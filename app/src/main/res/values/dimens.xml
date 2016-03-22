@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~  This Source Code Form is subject to the terms of the Mozilla Public
+  ~  License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+<resources>
+    <dimen name="ten">10dp</dimen>
+    <dimen name="twenty">20dp</dimen>
+    <dimen name="thirty">30dp</dimen>
+    <dimen name="sixty">60dp</dimen>
+    <dimen name="tabIndicatorHeight">4dp</dimen>
+    <dimen name="profile_layout">200dp</dimen>
+</resources>

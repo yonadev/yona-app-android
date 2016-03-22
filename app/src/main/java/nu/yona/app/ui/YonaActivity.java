@@ -1,0 +1,482 @@
+/*
+ * Copyright (c) 2016 Stichting Yona Foundation
+ *
+ *  This Source Code Form is subject to the terms of the Mozilla Public
+ *  License, v. 2.0. If a copy of the MPL was not distributed with this
+ *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+package nu.yona.app.ui;
+
+import android.app.AppOpsManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
+import nu.yona.app.api.service.AppWatchService;
+import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.ui.challenges.ChallengesFragment;
+import nu.yona.app.ui.dashboard.DashboardFragment;
+import nu.yona.app.ui.frinends.FriendsFragment;
+import nu.yona.app.ui.message.MessageFragment;
+import nu.yona.app.ui.profile.ProfileFragment;
+import nu.yona.app.ui.settings.SettingsFragment;
+import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
+
+/**
+ * Created by kinnarvasa on 18/03/16.
+ */
+public class YonaActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener {
+    
+    private static final int TOTAL_TABS = 4;
+    private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1;
+    boolean isBackPressed = false;
+    private Toolbar mToolBar;
+    private ActionBar mActionBar;
+    private TabLayout mTabLayout;
+    private Fragment mContent;
+    private DashboardFragment dashboardFragment = new DashboardFragment();
+    private FriendsFragment friendsFragment = new FriendsFragment();
+    private ChallengesFragment challengesFragment = new ChallengesFragment();
+    private SettingsFragment settingsFragment = new SettingsFragment();
+    private TextView toolbarTitle;
+    private ImageView leftIcon, rightIcon;
+    private final int WAIT_TIME = 1000;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.yona_layout);
+        
+        mToolBar = (Toolbar) findViewById(R.id.main_toolbar);
+        mToolBar.setBackgroundColor(Color.BLUE);
+        toolbarTitle = (TextView) mToolBar.findViewById(R.id.toolbar_title);
+        leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
+        rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
+        
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        
+        mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowTitleEnabled(false);
+        
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        setupTabs();
+        mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        
+        clearAllFragment();
+        
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+        
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getCustomView().getTag().hashCode()) {
+                    case R.string.dashboard:
+                        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
+                        break;
+                    case R.string.frineds:
+                        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_FRIENDS.getActionString()));
+                        break;
+                    case R.string.challenges:
+                        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_CHALLENGES.getActionString()));
+                        break;
+                    case R.string.settings:
+                        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_SETTINGS.getActionString()));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                
+            }
+            
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                
+            }
+        });
+        //Load default dashboard_selector fragment on start
+        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
+        
+        leftIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mContent instanceof DashboardFragment) {
+                    replaceFragmentWithAction(new Intent(IntentEnum.ACTION_PROFILE.getActionString()));
+                } else if (mContent instanceof ProfileFragment) {
+                    onBackPressed();
+                } else if (mContent instanceof MessageFragment) {
+                    onBackPressed();
+                }
+            }
+        });
+        rightIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mContent instanceof DashboardFragment) {
+                    replaceFragmentWithAction(new Intent(IntentEnum.ACTION_MESSAGE.getActionString()));
+                }
+            }
+        });
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    checkPermission();
+                }
+            }, WAIT_TIME);
+        }
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    
+    /**
+     * This will check whether user has given permission or not, if already given, it will start service, if not given, it will ask for permission.
+     */
+    private void checkPermission() {
+        if (!hasPermission()) {
+            showPermissionAlert();
+        } else {
+            startService();
+        }
+    }
+    
+    /**
+     * @return false if user has not given permission for package access so far.
+     */
+    private boolean hasPermission() {
+        try {
+            PackageManager packageManager = getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
+            AppOpsManager appOpsManager = (AppOpsManager) getSystemService(APP_OPS_SERVICE);
+            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+            return (mode == AppOpsManager.MODE_ALLOWED);
+        } catch (PackageManager.NameNotFoundException e) {
+            return true;
+        }
+        
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS:
+                if (hasPermission()) {
+                    Log.e("Permission", "permission granted.");
+                    startService();
+                } else {
+                    checkPermission();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    
+    private void startService() {
+        Intent serviceIntent = new Intent(YonaApplication.getAppContext(), AppWatchService.class);
+        startService(serviceIntent);
+    }
+    
+    /**
+     * Show permission alert to user on start of application if permission is not granted.
+     */
+    private void showPermissionAlert() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        
+        builder.setTitle(getString(R.string.app_usage_permission_title));
+        builder.setMessage(getString(R.string.app_usage_permission_message));
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setCancelable(false);
+        builder.create().show();
+    }
+    
+    /**
+     * To clear fragment stack.
+     */
+    private void clearAllFragment() {
+        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+            getSupportFragmentManager().popBackStack();
+        }
+    }
+    
+    /**
+     * To setup bottom tabs for application
+     */
+    private void setupTabs() {
+        for (int i = 0; i < TOTAL_TABS; i++) {
+            TabLayout.Tab tab = mTabLayout.newTab();
+            tab.setCustomView(getTabView(i));
+            mTabLayout.addTab(tab);
+        }
+    }
+    
+    /**
+     * @param position position of tab in number
+     * @return View to display for tab.
+     */
+    private View getTabView(int position) {
+        View v = LayoutInflater.from(this).inflate(R.layout.bottom_tab_item, null);
+        ImageView img = (ImageView) v.findViewById(R.id.tab_image);
+        switch (position) {
+            case 0:
+                img.setImageResource(R.drawable.dashboard_selector);
+                v.setTag(R.string.dashboard);
+                break;
+            case 1:
+                img.setImageResource(R.drawable.friends_selector);
+                v.setTag(R.string.frineds);
+                break;
+            case 2:
+                img.setImageResource(R.drawable.challenges_selector);
+                v.setTag(R.string.challenges);
+                break;
+            case 3:
+                img.setImageResource(R.drawable.settings_selector);
+                v.setTag(R.string.settings);
+                break;
+            default:
+                break;
+        }
+        return v;
+    }
+    
+    /**
+     * @param intent pass intent as input for replace current fragment with new.
+     */
+    private void replaceFragmentWithAction(Intent intent) {
+        boolean addToBackstack = false;
+        if (intent != null) {
+            //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN|WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            String callAction = intent.getAction();
+            boolean clearFragmentStack = intent.getBooleanExtra(AppConstant.CLEAR_FRAGMENT_STACK, false);
+            
+            if (!TextUtils.isEmpty(callAction)) {
+                Fragment oldFragment = mContent;
+                IntentEnum intentEnum = IntentEnum.fromName(callAction);
+                
+                if (intentEnum == null) {
+                    return;
+                }
+                
+                switch (intentEnum) {
+                    case ACTION_DASHBOARD:
+                        if (mContent instanceof DashboardFragment) {
+                            return;
+                        }
+                        setCustomTitle(R.string.dashboard);
+                        clearFragmentStack = true;
+                        addToBackstack = true;
+                        mContent = dashboardFragment;
+                        break;
+                    case ACTION_FRIENDS:
+                        if (mContent instanceof FriendsFragment) {
+                            return;
+                        }
+                        setCustomTitle(R.string.frineds);
+                        clearFragmentStack = true;
+                        addToBackstack = true;
+                        mContent = friendsFragment;
+                        break;
+                    case ACTION_CHALLENGES:
+                        if (mContent instanceof ChallengesFragment) {
+                            return;
+                        }
+                        setCustomTitle(R.string.challenges);
+                        clearFragmentStack = true;
+                        addToBackstack = true;
+                        mContent = challengesFragment;
+                        break;
+                    case ACTION_SETTINGS:
+                        if (mContent instanceof SettingsFragment) {
+                            return;
+                        }
+                        setCustomTitle(R.string.settings);
+                        clearFragmentStack = true;
+                        addToBackstack = true;
+                        mContent = settingsFragment;
+                        break;
+                    case ACTION_PROFILE:
+                        if (mContent instanceof ProfileFragment) {
+                            return;
+                        }
+                        setCustomTitle(R.string.profile);
+                        mContent = new ProfileFragment();
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
+                    case ACTION_MESSAGE:
+                        if (mContent instanceof MessageFragment) {
+                            return;
+                        }
+                        setTitle(R.string.message);
+                        mContent = new MessageFragment();
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
+                    default:
+                        break;
+                }
+                loadFragment(clearFragmentStack, addToBackstack, oldFragment);
+            }
+        }
+    }
+    
+    /**
+     * @param clearFragmentStack : yes if require to clear fragment stack.
+     * @param addToBackstack     : yes if require to add fragment to back stack.
+     * @param oldFragment        pass oldfragment which need to add in back stack.
+     */
+    private void loadFragment(boolean clearFragmentStack, boolean addToBackstack, Fragment oldFragment) {
+        if (mContent != null && !mContent.isAdded()) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            if (clearFragmentStack) {
+                int count = getSupportFragmentManager().getBackStackEntryCount();
+                for (int i = 0; i < count; ++i) {
+                    getSupportFragmentManager().popBackStackImmediate();
+                }
+                if (addToBackstack) {
+                    ft.addToBackStack(mContent.getClass().getName());
+                }
+                // adding back stack change listener again.
+                ft.replace(R.id.container, mContent).commit();
+            } else {
+                oldFragment.setUserVisibleHint(false);
+                if (!clearFragmentStack && addToBackstack) {
+                    ft.addToBackStack(mContent.getClass().getName());
+                }
+                ft.add(R.id.container, mContent).commit();
+                
+                oldFragment.onPause();
+                oldFragment.onStop();
+            }
+        }
+    }
+    
+    /**
+     * When user press back button, it will check in back stack, if stack has entry, it will reload previous fragment.
+     */
+    @Override
+    public void onBackStackChanged() {
+        if (isBackPressed) {
+            isBackPressed = false;
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                FragmentManager.BackStackEntry backStackEntry = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1);
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(backStackEntry.getName());
+                reloadOldFragment(fragment);
+            }
+        }
+    }
+    
+    /**
+     * @param fragment pass fragment to load on UI.
+     */
+    private void reloadOldFragment(Fragment fragment) {
+        if (fragment != null && !fragment.equals(mContent)) {
+            mContent = fragment;
+            if (mContent instanceof ProfileFragment) {
+                setCustomTitle(R.string.dashboard);
+            } else if (mContent instanceof MessageFragment) {
+                setCustomTitle(R.string.dashboard);
+            }
+        }
+    }
+    
+    /**
+     * This method will set custom title and buttons as per preference.
+     *
+     * @param titleId title id from strings.xml
+     */
+    private void setCustomTitle(int titleId) {
+        toolbarTitle.setText(getString(titleId));
+        switch (titleId) {
+            case R.string.dashboard:
+                mToolBar.setBackgroundColor(Color.rgb(114, 48, 94));
+                leftIcon.setVisibility(View.VISIBLE);
+                rightIcon.setVisibility(View.VISIBLE);
+                leftIcon.setTag(getString(R.string.dashboard));
+                rightIcon.setTag(getString(R.string.dashboard));
+                leftIcon.setImageBitmap(AppUtils.getCircleBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.profile)));
+                rightIcon.setImageDrawable(getDrawable(R.mipmap.ic_launcher));
+                break;
+            case R.string.frineds:
+                mToolBar.setBackgroundColor(Color.rgb(50, 125, 189));
+                leftIcon.setVisibility(View.GONE);
+                rightIcon.setVisibility(View.GONE);
+                break;
+            case R.string.challenges:
+                mToolBar.setBackgroundColor(Color.rgb(158, 198, 52));
+                leftIcon.setVisibility(View.GONE);
+                rightIcon.setVisibility(View.GONE);
+                break;
+            case R.string.settings:
+                mToolBar.setBackgroundColor(Color.rgb(248, 179, 54));
+                leftIcon.setVisibility(View.GONE);
+                rightIcon.setVisibility(View.GONE);
+                break;
+            case R.string.profile:
+                mToolBar.setBackgroundColor(Color.rgb(114, 48, 94));
+                leftIcon.setVisibility(View.VISIBLE);
+                rightIcon.setVisibility(View.VISIBLE);
+                leftIcon.setTag(getString(R.string.profile));
+                rightIcon.setTag(getString(R.string.profile));
+                break;
+            case R.string.message:
+                mToolBar.setBackgroundColor(Color.rgb(114, 48, 94));
+                leftIcon.setVisibility(View.VISIBLE);
+                rightIcon.setVisibility(View.GONE);
+                leftIcon.setTag(getString(R.string.message));
+                break;
+            default:
+                break;
+        }
+    }
+    
+    @Override
+    public void onBackPressed() {
+        isBackPressed = true;
+        onBackStackChanged();
+        super.onBackPressed();
+    }
+}

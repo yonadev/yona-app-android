@@ -1,0 +1,29 @@
+<!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~  This Source Code Form is subject to the terms of the Mozilla Public
+  ~  License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+<resources>
+    <string name="app_name">Yona</string>
+    <string name="dashboard">DASHBOARD</string>
+    <string name="frineds">VRIENDEN</string>
+    <string name="challenges">CHALLENGES</string>
+    <string name="settings">SETTINGS</string>
+    <string name="per_day">Per Dag</string>
+    <string name="per_week">Per Week</string>
+    <string name="timeline">Timeline</string>
+    <string name="overview">Overzicht</string>
+    <string name="profile"></string>
+    <string name="message">MELDIGEN</string>
+    <string name="profile_details">Profiel</string>
+    <string name="badges">Badges</string>
+    <string name="challenges_credit">TEGOED</string>
+    <string name="challenges_zone">TUDZONE</string>
+    <string name="challenges_no_go">NO GO</string>
+    <string name="change_pin">Wijzig pincode</string>
+    <string name="privacy">Privacy</string>
+    <string name="app_usage_permission_title">Permission</string>
+    <string name="app_usage_permission_message">Permission require for 5.1+ Android devies</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~  This Source Code Form is subject to the terms of the Mozilla Public
+  ~  License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="bottomBarColor">#FFFFFF</color>
+    <color name="dashboard">#6F2D5B</color>
+    <color name="friends">#2E7BBC</color>
+    <color name="challanges">#9CC52F</color>
+    <color name="dashboard_selected_tab">@android:color/white</color>
+    <color name="dashboard_deselected_tab">#B795AD</color>
+    <color name="friends_selected_tab">@android:color/white</color>
+    <color name="friends_deselected_tab">#91BADC</color>
+    <color name="challenges_selected_tab">@android:color/white</color>
+    <color name="challenges_deselected_tab">#C0DA7A</color>
+    <color name="settings_deselected_tab">#FBFBFB</color>
+</resources>

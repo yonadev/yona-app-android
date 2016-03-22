@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~  This Source Code Form is subject to the terms of the Mozilla Public
+  ~  License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="?android:colorControlHighlight">
+    <item>
+        <selector>
+            <item android:drawable="@mipmap/ic_launcher_selected" android:state_selected="true"
+                android:alpha="?android:attr/disabledAlpha" />
+            <item android:drawable="@mipmap/ic_launcher"
+                android:alpha="?android:attr/disabledAlpha" />
+        </selector>
+    </item>
+</ripple>
