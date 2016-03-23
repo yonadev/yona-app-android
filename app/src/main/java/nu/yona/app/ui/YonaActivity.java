@@ -8,11 +8,9 @@
 
 package nu.yona.app.ui;
 
-import android.app.AppOpsManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
+import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
@@ -23,6 +21,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -35,7 +34,7 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.service.AppWatchService;
+import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
@@ -50,7 +49,7 @@ import nu.yona.app.utils.AppUtils;
  * Created by kinnarvasa on 18/03/16.
  */
 public class YonaActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener {
-    
+
     private static final int TOTAL_TABS = 4;
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1;
     boolean isBackPressed = false;
@@ -64,32 +63,32 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private SettingsFragment settingsFragment = new SettingsFragment();
     private TextView toolbarTitle;
     private ImageView leftIcon, rightIcon;
-    private final int WAIT_TIME = 1000;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yona_layout);
-        
+
         mToolBar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolBar.setBackgroundColor(Color.BLUE);
         toolbarTitle = (TextView) mToolBar.findViewById(R.id.toolbar_title);
         leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
         rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
-        
+
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        
+
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowTitleEnabled(false);
-        
+
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         setupTabs();
         mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        
+
         clearAllFragment();
-        
+
         getSupportFragmentManager().addOnBackStackChangedListener(this);
-        
+
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -110,20 +109,20 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         break;
                 }
             }
-            
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                
+
             }
-            
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                
+
             }
         });
         //Load default dashboard_selector fragment on start
         replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
-        
+
         leftIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,56 +143,43 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 }
             }
         });
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     checkPermission();
                 }
-            }, WAIT_TIME);
+            }, AppConstant.ONE_SECOND);
+        } else {
+            AppUtils.startService(this);
         }
+        registerReceiver();
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
     }
-    
+
     /**
      * This will check whether user has given permission or not, if already given, it will start service, if not given, it will ask for permission.
      */
     private void checkPermission() {
-        if (!hasPermission()) {
+        if (!AppUtils.hasPermission(this)) {
             showPermissionAlert();
         } else {
-            startService();
+            AppUtils.startService(this);
         }
     }
-    
-    /**
-     * @return false if user has not given permission for package access so far.
-     */
-    private boolean hasPermission() {
-        try {
-            PackageManager packageManager = getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
-            AppOpsManager appOpsManager = (AppOpsManager) getSystemService(APP_OPS_SERVICE);
-            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
-            return (mode == AppOpsManager.MODE_ALLOWED);
-        } catch (PackageManager.NameNotFoundException e) {
-            return true;
-        }
-        
-    }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS:
-                if (hasPermission()) {
+                if (AppUtils.hasPermission(this)) {
                     Log.e("Permission", "permission granted.");
-                    startService();
+                    AppUtils.startService(this);
                 } else {
                     checkPermission();
                 }
@@ -202,18 +188,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 break;
         }
     }
-    
-    private void startService() {
-        Intent serviceIntent = new Intent(YonaApplication.getAppContext(), AppWatchService.class);
-        startService(serviceIntent);
-    }
-    
+
     /**
      * Show permission alert to user on start of application if permission is not granted.
      */
     private void showPermissionAlert() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        
+
         builder.setTitle(getString(R.string.app_usage_permission_title));
         builder.setMessage(getString(R.string.app_usage_permission_message));
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -231,7 +212,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         builder.setCancelable(false);
         builder.create().show();
     }
-    
+
     /**
      * To clear fragment stack.
      */
@@ -240,7 +221,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             getSupportFragmentManager().popBackStack();
         }
     }
-    
+
     /**
      * To setup bottom tabs for application
      */
@@ -251,7 +232,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             mTabLayout.addTab(tab);
         }
     }
-    
+
     /**
      * @param position position of tab in number
      * @return View to display for tab.
@@ -281,25 +262,24 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
         return v;
     }
-    
+
     /**
      * @param intent pass intent as input for replace current fragment with new.
      */
     private void replaceFragmentWithAction(Intent intent) {
         boolean addToBackstack = false;
         if (intent != null) {
-            //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN|WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             String callAction = intent.getAction();
             boolean clearFragmentStack = intent.getBooleanExtra(AppConstant.CLEAR_FRAGMENT_STACK, false);
-            
+
             if (!TextUtils.isEmpty(callAction)) {
                 Fragment oldFragment = mContent;
                 IntentEnum intentEnum = IntentEnum.fromName(callAction);
-                
+
                 if (intentEnum == null) {
                     return;
                 }
-                
+
                 switch (intentEnum) {
                     case ACTION_DASHBOARD:
                         if (mContent instanceof DashboardFragment) {
@@ -362,7 +342,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
         }
     }
-    
+
     /**
      * @param clearFragmentStack : yes if require to clear fragment stack.
      * @param addToBackstack     : yes if require to add fragment to back stack.
@@ -387,13 +367,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     ft.addToBackStack(mContent.getClass().getName());
                 }
                 ft.add(R.id.container, mContent).commit();
-                
+
                 oldFragment.onPause();
                 oldFragment.onStop();
             }
         }
     }
-    
+
     /**
      * When user press back button, it will check in back stack, if stack has entry, it will reload previous fragment.
      */
@@ -408,7 +388,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
         }
     }
-    
+
     /**
      * @param fragment pass fragment to load on UI.
      */
@@ -422,7 +402,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
         }
     }
-    
+
     /**
      * This method will set custom title and buttons as per preference.
      *
@@ -438,7 +418,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 leftIcon.setTag(getString(R.string.dashboard));
                 rightIcon.setTag(getString(R.string.dashboard));
                 leftIcon.setImageBitmap(AppUtils.getCircleBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.profile)));
-                rightIcon.setImageDrawable(getDrawable(R.mipmap.ic_launcher));
+                rightIcon.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.ic_launcher));
                 break;
             case R.string.frineds:
                 mToolBar.setBackgroundColor(Color.rgb(50, 125, 189));
@@ -472,11 +452,18 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 break;
         }
     }
-    
+
     @Override
     public void onBackPressed() {
         isBackPressed = true;
         onBackStackChanged();
         super.onBackPressed();
+    }
+
+    /**
+     * This will register receiver for different events like screen on-off, boot, connectivity etc.
+     */
+    public static void registerReceiver() {
+        YonaApplication.getAppContext().registerReceiver(new YonaReceiver(), new IntentFilter());
     }
 }

@@ -9,6 +9,8 @@
 package nu.yona.app.api.service;
 
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -16,6 +18,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -26,13 +30,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import nu.yona.app.YonaApplication;
+import nu.yona.app.utils.AppConstant;
+
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class AppWatchService extends Service {
+public class ActivityMonitorService extends Service {
 
-    private AppWatchService self;
+    private ActivityMonitorService self;
     private Stopwatch stopWatch = new Stopwatch();
+    private String previousAppName;
+    private PowerManager powerManager;
 
     public static String printForegroundTask(Context context) {
         String currentApp = "NULL";
@@ -54,21 +63,19 @@ public class AppWatchService extends Service {
             List<ActivityManager.RunningAppProcessInfo> tasks = am.getRunningAppProcesses();
             currentApp = tasks.get(0).processName;
         }
-
-        Log.e("adapter", "Current App in foreground is: " + currentApp);
         return currentApp;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        powerManager = ((PowerManager) YonaApplication.getAppContext().getSystemService(Context.POWER_SERVICE));
         self = this;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         scheduleMethod();
-        startForeground(101, null);
         return START_NOT_STICKY;
     }
 
@@ -80,7 +87,6 @@ public class AppWatchService extends Service {
 
     private void scheduleMethod() {
         // TODO Auto-generated method stub
-
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new Runnable() {
 
@@ -89,24 +95,58 @@ public class AppWatchService extends Service {
                 // This method will check for the Running apps after every 1000ms
                 checkRunningApps();
             }
-        }, 0, 1000, TimeUnit.MILLISECONDS);
+        }, 0, AppConstant.ONE_SECOND, TimeUnit.MILLISECONDS);
     }
 
     private void checkRunningApps() {
+        if (!powerManager.isInteractive()) {
+            stopWatch.stop();
+            return;
+        }
         String apppackagename = printForegroundTask(self);
         if (stopWatch.isStarted()) {
-            updateSpentTime(apppackagename);
+            if (previousAppName.equalsIgnoreCase(apppackagename)) {
+                updateSpentTime(apppackagename);
+            } else {
+                previousAppName = apppackagename;
+                stopWatch.stop();
+                stopWatch.start();
+                updateSpentTime(apppackagename);
+            }
+        } else {
+            stopWatch.start();
+            previousAppName = apppackagename;
         }
     }
 
     private void updateSpentTime(String pkgname) {
-        long spendingtime = stopWatch.getElapsedTimeSecs();
-        Log.e("Spending Time", "Spending Time of " + pkgname + ": " + spendingtime);
+        Log.e("Spending Time", "Spending Time of " + pkgname + ": " + stopWatch.getElapsedTimeMin() + ":" + stopWatch.getElapsedTimeSecs());
     }
 
-    public void stop() {
-        if (self != null) {
-            self.stopSelf();
-        }
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.e("Service", "On Task Removed");
+        restartService();
+        super.onTaskRemoved(rootIntent);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e("Service", "On Destroy");
+        super.onDestroy();
+        restartService();
+    }
+
+    private void restartService() {
+        Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
+        restartServiceIntent.setPackage(getPackageName());
+
+        PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmService.set(
+                AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + AppConstant.ONE_SECOND,
+                restartServicePendingIntent);
+
     }
 }

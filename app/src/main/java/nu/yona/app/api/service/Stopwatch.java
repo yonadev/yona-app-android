@@ -76,4 +76,8 @@ public class Stopwatch {
         return getElapsedTimeHour() + ":" + getElapsedTimeMin() + ":"
                 + getElapsedTimeSecs() + "." + getElapsedTimeMili();
     }
+
+    public long getStratTime() {
+        return startTime;
+    }
 }

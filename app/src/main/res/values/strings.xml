@@ -7,6 +7,7 @@
   -->
 <resources>
     <string name="app_name">Yona</string>
+    <string name="service_name">Yona Service</string>
     <string name="dashboard">DASHBOARD</string>
     <string name="frineds">VRIENDEN</string>
     <string name="challenges">CHALLENGES</string>

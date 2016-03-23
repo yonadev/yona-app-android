@@ -8,6 +8,12 @@
 
 package nu.yona.app.utils;
 
+import android.app.ActivityManager;
+import android.app.AppOpsManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,6 +22,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+
+import nu.yona.app.api.service.ActivityMonitorService;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -45,4 +53,42 @@ public class AppUtils {
         return output;
     }
 
+    /**
+     * @return false if user has not given permission for package access so far.
+     */
+    public static boolean hasPermission(Context context) {
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(context.APP_OPS_SERVICE);
+            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+            return (mode == AppOpsManager.MODE_ALLOWED);
+        } catch (PackageManager.NameNotFoundException e) {
+            return true;
+        }
+
+    }
+
+    /**
+     * @param serviceClass Name of class to check whether running or not.
+     * @return true if service already running else return false
+     */
+    public static boolean isYonaServiceRunning(Context context, Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Start service once user grant permission for application permission (for 5.1+ version)
+     */
+    public static void startService(Context context) {
+        if (!AppUtils.isYonaServiceRunning(context, ActivityMonitorService.class)) {
+            context.startService(new Intent(context, ActivityMonitorService.class));
+        }
+    }
 }
