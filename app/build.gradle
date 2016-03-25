@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "nu.yona.app.app"
+        applicationId "nu.yona.app"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
@@ -33,6 +33,91 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def apk = output.outputFile
+            def appName = getAppName()
+            def branch = getBranch().replaceAll(/\//, "-")
+            def versionString = getVersionString()
+            def buildNumber = getBuildNumber()
+            def apkName = appName + '-' + branch + '-' + versionString + '.' + buildNumber
+
+            if (variant.buildType.name == "release")
+                apkName += "-RELEASE"
+
+            output.outputFile = new File(apk.parent, apkName + '.apk')
+            output.packageApplication.outputFile = new File(apk.parent, apkName + '-unaligned.apk')
+        }
+    }
+
+    productFlavors {
+        //build flavors:
+        zdev {
+            //do nothing here, just merge in custom res
+        }
+        zproduction {
+            //do nothing here, just merge in custom res
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    android.defaultConfig.versionName = getVersionString()
+    android.defaultConfig.versionCode = Integer.valueOf(getBuildNumber())
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+def getAppName() {
+    def appName
+    if ('APP_NAME' in project.ext.properties) {
+        appName = project.ext.properties['APP_NAME']
+    } else {
+        appName = "Yona"
+    }
+}
+
+def getBuildNumber() {
+    def buildNumber
+
+    if ('BUILD_NUMBER' in project.ext.properties) {
+        buildNumber = project.ext.properties['BUILD_NUMBER']
+    } else {
+        buildNumber = "1"
+    }
+    return buildNumber
+}
+
+def getVersionString() {
+    def versionString
+
+    if ('VERSION_STRING' in project.ext.properties) {
+        versionString = project.ext.properties['VERSION_STRING']
+    } else {
+        versionString = android.defaultConfig.versionName ?: "0.0.0"
+    }
+    return versionString
+}
+
+
+def getBranch() {
+    def branch
+
+    if ('BRANCH' in project.ext.properties) {
+        branch = project.ext.properties['BRANCH']
+    } else {
+        branch = "develop"
+    }
+
+    return branch
 }
 
 dependencies {
