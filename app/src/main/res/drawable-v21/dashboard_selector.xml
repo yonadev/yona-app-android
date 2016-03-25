@@ -9,9 +9,9 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="?android:colorControlHighlight">
     <item>
         <selector>
-            <item android:drawable="@mipmap/ic_launcher_selected" android:state_selected="true"
+            <item android:drawable="@drawable/icn_me_active" android:state_selected="true"
                 android:alpha="?android:attr/disabledAlpha" />
-            <item android:drawable="@mipmap/ic_launcher"
+            <item android:drawable="@drawable/icn_me"
                 android:alpha="?android:attr/disabledAlpha" />
         </selector>
     </item>

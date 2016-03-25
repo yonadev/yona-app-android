@@ -21,4 +21,5 @@
     <color name="challenges_selected_tab">@android:color/white</color>
     <color name="challenges_deselected_tab">#C0DA7A</color>
     <color name="settings_deselected_tab">#FBFBFB</color>
+    <color name="pink_button_bg">#E8308A</color>
 </resources>

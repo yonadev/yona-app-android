@@ -27,4 +27,8 @@
     <string name="privacy">Privacy</string>
     <string name="app_usage_permission_title">Permission</string>
     <string name="app_usage_permission_message">Permission require for 5.1+ Android devies</string>
+    <string name="join">DOE MEE</string>
+    <string name="login">INLOGGEN</string>
+    <string name="previous">VORIGE</string>
+    <string name="next">VOLGENDE</string>
 </resources>

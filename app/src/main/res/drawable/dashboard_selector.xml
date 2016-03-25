@@ -7,7 +7,7 @@
   ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@mipmap/ic_launcher_selected" android:state_pressed="true" />
-    <item android:drawable="@mipmap/ic_launcher_selected" android:state_selected="true" />
-    <item android:drawable="@mipmap/ic_launcher" />
+    <item android:drawable="@drawable/icn_me_active" android:state_pressed="true" />
+    <item android:drawable="@drawable/icn_me_active" android:state_selected="true" />
+    <item android:drawable="@drawable/icn_me" />
 </selector>
