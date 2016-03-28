@@ -418,7 +418,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 leftIcon.setTag(getString(R.string.dashboard));
                 rightIcon.setTag(getString(R.string.dashboard));
                 leftIcon.setImageBitmap(AppUtils.getCircleBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.profile)));
-                rightIcon.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.ic_launcher));
+                rightIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icn_reminder));
                 break;
             case R.string.frineds:
                 mToolBar.setBackgroundColor(Color.rgb(50, 125, 189));

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~  This Source Code Form is subject to the terms of the Mozilla Public
+  ~  License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/previous"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/previous"
+            android:layout_marginRight="1dp"
+            android:background="@color/darkish_pink"
+            android:textColor="@android:color/white"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:background="@color/darkish_pink"
+            android:textColor="@android:color/white"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>

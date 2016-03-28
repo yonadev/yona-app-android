@@ -31,4 +31,5 @@
     <string name="login">INLOGGEN</string>
     <string name="previous">VORIGE</string>
     <string name="next">VOLGENDE</string>
+    <string name="connection_not_available">Internet connection not available.</string>
 </resources>

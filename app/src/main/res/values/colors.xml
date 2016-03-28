@@ -21,5 +21,18 @@
     <color name="challenges_selected_tab">@android:color/white</color>
     <color name="challenges_deselected_tab">#C0DA7A</color>
     <color name="settings_deselected_tab">#FBFBFB</color>
-    <color name="pink_button_bg">#E8308A</color>
+    <color name="darkish_pink">#E8308A</color>
+    <color name="mango">#f9b233</color>
+    <color name="grape">#6c2a58</color>
+    <color name="mid_blue">#1d71b8</color>
+    <color name="pea">#95c11f</color>
+    <color name="white_two">#f3f3f3</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#2f2f2f</color>
+    <color name="grape_two">#58254d</color>
+    <color name="bg_gradient_two">#f7f7f7</color>
+    <color name="bg_gradient_one">#fcfcfc</color>
+    <color name="sickly_green">#8cb818</color>
+    <color name="sickly_green_two">#8ab518</color>
+    <color name="white_three">#e7e7e7</color>
 </resources>
