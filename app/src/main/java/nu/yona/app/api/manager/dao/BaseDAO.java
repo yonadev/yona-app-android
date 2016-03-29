@@ -22,13 +22,13 @@ public class BaseDAO {
     private final Context mContext;
     private String baseUrl;
 
-    public String getBaseUrl(){
-        return mContext.getString(R.string.server_url);
-    }
-
     public BaseDAO(SQLiteOpenHelper mOpenHelper, Context context) {
         this.mOpenHelper = mOpenHelper;
         this.mContext = context;
+    }
+
+    public String getBaseUrl() {
+        return mContext.getString(R.string.server_url);
     }
 
     protected void delete(String tableName, String where, String[] whereArgs) {

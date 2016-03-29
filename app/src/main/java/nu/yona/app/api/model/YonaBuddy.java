@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2016 Stichting Yona Foundation
  *
@@ -18,7 +17,7 @@ public class YonaBuddy {
 
     @SerializedName("_links")
     @Expose
-    private Links__ Links;
+    private Links Links;
     @SerializedName("nickname")
     @Expose
     private String nickname;
@@ -30,95 +29,75 @@ public class YonaBuddy {
     private String receivingStatus;
     @SerializedName("_embedded")
     @Expose
-    private Embedded___ Embedded;
+    private Embedded Embedded;
 
     /**
-     * 
-     * @return
-     *     The Links
+     * @return The Links
      */
-    public Links__ getLinks() {
+    public Links getLinks() {
         return Links;
     }
 
     /**
-     * 
-     * @param Links
-     *     The _links
+     * @param Links The _links
      */
-    public void setLinks(Links__ Links) {
+    public void setLinks(Links Links) {
         this.Links = Links;
     }
 
     /**
-     * 
-     * @return
-     *     The nickname
+     * @return The nickname
      */
     public String getNickname() {
         return nickname;
     }
 
     /**
-     * 
-     * @param nickname
-     *     The nickname
+     * @param nickname The nickname
      */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
     /**
-     * 
-     * @return
-     *     The sendingStatus
+     * @return The sendingStatus
      */
     public String getSendingStatus() {
         return sendingStatus;
     }
 
     /**
-     * 
-     * @param sendingStatus
-     *     The sendingStatus
+     * @param sendingStatus The sendingStatus
      */
     public void setSendingStatus(String sendingStatus) {
         this.sendingStatus = sendingStatus;
     }
 
     /**
-     * 
-     * @return
-     *     The receivingStatus
+     * @return The receivingStatus
      */
     public String getReceivingStatus() {
         return receivingStatus;
     }
 
     /**
-     * 
-     * @param receivingStatus
-     *     The receivingStatus
+     * @param receivingStatus The receivingStatus
      */
     public void setReceivingStatus(String receivingStatus) {
         this.receivingStatus = receivingStatus;
     }
 
     /**
-     * 
-     * @return
-     *     The Embedded
+     * @return The Embedded
      */
-    public Embedded___ getEmbedded() {
+    public Embedded getEmbedded() {
         return Embedded;
     }
 
     /**
-     * 
-     * @param Embedded
-     *     The _embedded
+     * @param Embedded The _embedded
      */
-    public void setEmbedded(Embedded___ Embedded) {
+    public void setEmbedded(Embedded Embedded) {
         this.Embedded = Embedded;
     }
 

@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2016 Stichting Yona Foundation
  *
@@ -16,7 +15,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
 
-//    @SerializedName("_embedded")
+    //    @SerializedName("_embedded")
 //    @Expose
 //    private nu.yona.app.api.model.Embedded Embedded;
 //    @SerializedName("_links")
@@ -31,7 +30,7 @@ public class User {
     @SerializedName("mobileNumber")
     @Expose
     private String mobileNumber;
-//    @SerializedName("vpnProfile")
+    //    @SerializedName("vpnProfile")
 //    @Expose
 //    private VpnProfile vpnProfile;
     @SerializedName("nickname")
@@ -42,7 +41,7 @@ public class User {
 //    private List<String> devices = new ArrayList<String>();
 
     /**
-     * 
+     *
      * @return
      *     The Embedded
      */
@@ -51,7 +50,7 @@ public class User {
 //    }
 
     /**
-     * 
+     *
      * @param Embedded
      *     The _embedded
      */
@@ -60,7 +59,7 @@ public class User {
 //    }
 
     /**
-     * 
+     *
      * @return
      *     The Links
      */
@@ -69,7 +68,7 @@ public class User {
 //    }
 
     /**
-     * 
+     *
      * @param Links
      *     The _links
      */
@@ -78,61 +77,49 @@ public class User {
 //    }
 
     /**
-     * 
-     * @return
-     *     The firstName
+     * @return The firstName
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * 
-     * @param firstName
-     *     The firstName
+     * @param firstName The firstName
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * 
-     * @return
-     *     The lastName
+     * @return The lastName
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * 
-     * @param lastName
-     *     The lastName
+     * @param lastName The lastName
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * 
-     * @return
-     *     The mobileNumber
+     * @return The mobileNumber
      */
     public String getMobileNumber() {
         return mobileNumber;
     }
 
     /**
-     * 
-     * @param mobileNumber
-     *     The mobileNumber
+     * @param mobileNumber The mobileNumber
      */
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
     /**
-     * 
+     *
      * @return
      *     The vpnProfile
      */
@@ -141,7 +128,7 @@ public class User {
 //    }
 
     /**
-     * 
+     *
      * @param vpnProfile
      *     The vpnProfile
      */
@@ -150,25 +137,21 @@ public class User {
 //    }
 
     /**
-     * 
-     * @return
-     *     The nickname
+     * @return The nickname
      */
     public String getNickname() {
         return nickname;
     }
 
     /**
-     * 
-     * @param nickname
-     *     The nickname
+     * @param nickname The nickname
      */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
     /**
-     * 
+     *
      * @return
      *     The devices
      */
@@ -177,7 +160,7 @@ public class User {
 //    }
 
     /**
-     * 
+     *
      * @param devices
      *     The devices
      */

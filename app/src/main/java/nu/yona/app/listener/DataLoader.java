@@ -6,7 +6,7 @@
  *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package nu.yona.app.api.listener;
+package nu.yona.app.listener;
 
 import android.os.AsyncTask;
 import android.os.Build;

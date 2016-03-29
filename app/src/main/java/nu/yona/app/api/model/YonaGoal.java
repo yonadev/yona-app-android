@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2016 Stichting Yona Foundation
  *
@@ -27,54 +26,42 @@ public class YonaGoal {
     private String activityCategoryName;
 
     /**
-     * 
-     * @return
-     *     The Links
+     * @return The Links
      */
     public nu.yona.app.api.model.Links getLinks() {
         return Links;
     }
 
     /**
-     * 
-     * @param Links
-     *     The _links
+     * @param Links The _links
      */
     public void setLinks(nu.yona.app.api.model.Links Links) {
         this.Links = Links;
     }
 
     /**
-     * 
-     * @return
-     *     The Type
+     * @return The Type
      */
     public String getType() {
         return Type;
     }
 
     /**
-     * 
-     * @param Type
-     *     The @type
+     * @param Type The @type
      */
     public void setType(String Type) {
         this.Type = Type;
     }
 
     /**
-     * 
-     * @return
-     *     The activityCategoryName
+     * @return The activityCategoryName
      */
     public String getActivityCategoryName() {
         return activityCategoryName;
     }
 
     /**
-     * 
-     * @param activityCategoryName
-     *     The activityCategoryName
+     * @param activityCategoryName The activityCategoryName
      */
     public void setActivityCategoryName(String activityCategoryName) {
         this.activityCategoryName = activityCategoryName;

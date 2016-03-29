@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2016 Stichting Yona Foundation
  *
@@ -18,44 +17,36 @@ public class YonaBuddies {
 
     @SerializedName("_embedded")
     @Expose
-    private Embedded__ Embedded;
+    private Embedded Embedded;
     @SerializedName("links")
     @Expose
-    private Links____ links;
+    private Links links;
 
     /**
-     * 
-     * @return
-     *     The Embedded
+     * @return The Embedded
      */
-    public Embedded__ getEmbedded() {
+    public Embedded getEmbedded() {
         return Embedded;
     }
 
     /**
-     * 
-     * @param Embedded
-     *     The _embedded
+     * @param Embedded The _embedded
      */
-    public void setEmbedded(Embedded__ Embedded) {
+    public void setEmbedded(Embedded Embedded) {
         this.Embedded = Embedded;
     }
 
     /**
-     * 
-     * @return
-     *     The links
+     * @return The links
      */
-    public Links____ getLinks() {
+    public Links getLinks() {
         return links;
     }
 
     /**
-     * 
-     * @param links
-     *     The links
+     * @param links The links
      */
-    public void setLinks(Links____ links) {
+    public void setLinks(Links links) {
         this.links = links;
     }
 

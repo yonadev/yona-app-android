@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2016 Stichting Yona Foundation
  *
@@ -18,7 +17,7 @@ public class YonaUser {
 
     @SerializedName("_links")
     @Expose
-    private Links___ Links;
+    private Links Links;
     @SerializedName("firstName")
     @Expose
     private String firstName;
@@ -30,72 +29,56 @@ public class YonaUser {
     private String mobileNumber;
 
     /**
-     * 
-     * @return
-     *     The Links
+     * @return The Links
      */
-    public Links___ getLinks() {
+    public Links getLinks() {
         return Links;
     }
 
     /**
-     * 
-     * @param Links
-     *     The _links
+     * @param Links The _links
      */
-    public void setLinks(Links___ Links) {
+    public void setLinks(Links Links) {
         this.Links = Links;
     }
 
     /**
-     * 
-     * @return
-     *     The firstName
+     * @return The firstName
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * 
-     * @param firstName
-     *     The firstName
+     * @param firstName The firstName
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * 
-     * @return
-     *     The lastName
+     * @return The lastName
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * 
-     * @param lastName
-     *     The lastName
+     * @param lastName The lastName
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * 
-     * @return
-     *     The mobileNumber
+     * @return The mobileNumber
      */
     public String getMobileNumber() {
         return mobileNumber;
     }
 
     /**
-     * 
-     * @param mobileNumber
-     *     The mobileNumber
+     * @param mobileNumber The mobileNumber
      */
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;

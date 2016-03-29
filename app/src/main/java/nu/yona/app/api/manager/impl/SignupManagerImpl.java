@@ -17,15 +17,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import nu.yona.app.api.ApiKeys;
-import nu.yona.app.api.listener.DataLoadListener;
 import nu.yona.app.api.manager.SignupManager;
 import nu.yona.app.api.manager.dao.SignupDAO;
 import nu.yona.app.api.manager.network.SignupNetworkImpl;
+import nu.yona.app.listener.DataLoadListener;
 
 /**
  * Created by kinnarvasa on 25/03/16.
  */
-public class SignupManagerImpl implements SignupManager{
+public class SignupManagerImpl implements SignupManager {
 
     private SignupDAO signupDAO;
     private SignupNetworkImpl signupNetwork;
@@ -39,33 +39,34 @@ public class SignupManagerImpl implements SignupManager{
 
     /**
      * Validate user's first and last name
+     *
      * @param firstName
      * @param lastName
      * @return true if first name and last name are correct.
      */
-    public boolean validateUserName(String firstName, String lastName){
+    public boolean validateUserName(String firstName, String lastName) {
         // do validation for first name and last name
         return true;
     }
 
     /**
-     *
      * @param mobileNumber user's mobile number
      * @return true if number is in expected format
      */
-    public boolean validateMobileNumber(String mobileNumber){
+    public boolean validateMobileNumber(String mobileNumber) {
         // do validation for mobile number
         return true;
     }
 
     /**
      * This will register user on server
+     *
      * @param firstName Name of user
-     * @param lastName last name of user
-     * @param mobileNo mobile number of user
-     * @param nickName nick name of user (optional)
+     * @param lastName  last name of user
+     * @param mobileNo  mobile number of user
+     * @param nickName  nick name of user (optional)
      */
-    public void registerUser(String firstName, String lastName, String mobileNo, String nickName, final DataLoadListener listener){
+    public void registerUser(String firstName, String lastName, String mobileNo, String nickName, final DataLoadListener listener) {
         // do registration of user on server and save response in database.
         try {
             signupNetwork.registerUser(getJSONRequestObject(firstName, lastName, mobileNo, nickName), new DataLoadListener() {
@@ -79,12 +80,12 @@ public class SignupManagerImpl implements SignupManager{
                     listener.onError(errorMessage);
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             listener.onError(e.getMessage());
         }
     }
 
-    private JSONObject getJSONRequestObject(String firstName, String lastName, String mobileNo, String nickName) throws Exception{
+    private JSONObject getJSONRequestObject(String firstName, String lastName, String mobileNo, String nickName) throws Exception {
         JSONObject object = new JSONObject();
         object.put(ApiKeys.FIRST_NAME, firstName);
         object.put(ApiKeys.LAST_NAME, lastName);
@@ -100,10 +101,11 @@ public class SignupManagerImpl implements SignupManager{
 
     /**
      * This will get response of server in case of register successful and store it in database, update on UI after that via listener.
+     *
      * @param result
      * @param listener
      */
-    private void updateDataForRegisterUser(Object result, final DataLoadListener listener){
+    private void updateDataForRegisterUser(Object result, final DataLoadListener listener) {
         signupDAO.updateDataForRegisterUser(result, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {

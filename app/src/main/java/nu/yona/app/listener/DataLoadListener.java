@@ -6,7 +6,7 @@
  *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package nu.yona.app.api.listener;
+package nu.yona.app.listener;
 
 public interface DataLoadListener<T, U> {
     void onDataLoad(T result);

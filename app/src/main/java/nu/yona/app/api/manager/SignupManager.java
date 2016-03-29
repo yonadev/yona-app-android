@@ -10,7 +10,7 @@
 
 package nu.yona.app.api.manager;
 
-import nu.yona.app.api.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListener;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -18,6 +18,8 @@ import nu.yona.app.api.listener.DataLoadListener;
 public interface SignupManager {
 
     boolean validateUserName(String firstName, String lastName);
+
     boolean validateMobileNumber(String mobileNumber);
+
     void registerUser(String firstName, String lastName, String mobileNo, String nickName, DataLoadListener listener);
 }

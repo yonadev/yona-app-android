@@ -22,7 +22,7 @@ import nu.yona.app.ui.BaseFragment;
 /**
  * Created by kinnarvasa on 25/03/16.
  */
-public class StepTwo extends BaseFragment{
+public class StepTwo extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

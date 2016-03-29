@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2016 Stichting Yona Foundation
  *
@@ -24,36 +23,28 @@ public class Embedded {
     private YonaBuddies yonaBuddies;
 
     /**
-     * 
-     * @return
-     *     The yonaGoals
+     * @return The yonaGoals
      */
     public YonaGoals getYonaGoals() {
         return yonaGoals;
     }
 
     /**
-     * 
-     * @param yonaGoals
-     *     The yona:goals
+     * @param yonaGoals The yona:goals
      */
     public void setYonaGoals(YonaGoals yonaGoals) {
         this.yonaGoals = yonaGoals;
     }
 
     /**
-     * 
-     * @return
-     *     The yonaBuddies
+     * @return The yonaBuddies
      */
     public YonaBuddies getYonaBuddies() {
         return yonaBuddies;
     }
 
     /**
-     * 
-     * @param yonaBuddies
-     *     The yona:buddies
+     * @param yonaBuddies The yona:buddies
      */
     public void setYonaBuddies(YonaBuddies yonaBuddies) {
         this.yonaBuddies = yonaBuddies;

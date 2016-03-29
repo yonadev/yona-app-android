@@ -24,16 +24,15 @@ public class DBHelper {
     private static final String FIELD_TEXT = " TEXT,";
     private static final String FIELD_TEXT_WITHOUT_COMMA = " TEXT";
     private static final String FIELD_BLOB = " BLOB,";
+    public static final String TABLE_USER_REGISTER = CREATE_TABLE_IF_NOT_EXISTS + DBConstant.USER_DATA
+            + "("
+            + DBConstant.ID + FIELD_TEXT
+            + DBConstant.SOURCE_OBJECT + FIELD_BLOB
+            + ")";
     private static final String FIELD_BOOLEAN = " BOOLEAN,";
     private static final String FIELD_BOOLEAN_WITHOUT_COMMA = " BOOLEAN";
     private static final String FIELD_BLOB_WITHOUT_COMMA = " BLOB";
     private static final String NUMERIC_PRIMARY_KEY = " NUMERIC PRIMARY KEY, ";
     private static final String UNIQUE = " UNIQUE";
     private static final String NOT_NULL = " NOT NULL";
-
-    public static final String TABLE_USER_REGISTER = CREATE_TABLE_IF_NOT_EXISTS + DBConstant.USER_DATA
-            + "("
-            + DBConstant.ID + FIELD_TEXT
-            + DBConstant.SOURCE_OBJECT + FIELD_BLOB
-            + ")";
 }

@@ -22,19 +22,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper mInstance = null;
 
-    public static synchronized DatabaseHelper getInstance(Context context){
-        if (mInstance == null){
-            mInstance = new DatabaseHelper(context);
-        }
-        return mInstance;
-    }
-
     private DatabaseHelper(Context context) {
         super(context, DBConstant.DATABASE_NAME, null, DBConstant.DATABASE_VERSION);
-        synchronized (this){
+        synchronized (this) {
             Log.i(DatabaseHelper.class.getName(), "DatabaseHelper constructor called");
             this.getWritableDatabase();
         }
+    }
+
+    public static synchronized DatabaseHelper getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new DatabaseHelper(context);
+        }
+        return mInstance;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    private void createTables(SQLiteDatabase db){
+    private void createTables(SQLiteDatabase db) {
 //        db.execSQL(DBHelper.TABLE_USER_REGISTER);
     }
 }

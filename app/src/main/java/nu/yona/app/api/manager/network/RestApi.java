@@ -27,5 +27,5 @@ public interface RestApi {
     @Headers("Cache-Control: public, max-age=640000, s-maxage=640000 , max-stale=2419200")
     @POST("/users")
     Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
-                            @Body JSONObject body );
+                            @Body JSONObject body);
 }

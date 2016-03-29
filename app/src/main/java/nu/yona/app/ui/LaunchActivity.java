@@ -20,7 +20,7 @@ import nu.yona.app.ui.signup.SignupActivity;
 /**
  * Created by kinnarvasa on 25/03/16.
  */
-public class LaunchActivity extends BaseActivity{
+public class LaunchActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -37,17 +37,33 @@ public class BaseImpl {
     private File httpCacheDirectory;
     private int maxStale = 60 * 60 * 24 * 28;
     private int cacheSize = 10 * 1024 * 1024;
-    public BaseImpl(){
+    private Interceptor getInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request originalRequest = chain.request();
+            Request.Builder build = originalRequest.newBuilder();
+            build.header("Content-Type", "application/json");
+            if (!NetworkUtils.isOnline(YonaApplication.getAppContext()) && originalRequest.method().equalsIgnoreCase("GET") && !originalRequest.cacheControl().noCache()) {
+                build.header("Cache-Control", "public, max-stale=2419200");
+            }
+            Response response = chain.proceed(build.build());
+            return response.newBuilder()
+                    .header("Cache-Control", "public, max-age=" + maxStale)
+                    .build();
+        }
+    };
+
+    public BaseImpl() {
         try {
             httpCacheDirectory = new File(YonaApplication.getAppContext().getCacheDir(), NetworkConstant.CACHING_FILE);
-        } catch (Exception e){
+        } catch (Exception e) {
             Log.e(BaseImpl.class.getSimpleName(), e.getMessage());
         }
         cache = new Cache(httpCacheDirectory, cacheSize);
     }
 
-    private Retrofit getRetrofit(){
-        if(retrofit == null){
+    private Retrofit getRetrofit() {
+        if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(YonaApplication.getAppContext().getString(R.string.server_url))
                     .addConverterFactory(GsonConverterFactory.create())
@@ -68,24 +84,8 @@ public class BaseImpl {
         return okHttpClient;
     }
 
-    private Interceptor getInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request originalRequest = chain.request();
-            Request.Builder build = originalRequest.newBuilder();
-            build.header("Content-Type", "application/json");
-            if(!NetworkUtils.isOnline(YonaApplication.getAppContext()) && originalRequest.method().equalsIgnoreCase("GET") && !originalRequest.cacheControl().noCache()) {
-                build.header("Cache-Control", "public, max-stale=2419200");
-            }
-            Response response = chain.proceed(build.build());
-            return response.newBuilder()
-                    .header("Cache-Control", "public, max-age=" + maxStale)
-                    .build();
-        }
-    };
-
-    public RestApi getRestApi(){
-        if(restApi == null) {
+    public RestApi getRestApi() {
+        if (restApi == null) {
             restApi = getRetrofit().create(RestApi.class);
         }
         return restApi;

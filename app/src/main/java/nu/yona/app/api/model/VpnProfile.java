@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2016 Stichting Yona Foundation
  *
@@ -27,54 +26,42 @@ public class VpnProfile {
     private String openVPNProfile;
 
     /**
-     * 
-     * @return
-     *     The vpnLoginID
+     * @return The vpnLoginID
      */
     public String getVpnLoginID() {
         return vpnLoginID;
     }
 
     /**
-     * 
-     * @param vpnLoginID
-     *     The vpnLoginID
+     * @param vpnLoginID The vpnLoginID
      */
     public void setVpnLoginID(String vpnLoginID) {
         this.vpnLoginID = vpnLoginID;
     }
 
     /**
-     * 
-     * @return
-     *     The vpnPassword
+     * @return The vpnPassword
      */
     public String getVpnPassword() {
         return vpnPassword;
     }
 
     /**
-     * 
-     * @param vpnPassword
-     *     The vpnPassword
+     * @param vpnPassword The vpnPassword
      */
     public void setVpnPassword(String vpnPassword) {
         this.vpnPassword = vpnPassword;
     }
 
     /**
-     * 
-     * @return
-     *     The openVPNProfile
+     * @return The openVPNProfile
      */
     public String getOpenVPNProfile() {
         return openVPNProfile;
     }
 
     /**
-     * 
-     * @param openVPNProfile
-     *     The openVPNProfile
+     * @param openVPNProfile The openVPNProfile
      */
     public void setOpenVPNProfile(String openVPNProfile) {
         this.openVPNProfile = openVPNProfile;

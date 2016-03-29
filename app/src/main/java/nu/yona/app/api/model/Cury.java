@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2016 Stichting Yona Foundation
  *
@@ -27,54 +26,42 @@ public class Cury {
     private Boolean templated;
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * 
-     * @return
-     *     The href
+     * @return The href
      */
     public String getHref() {
         return href;
     }
 
     /**
-     * 
-     * @param href
-     *     The href
+     * @param href The href
      */
     public void setHref(String href) {
         this.href = href;
     }
 
     /**
-     * 
-     * @return
-     *     The templated
+     * @return The templated
      */
     public Boolean getTemplated() {
         return templated;
     }
 
     /**
-     * 
-     * @param templated
-     *     The templated
+     * @param templated The templated
      */
     public void setTemplated(Boolean templated) {
         this.templated = templated;

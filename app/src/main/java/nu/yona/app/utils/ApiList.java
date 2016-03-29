@@ -14,5 +14,5 @@ package nu.yona.app.utils;
  * Author @@MobiquityInc
  */
 public interface ApiList {
-    String USER= "users/";
+    String USER = "users/";
 }

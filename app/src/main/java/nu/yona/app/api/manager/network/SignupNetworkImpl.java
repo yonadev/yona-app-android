@@ -16,9 +16,9 @@ import android.util.Log;
 import org.json.JSONObject;
 
 import nu.yona.app.R;
-import nu.yona.app.api.listener.DataLoadListener;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.utils.NetworkUtils;
+import nu.yona.app.listener.DataLoadListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,7 +26,7 @@ import retrofit2.Response;
 /**
  * Created by kinnarvasa on 28/03/16.
  */
-public class SignupNetworkImpl extends BaseImpl implements Callback<User>{
+public class SignupNetworkImpl extends BaseImpl implements Callback<User> {
 
     private Context mContext;
     private String baseUrl;
@@ -36,8 +36,8 @@ public class SignupNetworkImpl extends BaseImpl implements Callback<User>{
         this.baseUrl = baseUrl;
     }
 
-    public void registerUser(JSONObject object, DataLoadListener listener){
-        if(!NetworkUtils.isOnline(mContext)){
+    public void registerUser(JSONObject object, DataLoadListener listener) {
+        if (!NetworkUtils.isOnline(mContext)) {
             listener.onError(mContext.getString(R.string.connection_not_available));
             return;
         }

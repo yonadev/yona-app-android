@@ -17,11 +17,15 @@ public interface DBConstant {
     String DATABASE_NAME = "yonaDB";
     int DATABASE_VERSION = 1;
 
-    /** DB TABLES **/
+    /**
+     * DB TABLES
+     **/
     String USER_DATA = "userData";
     /** DB TABLES **/
 
-    /** DB Fields **/
+    /**
+     * DB Fields
+     **/
     String ID = "Id";
     String SOURCE_OBJECT = "sourceObject";
     /** DB Fields **/

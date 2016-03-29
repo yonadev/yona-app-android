@@ -13,22 +13,22 @@ package nu.yona.app.api.manager.dao;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import nu.yona.app.api.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListener;
 
 /**
  * Created by kinnarvasa on 28/03/16.
  */
-public class SignupDAO extends BaseDAO{
+public class SignupDAO extends BaseDAO {
 
     public SignupDAO(SQLiteOpenHelper mOpenHelper, Context context) {
         super(mOpenHelper, context);
     }
 
-    public void updateDataForRegisterUser(Object result, DataLoadListener listener){
+    public void updateDataForRegisterUser(Object result, DataLoadListener listener) {
         // do process for storing data in database.
-        try{
+        try {
 
-        } catch (Exception e){
+        } catch (Exception e) {
             listener.onError(e.getMessage() != null ? e.getMessage() : e.getLocalizedMessage());
         }
     }

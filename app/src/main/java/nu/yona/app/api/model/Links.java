@@ -1,4 +1,3 @@
-
 /*
  *  Copyright (c) 2016 Stichting Yona Foundation
  *
@@ -30,54 +29,42 @@ public class Links {
     private Edit edit;
 
     /**
-     * 
-     * @return
-     *     The curies
+     * @return The curies
      */
     public List<Cury> getCuries() {
         return curies;
     }
 
     /**
-     * 
-     * @param curies
-     *     The curies
+     * @param curies The curies
      */
     public void setCuries(List<Cury> curies) {
         this.curies = curies;
     }
 
     /**
-     * 
-     * @return
-     *     The self
+     * @return The self
      */
     public Self getSelf() {
         return self;
     }
 
     /**
-     * 
-     * @param self
-     *     The self
+     * @param self The self
      */
     public void setSelf(Self self) {
         this.self = self;
     }
 
     /**
-     * 
-     * @return
-     *     The edit
+     * @return The edit
      */
     public Edit getEdit() {
         return edit;
     }
 
     /**
-     * 
-     * @param edit
-     *     The edit
+     * @param edit The edit
      */
     public void setEdit(Edit edit) {
         this.edit = edit;

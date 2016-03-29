@@ -16,22 +16,23 @@ import android.widget.FrameLayout;
 
 import nu.yona.app.R;
 import nu.yona.app.api.db.DatabaseHelper;
-import nu.yona.app.api.listener.DataLoadListener;
 import nu.yona.app.api.manager.SignupManager;
 import nu.yona.app.api.manager.impl.SignupManagerImpl;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 
 /**
  * Created by kinnarvasa on 25/03/16.
  */
-public class SignupActivity  extends BaseActivity {
+public class SignupActivity extends BaseActivity {
 
     private FrameLayout frameLayout;
     private StepOne stepOne;
     private StepTwo stepTwo;
     private SignupManager signupManager;
     private int SIGNUP_STEP = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +48,7 @@ public class SignupActivity  extends BaseActivity {
         findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SIGNUP_STEP == 0){
+                if (SIGNUP_STEP == 0) {
                     loadSteopTwo();
                 } else {
                     doRegister();
@@ -73,14 +74,16 @@ public class SignupActivity  extends BaseActivity {
         doBack();
         super.onBackPressed();
     }
-    private void doBack(){
-        if(SIGNUP_STEP == 1){
+
+    private void doBack() {
+        if (SIGNUP_STEP == 1) {
             loadSteopOne();
-        }else {
+        } else {
             startActivity(new Intent(SignupActivity.this, LaunchActivity.class));
         }
     }
-    private void loadSteopOne(){
+
+    private void loadSteopOne() {
         SIGNUP_STEP = 0;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -88,7 +91,7 @@ public class SignupActivity  extends BaseActivity {
         fragmentTransaction.commit();
     }
 
-    private void loadSteopTwo(){
+    private void loadSteopTwo() {
         SIGNUP_STEP = 1;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_out_right, R.anim.slide_in_left);
@@ -96,7 +99,7 @@ public class SignupActivity  extends BaseActivity {
         fragmentTransaction.commit();
     }
 
-    private void doRegister(){
+    private void doRegister() {
         signupManager.registerUser("Richard", "Quin", "+3 1612345678", "RQ", new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
