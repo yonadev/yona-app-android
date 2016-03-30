@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "21.1.2"
-
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "nu.yona.app"
         minSdkVersion 14
@@ -128,5 +128,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
+    testCompile 'junit:junit:4.12'
+    testCompile('org.robolectric:robolectric:3.0')
 
 }
