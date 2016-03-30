@@ -64,6 +64,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private TextView toolbarTitle;
     private ImageView leftIcon, rightIcon;
 
+    /**
+     * This will register receiver for different events like screen on-off, boot, connectivity etc.
+     */
+    public static void registerReceiver() {
+        YonaApplication.getAppContext().registerReceiver(new YonaReceiver(), new IntentFilter());
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -458,12 +465,5 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         isBackPressed = true;
         onBackStackChanged();
         super.onBackPressed();
-    }
-
-    /**
-     * This will register receiver for different events like screen on-off, boot, connectivity etc.
-     */
-    public static void registerReceiver() {
-        YonaApplication.getAppContext().registerReceiver(new YonaReceiver(), new IntentFilter());
     }
 }

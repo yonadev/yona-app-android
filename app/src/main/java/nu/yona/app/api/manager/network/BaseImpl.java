@@ -40,13 +40,14 @@ public class BaseImpl {
     private Interceptor getInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Request originalRequest = chain.request();
-            Request.Builder build = originalRequest.newBuilder();
-            build.header("Content-Type", "application/json");
-            if (!NetworkUtils.isOnline(YonaApplication.getAppContext()) && originalRequest.method().equalsIgnoreCase("GET") && !originalRequest.cacheControl().noCache()) {
-                build.header("Cache-Control", "public, max-stale=2419200");
+            Request request = chain.request();
+            request.newBuilder().addHeader("Content-Type", "application/json");
+            if (NetworkUtils.isOnline(YonaApplication.getAppContext())) {
+                request.newBuilder().addHeader("Cache-Control", "only-if-cached").build();
+            } else if(request.method().equalsIgnoreCase("GET") && !request.cacheControl().noCache()) {
+                    request.newBuilder().addHeader("Cache-Control", "public, max-stale="+ maxStale).build();
             }
-            Response response = chain.proceed(build.build());
+            Response response = chain.proceed(request);
             return response.newBuilder()
                     .header("Cache-Control", "public, max-age=" + maxStale)
                     .build();

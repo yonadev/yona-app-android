@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016 Stichting Yona Foundation
   ~
   ~  This Source Code Form is subject to the terms of the Mozilla Public
@@ -7,10 +6,12 @@
   ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
 <resources>
+    <dimen name="one">1dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="twenty">20dp</dimen>
     <dimen name="thirty">30dp</dimen>
     <dimen name="sixty">60dp</dimen>
     <dimen name="tabIndicatorHeight">4dp</dimen>
     <dimen name="profile_layout">200dp</dimen>
+    <dimen name="signup_add_avatar_height">200dp</dimen>
 </resources>

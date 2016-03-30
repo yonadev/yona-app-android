@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2016 Stichting Yona Foundation
   ~
   ~  This Source Code Form is subject to the terms of the Mozilla Public
@@ -8,37 +7,71 @@
   ~
   ~
   -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/previous"
-            android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/grape"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/signup_add_avatar_height"
+            android:background="@color/grape"
+            android:scaleType="centerInside"
+            android:src="@drawable/add_avatar" />
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/previous"
-            android:layout_marginRight="1dp"
-            android:background="@color/darkish_pink"
-            android:textColor="@android:color/white"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/next"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/next"
-            android:background="@color/darkish_pink"
-            android:textColor="@android:color/white"
-            android:layout_weight="1"/>
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/previous"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/darkish_pink"
+                android:text="@string/previous"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/next"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/darkish_pink"
+                android:text="@string/next"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingTop="@dimen/ten"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/join"
+            android:textColor="@color/white" />
+    </android.support.v7.widget.Toolbar>
+</FrameLayout>
