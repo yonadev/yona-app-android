@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2016 Stichting Yona Foundation
   ~
   ~  This Source Code Form is subject to the terms of the Mozilla Public
@@ -10,34 +9,39 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="2">
+
         <Button
             android:id="@+id/join"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/join"
             android:layout_marginRight="1dp"
+            android:layout_weight="1"
             android:background="@color/darkish_pink"
-            android:textColor="@android:color/white"
-            android:layout_weight="1"/>
+            android:text="@string/join"
+            android:textColor="@android:color/white" />
+
         <Button
             android:id="@+id/login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/login"
+            android:layout_weight="1"
             android:background="@color/darkish_pink"
-            android:textColor="@android:color/white"
-            android:layout_weight="1"/>
+            android:text="@string/login"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

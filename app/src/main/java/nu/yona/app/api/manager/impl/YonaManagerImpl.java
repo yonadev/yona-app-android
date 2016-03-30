@@ -15,5 +15,5 @@ import nu.yona.app.api.manager.YonaManager;
 /**
  * Created by kinnarvasa on 30/03/16.
  */
-public class YonaManagerImpl implements YonaManager{
+public class YonaManagerImpl implements YonaManager {
 }

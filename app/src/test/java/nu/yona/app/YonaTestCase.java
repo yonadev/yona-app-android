@@ -23,5 +23,5 @@ import nu.yona.app.support.YonaRunner;
 
 @Config(constants = BuildConfig.class, sdk = 21)
 @RunWith(YonaRunner.class)
-public class YonaTestCase extends AndroidTestCase{
+public class YonaTestCase extends AndroidTestCase {
 }

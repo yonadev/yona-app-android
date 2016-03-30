@@ -32,22 +32,23 @@ public class LaunchActivityTest extends YonaTestCase {
     private Activity activity;
     private Button jonMeBtn, loginBtn;
 
-    private void doInitialize(){
-        if(activity == null) {
+    private void doInitialize() {
+        if (activity == null) {
             activity = Robolectric.setupActivity(LaunchActivity.class);
             jonMeBtn = (Button) activity.findViewById(R.id.join);
             loginBtn = (Button) activity.findViewById(R.id.login);
         }
     }
+
     @Test
-   public void testSignupClick(){
+    public void testSignupClick() {
         doInitialize();
         jonMeBtn.performClick();
         Assert.assertEquals(shadowOf(activity).getNextStartedActivity(), new Intent(activity, SignupActivity.class));
-   }
+    }
 
     @Test
-    public void testLoginClick(){
+    public void testLoginClick() {
         doInitialize();
         loginBtn.performClick();
         Assert.assertEquals(shadowOf(activity).getNextStartedActivity(), new Intent(activity, SignupActivity.class));

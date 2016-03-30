@@ -50,7 +50,7 @@ public class YonaRunner extends RobolectricGradleTestRunner {
             @Override
             public int getTargetSdkVersion() {
                 int targetSdk = super.getTargetSdkVersion();
-                return targetSdk< MAX_SDK_SUPPORTED_BY_ROBOLECTRIC ?
+                return targetSdk < MAX_SDK_SUPPORTED_BY_ROBOLECTRIC ?
                         targetSdk : MAX_SDK_SUPPORTED_BY_ROBOLECTRIC;
 
             }

@@ -6,9 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <supports-screens
@@ -29,8 +30,8 @@
 
         <activity
             android:name=".ui.LaunchActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,15 +40,13 @@
 
         <activity
             android:name=".ui.signup.SignupActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
-        </activity>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
 
         <activity
             android:name=".ui.YonaActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
-        </activity>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
 
         <service
             android:name=".api.service.YonaVpnService"
@@ -57,14 +56,15 @@
             </intent-filter>
         </service>
 
-        <service android:name=".api.service.ActivityMonitorService"
+        <service
+            android:name=".api.service.ActivityMonitorService"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/service_name"/>
+            android:label="@string/service_name" />
 
         <receiver android:name=".api.receiver.YonaReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
     </application>

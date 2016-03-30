@@ -20,7 +20,7 @@ import android.test.MoreAsserts;
 public class YonaApplicationTest extends ApplicationTestCase<YonaApplication> {
     private YonaApplication yonaApplication;
 
-    public YonaApplicationTest(){
+    public YonaApplicationTest() {
         super(YonaApplication.class);
     }
 
