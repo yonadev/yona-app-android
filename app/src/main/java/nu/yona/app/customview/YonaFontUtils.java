@@ -15,6 +15,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import nu.yona.app.R;
 
 
@@ -31,11 +33,9 @@ public class YonaFontUtils {
         // check if a special textStyle was used (e.g. extra bold)
         int textStyle = attributeArray.getInt(R.styleable.YonaFontTextView_textStyle, 0);
 
-        Log.i(YonaFontUtils.class.getName(), "textStyle..." + textStyle);
         // if nothing extra was used, fall back to regular android:textStyle parameter
         if (textStyle == 0) {
             textStyle = attrs.getAttributeIntValue(ANDROID_SCHEMA, "textStyle", Typeface.NORMAL);
-            Log.i(YonaFontUtils.class.getName(), "textStyle..2.." + textStyle);
         }
 
         Typeface customFont = selectTypeface(context, textStyle);
@@ -49,21 +49,35 @@ public class YonaFontUtils {
             information about the TextView textStyle:
             http://developer.android.com/reference/android/R.styleable.html#TextView_textStyle
             */
-        Log.i(YonaFontUtils.class.getName(), "TypeFace bold.." + Typeface.BOLD);
-        Log.i(YonaFontUtils.class.getName(), "TypeFace normal.." + Typeface.NORMAL);
         switch (textStyle) {
             case Typeface.BOLD: // bold
-                Log.i(YonaFontUtils.class.getName(), "Bold selected");
-                return FontCache.getTypeface("roboto-bold.ttf", context);
+                return getTypeface("roboto-bold.ttf", context);
 
             case 10: // extra light, equals @integer/font_style_extra_light
-                Log.i(YonaFontUtils.class.getName(), "light roboto selected");
-                return FontCache.getTypeface("roboto-light.ttf", context);
+                return getTypeface("roboto-light.ttf", context);
 
             case Typeface.NORMAL: // regular
             default:
-                Log.i(YonaFontUtils.class.getName(), "Regular selected");
-                return FontCache.getTypeface("roboto-Regular.ttf", context);
+                return getTypeface("roboto-Regular.ttf", context);
         }
+    }
+
+
+    private HashMap<String, Typeface> fontCache = new HashMap<>();
+
+    public Typeface getTypeface(String fontname, Context context) {
+        Typeface typeface = fontCache.get(fontname);
+
+        if (typeface == null) {
+            try {
+                typeface = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontname);
+            } catch (Exception e) {
+                return null;
+            }
+
+            fontCache.put(fontname, typeface);
+        }
+
+        return typeface;
     }
 }
