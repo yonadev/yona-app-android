@@ -8,11 +8,11 @@
  *
  */
 
-package nu.yona.app.utils;
+package nu.yona.app.state;
 
 /**
- * Author @@MobiquityInc
+ * Created by kinnarvasa on 31/03/16.
  */
-public interface ApiList {
-    String USER = "/users/";
+public interface EventChangeListener {
+    void onStateChange(int eventType, Object object);
 }

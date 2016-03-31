@@ -15,24 +15,30 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.SignupManager;
 import nu.yona.app.api.manager.impl.SignupManagerImpl;
+import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 
 /**
  * Created by kinnarvasa on 25/03/16.
  */
-public class SignupActivity extends BaseActivity {
+public class SignupActivity extends BaseActivity implements EventChangeListener{
 
     private FrameLayout frameLayout;
     private StepOne stepOne;
     private StepTwo stepTwo;
     private SignupManager signupManager;
     private int SIGNUP_STEP = 0;
-
+    private RegisterUser registerUser;
+    private YonaFontButton nextButton, prevButton;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,21 +47,27 @@ public class SignupActivity extends BaseActivity {
 
         stepOne = new StepOne();
         stepTwo = new StepTwo();
+        registerUser = new RegisterUser();
 
         signupManager = new SignupManagerImpl(DatabaseHelper.getInstance(this), this);
 
+        nextButton = (YonaFontButton) findViewById(R.id.next);
+        prevButton = (YonaFontButton) findViewById(R.id.previous);
+
         loadSteopOne();
-        findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
+
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (SIGNUP_STEP == 0) {
-                    loadSteopTwo();
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_ONE_NEXT, null);
                 } else {
                     doRegister();
                 }
             }
         });
-
+        YonaApplication.getEventChangeManager().registerListener(this);
         findViewById(R.id.previous).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +87,12 @@ public class SignupActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
+    }
+
     private void doBack() {
         if (SIGNUP_STEP == 1) {
             loadSteopOne();
@@ -85,6 +103,7 @@ public class SignupActivity extends BaseActivity {
 
     private void loadSteopOne() {
         SIGNUP_STEP = 0;
+        prevButton.setVisibility(View.GONE);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         fragmentTransaction.replace(R.id.fragment_container, stepOne);
@@ -93,6 +112,7 @@ public class SignupActivity extends BaseActivity {
 
     private void loadSteopTwo() {
         SIGNUP_STEP = 1;
+        prevButton.setVisibility(View.VISIBLE);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_out_right, R.anim.slide_in_left);
         fragmentTransaction.replace(R.id.fragment_container, stepTwo);
@@ -100,7 +120,7 @@ public class SignupActivity extends BaseActivity {
     }
 
     private void doRegister() {
-        signupManager.registerUser("Richard", "Quin", "+3 1612345678", "RQ", new DataLoadListener() {
+        signupManager.registerUser(getRegisterUser(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
 
@@ -111,5 +131,25 @@ public class SignupActivity extends BaseActivity {
 
             }
         });
+    }
+
+    public RegisterUser getRegisterUser() {
+        return registerUser;
+    }
+
+    public SignupManager getSignupManager() {
+        return signupManager;
+    }
+
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType){
+            case EventChangeManager.EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT:
+                loadSteopTwo();
+                break;
+            default:
+                break;
+        }
     }
 }

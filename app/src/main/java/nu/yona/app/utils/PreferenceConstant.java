@@ -11,8 +11,9 @@
 package nu.yona.app.utils;
 
 /**
- * Author @@MobiquityInc
+ * Created by kinnarvasa on 31/03/16.
  */
-public interface ApiList {
-    String USER = "/users/";
+public interface PreferenceConstant {
+    String USER_PREFERENCE_KEY = "userPreferenceKey";
+    String YONA_PASSWORD = "yonaPassword";
 }

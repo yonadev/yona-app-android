@@ -14,8 +14,10 @@ import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import nu.yona.app.R;
+import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.utils.NetworkUtils;
 import nu.yona.app.listener.DataLoadListener;
@@ -36,12 +38,7 @@ public class SignupNetworkImpl extends BaseImpl implements Callback<User> {
         this.baseUrl = baseUrl;
     }
 
-    public void registerUser(JSONObject object, DataLoadListener listener) {
-        if (!NetworkUtils.isOnline(mContext)) {
-            listener.onError(mContext.getString(R.string.connection_not_available));
-            return;
-        }
-        Log.e("Register", "Call register user");
+    public void registerUser(String password, RegisterUser object, DataLoadListener listener) {
         getRestApi().registerUser("R I C H A R D", object).enqueue(this);
     }
 
