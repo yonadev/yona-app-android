@@ -32,7 +32,6 @@
         <item name="textAllCaps">false</item>
     </style>
 
-
     <style name="SeScore">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/black</item>
@@ -40,12 +39,12 @@
 
     <style name="SplashTitle">
         <item name="android:textSize">32sp</item>
-        <item name="app:textStyle">@integer/font_style_light</item>
+        <item name="textStyle">@integer/font_style_light</item>
     </style>
 
     <style name="SplashTxt">
         <item name="android:textSize">22sp</item>
-        <item name="app:textStyle">@integer/font_style_light</item>
+        <item name="textStyle">@integer/font_style_light</item>
         <item name="android:textColor">@color/white</item>
     </style>
 

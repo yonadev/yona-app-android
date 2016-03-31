@@ -19,16 +19,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/first_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:capitalize="words"
             android:drawableRight="@drawable/icn_name"
             android:ellipsize="end"
+            style="@style/InputLabel"
             android:hint="@string/first_name"
             android:imeOptions="actionNext"
             android:maxLength="@integer/char_limit"
+
             android:singleLine="true"
             android:textColorHint="@color/black" />
     </android.support.design.widget.TextInputLayout>
@@ -38,13 +39,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/last_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:capitalize="words"
             android:drawableRight="@drawable/icn_name"
             android:ellipsize="end"
+            style="@style/InputLabel"
             android:hint="@string/last_name"
             android:imeOptions="actionDone"
             android:maxLength="@integer/char_limit"

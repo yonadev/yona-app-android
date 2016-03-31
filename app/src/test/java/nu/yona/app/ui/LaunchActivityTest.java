@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.widget.Button;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.Robolectric;
 
@@ -32,7 +33,8 @@ public class LaunchActivityTest extends YonaTestCase {
     private Activity activity;
     private Button jonMeBtn, loginBtn;
 
-    private void doInitialize() {
+    @Before
+    public void setup() {
         if (activity == null) {
             activity = Robolectric.setupActivity(LaunchActivity.class);
             jonMeBtn = (Button) activity.findViewById(R.id.join);
@@ -42,14 +44,12 @@ public class LaunchActivityTest extends YonaTestCase {
 
     @Test
     public void testSignupClick() {
-        doInitialize();
         jonMeBtn.performClick();
         Assert.assertEquals(shadowOf(activity).getNextStartedActivity(), new Intent(activity, SignupActivity.class));
     }
 
     @Test
     public void testLoginClick() {
-        doInitialize();
         loginBtn.performClick();
         Assert.assertEquals(shadowOf(activity).getNextStartedActivity(), new Intent(activity, SignupActivity.class));
     }

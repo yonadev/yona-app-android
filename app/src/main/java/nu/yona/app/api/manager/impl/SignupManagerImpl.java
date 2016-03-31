@@ -12,15 +12,22 @@ package nu.yona.app.api.manager.impl;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
+import java.util.UUID;
+
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.ApiKeys;
 import nu.yona.app.api.manager.SignupManager;
 import nu.yona.app.api.manager.dao.SignupDAO;
 import nu.yona.app.api.manager.network.SignupNetworkImpl;
+import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -40,12 +47,13 @@ public class SignupManagerImpl implements SignupManager {
     /**
      * Validate user's first and last name
      *
-     * @param firstName
-     * @param lastName
      * @return true if first name and last name are correct.
      */
-    public boolean validateUserName(String firstName, String lastName) {
+    public boolean validateText(String string) {
         // do validation for first name and last name
+        if(TextUtils.isEmpty(string)){
+            return false;
+        }
         return true;
     }
 
@@ -61,15 +69,16 @@ public class SignupManagerImpl implements SignupManager {
     /**
      * This will register user on server
      *
-     * @param firstName Name of user
-     * @param lastName  last name of user
-     * @param mobileNo  mobile number of user
-     * @param nickName  nick name of user (optional)
      */
-    public void registerUser(String firstName, String lastName, String mobileNo, String nickName, final DataLoadListener listener) {
+    public void registerUser(RegisterUser registerUser, final DataLoadListener listener) {
         // do registration of user on server and save response in database.
         try {
-            signupNetwork.registerUser(getJSONRequestObject(firstName, lastName, mobileNo, nickName), new DataLoadListener() {
+            String yonaPwd = YonaApplication.getAppContext().getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, "");
+            if(yonaPwd.equals("")){
+                yonaPwd = UUID.randomUUID().toString();
+                YonaApplication.getAppContext().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, yonaPwd).commit();
+            }
+            signupNetwork.registerUser(yonaPwd, registerUser, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     updateDataForRegisterUser(result, listener);
@@ -83,20 +92,6 @@ public class SignupManagerImpl implements SignupManager {
         } catch (Exception e) {
             listener.onError(e.getMessage());
         }
-    }
-
-    private JSONObject getJSONRequestObject(String firstName, String lastName, String mobileNo, String nickName) throws Exception {
-        JSONObject object = new JSONObject();
-        object.put(ApiKeys.FIRST_NAME, firstName);
-        object.put(ApiKeys.LAST_NAME, lastName);
-        object.put(ApiKeys.NICK_NAME, nickName);
-        object.put(ApiKeys.MOBILE_NUMBER, mobileNo);
-
-        JSONArray array = new JSONArray();
-        array.put(android.os.Build.MODEL);
-        object.put(ApiKeys.DEVICES, array);
-
-        return object;
     }
 
     /**

@@ -11,8 +11,11 @@
 package nu.yona.app.api.manager.network;
 
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
+import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
+import nu.yona.app.utils.ApiList;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
@@ -25,7 +28,7 @@ import retrofit2.http.POST;
 public interface RestApi {
 
     @Headers("Cache-Control: public, max-age=640000, s-maxage=640000 , max-stale=2419200")
-    @POST("/users")
+    @POST(ApiList.USER)
     Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
-                            @Body JSONObject body);
+                            @Body RegisterUser body);
 }

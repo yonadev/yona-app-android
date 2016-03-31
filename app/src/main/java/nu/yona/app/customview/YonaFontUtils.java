@@ -63,9 +63,9 @@ public class YonaFontUtils {
     }
 
 
-    private HashMap<String, Typeface> fontCache = new HashMap<>();
+    private static HashMap<String, Typeface> fontCache = new HashMap<>();
 
-    public Typeface getTypeface(String fontname, Context context) {
+    public static Typeface getTypeface(String fontname, Context context) {
         Typeface typeface = fontCache.get(fontname);
 
         if (typeface == null) {
