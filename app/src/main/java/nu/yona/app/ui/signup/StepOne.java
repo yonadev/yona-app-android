@@ -14,21 +14,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
@@ -36,11 +31,8 @@ import nu.yona.app.ui.BaseFragment;
 /**
  * Created by kinnarvasa on 25/03/16.
  */
-public class StepOne extends BaseFragment implements EventChangeListener{
+public class StepOne extends BaseFragment implements EventChangeListener {
     private TextInputLayout firstNameLayout, lastNameLayout;
-    private YonaFontEditTextView firstName, lastName;
-    private TextView privacyPolicy;
-    private SignupActivity activity;
     TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -58,6 +50,9 @@ public class StepOne extends BaseFragment implements EventChangeListener{
 
         }
     };
+    private YonaFontEditTextView firstName, lastName;
+    private YonaFontTextView privacyPolicy;
+    private SignupActivity activity;
 
     @Nullable
     @Override
@@ -75,7 +70,7 @@ public class StepOne extends BaseFragment implements EventChangeListener{
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         lastName.addTextChangedListener(watcher);
 
-        privacyPolicy = (TextView) view.findViewById(R.id.privacyPolicy);
+        privacyPolicy = (YonaFontTextView) view.findViewById(R.id.privacyPolicy);
         privacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
 
         YonaApplication.getEventChangeManager().registerListener(this);
@@ -91,8 +86,8 @@ public class StepOne extends BaseFragment implements EventChangeListener{
 
     @Override
     public void onStateChange(int eventType, Object object) {
-        if(eventType == EventChangeManager.EVENT_SIGNUP_STEP_ONE_NEXT){
-            if(validateFirstName() && validateLastName()) {
+        if (eventType == EventChangeManager.EVENT_SIGNUP_STEP_ONE_NEXT) {
+            if (validateFirstName() && validateLastName()) {
                 activity.getRegisterUser().setFirstName(firstName.getText().toString());
                 activity.getRegisterUser().setLastName(lastName.getText().toString());
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT, null);
@@ -100,30 +95,25 @@ public class StepOne extends BaseFragment implements EventChangeListener{
         }
     }
 
-    private boolean validateFirstName(){
-        if(!activity.getSignupManager().validateText(firstName.getText().toString())){
+    private boolean validateFirstName() {
+        if (!activity.getSignupManager().validateText(firstName.getText().toString())) {
             firstNameLayout.setErrorEnabled(true);
             firstNameLayout.setError(getString(R.string.enter_name_validation));
-            showKeyboard(firstName);
+            activity.showKeyboard(firstName);
             firstName.requestFocus();
             return false;
         }
         return true;
     }
 
-    private boolean validateLastName(){
-        if(!activity.getSignupManager().validateText(lastName.getText().toString())){
+    private boolean validateLastName() {
+        if (!activity.getSignupManager().validateText(lastName.getText().toString())) {
             lastNameLayout.setErrorEnabled(true);
             lastNameLayout.setError(getString(R.string.enter_name_validation));
-            showKeyboard(lastName);
+            activity.showKeyboard(lastName);
             lastName.requestFocus();
             return false;
         }
         return true;
-    }
-
-    private void showKeyboard(EditText editText){
-        InputMethodManager inputMethodManager =  (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
     }
 }

@@ -24,11 +24,11 @@ import nu.yona.app.customview.YonaFontEditTextView;
 /**
  * Created by kinnarvasa on 31/03/16.
  */
-public class StepOneTest extends YonaTestCase {
+public class StepTwoTest extends YonaTestCase {
 
-    private StepOne stepOne;
+    private StepTwo stepTwo;
     private SignupActivity activity;
-    private YonaFontEditTextView firstName, lastName;
+    private YonaFontEditTextView mobileNumber;
 
     @Before
     public void setup() {
@@ -37,24 +37,17 @@ public class StepOneTest extends YonaTestCase {
                 .start()
                 .resume()
                 .get();
-        stepOne = new StepOne();
+        stepTwo = new StepTwo();
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(stepOne, null);
+        fragmentTransaction.add(stepTwo, null);
         fragmentTransaction.commit();
-        firstName = (YonaFontEditTextView) activity.findViewById(R.id.first_name);
-        lastName = (YonaFontEditTextView) activity.findViewById(R.id.last_name);
+        mobileNumber = (YonaFontEditTextView) activity.findViewById(R.id.mobile_number);
     }
 
     @Test
-    public void validateFirstName(){
-        firstName.setText("Kinnar");
-        assertTrue(activity.getSignupManager().validateText(firstName.getText().toString()));
-    }
-
-    @Test
-    public void validateLastName(){
-        lastName.setText("Vasa");
-        assertTrue(activity.getSignupManager().validateText(lastName.getText().toString()));
+    public void validateMobileNumber(){
+        mobileNumber.setText("+31123456789");
+        assertTrue(activity.getSignupManager().validateMobileNumber(mobileNumber.getText().toString()));
     }
 }

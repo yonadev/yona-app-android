@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/mobile_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,7 +29,8 @@
             android:hint="@string/mobile_number"
             android:imeOptions="actionNext"
             android:inputType="phone"
-            android:maxLength="@integer/char_limit"
+            style="@style/InputLabel"
+            android:maxLength="@integer/number_limit"
             android:singleLine="true"
             android:textColorHint="@color/black" />
     </android.support.design.widget.TextInputLayout>
@@ -39,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/nick_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,14 +49,17 @@
             android:ellipsize="end"
             android:hint="@string/last_name"
             android:imeOptions="actionDone"
+            style="@style/InputLabel"
             android:maxLength="@integer/char_limit"
             android:singleLine="true"
             android:textColorHint="@color/black" />
     </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <nu.yona.app.customview.YonaFontTextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ten"
+        android:gravity="center"
+        style="@style/Explanation"
         android:text="@string/user_signup_message" />
 </LinearLayout>

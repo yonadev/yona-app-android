@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -23,6 +22,7 @@ import nu.yona.app.R;
 public class YonaFontUtils {
 
     public static final String ANDROID_SCHEMA = "http://schemas.android.com/apk/res/android";
+    private static HashMap<String, Typeface> fontCache = new HashMap<>();
 
     public static void applyCustomFont(TextView customFontTextView, Context context, AttributeSet attrs) {
         TypedArray attributeArray = context.obtainStyledAttributes(
@@ -61,9 +61,6 @@ public class YonaFontUtils {
                 return getTypeface("roboto-Regular.ttf", context);
         }
     }
-
-
-    private static HashMap<String, Typeface> fontCache = new HashMap<>();
 
     public static Typeface getTypeface(String fontname, Context context) {
         Typeface typeface = fontCache.get(fontname);

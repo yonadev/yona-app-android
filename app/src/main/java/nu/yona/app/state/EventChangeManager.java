@@ -21,6 +21,9 @@ public class EventChangeManager {
     public static final int EVENT_SIGNUP_STEP_ONE_NEXT = 1;
     public static final int EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT = 2;
 
+    public static final int EVENT_SIGNUP_STEP_TWO_NEXT = 3;
+    public static final int EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT = 4;
+
     private final Set<EventChangeListener> listeners = new HashSet<EventChangeListener>();
 
     public void registerListener(EventChangeListener listener) {
