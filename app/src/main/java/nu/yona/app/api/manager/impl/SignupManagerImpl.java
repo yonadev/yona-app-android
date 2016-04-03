@@ -13,35 +13,34 @@ package nu.yona.app.api.manager.impl;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONStringer;
+import android.util.Log;
 
 import java.util.UUID;
 
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.ApiKeys;
 import nu.yona.app.api.manager.SignupManager;
 import nu.yona.app.api.manager.dao.SignupDAO;
 import nu.yona.app.api.manager.network.SignupNetworkImpl;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.PreferenceConstant;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
- * Created by kinnarvasa on 25/03/16.
+ * Created by kinnarvasa on 31/03/16.
  */
 public class SignupManagerImpl implements SignupManager {
 
     private SignupDAO signupDAO;
     private SignupNetworkImpl signupNetwork;
-    private Context mContext;
 
     public SignupManagerImpl(SQLiteOpenHelper openHelper, Context context) {
         signupDAO = new SignupDAO(openHelper, context);
-        signupNetwork = new SignupNetworkImpl(signupDAO.getBaseUrl(), context);
-        this.mContext = context;
+        signupNetwork = new SignupNetworkImpl();
     }
 
     /**
@@ -51,7 +50,7 @@ public class SignupManagerImpl implements SignupManager {
      */
     public boolean validateText(String string) {
         // do validation for first name and last name
-        if(TextUtils.isEmpty(string)){
+        if (TextUtils.isEmpty(string)) {
             return false;
         }
         return true;
@@ -63,25 +62,27 @@ public class SignupManagerImpl implements SignupManager {
      */
     public boolean validateMobileNumber(String mobileNumber) {
         // do validation for mobile number
+        if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != 12) { // 9 digits of mobile number and '+31'
+            return false;
+        }
         return true;
     }
 
     /**
      * This will register user on server
-     *
      */
     public void registerUser(RegisterUser registerUser, final DataLoadListener listener) {
         // do registration of user on server and save response in database.
         try {
             String yonaPwd = YonaApplication.getAppContext().getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, "");
-            if(yonaPwd.equals("")){
+            if (TextUtils.isEmpty(yonaPwd)) {
                 yonaPwd = UUID.randomUUID().toString();
                 YonaApplication.getAppContext().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, yonaPwd).commit();
             }
             signupNetwork.registerUser(yonaPwd, registerUser, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    updateDataForRegisterUser(result, listener);
+                    listener.onDataLoad((User)result);
                 }
 
                 @Override

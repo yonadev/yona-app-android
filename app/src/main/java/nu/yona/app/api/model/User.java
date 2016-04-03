@@ -13,68 +13,83 @@ package nu.yona.app.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
-    //    @SerializedName("_embedded")
-//    @Expose
-//    private nu.yona.app.api.model.Embedded Embedded;
-//    @SerializedName("_links")
-//    @Expose
-//    private Links_____ Links;
+    @SerializedName("_embedded")
+    @Expose
+    private nu.yona.app.api.model.Embedded Embedded;
+
+    @SerializedName("_links")
+    @Expose
+    private Links Links;
+
     @SerializedName("firstName")
     @Expose
     private String firstName;
+
     @SerializedName("lastName")
     @Expose
     private String lastName;
+
     @SerializedName("mobileNumber")
     @Expose
     private String mobileNumber;
-    //    @SerializedName("vpnProfile")
-//    @Expose
-//    private VpnProfile vpnProfile;
+
+    @SerializedName("vpnProfile")
+    @Expose
+    private VpnProfile vpnProfile;
+
     @SerializedName("nickname")
     @Expose
     private String nickname;
-//    @SerializedName("devices")
-//    @Expose
-//    private List<String> devices = new ArrayList<String>();
+
+    @SerializedName("devices")
+    @Expose
+    private List<String> devices = new ArrayList<String>();
+
+    @SerializedName("mobileNumberConfirmationCode")
+    @Expose
+    private String mobileNumberConfirmationCode;
+
+    public String getMobileNumberConfirmationCode() {
+        return mobileNumberConfirmationCode;
+    }
+
+    public void setMobileNumberConfirmationCode(String mobileNumberConfirmationCode) {
+        this.mobileNumberConfirmationCode = mobileNumberConfirmationCode;
+    }
+
 
     /**
-     *
-     * @return
-     *     The Embedded
+     * @return The Embedded
      */
-//    public nu.yona.app.api.model.Embedded getEmbedded() {
-//        return Embedded;
-//    }
+    public nu.yona.app.api.model.Embedded getEmbedded() {
+        return Embedded;
+    }
 
     /**
-     *
-     * @param Embedded
-     *     The _embedded
+     * @param Embedded The _embedded
      */
-//    public void setEmbedded(nu.yona.app.api.model.Embedded Embedded) {
-//        this.Embedded = Embedded;
-//    }
+    public void setEmbedded(nu.yona.app.api.model.Embedded Embedded) {
+        this.Embedded = Embedded;
+    }
 
     /**
-     *
-     * @return
-     *     The Links
+     * @return The Links
      */
-//    public Links_____ getLinks() {
-//        return Links;
-//    }
+    public Links getLinks() {
+        return Links;
+    }
 
     /**
-     *
-     * @param Links
-     *     The _links
+     * @param Links The _links
      */
-//    public void setLinks(Links_____ Links) {
-//        this.Links = Links;
-//    }
+    public void setLinks(Links Links) {
+        this.Links = Links;
+    }
 
     /**
      * @return The firstName
@@ -119,22 +134,18 @@ public class User {
     }
 
     /**
-     *
-     * @return
-     *     The vpnProfile
+     * @return The vpnProfile
      */
-//    public VpnProfile getVpnProfile() {
-//        return vpnProfile;
-//    }
+    public VpnProfile getVpnProfile() {
+        return vpnProfile;
+    }
 
     /**
-     *
-     * @param vpnProfile
-     *     The vpnProfile
+     * @param vpnProfile The vpnProfile
      */
-//    public void setVpnProfile(VpnProfile vpnProfile) {
-//        this.vpnProfile = vpnProfile;
-//    }
+    public void setVpnProfile(VpnProfile vpnProfile) {
+        this.vpnProfile = vpnProfile;
+    }
 
     /**
      * @return The nickname
@@ -151,21 +162,17 @@ public class User {
     }
 
     /**
-     *
-     * @return
-     *     The devices
+     * @return The devices
      */
-//    public List<String> getDevices() {
-//        return devices;
-//    }
+    public List<String> getDevices() {
+        return devices;
+    }
 
     /**
-     *
-     * @param devices
-     *     The devices
+     * @param devices The devices
      */
-//    public void setDevices(List<String> devices) {
-//        this.devices = devices;
-//    }
+    public void setDevices(List<String> devices) {
+        this.devices = devices;
+    }
 
 }

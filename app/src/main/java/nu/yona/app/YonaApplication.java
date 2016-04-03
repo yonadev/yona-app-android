@@ -28,13 +28,6 @@ public class YonaApplication extends Application {
         return mContext;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mContext = this;
-        eventChangeManager = new EventChangeManager();
-    }
-
     public static synchronized SharedPreferences getUserPreferences() {
         if (userPreferences == null) {
             userPreferences = getAppContext().getSharedPreferences(PreferenceConstant.USER_PREFERENCE_KEY, Context.MODE_PRIVATE);
@@ -44,6 +37,13 @@ public class YonaApplication extends Application {
 
     public static EventChangeManager getEventChangeManager() {
         return eventChangeManager;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mContext = this;
+        eventChangeManager = new EventChangeManager();
     }
 
 }
