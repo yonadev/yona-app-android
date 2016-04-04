@@ -10,6 +10,7 @@ package nu.yona.app.api.manager.impl;
 
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.PasscodeManager;
+import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -18,7 +19,7 @@ import nu.yona.app.utils.PreferenceConstant;
 public class PasscodeManagerImpl implements PasscodeManager {
 
     private int counter = 0;
-    private final int max_counter = 4;
+    private int PASSCODE_LENGTH = 4;
 
     /**
      * Validating the passcode which user has entered
@@ -45,7 +46,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      */
     @Override
     public boolean checkPasscodeLength(String passcode) {
-        if (passcode.length() == 4) {
+        if (passcode.length() == PASSCODE_LENGTH) {
             return true;
         }
         return false;
@@ -74,7 +75,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @return
      */
     public boolean isWrongCounterReached() {
-        if (getWrongPasscodeCounter() >= max_counter) {
+        if (getWrongPasscodeCounter() >= AppConstant.MAX_COUNTER) {
             return true;
         }
         return false;

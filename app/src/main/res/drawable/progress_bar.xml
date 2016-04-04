@@ -9,7 +9,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape>
-            <corners android:radius="2dip" />
+            <corners android:radius="@dimen/progressbar_radius" />
             <gradient
                 android:centerColor="@color/progressbar_background"
                 android:endColor="@color/progressbar_background"
@@ -21,7 +21,7 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <corners android:radius="2dip" />
+                <corners android:radius="@dimen/progressbar_radius" />
                 <gradient
                     android:endColor="@color/darkish_pink"
                     android:startColor="@color/darkish_pink" />

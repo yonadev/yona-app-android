@@ -163,28 +163,34 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
                 if (v.getId() == R.id.passcode4) {
                     if (passcode4.getText().length() == 0) {
                         passcode3.requestFocus();
+                        passcode3.setEnabled(true);
                         passcode3.setSelection(passcode3.getText().length());
                     }
                     if (passcode3.getText().length() == 0) {
                         passcode2.requestFocus();
+                        passcode2.setEnabled(true);
                         passcode2.setSelection(passcode2.getText().length());
                     }
                     if (passcode2.getText().length() == 0) {
                         passcode1.requestFocus();
+                        passcode1.setEnabled(true);
                         passcode1.setSelection(passcode1.getText().length());
                     }
                 } else if (v.getId() == R.id.passcode3) {
                     if (passcode3.getText().length() == 0) {
                         passcode2.requestFocus();
+                        passcode2.setEnabled(true);
                         passcode2.setSelection(passcode2.getText().length());
                     }
                     if (passcode2.getText().length() == 0) {
                         passcode1.requestFocus();
+                        passcode1.setEnabled(true);
                         passcode1.setSelection(passcode1.getText().length());
                     }
                 } else if (v.getId() == R.id.passcode2) {
                     if (passcode2.getText().length() == 0) {
                         passcode1.requestFocus();
+                        passcode1.setEnabled(true);
                         passcode1.setSelection(passcode1.getText().length());
                     }
                 }
@@ -233,21 +239,27 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             if (before == 1 && s.length() == 0) {
                 if (passcode2.hasFocus()) {
                     passcode1.requestFocus();
+                    passcode1.setEnabled(true);
                     passcode1.setSelection(passcode1.getText().length());
                 } else if (passcode3.hasFocus()) {
                     passcode2.requestFocus();
+                    passcode2.setEnabled(true);
                     passcode2.setSelection(passcode2.getText().length());
                 } else if (passcode4.hasFocus()) {
                     passcode3.requestFocus();
+                    passcode3.setEnabled(true);
                     passcode3.setSelection(passcode3.getText().length());
                 }
             } else if (s.length() == 1) {
                 if (passcode1.hasFocus()) {
                     passcode2.requestFocus();
+                    passcode1.setEnabled(false);
                 } else if (passcode2.hasFocus()) {
                     passcode3.requestFocus();
+                    passcode2.setEnabled(false);
                 } else if (passcode3.hasFocus()) {
                     passcode4.requestFocus();
+                    passcode3.setEnabled(false);
                 }
             }
         }
