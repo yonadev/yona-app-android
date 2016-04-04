@@ -14,6 +14,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.R;
@@ -42,10 +43,15 @@ public class BaseImpl {
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             request.newBuilder().addHeader("Content-Type", "application/json");
+            if (Locale.getDefault().toString().equals("nl_NL")) {
+                request.newBuilder().addHeader("Content-Language", "nl-NL");
+            } else {
+                request.newBuilder().addHeader("Content-Language", "en-EN");
+            }
             if (NetworkUtils.isOnline(YonaApplication.getAppContext())) {
                 request.newBuilder().addHeader("Cache-Control", "only-if-cached").build();
-            } else if(request.method().equalsIgnoreCase("GET") && !request.cacheControl().noCache()) {
-                    request.newBuilder().addHeader("Cache-Control", "public, max-stale="+ maxStale).build();
+            } else if (request.method().equalsIgnoreCase("GET") && !request.cacheControl().noCache()) {
+                request.newBuilder().addHeader("Cache-Control", "public, max-stale=" + maxStale).build();
             }
             Response response = chain.proceed(request);
             return response.newBuilder()
@@ -63,7 +69,7 @@ public class BaseImpl {
         cache = new Cache(httpCacheDirectory, cacheSize);
     }
 
-    private Retrofit getRetrofit() {
+    protected Retrofit getRetrofit() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(YonaApplication.getAppContext().getString(R.string.server_url))

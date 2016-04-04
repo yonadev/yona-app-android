@@ -10,9 +10,6 @@
 
 package nu.yona.app.api.manager.network;
 
-import org.json.JSONObject;
-import org.json.JSONStringer;
-
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.utils.ApiList;

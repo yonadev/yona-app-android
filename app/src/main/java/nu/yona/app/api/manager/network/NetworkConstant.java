@@ -23,4 +23,6 @@ public interface NetworkConstant {
     long API_CONNECT_TIMEOUT_IN_SECONDS = 60;
     int API_WRITE_TIMEOUT_IN_SECONDS = 60;
     int API_READ_TIMEOUT_IN_SECONDS = 60;
+
+    int RESPONSE_STATUS = 300;
 }
