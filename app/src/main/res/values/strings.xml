@@ -38,4 +38,9 @@
     <string name="mobile_number">MOBIEL TELEFOONNUMMER</string>
     <string name="user_signup_message">We gebruiken je mobile nummer voor een veilige registratie. Je nickname is verplicht en zorgt voor een nog betere privacy.</string>
     <string name="enter_name_validation">You need to enter a name</string>
+    <string name="enter_number_validation">Number should be 9 digits</string>
+    <string name="country_code_with_zero">" +31 (0) "</string>
+    <string name="country_code">"+31"</string>
+    <string name="loading">Loading</string>
+    <string name="ok">Ok</string>
 </resources>

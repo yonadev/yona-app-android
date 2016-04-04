@@ -10,5 +10,6 @@
 
 <resources>
     <integer name="char_limit">100</integer>
+    <integer name="number_limit">18</integer>
     <integer name="lines">1</integer>
 </resources>

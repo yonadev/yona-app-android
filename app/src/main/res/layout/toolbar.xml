@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            style="@style/NavTitle" />
 
         <ImageView
             android:id="@+id/rightIcon"
