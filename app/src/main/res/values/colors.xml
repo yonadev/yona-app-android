@@ -34,4 +34,5 @@
     <color name="sickly_green">#8cb818</color>
     <color name="sickly_green_two">#8ab518</color>
     <color name="white_three">#e7e7e7</color>
+    <color name="progressbar_background">#7f2a5c</color>
 </resources>

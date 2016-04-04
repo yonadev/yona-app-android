@@ -16,4 +16,6 @@ package nu.yona.app.utils;
 public interface PreferenceConstant {
     String USER_PREFERENCE_KEY = "userPreferenceKey";
     String YONA_PASSWORD = "yonaPassword";
+    String YONA_PASSCODE = "yonaPasscode";
+    String YONA_WRONG_PASSCODE_COUNTER = "wrongPasscodeCounter";
 }

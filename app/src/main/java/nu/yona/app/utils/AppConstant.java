@@ -14,4 +14,11 @@ package nu.yona.app.utils;
 public interface AppConstant {
     String CLEAR_FRAGMENT_STACK = "clearFragmentStack";
     int ONE_SECOND = 1000;
+
+
+    String SMS = "sms";
+    String PASSCODE = "passcode";
+    String PASSCODE_VERIFY = "passcode_verify";
+    String LOGGED_IN = "logged_in";
+    String SCREEN_TYPE = "screen_type";
 }

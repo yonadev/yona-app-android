@@ -7,5 +7,6 @@
   -->
 
 <resources>
-    <integer name="font_style_light">10</integer>
+    <integer name="roboto_light">10</integer>
+    <integer name="roboto_medium">11</integer>
 </resources>

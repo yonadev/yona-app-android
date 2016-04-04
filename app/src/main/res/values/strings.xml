@@ -43,4 +43,14 @@
     <string name="country_code">"+31"</string>
     <string name="loading">Loading</string>
     <string name="ok">Ok</string>
+    <string name="passcode_title">You are not alone</string>
+    <string name="empty_description"></string>
+    <string name="passcode_tryagain">Probeer opnieuw</string>
+    <string name="pincode">PINCODE</string>
+    <string name="passcode_step1_title">Account is aangemaakt</string>
+    <string name="passcode_step1_desc">Voor een goede beveiliging is het verplicht om de Yona app te voorzien van een pincode.
+Stel je pincode hieronder in. </string>
+    <string name="passcode_step2_title">Bevestig pincode</string>
+    <string name="passcode_step2_desc">Vul je pincode nog een keer in ter bevestiging.</string>
+    <string name="msg_block_user">Your account has been locked for security reasons, use the "reset passcode" option to enable our account.</string>
 </resources>
