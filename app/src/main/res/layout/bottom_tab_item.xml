@@ -15,6 +15,5 @@
         android:layout_width="@dimen/sixty"
         android:layout_height="@dimen/sixty"
         android:layout_centerHorizontal="true"
-        android:padding="@dimen/ten"
-        android:src="@android:drawable/btn_star" />
+        android:padding="@dimen/ten" />
 </RelativeLayout>

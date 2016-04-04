@@ -35,6 +35,7 @@ import android.widget.TextView;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.receiver.YonaReceiver;
+import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
@@ -61,7 +62,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private FriendsFragment friendsFragment = new FriendsFragment();
     private ChallengesFragment challengesFragment = new ChallengesFragment();
     private SettingsFragment settingsFragment = new SettingsFragment();
-    private TextView toolbarTitle;
+    private YonaFontTextView toolbarTitle;
     private ImageView leftIcon, rightIcon;
 
     /**
@@ -78,7 +79,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
         mToolBar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolBar.setBackgroundColor(Color.BLUE);
-        toolbarTitle = (TextView) mToolBar.findViewById(R.id.toolbar_title);
+        toolbarTitle = (YonaFontTextView) mToolBar.findViewById(R.id.toolbar_title);
         leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
         rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
 

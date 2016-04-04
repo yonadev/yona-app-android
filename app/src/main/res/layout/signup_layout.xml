@@ -44,6 +44,7 @@
                 android:layout_weight="1"
                 android:background="@color/darkish_pink"
                 android:text="@string/previous"
+                style="@style/BtnTxtSmall"
                 android:textColor="@android:color/white" />
 
             <nu.yona.app.customview.YonaFontButton
@@ -53,6 +54,7 @@
                 android:layout_weight="1"
                 android:background="@color/darkish_pink"
                 android:text="@string/next"
+                style="@style/BtnTxtSmall"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
@@ -61,16 +63,17 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@drawable/triangle_shadow"
         android:minHeight="?attr/actionBarSize"
-        android:paddingTop="@dimen/ten"
+        android:paddingTop="@dimen/twenty"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <TextView
+        <nu.yona.app.customview.YonaFontTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/join"
+            style="@style/NavTitle"
             android:textColor="@color/white" />
     </android.support.v7.widget.Toolbar>
 </FrameLayout>

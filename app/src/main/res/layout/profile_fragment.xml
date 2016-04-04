@@ -32,14 +32,15 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Kinnar Vasa"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            style="@style/SplashTxt"
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Kinnar"
+            style="@style/NavTitle"
             android:textColor="@android:color/white"
             android:textSize="12sp" />
     </LinearLayout>

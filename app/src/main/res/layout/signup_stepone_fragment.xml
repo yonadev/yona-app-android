@@ -57,7 +57,7 @@
         android:id="@+id/privacyPolicy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="@dimen/ten"
+        style="@style/Explanation"
         android:text="@string/privacy_policy" />
 </LinearLayout>

@@ -9,9 +9,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
+    android:background="@drawable/triangle_shadow"
     android:minHeight="?attr/actionBarSize"
-    android:paddingTop="@dimen/ten"
+    android:paddingTop="@dimen/twenty"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -27,7 +27,7 @@
             android:layout_height="@dimen/thirty"
             android:scaleType="fitXY" />
 
-        <TextView
+        <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/toolbar_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
