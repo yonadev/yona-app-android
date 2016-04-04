@@ -90,7 +90,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     @Override
     public void onBackPressed() {
         doBack();
-        super.onBackPressed();
+//        super.onBackPressed();
     }
 
     @Override
@@ -104,6 +104,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
             loadSteopOne();
         } else {
             startActivity(new Intent(SignupActivity.this, LaunchActivity.class));
+            finish();
         }
     }
 

@@ -36,6 +36,7 @@
             android:layout_weight="1"
             android:background="@color/darkish_pink"
             android:text="@string/join"
+            style="@style/BtnTxtSmall"
             android:textColor="@android:color/white" />
 
         <Button
@@ -45,6 +46,7 @@
             android:layout_weight="1"
             android:background="@color/darkish_pink"
             android:text="@string/login"
+            style="@style/BtnTxtSmall"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

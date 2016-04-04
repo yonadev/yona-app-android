@@ -87,11 +87,11 @@ public class SignupManagerImpl implements SignupManager {
 
                 @Override
                 public void onError(Object errorMessage) {
-                    listener.onError(errorMessage);
+                    listener.onError(new ErrorMessage(errorMessage.toString()));
                 }
             });
         } catch (Exception e) {
-            listener.onError(e.getMessage());
+            listener.onError(new ErrorMessage(e.getMessage()));
         }
     }
 
