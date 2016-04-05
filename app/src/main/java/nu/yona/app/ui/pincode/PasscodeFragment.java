@@ -41,14 +41,8 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private PasscodeManagerImpl passcodeManagerImpl;
     private ImageView accont_image;
     private String screen_type;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            screen_type = getArguments().getString(AppConstant.SCREEN_TYPE);
-        }
-    }
+    private YonaPasswordTransformationManager yonaPasswordTransformationManager;
+    private FieldTextWatcher watcher;
 
     @Nullable
     @Override
@@ -56,6 +50,10 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         View view = inflater.inflate(R.layout.pincode_layout, container, false);
 
         YonaApplication.getEventChangeManager().registerListener(this);
+
+        if (getArguments() != null) {
+            screen_type = getArguments().getString(AppConstant.SCREEN_TYPE);
+        }
 
         passcode_title = (YonaFontTextView) view.findViewById(R.id.passcode_title);
         passcode_description = (YonaFontTextView) view.findViewById(R.id.passcode_description);
@@ -66,41 +64,30 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
 
         profile_progress = (ProgressBar) view.findViewById(R.id.profile_progress);
 
-        passcode1 = (YonaFontEditTextView) view.findViewById(R.id.passcode1);
-        passcode2 = (YonaFontEditTextView) view.findViewById(R.id.passcode2);
-        passcode3 = (YonaFontEditTextView) view.findViewById(R.id.passcode3);
-        passcode4 = (YonaFontEditTextView) view.findViewById(R.id.passcode4);
-
-
         passcodeManagerImpl = new PasscodeManagerImpl();
+        yonaPasswordTransformationManager = new YonaPasswordTransformationManager();
+        watcher = new FieldTextWatcher();
 
-        YonaPasswordTransformationManager yonaPasswordTransformationManager = new YonaPasswordTransformationManager();
-        passcode1.setTransformationMethod(yonaPasswordTransformationManager);
-        passcode2.setTransformationMethod(yonaPasswordTransformationManager);
-        passcode3.setTransformationMethod(yonaPasswordTransformationManager);
-        passcode4.setTransformationMethod(yonaPasswordTransformationManager);
-
-
-        passcode1.setOnKeyListener(keyListener);
-        passcode2.setOnKeyListener(keyListener);
-        passcode3.setOnKeyListener(keyListener);
-        passcode4.setOnKeyListener(keyListener);
-
-        FieldTextWatcher watcher = new FieldTextWatcher();
-
-        passcode1.addTextChangedListener(watcher);
-        passcode2.addTextChangedListener(watcher);
-        passcode3.addTextChangedListener(watcher);
-        passcode4.addTextChangedListener(watcher);
+        passcode1 = getLayout(view, R.id.passcode1);
+        passcode2 = getLayout(view, R.id.passcode2);
+        passcode3 = getLayout(view, R.id.passcode3);
+        passcode4 = getLayout(view, R.id.passcode4);
 
         passcode_reset.setOnClickListener(this);
-
 
         updateScreenUI();
         resetDigit();
 
         return view;
 
+    }
+
+    private YonaFontEditTextView getLayout(View view, int id) {
+        YonaFontEditTextView textView = (YonaFontEditTextView) view.findViewById(id);
+        textView.setTransformationMethod(yonaPasswordTransformationManager);
+        textView.setOnKeyListener(keyListener);
+        textView.addTextChangedListener(watcher);
+        return textView;
     }
 
     private void updateScreenUI() {
@@ -142,7 +129,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private void populateLoginView() {
         accont_image.setImageResource(R.drawable.icn_y);
         passcode_title.setText(getString(R.string.passcode_title));
-        ((LoggedInActivity) getActivity()).updateTitle(getString(R.string.login));
+//        ((LoginActivity) getActivity()).updateTitle(getString(R.string.login));
     }
 
 
@@ -174,23 +161,17 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             if (keyCode == KeyEvent.KEYCODE_DEL) {
                 if (v.getId() == R.id.passcode4) {
                     if (passcode4.getText().length() == 0) {
-                        passcode3.requestFocus();
-                        passcode3.setFocusableInTouchMode(true);
-                        passcode4.setFocusableInTouchMode(false);
+                        setFocus(passcode4, passcode3);
                         passcode3.setText("");
                     }
                 } else if (v.getId() == R.id.passcode3) {
                     if (passcode3.getText().length() == 0) {
-                        passcode2.requestFocus();
-                        passcode2.setFocusableInTouchMode(true);
-                        passcode3.setFocusableInTouchMode(false);
+                        setFocus(passcode3, passcode2);
                         passcode2.setText("");
                     }
                 } else if (v.getId() == R.id.passcode2) {
                     if (passcode2.getText().length() == 0) {
-                        passcode1.requestFocus();
-                        passcode1.setFocusableInTouchMode(true);
-                        passcode2.setFocusableInTouchMode(false);
+                        setFocus(passcode2, passcode1);
                         passcode1.setText("");
                     }
                 }
@@ -238,29 +219,23 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         }
     }
 
+    private void setFocus(YonaFontEditTextView passcode1, YonaFontEditTextView passcode2) {
+        passcode1.setFocusableInTouchMode(false);
+        passcode2.setFocusableInTouchMode(true);
+        passcode2.requestFocus();
+    }
+
     private final class FieldTextWatcher implements TextWatcher {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (s.length() == 1) {
                 if (passcode1.hasFocus()) {
-                    passcode2.setFocusableInTouchMode(true);
-                    passcode2.requestFocus();
-                    passcode1.setFocusableInTouchMode(false);
-                   // passcode3.setFocusableInTouchMode(false);
-                   // passcode4.setFocusableInTouchMode(false);
+                    setFocus(passcode1, passcode2);
                 } else if (passcode2.hasFocus()) {
-                    //passcode1.setFocusableInTouchMode(false);
-                    passcode3.setFocusableInTouchMode(true);
-                    passcode3.requestFocus();
-                    passcode2.setFocusableInTouchMode(false);
-                    //passcode4.setFocusableInTouchMode(false);
+                    setFocus(passcode2, passcode3);
                 } else if (passcode3.hasFocus()) {
-                    passcode4.setFocusableInTouchMode(true);
-                    passcode4.requestFocus();
-                    //passcode1.setFocusableInTouchMode(false);
-                    //passcode2.setFocusableInTouchMode(false);
-                    passcode3.setFocusableInTouchMode(false);
+                    setFocus(passcode3, passcode4);
                 }
             }
         }
