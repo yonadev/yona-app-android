@@ -28,8 +28,8 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @return
      */
     @Override
-    public boolean validatePasscode(int passCode) {
-        if (passCode == getStoredPassCode()) {
+    public boolean validatePasscode(String passCode) {
+        if (passCode.equalsIgnoreCase(getStoredPassCode())) {
             updateWrongPasscodeCounter(0);
             return true;
         } else {
@@ -61,8 +61,8 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @return
      */
     @Override
-    public boolean validateTwoPasscode(int passcode, int passcode2) {
-        if (passcode == passcode2) {
+    public boolean validateTwoPasscode(String passcode, String passcode2) {
+        if (passcode.equalsIgnoreCase(passcode2)) {
             storedPassCode(passcode);
             return true;
         }
@@ -106,8 +106,8 @@ public class PasscodeManagerImpl implements PasscodeManager {
      *
      * @return int
      */
-    private int getStoredPassCode() {
-        return YonaApplication.getAppContext().getUserPreferences().getInt(PreferenceConstant.YONA_PASSCODE, 0);
+    private String getStoredPassCode() {
+        return YonaApplication.getAppContext().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "");
     }
 
     /**
@@ -115,8 +115,8 @@ public class PasscodeManagerImpl implements PasscodeManager {
      *
      * @param code
      */
-    private void storedPassCode(int code) {
-        YonaApplication.getAppContext().getUserPreferences().edit().putInt(PreferenceConstant.YONA_PASSCODE, code);
+    private void storedPassCode(String code) {
+        YonaApplication.getAppContext().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, code);
     }
 
 }

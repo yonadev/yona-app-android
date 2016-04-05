@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import nu.yona.app.R;
@@ -32,7 +33,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private PasscodeFragment passcodeFragment;
     private PasscodeFragment verifyPasscodeFragment;
     private int PASSCODE_STEP = 0;
-    public int first_passcode = 0;
+    private String first_passcode;
     private PasscodeManagerImpl passcodeMangerImpl;
     private TextView txtTitle;
 
@@ -114,10 +115,10 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
                 break;
             case EventChangeManager.EVENT_PASSCODE_STEP_TWO:
                 loadVerifyPasscodeView();
-                if (first_passcode == 0) {
-                    first_passcode = (int) object;
+                if (TextUtils.isEmpty(first_passcode)) {
+                    first_passcode = (String) object;
                 } else {
-                    validatePasscode((int) object);
+                    validatePasscode((String) object);
                 }
                 break;
             default:
@@ -131,13 +132,13 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
      *
      * @param code
      */
-    private void validatePasscode(int code) {
+    private void validatePasscode(String code) {
 
         if (passcodeMangerImpl.validateTwoPasscode(first_passcode, code)) {
             showChallengesScreen();
         } else {
             doBack();
-            first_passcode = 0;
+            first_passcode = "";
 
             new Handler().postDelayed(new Runnable() {
                 public void run() {

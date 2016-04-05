@@ -13,10 +13,10 @@ package nu.yona.app.api.manager;
  */
 public interface PasscodeManager {
 
-    boolean validatePasscode(int passCode);
+    boolean validatePasscode(String passCode);
 
     boolean checkPasscodeLength(String passcode);
 
-    boolean validateTwoPasscode(int passcode, int passcode2);
+    boolean validateTwoPasscode(String passcode, String passcode2);
 
 }

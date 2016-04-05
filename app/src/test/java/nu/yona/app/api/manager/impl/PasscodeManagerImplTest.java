@@ -29,8 +29,8 @@ public class PasscodeManagerImplTest extends YonaTestCase {
 
     @Test
     public void checkValidatePasscode() {
-        YonaApplication.getUserPreferences().edit().putInt(PreferenceConstant.YONA_PASSCODE, 1111).commit();
-        assertTrue(passcodeManager.validatePasscode(1111));
+        YonaApplication.getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, "1111").commit();
+        assertTrue(passcodeManager.validatePasscode("1111"));
     }
 
     @Test
@@ -40,17 +40,17 @@ public class PasscodeManagerImplTest extends YonaTestCase {
 
     @Test
     public void verifyPasscodeEnter() {
-        assertTrue(passcodeManager.validateTwoPasscode(1234, 1234));
+        assertTrue(passcodeManager.validateTwoPasscode("1234", "1234"));
     }
 
     @Test
     public void isWrongPasscodeCountReachedLimit() {
 
-        passcodeManager.validatePasscode(1234);
-        passcodeManager.validatePasscode(1234);
-        passcodeManager.validatePasscode(1234);
-        passcodeManager.validatePasscode(1234);
-        passcodeManager.validatePasscode(1234);
+        passcodeManager.validatePasscode("1234");
+        passcodeManager.validatePasscode("1234");
+        passcodeManager.validatePasscode("1234");
+        passcodeManager.validatePasscode("1234");
+        passcodeManager.validatePasscode("1234");
 
         assertTrue(passcodeManager.isWrongCounterReached());
     }
