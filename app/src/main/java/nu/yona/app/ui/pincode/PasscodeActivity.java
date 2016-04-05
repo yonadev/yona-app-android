@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -33,19 +34,24 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private int PASSCODE_STEP = 0;
     public int first_passcode = 0;
     private PasscodeManagerImpl passcodeMangerImpl;
+    private TextView txtTitle;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.passcode_container_layout);
+        setContentView(R.layout.blank_container_layout);
 
         passcodeMangerImpl = new PasscodeManagerImpl();
 
+        txtTitle = (TextView) findViewById(R.id.txt_nav_title);
         YonaApplication.getEventChangeManager().registerListener(this);
         loadPasscodeView();
     }
 
+    public void updateTitle(String title) {
+        txtTitle.setText(title);
+    }
 
     @Override
     public void onBackPressed() {
@@ -87,16 +93,16 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private void loadPasscodeView() {
         PASSCODE_STEP = 0;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.replace(R.id.passcode_container, getPasscodeFragment());
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        fragmentTransaction.replace(R.id.blank_container, getPasscodeFragment());
         fragmentTransaction.commit();
     }
 
     private void loadVerifyPasscodeView() {
         PASSCODE_STEP = 1;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        fragmentTransaction.replace(R.id.passcode_container, getPasscodeVerifyFragment());
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        fragmentTransaction.replace(R.id.blank_container, getPasscodeVerifyFragment());
         fragmentTransaction.commit();
     }
 

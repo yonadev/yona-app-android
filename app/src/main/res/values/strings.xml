@@ -53,4 +53,5 @@ Stel je pincode hieronder in. </string>
     <string name="passcode_step2_title">Bevestig pincode</string>
     <string name="passcode_step2_desc">Vul je pincode nog een keer in ter bevestiging.</string>
     <string name="msg_block_user">Your account has been locked for security reasons, use the "reset passcode" option to enable our account.</string>
+    <string name="passcode_reset">PIN reset</string>
 </resources>

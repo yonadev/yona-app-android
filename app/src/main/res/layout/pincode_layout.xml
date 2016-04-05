@@ -64,6 +64,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/passcode_reset_margin_top"
         android:layout_marginTop="@dimen/passcode_editfield_margin_top"
         android:gravity="center"
         android:weightSum="4">
@@ -110,9 +111,8 @@
         style="@style/TabTitleLg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/passcode_reset_margin_top"
         android:gravity="center"
-        android:text="@string/passcode_tryagain"
+        android:text="@string/passcode_reset"
         android:visibility="gone" />
 
 
