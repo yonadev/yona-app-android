@@ -20,6 +20,8 @@ import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Created by kinnarvasa on 02/04/16.
  */

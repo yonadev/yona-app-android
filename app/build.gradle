@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0.0"
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "ad6d6ae9670e48b693b8fbf377fffb2f"]
     }
     buildTypes {
         release {
@@ -57,8 +58,11 @@ android {
 
     productFlavors {
         //build flavors:
+        zdevelopment {
+            // this is for developer testing, not send crash report on hocky app
+        }
         zdev {
-            //do nothing here, just merge in custom res
+            //do nothing here, just merge in custom res - use this for QA Testing
         }
         zproduction {
             //do nothing here, just merge in custom res
@@ -136,5 +140,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
     testCompile 'junit:junit:4.12'
     testCompile('org.robolectric:robolectric:3.0')
+    compile 'net.hockeyapp.android:HockeySDK:3.7.2'
 
 }
