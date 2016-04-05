@@ -10,17 +10,21 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.yona.app.api.db.DBConstant;
+
 public class User {
 
     @SerializedName("_embedded")
     @Expose
-    private nu.yona.app.api.model.Embedded Embedded;
+    private Embedded Embedded;
 
     @SerializedName("_links")
     @Expose

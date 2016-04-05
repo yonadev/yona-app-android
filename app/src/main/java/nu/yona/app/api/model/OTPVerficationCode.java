@@ -14,37 +14,16 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by kinnarvasa on 31/03/16.
+ * Created by kinnarvasa on 04/04/16.
  */
-public class ErrorMessage {
-    @SerializedName("message")
-    @Expose
-    private String message;
+public class OTPVerficationCode {
+
     @SerializedName("code")
     @Expose
     private String code;
 
-    public ErrorMessage() {
-
-    }
-
-    public ErrorMessage(String message) {
-        this.code = "";
-        this.message = message;
-    }
-
-    /**
-     * @return The message
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * @param message The message
-     */
-    public void setMessage(String message) {
-        this.message = message;
+    public OTPVerficationCode(String otp) {
+        this.code = otp;
     }
 
     /**

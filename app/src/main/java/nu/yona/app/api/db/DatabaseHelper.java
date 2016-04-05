@@ -21,6 +21,7 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper mInstance = null;
+    private DBHelper dbHelper;
 
     private DatabaseHelper(Context context) {
         super(context, DBConstant.DATABASE_NAME, null, DBConstant.DATABASE_VERSION);
@@ -48,6 +49,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void createTables(SQLiteDatabase db) {
-//        db.execSQL(DBHelper.TABLE_USER_REGISTER);
+        db.execSQL(getDBHelper().TABLE_USER_REGISTER);
+    }
+
+    private DBHelper getDBHelper() {
+        if (dbHelper == null) {
+            dbHelper = new DBHelper();
+        }
+        return dbHelper;
     }
 }

@@ -47,14 +47,14 @@ public class StepOneTest extends YonaTestCase {
     }
 
     @Test
-    public void validateFirstName(){
+    public void validateFirstName() {
         firstName.setText("Kinnar");
-        assertTrue(activity.getSignupManager().validateText(firstName.getText().toString()));
+        assertTrue(activity.getAuthenticateManager().validateText(firstName.getText().toString()));
     }
 
     @Test
-    public void validateLastName(){
+    public void validateLastName() {
         lastName.setText("Vasa");
-        assertTrue(activity.getSignupManager().validateText(lastName.getText().toString()));
+        assertTrue(activity.getAuthenticateManager().validateText(lastName.getText().toString()));
     }
 }

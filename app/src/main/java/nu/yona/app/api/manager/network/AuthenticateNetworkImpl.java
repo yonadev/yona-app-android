@@ -10,12 +10,11 @@
 
 package nu.yona.app.api.manager.network;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
@@ -28,7 +27,7 @@ import retrofit2.Response;
 /**
  * Created by kinnarvasa on 28/03/16.
  */
-public class SignupNetworkImpl extends BaseImpl {
+public class AuthenticateNetworkImpl extends BaseImpl {
 
     public void registerUser(String password, RegisterUser object, final DataLoadListener listener) {
         getRestApi().registerUser(password, object).enqueue(new Callback<User>() {
@@ -36,7 +35,32 @@ public class SignupNetworkImpl extends BaseImpl {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
                     listener.onDataLoad(response.body());
-                } else{
+                } else {
+                    try {
+                        Converter<ResponseBody, ErrorMessage> errorConverter =
+                                getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                        ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
+                        listener.onError(errorMessage);
+                    } catch (IOException e) {
+                        listener.onError(new ErrorMessage(e.getMessage()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                listener.onError(new ErrorMessage(t.getMessage()));
+            }
+        });
+    }
+
+    public void verifyMobileNumber(String password, String url, OTPVerficationCode otp, final DataLoadListener listener) {
+        getRestApi().verifyMobileNumber(url, password, otp).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                    listener.onDataLoad(response.body());
+                } else {
                     try {
                         Converter<ResponseBody, ErrorMessage> errorConverter =
                                 getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);

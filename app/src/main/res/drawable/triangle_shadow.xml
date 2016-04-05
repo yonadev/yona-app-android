@@ -7,7 +7,7 @@
   ~
   ~
   -->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
             <solid android:color="@color/grape" />
@@ -16,13 +16,16 @@
     <item>
         <rotate
             android:fromDegrees="-15"
-            android:toDegrees="20"
             android:pivotX="0%"
-            android:pivotY="100%" >
+            android:pivotY="100%"
+            android:toDegrees="20">
             <shape>
-                <size android:width="30dp"
-                    android:height="45dp"/>
-                <stroke android:color="@color/grape_two" android:width="1dp"/>
+                <size
+                    android:width="30dp"
+                    android:height="45dp" />
+                <stroke
+                    android:width="1dp"
+                    android:color="@color/grape_two" />
                 <solid android:color="@color/grape_two" />
             </shape>
         </rotate>

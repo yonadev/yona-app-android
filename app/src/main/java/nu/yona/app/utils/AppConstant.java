@@ -17,11 +17,11 @@ public interface AppConstant {
     int MAX_COUNTER = 4;
     int TIMER_DELAY = 100;
 
-
-
     String SMS = "sms";
     String PASSCODE = "passcode";
     String PASSCODE_VERIFY = "passcode_verify";
+    String OTP = "otp";
+
     String LOGGED_IN = "logged_in";
     String SCREEN_TYPE = "screen_type";
 }

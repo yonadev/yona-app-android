@@ -10,6 +10,7 @@
 
 package nu.yona.app.api.manager.network;
 
+import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.utils.ApiList;
@@ -18,6 +19,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 
 /**
  * Created by kinnarvasa on 28/03/16.
@@ -28,4 +30,7 @@ public interface RestApi {
     @POST(ApiList.USER)
     Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
                             @Body RegisterUser body);
+
+    Call<User> verifyMobileNumber(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
+                                  @Body OTPVerficationCode code);
 }
