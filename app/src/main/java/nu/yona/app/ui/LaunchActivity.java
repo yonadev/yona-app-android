@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import nu.yona.app.R;
+import nu.yona.app.ui.pincode.LoggedInActivity;
 import nu.yona.app.ui.signup.SignupActivity;
 
 /**
@@ -25,6 +26,7 @@ public class LaunchActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_layout);
+
         findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,5 +34,17 @@ public class LaunchActivity extends BaseActivity {
                 finish();
             }
         });
+
+        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callLoginScreen();
+            }
+        });
+    }
+
+    public void callLoginScreen() {
+        startActivity(new Intent(LaunchActivity.this, LoggedInActivity.class));
+        finish();
     }
 }
