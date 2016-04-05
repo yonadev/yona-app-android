@@ -27,6 +27,9 @@ public class Links {
     @SerializedName("edit")
     @Expose
     private Edit edit;
+    @SerializedName("yona:confirmMobileNumber")
+    @Expose
+    private YonaConfirmMobileNumber yonaConfirmMobileNumber;
 
     /**
      * @return The curies
@@ -70,4 +73,17 @@ public class Links {
         this.edit = edit;
     }
 
+    /**
+     * @return The yonaConfirmMobileNumber
+     */
+    public YonaConfirmMobileNumber getYonaConfirmMobileNumber() {
+        return yonaConfirmMobileNumber;
+    }
+
+    /**
+     * @param yonaConfirmMobileNumber The yona:confirmMobileNumber
+     */
+    public void setYonaConfirmMobileNumber(YonaConfirmMobileNumber yonaConfirmMobileNumber) {
+        this.yonaConfirmMobileNumber = yonaConfirmMobileNumber;
+    }
 }

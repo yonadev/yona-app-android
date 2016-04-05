@@ -17,10 +17,10 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@drawable/yona_logo"
         android:layout_gravity="center"
+        android:layout_weight="1"
         android:scaleType="centerInside"
-        android:layout_weight="1" />
+        android:src="@drawable/yona_logo" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,25 +28,25 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <Button
+        <nu.yona.app.customview.YonaFontButton
             android:id="@+id/join"
+            style="@style/BtnTxtSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="1dp"
             android:layout_weight="1"
             android:background="@color/darkish_pink"
             android:text="@string/join"
-            style="@style/BtnTxtSmall"
             android:textColor="@android:color/white" />
 
-        <Button
+        <nu.yona.app.customview.YonaFontButton
             android:id="@+id/login"
+            style="@style/BtnTxtSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/darkish_pink"
             android:text="@string/login"
-            style="@style/BtnTxtSmall"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

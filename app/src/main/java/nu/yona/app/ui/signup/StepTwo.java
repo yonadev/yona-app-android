@@ -98,7 +98,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     }
 
     private boolean validateMobileNumber(String number) {
-        if (!activity.getSignupManager().validateMobileNumber(number)) {
+        if (!activity.getAuthenticateManager().validateMobileNumber(number)) {
             mobileNumberLayout.setErrorEnabled(true);
             mobileNumberLayout.setError(getString(R.string.enter_number_validation));
             activity.showKeyboard(mobileNumber);

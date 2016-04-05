@@ -11,6 +11,9 @@ package nu.yona.app;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+
+import java.util.UUID;
 
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.PreferenceConstant;
@@ -39,11 +42,22 @@ public class YonaApplication extends Application {
         return eventChangeManager;
     }
 
+    /**
+     * @return return yona password
+     */
+    public static String getYonaPassword() {
+        String yonaPwd = getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, "");
+        if (TextUtils.isEmpty(yonaPwd)) {
+            yonaPwd = UUID.randomUUID().toString();
+            getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, yonaPwd).commit();
+        }
+        return yonaPwd;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this;
         eventChangeManager = new EventChangeManager();
     }
-
 }
