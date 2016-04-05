@@ -93,7 +93,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
