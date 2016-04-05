@@ -20,7 +20,7 @@ public interface DBConstant {
     /**
      * DB TABLES
      **/
-    String USER_DATA = "userData";
+    String TBL_USER_DATA = "userData";
     /** DB TABLES **/
 
     /**

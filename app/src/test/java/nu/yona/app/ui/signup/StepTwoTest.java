@@ -46,8 +46,8 @@ public class StepTwoTest extends YonaTestCase {
     }
 
     @Test
-    public void validateMobileNumber(){
+    public void validateMobileNumber() {
         mobileNumber.setText("+31123456789");
-        assertTrue(activity.getSignupManager().validateMobileNumber(mobileNumber.getText().toString()));
+        assertTrue(activity.getAuthenticateManager().validateMobileNumber(mobileNumber.getText().toString()));
     }
 }

@@ -19,9 +19,8 @@ import android.widget.Toast;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.db.DatabaseHelper;
-import nu.yona.app.api.manager.SignupManager;
-import nu.yona.app.api.manager.impl.SignupManagerImpl;
+import nu.yona.app.api.manager.AuthenticateManager;
+import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
@@ -41,7 +40,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     private StepOne stepOne;
     private StepTwo stepTwo;
-    private SignupManager signupManager;
+    private AuthenticateManager authenticateManager;
     private int SIGNUP_STEP = 0;
     private RegisterUser registerUser;
     private YonaFontButton nextButton, prevButton;
@@ -55,7 +54,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         stepTwo = new StepTwo();
         registerUser = new RegisterUser();
 
-        signupManager = new SignupManagerImpl(DatabaseHelper.getInstance(this), this);
+        authenticateManager = new AuthenticateManagerImpl(this);
 
         nextButton = (YonaFontButton) findViewById(R.id.next);
         prevButton = (YonaFontButton) findViewById(R.id.previous);
@@ -128,7 +127,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     private void doRegister() {
         showLoadingView(true, null);
-        signupManager.registerUser(getRegisterUser(), new DataLoadListener() {
+        authenticateManager.registerUser(YonaApplication.getYonaPassword(), getRegisterUser(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
@@ -155,8 +154,8 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         return registerUser;
     }
 
-    public SignupManager getSignupManager() {
-        return signupManager;
+    public AuthenticateManager getAuthenticateManager() {
+        return authenticateManager;
     }
 
 

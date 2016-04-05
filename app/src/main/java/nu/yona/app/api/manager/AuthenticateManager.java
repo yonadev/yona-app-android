@@ -16,11 +16,13 @@ import nu.yona.app.listener.DataLoadListener;
 /**
  * Created by kinnarvasa on 25/03/16.
  */
-public interface SignupManager {
+public interface AuthenticateManager {
 
     boolean validateText(String string);
 
     boolean validateMobileNumber(String mobileNumber);
 
-    void registerUser(RegisterUser user, DataLoadListener listener);
+    void registerUser(String password, RegisterUser user, DataLoadListener listener);
+
+    void verifyMobileNumber(String password, String otp, DataLoadListener listener);
 }
