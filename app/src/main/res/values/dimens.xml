@@ -25,7 +25,7 @@
     <dimen name="progressbar_height">2dp</dimen>
     <dimen name="progressbar_margin_top">17dp</dimen>
     <dimen name="passcode_font_desc_margin_top">14dp</dimen>
-    <dimen name="passcode_editfield_margin_top">24dp</dimen>
+    <dimen name="passcode_editfield_margin_top">28dp</dimen>
     <dimen name="passcode_reset_margin_top">30dp</dimen>
 
 </resources>
