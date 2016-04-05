@@ -23,6 +23,7 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 31/03/16.
@@ -56,7 +57,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      */
     public boolean validateMobileNumber(String mobileNumber) {
         // do validation for mobile number
-        if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != 12) { // 9 digits of mobile number and '+31'
+        if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != AppConstant.MOBILE_NUMBER_LENGTH) { // 9 digits of mobile number and '+31'
             return false;
         }
         if (!android.util.Patterns.PHONE.matcher(mobileNumber).matches()) {
@@ -117,7 +118,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      * @param listener
      */
     public void verifyMobileNumber(String password, String otp, final DataLoadListener listener) {
-        if (otp.length() == 4) {
+        if (otp.length() == AppConstant.OTP_LENGTH) {
             authNetwork.verifyMobileNumber(password, authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber().getHref(),
                     new OTPVerficationCode(otp), new DataLoadListener() {
 

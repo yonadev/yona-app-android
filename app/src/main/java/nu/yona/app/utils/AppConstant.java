@@ -16,6 +16,8 @@ public interface AppConstant {
     int ONE_SECOND = 1000;
     int MAX_COUNTER = 4;
     int TIMER_DELAY = 100;
+    int MOBILE_NUMBER_LENGTH = 12;
+    int OTP_LENGTH = 4;
 
     String SMS = "sms";
     String PASSCODE = "passcode";
@@ -24,4 +26,5 @@ public interface AppConstant {
 
     String LOGGED_IN = "logged_in";
     String SCREEN_TYPE = "screen_type";
+    String FROM_LOGIN= "fromLogin";
 }

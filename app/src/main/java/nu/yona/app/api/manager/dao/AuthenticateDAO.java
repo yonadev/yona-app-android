@@ -52,14 +52,17 @@ public class AuthenticateDAO extends BaseDAO {
 
     public User getUser() {
         Cursor c = query(DBConstant.TBL_USER_DATA, null, null, null, null, null);
-        if (c != null && c.getCount() > 0) {
-            try {
+        try {
+            if (c != null && c.getCount() > 0) {
+
                 if (c.moveToFirst()) {
                     return serializer.deserialize(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT)), User.class);
                 }
-            } catch (Exception e) {
-                Log.e(AuthenticateDAO.class.getSimpleName(), "get user error", e);
             }
+        } catch (Exception e) {
+            Log.e(AuthenticateDAO.class.getSimpleName(), "get user error", e);
+        } finally {
+            c.close();
         }
         return null;
     }
