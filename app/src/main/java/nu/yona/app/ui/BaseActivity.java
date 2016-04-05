@@ -13,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.inputmethod.InputMethodManager;
 
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+
 import nu.yona.app.R;
 import nu.yona.app.customview.CustomProgressDialog;
 
@@ -53,6 +56,29 @@ public class BaseActivity extends AppCompatActivity {
             progressDialog.dismiss();
         }
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkForCrashes();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterManagers();
+    }
+
+    private void checkForCrashes() {
+        if(getResources().getBoolean(R.bool.enableHockyTracking)) {
+            CrashManager.register(this);
+        }
+    }
+
+    private void unregisterManagers() {
+        if(getResources().getBoolean(R.bool.enableHockyTracking)) {
+            UpdateManager.unregister();
+        }
     }
 
     public void dismissActiveDialog() {

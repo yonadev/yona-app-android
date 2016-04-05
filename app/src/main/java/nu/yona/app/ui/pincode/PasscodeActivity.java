@@ -61,7 +61,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
