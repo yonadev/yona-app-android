@@ -29,7 +29,7 @@ public class YonaBuddy {
     private String receivingStatus;
     @SerializedName("_embedded")
     @Expose
-    private Embedded Embedded;
+    private EmbeddedYonaUser Embedded;
 
     /**
      * @return The Links
@@ -90,14 +90,14 @@ public class YonaBuddy {
     /**
      * @return The Embedded
      */
-    public Embedded getEmbedded() {
+    public EmbeddedYonaUser getEmbedded() {
         return Embedded;
     }
 
     /**
      * @param Embedded The _embedded
      */
-    public void setEmbedded(Embedded Embedded) {
+    public void setEmbedded(EmbeddedYonaUser Embedded) {
         this.Embedded = Embedded;
     }
 

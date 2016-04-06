@@ -55,27 +55,32 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     public void verifyMobileNumber(String password, String url, OTPVerficationCode otp, final DataLoadListener listener) {
-        getRestApi().verifyMobileNumber(url, password, otp).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
-                } else {
-                    try {
-                        Converter<ResponseBody, ErrorMessage> errorConverter =
-                                getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
-                        ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
-                        listener.onError(errorMessage);
-                    } catch (IOException e) {
-                        listener.onError(new ErrorMessage(e.getMessage()));
+        try {
+            getRestApi().verifyMobileNumber(url, password, otp).enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        try {
+                            Converter<ResponseBody, ErrorMessage> errorConverter =
+                                    getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                            listener.onError(errorConverter.convert(response.errorBody()));
+                        } catch (IOException e) {
+                            listener.onError(new ErrorMessage(e.getMessage()));
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                listener.onError(new ErrorMessage(t.getMessage()));
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    listener.onError(new ErrorMessage(t.getMessage()));
+                }
+            });
+        } catch (Exception e){
+            if(e != null && e.getMessage() != null){
+                listener.onError(new ErrorMessage(e.getMessage()));
             }
-        });
+        }
     }
 }

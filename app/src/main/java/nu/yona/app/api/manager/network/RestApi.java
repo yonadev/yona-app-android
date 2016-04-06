@@ -31,6 +31,7 @@ public interface RestApi {
     Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
                             @Body RegisterUser body);
 
+    @POST
     Call<User> verifyMobileNumber(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
                                   @Body OTPVerficationCode code);
 }
