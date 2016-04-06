@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -151,7 +150,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     }
 
     public void showChallengesScreen() {
-        startActivity(new Intent(PasscodeActivity.this, YonaActivity.class));
+        startActivity(new Intent(PasscodeActivity.this, YonaActivity.class).putExtra(AppConstant.FROM_LOGIN, true));
         finish();
     }
 }

@@ -24,6 +24,7 @@ import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by kinnarvasa on 31/03/16.
@@ -76,6 +77,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
             authNetwork.registerUser(YonaApplication.getYonaPassword(), registerUser, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
+                    YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
                     updateDataForRegisterUser(result, listener);
                 }
 
@@ -125,6 +127,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                         @Override
                         public void onDataLoad(Object result) {
                             updateDataForRegisterUser(result, listener);
+                            YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, true).commit();
                         }
 
                         @Override

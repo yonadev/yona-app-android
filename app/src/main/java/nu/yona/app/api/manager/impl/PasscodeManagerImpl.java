@@ -116,7 +116,8 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @param code
      */
     private void storedPassCode(String code) {
-        YonaApplication.getAppContext().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, code);
+        YonaApplication.getAppContext().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, code).commit();
+        YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_PASSCODE, true).commit();
     }
 
 }

@@ -10,41 +10,58 @@
 
 package nu.yona.app.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.ui.pincode.LoggedInActivity;
+import nu.yona.app.ui.pincode.PasscodeActivity;
+import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by kinnarvasa on 25/03/16.
  */
 public class LaunchActivity extends BaseActivity {
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_layout);
 
+        if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
+            //do nothing
+        } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
+            startNewActivity(LaunchActivity.this, OTPActivity.class);
+        } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
+            startNewActivity(LaunchActivity.this, PasscodeActivity.class);
+        } else {
+            startNewActivity(LaunchActivity.this, LoggedInActivity.class);
+        }
+
         findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LaunchActivity.this, SignupActivity.class));
-                finish();
+                startNewActivity(LaunchActivity.this, SignupActivity.class);
             }
         });
 
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callLoginScreen();
+                startNewActivity(LaunchActivity.this, LoggedInActivity.class);
             }
         });
     }
 
-    public void callLoginScreen() {
-        startActivity(new Intent(LaunchActivity.this, LoggedInActivity.class));
+    public void startNewActivity(Context context, Class mClass) {
+        startActivity(new Intent(context, mClass));
         finish();
     }
+
 }

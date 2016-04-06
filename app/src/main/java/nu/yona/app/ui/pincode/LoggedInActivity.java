@@ -68,7 +68,7 @@ public class LoggedInActivity extends BaseActivity implements EventChangeListene
     @Override
     protected void onResume() {
         super.onResume();
-        txtTitle.setText(getString(R.string.login));
+        updateTitle(getString(R.string.login));
     }
 
     @Override
