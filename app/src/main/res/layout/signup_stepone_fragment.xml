@@ -21,11 +21,11 @@
 
         <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/first_name"
+            style="@style/InputLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableRight="@drawable/icn_name"
             android:ellipsize="end"
-            style="@style/InputLabel"
             android:hint="@string/first_name"
             android:imeOptions="actionNext"
             android:maxLength="@integer/char_limit"
@@ -41,11 +41,11 @@
 
         <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/last_name"
+            style="@style/InputLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableRight="@drawable/icn_name"
             android:ellipsize="end"
-            style="@style/InputLabel"
             android:hint="@string/last_name"
             android:imeOptions="actionDone"
             android:maxLength="@integer/char_limit"
@@ -55,9 +55,9 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/privacyPolicy"
+        style="@style/Explanation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ten"
-        style="@style/Explanation"
         android:text="@string/privacy_policy" />
 </LinearLayout>

@@ -21,6 +21,7 @@
 
         <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/mobile_number"
+            style="@style/InputLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:capitalize="words"
@@ -29,7 +30,6 @@
             android:hint="@string/mobile_number"
             android:imeOptions="actionNext"
             android:inputType="phone"
-            style="@style/InputLabel"
             android:maxLength="@integer/number_limit"
             android:singleLine="true"
             android:textColorHint="@color/black" />
@@ -42,6 +42,7 @@
 
         <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/nick_name"
+            style="@style/InputLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:capitalize="words"
@@ -49,16 +50,15 @@
             android:ellipsize="end"
             android:hint="@string/last_name"
             android:imeOptions="actionDone"
-            style="@style/InputLabel"
             android:maxLength="@integer/char_limit"
             android:singleLine="true"
             android:textColorHint="@color/black" />
     </android.support.design.widget.TextInputLayout>
 
     <nu.yona.app.customview.YonaFontTextView
+        style="@style/Explanation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ten"
-        style="@style/Explanation"
         android:text="@string/user_signup_message" />
 </LinearLayout>

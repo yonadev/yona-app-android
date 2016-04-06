@@ -28,6 +28,7 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.utils.AppConstant;
 
 /**
@@ -101,8 +102,9 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             } else if (screen_type.equalsIgnoreCase(AppConstant.LOGGED_IN)) {
                 visibleLoginView();
                 populateLoginView();
-            } else if (screen_type.equalsIgnoreCase(AppConstant.SMS)) {
-                //Todo for SMS screen
+            } else if (screen_type.equalsIgnoreCase(AppConstant.OTP)) {
+                populateOTPView();
+                visibleView();
             }
         }
     }
@@ -111,6 +113,15 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     public void onDetach() {
         super.onDetach();
         YonaApplication.getEventChangeManager().unRegisterListener(this);
+    }
+
+    private void populateOTPView(){
+        accont_image.setImageResource(R.drawable.add_avatar);
+        passcode_title.setText(getString(R.string.account_login));
+        passcode_description.setText(getString(R.string.account_login_security_message));
+        ((OTPActivity) getActivity()).updateTitle(getString(R.string.join));
+        passcode_reset.setText(getString(R.string.send_otp_again));
+        passcode_reset.setVisibility(View.VISIBLE);
     }
 
     private void visibleView() {
@@ -183,7 +194,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     /**
      * Reset all fields
      */
-    protected void resetDigit() {
+    public void resetDigit() {
         passcode1.getText().clear();
         passcode1.setFocusableInTouchMode(true);
         passcode2.getText().clear();
@@ -212,7 +223,17 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.passcode_reset:
-                //Todo redirect user to reset Pincode process again
+                doPasscodeReset();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void doPasscodeReset(){
+        switch (screen_type){
+            case AppConstant.OTP:
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_OTP_RESEND, null);
                 break;
             default:
                 break;

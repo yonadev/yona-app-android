@@ -17,46 +17,27 @@
         android:background="@color/grape"
         android:orientation="vertical">
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/signup_add_avatar_height"
-            android:background="@color/grape"
-            android:scaleType="centerInside"
-            android:src="@drawable/add_avatar" />
+            android:layout_height="@dimen/signup_add_avatar_height">
+
+            <ImageView
+                android:id="@+id/add_avtar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/signup_add_avatar_height"
+                android:background="@color/grape"
+                android:scaleType="centerInside"
+                android:src="@drawable/add_avatar" />
+
+        </RelativeLayout>
 
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/white" />
+            android:background="@color/grape" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <nu.yona.app.customview.YonaFontButton
-                android:id="@+id/previous"
-                style="@style/BtnTxtSmall"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/darkish_pink"
-                android:text="@string/previous"
-                android:textColor="@android:color/white" />
-
-            <nu.yona.app.customview.YonaFontButton
-                android:id="@+id/next"
-                style="@style/BtnTxtSmall"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/darkish_pink"
-                android:text="@string/next"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
     </LinearLayout>
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
@@ -71,7 +52,6 @@
 
         <nu.yona.app.customview.YonaFontTextView
             style="@style/NavTitle"
-            android:layout_marginLeft="@dimen/thirty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/join"

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
+import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
@@ -35,7 +36,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private int PASSCODE_STEP = 0;
     private String first_passcode;
     private PasscodeManagerImpl passcodeMangerImpl;
-    private TextView txtTitle;
+    private YonaFontTextView txtTitle;
 
 
     @Override
@@ -45,7 +46,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
         passcodeMangerImpl = new PasscodeManagerImpl();
 
-        txtTitle = (TextView) findViewById(R.id.txt_nav_title);
+        txtTitle = (YonaFontTextView) findViewById(R.id.txt_nav_title);
         YonaApplication.getEventChangeManager().registerListener(this);
         loadPasscodeView();
     }
@@ -57,7 +58,6 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     @Override
     public void onBackPressed() {
         doBack();
-        //super.onBackPressed();
     }
 
     @Override

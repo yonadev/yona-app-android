@@ -27,20 +27,20 @@
             android:background="@drawable/profile_selector"
             android:gravity="center_horizontal" />
 
-        <TextView
+        <nu.yona.app.customview.YonaFontTextView
+            style="@style/SplashTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Kinnar Vasa"
-            style="@style/SplashTxt"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white" />
 
-        <TextView
+        <nu.yona.app.customview.YonaFontTextView
+            style="@style/NavTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="Kinnar"
-            style="@style/NavTitle"
             android:textColor="@android:color/white"
             android:textSize="12sp" />
     </LinearLayout>
