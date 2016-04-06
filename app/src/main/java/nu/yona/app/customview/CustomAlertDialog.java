@@ -15,7 +15,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.text.TextUtils;
-import android.widget.TextView;
+
+import nu.yona.app.R;
 
 public class CustomAlertDialog extends AlertDialog.Builder {
 
@@ -33,10 +34,10 @@ public class CustomAlertDialog extends AlertDialog.Builder {
         customAlertDialog.setCancelable(false);
 
         // for setting title view in center
-        TextView titleTextView = new TextView(context);
+        YonaFontTextView titleTextView = new YonaFontTextView(context);
         titleTextView.setText(title);
-        titleTextView.setPadding(10, 10, 20, 20);
-        titleTextView.setTextSize(24);
+        titleTextView.setPadding(context.getResources().getInteger(R.integer.margin_ten), context.getResources().getInteger(R.integer.margin_ten),
+				context.getResources().getInteger(R.integer.margin_twenty), context.getResources().getInteger(R.integer.margin_twenty));
         customAlertDialog.setCustomTitle(titleTextView);
         customAlertDialog.setMessage(message);
 
