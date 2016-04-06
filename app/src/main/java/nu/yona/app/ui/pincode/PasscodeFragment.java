@@ -271,7 +271,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             String code =
                     passcode1.getText().toString() + passcode2.getText().toString() + passcode3.getText().toString() + passcode4.getText().toString();
             if (passcode4.hasFocus() && passcodeManagerImpl.checkPasscodeLength(code)) {
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_STEP_TWO, Integer.parseInt(code));
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_STEP_TWO, code);
             }
         }
 
