@@ -23,6 +23,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import java.util.Random;
+
 import nu.yona.app.api.service.ActivityMonitorService;
 
 /**
@@ -91,4 +93,20 @@ public class AppUtils {
             context.startService(new Intent(context, ActivityMonitorService.class));
         }
     }
+
+    /**
+     * Generate Random String length of 20
+     * @return
+     */
+    public static String getRandomString() {
+        char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTU".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0;i < 20; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
 }
