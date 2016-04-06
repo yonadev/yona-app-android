@@ -22,7 +22,9 @@ public interface AuthenticateManager {
 
     boolean validateMobileNumber(String mobileNumber);
 
-    void registerUser(String password, RegisterUser user, DataLoadListener listener);
+    void registerUser(RegisterUser user, DataLoadListener listener);
 
-    void verifyMobileNumber(String password, String otp, DataLoadListener listener);
+    void verifyMobileNumber(String otp, DataLoadListener listener);
+
+    void resendOTP(DataLoadListener listener);
 }

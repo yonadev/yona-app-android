@@ -13,11 +13,12 @@ package nu.yona.app.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
 public class YonaUser {
 
     @SerializedName("_links")
     @Expose
-    private Links Links;
+    private Links_ Links;
     @SerializedName("firstName")
     @Expose
     private String firstName;
@@ -31,14 +32,14 @@ public class YonaUser {
     /**
      * @return The Links
      */
-    public Links getLinks() {
+    public Links_ getLinks() {
         return Links;
     }
 
     /**
      * @param Links The _links
      */
-    public void setLinks(Links Links) {
+    public void setLinks(Links_ Links) {
         this.Links = Links;
     }
 

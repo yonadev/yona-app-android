@@ -14,4 +14,5 @@
     <integer name="lines">1</integer>
     <integer name="margin_ten">10</integer>
     <integer name="margin_twenty">20</integer>
+    <integer name="passcode_progress">60</integer>
 </resources>

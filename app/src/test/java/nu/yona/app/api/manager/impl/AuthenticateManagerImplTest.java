@@ -44,7 +44,7 @@ public class AuthenticateManagerImplTest{
         registerUser.setMobileNumber("+31873449748");
         registerUser.setNickName("Kinnar");
 
-        manager.registerUser(password, registerUser, new DataLoadListener() {
+        manager.registerUser(registerUser, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 validateMobileNumber(password, ((User) result).getMobileNumberConfirmationCode());
@@ -59,7 +59,7 @@ public class AuthenticateManagerImplTest{
     }
 
     public void validateMobileNumber(String password, String code) {
-        manager.verifyMobileNumber(password, code, new DataLoadListener() {
+        manager.verifyMobileNumber(code, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 System.out.println(result.toString());

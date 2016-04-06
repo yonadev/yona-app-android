@@ -120,6 +120,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode_title.setText(getString(R.string.account_login));
         passcode_description.setText(getString(R.string.account_login_security_message));
         ((OTPActivity) getActivity()).updateTitle(getString(R.string.join));
+        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress));
         passcode_reset.setText(getString(R.string.send_otp_again));
         passcode_reset.setVisibility(View.VISIBLE);
     }

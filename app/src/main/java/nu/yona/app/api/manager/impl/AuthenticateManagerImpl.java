@@ -69,11 +69,11 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     /**
      * This will register user on server
      */
-    public void registerUser(String password, RegisterUser registerUser, final DataLoadListener listener) {
+    public void registerUser(RegisterUser registerUser, final DataLoadListener listener) {
         // do registration of user on server and save response in database.
         try {
 
-            authNetwork.registerUser(password, registerUser, new DataLoadListener() {
+            authNetwork.registerUser(YonaApplication.getYonaPassword(), registerUser, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     updateDataForRegisterUser(result, listener);
@@ -117,9 +117,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      * @param otp      OTP received in sms
      * @param listener
      */
-    public void verifyMobileNumber(String password, String otp, final DataLoadListener listener) {
+    public void verifyMobileNumber(String otp, final DataLoadListener listener) {
         if (otp.length() == AppConstant.OTP_LENGTH) {
-            authNetwork.verifyMobileNumber(password, authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber().getHref(),
+            authNetwork.verifyMobileNumber(YonaApplication.getYonaPassword(), authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber().getHref(),
                     new OTPVerficationCode(otp), new DataLoadListener() {
 
                         @Override
@@ -129,11 +129,19 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
                         @Override
                         public void onError(Object errorMessage) {
-                            listener.onError(new ErrorMessage(errorMessage.toString()));
+                            if (errorMessage instanceof ErrorMessage) {
+                                listener.onError(errorMessage);
+                            } else {
+                                listener.onError(new ErrorMessage(errorMessage.toString()));
+                            }
                         }
                     });
         } else {
             listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.invalid_otp)));
         }
+    }
+
+    public void resendOTP(DataLoadListener listener){
+        // do API implementation for resend OTP
     }
 }

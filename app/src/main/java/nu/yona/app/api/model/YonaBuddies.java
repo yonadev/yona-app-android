@@ -13,40 +13,41 @@ package nu.yona.app.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+
 public class YonaBuddies {
 
     @SerializedName("_embedded")
     @Expose
-    private Embedded Embedded;
+    private EmbeddedYonaBuddies Embedded;
     @SerializedName("links")
     @Expose
-    private Links links;
+    private Links_ links;
 
     /**
      * @return The Embedded
      */
-    public Embedded getEmbedded() {
+    public EmbeddedYonaBuddies getEmbedded() {
         return Embedded;
     }
 
     /**
      * @param Embedded The _embedded
      */
-    public void setEmbedded(Embedded Embedded) {
+    public void setEmbedded(EmbeddedYonaBuddies Embedded) {
         this.Embedded = Embedded;
     }
 
     /**
      * @return The links
      */
-    public Links getLinks() {
+    public Links_ getLinks() {
         return links;
     }
 
     /**
      * @param links The links
      */
-    public void setLinks(Links links) {
+    public void setLinks(Links_ links) {
         this.links = links;
     }
 
