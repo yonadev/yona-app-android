@@ -13,7 +13,7 @@
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:cursorVisible="true"/>
+        android:cursorVisible="true" />
 
     <TextView
         android:id="@+id/message"

@@ -29,13 +29,13 @@
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/toolbar_title"
+            style="@style/NavTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textColor="@android:color/white"
-            style="@style/NavTitle" />
+            android:textColor="@android:color/white" />
 
         <ImageView
             android:id="@+id/rightIcon"

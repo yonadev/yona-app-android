@@ -28,6 +28,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -63,7 +64,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private SettingsFragment settingsFragment = new SettingsFragment();
     private YonaFontTextView toolbarTitle;
     private ImageView leftIcon, rightIcon;
-
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
      */
@@ -127,8 +127,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
             }
         });
-        //Load default dashboard_selector fragment on start
-        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
+
+        //Load default dashboard_selector fragment on start after login, if signup, start challenges.
+        if(getIntent().getExtras() != null && getIntent().getExtras().getBoolean(AppConstant.FROM_LOGIN, true)) {
+            replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
+        } else {
+            replaceFragmentWithAction(new Intent(IntentEnum.ACTION_CHALLENGES.getActionString()));
+        }
 
         leftIcon.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -19,7 +19,6 @@ public interface AppConstant {
     int MOBILE_NUMBER_LENGTH = 12;
     int OTP_LENGTH = 4;
 
-    String SMS = "sms";
     String PASSCODE = "passcode";
     String PASSCODE_VERIFY = "passcode_verify";
     String OTP = "otp";

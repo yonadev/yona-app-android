@@ -12,4 +12,6 @@
     <integer name="char_limit">100</integer>
     <integer name="number_limit">18</integer>
     <integer name="lines">1</integer>
+    <integer name="margin_ten">10</integer>
+    <integer name="margin_twenty">20</integer>
 </resources>

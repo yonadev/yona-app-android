@@ -31,7 +31,6 @@ import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
-import nu.yona.app.ui.pincode.PasscodeActivity;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -127,7 +126,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     private void doRegister() {
         showLoadingView(true, null);
-        authenticateManager.registerUser(YonaApplication.getYonaPassword(), getRegisterUser(), new DataLoadListener() {
+        authenticateManager.registerUser(getRegisterUser(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
@@ -179,7 +178,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     }
 
     public void showMobileVerificationScreen() {
-        startActivity(new Intent(SignupActivity.this, PasscodeActivity.class));
+        startActivity(new Intent(SignupActivity.this, OTPActivity.class));
         finish();
     }
 }

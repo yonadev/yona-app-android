@@ -53,6 +53,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
 
+        <activity
+            android:name=".ui.signup.OTPActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.pincode.LoggedInActivity"

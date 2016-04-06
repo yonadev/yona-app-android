@@ -38,23 +38,23 @@
 
             <nu.yona.app.customview.YonaFontButton
                 android:id="@+id/previous"
+                style="@style/BtnTxtSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:background="@color/darkish_pink"
                 android:text="@string/previous"
-                style="@style/BtnTxtSmall"
                 android:textColor="@android:color/white" />
 
             <nu.yona.app.customview.YonaFontButton
                 android:id="@+id/next"
+                style="@style/BtnTxtSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/darkish_pink"
                 android:text="@string/next"
-                style="@style/BtnTxtSmall"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
@@ -70,10 +70,11 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <nu.yona.app.customview.YonaFontTextView
+            style="@style/NavTitle"
+            android:layout_marginLeft="@dimen/thirty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/join"
-            style="@style/NavTitle"
             android:textColor="@color/white" />
     </android.support.v7.widget.Toolbar>
 </FrameLayout>
