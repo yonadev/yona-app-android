@@ -28,7 +28,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -41,10 +40,12 @@ import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
 import nu.yona.app.ui.message.MessageFragment;
+import nu.yona.app.ui.pincode.LoggedInActivity;
 import nu.yona.app.ui.profile.ProfileFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by kinnarvasa on 18/03/16.
@@ -64,6 +65,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private SettingsFragment settingsFragment = new SettingsFragment();
     private YonaFontTextView toolbarTitle;
     private ImageView leftIcon, rightIcon;
+    private boolean isToDisplayLogin = false;
+
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
      */
@@ -76,6 +79,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yona_layout);
 
+        if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean(AppConstant.FROM_LOGIN)) {
+            isToDisplayLogin = false;
+        }
         mToolBar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolBar.setBackgroundColor(Color.BLUE);
         toolbarTitle = (YonaFontTextView) mToolBar.findViewById(R.id.toolbar_title);
@@ -129,10 +135,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         });
 
         //Load default dashboard_selector fragment on start after login, if signup, start challenges.
-        if(getIntent().getExtras() != null && getIntent().getExtras().getBoolean(AppConstant.FROM_LOGIN, true)) {
-            replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
-        } else {
+        if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
             replaceFragmentWithAction(new Intent(IntentEnum.ACTION_CHALLENGES.getActionString()));
+        } else {
+            replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
         }
 
         leftIcon.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +178,16 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     @Override
     protected void onResume() {
         super.onResume();
+        if (isToDisplayLogin) {
+            startActivity(new Intent(YonaActivity.this, LoggedInActivity.class));
+            finish();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isToDisplayLogin = true;
     }
 
     /**

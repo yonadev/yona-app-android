@@ -18,4 +18,9 @@ public interface PreferenceConstant {
     String YONA_PASSWORD = "yonaPassword";
     String YONA_PASSCODE = "yonaPasscode";
     String YONA_WRONG_PASSCODE_COUNTER = "wrongPasscodeCounter";
+
+    String STEP_REGISTER = "stepRegister";
+    String STEP_OTP = "stepOTP";
+    String STEP_PASSCODE = "stepPasscode";
+    String STEP_CHALLENGES = "stepChallenges";
 }
