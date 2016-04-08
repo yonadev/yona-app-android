@@ -177,6 +177,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode_title.setText(getString(R.string.passcode_step2_title));
         passcode_description.setText(getString(R.string.passcode_step2_desc));
         ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.pincode));
+        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_verify_progerss));
     }
 
     /**
@@ -186,6 +187,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         accont_image.setImageResource(R.drawable.icn_account_created);
         passcode_title.setText(getString(R.string.passcode_step1_title));
         passcode_description.setText(getString(R.string.passcode_step1_desc));
+        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_create_progress));
         ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.pincode));
     }
 

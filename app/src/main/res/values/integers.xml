@@ -15,4 +15,6 @@
     <integer name="margin_ten">10</integer>
     <integer name="margin_twenty">20</integer>
     <integer name="passcode_progress">60</integer>
+    <integer name="passcode_create_progress">80</integer>
+    <integer name="passcode_verify_progerss">100</integer>
 </resources>
