@@ -37,7 +37,6 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private PasscodeManagerImpl passcodeMangerImpl;
     private YonaFontTextView txtTitle;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +46,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
         txtTitle = (YonaFontTextView) findViewById(R.id.txt_nav_title);
         YonaApplication.getEventChangeManager().registerListener(this);
-        loadPasscodeView();
+        loadPasscodeView(true);
     }
 
     public void updateTitle(String title) {
@@ -67,7 +66,8 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     private void doBack() {
         if (PASSCODE_STEP == 1) {
-            loadPasscodeView();
+            first_passcode = null;
+            loadPasscodeView(false);
         } else {
             finish();
         }
@@ -90,30 +90,38 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     }
 
 
-    private void loadPasscodeView() {
+    private void loadPasscodeView(boolean isEntryAnim) {
         PASSCODE_STEP = 0;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        fragmentAnimation(fragmentTransaction, isEntryAnim);
         fragmentTransaction.replace(R.id.blank_container, getPasscodeFragment());
         fragmentTransaction.commit();
     }
 
-    private void loadVerifyPasscodeView() {
+    private void loadVerifyPasscodeView(boolean isEntryAnim) {
         PASSCODE_STEP = 1;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        fragmentAnimation(fragmentTransaction, isEntryAnim);
         fragmentTransaction.replace(R.id.blank_container, getPasscodeVerifyFragment());
         fragmentTransaction.commit();
+    }
+
+    private void fragmentAnimation(FragmentTransaction animTransaction, boolean isEntryAnim) {
+        if (isEntryAnim) {
+            animTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
+        } else {
+            animTransaction.setCustomAnimations(R.anim.back_slide_in, R.anim.back_slide_out);
+        }
     }
 
     @Override
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_PASSCODE_STEP_ONE:
-                loadPasscodeView();
+                loadPasscodeView(false);
                 break;
             case EventChangeManager.EVENT_PASSCODE_STEP_TWO:
-                loadVerifyPasscodeView();
+                loadVerifyPasscodeView(true);
                 if (TextUtils.isEmpty(first_passcode)) {
                     first_passcode = (String) object;
                 } else {
@@ -151,6 +159,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     public void showChallengesScreen() {
         startActivity(new Intent(PasscodeActivity.this, YonaActivity.class).putExtra(AppConstant.FROM_LOGIN, true));
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
 }

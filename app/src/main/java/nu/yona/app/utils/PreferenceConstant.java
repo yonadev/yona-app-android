@@ -23,4 +23,5 @@ public interface PreferenceConstant {
     String STEP_OTP = "stepOTP";
     String STEP_PASSCODE = "stepPasscode";
     String STEP_CHALLENGES = "stepChallenges";
+    String USER_BLOCKED = "userBlocked";
 }

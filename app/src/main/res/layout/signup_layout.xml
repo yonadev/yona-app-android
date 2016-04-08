@@ -11,53 +11,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grape"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/signup_add_avatar_height"
-            android:background="@color/grape"
-            android:scaleType="centerInside"
-            android:src="@drawable/add_avatar" />
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/white" />
+        android:fillViewport="true"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:background="@color/grape"
+            android:orientation="vertical">
 
-            <nu.yona.app.customview.YonaFontButton
-                android:id="@+id/previous"
-                style="@style/BtnTxtSmall"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="1dp"
-                android:layout_weight="1"
-                android:background="@color/darkish_pink"
-                android:text="@string/previous"
-                android:textColor="@android:color/white" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/signup_add_avatar_height"
+                android:background="@color/grape"
+                android:scaleType="centerInside"
+                android:src="@drawable/add_avatar" />
 
-            <nu.yona.app.customview.YonaFontButton
-                android:id="@+id/next"
-                style="@style/BtnTxtSmall"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/darkish_pink"
-                android:text="@string/next"
-                android:textColor="@android:color/white" />
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/bottomBarColor">
+
+                <nu.yona.app.customview.YonaFontButton
+                    android:id="@+id/previous"
+                    style="@style/BtnTxtSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/signup_profile_btn_height"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/darkish_pink"
+                    android:text="@string/previous"
+                    android:textColor="@android:color/white" />
+
+                <nu.yona.app.customview.YonaFontButton
+                    android:id="@+id/next"
+                    style="@style/BtnTxtSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/signup_profile_btn_height"
+                    android:layout_weight="1"
+                    android:background="@color/darkish_pink"
+                    android:text="@string/next"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+    </ScrollView>
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -65,15 +74,15 @@
         android:layout_height="wrap_content"
         android:background="@drawable/triangle_shadow"
         android:minHeight="?attr/actionBarSize"
-        android:paddingTop="@dimen/twenty"
+        android:paddingTop="@dimen/signup_profile_left_right_padding"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <nu.yona.app.customview.YonaFontTextView
             style="@style/NavTitle"
-            android:layout_marginLeft="@dimen/thirty"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/signup_profile_left_right_padding"
             android:text="@string/join"
             android:textColor="@color/white" />
     </android.support.v7.widget.Toolbar>

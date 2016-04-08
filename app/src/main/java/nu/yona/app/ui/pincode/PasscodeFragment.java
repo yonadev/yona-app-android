@@ -115,7 +115,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
-    private void populateOTPView(){
+    private void populateOTPView() {
         accont_image.setImageResource(R.drawable.add_avatar);
         passcode_title.setText(getString(R.string.account_login));
         passcode_description.setText(getString(R.string.account_login_security_message));
@@ -231,8 +231,8 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         }
     }
 
-    private void doPasscodeReset(){
-        switch (screen_type){
+    private void doPasscodeReset() {
+        switch (screen_type) {
             case AppConstant.OTP:
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_OTP_RESEND, null);
                 break;
@@ -245,6 +245,16 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode1.setFocusableInTouchMode(false);
         passcode2.setFocusableInTouchMode(true);
         passcode2.requestFocus();
+    }
+
+    /**
+     * Disable Editable text , so User can not Enter Passcode into it
+     */
+    public void disableEditable() {
+        passcode1.setEnabled(false);
+        passcode2.setEnabled(false);
+        passcode3.setEnabled(false);
+        passcode4.setEnabled(false);
     }
 
     private final class FieldTextWatcher implements TextWatcher {

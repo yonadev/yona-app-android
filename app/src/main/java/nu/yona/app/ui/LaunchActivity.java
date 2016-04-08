@@ -61,6 +61,7 @@ public class LaunchActivity extends BaseActivity {
 
     public void startNewActivity(Context context, Class mClass) {
         startActivity(new Intent(context, mClass));
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
 

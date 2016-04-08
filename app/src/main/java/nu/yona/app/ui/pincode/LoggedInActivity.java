@@ -10,7 +10,6 @@ package nu.yona.app.ui.pincode;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.TextView;
 
@@ -22,14 +21,16 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by bhargavsuthar on 3/30/16.
  */
 public class LoggedInActivity extends BaseActivity implements EventChangeListener {
 
-    protected PasscodeManagerImpl passcodeManagerImpl;
+    private PasscodeManagerImpl passcodeManagerImpl;
     private TextView txtTitle;
+    private PasscodeFragment passcodeFragment;
 
 
     @Override
@@ -43,15 +44,14 @@ public class LoggedInActivity extends BaseActivity implements EventChangeListene
 
         txtTitle = (TextView) findViewById(R.id.txt_nav_title);
 
-        Fragment newFragment = new PasscodeFragment();
+        passcodeFragment = new PasscodeFragment();
         Bundle loginBundle = new Bundle();
         loginBundle.putString(AppConstant.SCREEN_TYPE, AppConstant.LOGGED_IN);
-        newFragment.setArguments(loginBundle);
+        passcodeFragment.setArguments(loginBundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        fragmentTransaction.replace(R.id.blank_container, newFragment);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
+        fragmentTransaction.replace(R.id.blank_container, passcodeFragment);
         fragmentTransaction.commit();
-
     }
 
     public void updateTitle(String title) {
@@ -69,6 +69,14 @@ public class LoggedInActivity extends BaseActivity implements EventChangeListene
     protected void onResume() {
         super.onResume();
         updateTitle(getString(R.string.login));
+        if (YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null) {
+            updateBlockMsg();
+        }
+    }
+
+    private void updateBlockMsg() {
+        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.msg_block_user));
+        passcodeFragment.disableEditable();
     }
 
     @Override
@@ -79,7 +87,8 @@ public class LoggedInActivity extends BaseActivity implements EventChangeListene
                 if (passcodeManagerImpl.validatePasscode(passcode)) {
                     showChallengesScreen();
                 } else if (passcodeManagerImpl.isWrongCounterReached()) {
-                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.msg_block_user));
+                    YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
+                    updateBlockMsg();
                 } else {
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcode_tryagain));
                 }
@@ -92,6 +101,7 @@ public class LoggedInActivity extends BaseActivity implements EventChangeListene
 
     public void showChallengesScreen() {
         startActivity(new Intent(LoggedInActivity.this, YonaActivity.class));
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
 }
