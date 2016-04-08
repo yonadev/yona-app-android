@@ -75,6 +75,7 @@
             android:layout_width="@dimen/passcode_editText_width"
             android:layout_height="@dimen/passcode_editText_height"
             android:imeOptions="actionNext"
+            android:cursorVisible="false"
             android:layout_weight="1">
 
             <requestFocus />
@@ -88,6 +89,7 @@
             android:layout_height="@dimen/passcode_editText_height"
             android:layout_marginLeft="@dimen/passcode_margin_left"
             android:imeOptions="actionNext"
+            android:cursorVisible="false"
             android:layout_weight="1" />
 
         <nu.yona.app.customview.YonaFontEditTextView
@@ -97,6 +99,7 @@
             android:layout_height="@dimen/passcode_editText_height"
             android:layout_marginLeft="@dimen/passcode_margin_left"
             android:imeOptions="actionNext"
+            android:cursorVisible="false"
             android:layout_weight="1" />
 
         <nu.yona.app.customview.YonaFontEditTextView
@@ -106,6 +109,7 @@
             android:layout_height="@dimen/passcode_editText_height"
             android:layout_marginLeft="@dimen/passcode_margin_left"
             android:imeOptions="actionDone"
+            android:cursorVisible="false"
             android:layout_weight="1" />
     </LinearLayout>
 
