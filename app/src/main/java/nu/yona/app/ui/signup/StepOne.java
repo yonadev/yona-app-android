@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import nu.yona.app.ui.BaseFragment;
  * Created by kinnarvasa on 25/03/16.
  */
 public class StepOne extends BaseFragment implements EventChangeListener {
+
     private TextInputLayout firstNameLayout, lastNameLayout;
     TextWatcher watcher = new TextWatcher() {
         @Override
@@ -66,9 +69,11 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
         firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
         firstName.addTextChangedListener(watcher);
+        firstName.setFilters(new InputFilter[]{activity.filter});
 
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         lastName.addTextChangedListener(watcher);
+        lastName.setFilters(new InputFilter[]{activity.filter});
 
         privacyPolicy = (YonaFontTextView) view.findViewById(R.id.privacyPolicy);
         privacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
