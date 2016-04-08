@@ -10,15 +10,11 @@
 
 package nu.yona.app.api.model;
 
-import android.content.ContentValues;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import nu.yona.app.api.db.DBConstant;
 
 public class User {
 

@@ -11,7 +11,6 @@ package nu.yona.app.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -64,7 +63,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private ChallengesFragment challengesFragment = new ChallengesFragment();
     private SettingsFragment settingsFragment = new SettingsFragment();
     private YonaFontTextView toolbarTitle;
-    private ImageView leftIcon, rightIcon;
+    private ImageView rightIcon;
     private boolean isToDisplayLogin = false;
 
     /**
@@ -85,7 +84,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         mToolBar = (Toolbar) findViewById(R.id.main_toolbar);
         mToolBar.setBackgroundColor(Color.BLUE);
         toolbarTitle = (YonaFontTextView) mToolBar.findViewById(R.id.toolbar_title);
-        leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
         rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
 
         setSupportActionBar(mToolBar);
@@ -141,18 +139,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             mTabLayout.getTabAt(0).select();
         }
 
-        leftIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mContent instanceof DashboardFragment) {
-                    replaceFragmentWithAction(new Intent(IntentEnum.ACTION_PROFILE.getActionString()));
-                } else if (mContent instanceof ProfileFragment) {
-                    onBackPressed();
-                } else if (mContent instanceof MessageFragment) {
-                    onBackPressed();
-                }
-            }
-        });
         rightIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -442,40 +428,30 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         switch (titleId) {
             case R.string.dashboard:
                 mToolBar.setBackgroundColor(Color.rgb(114, 48, 94));
-                leftIcon.setVisibility(View.VISIBLE);
                 rightIcon.setVisibility(View.VISIBLE);
-                leftIcon.setTag(getString(R.string.dashboard));
                 rightIcon.setTag(getString(R.string.dashboard));
-                leftIcon.setImageBitmap(AppUtils.getCircleBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.profile)));
                 rightIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icn_reminder));
                 break;
             case R.string.frineds:
                 mToolBar.setBackgroundColor(Color.rgb(50, 125, 189));
-                leftIcon.setVisibility(View.GONE);
                 rightIcon.setVisibility(View.GONE);
                 break;
             case R.string.challenges:
                 mToolBar.setBackgroundColor(Color.rgb(158, 198, 52));
-                leftIcon.setVisibility(View.GONE);
                 rightIcon.setVisibility(View.GONE);
                 break;
             case R.string.settings:
                 mToolBar.setBackgroundColor(Color.rgb(248, 179, 54));
-                leftIcon.setVisibility(View.GONE);
                 rightIcon.setVisibility(View.GONE);
                 break;
             case R.string.profile:
                 mToolBar.setBackgroundColor(Color.rgb(114, 48, 94));
-                leftIcon.setVisibility(View.VISIBLE);
                 rightIcon.setVisibility(View.VISIBLE);
-                leftIcon.setTag(getString(R.string.profile));
                 rightIcon.setTag(getString(R.string.profile));
                 break;
             case R.string.message:
                 mToolBar.setBackgroundColor(Color.rgb(114, 48, 94));
-                leftIcon.setVisibility(View.VISIBLE);
                 rightIcon.setVisibility(View.GONE);
-                leftIcon.setTag(getString(R.string.message));
                 break;
             default:
                 break;

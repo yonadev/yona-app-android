@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,7 @@ import nu.yona.app.ui.BaseFragment;
 public class StepTwo extends BaseFragment implements EventChangeListener {
 
     private YonaFontEditTextView mobileNumber, nickName;
-    private TextInputLayout mobileNumberLayout;
+    private TextInputLayout mobileNumberLayout, nickNameLayout;
     private SignupActivity activity;
     private int counter = 0;
     private static final char space = ' ';
@@ -46,6 +47,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
 
         mobileNumber = (YonaFontEditTextView) view.findViewById(R.id.mobile_number);
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
+        nickName.setFilters(new InputFilter[]{activity.filter});
 
         mobileNumber.setText(R.string.country_code_with_zero);
         mobileNumber.requestFocus();
@@ -109,6 +111,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         });
 
         mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
+        nickNameLayout = (TextInputLayout) view.findViewById(R.id.nick_name_layout);
 
         YonaApplication.getEventChangeManager().registerListener(this);
 
@@ -126,8 +129,8 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         if (eventType == EventChangeManager.EVENT_SIGNUP_STEP_TWO_NEXT) {
             String number = getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length());
             String phonenumber = number.replace(" ", "");
-            if (validateMobileNumber(phonenumber)) {
-                activity.getRegisterUser().setMobileNumber(phonenumber);
+            if (validateMobileNumber(phonenumber) && validateNickName()) {
+                activity.getRegisterUser().setMobileNumber(number);
                 activity.getRegisterUser().setNickName(nickName.getText().toString());
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT, null);
             }
@@ -140,6 +143,17 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
             mobileNumberLayout.setError(getString(R.string.enter_number_validation));
             activity.showKeyboard(mobileNumber);
             mobileNumber.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateNickName() {
+        if (!activity.getAuthenticateManager().validateText(nickName.getText().toString())) {
+            nickNameLayout.setErrorEnabled(true);
+            nickNameLayout.setError(getString(R.string.enter_name_validation));
+            activity.showKeyboard(nickName);
+            nickName.requestFocus();
             return false;
         }
         return true;

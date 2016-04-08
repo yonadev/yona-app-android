@@ -7,8 +7,6 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grape"
@@ -74,8 +72,9 @@
             style="@style/passcode_editText"
             android:layout_width="@dimen/passcode_editText_width"
             android:layout_height="@dimen/passcode_editText_height"
-            android:imeOptions="actionNext"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:cursorVisible="false"
+            android:imeOptions="actionNext">
 
             <requestFocus />
         </nu.yona.app.customview.YonaFontEditTextView>
@@ -87,8 +86,9 @@
             android:layout_width="@dimen/passcode_editText_width"
             android:layout_height="@dimen/passcode_editText_height"
             android:layout_marginLeft="@dimen/passcode_margin_left"
-            android:imeOptions="actionNext"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:cursorVisible="false"
+            android:imeOptions="actionNext" />
 
         <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/passcode3"
@@ -96,8 +96,9 @@
             android:layout_width="@dimen/passcode_editText_width"
             android:layout_height="@dimen/passcode_editText_height"
             android:layout_marginLeft="@dimen/passcode_margin_left"
-            android:imeOptions="actionNext"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:cursorVisible="false"
+            android:imeOptions="actionNext" />
 
         <nu.yona.app.customview.YonaFontEditTextView
             android:id="@+id/passcode4"
@@ -105,8 +106,9 @@
             android:layout_width="@dimen/passcode_editText_width"
             android:layout_height="@dimen/passcode_editText_height"
             android:layout_marginLeft="@dimen/passcode_margin_left"
-            android:imeOptions="actionDone"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:cursorVisible="false"
+            android:imeOptions="actionDone" />
     </LinearLayout>
 
 

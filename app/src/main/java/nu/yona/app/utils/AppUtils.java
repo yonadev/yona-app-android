@@ -96,13 +96,14 @@ public class AppUtils {
 
     /**
      * Generate Random String length of 20
+     *
      * @return
      */
     public static String getRandomString() {
         char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTU".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
-        for (int i = 0;i < 20; i++) {
+        for (int i = 0; i < 20; i++) {
             char c = chars[random.nextInt(chars.length)];
             sb.append(c);
         }

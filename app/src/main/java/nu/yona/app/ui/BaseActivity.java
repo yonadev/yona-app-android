@@ -63,6 +63,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         checkForCrashes();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -70,13 +71,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void checkForCrashes() {
-        if(getResources().getBoolean(R.bool.enableHockyTracking)) {
+        if (getResources().getBoolean(R.bool.enableHockyTracking)) {
             CrashManager.register(this);
         }
     }
 
     private void unregisterManagers() {
-        if(getResources().getBoolean(R.bool.enableHockyTracking)) {
+        if (getResources().getBoolean(R.bool.enableHockyTracking)) {
             UpdateManager.unregister();
         }
     }

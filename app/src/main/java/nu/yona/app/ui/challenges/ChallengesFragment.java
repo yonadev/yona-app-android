@@ -15,8 +15,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import nu.yona.app.R;
+import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 
@@ -36,6 +39,7 @@ public class ChallengesFragment extends BaseFragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
         return view;
     }
 
@@ -45,5 +49,22 @@ public class ChallengesFragment extends BaseFragment {
         adapter.addFragment(new ZoneFragment(), getString(R.string.challenges_zone));
         adapter.addFragment(new NoGoFragment(), getString(R.string.challenges_no_go));
         viewPager.setAdapter(adapter);
+    }
+
+    private void setupTabIcons() {
+        LinearLayout tabOne = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
+        ((YonaFontTextView) tabOne.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_credit));
+        ((ImageView) tabOne.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_timezone);
+        tabLayout.getTabAt(0).setCustomView(tabOne);
+
+        LinearLayout tabTwo = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
+        ((YonaFontTextView) tabTwo.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_zone));
+        ((ImageView) tabTwo.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_timebucket);
+        tabLayout.getTabAt(1).setCustomView(tabTwo);
+
+        LinearLayout tabThree = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
+        ((YonaFontTextView) tabThree.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_no_go));
+        ((ImageView) tabThree.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_nogo);
+        tabLayout.getTabAt(2).setCustomView(tabThree);
     }
 }

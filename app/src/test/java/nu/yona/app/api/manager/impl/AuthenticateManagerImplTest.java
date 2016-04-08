@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by kinnarvasa on 02/04/16.
  */
-public class AuthenticateManagerImplTest{
+public class AuthenticateManagerImplTest {
 
     private AuthenticateManager manager;
     private RegisterUser registerUser;

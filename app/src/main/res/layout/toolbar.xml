@@ -15,32 +15,23 @@
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingRight="@dimen/twenty">
-
-        <ImageView
-            android:id="@+id/leftIcon"
-            android:layout_width="@dimen/thirty"
-            android:layout_height="@dimen/thirty"
-            android:scaleType="fitXY" />
+        android:layout_height="wrap_content">
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/toolbar_title"
             style="@style/NavTitle"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/white" />
 
         <ImageView
             android:id="@+id/rightIcon"
             android:layout_width="@dimen/thirty"
             android:layout_height="@dimen/thirty"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/twenty"
             android:scaleType="fitXY" />
-    </LinearLayout>
+    </RelativeLayout>
 </android.support.v7.widget.Toolbar>

@@ -144,7 +144,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         }
     }
 
-    public void resendOTP(DataLoadListener listener){
+    public void resendOTP(DataLoadListener listener) {
         // do API implementation for resend OTP
     }
 }
