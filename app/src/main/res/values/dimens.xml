@@ -13,7 +13,9 @@
     <dimen name="sixty">60dp</dimen>
     <dimen name="tabIndicatorHeight">4dp</dimen>
     <dimen name="profile_layout">200dp</dimen>
-    <dimen name="signup_add_avatar_height">200dp</dimen>
+    <dimen name="signup_profile_btn_height">60dp</dimen>
+    <dimen name="signup_profile_left_right_padding">32dp</dimen>
+    <dimen name="signup_add_avatar_height">170dp</dimen>
     <dimen name="progressbar_radius">2dip</dimen>
     <dimen name="passcode_editText_width">55dp</dimen>
     <dimen name="passcode_editText_height">55dp</dimen>
@@ -27,5 +29,6 @@
     <dimen name="passcode_font_desc_margin_top">14dp</dimen>
     <dimen name="passcode_editfield_margin_top">28dp</dimen>
     <dimen name="passcode_reset_margin_top">30dp</dimen>
+    <integer name="fragment_animation_duration">200</integer>
 
 </resources>

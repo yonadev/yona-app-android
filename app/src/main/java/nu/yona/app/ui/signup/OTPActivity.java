@@ -38,6 +38,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
     private PasscodeFragment otpFragment;
     private YonaFontTextView txtTitle;
     private AuthenticateManager authenticateManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +53,13 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
 
     private void loadOTPFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.back_slide_in, R.anim.back_slide_out);
         fragmentTransaction.replace(R.id.blank_container, getOTPFragment());
         fragmentTransaction.commit();
     }
 
     private PasscodeFragment getOTPFragment() {
-        if(otpFragment == null) {
+        if (otpFragment == null) {
             Bundle bPasscode = new Bundle();
             bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.OTP);
             otpFragment = new PasscodeFragment();
@@ -98,9 +99,9 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
 
             @Override
             public void onError(Object errorMessage) {
-                if(errorMessage instanceof ErrorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
                     showLoadingView(false, null);
-                    CustomAlertDialog.show(OTPActivity.this, ((ErrorMessage)errorMessage).getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    CustomAlertDialog.show(OTPActivity.this, ((ErrorMessage) errorMessage).getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             otpFragment.resetDigit();
@@ -112,7 +113,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         });
     }
 
-    private void resendOTP(){
+    private void resendOTP() {
         showLoadingView(true, null);
         otpFragment.resetDigit();
         authenticateManager.resendOTP(new DataLoadListener() {
@@ -128,8 +129,9 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         });
     }
 
-    private void showPasscodeScreen(){
+    private void showPasscodeScreen() {
         startActivity(new Intent(OTPActivity.this, PasscodeActivity.class));
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
 

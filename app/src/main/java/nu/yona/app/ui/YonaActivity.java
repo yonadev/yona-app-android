@@ -136,9 +136,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
         //Load default dashboard_selector fragment on start after login, if signup, start challenges.
         if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
-            replaceFragmentWithAction(new Intent(IntentEnum.ACTION_CHALLENGES.getActionString()));
+            mTabLayout.getTabAt(2).select();
         } else {
-            replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
+            mTabLayout.getTabAt(0).select();
         }
 
         leftIcon.setOnClickListener(new View.OnClickListener() {
@@ -379,6 +379,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private void loadFragment(boolean clearFragmentStack, boolean addToBackstack, Fragment oldFragment) {
         if (mContent != null && !mContent.isAdded()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.back_slide_in, R.anim.back_slide_out);
             if (clearFragmentStack) {
                 int count = getSupportFragmentManager().getBackStackEntryCount();
                 for (int i = 0; i < count; ++i) {

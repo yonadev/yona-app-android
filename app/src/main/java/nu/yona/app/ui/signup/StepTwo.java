@@ -34,6 +34,8 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     private YonaFontEditTextView mobileNumber, nickName;
     private TextInputLayout mobileNumberLayout;
     private SignupActivity activity;
+    private int counter = 0;
+    private static final char space = ' ';
 
     @Nullable
     @Override
@@ -49,9 +51,20 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         mobileNumber.requestFocus();
         activity.showKeyboard(mobileNumber);
         mobileNumber.addTextChangedListener(new TextWatcher() {
+
+            private boolean backspacingFlag = false;
+            private boolean editedFlag = false;
+            private int cursorComplement;
+
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                cursorComplement = s.length() - mobileNumber.getSelectionStart();
+                if (count > after) {
+                    backspacingFlag = true;
+                } else {
+                    backspacingFlag = false;
+                }
             }
 
             @Override
@@ -62,6 +75,29 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
                         || s.toString().equals((getString(R.string.country_code_with_zero) + "0"))) {
                     mobileNumber.setText(R.string.country_code_with_zero);
                     mobileNumber.setSelection(mobileNumber.getText().length());
+                }
+
+                String string = s.toString();
+                String phone = string.replaceAll("[^\\d]", "");
+
+                if (!editedFlag) {
+                    editedFlag = true;
+                    String ans = "";
+                    if (!backspacingFlag) {
+                        if (phone.length() >= 13) {
+                            ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9, 13);
+                        } else if (phone.length() > 10) {
+                            ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9);
+                        } else if (phone.length() > 7) {
+                            ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6);
+                        } else if (phone.length() >= 3) {
+                            ans = getString(R.string.country_code_with_zero) + phone.substring(3);
+                        }
+                        mobileNumber.setText(ans);
+                        mobileNumber.setSelection(mobileNumber.getText().length() - cursorComplement);
+                    }
+                } else {
+                    editedFlag = false;
                 }
 
             }
@@ -89,8 +125,9 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     public void onStateChange(int eventType, Object object) {
         if (eventType == EventChangeManager.EVENT_SIGNUP_STEP_TWO_NEXT) {
             String number = getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length());
-            if (validateMobileNumber(number)) {
-                activity.getRegisterUser().setMobileNumber(number);
+            String phonenumber = number.replace(" ", "");
+            if (validateMobileNumber(phonenumber)) {
+                activity.getRegisterUser().setMobileNumber(phonenumber);
                 activity.getRegisterUser().setNickName(nickName.getText().toString());
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT, null);
             }
