@@ -18,6 +18,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/toolbar_title"
             style="@style/NavTitle"
@@ -27,9 +28,9 @@
 
         <ImageView
             android:id="@+id/rightIcon"
-            android:layout_alignParentRight="true"
             android:layout_width="@dimen/thirty"
             android:layout_height="@dimen/thirty"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/twenty"
             android:scaleType="fitXY" />
     </RelativeLayout>

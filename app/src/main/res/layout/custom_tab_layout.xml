@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2016 Stichting Yona Foundation
   ~
   ~  This Source Code Form is subject to the terms of the Mozilla Public
@@ -10,24 +9,25 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/twenty"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/tab_image"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tab_icon_height"
-        android:src="@drawable/icn_challenge_nogo"/>
+        android:src="@drawable/icn_challenge_nogo" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/tab_text"
+        style="@style/TabTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TabTitle"
-        android:textColor="@color/white"
-        android:gravity="center_horizontal"
         android:layout_marginTop="@dimen/thirteen"
-        android:text="Challangels"/>
+        android:gravity="center_horizontal"
+        android:text="Challangels"
+        android:textColor="@color/white" />
 </LinearLayout>

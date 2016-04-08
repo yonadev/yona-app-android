@@ -24,10 +24,10 @@
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/txt_nav_title"
-            android:layout_marginLeft="@dimen/thirty"
             style="@style/NavTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/thirty"
             android:textColor="@color/white" />
     </android.support.v7.widget.Toolbar>
 

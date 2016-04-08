@@ -37,7 +37,7 @@ public class CustomAlertDialog extends AlertDialog.Builder {
         YonaFontTextView titleTextView = new YonaFontTextView(context);
         titleTextView.setText(title);
         titleTextView.setPadding(context.getResources().getInteger(R.integer.margin_ten), context.getResources().getInteger(R.integer.margin_ten),
-				context.getResources().getInteger(R.integer.margin_twenty), context.getResources().getInteger(R.integer.margin_twenty));
+                context.getResources().getInteger(R.integer.margin_twenty), context.getResources().getInteger(R.integer.margin_twenty));
         customAlertDialog.setCustomTitle(titleTextView);
         customAlertDialog.setMessage(message);
 

@@ -44,6 +44,31 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private String screen_type;
     private YonaPasswordTransformationManager yonaPasswordTransformationManager;
     private FieldTextWatcher watcher;
+    private View.OnKeyListener keyListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
+            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                if (v.getId() == R.id.passcode4) {
+                    if (passcode4.getText().length() == 0) {
+                        setFocus(passcode4, passcode3);
+                        passcode3.setText("");
+                    }
+                } else if (v.getId() == R.id.passcode3) {
+                    if (passcode3.getText().length() == 0) {
+                        setFocus(passcode3, passcode2);
+                        passcode2.setText("");
+                    }
+                } else if (v.getId() == R.id.passcode2) {
+                    if (passcode2.getText().length() == 0) {
+                        setFocus(passcode2, passcode1);
+                        passcode1.setText("");
+                    }
+                }
+            }
+            return false;
+        }
+    };
 
     @Nullable
     @Override
@@ -144,7 +169,6 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
 //        ((LoginActivity) getActivity()).updateTitle(getString(R.string.login));
     }
 
-
     /**
      * update screen's text as per account pincode's verification
      */
@@ -164,33 +188,6 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode_description.setText(getString(R.string.passcode_step1_desc));
         ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.pincode));
     }
-
-
-    private View.OnKeyListener keyListener = new View.OnKeyListener() {
-        @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-            //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
-            if (keyCode == KeyEvent.KEYCODE_DEL) {
-                if (v.getId() == R.id.passcode4) {
-                    if (passcode4.getText().length() == 0) {
-                        setFocus(passcode4, passcode3);
-                        passcode3.setText("");
-                    }
-                } else if (v.getId() == R.id.passcode3) {
-                    if (passcode3.getText().length() == 0) {
-                        setFocus(passcode3, passcode2);
-                        passcode2.setText("");
-                    }
-                } else if (v.getId() == R.id.passcode2) {
-                    if (passcode2.getText().length() == 0) {
-                        setFocus(passcode2, passcode1);
-                        passcode1.setText("");
-                    }
-                }
-            }
-            return false;
-        }
-    };
 
     /**
      * Reset all fields

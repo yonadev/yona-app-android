@@ -53,18 +53,18 @@ public class ChallengesFragment extends BaseFragment {
 
     private void setupTabIcons() {
         LinearLayout tabOne = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
-        ((YonaFontTextView)tabOne.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_credit));
-        ((ImageView)tabOne.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_timezone);
+        ((YonaFontTextView) tabOne.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_credit));
+        ((ImageView) tabOne.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_timezone);
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
         LinearLayout tabTwo = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
-        ((YonaFontTextView)tabTwo.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_zone));
-        ((ImageView)tabTwo.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_timebucket);
+        ((YonaFontTextView) tabTwo.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_zone));
+        ((ImageView) tabTwo.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_timebucket);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
         LinearLayout tabThree = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
-        ((YonaFontTextView)tabThree.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_no_go));
-        ((ImageView)tabThree.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_nogo);
+        ((YonaFontTextView) tabThree.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_no_go));
+        ((ImageView) tabThree.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_nogo);
         tabLayout.getTabAt(2).setCustomView(tabThree);
     }
 }

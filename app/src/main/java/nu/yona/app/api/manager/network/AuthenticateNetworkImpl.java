@@ -77,8 +77,8 @@ public class AuthenticateNetworkImpl extends BaseImpl {
                     listener.onError(new ErrorMessage(t.getMessage()));
                 }
             });
-        } catch (Exception e){
-            if(e != null && e.getMessage() != null){
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
                 listener.onError(new ErrorMessage(e.getMessage()));
             }
         }
