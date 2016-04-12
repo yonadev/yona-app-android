@@ -18,7 +18,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/passcode_layout_padding"
+        android:layout_marginRight="@dimen/challenges_margin_left"
+        android:layout_marginTop="@dimen/thirty">
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/toolbar_title"
@@ -32,8 +35,9 @@
             android:id="@+id/rightIcon"
             android:layout_width="@dimen/thirty"
             android:layout_height="@dimen/thirty"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/twenty"
+            android:layout_alignParentTop="true"
             android:scaleType="fitXY" />
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>
