@@ -32,6 +32,12 @@
     <dimen name="passcode_reset_margin_top">30dp</dimen>
     <integer name="fragment_animation_duration">200</integer>
     <dimen name="tab_icon_height">48dp</dimen>
-    <dimen name="challenges_tab_layout_height">100dp</dimen>
+    <dimen name="challenges_tab_layout_height">135dp</dimen>
+    <dimen name="challenges_margin_left">15dp</dimen>
+    <dimen name="challenges_counter_width">18dp</dimen>
+    <dimen name="challenges_counter_height">16dp</dimen>
+    <dimen name="tab_counter_padding_left">6dp</dimen>
+    <dimen name="tab_challenges_image_padding">4dp</dimen>
+    <dimen name="tab_challenges_margin_top">40dp</dimen>
 
 </resources>

@@ -16,7 +16,7 @@
         android:id="@+id/toolbar_app"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/triangle_shadow"
+        android:background="@drawable/triangle_shadow_grape"
         android:minHeight="?attr/actionBarSize"
         android:paddingTop="@dimen/twenty"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
