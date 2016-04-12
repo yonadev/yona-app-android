@@ -30,6 +30,8 @@ public class ChallengesFragment extends BaseFragment {
     private View view;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private final float TAB_ALPHA_SELECTED = 1;
+    private final double TAB_ALPHA_UNSELECTED = 0.5;
 
     @Nullable
     @Override
@@ -39,7 +41,29 @@ public class ChallengesFragment extends BaseFragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                updateTabViewBackground(tab, TAB_ALPHA_SELECTED);
+                updateChallengeCounter(tab, 0);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                updateTabViewBackground(tab, (float) TAB_ALPHA_UNSELECTED);
+                updateChallengeCounter(tab, 3);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         setupTabIcons();
+        updateTabViewBackground(tabLayout.getTabAt(0), TAB_ALPHA_SELECTED);
+        updateTabViewBackground(tabLayout.getTabAt(1), (float) TAB_ALPHA_UNSELECTED);
+        updateTabViewBackground(tabLayout.getTabAt(2), (float) TAB_ALPHA_UNSELECTED);
+
         return view;
     }
 
@@ -67,4 +91,16 @@ public class ChallengesFragment extends BaseFragment {
         ((ImageView) tabThree.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_nogo);
         tabLayout.getTabAt(2).setCustomView(tabThree);
     }
+
+    /**
+     * On selection of tab need to change the background of tab selection
+     */
+    private void updateTabViewBackground(TabLayout.Tab tab, float alpha) {
+        tab.getCustomView().setAlpha(alpha);
+    }
+
+    private void updateChallengeCounter(TabLayout.Tab tab, int count) {
+        //Todo update the count of goal set
+    }
+
 }
