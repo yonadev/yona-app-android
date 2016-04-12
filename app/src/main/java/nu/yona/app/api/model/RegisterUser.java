@@ -14,7 +14,7 @@ package nu.yona.app.api.model;
  * Created by kinnarvasa on 31/03/16.
  */
 public class RegisterUser {
-    private String firstName, lastName, nickName, mobileNumber;
+    private String firstName, lastName, nickname, mobileNumber;
 
     public String getFirstName() {
         return firstName;
@@ -41,10 +41,10 @@ public class RegisterUser {
     }
 
     public String getNickName() {
-        return nickName;
+        return nickname;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickName(String nickname) {
+        this.nickname = nickname;
     }
 }
