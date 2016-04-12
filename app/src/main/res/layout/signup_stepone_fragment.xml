@@ -24,12 +24,12 @@
             style="@style/InputLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:capitalize="words"
             android:drawableRight="@drawable/icn_name"
             android:ellipsize="end"
             android:hint="@string/first_name"
             android:imeOptions="actionNext"
             android:maxLength="@integer/char_limit"
-            android:capitalize="words"
             android:singleLine="true"
             android:textColorHint="@color/black" />
     </android.support.design.widget.TextInputLayout>
@@ -44,13 +44,13 @@
             style="@style/InputLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:capitalize="words"
             android:drawableRight="@drawable/icn_name"
             android:ellipsize="end"
             android:hint="@string/last_name"
             android:imeOptions="actionDone"
             android:maxLength="@integer/char_limit"
             android:singleLine="true"
-            android:capitalize="words"
             android:textColorHint="@color/black" />
     </android.support.design.widget.TextInputLayout>
 

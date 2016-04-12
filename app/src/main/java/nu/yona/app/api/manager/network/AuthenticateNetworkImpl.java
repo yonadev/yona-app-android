@@ -83,4 +83,32 @@ public class AuthenticateNetworkImpl extends BaseImpl {
             }
         }
     }
+
+    public void resendOTP(String url, String password, final DataLoadListener listener) {
+        try {
+            getRestApi().resendOTP(url, password).enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        try {
+                            Converter<ResponseBody, ErrorMessage> errorConverter =
+                                    getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                            listener.onError(errorConverter.convert(response.errorBody()));
+                        } catch (IOException e) {
+                            listener.onError(new ErrorMessage(e.getMessage()));
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    listener.onError(new ErrorMessage(t.getMessage()));
+                }
+            });
+        } catch (Exception e) {
+
+        }
+    }
 }

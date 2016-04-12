@@ -23,13 +23,16 @@ public class Links {
     private List<Cury> curies = new ArrayList<Cury>();
     @SerializedName("self")
     @Expose
-    private Self self;
+    private Href self;
     @SerializedName("edit")
     @Expose
-    private Edit edit;
+    private Href edit;
     @SerializedName("yona:confirmMobileNumber")
     @Expose
-    private YonaConfirmMobileNumber yonaConfirmMobileNumber;
+    private Href yonaConfirmMobileNumber;
+    @SerializedName("yona:resendMobileNumberConfirmationCode")
+    @Expose
+    private Href resendMobileNumberConfirmationCode;
 
     /**
      * @return The curies
@@ -48,42 +51,51 @@ public class Links {
     /**
      * @return The self
      */
-    public Self getSelf() {
+    public Href getSelf() {
         return self;
     }
 
     /**
      * @param self The self
      */
-    public void setSelf(Self self) {
+    public void setSelf(Href self) {
         this.self = self;
     }
 
     /**
      * @return The edit
      */
-    public Edit getEdit() {
+    public Href getEdit() {
         return edit;
     }
 
     /**
      * @param edit The edit
      */
-    public void setEdit(Edit edit) {
+    public void setEdit(Href edit) {
         this.edit = edit;
     }
 
     /**
      * @return The yonaConfirmMobileNumber
      */
-    public YonaConfirmMobileNumber getYonaConfirmMobileNumber() {
+    public Href getYonaConfirmMobileNumber() {
         return yonaConfirmMobileNumber;
     }
 
     /**
      * @param yonaConfirmMobileNumber The yona:confirmMobileNumber
      */
-    public void setYonaConfirmMobileNumber(YonaConfirmMobileNumber yonaConfirmMobileNumber) {
+    public void setYonaConfirmMobileNumber(Href yonaConfirmMobileNumber) {
         this.yonaConfirmMobileNumber = yonaConfirmMobileNumber;
     }
+
+    public Href getResendMobileNumberConfirmationCode() {
+        return resendMobileNumberConfirmationCode;
+    }
+
+    public void setResendMobileNumberConfirmationCode(Href resendMobileNumberConfirmationCode) {
+        this.resendMobileNumberConfirmationCode = resendMobileNumberConfirmationCode;
+    }
+
 }

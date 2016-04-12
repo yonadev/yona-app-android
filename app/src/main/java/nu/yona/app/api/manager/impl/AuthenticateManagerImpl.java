@@ -144,7 +144,21 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         }
     }
 
-    public void resendOTP(DataLoadListener listener) {
-        // do API implementation for resend OTP
+    public void resendOTP(final DataLoadListener listener) {
+        authNetwork.resendOTP(authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                listener.onDataLoad(result);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    listener.onError(errorMessage);
+                } else {
+                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                }
+            }
+        });
     }
 }

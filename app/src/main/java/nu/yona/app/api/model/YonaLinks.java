@@ -21,113 +21,113 @@ public class YonaLinks {
 
     @SerializedName("yona:confirmMobileNumber")
     @Expose
-    private YonaConfirmMobileNumber yonaConfirmMobileNumber;
+    private Href yonaConfirmMobileNumber;
     @SerializedName("yona:messages")
     @Expose
-    private YonaMessages yonaMessages;
+    private Href yonaMessages;
     @SerializedName("yona:weeklyActivityReports")
     @Expose
-    private YonaWeeklyActivityReports yonaWeeklyActivityReports;
+    private Href yonaWeeklyActivityReports;
     @SerializedName("yona:dailyActivityReports")
     @Expose
-    private YonaDailyActivityReports yonaDailyActivityReports;
+    private Href yonaDailyActivityReports;
     @SerializedName("yona:newDeviceRequest")
     @Expose
-    private YonaNewDeviceRequest yonaNewDeviceRequest;
+    private Href yonaNewDeviceRequest;
     @SerializedName("yona:appActivity")
     @Expose
-    private YonaAppActivity yonaAppActivity;
+    private Href yonaAppActivity;
     @SerializedName("curies")
     @Expose
     private List<Cury> curies = new ArrayList<Cury>();
     @SerializedName("self")
     @Expose
-    private Self self;
+    private Href self;
     @SerializedName("edit")
     @Expose
-    private Edit edit;
+    private Href edit;
 
     /**
      * @return The yonaConfirmMobileNumber
      */
-    public YonaConfirmMobileNumber getYonaConfirmMobileNumber() {
+    public Href getYonaConfirmMobileNumber() {
         return yonaConfirmMobileNumber;
     }
 
     /**
      * @param yonaConfirmMobileNumber The yona:confirmMobileNumber
      */
-    public void setYonaConfirmMobileNumber(YonaConfirmMobileNumber yonaConfirmMobileNumber) {
+    public void setYonaConfirmMobileNumber(Href yonaConfirmMobileNumber) {
         this.yonaConfirmMobileNumber = yonaConfirmMobileNumber;
     }
 
     /**
      * @return The yonaMessages
      */
-    public YonaMessages getYonaMessages() {
+    public Href getYonaMessages() {
         return yonaMessages;
     }
 
     /**
      * @param yonaMessages The yona:messages
      */
-    public void setYonaMessages(YonaMessages yonaMessages) {
+    public void setYonaMessages(Href yonaMessages) {
         this.yonaMessages = yonaMessages;
     }
 
     /**
      * @return The yonaWeeklyActivityReports
      */
-    public YonaWeeklyActivityReports getYonaWeeklyActivityReports() {
+    public Href getYonaWeeklyActivityReports() {
         return yonaWeeklyActivityReports;
     }
 
     /**
      * @param yonaWeeklyActivityReports The yona:weeklyActivityReports
      */
-    public void setYonaWeeklyActivityReports(YonaWeeklyActivityReports yonaWeeklyActivityReports) {
+    public void setYonaWeeklyActivityReports(Href yonaWeeklyActivityReports) {
         this.yonaWeeklyActivityReports = yonaWeeklyActivityReports;
     }
 
     /**
      * @return The yonaDailyActivityReports
      */
-    public YonaDailyActivityReports getYonaDailyActivityReports() {
+    public Href getYonaDailyActivityReports() {
         return yonaDailyActivityReports;
     }
 
     /**
      * @param yonaDailyActivityReports The yona:dailyActivityReports
      */
-    public void setYonaDailyActivityReports(YonaDailyActivityReports yonaDailyActivityReports) {
+    public void setYonaDailyActivityReports(Href yonaDailyActivityReports) {
         this.yonaDailyActivityReports = yonaDailyActivityReports;
     }
 
     /**
      * @return The yonaNewDeviceRequest
      */
-    public YonaNewDeviceRequest getYonaNewDeviceRequest() {
+    public Href getYonaNewDeviceRequest() {
         return yonaNewDeviceRequest;
     }
 
     /**
      * @param yonaNewDeviceRequest The yona:newDeviceRequest
      */
-    public void setYonaNewDeviceRequest(YonaNewDeviceRequest yonaNewDeviceRequest) {
+    public void setYonaNewDeviceRequest(Href yonaNewDeviceRequest) {
         this.yonaNewDeviceRequest = yonaNewDeviceRequest;
     }
 
     /**
      * @return The yonaAppActivity
      */
-    public YonaAppActivity getYonaAppActivity() {
+    public Href getYonaAppActivity() {
         return yonaAppActivity;
     }
 
     /**
      * @param yonaAppActivity The yona:appActivity
      */
-    public void setYonaAppActivity(YonaAppActivity yonaAppActivity) {
+    public void setYonaAppActivity(Href yonaAppActivity) {
         this.yonaAppActivity = yonaAppActivity;
     }
 
@@ -148,28 +148,28 @@ public class YonaLinks {
     /**
      * @return The self
      */
-    public Self getSelf() {
+    public Href getSelf() {
         return self;
     }
 
     /**
      * @param self The self
      */
-    public void setSelf(Self self) {
+    public void setSelf(Href self) {
         this.self = self;
     }
 
     /**
      * @return The edit
      */
-    public Edit getEdit() {
+    public Href getEdit() {
         return edit;
     }
 
     /**
      * @param edit The edit
      */
-    public void setEdit(Edit edit) {
+    public void setEdit(Href edit) {
         this.edit = edit;
     }
 

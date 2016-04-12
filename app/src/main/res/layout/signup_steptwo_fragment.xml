@@ -25,12 +25,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:capitalize="words"
+            android:digits="1234567890 "
             android:drawableRight="@drawable/icn_mobile"
             android:ellipsize="end"
             android:hint="@string/mobile_number"
             android:imeOptions="actionNext"
             android:inputType="phone"
-            android:digits="1234567890 "
             android:maxLength="@integer/number_limit"
             android:singleLine="true"
             android:textColorHint="@color/black" />
