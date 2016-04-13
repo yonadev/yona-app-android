@@ -25,6 +25,7 @@
     <string name="challenges_no_go">NO GO</string>
     <string name="change_pin">Wijzig pincode</string>
     <string name="privacy">Privacy</string>
+    <string name="add_device">Device toevoegen</string>
     <string name="app_usage_permission_title">Permission</string>
     <string name="app_usage_permission_message">Permission require for 5.1+ Android devies</string>
     <string name="join">DOE MEE</string>
@@ -58,4 +59,5 @@
     <string name="account_login">Account wordt aangemaakt</string>
     <string name="account_login_security_message">Als extra beveiligings  ontvang je een code per SMS, graag deze code hieronder invullen.</string>
     <string name="send_otp_again">Stuur code opnieuw</string>
+    <string name="yona_add_device_message">" Toets deze passcode in op het device waar je Yona op gaat gebruiken."</string>
 </resources>

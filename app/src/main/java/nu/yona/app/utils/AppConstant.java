@@ -18,6 +18,8 @@ public interface AppConstant {
     int TIMER_DELAY = 500;
     int MOBILE_NUMBER_LENGTH = 12;
     int OTP_LENGTH = 4;
+    int ADD_DEVICE_PASSWORD_CHAR_LIMIT = 6;
+    int YONA_PASSWORD_CHAR_LIMIT = 20;
 
     String PASSCODE = "passcode";
     String PASSCODE_VERIFY = "passcode_verify";
