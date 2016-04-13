@@ -18,19 +18,19 @@ public class Links_ {
 
     @SerializedName("self")
     @Expose
-    private Self self;
+    private Href self;
 
     /**
      * @return The self
      */
-    public Self getSelf() {
+    public Href getSelf() {
         return self;
     }
 
     /**
      * @param self The self
      */
-    public void setSelf(Self self) {
+    public void setSelf(Href self) {
         this.self = self;
     }
 

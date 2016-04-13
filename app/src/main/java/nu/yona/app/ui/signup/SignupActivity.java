@@ -39,6 +39,16 @@ import nu.yona.app.ui.LaunchActivity;
  */
 public class SignupActivity extends BaseActivity implements EventChangeListener {
 
+    public InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            String blockCharacterSet = "~#^&|$%*!@/()-'\":;,?{}=!$^';,?×÷<>{}€£¥₩%~`¤♡♥_|《》¡¿°•○●□■◇◆♧♣▲▼▶◀↑↓←→☆★▪:-);-):-D:-(:'(:O 1234567890";
+            if (source != null && blockCharacterSet.contains(("" + source))) {
+                return "";
+            }
+            return null;
+        }
+    };
     private StepOne stepOne;
     private StepTwo stepTwo;
     private AuthenticateManager authenticateManager;
@@ -160,7 +170,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         return authenticateManager;
     }
 
-
     @Override
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
@@ -185,15 +194,4 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
-
-    public InputFilter filter = new InputFilter() {
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            String blockCharacterSet = "~#^&|$%*!@/()-'\":;,?{}=!$^';,?×÷<>{}€£¥₩%~`¤♡♥_|《》¡¿°•○●□■◇◆♧♣▲▼▶◀↑↓←→☆★▪:-);-):-D:-(:'(:O 1234567890";
-            if (source != null && blockCharacterSet.contains(("" + source))) {
-                return "";
-            }
-            return null;
-        }
-    };
 }

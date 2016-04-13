@@ -13,7 +13,7 @@ package nu.yona.app.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Edit {
+public class Href {
 
     @SerializedName("href")
     @Expose
