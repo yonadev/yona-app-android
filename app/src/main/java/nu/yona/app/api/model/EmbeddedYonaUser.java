@@ -10,10 +10,12 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class EmbeddedYonaUser {
+public class EmbeddedYonaUser extends BaseEntity {
 
     @SerializedName("yona:user")
     @Expose
@@ -33,4 +35,8 @@ public class EmbeddedYonaUser {
         this.yonaUser = yonaUser;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

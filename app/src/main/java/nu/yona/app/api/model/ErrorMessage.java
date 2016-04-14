@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kinnarvasa on 31/03/16.
  */
-public class ErrorMessage {
+public class ErrorMessage extends BaseEntity {
     @SerializedName("message")
     @Expose
     private String message;
@@ -59,5 +61,10 @@ public class ErrorMessage {
      */
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

@@ -11,14 +11,25 @@ package nu.yona.app.api.manager.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.HashMap;
+import java.util.List;
+
+import nu.yona.app.api.db.DbSerializer;
+import nu.yona.app.api.db.JsonSerializer;
+import nu.yona.app.api.model.BaseEntity;
+import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoader;
 
 /**
  * Author @MobiquityInc
  */
 public class BaseDAO {
 
-    public final SQLiteOpenHelper mOpenHelper;
+    protected final SQLiteOpenHelper mOpenHelper;
+    protected DbSerializer serializer = new JsonSerializer();
 
     public BaseDAO(SQLiteOpenHelper mOpenHelper, Context context) {
         this.mOpenHelper = mOpenHelper;
@@ -49,4 +60,39 @@ public class BaseDAO {
         }
         return mOpenHelper.getWritableDatabase().query(tableName, projection, selection, selectionArgs, groupBy, null, sortOrder);
     }
+
+    protected void bulkInsert(final String tableName, final List<? extends BaseEntity> items, final DataLoadListener listener) {
+        try {
+
+            new DataLoader() {
+                @Override
+                public void doDBCall() {
+                    SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+                    db.beginTransaction();
+                    db.delete(tableName, null, null);
+                    for (BaseEntity q : items) {
+                        db.insert(tableName, null, q.getDbContentValues());
+                    }
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    listener.onDataLoad(null);
+                }
+            }.executeAsync();
+        } catch (Exception e) {
+            listener.onError(e);
+        }
+    }
+
+    protected HashMap<String, Integer> createColumnMap(Cursor c) {
+        HashMap<String, Integer> result = new HashMap<>();
+
+        String[] names = c.getColumnNames();
+
+        for (int i = 0; i < names.length; i++) {
+            result.put(names[i], i);
+        }
+
+        return result;
+    }
+
 }

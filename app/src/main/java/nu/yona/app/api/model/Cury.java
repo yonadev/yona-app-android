@@ -10,10 +10,12 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Cury {
+public class Cury extends BaseEntity {
 
     @SerializedName("name")
     @Expose
@@ -67,4 +69,8 @@ public class Cury {
         this.templated = templated;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

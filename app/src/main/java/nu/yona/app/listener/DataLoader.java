@@ -18,7 +18,7 @@ public abstract class DataLoader extends AsyncTask<Void, Void, Object> {
         return doDBCall();
     }
 
-    public abstract Object doDBCall();
+    public abstract void doDBCall();
 
     public void executeAsync() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

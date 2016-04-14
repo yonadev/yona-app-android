@@ -29,5 +29,4 @@ public class NewDeviceRequest {
         this.newDeviceRequestPassword = newDeviceRequestPassword;
     }
 
-
 }

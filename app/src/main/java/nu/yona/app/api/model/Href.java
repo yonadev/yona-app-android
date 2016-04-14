@@ -10,10 +10,12 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Href {
+public class Href extends BaseEntity {
 
     @SerializedName("href")
     @Expose
@@ -33,4 +35,8 @@ public class Href {
         this.href = href;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

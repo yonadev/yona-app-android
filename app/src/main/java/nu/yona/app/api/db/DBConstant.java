@@ -16,11 +16,12 @@ package nu.yona.app.api.db;
 public interface DBConstant {
     String DATABASE_NAME = "yonaDB";
     int DATABASE_VERSION = 1;
-
+    String NO_DATA_ERROR = "No Data";
     /**
      * DB TABLES
      **/
     String TBL_USER_DATA = "userData";
+    String TBL_ACTIVITY_CATEGORIES = "activityCategories";
     /** DB TABLES **/
 
     /**
