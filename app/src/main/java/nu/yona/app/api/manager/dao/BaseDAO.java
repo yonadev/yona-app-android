@@ -13,8 +13,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import java.util.HashMap;
 import java.util.List;
 
 import nu.yona.app.api.db.DbSerializer;
@@ -66,7 +64,7 @@ public class BaseDAO {
 
             new DataLoader() {
                 @Override
-                public void doDBCall() {
+                public Object doDBCall() {
                     SQLiteDatabase db = mOpenHelper.getWritableDatabase();
                     db.beginTransaction();
                     db.delete(tableName, null, null);
@@ -76,23 +74,11 @@ public class BaseDAO {
                     db.setTransactionSuccessful();
                     db.endTransaction();
                     listener.onDataLoad(null);
+                    return null;
                 }
             }.executeAsync();
         } catch (Exception e) {
             listener.onError(e);
         }
     }
-
-    protected HashMap<String, Integer> createColumnMap(Cursor c) {
-        HashMap<String, Integer> result = new HashMap<>();
-
-        String[] names = c.getColumnNames();
-
-        for (int i = 0; i < names.length; i++) {
-            result.put(names[i], i);
-        }
-
-        return result;
-    }
-
 }

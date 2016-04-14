@@ -46,7 +46,7 @@ public class ActivityCategoriesDAO extends BaseDAO {
     public void getActivityCategories(final DataLoadListener listener) {
         new DataLoader() {
             @Override
-            public void doDBCall() {
+            public Object doDBCall() {
                 Cursor c = null;
                 try {
                     c = query(DBConstant.TBL_ACTIVITY_CATEGORIES, null, null, null, null, null);
@@ -71,6 +71,7 @@ public class ActivityCategoriesDAO extends BaseDAO {
                         c.close();
                     }
                 }
+                return null;
             }
         }.executeAsync();
     }
