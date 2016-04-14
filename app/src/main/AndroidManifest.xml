@@ -67,6 +67,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
 
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
         <service
             android:name=".api.service.YonaVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE">

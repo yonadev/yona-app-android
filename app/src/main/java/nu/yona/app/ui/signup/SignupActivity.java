@@ -17,7 +17,6 @@ import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -25,7 +24,6 @@ import nu.yona.app.api.manager.AuthenticateManager;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
-import nu.yona.app.api.model.User;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.listener.DataLoadListener;
@@ -143,8 +141,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
-                User user = (User) result;
-                Toast.makeText(SignupActivity.this, "Confirmation code: " + user.getMobileNumberConfirmationCode(), Toast.LENGTH_LONG).show();
                 showMobileVerificationScreen();
             }
 

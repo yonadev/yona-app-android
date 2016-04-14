@@ -18,35 +18,36 @@ import java.util.List;
 
 public class Links {
 
-    @SerializedName("curies")
-    @Expose
-    private List<Cury> curies = new ArrayList<Cury>();
     @SerializedName("self")
     @Expose
     private Href self;
     @SerializedName("edit")
     @Expose
     private Href edit;
+    @SerializedName("yona:messages")
+    @Expose
+    private Href yonaMessages;
+    @SerializedName("yona:dailyActivityReports")
+    @Expose
+    private Href yonaDailyActivityReports;
+    @SerializedName("yona:weeklyActivityReports")
+    @Expose
+    private Href yonaWeeklyActivityReports;
+    @SerializedName("yona:newDeviceRequest")
+    @Expose
+    private Href yonaNewDeviceRequest;
+    @SerializedName("yona:appActivity")
+    @Expose
+    private Href yonaAppActivity;
+    @SerializedName("curies")
+    @Expose
+    private List<Cury> curies = new ArrayList<Cury>();
     @SerializedName("yona:confirmMobileNumber")
     @Expose
     private Href yonaConfirmMobileNumber;
     @SerializedName("yona:resendMobileNumberConfirmationCode")
     @Expose
     private Href resendMobileNumberConfirmationCode;
-
-    /**
-     * @return The curies
-     */
-    public List<Cury> getCuries() {
-        return curies;
-    }
-
-    /**
-     * @param curies The curies
-     */
-    public void setCuries(List<Cury> curies) {
-        this.curies = curies;
-    }
 
     /**
      * @return The self
@@ -77,15 +78,93 @@ public class Links {
     }
 
     /**
-     * @return The yonaConfirmMobileNumber
+     * @return The yonaMessages
      */
+    public Href getYonaMessages() {
+        return yonaMessages;
+    }
+
+    /**
+     * @param yonaMessages The yona:messages
+     */
+    public void setYonaMessages(Href yonaMessages) {
+        this.yonaMessages = yonaMessages;
+    }
+
+    /**
+     * @return The yonaDailyActivityReports
+     */
+    public Href getYonaDailyActivityReports() {
+        return yonaDailyActivityReports;
+    }
+
+    /**
+     * @param yonaDailyActivityReports The yona:dailyActivityReports
+     */
+    public void setYonaDailyActivityReports(Href yonaDailyActivityReports) {
+        this.yonaDailyActivityReports = yonaDailyActivityReports;
+    }
+
+    /**
+     * @return The yonaWeeklyActivityReports
+     */
+    public Href getYonaWeeklyActivityReports() {
+        return yonaWeeklyActivityReports;
+    }
+
+    /**
+     * @param yonaWeeklyActivityReports The yona:weeklyActivityReports
+     */
+    public void setYonaWeeklyActivityReports(Href yonaWeeklyActivityReports) {
+        this.yonaWeeklyActivityReports = yonaWeeklyActivityReports;
+    }
+
+    /**
+     * @return The yonaNewDeviceRequest
+     */
+    public Href getYonaNewDeviceRequest() {
+        return yonaNewDeviceRequest;
+    }
+
+    /**
+     * @param yonaNewDeviceRequest The yona:newDeviceRequest
+     */
+    public void setYonaNewDeviceRequest(Href yonaNewDeviceRequest) {
+        this.yonaNewDeviceRequest = yonaNewDeviceRequest;
+    }
+
+    /**
+     * @return The yonaAppActivity
+     */
+    public Href getYonaAppActivity() {
+        return yonaAppActivity;
+    }
+
+    /**
+     * @param yonaAppActivity The yona:appActivity
+     */
+    public void setYonaAppActivity(Href yonaAppActivity) {
+        this.yonaAppActivity = yonaAppActivity;
+    }
+
+    /**
+     * @return The curies
+     */
+    public List<Cury> getCuries() {
+        return curies;
+    }
+
+    /**
+     * @param curies The curies
+     */
+    public void setCuries(List<Cury> curies) {
+        this.curies = curies;
+    }
+
     public Href getYonaConfirmMobileNumber() {
         return yonaConfirmMobileNumber;
     }
 
-    /**
-     * @param yonaConfirmMobileNumber The yona:confirmMobileNumber
-     */
     public void setYonaConfirmMobileNumber(Href yonaConfirmMobileNumber) {
         this.yonaConfirmMobileNumber = yonaConfirmMobileNumber;
     }
@@ -97,5 +176,4 @@ public class Links {
     public void setResendMobileNumberConfirmationCode(Href resendMobileNumberConfirmationCode) {
         this.resendMobileNumberConfirmationCode = resendMobileNumberConfirmationCode;
     }
-
 }

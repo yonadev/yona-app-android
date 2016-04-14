@@ -14,17 +14,24 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.utils.NetworkUtils;
+import nu.yona.app.listener.DataLoadListener;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import retrofit2.Callback;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -38,6 +45,7 @@ public class BaseImpl {
     private File httpCacheDirectory;
     private int maxStale = 60 * 60 * 24 * 28;
     private int cacheSize = 10 * 1024 * 1024;
+
     private Interceptor getInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -96,5 +104,29 @@ public class BaseImpl {
             restApi = getRetrofit().create(RestApi.class);
         }
         return restApi;
+    }
+
+    public Callback getCall(final DataLoadListener listener) {
+        return new Callback() {
+            @Override
+            public void onResponse(retrofit2.Call call, retrofit2.Response response) {
+                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                    listener.onDataLoad(response.body());
+                } else {
+                    try {
+                        Converter<ResponseBody, ErrorMessage> errorConverter =
+                                getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                        listener.onError(errorConverter.convert(response.errorBody()));
+                    } catch (IOException e) {
+                        listener.onError(new ErrorMessage(e.getMessage()));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call call, Throwable t) {
+                listener.onError(new ErrorMessage(t.getMessage()));
+            }
+        };
     }
 }

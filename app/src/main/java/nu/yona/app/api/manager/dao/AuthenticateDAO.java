@@ -27,6 +27,7 @@ import nu.yona.app.listener.DataLoadListener;
  */
 public class AuthenticateDAO extends BaseDAO {
 
+    private String USER_ID = "1"; // single user app and default id in db for that is 1.
     private DbSerializer serializer = new JsonSerializer();
 
     public AuthenticateDAO(SQLiteOpenHelper mOpenHelper, Context context) {
@@ -37,12 +38,13 @@ public class AuthenticateDAO extends BaseDAO {
         // do process for storing data in database.
         try {
             ContentValues values = new ContentValues();
+            values.put(DBConstant.ID, USER_ID);
             values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(result));
             // we will store only one user in database, so check if already user exist in db, just update.
             if (getUser() == null) {
                 insert(DBConstant.TBL_USER_DATA, values);
             } else {
-                update(DBConstant.TBL_USER_DATA, values, DBConstant.ID + " = ?", new String[]{"1"});
+                update(DBConstant.TBL_USER_DATA, values, DBConstant.ID + " = ?", new String[]{USER_ID});
             }
             listener.onDataLoad(result);
         } catch (Exception e) {
@@ -62,7 +64,9 @@ public class AuthenticateDAO extends BaseDAO {
         } catch (Exception e) {
             Log.e(AuthenticateDAO.class.getSimpleName(), "get user error", e);
         } finally {
-            c.close();
+            if (c != null) {
+                c.close();
+            }
         }
         return null;
     }
