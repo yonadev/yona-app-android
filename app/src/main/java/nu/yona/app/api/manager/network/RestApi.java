@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.manager.network;
 
+import java.util.List;
+
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
@@ -18,6 +20,7 @@ import nu.yona.app.utils.ApiList;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -60,8 +63,18 @@ public interface RestApi {
 
     /******** DEVICE ************/
 
-    /******** Goal ************/
+    /********
+     * ActivityCategory
+     ************/
+
+    @GET
+    Call<List<User>> getActivityCategories(@Url String url);
+
+    /******** ActivityCategory ************/
+
+    /******** GOALS ************/
 
 
-    /******** Goal ************/
+
+    /******** GOALS ************/
 }

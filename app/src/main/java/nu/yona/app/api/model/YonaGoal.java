@@ -10,14 +10,16 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class YonaGoal {
+public class YonaGoal extends BaseEntity {
 
     @SerializedName("_links")
     @Expose
-    private nu.yona.app.api.model.Links Links;
+    private Links Links;
     @SerializedName("@type")
     @Expose
     private String Type;
@@ -28,7 +30,7 @@ public class YonaGoal {
     /**
      * @return The Links
      */
-    public nu.yona.app.api.model.Links getLinks() {
+    public Links getLinks() {
         return Links;
     }
 
@@ -67,4 +69,8 @@ public class YonaGoal {
         this.activityCategoryName = activityCategoryName;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

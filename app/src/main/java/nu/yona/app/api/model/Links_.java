@@ -10,11 +10,13 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Links_ {
+public class Links_ extends BaseEntity {
 
     @SerializedName("self")
     @Expose
@@ -34,4 +36,8 @@ public class Links_ {
         this.self = self;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

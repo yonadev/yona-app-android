@@ -10,10 +10,12 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VpnProfile {
+public class VpnProfile extends BaseEntity {
 
     @SerializedName("vpnLoginID")
     @Expose
@@ -65,6 +67,11 @@ public class VpnProfile {
      */
     public void setOpenVPNProfile(String openVPNProfile) {
         this.openVPNProfile = openVPNProfile;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 
 }
