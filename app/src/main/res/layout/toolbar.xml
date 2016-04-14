@@ -27,7 +27,11 @@
             style="@style/NavTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/thirty_two"
+            android:layout_marginTop="15dp"
+            android:layout_toLeftOf="@+id/rightIcon"
+            android:layout_toStartOf="@+id/rightIcon"
+            android:maxLines="1"
+            android:text="Dashboard"
             android:textColor="@color/white" />
 
         <ImageView
