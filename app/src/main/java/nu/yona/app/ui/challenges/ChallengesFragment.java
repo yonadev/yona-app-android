@@ -44,14 +44,13 @@ public class ChallengesFragment extends BaseFragment {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
                 updateTabViewBackground(tab, TAB_ALPHA_SELECTED);
-                updateChallengeCounter(tab, 0);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 updateTabViewBackground(tab, (float) TAB_ALPHA_UNSELECTED);
-                updateChallengeCounter(tab, 3);
             }
 
             @Override

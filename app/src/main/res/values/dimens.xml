@@ -24,7 +24,7 @@
     <dimen name="passcode_editText_height">55dp</dimen>
     <dimen name="progress_bar_height">2dp</dimen>
     <dimen name="passcode_margin_left">13dp</dimen>
-    <dimen name="passcode_layout_padding">32dp</dimen>
+    <dimen name="layout_margin">32dp</dimen>
     <dimen name="passcode_layout_padding_top">37dp</dimen>
     <dimen name="passcode_font_title">13dp</dimen>
     <dimen name="progressbar_height">2dp</dimen>
@@ -34,6 +34,8 @@
     <dimen name="passcode_reset_margin_top">30dp</dimen>
     <integer name="fragment_animation_duration">200</integer>
     <dimen name="tab_icon_height">48dp</dimen>
+
+    <!-- Challenges -->
     <dimen name="challenges_tab_layout_height">135dp</dimen>
     <dimen name="challenges_margin_left">15dp</dimen>
     <dimen name="challenges_counter_width">18dp</dimen>
@@ -41,5 +43,17 @@
     <dimen name="tab_counter_padding_left">6dp</dimen>
     <dimen name="tab_challenges_image_padding">4dp</dimen>
     <dimen name="tab_challenges_margin_top">40dp</dimen>
+    <dimen name="header_creation_height">81dp</dimen>
+    <dimen name="img_padding">4dp</dimen>
+    <dimen name="img_width">56dp</dimen>
+    <dimen name="img_height">56dp</dimen>
+    <dimen name="circle_margin">13dp</dimen>
+
+    <dimen name="goal_view_height">114dp</dimen>
+    <dimen name="goal_title_margin_top">29dp</dimen>
+    <dimen name="goal_sub_title_margin_top">7dp</dimen>
+
+    <dimen name="toolbar_icon_size">24dp</dimen>
+
 
 </resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/goal_view_height"
+    android:background="@drawable/goal_item_gradient"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/layout_margin"
+    android:paddingRight="@dimen/layout_margin"
+    android:paddingTop="@dimen/layout_margin">
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/goal_title"
+        style="@style/SeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/goal_sub_content"
+        style="@style/FooterTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/goal_sub_title_margin_top"
+        android:maxLines="2" />
+</LinearLayout>

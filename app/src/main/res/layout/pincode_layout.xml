@@ -12,8 +12,8 @@
     android:background="@color/grape"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/passcode_layout_padding"
-    android:paddingRight="@dimen/passcode_layout_padding"
+    android:paddingLeft="@dimen/layout_margin"
+    android:paddingRight="@dimen/layout_margin"
     android:paddingTop="@dimen/passcode_layout_padding_top">
 
     <ImageView
