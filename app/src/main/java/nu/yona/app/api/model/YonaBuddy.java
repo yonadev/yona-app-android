@@ -10,10 +10,12 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class YonaBuddy {
+public class YonaBuddy extends BaseEntity {
 
     @SerializedName("_links")
     @Expose
@@ -101,4 +103,8 @@ public class YonaBuddy {
         this.Embedded = Embedded;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kinnarvasa on 04/04/16.
  */
-public class OTPVerficationCode {
+public class OTPVerficationCode extends BaseEntity {
 
     @SerializedName("code")
     @Expose
@@ -39,4 +41,10 @@ public class OTPVerficationCode {
     public void setCode(String code) {
         this.code = code;
     }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
+
 }

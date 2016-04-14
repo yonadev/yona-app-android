@@ -36,8 +36,7 @@ public class DeviceNetworkImpl extends BaseImpl {
     }
 
     /**
-     *
-     * @param url url to send delete request
+     * @param url          url to send delete request
      * @param yonaPassword applicaiton password need to pass in header
      * @param listener
      */

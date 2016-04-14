@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Links {
+public class Links extends BaseEntity {
 
     @SerializedName("self")
     @Expose
@@ -175,5 +177,10 @@ public class Links {
 
     public void setResendMobileNumberConfirmationCode(Href resendMobileNumberConfirmationCode) {
         this.resendMobileNumberConfirmationCode = resendMobileNumberConfirmationCode;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

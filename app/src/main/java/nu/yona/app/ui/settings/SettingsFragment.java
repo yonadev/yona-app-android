@@ -32,6 +32,7 @@ public class SettingsFragment extends BaseFragment {
     private View view;
     private DeviceManagerImpl deviceManager;
     private YonaActivity activity;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class SettingsFragment extends BaseFragment {
                 getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(doDelete) {
+                        if (doDelete) {
                             doDeleteDeviceRequest();
                         }
                         dialogInterface.dismiss();

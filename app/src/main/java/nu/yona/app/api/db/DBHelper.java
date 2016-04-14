@@ -32,6 +32,11 @@ public class DBHelper {
             + DBConstant.ID + FIELD_TEXT
             + DBConstant.SOURCE_OBJECT + FIELD_BLOB_WITHOUT_COMMA
             + ")";
+    public final String TABLE_ACTIVITY_CATEGORY = CREATE_TABLE_IF_NOT_EXISTS + DBConstant.TBL_ACTIVITY_CATEGORIES
+            + "("
+            + DBConstant.ID + FIELD_TEXT
+            + DBConstant.SOURCE_OBJECT + FIELD_BLOB_WITHOUT_COMMA
+            + ")";
     private final String NUMERIC_PRIMARY_KEY = " NUMERIC PRIMARY KEY, ";
     private final String UNIQUE = " UNIQUE";
     private final String NOT_NULL = " NOT NULL";

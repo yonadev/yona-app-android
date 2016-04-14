@@ -16,7 +16,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmbeddedYonaBuddies {
+public class EmbeddedYonaBuddies extends BaseEntity {
 
     @SerializedName("yona:buddies")
     @Expose

@@ -28,7 +28,7 @@ import nu.yona.app.listener.DataLoadListener;
 public class AuthenticateDAO extends BaseDAO {
 
     private String USER_ID = "1"; // single user app and default id in db for that is 1.
-    private DbSerializer serializer = new JsonSerializer();
+
 
     public AuthenticateDAO(SQLiteOpenHelper mOpenHelper, Context context) {
         super(mOpenHelper, context);

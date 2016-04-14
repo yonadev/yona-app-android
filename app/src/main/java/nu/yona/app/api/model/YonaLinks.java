@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class YonaLinks {
+public class YonaLinks extends BaseEntity {
 
     @SerializedName("yona:confirmMobileNumber")
     @Expose
@@ -173,4 +175,9 @@ public class YonaLinks {
         this.edit = edit;
     }
 
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }
