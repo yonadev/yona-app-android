@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~  This Source Code Form is subject to the terms of the Mozilla Public
+  ~  License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/signup_add_avatar_height"
+                android:background="@color/grape"
+                android:scaleType="centerInside"
+                android:src="@drawable/add_avatar" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/thirty_two"
+                android:layout_marginRight="@dimen/thirty_two"
+                android:orientation="vertical">
+
+                <nu.yona.app.customview.YonaFontTextView
+                    style="@style/Explanation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/thirty_six"
+                    android:text="@string/loggedin_add_device_message"
+                    android:textColor="@color/black" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/mobile_number_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/twenty">
+
+                    <nu.yona.app.customview.YonaFontEditTextView
+                        android:id="@+id/mobile_number"
+                        style="@style/InputLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:capitalize="words"
+                        android:drawableRight="@drawable/icn_mobile"
+                        android:ellipsize="end"
+                        android:hint="@string/mobile_number"
+                        android:imeOptions="actionNext"
+                        android:maxLength="@integer/number_limit"
+                        android:singleLine="true"
+                        android:textColorHint="@color/black" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/passcode_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <nu.yona.app.customview.YonaFontEditTextView
+                        android:id="@+id/passcode"
+                        style="@style/InputLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:capitalize="words"
+                        android:drawableRight="@drawable/icn_name"
+                        android:ellipsize="end"
+                        android:hint="@string/passcode"
+                        android:imeOptions="actionNext"
+                        android:maxLength="@integer/char_limit"
+                        android:singleLine="true"
+                        android:textColorHint="@color/black" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <nu.yona.app.customview.YonaFontButton
+        android:id="@+id/next"
+        style="@style/BtnTxtSmall"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/signup_profile_btn_height"
+        android:background="@color/darkish_pink"
+        android:text="@string/previous"
+        android:textColor="@android:color/white" />
+</LinearLayout>

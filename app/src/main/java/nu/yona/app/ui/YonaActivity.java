@@ -39,7 +39,7 @@ import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
 import nu.yona.app.ui.message.MessageFragment;
-import nu.yona.app.ui.pincode.LoggedInActivity;
+import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.ui.profile.ProfileFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
 import nu.yona.app.utils.AppConstant;
@@ -165,7 +165,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     protected void onResume() {
         super.onResume();
         if (isToDisplayLogin) {
-            startActivity(new Intent(YonaActivity.this, LoggedInActivity.class));
+            startActivity(new Intent(YonaActivity.this, PinActivity.class));
             finish();
         }
     }

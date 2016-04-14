@@ -26,7 +26,7 @@ import nu.yona.app.utils.PreferenceConstant;
 /**
  * Created by bhargavsuthar on 3/30/16.
  */
-public class LoggedInActivity extends BaseActivity implements EventChangeListener {
+public class PinActivity extends BaseActivity implements EventChangeListener {
 
     private PasscodeManagerImpl passcodeManagerImpl;
     private TextView txtTitle;
@@ -100,7 +100,7 @@ public class LoggedInActivity extends BaseActivity implements EventChangeListene
     }
 
     public void showChallengesScreen() {
-        startActivity(new Intent(LoggedInActivity.this, YonaActivity.class));
+        startActivity(new Intent(PinActivity.this, YonaActivity.class));
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
