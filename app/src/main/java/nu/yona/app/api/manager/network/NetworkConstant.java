@@ -16,6 +16,7 @@ package nu.yona.app.api.manager.network;
 public interface NetworkConstant {
 
     String YONA_PASSWORD = "Yona-Password";
+    String YONA_NEW_PASSWORD = "Yona-NewDeviceRequestPassword";
     String BODY = "body";
 
     String CACHING_FILE = "apiResponse";

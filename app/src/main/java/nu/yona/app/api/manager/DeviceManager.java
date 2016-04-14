@@ -20,4 +20,10 @@ public interface DeviceManager {
     void addDevice(String devicePassword, DataLoadListener listener);
 
     void deleteDevice(DataLoadListener listener);
+
+    boolean validateMobileNumber(String mobileNumber);
+
+    boolean validatePasscode(String passcode);
+
+    void validateDevice(String devicePassword, String mobileNumber, final DataLoadListener listener);
 }
