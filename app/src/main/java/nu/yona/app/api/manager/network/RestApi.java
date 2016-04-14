@@ -12,6 +12,7 @@ package nu.yona.app.api.manager.network;
 
 import java.util.List;
 
+import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
@@ -25,6 +26,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 /**
@@ -60,6 +62,9 @@ public interface RestApi {
 
     @DELETE
     Call<Void> deleteDevice(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
+    @GET ("newDeviceRequests/{mobileNumber}")
+    Call<NewDevice> checkDevice(@Path("mobileNumber") String mobileNumber, @Header(NetworkConstant.YONA_NEW_PASSWORD) String password);
 
     /******** DEVICE ************/
 

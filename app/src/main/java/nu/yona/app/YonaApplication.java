@@ -54,6 +54,14 @@ public class YonaApplication extends Application {
         return yonaPwd;
     }
 
+    /**
+     *
+     * @param password yona password
+     */
+    public static void setYonaPassword(String password) {
+        getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, password).commit();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
