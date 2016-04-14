@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/header_creation_height"
+    android:background="@color/bg_gradient_two"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/img_add_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/circle_margin"
+        android:layout_marginTop="13dp"
+        android:background="@android:color/transparent"
+        android:padding="@dimen/img_padding"
+        android:src="@drawable/add_circel" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/txt_header_text"
+        style="@style/FooterTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/layout_margin"
+        android:layout_marginRight="@dimen/tab_challenges_margin_top"
+        android:layout_toLeftOf="@+id/img_add_goal"
+        android:layout_toStartOf="@+id/img_add_goal"
+        android:maxLines="2"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</RelativeLayout>
