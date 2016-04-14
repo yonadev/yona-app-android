@@ -16,7 +16,7 @@ package nu.yona.app.api.db;
 public interface DBConstant {
     String DATABASE_NAME = "yonaDB";
     int DATABASE_VERSION = 1;
-
+    String NO_DATA_ERROR = "No Data";
     /**
      * DB TABLES
      **/

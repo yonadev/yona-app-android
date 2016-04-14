@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -36,4 +38,8 @@ public class EmbeddedYonaBuddies extends BaseEntity {
         this.yonaBuddies = yonaBuddies;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }
