@@ -9,9 +9,7 @@
  */
 
 package nu.yona.app.api.manager.network;
-
-import java.util.List;
-
+import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.api.model.OTPVerficationCode;
@@ -72,8 +70,8 @@ public interface RestApi {
      * ActivityCategory
      ************/
 
-    @GET
-    Call<List<User>> getActivityCategories(@Url String url);
+    @GET ("activityCategories/")
+    Call<ActivityCategories> getActivityCategories();
 
     /******** ActivityCategory ************/
 
