@@ -33,11 +33,6 @@ public class YonaFontUtils {
         // check if a special textStyle was used (e.g. extra bold)
         int textStyle = attributeArray.getInt(R.styleable.YonaFontTextView_textStyle, 0);
 
-        // if nothing extra was used, fall back to regular android:textStyle parameter
-        if (textStyle == 0) {
-            textStyle = attrs.getAttributeIntValue(ANDROID_SCHEMA, "textStyle", Typeface.NORMAL);
-        }
-
         Typeface customFont = selectTypeface(context, textStyle);
         customFontTextView.setTypeface(customFont);
 
@@ -50,13 +45,16 @@ public class YonaFontUtils {
             http://developer.android.com/reference/android/R.styleable.html#TextView_textStyle
             */
         switch (textStyle) {
-            case Typeface.BOLD: // bold
+            case 12: // bold
                 return getTypeface("roboto-bold.ttf", context);
 
             case 10: // extra light, equals @integer/font_style_extra_light
                 return getTypeface("roboto-light.ttf", context);
 
-            case Typeface.NORMAL: // regular
+            case 11:
+                return getTypeface("roboto-medium.ttf", context);
+
+            case 13: // regular
             default:
                 return getTypeface("roboto-Regular.ttf", context);
         }
