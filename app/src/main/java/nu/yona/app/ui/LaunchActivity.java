@@ -17,7 +17,8 @@ import android.view.View;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.ui.pincode.LoggedInActivity;
+import nu.yona.app.ui.login.LoginActivity;
+import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
@@ -41,7 +42,7 @@ public class LaunchActivity extends BaseActivity {
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
             startNewActivity(LaunchActivity.this, PasscodeActivity.class);
         } else {
-            startNewActivity(LaunchActivity.this, LoggedInActivity.class);
+            startNewActivity(LaunchActivity.this, PinActivity.class);
         }
 
         findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {
@@ -54,7 +55,7 @@ public class LaunchActivity extends BaseActivity {
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startNewActivity(LaunchActivity.this, LoggedInActivity.class);
+                startNewActivity(LaunchActivity.this, LoginActivity.class);
             }
         });
     }

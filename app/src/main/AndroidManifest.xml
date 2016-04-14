@@ -63,7 +63,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.pincode.LoggedInActivity"
+            android:name=".ui.pincode.PinActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
 
