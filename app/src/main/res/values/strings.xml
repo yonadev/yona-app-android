@@ -63,4 +63,7 @@
     <string name="loggedin_add_device_message">Je hebt nog niet eerder ingelogd op dit apparaat. Ga naar je primaire device (waarschijnlijk je mobiel), open Yona, vervolgens naar instellingen en klik op ‘apparaat toevoegen’. Vul vervolgens onderstaande velden in.</string>
     <string name="passcode">PASSCODE</string>
     <string name="in_loggin">INLOGGEN</string>
+    <string name="challenges_nogo_header_text">Hier leg je vast waar je helemaal niet wilt komen.</string>
+    <string name="challenges_tijdzone_header_text">Kies een categorie waar je een tijdzone voor wilt instellen</string>
+    <string name="challenges_tegoed_header_text">Kies een categorie waar je een tegoed voor wilt vastleggen</string>
 </resources>
