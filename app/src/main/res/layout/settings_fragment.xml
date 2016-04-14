@@ -29,4 +29,14 @@
         android:text="@string/privacy"
         android:textAlignment="textStart"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/add_device"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:padding="@dimen/twenty"
+        android:text="@string/add_device"
+        android:textAlignment="textStart"
+        android:textStyle="bold" />
 </LinearLayout>

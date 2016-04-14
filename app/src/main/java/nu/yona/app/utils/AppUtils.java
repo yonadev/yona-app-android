@@ -99,11 +99,11 @@ public class AppUtils {
      *
      * @return
      */
-    public static String getRandomString() {
+    public static String getRandomString(int charLimit) {
         char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTU".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < charLimit; i++) {
             char c = chars[random.nextInt(chars.length)];
             sb.append(c);
         }
