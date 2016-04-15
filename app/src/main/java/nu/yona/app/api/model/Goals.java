@@ -20,7 +20,7 @@ public class Goals extends BaseEntity {
 
     @SerializedName("_embedded")
     @Expose
-    private Embedded embedded;
+    private EmbeddedGoals embedded;
 
     @SerializedName("_links")
     @Expose
@@ -39,11 +39,12 @@ public class Goals extends BaseEntity {
         this.links = links;
     }
 
-    public Embedded getEmbedded() {
+    public EmbeddedGoals getEmbedded() {
         return embedded;
     }
 
-    public void setEmbedded(Embedded embedded) {
+    public void setEmbedded(EmbeddedGoals embedded) {
         this.embedded = embedded;
     }
+
 }

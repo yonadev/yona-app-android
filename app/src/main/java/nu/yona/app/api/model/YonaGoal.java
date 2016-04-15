@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class YonaGoal extends BaseEntity {
 
     @SerializedName("_links")
@@ -26,6 +29,12 @@ public class YonaGoal extends BaseEntity {
     @SerializedName("activityCategoryName")
     @Expose
     private String activityCategoryName;
+    @SerializedName("maxDurationMinutes")
+    @Expose
+    private long maxDurationMinutes;
+    @SerializedName("zones")
+    @Expose
+    private List<String> zones = new ArrayList<>();
 
     /**
      * @return The Links
