@@ -30,7 +30,7 @@
                 android:layout_height="@dimen/signup_add_avatar_height"
                 android:background="@color/grape"
                 android:scaleType="centerInside"
-                android:src="@drawable/add_avatar" />
+                android:src="@drawable/icn_avatar" />
 
             <LinearLayout
                 android:layout_width="match_parent"
