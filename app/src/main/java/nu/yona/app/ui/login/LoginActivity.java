@@ -182,7 +182,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     private boolean validatePasscode(String passcodeStr) {
         if (!deviceManager.validatePasscode(passcodeStr)) {
             passcodeLayout.setErrorEnabled(true);
-            passcodeLayout.setError(getString(R.string.enter_number_validation));
+            passcodeLayout.setError(getString(R.string.enter_passcode));
             showKeyboard(passcode);
             passcode.requestFocus();
             return false;
