@@ -10,6 +10,7 @@ package nu.yona.app.api.manager.impl;
 
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.PasscodeManager;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
@@ -36,6 +37,12 @@ public class PasscodeManagerImpl implements PasscodeManager {
             updateWrongPasscodeCounter(counter++);
         }
         return false;
+    }
+
+    @Override
+    public void resendPasscode(DataLoadListener listener) {
+        storedPassCode("");
+        // do call on server for reset OTP
     }
 
     /**

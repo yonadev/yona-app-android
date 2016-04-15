@@ -44,6 +44,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private String screen_type;
     private YonaPasswordTransformationManager yonaPasswordTransformationManager;
     private FieldTextWatcher watcher;
+
     private View.OnKeyListener keyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -234,6 +235,9 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         switch (screen_type) {
             case AppConstant.OTP:
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_OTP_RESEND, null);
+                break;
+            case AppConstant.LOGGED_IN:
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_RESET, null);
                 break;
             default:
                 break;

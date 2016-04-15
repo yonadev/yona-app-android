@@ -16,10 +16,12 @@ import android.widget.TextView;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
@@ -93,6 +95,9 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcode_tryagain));
                 }
                 break;
+            case EventChangeManager.EVENT_PASSCODE_RESET:
+                doPinReset();
+                break;
             default:
                 break;
         }
@@ -102,6 +107,28 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
     public void showChallengesScreen() {
         startActivity(new Intent(PinActivity.this, YonaActivity.class));
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        finish();
+    }
+
+
+    private void doPinReset() {
+//        showLoadingView(true, null);
+        passcodeManagerImpl.resendPasscode(new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                showLoadingView(false, null);
+                loadOTPScreen();
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                showLoadingView(false, null);
+            }
+        });
+    }
+
+    private void loadOTPScreen() {
+        startActivity(new Intent(PinActivity.this, OTPActivity.class));
         finish();
     }
 }
