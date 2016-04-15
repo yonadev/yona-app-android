@@ -41,6 +41,7 @@
     <string name="user_signup_message">We gebruiken je mobile telefoonnummer voor een veilige registratie. Je nickname is verplicht en zorgt voor een nog betere privacy.</string>
     <string name="enter_name_validation">You need to enter a name</string>
     <string name="enter_number_validation">Number should be 9 digits</string>
+    <string name="enter_passcode">You need to enter 6 digits alphanumeric passcode.</string>
     <string name="country_code_with_zero">"+31 (0) "</string>
     <string name="country_code">"+31"</string>
     <string name="loading">Loading</string>
