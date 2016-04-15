@@ -22,6 +22,7 @@ public interface DBConstant {
      **/
     String TBL_USER_DATA = "userData";
     String TBL_ACTIVITY_CATEGORIES = "activityCategories";
+    String TBL_GOAL = "goal";
     /** DB TABLES **/
 
     /**

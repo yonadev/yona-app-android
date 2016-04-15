@@ -8,15 +8,16 @@
 
 package nu.yona.app.api.manager;
 
-import nu.yona.app.api.model.ActivityCategories;
+import nu.yona.app.api.model.Goals;
 import nu.yona.app.listener.DataLoadListener;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public interface ActivityCategoryManager {
+public interface GoalManager {
 
-    void getActivityCategoriesById(DataLoadListener listener);
+    void getUserGoal(DataLoadListener listener);
 
-    ActivityCategories getListOfActivityCategories();
+    Goals getUserGoalFromDb();
+
 }
