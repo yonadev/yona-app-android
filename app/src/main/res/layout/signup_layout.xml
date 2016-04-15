@@ -68,22 +68,5 @@
 
     </ScrollView>
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/triangle_shadow"
-        android:minHeight="?attr/actionBarSize"
-        android:paddingTop="@dimen/signup_profile_left_right_padding"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <nu.yona.app.customview.YonaFontTextView
-            style="@style/NavTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/signup_profile_left_right_padding"
-            android:text="@string/join"
-            android:textColor="@color/white" />
-    </android.support.v7.widget.Toolbar>
+    <include layout="@layout/toolbar" />
 </FrameLayout>

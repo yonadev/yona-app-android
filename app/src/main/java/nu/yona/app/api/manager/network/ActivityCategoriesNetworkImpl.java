@@ -12,10 +12,9 @@ package nu.yona.app.api.manager.network;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.List;
 
+import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -29,9 +28,9 @@ import retrofit2.Response;
 public class ActivityCategoriesNetworkImpl extends BaseImpl {
 
     public void getActivityCategories(String url, final DataLoadListener listener) {
-        getRestApi().getActivityCategories(url).enqueue(new Callback<List<User>>() {
+        getRestApi().getActivityCategories().enqueue(new Callback<ActivityCategories>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            public void onResponse(Call<ActivityCategories> call, Response<ActivityCategories> response) {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
                     listener.onDataLoad(response.body());
                 } else {
@@ -47,7 +46,7 @@ public class ActivityCategoriesNetworkImpl extends BaseImpl {
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(Call<ActivityCategories> call, Throwable t) {
                 listener.onError(new ErrorMessage(t.getMessage()));
             }
         });

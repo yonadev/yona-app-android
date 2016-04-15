@@ -17,7 +17,6 @@ import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -29,11 +28,12 @@ import nu.yona.app.api.manager.DeviceManager;
 import nu.yona.app.api.manager.impl.DeviceManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.customview.CustomAlertDialog;
-import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.ui.BaseActivity;
+import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.utils.AppConstant;
 
@@ -61,18 +61,20 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        ((YonaFontTextView) findViewById(R.id.toolbar_title)).setText(R.string.in_loggin);
+
         mobileNumberLayout = (TextInputLayout) findViewById(R.id.mobile_number_layout);
         passcodeLayout = (TextInputLayout) findViewById(R.id.passcode_layout);
 
         mobileNumber = (YonaFontEditTextView) findViewById(R.id.mobile_number);
         passcode = (YonaFontEditTextView) findViewById(R.id.passcode);
-        passcode.setFilters(new InputFilter[] {new InputFilter.LengthFilter(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT), filter});
+        passcode.setFilters(new InputFilter[]{new InputFilter.LengthFilter(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT), filter});
 
         findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateMobileNumber(getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length()).replace(" ", ""))
-                        && validatePasscode(passcode.getText().toString())){
+                if (validateMobileNumber(getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length()).replace(" ", ""))
+                        && validatePasscode(passcode.getText().toString())) {
                     doLogin();
                 }
             }
@@ -155,6 +157,17 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        doBack();
+    }
+
+    private void doBack() {
+        startActivity(new Intent(LoginActivity.this, LaunchActivity.class));
+        overridePendingTransition(R.anim.back_slide_in, R.anim.back_slide_out);
+        finish();
+    }
+
     private boolean validateMobileNumber(String number) {
         if (!deviceManager.validateMobileNumber(number)) {
             mobileNumberLayout.setErrorEnabled(true);
@@ -166,7 +179,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         return true;
     }
 
-    private boolean validatePasscode(String passcodeStr){
+    private boolean validatePasscode(String passcodeStr) {
         if (!deviceManager.validatePasscode(passcodeStr)) {
             passcodeLayout.setErrorEnabled(true);
             passcodeLayout.setError(getString(R.string.enter_number_validation));
@@ -180,7 +193,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     /**
      * Do login on server in background.
      */
-    private void doLogin(){
+    private void doLogin() {
         showLoadingView(true, null);
         deviceManager.validateDevice(passcode.getText().toString(), getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length()).replace(" ", ""), new DataLoadListener() {
             @Override

@@ -14,9 +14,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.DeviceManager;
-import nu.yona.app.api.manager.dao.AuthenticateDAO;
 import nu.yona.app.api.manager.network.DeviceNetworkImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.NewDevice;
@@ -30,11 +28,9 @@ import nu.yona.app.utils.AppConstant;
 public class DeviceManagerImpl implements DeviceManager {
 
     private DeviceNetworkImpl deviceNetwork;
-    private AuthenticateDAO authenticateDAO;
 
     public DeviceManagerImpl(Context context) {
         deviceNetwork = new DeviceNetworkImpl();
-        authenticateDAO = new AuthenticateDAO(DatabaseHelper.getInstance(context), context);
     }
 
     /**
@@ -52,10 +48,10 @@ public class DeviceManagerImpl implements DeviceManager {
         return true;
     }
 
-    public boolean validatePasscode(String passcode){
+    public boolean validatePasscode(String passcode) {
         if (TextUtils.isEmpty(passcode)) {
             return false;
-        } else if(passcode.length() != AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT){
+        } else if (passcode.length() != AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT) {
             return false;
         }
         return true;
@@ -68,7 +64,7 @@ public class DeviceManagerImpl implements DeviceManager {
      * @param listener
      */
     public void addDevice(String devicePassword, final DataLoadListener listener) {
-        deviceNetwork.addDevice(authenticateDAO.getUser().getLinks().getYonaNewDeviceRequest().getHref(),
+        deviceNetwork.addDevice(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref(),
                 new NewDeviceRequest(devicePassword), YonaApplication.getYonaPassword(),
                 new DataLoadListener() {
 
@@ -89,7 +85,7 @@ public class DeviceManagerImpl implements DeviceManager {
     }
 
     public void deleteDevice(final DataLoadListener listener) {
-        deviceNetwork.deleteDevice(authenticateDAO.getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+        deviceNetwork.deleteDevice(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 listener.onDataLoad(result);

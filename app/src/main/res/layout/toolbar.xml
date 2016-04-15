@@ -7,11 +7,12 @@
   -->
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/triangle_shadow"
+    android:layout_height="@dimen/sixty"
+    android:background="@drawable/grape_triangle_shadow"
     android:minHeight="?attr/actionBarSize"
-    android:paddingTop="@dimen/twenty"
+    android:paddingLeft="@dimen/thirty_two"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -24,6 +25,7 @@
             style="@style/NavTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/thirty_two"
             android:textColor="@color/white" />
 
         <ImageView

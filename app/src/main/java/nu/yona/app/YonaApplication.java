@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
+import nu.yona.app.api.model.User;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
@@ -26,6 +28,7 @@ public class YonaApplication extends Application {
     private static YonaApplication mContext;
     private static SharedPreferences userPreferences;
     private static EventChangeManager eventChangeManager;
+    private static User user;
 
     public static synchronized YonaApplication getAppContext() {
         return mContext;
@@ -55,11 +58,22 @@ public class YonaApplication extends Application {
     }
 
     /**
-     *
      * @param password yona password
      */
     public static void setYonaPassword(String password) {
         getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, password).commit();
+    }
+
+    public static User getUser() {
+        if (user == null) {
+            user = new AuthenticateManagerImpl(getAppContext()).getUser();
+        }
+        return user;
+    }
+
+    public static User updateUser() {
+        user = new AuthenticateManagerImpl(getAppContext()).getUser();
+        return user;
     }
 
     @Override

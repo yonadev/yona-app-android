@@ -11,6 +11,7 @@
 package nu.yona.app.api.manager;
 
 import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 
 /**
@@ -27,4 +28,6 @@ public interface AuthenticateManager {
     void verifyMobileNumber(String otp, DataLoadListener listener);
 
     void resendOTP(DataLoadListener listener);
+
+    User getUser();
 }

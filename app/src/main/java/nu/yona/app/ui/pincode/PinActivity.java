@@ -42,7 +42,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
         YonaApplication.getEventChangeManager().registerListener(this);
 
-        txtTitle = (TextView) findViewById(R.id.txt_nav_title);
+        txtTitle = (TextView) findViewById(R.id.toolbar_title);
 
         passcodeFragment = new PasscodeFragment();
         Bundle loginBundle = new Bundle();

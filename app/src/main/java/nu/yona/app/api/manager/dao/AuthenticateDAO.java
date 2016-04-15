@@ -17,8 +17,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import nu.yona.app.api.db.DBConstant;
-import nu.yona.app.api.db.DbSerializer;
-import nu.yona.app.api.db.JsonSerializer;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 
