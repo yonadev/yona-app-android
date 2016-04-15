@@ -44,7 +44,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
         passcodeMangerImpl = new PasscodeManagerImpl();
 
-        txtTitle = (YonaFontTextView) findViewById(R.id.txt_nav_title);
+        txtTitle = (YonaFontTextView) findViewById(R.id.toolbar_title);
         YonaApplication.getEventChangeManager().registerListener(this);
         loadPasscodeView(true);
     }

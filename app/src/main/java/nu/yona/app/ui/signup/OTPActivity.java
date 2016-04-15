@@ -46,7 +46,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
 
         authenticateManager = new AuthenticateManagerImpl(this);
 
-        txtTitle = (YonaFontTextView) findViewById(R.id.txt_nav_title);
+        txtTitle = (YonaFontTextView) findViewById(R.id.toolbar_title);
         YonaApplication.getEventChangeManager().registerListener(this);
         loadOTPFragment();
     }

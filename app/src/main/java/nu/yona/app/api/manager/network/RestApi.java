@@ -9,6 +9,7 @@
  */
 
 package nu.yona.app.api.manager.network;
+
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
@@ -61,7 +62,7 @@ public interface RestApi {
     @DELETE
     Call<Void> deleteDevice(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
-    @GET ("newDeviceRequests/{mobileNumber}")
+    @GET("newDeviceRequests/{mobileNumber}")
     Call<NewDevice> checkDevice(@Path("mobileNumber") String mobileNumber, @Header(NetworkConstant.YONA_NEW_PASSWORD) String password);
 
     /******** DEVICE ************/
@@ -70,13 +71,12 @@ public interface RestApi {
      * ActivityCategory
      ************/
 
-    @GET ("activityCategories/")
+    @GET("activityCategories/")
     Call<ActivityCategories> getActivityCategories();
 
     /******** ActivityCategory ************/
 
     /******** GOALS ************/
-
 
 
     /******** GOALS ************/

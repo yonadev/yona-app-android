@@ -8,12 +8,14 @@
 <resources>
     <dimen name="one">1dp</dimen>
     <dimen name="ten">10dp</dimen>
+    <dimen name="twelve">12dp</dimen>
     <dimen name="thirteen">13dp</dimen>
     <dimen name="twenty">20dp</dimen>
     <dimen name="thirty">30dp</dimen>
     <dimen name="thirty_two">32dp</dimen>
     <dimen name="thirty_six">36dp</dimen>
     <dimen name="sixty">60dp</dimen>
+    <dimen name="seventy">70dp</dimen>
     <dimen name="tabIndicatorHeight">4dp</dimen>
     <dimen name="profile_layout">200dp</dimen>
     <dimen name="signup_profile_btn_height">60dp</dimen>

@@ -22,6 +22,7 @@ import nu.yona.app.api.manager.network.AuthenticateNetworkImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
@@ -160,5 +161,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 }
             }
         });
+    }
+
+    public User getUser() {
+        return authenticateDao.getUser();
     }
 }

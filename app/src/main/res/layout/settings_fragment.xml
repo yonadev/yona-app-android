@@ -5,38 +5,8 @@
   ~  License, v. 2.0. If a copy of the MPL was not distributed with this
   ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/settingsLayout"
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:background="@drawable/button"
-        android:padding="@dimen/twenty"
-        android:text="@string/change_pin"
-        android:textAlignment="textStart"
-        android:textStyle="bold" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        android:padding="@dimen/twenty"
-        android:text="@string/privacy"
-        android:textAlignment="textStart"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/add_device"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        android:padding="@dimen/twenty"
-        android:text="@string/add_device"
-        android:textAlignment="textStart"
-        android:textStyle="bold" />
-</LinearLayout>
+    android:background="@color/white_two" />
