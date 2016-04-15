@@ -57,7 +57,7 @@
     <string name="passcode_reset">PIN reset</string>
     <string name="invalid_otp">Invalid OTP</string>
     <string name="account_login">Account wordt aangemaakt</string>
-    <string name="account_login_security_message">Als extra beveiligings  ontvang je een code per SMS, graag deze code hieronder invullen.</string>
+    <string name="account_login_security_message">Als extra beveiliging ontvang je een code per SMS. Graag deze code hieronder invullen.</string>
     <string name="send_otp_again">Stuur code opnieuw</string>
     <string name="yona_add_device_message">" Toets deze passcode in op het device waar je Yona op gaat gebruiken."</string>
     <string name="loggedin_add_device_message">Je hebt nog niet eerder ingelogd op dit apparaat. Ga naar je primaire device (waarschijnlijk je mobiel), open Yona, vervolgens naar instellingen en klik op ‘apparaat toevoegen’. Vul vervolgens onderstaande velden in.</string>
