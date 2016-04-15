@@ -27,8 +27,9 @@ public class EventChangeManager {
     public static final int EVENT_PASSCODE_STEP_ONE = 5;
     public static final int EVENT_PASSCODE_STEP_TWO = 6;
     public static final int EVENT_PASSCODE_ERROR = 7;
+    public static final int EVENT_PASSCODE_RESET = 8;
 
-    public static final int EVENT_OTP_RESEND = 8;
+    public static final int EVENT_OTP_RESEND = 9;
 
     private final Set<EventChangeListener> listeners = new HashSet<EventChangeListener>();
 

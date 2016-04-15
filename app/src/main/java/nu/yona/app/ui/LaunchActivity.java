@@ -10,9 +10,9 @@
 
 package nu.yona.app.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import nu.yona.app.R;
@@ -37,31 +37,32 @@ public class LaunchActivity extends BaseActivity {
 
         if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
             //do nothing
-        } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
-            startNewActivity(LaunchActivity.this, OTPActivity.class);
+        } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)
+                || TextUtils.isEmpty(YonaApplication.getAppContext().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
+            startNewActivity(OTPActivity.class);
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
-            startNewActivity(LaunchActivity.this, PasscodeActivity.class);
+            startNewActivity(PasscodeActivity.class);
         } else {
-            startNewActivity(LaunchActivity.this, PinActivity.class);
+            startNewActivity(PinActivity.class);
         }
 
         findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startNewActivity(LaunchActivity.this, SignupActivity.class);
+                startNewActivity(SignupActivity.class);
             }
         });
 
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startNewActivity(LaunchActivity.this, LoginActivity.class);
+                startNewActivity(LoginActivity.class);
             }
         });
     }
 
-    public void startNewActivity(Context context, Class mClass) {
-        startActivity(new Intent(context, mClass));
+    public void startNewActivity(Class mClass) {
+        startActivity(new Intent(LaunchActivity.this, mClass));
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }

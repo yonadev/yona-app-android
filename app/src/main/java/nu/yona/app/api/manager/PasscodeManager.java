@@ -8,6 +8,8 @@
 
 package nu.yona.app.api.manager;
 
+import nu.yona.app.listener.DataLoadListener;
+
 /**
  * Created by bhargavsuthar on 3/31/16.
  */
@@ -19,4 +21,5 @@ public interface PasscodeManager {
 
     boolean validateTwoPasscode(String passcode, String passcode2);
 
+    void resendPasscode(DataLoadListener listener);
 }
