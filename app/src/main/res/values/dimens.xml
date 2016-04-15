@@ -54,6 +54,7 @@
     <dimen name="goal_view_height">114dp</dimen>
     <dimen name="goal_title_margin_top">29dp</dimen>
     <dimen name="goal_sub_title_margin_top">7dp</dimen>
+    <dimen name="category_goal_height">70dp</dimen>
 
     <dimen name="toolbar_icon_size">24dp</dimen>
 

@@ -25,6 +25,7 @@ public class NoGoFragment extends BaseGoalCreateFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        showCurrentGoalListView();
         mDescTab.setText(getActivity().getString(R.string.challenges_nogo_header_text));
         return view;
     }

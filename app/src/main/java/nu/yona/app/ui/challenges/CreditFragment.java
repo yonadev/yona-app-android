@@ -21,11 +21,15 @@ import nu.yona.app.R;
  */
 public class CreditFragment extends BaseGoalCreateFragment implements View.OnClickListener {
 
+    private GoalListAdapter mGoalListAdapter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-
+        showCurrentGoalListView();
+        mGoalListAdapter = new GoalListAdapter(getActivity(), budgetCategoriesGoalList);
+        mGoalListView.setAdapter(mGoalListAdapter);
         mDescTab.setText(getActivity().getString(R.string.challenges_tegoed_header_text));
         btnGoalAdd.setOnClickListener(this);
         return view;

@@ -31,6 +31,10 @@ import android.widget.ImageView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.ActivityCategoryManager;
+import nu.yona.app.api.manager.GoalManager;
+import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
+import nu.yona.app.api.manager.impl.GoalManagerImpl;
 import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
@@ -65,6 +69,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private ImageView rightIcon;
     private boolean isToDisplayLogin = false;
 
+    private GoalManager goalManager;
+    private ActivityCategoryManager activityCategoryManager;
+
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
      */
@@ -76,6 +83,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yona_layout);
+
+        goalManager = new GoalManagerImpl(this);
+        activityCategoryManager = new ActivityCategoryManagerImpl(this);
 
         if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean(AppConstant.FROM_LOGIN)) {
             isToDisplayLogin = false;
@@ -166,6 +176,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             startActivity(new Intent(YonaActivity.this, PinActivity.class));
             finish();
         }
+
+        goalManager.getUserGoal(null);
+        activityCategoryManager.getActivityCategoriesById(null);
     }
 
     @Override
@@ -362,7 +375,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
         } else if (mContent instanceof SettingsFragment) {
             mToolBar.setBackgroundColor(getResources().getColor(R.color.mango));
-        } else if(mContent instanceof FriendsFragment) {
+        } else if (mContent instanceof FriendsFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
         }
     }
