@@ -15,9 +15,9 @@
     </item>
     <item>
         <rotate
-            android:fromDegrees="-15"
-            android:pivotX="0%"
-            android:pivotY="100%"
+            android:fromDegrees="-13"
+            android:pivotX="-10%"
+            android:pivotY="120%"
             android:toDegrees="20">
             <shape>
                 <size
