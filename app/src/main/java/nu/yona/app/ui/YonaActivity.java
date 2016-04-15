@@ -441,7 +441,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 rightIcon.setVisibility(View.GONE);
                 break;
             case R.string.settings:
-                mToolBar.setBackgroundColor(Color.rgb(248, 179, 54));
+                mToolBar.setBackgroundResource(R.drawable.triangle_shadow_mango);
                 rightIcon.setVisibility(View.GONE);
                 break;
             case R.string.profile:
