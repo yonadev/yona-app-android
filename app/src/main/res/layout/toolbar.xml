@@ -31,7 +31,6 @@
             android:layout_toLeftOf="@+id/rightIcon"
             android:layout_toStartOf="@+id/rightIcon"
             android:maxLines="1"
-            android:text="Dashboard"
             android:textColor="@color/white" />
 
         <ImageView
