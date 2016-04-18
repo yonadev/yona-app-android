@@ -102,6 +102,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         authenticateDao.updateDataForRegisterUser(result, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaApplication.updateUser();
                 listener.onDataLoad(result);
             }
 

@@ -51,6 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void createTables(SQLiteDatabase db) {
         db.execSQL(getDBHelper().TABLE_USER_REGISTER);
         db.execSQL(getDBHelper().TABLE_ACTIVITY_CATEGORY);
+        db.execSQL(getDBHelper().TABLE_GOAL);
     }
 
     private DBHelper getDBHelper() {
