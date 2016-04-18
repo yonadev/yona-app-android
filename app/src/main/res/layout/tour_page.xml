@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/tour_img_android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_tour_android_1" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/tour_dec"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/tour_desc_margin"
+        android:gravity="center_horizontal"
+        android:text="Descriptoin of Text"
+        android:textSize="32sp" />
+
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/tour_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="@dimen/tour_desc_margin"
+        android:layout_marginRight="@dimen/tour_desc_margin"
+        android:gravity="center"
+        android:text="Text of Title"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:textStyle="@integer/roboto_medium" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="@dimen/toolbar_icon_size"
+        android:layout_height="@dimen/toolbar_icon_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="22dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="34dp"
+        android:background="@drawable/icn_next" />
+
+
+</RelativeLayout>
