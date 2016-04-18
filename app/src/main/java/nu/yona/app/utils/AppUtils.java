@@ -71,6 +71,10 @@ public class AppUtils {
 
     }
 
+    public static int getDp(Context context, int dp) {
+        return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
+    }
+
     /**
      * @param serviceClass Name of class to check whether running or not.
      * @return true if service already running else return false

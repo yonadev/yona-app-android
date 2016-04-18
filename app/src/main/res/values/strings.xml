@@ -71,4 +71,12 @@
     <string name="challenges_nogo_subText">Vermijd %1$s gerelateerde content</string>
     <string name="challenges_timzoe_subtext">Timeslot tussen %1$sen tussen %2$s</string>
     <string name="challenges_budget_subtext">Je kunt per dag %1$s minuten daten</string>
+    <string name="screentitle1">Transparantie</string>
+    <string name="screentitle2">Delen</string>
+    <string name="screentitle3">Grenzen</string>
+    <string name="screentitle4">Tijdsbesteding</string>
+    <string name="screendesc1">Persoonlijke keuze om transparant te zijn...</string>
+    <string name="screendesc2">Je doelen delen met de persoon die je vertrouwt</string>
+    <string name="screendesc3">Grenzen afspreken en daar anderen in betrekken</string>
+    <string name="screendesc4">Controle houden over de tijd die je online bent</string>
 </resources>
