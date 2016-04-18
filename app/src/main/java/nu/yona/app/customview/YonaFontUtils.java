@@ -21,6 +21,13 @@ import nu.yona.app.R;
 
 public class YonaFontUtils {
 
+    //font Style TypeFace
+    private static final int ROBOTO_LIGHT = 10;
+    private static final int ROBOTO_MEDIUM = 11;
+    private static final int ROBOTO_BOLD = 12;
+    private static final int ROBOTO_NORMAL = 13;
+
+
     public static final String ANDROID_SCHEMA = "http://schemas.android.com/apk/res/android";
     private static HashMap<String, Typeface> fontCache = new HashMap<>();
 
@@ -45,16 +52,16 @@ public class YonaFontUtils {
             http://developer.android.com/reference/android/R.styleable.html#TextView_textStyle
             */
         switch (textStyle) {
-            case 12: // bold
-                return getTypeface("roboto-bold.ttf", context);
-
-            case 10: // extra light, equals @integer/font_style_extra_light
+            case ROBOTO_LIGHT: // extra light, equals @integer/font_style_extra_light
                 return getTypeface("roboto-light.ttf", context);
 
-            case 11:
+            case ROBOTO_MEDIUM:
                 return getTypeface("roboto-medium.ttf", context);
 
-            case 13: // regular
+            case ROBOTO_BOLD: // bold
+                return getTypeface("roboto-bold.ttf", context);
+
+            case ROBOTO_NORMAL: // regular
             default:
                 return getTypeface("roboto-Regular.ttf", context);
         }
