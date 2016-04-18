@@ -15,17 +15,35 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
-import nu.yona.app.ui.BaseFragment;
 
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class CreditFragment extends BaseFragment {
+public class CreditFragment extends BaseGoalCreateFragment implements View.OnClickListener {
+
+    private GoalListAdapter mGoalListAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.challenges_credit_fragment, null);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        showCurrentGoalListView();
+        mGoalListAdapter = new GoalListAdapter(getActivity(), budgetCategoriesGoalList);
+        mGoalListView.setAdapter(mGoalListAdapter);
+        mDescTab.setText(getActivity().getString(R.string.challenges_tegoed_header_text));
+        btnGoalAdd.setOnClickListener(this);
+        return view;
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.img_add_goal:
+                //show new goal list creation view
+                showNewListOfGoalView();
+                break;
+            default:
+                break;
+        }
     }
 }

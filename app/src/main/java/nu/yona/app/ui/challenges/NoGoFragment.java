@@ -15,17 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
-import nu.yona.app.ui.BaseFragment;
 
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class NoGoFragment extends BaseFragment {
+public class NoGoFragment extends BaseGoalCreateFragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.challenges_nogo_fragment, null);
-
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        showCurrentGoalListView();
+        mDescTab.setText(getActivity().getString(R.string.challenges_nogo_header_text));
+        return view;
     }
 }

@@ -17,7 +17,9 @@ import android.support.v4.app.FragmentTransaction;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.AuthenticateManager;
+import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -38,6 +40,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
     private PasscodeFragment otpFragment;
     private YonaFontTextView txtTitle;
     private AuthenticateManager authenticateManager;
+    private ActivityCategoryManager activityCategoryManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         setContentView(R.layout.blank_container_layout);
 
         authenticateManager = new AuthenticateManagerImpl(this);
+        activityCategoryManager = new ActivityCategoryManagerImpl(this);
 
         txtTitle = (YonaFontTextView) findViewById(R.id.toolbar_title);
         YonaApplication.getEventChangeManager().registerListener(this);
@@ -93,6 +97,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         authenticateManager.verifyMobileNumber(otpString, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                getActivityCategories();
                 showLoadingView(false, null);
                 showPasscodeScreen();
             }
@@ -111,6 +116,13 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
                 }
             }
         });
+    }
+
+    /*
+     * Get all activity categories
+     */
+    private void getActivityCategories() {
+        activityCategoryManager.getActivityCategoriesById(null);
     }
 
     private void resendOTP() {
