@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -34,6 +35,7 @@ import nu.yona.app.utils.PreferenceConstant;
 public class PinActivity extends BaseActivity implements EventChangeListener {
 
     private PasscodeManagerImpl passcodeManagerImpl;
+    private AuthenticateManagerImpl authenticateManager;
     private TextView txtTitle;
     private PasscodeFragment passcodeFragment;
 
@@ -43,7 +45,8 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blank_container_layout);
 
-        passcodeManagerImpl = new PasscodeManagerImpl(this);
+        passcodeManagerImpl = new PasscodeManagerImpl();
+        authenticateManager = new AuthenticateManagerImpl(this);
 
         YonaApplication.getEventChangeManager().registerListener(this);
 
@@ -116,11 +119,17 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
     private void doPinReset() {
         showLoadingView(true, null);
-        passcodeManagerImpl.requestPinReset(new DataLoadListener() {
+        authenticateManager.requestPinReset(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
-                loadOTPScreen();
+                CustomAlertDialog.show(PinActivity.this, getString(R.string.reset_pin_request), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        loadOTPScreen();
+                    }
+                });
             }
 
             @Override
