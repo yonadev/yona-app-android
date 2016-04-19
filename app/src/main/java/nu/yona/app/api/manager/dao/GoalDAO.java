@@ -44,11 +44,11 @@ public class GoalDAO extends BaseDAO {
             } else {
                 update(DBConstant.TBL_GOAL, values, DBConstant.ID + " = ?", new String[]{ID});
             }
-            if(listener != null) {
+            if (listener != null) {
                 listener.onDataLoad(goals);
             }
         } catch (Exception e) {
-            if(listener != null) {
+            if (listener != null) {
                 listener.onError(e.getMessage() != null ? e.getMessage() : e.getLocalizedMessage());
             }
         }

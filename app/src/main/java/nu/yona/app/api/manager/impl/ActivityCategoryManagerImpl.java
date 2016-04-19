@@ -30,7 +30,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
     public ActivityCategoryManagerImpl(Context context) {
         activityCategoriesNetwork = new ActivityCategoriesNetworkImpl();
         activityCategoriesDAO = new ActivityCategoriesDAO(DatabaseHelper.getInstance(context), context);
-        authenticateDao = new AuthenticateDAO(DatabaseHelper.getInstance(context), context);
+        authenticateDao = new AuthenticateDAO(context);
     }
 
     /**

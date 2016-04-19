@@ -50,7 +50,15 @@ public class Links extends BaseEntity {
     @SerializedName("yona:resendMobileNumberConfirmationCode")
     @Expose
     private Href resendMobileNumberConfirmationCode;
-
+    @SerializedName("yona:requestPinReset")
+    @Expose
+    private Href requestPinReset;
+    @SerializedName("yona:clearPinReset")
+    @Expose
+    private Href clearPinReset;
+    @SerializedName("yona:verifyPinReset")
+    @Expose
+    private Href verifyPinReset;
     /**
      * @return The self
      */
@@ -177,6 +185,30 @@ public class Links extends BaseEntity {
 
     public void setResendMobileNumberConfirmationCode(Href resendMobileNumberConfirmationCode) {
         this.resendMobileNumberConfirmationCode = resendMobileNumberConfirmationCode;
+    }
+
+    public Href getRequestPinReset() {
+        return requestPinReset;
+    }
+
+    public void setRequestPinReset(Href requestPinReset) {
+        this.requestPinReset = requestPinReset;
+    }
+
+    public Href getVerifyPinReset() {
+        return verifyPinReset;
+    }
+
+    public void setVerifyPinReset(Href verifyPinReset) {
+        this.verifyPinReset = verifyPinReset;
+    }
+
+    public Href getClearPinReset() {
+        return clearPinReset;
+    }
+
+    public void setClearPinReset(Href clearPinReset) {
+        this.clearPinReset = clearPinReset;
     }
 
     @Override

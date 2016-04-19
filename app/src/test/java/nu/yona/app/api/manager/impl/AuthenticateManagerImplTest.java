@@ -59,7 +59,7 @@ public class AuthenticateManagerImplTest {
     }
 
     public void validateMobileNumber(String password, String code) {
-        manager.verifyMobileNumber(code, new DataLoadListener() {
+        manager.verifyOTP(code, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 System.out.println(result.toString());

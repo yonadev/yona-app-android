@@ -43,6 +43,9 @@ public interface RestApi {
     Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
                             @Body RegisterUser body);
 
+    @GET
+    Call<User> getUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword);
+
     @POST
     Call<User> verifyMobileNumber(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
                                   @Body OTPVerficationCode code);
@@ -51,6 +54,16 @@ public interface RestApi {
     Call<Void> resendOTP(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
     /******** USER ************/
+
+    /********
+     * RESET PIN
+     ************/
+
+    @POST
+    Call<Void> requestPinReset(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
+
+    /******** RESET PIN ************/
 
     /********
      * DEVICE

@@ -13,10 +13,10 @@ package nu.yona.app.api.manager.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import nu.yona.app.api.db.DBConstant;
+import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 
@@ -28,8 +28,8 @@ public class AuthenticateDAO extends BaseDAO {
     private String USER_ID = "1"; // single user app and default id in db for that is 1.
 
 
-    public AuthenticateDAO(SQLiteOpenHelper mOpenHelper, Context context) {
-        super(mOpenHelper, context);
+    public AuthenticateDAO(Context context) {
+        super(DatabaseHelper.getInstance(context), context);
     }
 
     public void updateDataForRegisterUser(Object result, DataLoadListener listener) {

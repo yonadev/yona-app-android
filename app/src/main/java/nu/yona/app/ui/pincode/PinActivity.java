@@ -8,6 +8,7 @@
 
 package nu.yona.app.ui.pincode;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
+import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -40,7 +43,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blank_container_layout);
 
-        passcodeManagerImpl = new PasscodeManagerImpl();
+        passcodeManagerImpl = new PasscodeManagerImpl(this);
 
         YonaApplication.getEventChangeManager().registerListener(this);
 
@@ -112,8 +115,8 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
 
     private void doPinReset() {
-//        showLoadingView(true, null);
-        passcodeManagerImpl.resendPasscode(new DataLoadListener() {
+        showLoadingView(true, null);
+        passcodeManagerImpl.requestPinReset(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
@@ -122,7 +125,14 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
             @Override
             public void onError(Object errorMessage) {
+                ErrorMessage message = (ErrorMessage) errorMessage;
                 showLoadingView(false, null);
+                CustomAlertDialog.show(PinActivity.this, message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
             }
         });
     }

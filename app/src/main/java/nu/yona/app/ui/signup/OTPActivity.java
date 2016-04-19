@@ -94,7 +94,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
 
     private void validateOTP(final String otpString) {
         showLoadingView(true, null);
-        authenticateManager.verifyMobileNumber(otpString, new DataLoadListener() {
+        authenticateManager.verifyOTP(otpString, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 getActivityCategories();
