@@ -62,7 +62,11 @@ public interface RestApi {
     @POST
     Call<Void> requestPinReset(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
+    @POST
+    Call<Void> verifyPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body OTPVerficationCode code);
 
+    @POST
+    Call<Void> clearPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
     /******** RESET PIN ************/
 
     /********

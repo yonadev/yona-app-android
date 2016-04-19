@@ -144,9 +144,11 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                             }
                         });
             } else {
-                authNetwork.doPasscodeReset(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+                authNetwork.doVerifyPin(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref(), otp, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
+                        YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, false).commit();
+                        authNetwork.doClearPin(authenticateDao.getUser().getLinks().getClearPinReset().getHref(), YonaApplication.getYonaPassword());
                         listener.onDataLoad(result);
                     }
 
