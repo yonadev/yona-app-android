@@ -30,7 +30,6 @@ public class GoalCategoryListAdapter<T> extends BaseAdapter {
     private List<T> mListYonaGoal;
     private GaolViewHolder goalViewHolder;
 
-
     public GoalCategoryListAdapter(Context context, List<T> listYonaGoal) {
         this.mContext = context;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -54,15 +53,15 @@ public class GoalCategoryListAdapter<T> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            view = mInflater.inflate(R.layout.category_goal_item_layout, parent, false);
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.category_goal_item_layout, parent, false);
             goalViewHolder = new GaolViewHolder();
-            goalViewHolder.title_goal = (YonaFontTextView) view.findViewById(R.id.goal_title);
-            view.setTag(goalViewHolder);
+            goalViewHolder.title_goal = (YonaFontTextView) convertView.findViewById(R.id.goal_title);
+            convertView.setTag(goalViewHolder);
         } else {
-            goalViewHolder = (GaolViewHolder) view.getTag();
+            goalViewHolder = (GaolViewHolder) convertView.getTag();
         }
+
         Object object = getItem(position);
         if (object instanceof YonaActivityCategories) {
             YonaActivityCategories mYonaActivityCategories = (YonaActivityCategories) getItem(position);
@@ -70,7 +69,7 @@ public class GoalCategoryListAdapter<T> extends BaseAdapter {
                 goalViewHolder.title_goal.setText(mYonaActivityCategories.getName());
             }
         }
-        return view;
+        return convertView;
     }
 
     public void updateGoalsList(final List<T> yonaGoalList) {
