@@ -41,13 +41,12 @@ public class BaseGoalCreateFragment extends BaseFragment {
     protected ListView mGoalCreationListView;
     protected ImageButton btnGoalAdd;
     protected YonaFontTextView mDescTab;
-    private GoalManager goalManager;
-    private ActivityCategoryManager activityCategoryManager;
     protected List<YonaGoal> budgetCategoriesGoalList;
     protected List<YonaGoal> timeZoneCategoriesGoalList;
     protected List<YonaGoal> noGoCategoriesGoalList;
     protected List<YonaActivityCategories> mYonaActivityCategoriesList;
-
+    private GoalManager goalManager;
+    private ActivityCategoryManager activityCategoryManager;
     private GoalCategoryListAdapter categoryGoalListAdapter;
 
 

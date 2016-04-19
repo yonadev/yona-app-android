@@ -27,11 +27,11 @@ import nu.yona.app.ui.ViewPagerAdapter;
  * Created by kinnarvasa on 21/03/16.
  */
 public class ChallengesFragment extends BaseFragment {
+    private final float TAB_ALPHA_SELECTED = 1;
+    private final double TAB_ALPHA_UNSELECTED = 0.5;
     private View view;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private final float TAB_ALPHA_SELECTED = 1;
-    private final double TAB_ALPHA_UNSELECTED = 0.5;
 
     @Nullable
     @Override

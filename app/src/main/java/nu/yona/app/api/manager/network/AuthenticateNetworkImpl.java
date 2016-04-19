@@ -30,7 +30,68 @@ import retrofit2.Response;
 public class AuthenticateNetworkImpl extends BaseImpl {
 
     public void registerUser(String password, RegisterUser object, final DataLoadListener listener) {
-        getRestApi().registerUser(password, object).enqueue(new Callback<User>() {
+        getRestApi().registerUser(password, object).enqueue(getUserCallBack(listener));
+    }
+
+    public void getUser(String url, String yonaPassword, DataLoadListener listener) {
+        try {
+            getRestApi().getUser(url, yonaPassword).enqueue(getUserCallBack(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
+    }
+
+    public void verifyMobileNumber(String password, String url, OTPVerficationCode otp, final DataLoadListener listener) {
+        try {
+            getRestApi().verifyMobileNumber(url, password, otp).enqueue(getUserCallBack(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
+    }
+
+    public void resendOTP(String url, String password, final DataLoadListener listener) {
+        try {
+            getRestApi().resendOTP(url, password).enqueue(getCall(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
+    }
+
+
+    /**
+     * @param url          : URL for passcode reset
+     * @param yonaPassword : Yona password
+     * @param listener
+     */
+    public void doPasscodeReset(String url, String yonaPassword, final DataLoadListener listener) {
+        try {
+            getRestApi().requestPinReset(url, yonaPassword).enqueue(getCall(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.toString()));
+            }
+        }
+    }
+
+    /**
+     * @param url          URL for Verify Pin Reset
+     * @param otp          OTP value received from SMS
+     * @param yonaPassword Yona Password
+     * @param listener
+     */
+    public void doVerifyPinReset(String url, String otp, String yonaPassword, DataLoadListener listener) {
+
+    }
+
+
+    private Callback<User> getUserCallBack(final DataLoadListener listener) {
+        return new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
@@ -51,46 +112,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
             public void onFailure(Call<User> call, Throwable t) {
                 listener.onError(new ErrorMessage(t.getMessage()));
             }
-        });
+        };
     }
 
-    public void verifyMobileNumber(String password, String url, OTPVerficationCode otp, final DataLoadListener listener) {
-        try {
-            getRestApi().verifyMobileNumber(url, password, otp).enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                        listener.onDataLoad(response.body());
-                    } else {
-                        try {
-                            Converter<ResponseBody, ErrorMessage> errorConverter =
-                                    getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
-                            listener.onError(errorConverter.convert(response.errorBody()));
-                        } catch (IOException e) {
-                            listener.onError(new ErrorMessage(e.getMessage()));
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    listener.onError(new ErrorMessage(t.getMessage()));
-                }
-            });
-        } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
-        }
-    }
-
-    public void resendOTP(String url, String password, final DataLoadListener listener) {
-        try {
-            getRestApi().resendOTP(url, password).enqueue(getCall(listener));
-        } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
-        }
-    }
 }

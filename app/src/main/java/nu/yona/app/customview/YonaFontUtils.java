@@ -21,14 +21,12 @@ import nu.yona.app.R;
 
 public class YonaFontUtils {
 
+    public static final String ANDROID_SCHEMA = "http://schemas.android.com/apk/res/android";
     //font Style TypeFace
     private static final int ROBOTO_LIGHT = 10;
     private static final int ROBOTO_MEDIUM = 11;
     private static final int ROBOTO_BOLD = 12;
     private static final int ROBOTO_NORMAL = 13;
-
-
-    public static final String ANDROID_SCHEMA = "http://schemas.android.com/apk/res/android";
     private static HashMap<String, Typeface> fontCache = new HashMap<>();
 
     public static void applyCustomFont(TextView customFontTextView, Context context, AttributeSet attrs) {

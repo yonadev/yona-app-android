@@ -19,7 +19,7 @@ import nu.yona.app.R;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClickListener{
+public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClickListener {
 
     private GoalListAdapter mGoalListAdapter;
 
