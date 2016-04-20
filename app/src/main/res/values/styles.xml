@@ -34,11 +34,13 @@
 
     <style name="SeScoreNeg">
         <item name="android:textSize">32sp</item>
+        <item name="android:typeface">@integer/oswald_light</item>
         <item name="android:textColor">@color/darkish_pink</item>
     </style>
 
     <style name="SeScorePos">
         <item name="android:textSize">32sp</item>
+        <item name="textStyle">@integer/oswald_light</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
