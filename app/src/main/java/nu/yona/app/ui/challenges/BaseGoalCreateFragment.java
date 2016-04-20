@@ -116,4 +116,18 @@ public class BaseGoalCreateFragment extends BaseFragment {
         }
     }
 
+    /**
+     * It will check the visibility of child View
+     */
+    public boolean checkIsChildViewVisible() {
+        return mGoalCreationListView.getVisibility() == View.VISIBLE ? true : false;
+    }
+
+    /**
+     * onBackpressed of button it will call from main activity
+     */
+    public void onBackPressedView() {
+        showCurrentGoalListView();
+    }
+
 }
