@@ -27,6 +27,7 @@ public class YonaFontUtils {
     private static final int ROBOTO_MEDIUM = 11;
     private static final int ROBOTO_BOLD = 12;
     private static final int ROBOTO_NORMAL = 13;
+    private static final int OSWALD_LIGHT = 14;
     private static HashMap<String, Typeface> fontCache = new HashMap<>();
 
     public static void applyCustomFont(TextView customFontTextView, Context context, AttributeSet attrs) {
@@ -58,6 +59,9 @@ public class YonaFontUtils {
 
             case ROBOTO_BOLD: // bold
                 return getTypeface("roboto-bold.ttf", context);
+
+            case OSWALD_LIGHT:
+                return getTypeface("oswald-light.ttf", context);
 
             case ROBOTO_NORMAL: // regular
             default:
