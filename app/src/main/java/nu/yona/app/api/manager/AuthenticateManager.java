@@ -32,4 +32,6 @@ public interface AuthenticateManager {
     void requestPinReset(DataLoadListener listener);
 
     User getUser();
+
+    void getUser(final String url, final DataLoadListener listener);
 }

@@ -59,6 +59,9 @@ public class Links extends BaseEntity {
     @SerializedName("yona:verifyPinReset")
     @Expose
     private Href verifyPinReset;
+    @SerializedName("yona:user")
+    @Expose
+    private Href yonaUser;
     /**
      * @return The self
      */
@@ -211,6 +214,23 @@ public class Links extends BaseEntity {
         this.clearPinReset = clearPinReset;
     }
 
+    /**
+     *
+     * @return
+     * The yonaUser
+     */
+    public Href getYonaUser() {
+        return yonaUser;
+    }
+
+    /**
+     *
+     * @param yonaUser
+     * The yona:user
+     */
+    public void setYonaUser(Href yonaUser) {
+        this.yonaUser = yonaUser;
+    }
     @Override
     public ContentValues getDbContentValues() {
         return null;

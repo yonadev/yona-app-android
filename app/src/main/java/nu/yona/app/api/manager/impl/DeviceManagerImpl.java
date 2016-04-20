@@ -28,8 +28,9 @@ import nu.yona.app.utils.AppConstant;
 public class DeviceManagerImpl implements DeviceManager {
 
     private DeviceNetworkImpl deviceNetwork;
-
+    private Context mContext;
     public DeviceManagerImpl(Context context) {
+        mContext = context;
         deviceNetwork = new DeviceNetworkImpl();
     }
 
@@ -117,7 +118,7 @@ public class DeviceManagerImpl implements DeviceManager {
                     public void onDataLoad(Object result) {
                         NewDevice device = (NewDevice) result;
                         YonaApplication.setYonaPassword(device.getYonaPassword());
-                        listener.onDataLoad(result);
+                        getUser(device, listener);
                     }
 
                     @Override
@@ -129,5 +130,31 @@ public class DeviceManagerImpl implements DeviceManager {
                         }
                     }
                 });
+    }
+
+    private void getUser(NewDevice device, final DataLoadListener listener) {
+        try {
+            new AuthenticateManagerImpl(mContext).getUser(device.getLinks().getYonaUser().getHref(), new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    listener.onDataLoad(result);
+                    YonaApplication.updateUser();
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    if (errorMessage instanceof ErrorMessage) {
+                        listener.onError(errorMessage);
+                    } else {
+                        listener.onError(new ErrorMessage(errorMessage.toString()));
+                    }
+                }
+            });
+        } catch (Exception e) {
+            if(e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
+
     }
 }
