@@ -78,6 +78,22 @@ public class YonaGoal extends BaseEntity {
         this.activityCategoryName = activityCategoryName;
     }
 
+    public long getMaxDurationMinutes() {
+        return maxDurationMinutes;
+    }
+
+    public void setMaxDurationMinutes(long maxDurationMinutes) {
+        this.maxDurationMinutes = maxDurationMinutes;
+    }
+
+    public List<String> getZones() {
+        return zones;
+    }
+
+    public void setZones(List<String> zones) {
+        this.zones = zones;
+    }
+
     @Override
     public ContentValues getDbContentValues() {
         return null;

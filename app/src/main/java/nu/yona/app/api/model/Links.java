@@ -26,6 +26,9 @@ public class Links extends BaseEntity {
     @SerializedName("edit")
     @Expose
     private Href edit;
+    @SerializedName("yona:activityCategory")
+    @Expose
+    private Href yonaActivityCategory;
     @SerializedName("yona:messages")
     @Expose
     private Href yonaMessages;
@@ -62,6 +65,7 @@ public class Links extends BaseEntity {
     @SerializedName("yona:user")
     @Expose
     private Href yonaUser;
+
     /**
      * @return The self
      */
@@ -215,22 +219,27 @@ public class Links extends BaseEntity {
     }
 
     /**
-     *
-     * @return
-     * The yonaUser
+     * @return The yonaUser
      */
     public Href getYonaUser() {
         return yonaUser;
     }
 
     /**
-     *
-     * @param yonaUser
-     * The yona:user
+     * @param yonaUser The yona:user
      */
     public void setYonaUser(Href yonaUser) {
         this.yonaUser = yonaUser;
     }
+
+    public Href getYonaActivityCategory() {
+        return yonaActivityCategory;
+    }
+
+    public void setYonaActivityCategory(Href yonaActivityCategory) {
+        this.yonaActivityCategory = yonaActivityCategory;
+    }
+
     @Override
     public ContentValues getDbContentValues() {
         return null;

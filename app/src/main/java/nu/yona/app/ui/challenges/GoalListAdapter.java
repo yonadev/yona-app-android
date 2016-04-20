@@ -20,6 +20,7 @@ import java.util.List;
 import nu.yona.app.R;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.enums.GoalsEnum;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
@@ -68,6 +69,13 @@ public class GoalListAdapter<T> extends BaseAdapter {
         if (object instanceof YonaGoal) {
             YonaGoal mYonaGoal = (YonaGoal) getItem(position);
             if (mYonaGoal != null) {
+                if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
+                    goalViewHolder.desc_goal.setText(mContext.getString(R.string.challenges_budget_subtext, mYonaGoal.getMaxDurationMinutes()));
+                } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
+                    goalViewHolder.desc_goal.setText(mContext.getString(R.string.challenges_timzoe_subtext, mYonaGoal.getZones().get(0), mYonaGoal.getZones().get(1)));
+                } else {
+                    goalViewHolder.desc_goal.setText(mContext.getString(R.string.challenges_nogo_subText, mYonaGoal.getActivityCategoryName()));
+                }
                 goalViewHolder.title_goal.setText(mYonaGoal.getActivityCategoryName());
             }
         }

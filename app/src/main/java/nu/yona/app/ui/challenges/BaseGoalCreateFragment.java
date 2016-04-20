@@ -10,6 +10,7 @@ package nu.yona.app.ui.challenges;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import nu.yona.app.R;
 import nu.yona.app.api.manager.ActivityCategoryManager;
@@ -48,6 +51,7 @@ public class BaseGoalCreateFragment extends BaseFragment {
     private GoalManager goalManager;
     private ActivityCategoryManager activityCategoryManager;
     private GoalCategoryListAdapter categoryGoalListAdapter;
+    protected HashMap<String, String> mGoalCategoriesMap;
 
 
     @Nullable
@@ -62,6 +66,8 @@ public class BaseGoalCreateFragment extends BaseFragment {
         timeZoneCategoriesGoalList = new ArrayList<YonaGoal>();
         noGoCategoriesGoalList = new ArrayList<YonaGoal>();
         mYonaActivityCategoriesList = new ArrayList<YonaActivityCategories>();
+        mGoalCategoriesMap = new HashMap<String, String>();
+
         getListOfCategory();
         filterCategoriesGoal();
 
@@ -92,6 +98,9 @@ public class BaseGoalCreateFragment extends BaseFragment {
         if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
             for (YonaActivityCategories activityCategories : embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories()) {
                 mYonaActivityCategoriesList.add(activityCategories);
+                if (!TextUtils.isEmpty(activityCategories.getName()) && !TextUtils.isEmpty(activityCategories.get_links().getSelf().getHref())) {
+                    mGoalCategoriesMap.put(activityCategories.getName(), activityCategories.get_links().getSelf().getHref());
+                }
             }
 
         }
@@ -104,9 +113,15 @@ public class BaseGoalCreateFragment extends BaseFragment {
         if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
             for (YonaGoal mYonaGoal : userGoals.getEmbedded().getYonaGoals()) {
                 if (mYonaGoal != null) {
-                    if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString())) {
+                    for (Map.Entry<String, String> entry : mGoalCategoriesMap.entrySet()) {
+                        if (entry.getValue().equals(mYonaGoal.getLinks().getYonaActivityCategory().getHref())) {
+                            mYonaGoal.setActivityCategoryName(entry.getKey());
+                            break;
+                        }
+                    }
+                    if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
                         budgetCategoriesGoalList.add(mYonaGoal);
-                    } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
+                    } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
                         timeZoneCategoriesGoalList.add(mYonaGoal);
                     } else {
                         noGoCategoriesGoalList.add(mYonaGoal);
