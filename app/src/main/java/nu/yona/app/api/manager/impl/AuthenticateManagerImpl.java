@@ -174,7 +174,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
             authNetwork.doPasscodeReset(YonaApplication.getUser().getLinks().getRequestPinReset().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    getUser(listener);
+                    getUser(getUser().getLinks().getSelf().getHref(), listener);
                 }
 
                 @Override
@@ -191,8 +191,14 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         }
     }
 
-    private void getUser(final DataLoadListener listener) {
-        authNetwork.getUser(getUser().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+    /**
+     *
+     * @param url url to fetch user
+     * @param listener
+     */
+    @Override
+    public void getUser(final String url, final DataLoadListener listener) {
+        authNetwork.getUser(url, YonaApplication.getYonaPassword(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 updateDataForRegisterUser((User) result, listener);
