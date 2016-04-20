@@ -191,11 +191,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * This will check whether user has given permission or not, if already given, it will start service, if not given, it will ask for permission.
      */
     private void checkPermission() {
-        if (!AppUtils.hasPermission(this)) {
-            showPermissionAlert();
-        } else {
-            AppUtils.startService(this);
-        }
+        //As this feature is not yet implemented, commenting, so user don't see any alert during testing.
+//        if (!AppUtils.hasPermission(this)) {
+//            showPermissionAlert();
+//        } else {
+//            AppUtils.startService(this);
+//        }
     }
 
     @Override

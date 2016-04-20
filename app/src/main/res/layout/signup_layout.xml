@@ -25,6 +25,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/sixty"
                 android:layout_height="@dimen/signup_add_avatar_height"
                 android:background="@color/grape"
                 android:scaleType="centerInside"
