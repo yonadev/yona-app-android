@@ -479,8 +479,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     @Override
     public void onBackPressed() {
-        isBackPressed = true;
-        onBackStackChanged();
-        super.onBackPressed();
+        if (mContent instanceof ChallengesFragment && ((ChallengesFragment) mContent).isChildViewVisible()) {
+            ((ChallengesFragment) mContent).updateView();
+        } else {
+            isBackPressed = true;
+            onBackStackChanged();
+            super.onBackPressed();
+        }
     }
 }
