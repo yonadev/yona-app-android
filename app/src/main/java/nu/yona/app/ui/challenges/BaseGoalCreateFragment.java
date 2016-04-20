@@ -116,6 +116,7 @@ public class BaseGoalCreateFragment extends BaseFragment {
                     for (Map.Entry<String, String> entry : mGoalCategoriesMap.entrySet()) {
                         if (entry.getValue().equals(mYonaGoal.getLinks().getYonaActivityCategory().getHref())) {
                             mYonaGoal.setActivityCategoryName(entry.getKey());
+                            break;
                         }
                     }
                     if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
