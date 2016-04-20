@@ -112,23 +112,33 @@ public class ChallengesFragment extends BaseFragment {
     }
 
     public boolean isChildViewVisible() {
-        if (tabLayout.getSelectedTabPosition() == 0) {
-            return creditFragment.checkIsChildViewVisible();
-        } else if (tabLayout.getSelectedTabPosition() == 1) {
-            return zoneFragment.checkIsChildViewVisible();
-        } else if (tabLayout.getSelectedTabPosition() == 2) {
-            return noGoFragment.checkIsChildViewVisible();
+
+        switch (tabLayout.getSelectedTabPosition()) {
+            case TAB_INDEX_ONE:
+                return creditFragment.checkIsChildViewVisible();
+            case TAB_INDEX_TWO:
+                return zoneFragment.checkIsChildViewVisible();
+            case TAB_INDEX_THREE:
+                return noGoFragment.checkIsChildViewVisible();
+            default:
+                return false;
         }
-        return false;
     }
 
     public void updateView() {
-        if (tabLayout.getSelectedTabPosition() == 0) {
-            creditFragment.onBackPressedView();
-        } else if (tabLayout.getSelectedTabPosition() == 1) {
-            zoneFragment.onBackPressedView();
-        } else if (tabLayout.getSelectedTabPosition() == 2) {
-            noGoFragment.onBackPressedView();
+
+        switch (tabLayout.getSelectedTabPosition()) {
+            case TAB_INDEX_ONE:
+                creditFragment.onBackPressedView();
+                break;
+            case TAB_INDEX_TWO:
+                zoneFragment.onBackPressedView();
+                break;
+            case TAB_INDEX_THREE:
+                noGoFragment.onBackPressedView();
+                break;
+            default:
+                break;
         }
     }
 
