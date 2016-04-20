@@ -218,8 +218,6 @@ public class Links extends BaseEntity {
         this.clearPinReset = clearPinReset;
     }
 
-    <<<<<<<Updated upstream
-
     /**
      * @return The yonaUser
      */
@@ -234,8 +232,6 @@ public class Links extends BaseEntity {
         this.yonaUser = yonaUser;
     }
 
-    =======
-
     public Href getYonaActivityCategory() {
         return yonaActivityCategory;
     }
@@ -243,9 +239,6 @@ public class Links extends BaseEntity {
     public void setYonaActivityCategory(Href yonaActivityCategory) {
         this.yonaActivityCategory = yonaActivityCategory;
     }
-
-    >>>>>>>
-    Stashed changes
 
     @Override
     public ContentValues getDbContentValues() {
