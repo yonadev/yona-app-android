@@ -8,32 +8,26 @@
 
 package nu.yona.app.ui.challenges;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import nu.yona.app.R;
-import nu.yona.app.api.manager.ActivityCategoryManager;
-import nu.yona.app.api.manager.GoalManager;
-import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
-import nu.yona.app.api.manager.impl.GoalManagerImpl;
+import nu.yona.app.api.manager.ChallengesManager;
+import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
 import nu.yona.app.api.model.ActivityCategories;
-import nu.yona.app.api.model.Goals;
-import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.YonaFontTextView;
-import nu.yona.app.enums.GoalsEnum;
+import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by bhargavsuthar on 13/04/16.
@@ -44,14 +38,8 @@ public class BaseGoalCreateFragment extends BaseFragment {
     protected ListView mGoalCreationListView;
     protected ImageButton btnGoalAdd;
     protected YonaFontTextView mDescTab;
-    protected List<YonaGoal> budgetCategoriesGoalList;
-    protected List<YonaGoal> timeZoneCategoriesGoalList;
-    protected List<YonaGoal> noGoCategoriesGoalList;
-    protected List<YonaActivityCategories> mYonaActivityCategoriesList;
-    private GoalManager goalManager;
-    private ActivityCategoryManager activityCategoryManager;
     private GoalCategoryListAdapter categoryGoalListAdapter;
-    protected HashMap<String, String> mGoalCategoriesMap;
+    protected ChallengesManager challengesManager;
 
 
     @Nullable
@@ -59,24 +47,14 @@ public class BaseGoalCreateFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.goal_creation_layout, null);
 
-        goalManager = new GoalManagerImpl(getActivity());
-        activityCategoryManager = new ActivityCategoryManagerImpl(getActivity());
-
-        budgetCategoriesGoalList = new ArrayList<YonaGoal>();
-        timeZoneCategoriesGoalList = new ArrayList<YonaGoal>();
-        noGoCategoriesGoalList = new ArrayList<YonaGoal>();
-        mYonaActivityCategoriesList = new ArrayList<YonaActivityCategories>();
-        mGoalCategoriesMap = new HashMap<String, String>();
-
-        getListOfCategory();
-        filterCategoriesGoal();
-
+        challengesManager = new ChallengesManagerImpl(getActivity());
         mGoalListView = (ListView) view.findViewById(R.id.goal_listview);
         mGoalCreationListView = (ListView) view.findViewById(R.id.new_goal_listview);
-        categoryGoalListAdapter = new GoalCategoryListAdapter(getActivity(), mYonaActivityCategoriesList);
+        categoryGoalListAdapter = new GoalCategoryListAdapter(getActivity(), challengesManager.getListOfCategories());
         mGoalCreationListView.setAdapter(categoryGoalListAdapter);
         btnGoalAdd = (ImageButton) view.findViewById(R.id.img_add_goal);
         mDescTab = (YonaFontTextView) view.findViewById(R.id.txt_header_text);
+        mGoalCreationListView.setOnItemClickListener(itemClickListener);
         return view;
     }
 
@@ -93,43 +71,6 @@ public class BaseGoalCreateFragment extends BaseFragment {
         mGoalCreationListView.setVisibility(View.VISIBLE);
     }
 
-    private synchronized void getListOfCategory() {
-        ActivityCategories embeddedActivityCategories = activityCategoryManager.getListOfActivityCategories();
-        if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
-            for (YonaActivityCategories activityCategories : embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories()) {
-                mYonaActivityCategoriesList.add(activityCategories);
-                if (!TextUtils.isEmpty(activityCategories.getName()) && !TextUtils.isEmpty(activityCategories.get_links().getSelf().getHref())) {
-                    mGoalCategoriesMap.put(activityCategories.getName(), activityCategories.get_links().getSelf().getHref());
-                }
-            }
-
-        }
-    }
-
-
-    private synchronized void filterCategoriesGoal() {
-        Goals userGoals = goalManager.getUserGoalFromDb();
-
-        if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
-            for (YonaGoal mYonaGoal : userGoals.getEmbedded().getYonaGoals()) {
-                if (mYonaGoal != null) {
-                    for (Map.Entry<String, String> entry : mGoalCategoriesMap.entrySet()) {
-                        if (entry.getValue().equals(mYonaGoal.getLinks().getYonaActivityCategory().getHref())) {
-                            mYonaGoal.setActivityCategoryName(entry.getKey());
-                            break;
-                        }
-                    }
-                    if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
-                        budgetCategoriesGoalList.add(mYonaGoal);
-                    } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
-                        timeZoneCategoriesGoalList.add(mYonaGoal);
-                    } else {
-                        noGoCategoriesGoalList.add(mYonaGoal);
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * It will check the visibility of child View
@@ -145,4 +86,20 @@ public class BaseGoalCreateFragment extends BaseFragment {
         showCurrentGoalListView();
     }
 
+
+    public AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent goalIntent = new Intent(IntentEnum.ACTION_CHALLENGES_GOAL.getActionString());
+            Object object = parent.getAdapter().getItem(position);
+            if (object != null) {
+                if (object instanceof YonaGoal) {
+                    goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaGoal) object);
+                } else if (object instanceof ActivityCategories) {
+                    goalIntent.putExtra(AppConstant.GOAL_OBJECT, (ActivityCategories) object);
+                }
+            }
+            ((YonaActivity) getActivity()).replaceFragment(goalIntent);
+        }
+    };
 }

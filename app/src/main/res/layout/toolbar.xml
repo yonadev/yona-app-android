@@ -10,7 +10,7 @@
     android:id="@+id/toolbar_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/sixty"
-    android:background="@drawable/grape_triangle_shadow"
+    android:background="@drawable/triangle_shadow_grape"
     android:minHeight="?attr/actionBarSize"
     android:paddingLeft="@dimen/thirty_two"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"

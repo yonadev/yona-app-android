@@ -71,4 +71,5 @@
     <string name="challenges_nogo_subText">Vermijd %1$s gerelateerde content</string>
     <string name="challenges_timzoe_subtext">Timeslot tussen %1$sen tussen %2$s</string>
     <string name="challenges_budget_subtext">Je kunt per dag %1$s minuten daten</string>
+    <string name="challenges_footer_text">De volgende apps zijn \nonderdeel van deze challenge:</string>
 </resources>

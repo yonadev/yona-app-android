@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="@dimen/margin_bucket_screen"
+    android:background="@color/pea"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/margin_bucket_screen"
+    android:paddingRight="@dimen/margin_bucket_screen">
+
+
+    <ImageView
+        android:id="@+id/img_bucket"
+        android:layout_width="@dimen/image_bucket_size"
+        android:layout_height="@dimen/image_bucket_size"
+        android:layout_marginTop="@dimen/image_margin_top"
+        android:background="@drawable/circle_challenges"
+        android:padding="@dimen/challenges_padding_imge"
+        android:src="@drawable/icn_challenge_nogo" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        style="@style/ChallengeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/challenges_margin_top"
+        android:gravity="center"
+        android:text="Social media" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        style="@style/SubscribeTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/challenges_margin_bottom"
+        android:layout_marginTop="@dimen/challenges_desc_margin_top"
+        android:gravity="center"
+        android:text="Bepaal hier hoeveel tijdje aan social media wilt besteden" />
+
+</LinearLayout>
