@@ -20,7 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.ViewPagerIndicator;
+import nu.yona.app.customview.YonaFontButton;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppUtils;
 
 public class TourView extends LinearLayout {
@@ -43,7 +46,7 @@ public class TourView extends LinearLayout {
         viewPager.setAdapter(pagerAdapter);
         viewPager.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         viewPager.setCurrentItem(startPage);
-        viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 if (onPageChangeListener != null) {
@@ -71,18 +74,26 @@ public class TourView extends LinearLayout {
         addView(viewPager);
     }
 
-    public int getPage() {
-        return viewPager.getCurrentItem();
-    }
-
-    public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
-        this.onPageChangeListener = onPageChangeListener;
-    }
-
-    private View createPage(int pageNo) {
+    private View createPage(final int pageNo) {
         final Context context = getContext();
         View pageView = LayoutInflater.from(context).inflate(R.layout.tour_page, null);
 
+        pageView.findViewById(R.id.imageButton).setTag(pageNo +"");
+        pageView.findViewById(R.id.imageButton).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    int viewPageNo = Integer.parseInt(v.getTag().toString());
+                    if(viewPageNo == 4) {
+                        moveToLaunchActivity();
+                    } else {
+                        viewPager.setCurrentItem(viewPageNo, true);
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+        });
         int titleId = getResources().getIdentifier("screentitle" + pageNo, "string", context.getPackageName());
         int infoId = getResources().getIdentifier("screendesc" + pageNo, "string", context.getPackageName());
         int imgAndroid = getResources().getIdentifier("img_tour_android_" + pageNo, "drawable", context.getPackageName());
@@ -171,4 +182,7 @@ public class TourView extends LinearLayout {
     }
 
 
+    private void moveToLaunchActivity() {
+        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_TOUR_COMPLETE, null);
+    }
 }
