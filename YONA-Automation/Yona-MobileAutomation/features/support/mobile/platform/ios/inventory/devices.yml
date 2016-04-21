@@ -1,0 +1,15 @@
+#ADD YOUR OWN DEVICES
+#E.G.:
+#iphone_4_8.1:
+#  name: iPhone 4
+#  uiud: 5de2ba8d57e51690b0f6a226e090f14d44bc4302
+#  version: '8.1'
+#
+#iphone_5s_8.1:
+#  uiud: 5de2ba8d57e51690b0f6a226e090f14d44bc4xxx302
+#  version: '8.1x'
+
+iPhone_6:
+name: iPhone 6
+uiud: DCC9F6C4-24CD-4A47-AADD-76D40DCF3927
+version: '9.3'

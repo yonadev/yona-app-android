@@ -1,0 +1,8 @@
+#ADD DEVICES AS YOU NEED THEM. CHECK LIST OF DEVICES ON SAUCELABS SITE
+nexus_7_hd_4.4:
+  name: Google Nexus 7 HD Emulator
+  version: '4.4'
+
+galaxy_s4_4.3:
+  name: Samsung Galaxy S4 Emulator
+  version: '4.3'

@@ -1,0 +1,19 @@
+iphone_6_8.3:
+  name: iPhone 6
+  version: '8.3'
+
+iphone_6_plus_8.3:
+  name: iPhone 6 Plus
+  version: '8.3'
+
+iphone_6_8.3:
+  name: iPhone 6
+  version: '8.3'
+
+iphone_6_plus_8.4:
+  name: iPhone 6 Plus
+  version: '8.4'
+
+iphone_simulator_7.1:
+  name: iPhone Simulator
+  version: '7.1'

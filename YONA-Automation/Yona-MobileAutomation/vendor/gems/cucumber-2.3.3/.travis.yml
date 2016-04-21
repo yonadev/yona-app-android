@@ -1,0 +1,24 @@
+sudo: false
+
+rvm:
+  - 2.2
+  - 2.1
+  - 2.0
+  - 1.9.3
+  - jruby-1.7.12
+
+# whitelist
+branches:
+  only:
+    - master
+    - v1.3.x-bugfix
+
+before_install:
+  - gem update bundler
+
+notifications:
+  email:
+    - cukes-devs@googlegroups.com
+  webhooks:
+    urls: # gitter
+      - https://webhooks.gitter.im/e/dc010332f9d40fcc21c4

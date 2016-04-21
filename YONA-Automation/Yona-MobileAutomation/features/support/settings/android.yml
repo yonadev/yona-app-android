@@ -1,0 +1,10 @@
+#TODO - look into building .apk on the fly
+#:apk: 'YOUR ANDROID APPLICATION PACKAGE'
+#:apk_path: 'PATH TO YOUR ANDROID APK'
+#:android_package: "YOUR APPLICATION'S PACKAGE"
+#:android_activity: "YOUR APPLICATION'S MAIN ACTIVITY"
+#E.G.:
+:apk: 'Yona-develop-1.0.0.1-1.apk'
+:apk_path: '/Users/jaisharma/Downloads/Yona-develop-1.0.0.1-1.apk'
+:android_package: 'nu.yona.app'
+:android_activity: 'nu.yona.app.ui.LaunchActivity'

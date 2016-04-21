@@ -1,0 +1,10 @@
+[caps]
+platformName = "android"
+deviceName = "Nexus 7"
+app = "./api.apk"
+appPackage = "io.appium.android.apis"
+appActivity = ".ApiDemos"
+
+[appium_lib]
+sauce_username = ""
+sauce_access_key = ""

@@ -1,0 +1,88 @@
+#THIS WILL DEPEND ON YOUR SDK VERSION:
+resizable_ipad_8.1:
+  name: Resizable iPad
+  version: '8.1'
+
+resizable_ipad_8.3:
+  name: Resizable iPad
+  version: '8.3'
+
+resizable_iphone_8.1:
+  name: Resizable iPhone
+  version: '8.1'
+
+resizable_iphone_8.3:
+  name: Resizable iPhone
+  version: '8.3'
+
+ipad_2_8.1:
+  name: iPad 2
+  version: '8.1'
+
+ipad_2_8.3:
+  name: iPad 2
+  version: '8.3'
+
+ipad_air_8.1:
+  name: iPad Air
+  version: '8.1'
+ipad_air_8.3:
+  name: iPad Air
+  version: '8.3'
+
+ipad_retina_8.1:
+  name: iPad Retina
+  version: '8.1'
+
+ipad_retina_8.3:
+  name: iPad Retina
+  version: '8.3'
+
+ipad_iphone_4s_8.1:
+  name: iPhone 4s
+  version: '8.1'
+
+ipad_iphone_4s_8.3:
+  name: iPhone 4s
+  version: '8.3'
+
+iphone_5_8.1:
+  name: iPhone 5
+  version: '8.1'
+
+iphone_5_8.3:
+  name: iPhone 5
+  version: '8.3'
+
+iphone_5s_8.1:
+  name: iPhone 5s
+  version: '8.1'
+
+iphone_5s_8.3:
+  name: iPhone 5s
+  version: '8.3'
+
+iphone_6_8.1:
+  name: iPhone 6
+  version: '8.1'
+
+iphone_6_8.3:
+  name: iPhone 6
+  version: '8.3'
+
+iphone_6_plus_8.1:
+  name: iPhone 6 Plus
+  version: '8.1'
+
+iphone_6_plus_8.3:
+  name: iPhone 6 Plus
+  version: '8.3'
+
+iphone_6s_plus_9.3:
+  name: iPhone 6s Plus
+  version: '9.3'
+
+iphone_5_7.1:
+  name: iPhone 5s
+  version: '7.1'
+

@@ -1,0 +1,6 @@
+ Usage:
+    md5 [-d] path
+
+ Example:
+    md5 ./test.apk
+    md5 ./test.ipa

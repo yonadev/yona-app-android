@@ -1,0 +1,138 @@
+#!/bin/sh
+
+check() {
+    if [ ! $? -eq 0 ]; then
+	echo An error occured while setting up $1
+	popd
+	echo cleaning up...
+	pwd
+	rm -r $1
+	exit 1
+    fi
+}
+
+build() {
+    archive=`basename $1`
+    package=`echo $archive | sed 's/\(+*\)\.tar\..*/\1/'`
+    pattern=`echo $package | sed 's/\(+*\)-.*/\1/'`
+    package_alt=`ls | grep $pattern | grep -v tar`
+
+    if [ "$package_alt" == "" ]; then
+	package_alt=$package
+    fi
+
+    echo Checking for $package or $package_alt
+    if [ ! -e $package ] && [ ! -e $package_alt  ]; then
+	echo Setting up $package
+	is_git=`echo $1 | grep .git`
+	if [ "$is_git" != "" ]; then
+	    echo Using git
+	    git clone $1
+	    package=`basename $1 .git`
+	else
+	    echo fetching from $1
+	    curl -# -L $1 > $archive
+	    echo extracting from $archive
+	    tar xf $archive
+	fi
+	package_alt=`ls | grep $pattern | grep -v tar`
+	if [ -e $package ]; then
+	    echo Found $package
+	elif [ -e $package_alt ]; then
+	    echo Found $package_alt
+	    package=$package_alt
+	else
+	    echo Could not find any package
+	    exit
+	fi
+	rm $archive
+	pushd $package
+	echo Configuring... $args
+	if [ -e configure ]; then
+	    echo using configure -- Installing to $dest
+	    ./configure $args "--prefix="$dest
+	elif [ -e autogen.sh ]; then
+	    echo Using autogen.sh
+	    echo `which libtool`
+	    ./autogen.sh $args "--prefix="$dest
+	else
+	    echo "using cmake -- Found at $CMAKE with PKG_CONFIG_EXECUTABLE=$PKG_CONFIG_EXECUTABLE"
+	    $CMAKE . -DCMAKE_INSTALL_PREFIX=$dest -DCMAKE_PREFIX_PATH=$dest $args
+	fi
+	check $package
+	echo done
+	echo Building...
+	make
+	check $package
+	echo Done
+	echo Installing...
+	make install
+	check $package
+	echo Done
+	popd
+    else
+	echo Found $package
+    fi
+    echo Removing $package..
+    rm $package
+    args=""
+}
+
+dest="/usr/local/ideviceinstaller"
+
+mkdir -p $dest
+pushd $dest
+
+PATH=$dest"/bin":$PATH
+echo $PATH
+
+### Building package config
+args="--with-internal-glib --disable-debug --disable-host-tool"
+build http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz
+export PKG_CONFIG=$dest"/bin/pkg-config"
+export PKG_CONFIG_EXECUTABLE=$PKG_CONFIG
+echo "Using pkg-config found at "$PKG_CONFIG
+
+### Building CMake
+args="--system-libs --no-system-libarchive --no-qt-gui"
+build http://www.cmake.org/files/v2.8/cmake-2.8.10.2.tar.gz
+CMAKE=`pwd`'/bin/cmake'
+
+### Building Autoconf
+build http://ftp.gnu.org/gnu/autoconf/autoconf-latest.tar.gz
+
+### Building Automake
+build http://ftp.gnu.org/gnu/automake/automake-1.13.1.tar.gz
+
+### Building dependencies
+
+### Crypto packages
+build http://www.lysator.liu.se/~nisse/archive/nettle-2.7.tar.gz
+build http://ftp.gnu.org/gnu/libtasn1/libtasn1-3.3.tar.gz
+build ftp://ftp.gnu.org/gnu/gmp/gmp-5.1.1.tar.bz2
+build ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.10.tar.xz
+build ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.5.2.tar.bz2
+args="darwin64-x86_64-cc"
+build https://www.openssl.org/source/openssl-1.0.1e.tar.gz
+
+build http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.9/libusb-1.0.9.tar.bz2
+
+args="--disable-dependency-tracking --without-python"
+build ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz
+
+args="-DENABLE_SWIG='OFF'"
+build http://www.libimobiledevice.org/downloads/libplist-1.9.tar.bz2
+
+build http://git.sukimashita.com/usbmuxd.git
+#build http://www.libimobiledevice.org/downloads/usbmuxd-1.0.8.tar.bz2
+
+args="--disable-dependency-tracking --without-cython"
+build http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.5.tar.bz2
+
+args="--disable-dependency-tracking --enable-ltdl-install"
+build http://mirror.sbb.rs/gnu/libtool/libtool-2.4.2.tar.gz
+
+build http://www.nih.at/libzip/libzip-0.11.1.tar.gz
+
+args="--disable-dependency-tracking"
+build http://git.sukimashita.com/ideviceinstaller.git
