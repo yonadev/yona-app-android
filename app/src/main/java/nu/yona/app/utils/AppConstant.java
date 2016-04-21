@@ -24,6 +24,7 @@ public interface AppConstant {
     String PASSCODE = "passcode";
     String PASSCODE_VERIFY = "passcode_verify";
     String OTP = "otp";
+    String NEW_DEVICE_REQUESTED = "newDeviceRequested";
 
     String LOGGED_IN = "logged_in";
     String SCREEN_TYPE = "screen_type";
