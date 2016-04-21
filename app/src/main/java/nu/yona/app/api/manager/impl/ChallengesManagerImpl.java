@@ -21,6 +21,10 @@ import nu.yona.app.api.manager.ChallengesManager;
 import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.Goals;
+import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.Links;
+import nu.yona.app.api.model.PostBudgetYonaGoal;
+import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.enums.GoalsEnum;
@@ -163,5 +167,57 @@ public class ChallengesManagerImpl implements ChallengesManager {
     @Override
     public void createNewGoal(YonaGoal yonaGoal, DataLoadListener listener) {
 
+    }
+
+    /**
+     * @param time     milliseconds
+     * @param goal     YonaGoal selected object
+     * @param listener
+     */
+    public void postBudgetGoals(long time, YonaGoal goal, final DataLoadListener listener) {
+        goalManager.postBudgetGoals(getPostYonaGoalForBudget(time, goal), listener);
+    }
+
+    private PostBudgetYonaGoal getPostYonaGoalForBudget(long time, YonaGoal goal) {
+        PostBudgetYonaGoal postBudgetYonaGoal = new PostBudgetYonaGoal();
+        postBudgetYonaGoal.setType(GoalsEnum.BUDGET_GOAL.getActionString());
+        Links links = new Links();
+        Href yonaActivityCategory = new Href();
+        yonaActivityCategory.setHref(goal.getLinks().getYonaActivityCategory().getHref());
+        links.setYonaActivityCategory(yonaActivityCategory);
+        postBudgetYonaGoal.setMaxDurationMinutes((time/1000)%60);
+        postBudgetYonaGoal.setLinks(links);
+
+        return postBudgetYonaGoal;
+    }
+
+    /**
+     * @param timeGoal Array of Time Goals
+     * @param goal     selected yona Goal
+     * @param listener
+     */
+    public void postTimeGoals(ArrayList<String> timeGoal, YonaGoal goal, final DataLoadListener listener) {
+        goalManager.postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, goal), listener);
+    }
+
+    private PostTimeZoneYonaGoal getPostYonaGoalForTimeZone(ArrayList<String> timeGoal, YonaGoal goal) {
+        PostTimeZoneYonaGoal postBudgetYonaGoal = new PostTimeZoneYonaGoal();
+        postBudgetYonaGoal.setType(GoalsEnum.TIME_ZONE_GOAL.getActionString());
+        Links links = new Links();
+        Href yonaActivityCategory = new Href();
+        yonaActivityCategory.setHref(goal.getLinks().getYonaActivityCategory().getHref());
+        links.setYonaActivityCategory(yonaActivityCategory);
+        postBudgetYonaGoal.setZones(timeGoal);
+        postBudgetYonaGoal.setLinks(links);
+
+        return postBudgetYonaGoal;
+    }
+
+    /**
+     * @param yonaGoal YonaGoal object to delete it.
+     * @param listener
+     */
+    public void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener) {
+        goalManager.deleteGoal(yonaGoal, listener);
     }
 }
