@@ -79,4 +79,7 @@
     <string name="screendesc2">Je doelen delen met de persoon die je vertrouwt</string>
     <string name="screendesc3">Grenzen afspreken en daar anderen in betrekken</string>
     <string name="screendesc4">Controle houden over de tijd die je online bent</string>
+    <string name="user_override">Mobile Number %1$s already register with Yona, do you want to re-register same number? (Note:All data associated with this number will be removed, if you want to add another device, you can go back and click on InLoggin.)</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

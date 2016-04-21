@@ -120,6 +120,32 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     }
 
     /**
+     *
+     * @param user Register User object
+     * @param otp OTP - Sms received value
+     * @param listener
+     */
+    @Override
+    public void verifyOTP(RegisterUser user, String otp, final DataLoadListener listener) {
+        if(user == null) {
+            verifyOTP(otp, listener);
+        } else {
+            authNetwork.registerUserOverride(YonaApplication.getYonaPassword(), user, otp, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
+                    updateDataForRegisterUser(result, listener);
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    listener.onError(errorMessage);
+                }
+            });
+        }
+    }
+
+    /**
      * @param otp      OTP received in sms
      * @param listener
      */
@@ -238,7 +264,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
     @Override
     public void requestUserOverride(String mobileNumber, final DataLoadListener listener) {
-        authNetwork.requestUserOverride(new MobileNumber(mobileNumber), new DataLoadListener() {
+        authNetwork.requestUserOverride(mobileNumber, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 listener.onDataLoad(result);

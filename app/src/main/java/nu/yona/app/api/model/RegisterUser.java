@@ -10,11 +10,29 @@
 
 package nu.yona.app.api.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by kinnarvasa on 31/03/16.
  */
-public class RegisterUser {
+public class RegisterUser implements Parcelable{
     private String firstName, lastName, nickname, mobileNumber;
+
+    public RegisterUser(){
+
+    }
+
+    public RegisterUser(Parcel in){
+        String[] data = new String[4];
+        in.readStringArray(data);
+        this.firstName = data[0];
+        this.lastName = data[1];
+        this.nickname = data[2];
+        this.mobileNumber = data[3];
+    }
 
     public String getFirstName() {
         return firstName;
@@ -47,4 +65,24 @@ public class RegisterUser {
     public void setNickName(String nickname) {
         this.nickname = nickname;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {this.firstName, this.lastName, this.nickname, this.mobileNumber});
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public RegisterUser createFromParcel(Parcel in) {
+            return new RegisterUser(in);
+        }
+
+        public RegisterUser[] newArray(int size) {
+            return new RegisterUser[size];
+        }
+    };
 }
