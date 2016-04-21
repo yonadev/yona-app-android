@@ -45,8 +45,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
             android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
-            android:layout_toEndOf="@+id/view3"
-            android:layout_toRightOf="@+id/view3"
+            android:layout_toEndOf="@id/view3"
+            android:layout_toRightOf="@id/view3"
             android:text="van" />
 
         <nu.yona.app.customview.YonaFontTextView
@@ -55,8 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_toEndOf="@+id/textVan"
-            android:layout_toRightOf="@+id/textVan" />
+            android:layout_toEndOf="@id/textVan"
+            android:layout_toRightOf="@id/textVan" />
     </LinearLayout>
 
     <View
@@ -80,12 +80,12 @@
             style="@style/FooterTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textVan"
+            android:layout_alignTop="@id/textVan"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
             android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
-            android:layout_toEndOf="@+id/view4"
-            android:layout_toRightOf="@+id/view4"
+            android:layout_toEndOf="@id/view4"
+            android:layout_toRightOf="@id/view4"
             android:text="tot" />
 
         <nu.yona.app.customview.YonaFontTextView
@@ -95,8 +95,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_toEndOf="@+id/txtTot"
-            android:layout_toRightOf="@+id/txtTot" />
+            android:layout_toEndOf="@id/txtTot"
+            android:layout_toRightOf="@id/txtTot" />
 
     </LinearLayout>
 </LinearLayout>

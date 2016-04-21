@@ -10,18 +10,18 @@
     <item>
         <shape>
 
-            <corners android:radius="48dp" />
+            <corners android:radius="@dimen/circle_goal_challenges_radius" />
 
             <stroke
-                android:width="5px"
+                android:width="@dimen/circle_goal_challenges_stroke_width"
                 android:color="@color/sickly_green" />
 
             <solid android:color="@color/sickly_green_two" />
 
             <padding
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
+                android:left="@dimen/circle_goal_challenges_padding"
+                android:right="@dimen/circle_goal_challenges_padding"
+                android:top="@dimen/circle_goal_challenges_padding" />
 
         </shape>
     </item>

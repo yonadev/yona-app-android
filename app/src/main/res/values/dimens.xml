@@ -78,5 +78,13 @@
     <dimen name="time_zone_goal_van_margin_left">20dp</dimen>
     <dimen name="time_zone_goal_van_margin_right">12dp</dimen>
     <dimen name="tour_desc_margin">37dp</dimen>
+    <dimen name="button_challenges_radius">20dp</dimen>
+    <dimen name="button_challenges_stroke_width">1.5dp</dimen>
+    <dimen name="circle_goal_challenges_radius">48dp</dimen>
+    <dimen name="circle_goal_challenges_padding">1dp</dimen>
+    <dimen name="circle_goal_challenges_stroke_width">5px</dimen>
+    <dimen name="btn_challenges_opslaan_margin">22dp</dimen>
+    <dimen name="btn_challenges_opslaan_margin_top">32dp</dimen>
+    <dimen name="btn_challenges_opslaan_paddding">15dp</dimen>
 
 </resources>
