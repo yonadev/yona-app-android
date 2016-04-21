@@ -20,6 +20,8 @@ public interface AppConstant {
     int OTP_LENGTH = 4;
     int ADD_DEVICE_PASSWORD_CHAR_LIMIT = 6;
     int YONA_PASSWORD_CHAR_LIMIT = 20;
+    int ONE_SECOND = 1000;
+    int ONE_MINUTE = 60;
 
     String PASSCODE = "passcode";
     String PASSCODE_VERIFY = "passcode_verify";

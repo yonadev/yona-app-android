@@ -66,7 +66,7 @@ public class DeviceManagerImpl implements DeviceManager {
      * @param listener
      */
     public void addDevice(final String devicePassword, final DataLoadListener listener) {
-        if(YonaApplication.getUserPreferences().getBoolean(AppConstant.NEW_DEVICE_REQUESTED, false)){
+        if (YonaApplication.getUserPreferences().getBoolean(AppConstant.NEW_DEVICE_REQUESTED, false)) {
             deleteDevice(new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {

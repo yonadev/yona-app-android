@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
+import nu.yona.app.enums.ChallengesEnum;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -27,7 +28,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        showCurrentGoalListView();
+        showCurrentGoalListView(ChallengesEnum.CREDIT_TAB.getTab());
         mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfBudgetGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
         mGoalListView.setOnItemClickListener(itemClickListener);
@@ -42,7 +43,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
         switch (v.getId()) {
             case R.id.img_add_goal:
                 //show new goal list creation view
-                showNewListOfGoalView();
+                showNewListOfGoalView(ChallengesEnum.CREDIT_TAB.getTab());
                 break;
             default:
                 break;
