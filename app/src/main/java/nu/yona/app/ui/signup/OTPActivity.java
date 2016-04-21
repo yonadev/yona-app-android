@@ -42,7 +42,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
     private YonaFontTextView txtTitle;
     private AuthenticateManager authenticateManager;
     private ActivityCategoryManager activityCategoryManager;
-    private RegisterUser user = null;
+    private RegisterUser user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

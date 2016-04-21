@@ -101,7 +101,7 @@ public class AppUtils {
      * @return
      */
     public static String getRandomString(int charLimit) {
-        char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWZYZ".toCharArray();
+        char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < charLimit; i++) {
