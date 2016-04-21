@@ -48,6 +48,12 @@
             android:screenOrientation="portrait"></activity>
 
         <activity
+            android:name=".ui.tour.TourActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
+
+
+        <activity
             android:name=".ui.YonaActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>

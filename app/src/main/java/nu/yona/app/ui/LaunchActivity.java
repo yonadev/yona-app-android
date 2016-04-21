@@ -22,6 +22,7 @@ import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
+import nu.yona.app.ui.tour.TourActivity;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -35,14 +36,16 @@ public class LaunchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_layout);
 
-        if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
-            //do nothing
+        if(!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false)) {
+            startNewActivity(TourActivity.class);
+        } else  if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
+            // continue on same page.
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)
                 || TextUtils.isEmpty(YonaApplication.getAppContext().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
             startNewActivity(OTPActivity.class);
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
             startNewActivity(PasscodeActivity.class);
-        } else {
+        } else if (!TextUtils.isEmpty(YonaApplication.getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))){
             startNewActivity(PinActivity.class);
         }
 
