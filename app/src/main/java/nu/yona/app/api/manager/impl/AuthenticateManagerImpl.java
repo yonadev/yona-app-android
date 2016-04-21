@@ -21,6 +21,7 @@ import nu.yona.app.api.manager.dao.AuthenticateDAO;
 import nu.yona.app.api.manager.network.AuthenticateNetworkImpl;
 import nu.yona.app.api.manager.network.NetworkConstant;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.MobileNumber;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
@@ -216,8 +217,28 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
     }
 
+    @Override
     public void resendOTP(final DataLoadListener listener) {
         authNetwork.resendOTP(authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                listener.onDataLoad(result);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    listener.onError(errorMessage);
+                } else {
+                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void requestUserOverride(String mobileNumber, final DataLoadListener listener) {
+        authNetwork.requestUserOverride(new MobileNumber(mobileNumber), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 listener.onDataLoad(result);

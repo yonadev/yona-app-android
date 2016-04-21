@@ -8,12 +8,11 @@
  *
  */
 
-package nu.yona.app.utils;
+package nu.yona.app.api.utils;
 
 /**
- * Author @@MobiquityInc
+ * Created by kinnarvasa on 21/04/16.
  */
-public interface ApiList {
-    String USER = "/users/";
-    String ADMIN_OVERRIDE_USER = "/admin/requestUserOverwrite/";
+public interface ServerErrorCode {
+    String USER_EXIST_ERROR = "error.user.exists";
 }

@@ -12,6 +12,7 @@ package nu.yona.app.api.manager.network;
 
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.Goals;
+import nu.yona.app.api.model.MobileNumber;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.api.model.OTPVerficationCode;
@@ -53,6 +54,8 @@ public interface RestApi {
     @POST
     Call<Void> resendOTP(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
+    @POST(ApiList.ADMIN_OVERRIDE_USER)
+    Call<Void> requestUserOverride(@Body MobileNumber number);
     /******** USER ************/
 
     /********

@@ -17,6 +17,7 @@ import java.lang.annotation.Annotation;
 
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.MobileNumber;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
@@ -85,6 +86,15 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         }
     }
 
+    public void requestUserOverride(MobileNumber mobileNumber, DataLoadListener listener) {
+        try {
+            getRestApi().requestUserOverride(mobileNumber).enqueue(getCall(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
+    }
 
     /**
      * @param url          : URL for passcode reset
