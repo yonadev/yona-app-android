@@ -27,8 +27,9 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        mGoalListAdapter = new GoalListAdapter(getActivity(), noGoCategoriesGoalList);
+        mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfNoGoGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
+        mGoalListView.setOnItemClickListener(itemClickListener);
         showCurrentGoalListView();
         btnGoalAdd.setOnClickListener(this);
         showCurrentGoalListView();

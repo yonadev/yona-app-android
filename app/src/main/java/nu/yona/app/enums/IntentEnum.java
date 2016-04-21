@@ -15,12 +15,13 @@ import java.util.Map;
  * Created by kinnarvasa on 21/03/16.
  */
 public enum IntentEnum {
-    ACTION_DASHBOARD("nu.yona.app.app.action.DASHBOARD"),
-    ACTION_FRIENDS("nu.yona.app.app.action.FRIENDS"),
-    ACTION_CHALLENGES("nu.yona.app.app.action.CHALLENGES"),
-    ACTION_SETTINGS("nu.yona.app.app.action.SETTINGS"),
-    ACTION_PROFILE("nu.yona.app.app.action.PROFILE"),
-    ACTION_MESSAGE("nu.yona.app.app.action.MESSAGE");
+    ACTION_DASHBOARD("nu.yona.app.action.DASHBOARD"),
+    ACTION_FRIENDS("nu.yona.app.action.FRIENDS"),
+    ACTION_CHALLENGES("nu.yona.app.action.CHALLENGES"),
+    ACTION_SETTINGS("nu.yona.app.action.SETTINGS"),
+    ACTION_PROFILE("nu.yona.app.action.PROFILE"),
+    ACTION_MESSAGE("nu.yona.app.action.MESSAGE"),
+    ACTION_CHALLENGES_GOAL("nu.yona.app.action.CHALLENGES_GOAL");
 
     private static Map<String, IntentEnum> nameToEnumMapping = new HashMap<String, IntentEnum>();
 

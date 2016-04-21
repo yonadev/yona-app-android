@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/goal_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/goal_item_height"
+    android:background="@color/white_two"
+    android:padding="@dimen/layout_margin"
+    android:visibility="gone">
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/goal_item_text"
+        style="@style/SeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/budgetGoalTitle" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/goal_minutes_num"
+        style="@style/SeScorePos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/goal_item_subtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/goal_item_text"
+        android:layout_marginTop="@dimen/goal_item_desc_margin_top"
+        android:layout_toLeftOf="@id/goal_minutes_num"
+        android:layout_toStartOf="@id/goal_minutes_num"
+        android:text="@string/budgetGoalDesc" />
+
+
+</RelativeLayout>

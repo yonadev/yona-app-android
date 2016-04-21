@@ -71,6 +71,13 @@
     <string name="challenges_nogo_subText">Vermijd %1$s gerelateerde content</string>
     <string name="challenges_timzoe_subtext">Timeslot tussen %1$sen tussen %2$s</string>
     <string name="challenges_budget_subtext">Je kunt per dag %1$s minuten daten</string>
+    <string name="challenges_footer_text">De volgende apps zijn \nonderdeel van deze challenge:</string>
+    <string name="challengesGoalCreateText">CHALLENGE OPSLAAN</string>
+    <string name="budgetGoalDesc">minuten per dag</string>
+    <string name="budgetGoalTitle">Tegoed</string>
+    <string name="timezonegoalheadersubtext">Bepaal hier wanneer je wel of geen tijd aan %1$s wilt besteden</string>
+    <string name="budgetgoalheadersubtext">Bepaal hier hoeveel tijd je aan %1$s wilt besteden</string>
+    <string name="timezone">Tijdzone</string>
     <string name="screentitle1">Transparantie</string>
     <string name="screentitle2">Delen</string>
     <string name="screentitle3">Grenzen</string>

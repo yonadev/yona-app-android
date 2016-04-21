@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/time_zone_goal_item_height"
+    android:orientation="horizontal">
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/index_time_zone_goal"
+        style="@style/SeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/layout_margin"
+        android:layout_marginRight="@dimen/time_zone_goal_index_margin_right"
+        android:layout_weight="1" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="1dp"
+        android:layout_height="@dimen/time_zone_goal_item_height"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/index_time_zone_goal"
+        android:layout_toRightOf="@id/index_time_zone_goal"
+        android:background="@color/bg_gradient_three" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/textVan"
+            style="@style/FooterTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/index_time_zone_goal"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
+            android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
+            android:layout_toEndOf="@id/view3"
+            android:layout_toRightOf="@id/view3"
+            android:text="van" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txtGoalStartTime"
+            style="@style/SeScorePos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_toEndOf="@id/textVan"
+            android:layout_toRightOf="@id/textVan" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="1dp"
+        android:layout_height="@dimen/time_zone_goal_item_height"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/time_zone_goal_van_margin_right"
+        android:layout_toRightOf="@id/txtGoalStartTime"
+        android:background="@color/bg_gradient_three" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txtTot"
+            style="@style/FooterTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/textVan"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
+            android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
+            android:layout_toEndOf="@id/view4"
+            android:layout_toRightOf="@id/view4"
+            android:text="tot" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txtGoalEndTime"
+            style="@style/SeScorePos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_toEndOf="@id/txtTot"
+            android:layout_toRightOf="@id/txtTot" />
+
+    </LinearLayout>
+</LinearLayout>

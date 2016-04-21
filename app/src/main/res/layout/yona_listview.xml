@@ -6,10 +6,10 @@
   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape>
-            <gradient android:angle="270" android:endColor="@color/bg_gradient_two" android:startColor="@color/bg_gradient_one" />
-        </shape>
-    </item>
-</selector>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1">
+
+</android.support.v7.widget.RecyclerView>

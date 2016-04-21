@@ -28,12 +28,14 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         showCurrentGoalListView();
-        mGoalListAdapter = new GoalListAdapter(getActivity(), budgetCategoriesGoalList);
+        mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfBudgetGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
+        mGoalListView.setOnItemClickListener(itemClickListener);
         mDescTab.setText(getActivity().getString(R.string.challenges_tegoed_header_text));
         btnGoalAdd.setOnClickListener(this);
         return view;
     }
+
 
     @Override
     public void onClick(View v) {
