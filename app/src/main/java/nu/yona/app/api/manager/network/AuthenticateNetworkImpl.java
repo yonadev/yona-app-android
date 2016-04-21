@@ -17,7 +17,6 @@ import java.lang.annotation.Annotation;
 
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.MobileNumber;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
@@ -38,10 +37,9 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
-     *
      * @param password Yona Password
-     * @param object RegisterUser object
-     * @param otp SMS
+     * @param object   RegisterUser object
+     * @param otp      SMS
      * @param listener
      */
     public void registerUserOverride(String password, RegisterUser object, String otp, final DataLoadListener listener) {
@@ -49,8 +47,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
-     *
-     * @param url url from user object to get/update user
+     * @param url          url from user object to get/update user
      * @param yonaPassword yona password
      * @param listener
      */
@@ -65,10 +62,9 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
-     *
      * @param password yona password
-     * @param url url for verify mobile number
-     * @param otp sms verification code
+     * @param url      url for verify mobile number
+     * @param otp      sms verification code
      * @param listener
      */
     public void verifyMobileNumber(String password, String url, OTPVerficationCode otp, final DataLoadListener listener) {
@@ -82,8 +78,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
-     *
-     * @param url url to resend sms
+     * @param url      url to resend sms
      * @param password yona password
      * @param listener
      */
@@ -123,20 +118,20 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
-     *
-     * @param url URL for verify pin
-     * @param otp SMS received value
+     * @param url      URL for verify pin
+     * @param otp      SMS received value
      * @param listener
      */
     public void doVerifyPin(String url, String otp, final DataLoadListener listener) {
-        try  {
+        try {
             getRestApi().verifyPin(url, YonaApplication.getYonaPassword(), new OTPVerficationCode(otp)).enqueue(getCall(listener));
-        }  catch (Exception e) {
+        } catch (Exception e) {
             if (e != null && e.getMessage() != null) {
                 listener.onError(new ErrorMessage(e.toString()));
             }
         }
     }
+
     /**
      * @param url          URL for Verify Pin Reset
      * @param yonaPassword Yona Password

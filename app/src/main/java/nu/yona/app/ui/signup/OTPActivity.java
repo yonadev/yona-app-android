@@ -43,6 +43,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
     private AuthenticateManager authenticateManager;
     private ActivityCategoryManager activityCategoryManager;
     private RegisterUser user = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         YonaApplication.getEventChangeManager().registerListener(this);
         loadOTPFragment();
 
-        if(getIntent() != null && getIntent().getExtras() != null) {
+        if (getIntent() != null && getIntent().getExtras() != null) {
             user = (RegisterUser) getIntent().getExtras().getParcelable(AppConstant.USER);
         }
     }

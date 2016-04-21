@@ -13,19 +13,26 @@ package nu.yona.app.api.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * Created by kinnarvasa on 31/03/16.
  */
-public class RegisterUser implements Parcelable{
+public class RegisterUser implements Parcelable {
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public RegisterUser createFromParcel(Parcel in) {
+            return new RegisterUser(in);
+        }
+
+        public RegisterUser[] newArray(int size) {
+            return new RegisterUser[size];
+        }
+    };
     private String firstName, lastName, nickname, mobileNumber;
 
-    public RegisterUser(){
+    public RegisterUser() {
 
     }
 
-    public RegisterUser(Parcel in){
+    public RegisterUser(Parcel in) {
         String[] data = new String[4];
         in.readStringArray(data);
         this.firstName = data[0];
@@ -73,16 +80,6 @@ public class RegisterUser implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.firstName, this.lastName, this.nickname, this.mobileNumber});
+        dest.writeStringArray(new String[]{this.firstName, this.lastName, this.nickname, this.mobileNumber});
     }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public RegisterUser createFromParcel(Parcel in) {
-            return new RegisterUser(in);
-        }
-
-        public RegisterUser[] newArray(int size) {
-            return new RegisterUser[size];
-        }
-    };
 }

@@ -19,9 +19,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.AuthenticateManager;
 import nu.yona.app.api.manager.dao.AuthenticateDAO;
 import nu.yona.app.api.manager.network.AuthenticateNetworkImpl;
-import nu.yona.app.api.manager.network.NetworkConstant;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.MobileNumber;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
@@ -120,14 +118,13 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     }
 
     /**
-     *
-     * @param user Register User object
-     * @param otp OTP - Sms received value
+     * @param user     Register User object
+     * @param otp      OTP - Sms received value
      * @param listener
      */
     @Override
     public void verifyOTP(RegisterUser user, String otp, final DataLoadListener listener) {
-        if(user == null) {
+        if (user == null) {
             verifyOTP(otp, listener);
         } else {
             authNetwork.registerUserOverride(YonaApplication.getYonaPassword(), user, otp, new DataLoadListener() {
@@ -222,8 +219,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     }
 
     /**
-     *
-     * @param url url to fetch user
+     * @param url      url to fetch user
      * @param listener
      */
     @Override

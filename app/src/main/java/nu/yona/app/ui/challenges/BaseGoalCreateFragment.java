@@ -48,11 +48,10 @@ public class BaseGoalCreateFragment extends BaseFragment {
     protected List<YonaGoal> timeZoneCategoriesGoalList;
     protected List<YonaGoal> noGoCategoriesGoalList;
     protected List<YonaActivityCategories> mYonaActivityCategoriesList;
+    protected HashMap<String, String> mGoalCategoriesMap;
     private GoalManager goalManager;
     private ActivityCategoryManager activityCategoryManager;
     private GoalCategoryListAdapter categoryGoalListAdapter;
-    protected HashMap<String, String> mGoalCategoriesMap;
-
 
     @Nullable
     @Override

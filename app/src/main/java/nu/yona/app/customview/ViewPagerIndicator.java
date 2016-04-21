@@ -20,13 +20,12 @@ import nu.yona.app.utils.AppUtils;
 
 public class ViewPagerIndicator extends View {
     private static final float SPACING = 2.0f;
-
+    private final Paint backPaint = new Paint();
+    private final Paint frontPaint = new Paint();
     private int scrollPosition;
     private float currentScroll;
     private float radius;
     private int count;
-    private final Paint backPaint = new Paint();
-    private final Paint frontPaint = new Paint();
 
     public ViewPagerIndicator(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);

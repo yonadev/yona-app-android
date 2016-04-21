@@ -170,7 +170,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     private void OverrideUser() {
         showLoadingView(true, null);
-        authenticateManager.requestUserOverride(getRegisterUser().getMobileNumber(), new DataLoadListener(){
+        authenticateManager.requestUserOverride(getRegisterUser().getMobileNumber(), new DataLoadListener() {
 
             @Override
             public void onDataLoad(Object result) {
@@ -217,7 +217,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     public void showMobileVerificationScreen(Bundle bundle) {
         Intent intent = new Intent(SignupActivity.this, OTPActivity.class);
-        if(bundle != null) {
+        if (bundle != null) {
             intent.putExtras(bundle);
         }
         startActivity(intent);
@@ -228,7 +228,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     private void showError(Object errorMessage) {
         ErrorMessage message = (ErrorMessage) errorMessage;
         showLoadingView(false, null);
-        if(message.getCode() != null && message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)){
+        if (message.getCode() != null && message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)) {
             showAlertForReRegisteruser(message.getMessage());
         } else {
             CustomAlertDialog.show(SignupActivity.this, message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {

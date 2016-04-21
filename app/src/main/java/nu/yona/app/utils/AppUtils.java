@@ -11,7 +11,6 @@ package nu.yona.app.utils;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -24,8 +23,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 import java.util.Random;
-
-import nu.yona.app.api.service.ActivityMonitorService;
 
 /**
  * Created by kinnarvasa on 21/03/16.
