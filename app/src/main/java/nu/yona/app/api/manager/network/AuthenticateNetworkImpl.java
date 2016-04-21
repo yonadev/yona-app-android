@@ -39,6 +39,17 @@ public class AuthenticateNetworkImpl extends BaseImpl {
 
     /**
      *
+     * @param password Yona Password
+     * @param object RegisterUser object
+     * @param otp SMS
+     * @param listener
+     */
+    public void registerUserOverride(String password, RegisterUser object, String otp, final DataLoadListener listener) {
+        getRestApi().overrideRegisterUser(password, otp, object).enqueue(getUserCallBack(listener));
+    }
+
+    /**
+     *
      * @param url url from user object to get/update user
      * @param yonaPassword yona password
      * @param listener
@@ -86,7 +97,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         }
     }
 
-    public void requestUserOverride(MobileNumber mobileNumber, DataLoadListener listener) {
+    public void requestUserOverride(String mobileNumber, DataLoadListener listener) {
         try {
             getRestApi().requestUserOverride(mobileNumber).enqueue(getCall(listener));
         } catch (Exception e) {

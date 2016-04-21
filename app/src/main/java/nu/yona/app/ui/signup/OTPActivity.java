@@ -22,6 +22,7 @@ import nu.yona.app.api.manager.AuthenticateManager;
 import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListener;
@@ -41,7 +42,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
     private YonaFontTextView txtTitle;
     private AuthenticateManager authenticateManager;
     private ActivityCategoryManager activityCategoryManager;
-
+    private RegisterUser user = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,10 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         txtTitle = (YonaFontTextView) findViewById(R.id.toolbar_title);
         YonaApplication.getEventChangeManager().registerListener(this);
         loadOTPFragment();
+
+        if(getIntent() != null && getIntent().getExtras() != null) {
+            user = (RegisterUser) getIntent().getExtras().getParcelable(AppConstant.USER);
+        }
     }
 
     private void loadOTPFragment() {
@@ -94,7 +99,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
 
     private void validateOTP(final String otpString) {
         showLoadingView(true, null);
-        authenticateManager.verifyOTP(otpString, new DataLoadListener() {
+        authenticateManager.verifyOTP(user, otpString, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 getActivityCategories();

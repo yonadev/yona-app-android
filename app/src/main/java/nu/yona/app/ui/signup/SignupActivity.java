@@ -24,6 +24,7 @@ import nu.yona.app.api.manager.AuthenticateManager;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontTextView;
@@ -32,6 +33,7 @@ import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -142,19 +144,46 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
-                showMobileVerificationScreen();
+                showMobileVerificationScreen(null);
             }
 
             @Override
             public void onError(Object errorMessage) {
-                ErrorMessage message = (ErrorMessage) errorMessage;
+                showError(errorMessage);
+            }
+        });
+    }
+
+    private void showAlertForReRegisteruser(String title) {
+        CustomAlertDialog.show(SignupActivity.this, title, getString(R.string.user_override, getRegisterUser().getMobileNumber()), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                OverrideUser();
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void OverrideUser() {
+        showLoadingView(true, null);
+        authenticateManager.requestUserOverride(getRegisterUser().getMobileNumber(), new DataLoadListener(){
+
+            @Override
+            public void onDataLoad(Object result) {
                 showLoadingView(false, null);
-                CustomAlertDialog.show(SignupActivity.this, message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(AppConstant.USER, getRegisterUser());
+                showMobileVerificationScreen(bundle);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                showLoadingView(false, null);
+                showError(errorMessage);
             }
         });
     }
@@ -186,9 +215,28 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public void showMobileVerificationScreen() {
-        startActivity(new Intent(SignupActivity.this, OTPActivity.class));
+    public void showMobileVerificationScreen(Bundle bundle) {
+        Intent intent = new Intent(SignupActivity.this, OTPActivity.class);
+        if(bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
+    }
+
+    private void showError(Object errorMessage) {
+        ErrorMessage message = (ErrorMessage) errorMessage;
+        showLoadingView(false, null);
+        if(message.getCode() != null && message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)){
+            showAlertForReRegisteruser(message.getMessage());
+        } else {
+            CustomAlertDialog.show(SignupActivity.this, message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+        }
     }
 }
