@@ -13,7 +13,6 @@ package nu.yona.app.utils;
  */
 public interface AppConstant {
     String CLEAR_FRAGMENT_STACK = "clearFragmentStack";
-    int ONE_SECOND = 1000;
     int MAX_COUNTER = 4;
     int TIMER_DELAY = 500;
     int MOBILE_NUMBER_LENGTH = 12;
