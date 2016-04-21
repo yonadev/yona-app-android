@@ -93,9 +93,9 @@ public class AppUtils {
      * Start service once user grant permission for application permission (for 5.1+ version)
      */
     public static void startService(Context context) {
-        if (!AppUtils.isYonaServiceRunning(context, ActivityMonitorService.class)) {
-            context.startService(new Intent(context, ActivityMonitorService.class));
-        }
+//        if (!AppUtils.isYonaServiceRunning(context, ActivityMonitorService.class)) {
+//            context.startService(new Intent(context, ActivityMonitorService.class));
+//        }
     }
 
     /**

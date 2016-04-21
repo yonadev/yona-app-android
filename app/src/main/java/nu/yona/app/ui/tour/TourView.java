@@ -56,10 +56,14 @@ public class TourView extends LinearLayout {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                indicator.onScrolled(position, positionOffset);
+                if(position == 3) {
+                    moveToLaunchActivity();
+                } else {
+                    indicator.onScrolled(position, positionOffset);
 
-                if (onPageChangeListener != null) {
-                    onPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                    if (onPageChangeListener != null) {
+                        onPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                    }
                 }
             }
 
