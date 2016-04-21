@@ -29,6 +29,7 @@ public class DeviceManagerImpl implements DeviceManager {
 
     private DeviceNetworkImpl deviceNetwork;
     private Context mContext;
+
     public DeviceManagerImpl(Context context) {
         mContext = context;
         deviceNetwork = new DeviceNetworkImpl();
@@ -151,7 +152,7 @@ public class DeviceManagerImpl implements DeviceManager {
                 }
             });
         } catch (Exception e) {
-            if(e != null && e.getMessage() != null) {
+            if (e != null && e.getMessage() != null) {
                 listener.onError(new ErrorMessage(e.getMessage()));
             }
         }

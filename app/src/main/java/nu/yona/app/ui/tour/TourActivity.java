@@ -17,7 +17,6 @@ import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
-import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.PreferenceConstant;
 
 public class TourActivity extends BaseActivity implements EventChangeListener {

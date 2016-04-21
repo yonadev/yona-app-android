@@ -28,4 +28,5 @@ public interface AppConstant {
     String LOGGED_IN = "logged_in";
     String SCREEN_TYPE = "screen_type";
     String FROM_LOGIN = "fromLogin";
+    String USER = "user";
 }
