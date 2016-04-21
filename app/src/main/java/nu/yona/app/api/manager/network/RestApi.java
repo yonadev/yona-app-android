@@ -17,7 +17,6 @@ import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
-import nu.yona.app.api.model.PostYonaGoal;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.utils.ApiList;

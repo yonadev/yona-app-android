@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
+import nu.yona.app.enums.ChallengesEnum;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -30,7 +31,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
         mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfTimeZoneGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
         mGoalListView.setOnItemClickListener(itemClickListener);
-        showCurrentGoalListView();
+        showCurrentGoalListView(ChallengesEnum.ZONE_TAB.getTab());
         btnGoalAdd.setOnClickListener(this);
         mDescTab.setText(getActivity().getString(R.string.challenges_tijdzone_header_text));
         return view;
@@ -41,7 +42,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
         switch (v.getId()) {
             case R.id.img_add_goal:
                 //show new goal list creation view
-                showNewListOfGoalView();
+                showNewListOfGoalView(ChallengesEnum.ZONE_TAB.getTab());
                 break;
             default:
                 break;
