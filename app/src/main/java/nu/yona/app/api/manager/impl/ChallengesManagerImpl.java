@@ -56,7 +56,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         updateCategoriesAndGoals();
     }
 
-    private void updateCategoriesAndGoals(){
+    private void updateCategoriesAndGoals() {
         getListOfCategory();
         filterCategoriesGoal();
     }
