@@ -15,6 +15,9 @@ import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.api.model.OTPVerficationCode;
+import nu.yona.app.api.model.PostBudgetYonaGoal;
+import nu.yona.app.api.model.PostTimeZoneYonaGoal;
+import nu.yona.app.api.model.PostYonaGoal;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.utils.ApiList;
@@ -107,6 +110,16 @@ public interface RestApi {
 
     @GET
     Call<Goals> getUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
+    @POST
+    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body PostBudgetYonaGoal postBudgetYonaGoal);
+
+    @POST
+    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body PostTimeZoneYonaGoal postBudgetYonaGoal);
+
+    @DELETE
+    Call<Void> deleteUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
 
     /******** GOALS ************/
 }

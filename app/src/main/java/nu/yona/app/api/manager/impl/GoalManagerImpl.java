@@ -15,7 +15,13 @@ import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.manager.dao.GoalDAO;
 import nu.yona.app.api.manager.network.GoalNetworkImpl;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Goals;
+import nu.yona.app.api.model.PostBudgetYonaGoal;
+import nu.yona.app.api.model.PostTimeZoneYonaGoal;
+import nu.yona.app.api.model.PostYonaGoal;
+import nu.yona.app.api.model.YonaGoal;
+import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
 
 /**
@@ -50,9 +56,58 @@ public class GoalManagerImpl implements GoalManager {
 
             @Override
             public void onError(Object errorMessage) {
+                handleError(errorMessage, listener);
+            }
+        });
+    }
+
+    @Override
+    public void postBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener) {
+        goalNetwork.putUserBudgetGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                goalDAO.saveGoalData((Goals) result, listener);
                 if (listener != null) {
-                    listener.onError(errorMessage);
+                    listener.onDataLoad(result);
                 }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                handleError(errorMessage, listener);
+            }
+        });
+    }
+
+    @Override
+    public void postTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener) {
+        goalNetwork.putUserTimeZoneGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                goalDAO.saveGoalData((Goals) result, listener);
+                if (listener != null) {
+                    listener.onDataLoad(result);
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                handleError(errorMessage, listener);
+            }
+        });
+    }
+
+    @Override
+    public void deleteGoal(YonaGoal yonaGoal, final DataLoadListener listener) {
+        goalNetwork.deleteGoal(yonaGoal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                getUserGoal(listener);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                handleError(errorMessage, listener);
             }
         });
     }
@@ -66,4 +121,14 @@ public class GoalManagerImpl implements GoalManager {
         return goalDAO.getUserGoal();
     }
 
+    private void handleError(Object errorMessage, DataLoadListener listener) {
+        if (listener == null) {
+            return;
+        }
+        if (errorMessage instanceof ErrorMessage) {
+            listener.onError(errorMessage);
+        } else {
+            listener.onError(new ErrorMessage(errorMessage.toString()));
+        }
+    }
 }

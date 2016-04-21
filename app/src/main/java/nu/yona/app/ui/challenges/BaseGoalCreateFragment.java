@@ -39,11 +39,26 @@ import nu.yona.app.utils.AppConstant;
  */
 public class BaseGoalCreateFragment extends BaseFragment {
 
+    public ChallengesManager challengesManager;
+    public AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent goalIntent = new Intent(IntentEnum.ACTION_CHALLENGES_GOAL.getActionString());
+            Object object = parent.getAdapter().getItem(position);
+            if (object != null) {
+                if (object instanceof YonaGoal) {
+                    goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaGoal) object);
+                } else if (object instanceof YonaActivityCategories) {
+                    goalIntent.putExtra(AppConstant.GOAL_OBJECT, challengesManager.getYonaGoalByCategoryType((YonaActivityCategories) object));
+                }
+            }
+            ((YonaActivity) getActivity()).replaceFragment(goalIntent);
+        }
+    };
     protected ListView mGoalListView;
     protected ListView mGoalCreationListView;
     protected ImageButton btnGoalAdd;
     protected YonaFontTextView mDescTab;
-    public ChallengesManager challengesManager;
     protected List<YonaGoal> budgetCategoriesGoalList;
     protected List<YonaGoal> timeZoneCategoriesGoalList;
     protected List<YonaGoal> noGoCategoriesGoalList;
@@ -75,13 +90,11 @@ public class BaseGoalCreateFragment extends BaseFragment {
         mGoalCreationListView.setVisibility(View.GONE);
     }
 
-
     public synchronized void showNewListOfGoalView() {
         btnGoalAdd.setVisibility(View.GONE);
         mGoalListView.setVisibility(View.GONE);
         mGoalCreationListView.setVisibility(View.VISIBLE);
     }
-
 
     /**
      * It will check the visibility of child View
@@ -96,21 +109,4 @@ public class BaseGoalCreateFragment extends BaseFragment {
     public void onBackPressedView() {
         showCurrentGoalListView();
     }
-
-
-    public AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent goalIntent = new Intent(IntentEnum.ACTION_CHALLENGES_GOAL.getActionString());
-            Object object = parent.getAdapter().getItem(position);
-            if (object != null) {
-                if (object instanceof YonaGoal) {
-                    goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaGoal) object);
-                } else if (object instanceof YonaActivityCategories) {
-                    goalIntent.putExtra(AppConstant.GOAL_OBJECT, challengesManager.getYonaGoalByCategoryType((YonaActivityCategories) object));
-                }
-            }
-            ((YonaActivity) getActivity()).replaceFragment(goalIntent);
-        }
-    };
 }

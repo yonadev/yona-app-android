@@ -14,6 +14,10 @@ import java.lang.annotation.Annotation;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Goals;
+import nu.yona.app.api.model.PostBudgetYonaGoal;
+import nu.yona.app.api.model.PostTimeZoneYonaGoal;
+import nu.yona.app.api.model.PostYonaGoal;
+import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -26,8 +30,25 @@ import retrofit2.Response;
  */
 public class GoalNetworkImpl extends BaseImpl {
 
-    public void getUserGoals(String url, final DataLoadListener listener) {
-        getRestApi().getUserGoals(url, YonaApplication.getYonaPassword()).enqueue(new Callback<Goals>() {
+    public void getUserGoals(String url, DataLoadListener listener) {
+        getRestApi().getUserGoals(url, YonaApplication.getYonaPassword()).enqueue(getGoals(listener));
+
+    }
+
+    public void putUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener) {
+        getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
+    }
+
+    public void putUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener) {
+        getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
+    }
+
+    public void deleteGoal(String url, String yonaPassword, DataLoadListener listener) {
+        getRestApi().deleteDevice(url, yonaPassword).enqueue(getCall(listener));
+    }
+
+    private Callback<Goals> getGoals(final DataLoadListener listener) {
+        return new Callback<Goals>() {
             @Override
             public void onResponse(Call<Goals> call, Response<Goals> response) {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
@@ -48,8 +69,6 @@ public class GoalNetworkImpl extends BaseImpl {
             public void onFailure(Call<Goals> call, Throwable t) {
                 listener.onError(new ErrorMessage(t.getMessage()));
             }
-        });
-
+        };
     }
-
 }

@@ -9,6 +9,11 @@
 package nu.yona.app.api.manager;
 
 import nu.yona.app.api.model.Goals;
+import nu.yona.app.api.model.PostBudgetYonaGoal;
+import nu.yona.app.api.model.PostTimeZoneYonaGoal;
+import nu.yona.app.api.model.PostYonaGoal;
+import nu.yona.app.api.model.YonaGoal;
+import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
 
 /**
@@ -20,4 +25,9 @@ public interface GoalManager {
 
     Goals getUserGoalFromDb();
 
+    void postBudgetGoals(PostBudgetYonaGoal goal, DataLoadListener listener);
+
+    void postTimeZoneGoals(PostTimeZoneYonaGoal goal, DataLoadListener listener);
+
+    void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener);
 }
