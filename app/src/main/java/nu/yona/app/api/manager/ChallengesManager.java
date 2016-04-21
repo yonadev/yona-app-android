@@ -36,6 +36,8 @@ public interface ChallengesManager {
 
     void postBudgetGoals(long time, YonaGoal goal, final DataLoadListener listener);
 
+    void postBudgetGoals(long time, YonaActivityCategories categories, final DataLoadListener listener);
+
     void postTimeGoals(ArrayList<String> timeGoal, YonaGoal goal, final DataLoadListener listener);
 
     void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener);

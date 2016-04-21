@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
+import nu.yona.app.enums.ChallengesEnum;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -30,9 +31,9 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
         mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfNoGoGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
         mGoalListView.setOnItemClickListener(itemClickListener);
-        showCurrentGoalListView();
+        showCurrentGoalListView(ChallengesEnum.NO_GO_TAB.getTab());
         btnGoalAdd.setOnClickListener(this);
-        showCurrentGoalListView();
+        showCurrentGoalListView(ChallengesEnum.NO_GO_TAB.getTab());
         mDescTab.setText(getActivity().getString(R.string.challenges_nogo_header_text));
         return view;
     }
@@ -42,7 +43,7 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
         switch (v.getId()) {
             case R.id.img_add_goal:
                 //show new goal list creation view
-                showNewListOfGoalView();
+                showNewListOfGoalView(ChallengesEnum.NO_GO_TAB.getTab());
                 break;
             default:
                 break;

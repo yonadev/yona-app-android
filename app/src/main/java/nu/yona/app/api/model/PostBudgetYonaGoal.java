@@ -13,14 +13,10 @@ package nu.yona.app.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONArray;
-
-import java.util.List;
-
 /**
  * Created by kinnarvasa on 21/04/16.
  */
-public class PostBudgetYonaGoal extends  PostYonaGoal{
+public class PostBudgetYonaGoal extends PostYonaGoal {
 
     @SerializedName("maxDurationMinutes")
     @Expose

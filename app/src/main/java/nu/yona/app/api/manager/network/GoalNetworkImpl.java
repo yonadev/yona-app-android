@@ -16,8 +16,6 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
-import nu.yona.app.api.model.PostYonaGoal;
-import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
