@@ -124,6 +124,25 @@ public class ChallengesManagerImpl implements ChallengesManager {
         return noGoCategoriesGoalList;
     }
 
+    @Override
+    public YonaGoal getYonaGoalByCategoryType(YonaActivityCategories activityCategories) {
+        Goals userGoals = goalManager.getUserGoalFromDb();
+        if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
+            for (YonaGoal mYonaGoal : userGoals.getEmbedded().getYonaGoals()) {
+                if (mYonaGoal != null) {
+                    for (Map.Entry<String, String> entry : mGoalCategoriesMap.entrySet()) {
+                        if (entry.getValue().equals(mYonaGoal.getLinks().getYonaActivityCategory().getHref())) {
+                            mYonaGoal.setActivityCategoryName(entry.getKey());
+                            return mYonaGoal;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Delete Goal by User's Goal id(url)
      *

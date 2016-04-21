@@ -27,6 +27,8 @@ public interface ChallengesManager {
 
     List<YonaGoal> getListOfNoGoGoals();
 
+    YonaGoal getYonaGoalByCategoryType(YonaActivityCategories activityCategories);
+
     void deleteGoal(String goalId, DataLoadListener listener);
 
     void createNewGoal(YonaGoal yonaGoal, DataLoadListener listener);

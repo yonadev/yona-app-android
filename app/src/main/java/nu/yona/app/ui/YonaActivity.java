@@ -364,6 +364,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         break;
                     case ACTION_CHALLENGES_GOAL:
                         mContent = new ChallengesGoalDetailFragment();
+                        mContent.setArguments(intent.getExtras());
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;

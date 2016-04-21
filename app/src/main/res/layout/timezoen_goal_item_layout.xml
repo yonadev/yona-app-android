@@ -12,7 +12,7 @@
     android:orientation="horizontal">
 
     <nu.yona.app.customview.YonaFontTextView
-        android:id="@+id/view2"
+        android:id="@+id/index_time_zone_goal"
         style="@style/SeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,8 +26,8 @@
         android:layout_width="1dp"
         android:layout_height="@dimen/time_zone_goal_item_height"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/view2"
-        android:layout_toRightOf="@+id/view2"
+        android:layout_toEndOf="@id/index_time_zone_goal"
+        android:layout_toRightOf="@id/index_time_zone_goal"
         android:background="@color/bg_gradient_three" />
 
     <LinearLayout
@@ -41,7 +41,7 @@
             style="@style/FooterTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/view2"
+            android:layout_alignBottom="@id/index_time_zone_goal"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
             android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"

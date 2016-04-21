@@ -7,33 +7,40 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/goal_item_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/goal_item_height"
-    android:padding="@dimen/layout_margin">
+    android:background="@color/white_two"
+    android:padding="@dimen/layout_margin"
+    android:visibility="gone">
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goal_item_text"
         style="@style/SeTitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <nu.yona.app.customview.YonaFontTextView
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/goal_item_text"
-        android:layout_marginTop="@dimen/goal_item_desc_margin_top"
-        android:layout_toLeftOf="@+id/view"
-        android:layout_toStartOf="@+id/view" />
+        android:text="@string/budgetGoalTitle" />
 
     <nu.yona.app.customview.YonaFontTextView
-        android:id="@+id/view"
+        android:id="@+id/goal_minutes_num"
         style="@style/SeScorePos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/goal_item_subtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/goal_item_text"
+        android:layout_marginTop="@dimen/goal_item_desc_margin_top"
+        android:layout_toLeftOf="@id/goal_minutes_num"
+        android:layout_toStartOf="@id/goal_minutes_num"
+        android:text="@string/budgetGoalDesc" />
+
 
 </RelativeLayout>

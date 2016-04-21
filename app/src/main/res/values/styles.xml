@@ -24,6 +24,10 @@
         <item name="tabSelectedTextColor">@android:color/primary_text_dark_nodisable</item>
     </style>
 
+    <style name="FragmentStyle">
+        <item name="android:background">@color/white_three</item>
+    </style>
+
     <style name="NavigationTab" parent="Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/NavigationTabTextAppeareance</item>
     </style>

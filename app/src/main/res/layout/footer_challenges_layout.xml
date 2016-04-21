@@ -27,7 +27,7 @@
             android:background="@drawable/button_challenges"
             android:paddingBottom="15dp"
             android:paddingTop="15dp"
-            android:text="CHALLENGE OPSLAAN"
+            android:text="@string/challengesGoalCreateText"
             android:textColor="@color/mid_blue" />
 
     </LinearLayout>
@@ -40,6 +40,7 @@
         android:orientation="vertical">
 
         <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/challenges_goal_footer_title"
             style="@style/FooterTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,11 +49,12 @@
             android:text="@string/challenges_footer_text" />
 
         <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/challenges_goal_footer_subscribeTxt"
             style="@style/FooterTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/footer_detail_margin_top"
-            android:gravity="center"/>
+            android:gravity="center" />
 
     </LinearLayout>
 

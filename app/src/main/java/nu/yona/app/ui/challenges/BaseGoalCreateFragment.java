@@ -21,7 +21,7 @@ import android.widget.ListView;
 import nu.yona.app.R;
 import nu.yona.app.api.manager.ChallengesManager;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
-import nu.yona.app.api.model.ActivityCategories;
+import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
@@ -39,7 +39,7 @@ public class BaseGoalCreateFragment extends BaseFragment {
     protected ImageButton btnGoalAdd;
     protected YonaFontTextView mDescTab;
     private GoalCategoryListAdapter categoryGoalListAdapter;
-    protected ChallengesManager challengesManager;
+    public ChallengesManager challengesManager;
 
 
     @Nullable
@@ -95,8 +95,8 @@ public class BaseGoalCreateFragment extends BaseFragment {
             if (object != null) {
                 if (object instanceof YonaGoal) {
                     goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaGoal) object);
-                } else if (object instanceof ActivityCategories) {
-                    goalIntent.putExtra(AppConstant.GOAL_OBJECT, (ActivityCategories) object);
+                } else if (object instanceof YonaActivityCategories) {
+                    goalIntent.putExtra(AppConstant.GOAL_OBJECT, challengesManager.getYonaGoalByCategoryType((YonaActivityCategories) object));
                 }
             }
             ((YonaActivity) getActivity()).replaceFragment(goalIntent);
