@@ -15,4 +15,8 @@ package nu.yona.app.utils;
  */
 public interface ApiList {
     String USER = "/users/";
+    String USER_OVERRIDE = "/users/?overwriteUserConfirmationCode={otp}";
+    String ADMIN_OVERRIDE_USER = "/admin/requestUserOverwrite/";
+    String NEW_DEVICE_REQUEST = "newDeviceRequests/{mobileNumber}";
+    String ACTIVITY_CATEGORIES = "activityCategories/";
 }

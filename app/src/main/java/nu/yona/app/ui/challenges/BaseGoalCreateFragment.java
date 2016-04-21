@@ -18,8 +18,13 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import java.util.HashMap;
+import java.util.List;
+
 import nu.yona.app.R;
+import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.ChallengesManager;
+import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
@@ -38,9 +43,15 @@ public class BaseGoalCreateFragment extends BaseFragment {
     protected ListView mGoalCreationListView;
     protected ImageButton btnGoalAdd;
     protected YonaFontTextView mDescTab;
-    private GoalCategoryListAdapter categoryGoalListAdapter;
     public ChallengesManager challengesManager;
-
+    protected List<YonaGoal> budgetCategoriesGoalList;
+    protected List<YonaGoal> timeZoneCategoriesGoalList;
+    protected List<YonaGoal> noGoCategoriesGoalList;
+    protected List<YonaActivityCategories> mYonaActivityCategoriesList;
+    protected HashMap<String, String> mGoalCategoriesMap;
+    private GoalManager goalManager;
+    private ActivityCategoryManager activityCategoryManager;
+    private GoalCategoryListAdapter categoryGoalListAdapter;
 
     @Nullable
     @Override

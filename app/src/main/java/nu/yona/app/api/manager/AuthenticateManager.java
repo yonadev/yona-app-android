@@ -25,6 +25,8 @@ public interface AuthenticateManager {
 
     void registerUser(RegisterUser user, DataLoadListener listener);
 
+    void verifyOTP(RegisterUser user, String otp, DataLoadListener listener);
+
     void verifyOTP(String otp, DataLoadListener listener);
 
     void resendOTP(DataLoadListener listener);
@@ -34,4 +36,6 @@ public interface AuthenticateManager {
     User getUser();
 
     void getUser(final String url, final DataLoadListener listener);
+
+    void requestUserOverride(String mobileNumber, final DataLoadListener listener);
 }

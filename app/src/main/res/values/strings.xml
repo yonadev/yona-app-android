@@ -78,5 +78,15 @@
     <string name="timezonegoalheadersubtext">Bepaal hier wanneer je wel of geen tijd aan %1$s wilt besteden</string>
     <string name="budgetgoalheadersubtext">Bepaal hier hoeveel tijd je aan %1$s wilt besteden</string>
     <string name="timezone">Tijdzone</string>
-
+    <string name="screentitle1">Transparantie</string>
+    <string name="screentitle2">Delen</string>
+    <string name="screentitle3">Grenzen</string>
+    <string name="screentitle4">Tijdsbesteding</string>
+    <string name="screendesc1">Persoonlijke keuze om transparant te zijn...</string>
+    <string name="screendesc2">Je doelen delen met de persoon die je vertrouwt</string>
+    <string name="screendesc3">Grenzen afspreken en daar anderen in betrekken</string>
+    <string name="screendesc4">Controle houden over de tijd die je online bent</string>
+    <string name="user_override">Mobile Number %1$s already register with Yona, do you want to re-register same number? (Note:All data associated with this number will be removed, if you want to add another device, you can go back and click on InLoggin.)</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

@@ -31,6 +31,8 @@ public class EventChangeManager {
 
     public static final int EVENT_OTP_RESEND = 9;
 
+    public static final int EVENT_TOUR_COMPLETE = 10;
+
     private final Set<EventChangeListener> listeners = new HashSet<EventChangeListener>();
 
     public void registerListener(EventChangeListener listener) {

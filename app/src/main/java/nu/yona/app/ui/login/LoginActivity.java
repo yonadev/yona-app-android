@@ -12,6 +12,7 @@ package nu.yona.app.ui.login;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
@@ -36,6 +37,7 @@ import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by kinnarvasa on 13/04/16.
@@ -223,6 +225,11 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     }
 
     private void showPasscodeScreen() {
+        SharedPreferences.Editor editor = YonaApplication.getUserPreferences().edit();
+        editor.putBoolean(PreferenceConstant.STEP_REGISTER, true);
+        editor.putBoolean(PreferenceConstant.STEP_OTP, true);
+        editor.putBoolean(PreferenceConstant.STEP_PASSCODE, true);
+        editor.commit();
         startActivity(new Intent(LoginActivity.this, PasscodeActivity.class));
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();

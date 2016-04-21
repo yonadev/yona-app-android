@@ -77,6 +77,6 @@
     <dimen name="time_zone_goal_index_margin_right">26dp</dimen>
     <dimen name="time_zone_goal_van_margin_left">20dp</dimen>
     <dimen name="time_zone_goal_van_margin_right">12dp</dimen>
-
+    <dimen name="tour_desc_margin">37dp</dimen>
 
 </resources>
