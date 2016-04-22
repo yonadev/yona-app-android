@@ -10,7 +10,6 @@ package nu.yona.app.ui.challenges;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,15 +40,16 @@ public class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewH
     @Override
     public void onBindViewHolder(TimeZoneGoalViewHolder holder, int position) {
         String txtTime = (String) getItem(position);
-        Log.i(TimeZoneGoalViewHolder.class.getName(), "position:" + position);
         if (!TextUtils.isEmpty(txtTime)) {
-            holder.indexGoalTxt.setText("" + position);
+            holder.indexGoalTxt.setText("" + (position + 1));
+            String[] times = txtTime.split("-", 2);
+            holder.startTimeTxt.setText(times[0]);
+            holder.endTimeTxt.setText(times[1]);
         }
     }
 
     @Override
     public int getItemCount() {
-        Log.i(TimeZoneGoalViewHolder.class.getName(), "getItemCount :" + this.mListYonaGoal.size());
         return this.mListYonaGoal.size();
     }
 

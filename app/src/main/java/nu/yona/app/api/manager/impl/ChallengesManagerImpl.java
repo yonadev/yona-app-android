@@ -30,7 +30,6 @@ import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
-import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by bhargavsuthar on 20/04/16.
@@ -147,13 +146,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
         Goals userGoals = goalManager.getUserGoalFromDb();
         if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
             for (YonaGoal mYonaGoal : userGoals.getEmbedded().getYonaGoals()) {
-                if (mYonaGoal != null) {
-                    for (Map.Entry<String, String> entry : mGoalCategoriesMap.entrySet()) {
-                        if (entry.getValue().equals(mYonaGoal.getLinks().getYonaActivityCategory().getHref())) {
-                            mYonaGoal.setActivityCategoryName(entry.getKey());
-                            return mYonaGoal;
-                        }
-                    }
+                if (mYonaGoal != null && activityCategories.get_links().getSelf().getHref().equalsIgnoreCase(mYonaGoal.getLinks().getYonaActivityCategory().getHref())) {
+                    mYonaGoal.setActivityCategoryName(activityCategories.getName());
+                    return mYonaGoal;
                 }
             }
         }
@@ -216,7 +211,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         postBudgetYonaGoal.setType(GoalsEnum.BUDGET_GOAL.getActionString());
         Links links = new Links();
         links.setYonaActivityCategory(category.get_links().getSelf());
-        postBudgetYonaGoal.setMaxDurationMinutes((time / AppConstant.ONE_SECOND) % AppConstant.ONE_MINUTE);
+        postBudgetYonaGoal.setMaxDurationMinutes(time);
         postBudgetYonaGoal.setLinks(links);
 
         return postBudgetYonaGoal;
@@ -229,7 +224,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         Href yonaActivityCategory = new Href();
         yonaActivityCategory.setHref(goal.getLinks().getYonaActivityCategory().getHref());
         links.setYonaActivityCategory(yonaActivityCategory);
-        postBudgetYonaGoal.setMaxDurationMinutes((time / AppConstant.ONE_SECOND) % AppConstant.ONE_MINUTE);
+        postBudgetYonaGoal.setMaxDurationMinutes(time);
         postBudgetYonaGoal.setLinks(links);
 
         return postBudgetYonaGoal;
@@ -263,5 +258,26 @@ public class ChallengesManagerImpl implements ChallengesManager {
      */
     public void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener) {
         goalManager.deleteGoal(yonaGoal, listener);
+    }
+
+    /**
+     * It will check and return which type of goal is
+     *
+     * @param yonaGoal
+     * @return
+     */
+    @Override
+    public GoalsEnum typeOfGoal(YonaGoal yonaGoal) {
+
+        if (yonaGoal != null) {
+            if (yonaGoal.getMaxDurationMinutes() > 0 && GoalsEnum.BUDGET_GOAL.getActionString().equalsIgnoreCase(yonaGoal.getType())) {
+                return GoalsEnum.BUDGET_GOAL;
+            } else if (yonaGoal.getZones() != null && GoalsEnum.TIME_ZONE_GOAL.getActionString().equalsIgnoreCase(yonaGoal.getType())) {
+                return GoalsEnum.TIME_ZONE_GOAL;
+            } else {
+                return GoalsEnum.NOGO;
+            }
+        }
+        return null;
     }
 }
