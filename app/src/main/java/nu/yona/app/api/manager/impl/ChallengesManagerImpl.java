@@ -56,12 +56,14 @@ public class ChallengesManagerImpl implements ChallengesManager {
         updateCategoriesAndGoals();
     }
 
-    private void updateCategoriesAndGoals() {
+    @Override
+    public void updateCategoriesAndGoals() {
         getListOfCategory();
         filterCategoriesGoal();
     }
 
     private synchronized void getListOfCategory() {
+        mYonaActivityCategoriesList.clear();
         ActivityCategories embeddedActivityCategories = activityCategoryManager.getListOfActivityCategories();
         if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
             for (YonaActivityCategories activityCategories : embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories()) {
@@ -75,6 +77,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
     }
 
     private synchronized void filterCategoriesGoal() {
+        budgetCategoriesGoalList.clear();
+        timeZoneCategoriesGoalList.clear();
+        noGoCategoriesGoalList.clear();
         Goals userGoals = goalManager.getUserGoalFromDb();
 
         if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
@@ -100,6 +105,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
     @Override
     public List<YonaActivityCategories> getListOfCategories() {
+        getListOfCategory();
         return mYonaActivityCategoriesList;
     }
 
@@ -110,6 +116,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
      */
     @Override
     public List<YonaGoal> getListOfBudgetGoals() {
+        filterCategoriesGoal();
         return budgetCategoriesGoalList;
     }
 
@@ -120,6 +127,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
      */
     @Override
     public List<YonaGoal> getListOfTimeZoneGoals() {
+        filterCategoriesGoal();
         return timeZoneCategoriesGoalList;
     }
 
@@ -130,6 +138,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
      */
     @Override
     public List<YonaGoal> getListOfNoGoGoals() {
+        filterCategoriesGoal();
         return noGoCategoriesGoalList;
     }
 
@@ -187,7 +196,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         goalManager.postBudgetGoals(getPostYonaGoalForBudget(time, category), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                updateCategoriesAndGoals();
+
                 listener.onDataLoad(result);
             }
 
