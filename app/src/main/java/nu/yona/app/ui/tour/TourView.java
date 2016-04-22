@@ -28,7 +28,6 @@ import nu.yona.app.utils.AppUtils;
 public class TourView extends LinearLayout {
 
     private final static int TOTAL_PAGE = 4;
-
     private final ViewPager viewPager;
     private final PagerAdapter pagerAdapter = new PagerAdapter() {
         @Override
@@ -76,7 +75,7 @@ public class TourView extends LinearLayout {
         public void restoreState(Parcelable p, ClassLoader c) {
         }
     };
-    private OnPageChangeListener onPageChangeListener;
+    private boolean moveToNextActivity;
 
     public TourView(Context context, int startPage) {
         super(context);
@@ -94,28 +93,23 @@ public class TourView extends LinearLayout {
         viewPager.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                if (onPageChangeListener != null) {
-                    onPageChangeListener.onPageSelected(position);
-                }
+
             }
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == 3) {
+                indicator.onScrolled(position, positionOffset);
+                if (position == (viewPager.getAdapter().getCount() - 1) && moveToNextActivity) {
                     moveToLaunchActivity();
-                } else {
-                    indicator.onScrolled(position, positionOffset);
-
-                    if (onPageChangeListener != null) {
-                        onPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                    }
                 }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (onPageChangeListener != null) {
-                    onPageChangeListener.onPageScrollStateChanged(state);
+                if (state == 1) {
+                    moveToNextActivity = true;
+                } else {
+                    moveToNextActivity = false;
                 }
             }
         });
