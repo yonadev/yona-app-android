@@ -36,6 +36,11 @@ public class GoalCategoryListAdapter<T> extends BaseAdapter {
         this.mListYonaGoal = listYonaGoal;
     }
 
+    public void notifyDataSetChanged(List<T> mListYonaGoal) {
+        this.mListYonaGoal = mListYonaGoal;
+        super.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mListYonaGoal.size();

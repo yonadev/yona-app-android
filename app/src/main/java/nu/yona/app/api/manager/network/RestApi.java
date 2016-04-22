@@ -12,10 +12,11 @@ package nu.yona.app.api.manager.network;
 
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.Goals;
-import nu.yona.app.api.model.MobileNumber;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.api.model.OTPVerficationCode;
+import nu.yona.app.api.model.PostBudgetYonaGoal;
+import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.utils.ApiList;
@@ -28,6 +29,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -44,6 +46,10 @@ public interface RestApi {
     Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
                             @Body RegisterUser body);
 
+    @POST(ApiList.USER)
+    Call<User> overrideRegisterUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Query("overwriteUserConfirmationCode") String otp,
+                                    @Body RegisterUser body);
+
     @GET
     Call<User> getUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword);
 
@@ -55,7 +61,7 @@ public interface RestApi {
     Call<Void> resendOTP(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
     @POST(ApiList.ADMIN_OVERRIDE_USER)
-    Call<Void> requestUserOverride(@Body MobileNumber number);
+    Call<Void> requestUserOverride(@Query("mobileNumber") String number);
     /******** USER ************/
 
     /********
@@ -83,7 +89,7 @@ public interface RestApi {
     @DELETE
     Call<Void> deleteDevice(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
-    @GET("newDeviceRequests/{mobileNumber}")
+    @GET(ApiList.NEW_DEVICE_REQUEST)
     Call<NewDevice> checkDevice(@Path("mobileNumber") String mobileNumber, @Header(NetworkConstant.YONA_NEW_PASSWORD) String password);
 
     /******** DEVICE ************/
@@ -92,7 +98,7 @@ public interface RestApi {
      * ActivityCategory
      ************/
 
-    @GET("activityCategories/")
+    @GET(ApiList.ACTIVITY_CATEGORIES)
     Call<ActivityCategories> getActivityCategories();
 
     /******** ActivityCategory ************/
@@ -103,6 +109,16 @@ public interface RestApi {
 
     @GET
     Call<Goals> getUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
+    @POST
+    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body PostBudgetYonaGoal postBudgetYonaGoal);
+
+    @POST
+    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body PostTimeZoneYonaGoal postBudgetYonaGoal);
+
+    @DELETE
+    Call<Void> deleteUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
 
     /******** GOALS ************/
 }

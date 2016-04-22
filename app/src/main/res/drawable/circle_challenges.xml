@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+
+            <corners android:radius="@dimen/circle_goal_challenges_radius" />
+
+            <stroke
+                android:width="@dimen/circle_goal_challenges_stroke_width"
+                android:color="@color/sickly_green" />
+
+            <solid android:color="@color/sickly_green_two" />
+
+            <padding
+                android:left="@dimen/circle_goal_challenges_padding"
+                android:right="@dimen/circle_goal_challenges_padding"
+                android:top="@dimen/circle_goal_challenges_padding" />
+
+        </shape>
+    </item>
+</layer-list>

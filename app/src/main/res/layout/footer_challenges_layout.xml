@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gradient_two"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/challenge_opslaan_height"
+        android:orientation="vertical">
+
+        <nu.yona.app.customview.YonaFontButton
+            android:id="@+id/btnChallenges"
+            style="@style/BtnTxtBlue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/btn_challenges_opslaan_margin"
+            android:layout_marginRight="@dimen/btn_challenges_opslaan_margin"
+            android:layout_marginTop="@dimen/btn_challenges_opslaan_margin_top"
+            android:background="@drawable/button_challenges"
+            android:paddingBottom="@dimen/btn_challenges_opslaan_paddding"
+            android:paddingTop="@dimen/btn_challenges_opslaan_paddding"
+            android:text="@string/challengesGoalCreateText"
+            android:textColor="@color/mid_blue" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/footer_challenges_detail"
+        android:background="@color/white_three"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/challenges_goal_footer_title"
+            style="@style/FooterTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_bucket_screen"
+            android:gravity="center"
+            android:text="@string/challenges_footer_text" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/challenges_goal_footer_subscribeTxt"
+            style="@style/FooterTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/footer_detail_margin_top"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</LinearLayout>

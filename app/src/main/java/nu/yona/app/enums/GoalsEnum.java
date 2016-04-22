@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public enum GoalsEnum {
     BUDGET_GOAL("BudgetGoal"),
-    TIME_ZONE_GOAL("TimeZoneGoal");
+    TIME_ZONE_GOAL("TimeZoneGoal"),
+    NOGO("NOGO"); // we will never received from server as Type, we need to identify by maxDurationMinutes
 
     private static Map<String, GoalsEnum> nameToEnumMapping = new HashMap<String, GoalsEnum>();
 

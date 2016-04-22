@@ -39,6 +39,7 @@ import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.challenges.ChallengesFragment;
+import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
 import nu.yona.app.ui.message.MessageFragment;
@@ -361,6 +362,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;
+                    case ACTION_CHALLENGES_GOAL:
+                        mContent = new ChallengesGoalDetailFragment();
+                        mContent.setArguments(intent.getExtras());
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
                     default:
                         break;
                 }
@@ -370,12 +377,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void updateToolBar() {
-        if (mContent instanceof ChallengesFragment) {
+        if (mContent instanceof ChallengesFragment || mContent instanceof ChallengesGoalDetailFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_green);
         } else if (mContent instanceof DashboardFragment || mContent instanceof MessageFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
         } else if (mContent instanceof SettingsFragment) {
-            mToolBar.setBackgroundColor(getResources().getColor(R.color.mango));
+            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_mango);
         } else if (mContent instanceof FriendsFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
         }
@@ -487,5 +494,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             onBackStackChanged();
             super.onBackPressed();
         }
+    }
+
+    public void replaceFragment(Intent intent) {
+        replaceFragmentWithAction(intent);
     }
 }

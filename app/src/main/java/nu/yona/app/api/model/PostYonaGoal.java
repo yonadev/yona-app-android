@@ -10,40 +10,45 @@
 
 package nu.yona.app.api.model;
 
-import android.content.ContentValues;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by kinnarvasa on 21/04/16.
  */
-public class MobileNumber {
-    @SerializedName("mobileNumber")
+public class PostYonaGoal {
+    @SerializedName("@type")
     @Expose
-    private String mobileNumber;
+    private String Type;
+    @SerializedName("_links")
+    @Expose
+    private Links Links;
 
     /**
-     *
-     * @param number Mobile Number
+     * @return The Type
      */
-    public MobileNumber(String number) {
-        this.mobileNumber = number;
-    }
-    /**
-     *
-     * @return
-     * The mobileNumber
-     */
-    public String getMobileNumber() {
-        return mobileNumber;
+    public String getType() {
+        return Type;
     }
 
     /**
-     *
-     * @param mobileNumber
-     * The mobileNumber
+     * @param Type The @type
      */
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void setType(String Type) {
+        this.Type = Type;
+    }
+
+    /**
+     * @return The Links
+     */
+    public Links getLinks() {
+        return Links;
+    }
+
+    /**
+     * @param Links The _links
+     */
+    public void setLinks(Links Links) {
+        this.Links = Links;
     }
 }

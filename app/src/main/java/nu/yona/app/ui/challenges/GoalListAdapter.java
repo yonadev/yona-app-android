@@ -38,6 +38,11 @@ public class GoalListAdapter<T> extends BaseAdapter {
         this.mListYonaGoal = listYonaGoal;
     }
 
+    public void notifyDataSetChanged(List<T> listYonaGoal) {
+        this.mListYonaGoal = listYonaGoal;
+        super.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mListYonaGoal.size();
@@ -71,7 +76,7 @@ public class GoalListAdapter<T> extends BaseAdapter {
             if (mYonaGoal != null) {
                 if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
                     goalViewHolder.desc_goal.setText(mContext.getString(R.string.challenges_budget_subtext, mYonaGoal.getMaxDurationMinutes()));
-                } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
+                } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString()) && (mYonaGoal.getZones() != null)) {
                     goalViewHolder.desc_goal.setText(mContext.getString(R.string.challenges_timzoe_subtext, mYonaGoal.getZones().get(0), mYonaGoal.getZones().get(1)));
                 } else {
                     goalViewHolder.desc_goal.setText(mContext.getString(R.string.challenges_nogo_subText, mYonaGoal.getActivityCategoryName()));

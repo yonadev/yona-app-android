@@ -11,7 +11,6 @@ package nu.yona.app.utils;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -24,8 +23,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 
 import java.util.Random;
-
-import nu.yona.app.api.service.ActivityMonitorService;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -93,9 +90,9 @@ public class AppUtils {
      * Start service once user grant permission for application permission (for 5.1+ version)
      */
     public static void startService(Context context) {
-        if (!AppUtils.isYonaServiceRunning(context, ActivityMonitorService.class)) {
-            context.startService(new Intent(context, ActivityMonitorService.class));
-        }
+//        if (!AppUtils.isYonaServiceRunning(context, ActivityMonitorService.class)) {
+//            context.startService(new Intent(context, ActivityMonitorService.class));
+//        }
     }
 
     /**
@@ -104,7 +101,7 @@ public class AppUtils {
      * @return
      */
     public static String getRandomString(int charLimit) {
-        char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTU".toCharArray();
+        char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < charLimit; i++) {
@@ -114,4 +111,16 @@ public class AppUtils {
         return sb.toString();
     }
 
+    /**
+     * get the two digit length if digit length is one
+     *
+     * @param digit
+     * @return digit
+     */
+    public static String getHourDigit(String digit) {
+        if (digit.length() != 2) {
+            digit = "0" + digit;
+        }
+        return digit;
+    }
 }
