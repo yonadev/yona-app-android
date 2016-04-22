@@ -42,7 +42,7 @@ public class GoalNetworkImpl extends BaseImpl {
     }
 
     public void deleteGoal(String url, String yonaPassword, DataLoadListener listener) {
-        getRestApi().deleteDevice(url, yonaPassword).enqueue(getCall(listener));
+        getRestApi().deleteUserGoal(url, yonaPassword).enqueue(getCall(listener));
     }
 
     private Callback<Goals> getGoals(final DataLoadListener listener) {
