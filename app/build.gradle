@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.3"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "nu.yona.app"
@@ -132,8 +132,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/jackson-mapper-asl-1.9.0.jar')
     compile files('libs/jackson-core-asl-1.9.0.jar')
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:appcompat-v7:23+'
+    compile 'com.android.support:design:23+'
     compile 'com.squareup.retrofit2:retrofit:2.0.1'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.google.code.gson:gson:2.4'
@@ -141,6 +141,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile('org.robolectric:robolectric:3.0')
     compile 'net.hockeyapp.android:HockeySDK:3.7.2'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.2.0'
 
 }

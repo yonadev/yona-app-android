@@ -34,6 +34,7 @@ import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.ChallengesEnum;
+import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeManager;
@@ -116,17 +117,27 @@ public class BaseGoalCreateFragment extends BaseFragment {
     private void handleClickEvent(Object object) {
         Intent goalIntent = new Intent(IntentEnum.ACTION_CHALLENGES_GOAL.getActionString());
         if (object != null) {
+
             if (object instanceof YonaGoal) {
                 goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaGoal) object);
             } else if (object instanceof YonaActivityCategories) {
-                goalIntent.putExtra(AppConstant.GOAL_OBJECT, challengesManager.getYonaGoalByCategoryType((YonaActivityCategories) object));
+                YonaGoal yonaGoal = challengesManager.getYonaGoalByCategoryType((YonaActivityCategories) object);
+                if (yonaGoal == null) {
+                    goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaActivityCategories) object);
+                } else {
+                    CustomAlertDialog.show(getActivity(), "You already Added this category.", "Ok");
+                    return;
+                    //goalIntent.putExtra(AppConstant.GOAL_OBJECT, yonaGoal);
+                }
             }
         }
         switch (ChallengesEnum.getEnum(CURRENT_TAB)) {
             case CREDIT_TAB:
+                goalIntent.putExtra(AppConstant.NEW_GOAL_TYPE, GoalsEnum.BUDGET_GOAL.getActionString());
                 activity.replaceFragment(goalIntent);
                 break;
             case ZONE_TAB:
+                goalIntent.putExtra(AppConstant.NEW_GOAL_TYPE, GoalsEnum.TIME_ZONE_GOAL.getActionString());
                 activity.replaceFragment(goalIntent);
                 break;
             case NO_GO_TAB:

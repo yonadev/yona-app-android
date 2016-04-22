@@ -111,4 +111,16 @@ public class AppUtils {
         return sb.toString();
     }
 
+    /**
+     * get the two digit length if digit length is one
+     *
+     * @param digit
+     * @return digit
+     */
+    public static String getHourDigit(String digit) {
+        if (digit.length() != 2) {
+            digit = "0" + digit;
+        }
+        return digit;
+    }
 }

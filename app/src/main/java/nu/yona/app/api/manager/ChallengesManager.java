@@ -13,6 +13,7 @@ import java.util.List;
 
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
+import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
 
 /**
@@ -43,4 +44,6 @@ public interface ChallengesManager {
     void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener);
 
     void updateCategoriesAndGoals();
+
+    GoalsEnum typeOfGoal(YonaGoal yonaGoal);
 }

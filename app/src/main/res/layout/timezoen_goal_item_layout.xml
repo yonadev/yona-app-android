@@ -9,7 +9,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/time_zone_goal_item_height"
-    android:orientation="horizontal">
+    android:background="@drawable/item_gradient"
+    android:orientation="horizontal"
+    android:weightSum="2">
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/index_time_zone_goal"
@@ -31,9 +33,9 @@
         android:background="@color/bg_gradient_three" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <nu.yona.app.customview.YonaFontTextView
@@ -70,9 +72,9 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <nu.yona.app.customview.YonaFontTextView
