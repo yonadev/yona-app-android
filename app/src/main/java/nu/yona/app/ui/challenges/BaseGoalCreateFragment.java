@@ -28,6 +28,7 @@ import nu.yona.app.api.manager.ChallengesManager;
 import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -129,7 +130,11 @@ public class BaseGoalCreateFragment extends BaseFragment {
                 activity.replaceFragment(goalIntent);
                 break;
             case NO_GO_TAB:
-                addNoGoChallange(object);
+                if (object instanceof YonaActivityCategories) {
+                    addNoGoChallange(object);
+                } else if (object instanceof YonaGoal) {
+                    activity.replaceFragment(goalIntent);
+                }
                 break;
             default:
                 break;
@@ -137,29 +142,28 @@ public class BaseGoalCreateFragment extends BaseFragment {
     }
 
     private void addNoGoChallange(final Object object) {
-        if (object instanceof YonaActivityCategories) {
-            YonaActivityCategories categories = (YonaActivityCategories) object;
-            activity.showLoadingView(true, null);
-            challengesManager.postBudgetGoals(0, categories, new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    activity.showLoadingView(false, null);
-                    showCurrentGoalListView(CURRENT_TAB);
-                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
-                }
 
-                @Override
-                public void onError(Object errorMessage) {
-                    activity.showLoadingView(false, null);
-                    String message;
-                    if (errorMessage instanceof ErrorMessage) {
-                        message = ((ErrorMessage) errorMessage).getMessage();
-                    } else {
-                        message = errorMessage.toString();
-                    }
-                    CustomAlertDialog.show(activity, message, getString(R.string.ok));
+        YonaActivityCategories categories = (YonaActivityCategories) object;
+        activity.showLoadingView(true, null);
+        challengesManager.postBudgetGoals(0, categories, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                activity.showLoadingView(false, null);
+                showCurrentGoalListView(CURRENT_TAB);
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                activity.showLoadingView(false, null);
+                String message;
+                if (errorMessage instanceof ErrorMessage) {
+                    message = ((ErrorMessage) errorMessage).getMessage();
+                } else {
+                    message = errorMessage.toString();
                 }
-            });
-        }
+                CustomAlertDialog.show(activity, message, getString(R.string.ok));
+            }
+        });
     }
 }
