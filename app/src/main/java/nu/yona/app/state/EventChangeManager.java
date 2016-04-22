@@ -33,6 +33,7 @@ public class EventChangeManager {
 
     public static final int EVENT_TOUR_COMPLETE = 10;
 
+    public static final int EVENT_UPDATE_GOALS = 11;
     private final Set<EventChangeListener> listeners = new HashSet<EventChangeListener>();
 
     public void registerListener(EventChangeListener listener) {

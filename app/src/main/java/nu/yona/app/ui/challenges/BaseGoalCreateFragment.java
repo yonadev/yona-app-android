@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.ChallengesManager;
 import nu.yona.app.api.manager.GoalManager;
@@ -34,6 +35,7 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -134,7 +136,7 @@ public class BaseGoalCreateFragment extends BaseFragment {
         }
     }
 
-    private void addNoGoChallange(Object object) {
+    private void addNoGoChallange(final Object object) {
         if (object instanceof YonaActivityCategories) {
             YonaActivityCategories categories = (YonaActivityCategories) object;
             activity.showLoadingView(true, null);
@@ -143,6 +145,7 @@ public class BaseGoalCreateFragment extends BaseFragment {
                 public void onDataLoad(Object result) {
                     activity.showLoadingView(false, null);
                     showCurrentGoalListView(CURRENT_TAB);
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
                 }
 
                 @Override

@@ -64,10 +64,7 @@ public class GoalManagerImpl implements GoalManager {
         goalNetwork.putUserBudgetGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                goalDAO.saveGoalData((Goals) result, listener);
-                if (listener != null) {
-                    listener.onDataLoad(result);
-                }
+                getUserGoal(listener);
             }
 
             @Override
