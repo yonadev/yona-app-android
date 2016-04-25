@@ -18,6 +18,7 @@ import java.lang.annotation.Annotation;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.OTPVerficationCode;
+import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
@@ -109,7 +110,27 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doPasscodeReset(String url, String yonaPassword, final DataLoadListener listener) {
         try {
-            getRestApi().requestPinReset(url, yonaPassword).enqueue(getCall(listener));
+            getRestApi().requestPinReset(url, yonaPassword).enqueue(new Callback<PinResetDelay>() {
+                @Override
+                public void onResponse(Call<PinResetDelay> call, Response<PinResetDelay> response) {
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        try {
+                            Converter<ResponseBody, ErrorMessage> errorConverter =
+                                    getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                            listener.onError(errorConverter.convert(response.errorBody()));
+                        } catch (IOException e) {
+                            listener.onError(new ErrorMessage(e.getMessage()));
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PinResetDelay> call, Throwable t) {
+
+                }
+            });
         } catch (Exception e) {
             if (e != null && e.getMessage() != null) {
                 listener.onError(new ErrorMessage(e.toString()));

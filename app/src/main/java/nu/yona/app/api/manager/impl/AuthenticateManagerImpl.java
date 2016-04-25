@@ -201,7 +201,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
             authNetwork.doPasscodeReset(YonaApplication.getUser().getLinks().getRequestPinReset().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    getUser(getUser().getLinks().getSelf().getHref(), listener);
+                    getUser(result, listener);
                 }
 
                 @Override
@@ -216,6 +216,20 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         } catch (Exception e) {
             listener.onError(new ErrorMessage(e.getMessage()));
         }
+    }
+
+    private void getUser(final Object object, final DataLoadListener listener) {
+        getUser(getUser().getLinks().getSelf().getHref(), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                listener.onDataLoad(object);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onDataLoad(object); // because we want to carry forward object to UI part, we don't worry here about user update.
+            }
+        });
     }
 
     /**

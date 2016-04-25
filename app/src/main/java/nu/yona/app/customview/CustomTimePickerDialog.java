@@ -33,15 +33,16 @@ import nu.yona.app.R;
 import nu.yona.app.utils.AppUtils;
 
 public class CustomTimePickerDialog extends DialogFragment implements OnClickListener {
+    public int timeInterval = 1;
     private Dialog d;
     private TimePicker timePicker;
-    public int timeInterval = 1;
     private OnTimeSetListener timeSetListener;
     private boolean showAsSoonAsPossible;
     private long minSelectedTime;
     private NumberPicker minutePicker;
     private long preparationTime;
     private boolean isPastTimeSelectionAllow;
+    private Calendar cal;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,10 +55,6 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
 
     public void setMinTimeTime(Long time) {
         minSelectedTime = time;
-    }
-
-    public interface OnTimeSetListener {
-        void setTime(String time);
     }
 
     public void setTimePickerInterval(long tTimeInterval) {
@@ -222,8 +219,6 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         return null;
     }
 
-    private Calendar cal;
-
     public Calendar getCurrentCalendar() {
         if (cal == null) {
             cal = Calendar.getInstance();
@@ -233,6 +228,10 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
             cal.setTimeZone(TimeZone.getDefault());
         }
         return cal;
+    }
+
+    public interface OnTimeSetListener {
+        void setTime(String time);
     }
 
 }

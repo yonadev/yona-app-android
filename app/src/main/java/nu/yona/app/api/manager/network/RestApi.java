@@ -15,6 +15,7 @@ import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.api.model.OTPVerficationCode;
+import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.RegisterUser;
@@ -69,7 +70,7 @@ public interface RestApi {
      ************/
 
     @POST
-    Call<Void> requestPinReset(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+    Call<PinResetDelay> requestPinReset(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
     @POST
     Call<Void> verifyPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body OTPVerficationCode code);

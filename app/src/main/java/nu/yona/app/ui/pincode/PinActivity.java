@@ -19,6 +19,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
@@ -27,6 +28,7 @@ import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -123,13 +125,16 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
-                CustomAlertDialog.show(PinActivity.this, getString(R.string.reset_pin_request), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        loadOTPScreen();
-                    }
-                });
+                if (result instanceof PinResetDelay) {
+                    PinResetDelay delay = (PinResetDelay) result;
+                    CustomAlertDialog.show(PinActivity.this, getString(R.string.reset_pin_request, AppUtils.getTimeForOTP(delay.getDelay())), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            loadOTPScreen();
+                        }
+                    });
+                }
             }
 
             @Override

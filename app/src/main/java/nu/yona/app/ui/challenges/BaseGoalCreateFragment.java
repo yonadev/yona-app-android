@@ -28,7 +28,6 @@ import nu.yona.app.api.manager.ChallengesManager;
 import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.CustomAlertDialog;
