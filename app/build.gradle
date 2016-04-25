@@ -2,8 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
-    useLibrary 'org.apache.http.legacy'
+    buildToolsVersion "23.0.1"
     defaultConfig {
         applicationId "nu.yona.app"
         minSdkVersion 14
