@@ -61,11 +61,11 @@ module Platform
               app: cap[:apk_path],
               appPackage: cap[:android_package],
               appActivity: cap[:android_activity],
-              :'appium-version' => '1.3.7',
+              :'appium-version' => '1.5.1',
               platformVersion: ENV['VERSION'],
               deviceName: ENV['DEVICE'],
-              app: 'sauce-storage:'+app,
-              name: app,
+              app: 'sauce-storage:Yona-develop-1.0.0.1-1.apk',
+              # name: app,
               :'access-key' => sauce_key
           },
           appium_lib: {

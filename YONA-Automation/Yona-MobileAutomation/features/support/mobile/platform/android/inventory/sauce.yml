@@ -6,3 +6,7 @@ nexus_7_hd_4.4:
 galaxy_s4_4.3:
   name: Samsung Galaxy S4 Emulator
   version: '4.3'
+
+Android_emulator:
+  name: Android Emulator
+  version: '5.1'
