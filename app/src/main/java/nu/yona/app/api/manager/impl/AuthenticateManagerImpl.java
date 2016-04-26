@@ -299,6 +299,32 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     }
 
     /**
+     * @param listener
+     */
+    @Override
+    public void deleteUser(final DataLoadListener listener) {
+        authNetwork.deleteUser(authenticateDao.getUser().getLinks().getEdit().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                SharedPreferences.Editor editor = YonaApplication.getUserPreferences().edit();
+                editor.clear();
+                editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
+                editor.commit();
+                listener.onDataLoad(result);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    listener.onError(errorMessage);
+                } else {
+                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                }
+            }
+        });
+    }
+
+    /**
      * Stored User passcode into pref
      *
      * @param code

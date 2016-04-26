@@ -63,6 +63,10 @@ public interface RestApi {
 
     @POST(ApiList.ADMIN_OVERRIDE_USER)
     Call<Void> requestUserOverride(@Query("mobileNumber") String number);
+
+    @DELETE
+    Call<Void> deleteUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
     /******** USER ************/
 
     /********

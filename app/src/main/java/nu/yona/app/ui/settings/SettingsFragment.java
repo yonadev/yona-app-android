@@ -63,7 +63,7 @@ public class SettingsFragment extends BaseFragment {
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.add_device))) {
                     activity.showLoadingView(true, null);
                     addDevice(AppUtils.getRandomString(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT));
-                } else if(((YonaFontTextView) view).getText().toString().equals(getString(R.string.delete_user))) {
+                } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.delete_user))) {
                     unsubscribeUser();
                 }
             }
@@ -108,6 +108,7 @@ public class SettingsFragment extends BaseFragment {
             }
         });
     }
+
     @Override
     public void onResume() {
         super.onResume();

@@ -38,4 +38,6 @@ public interface AuthenticateManager {
     void getUser(final String url, final DataLoadListener listener);
 
     void requestUserOverride(String mobileNumber, final DataLoadListener listener);
+
+    void deleteUser(final DataLoadListener listener);
 }
