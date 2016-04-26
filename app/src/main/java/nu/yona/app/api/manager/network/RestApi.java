@@ -25,6 +25,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HEAD;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -63,6 +64,10 @@ public interface RestApi {
 
     @POST(ApiList.ADMIN_OVERRIDE_USER)
     Call<Void> requestUserOverride(@Query("mobileNumber") String number);
+
+    @DELETE
+    Call<Void> deleteUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
     /******** USER ************/
 
     /********
