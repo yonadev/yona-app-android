@@ -103,6 +103,16 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         }
     }
 
+    public void deleteUser(String url, String yonaPassword, DataLoadListener listener) {
+        try {
+            getRestApi().deleteUser(url, yonaPassword).enqueue(getCall(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
+    }
+
     /**
      * @param url          : URL for passcode reset
      * @param yonaPassword : Yona password

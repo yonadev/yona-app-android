@@ -132,7 +132,7 @@ public class AppUtils {
     public static String getTimeForOTP(String time) {
         try {
             return new Period(time, PeriodType.hours()).getHours() + "";
-        } catch (Exception e){
+        } catch (Exception e) {
             Log.e(AppUtils.class.getSimpleName(), e.getMessage());
         }
         return time;
