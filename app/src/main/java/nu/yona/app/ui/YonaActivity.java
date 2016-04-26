@@ -11,6 +11,7 @@ package nu.yona.app.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,12 +33,18 @@ import android.widget.ImageView;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.ActivityCategoryManager;
+import nu.yona.app.api.manager.AuthenticateManager;
 import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
+import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.manager.impl.GoalManagerImpl;
+import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.receiver.YonaReceiver;
+import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
@@ -70,9 +77,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private ImageView rightIcon;
     private boolean isToDisplayLogin = false;
 
-    private GoalManager goalManager;
-    private ActivityCategoryManager activityCategoryManager;
-
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
      */
@@ -84,9 +88,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yona_layout);
-
-        goalManager = new GoalManagerImpl(this);
-        activityCategoryManager = new ActivityCategoryManagerImpl(this);
 
         if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean(AppConstant.FROM_LOGIN)) {
             isToDisplayLogin = false;
@@ -168,6 +169,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             AppUtils.startService(this);
         }
         registerReceiver();
+        getUser();
     }
 
     @Override
@@ -177,9 +179,40 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             startActivity(new Intent(YonaActivity.this, PinActivity.class));
             finish();
         }
+    }
 
-        goalManager.getUserGoal(null);
-        activityCategoryManager.getActivityCategoriesById(null);
+    private void getUser() {
+        AuthenticateManager authenticateManager = new AuthenticateManagerImpl(this);
+        User user = authenticateManager.getUser();
+        if(user != null) {
+            authenticateManager.getUser(user.getLinks().getSelf().getHref(), new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    new GoalManagerImpl(YonaActivity.this).getUserGoal(null);
+                    new ActivityCategoryManagerImpl(YonaActivity.this).getActivityCategoriesById(null);
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    showError((ErrorMessage) errorMessage);
+                }
+            });
+
+        }
+    }
+
+    private void showError(ErrorMessage errorMessage) {
+        CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SharedPreferences.Editor editor = YonaApplication.getUserPreferences().edit();
+                editor.clear();
+                editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
+                editor.commit();
+                startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
+                dialogInterface.dismiss();
+            }
+        });
     }
 
     @Override

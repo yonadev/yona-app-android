@@ -37,10 +37,8 @@ import nu.yona.app.utils.PreferenceConstant;
 public class PinActivity extends BaseActivity implements EventChangeListener {
 
     private PasscodeManagerImpl passcodeManagerImpl;
-    private AuthenticateManagerImpl authenticateManager;
     private TextView txtTitle;
     private PasscodeFragment passcodeFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,6 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         setContentView(R.layout.blank_container_layout);
 
         passcodeManagerImpl = new PasscodeManagerImpl();
-        authenticateManager = new AuthenticateManagerImpl(this);
 
         YonaApplication.getEventChangeManager().registerListener(this);
 
@@ -121,7 +118,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
     private void doPinReset() {
         showLoadingView(true, null);
-        authenticateManager.requestPinReset(new DataLoadListener() {
+        new AuthenticateManagerImpl(this).requestPinReset(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
