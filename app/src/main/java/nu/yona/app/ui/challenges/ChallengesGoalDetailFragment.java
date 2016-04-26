@@ -22,13 +22,13 @@ import android.widget.ImageView;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.R;
-import nu.yona.app.api.manager.impl.GoalManagerImpl;
-import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.YonaGoal;
-import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.api.manager.ChallengesManager;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
+import nu.yona.app.api.manager.impl.GoalManagerImpl;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaActivityCategories;
+import nu.yona.app.api.model.YonaGoal;
+import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.CustomTimePickerDialog;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontTextView;
@@ -55,6 +55,14 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private String first_time;
     private String second_time;
     private String currentTab;
+    private CustomTimePickerDialog.OnTimeSetListener timeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
+
+        @Override
+        public void setTime(String time) {
+            setFirst_time(time);
+            mBudgetGoalTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(getTimeInMilliseconds(getFirst_time()))));
+        }
+    };
 
     public String getSecond_time() {
         return second_time;
@@ -199,16 +207,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         TimeZoneGoalsAdapter timeZoneGoalsAdapter = new TimeZoneGoalsAdapter(tYonaGoal.getZones(), null);
         timeZoneGoalView.setAdapter(timeZoneGoalsAdapter);
     }
-
-    private CustomTimePickerDialog.OnTimeSetListener timeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
-
-        @Override
-        public void setTime(String time) {
-            setFirst_time(time);
-            mBudgetGoalTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(getTimeInMilliseconds(getFirst_time()))));
-        }
-    };
-
 
     private void createNewBudgetGoal(long minutes, Object object) {
         if (object instanceof YonaGoal) {

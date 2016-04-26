@@ -67,7 +67,7 @@
     <string name="challenges_nogo_header_text">Hier leg je vast waar je helemaal niet wilt komen.</string>
     <string name="challenges_tijdzone_header_text">Kies een categorie waar je een tijdzone voor wilt instellen</string>
     <string name="challenges_tegoed_header_text">Kies een categorie waar je een tegoed voor wilt vastleggen</string>
-    <string name="reset_pin_request">Your request for reset has been received. You will receive an text message with a PIN reset confirmation code within 24 hours.</string>
+    <string name="reset_pin_request">Your request for reset has been received. You will receive an text message with a PIN reset confirmation code within %1$s hours.</string>
     <string name="challenges_nogo_subText">Vermijd %1$s gerelateerde content</string>
     <string name="challenges_timzoe_subtext">Timeslot tussen %1$sen tussen %2$s</string>
     <string name="challenges_budget_subtext">Je kunt per dag %1$s minuten daten</string>

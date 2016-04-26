@@ -21,8 +21,13 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Log;
+
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 
 import java.util.Random;
+
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -122,5 +127,14 @@ public class AppUtils {
             digit = "0" + digit;
         }
         return digit;
+    }
+
+    public static String getTimeForOTP(String time) {
+        try {
+            return new Period(time, PeriodType.hours()).getHours() + "";
+        } catch (Exception e){
+            Log.e(AppUtils.class.getSimpleName(), e.getMessage());
+        }
+        return time;
     }
 }
