@@ -66,7 +66,7 @@ public class YonaFontUtils {
 
             case ROBOTO_NORMAL: // regular
             default:
-                return getTypeface("roboto-Regular.ttf", context);
+                return getTypeface("roboto-regular.ttf", context);
         }
     }
 
