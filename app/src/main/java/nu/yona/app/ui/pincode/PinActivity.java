@@ -82,7 +82,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
     }
 
     private void updateBlockMsg() {
-        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.msg_block_user));
+        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.msgblockuser));
         passcodeFragment.disableEditable();
     }
 
@@ -97,7 +97,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
                     YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
                     updateBlockMsg();
                 } else {
-                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcode_tryagain));
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcodetryagain));
                 }
                 break;
             case EventChangeManager.EVENT_PASSCODE_RESET:
@@ -124,7 +124,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
                 showLoadingView(false, null);
                 if (result instanceof PinResetDelay) {
                     PinResetDelay delay = (PinResetDelay) result;
-                    CustomAlertDialog.show(PinActivity.this, getString(R.string.reset_pin_request, AppUtils.getTimeForOTP(delay.getDelay())), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    CustomAlertDialog.show(PinActivity.this, getString(R.string.resetpinrequest, AppUtils.getTimeForOTP(delay.getDelay())), getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();

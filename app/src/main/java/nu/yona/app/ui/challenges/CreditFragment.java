@@ -35,7 +35,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
         mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfBudgetGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
         mGoalListView.setOnItemClickListener(itemClickListener);
-        mDescTab.setText(getActivity().getString(R.string.challenges_tegoed_header_text));
+        mDescTab.setText(getActivity().getString(R.string.challengestegoedheader));
         btnGoalAdd.setOnClickListener(this);
         return view;
     }

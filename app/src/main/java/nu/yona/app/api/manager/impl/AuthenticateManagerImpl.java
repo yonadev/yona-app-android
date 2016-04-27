@@ -182,7 +182,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                                     }
                                 });
                     } else {
-                        listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
+                        listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
                     }
                 } else {
                     if (!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref())) {
@@ -204,11 +204,11 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                             }
                         });
                     } else {
-                        listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
+                        listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
                     }
                 }
             } else {
-                listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.invalid_otp)));
+                listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.invalidotp)));
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -236,7 +236,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
+                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -258,7 +258,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
+                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -289,7 +289,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
+                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -317,7 +317,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
+                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);

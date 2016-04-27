@@ -155,7 +155,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     }
 
     private void showAlertForReRegisteruser(String title) {
-        CustomAlertDialog.show(SignupActivity.this, title, getString(R.string.user_override, getRegisterUser().getMobileNumber()), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
+        CustomAlertDialog.show(SignupActivity.this, title, getString(R.string.useroverride, getRegisterUser().getMobileNumber()), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 OverrideUser();

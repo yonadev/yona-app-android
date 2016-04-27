@@ -138,7 +138,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     private boolean validateMobileNumber(String number) {
         if (!activity.getAuthenticateManager().validateMobileNumber(number)) {
             mobileNumberLayout.setErrorEnabled(true);
-            mobileNumberLayout.setError(getString(R.string.enter_number_validation));
+            mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
             activity.showKeyboard(mobileNumber);
             mobileNumber.requestFocus();
             return false;
@@ -149,7 +149,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     private boolean validateNickName() {
         if (!activity.getAuthenticateManager().validateText(nickName.getText().toString())) {
             nickNameLayout.setErrorEnabled(true);
-            nickNameLayout.setError(getString(R.string.enter_name_validation));
+            nickNameLayout.setError(getString(R.string.enternumbervalidation));
             activity.showKeyboard(nickName);
             nickName.requestFocus();
             return false;

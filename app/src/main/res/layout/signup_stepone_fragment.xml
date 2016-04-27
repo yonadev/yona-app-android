@@ -27,7 +27,7 @@
             android:capitalize="words"
             android:drawableRight="@drawable/icn_name"
             android:ellipsize="end"
-            android:hint="@string/first_name"
+            android:hint="@string/firstname"
             android:imeOptions="actionNext"
             android:maxLength="@integer/char_limit"
             android:singleLine="true"
@@ -47,7 +47,7 @@
             android:capitalize="words"
             android:drawableRight="@drawable/icn_name"
             android:ellipsize="end"
-            android:hint="@string/last_name"
+            android:hint="@string/lastname"
             android:imeOptions="actionDone"
             android:maxLength="@integer/char_limit"
             android:singleLine="true"
@@ -60,5 +60,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ten"
-        android:text="@string/privacy_policy" />
+        android:text="@string/privacypolicy" />
 </LinearLayout>

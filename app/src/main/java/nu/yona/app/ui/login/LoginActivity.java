@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        ((YonaFontTextView) findViewById(R.id.toolbar_title)).setText(R.string.in_loggin);
+        ((YonaFontTextView) findViewById(R.id.toolbar_title)).setText(R.string.inloggin);
 
         mobileNumberLayout = (TextInputLayout) findViewById(R.id.mobile_number_layout);
         passcodeLayout = (TextInputLayout) findViewById(R.id.passcode_layout);
@@ -174,7 +174,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     private boolean validateMobileNumber(String number) {
         if (!deviceManager.validateMobileNumber(number)) {
             mobileNumberLayout.setErrorEnabled(true);
-            mobileNumberLayout.setError(getString(R.string.enter_number_validation));
+            mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
             showKeyboard(mobileNumber);
             mobileNumber.requestFocus();
             return false;
@@ -185,7 +185,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     private boolean validatePasscode(String passcodeStr) {
         if (!deviceManager.validatePasscode(passcodeStr)) {
             passcodeLayout.setErrorEnabled(true);
-            passcodeLayout.setError(getString(R.string.enter_passcode));
+            passcodeLayout.setError(getString(R.string.enterpasscode));
             showKeyboard(passcode);
             passcode.requestFocus();
             return false;

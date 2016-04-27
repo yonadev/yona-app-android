@@ -19,7 +19,7 @@
         style="@style/SeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/budgetGoalTitle" />
+        android:text="@string/budgetgoaltitle" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goal_minutes_num"
@@ -40,7 +40,7 @@
         android:layout_marginTop="@dimen/goal_item_desc_margin_top"
         android:layout_toLeftOf="@id/goal_minutes_num"
         android:layout_toStartOf="@id/goal_minutes_num"
-        android:text="@string/budgetGoalDesc" />
+        android:text="@string/budgetgoaldesc" />
 
 
 </RelativeLayout>

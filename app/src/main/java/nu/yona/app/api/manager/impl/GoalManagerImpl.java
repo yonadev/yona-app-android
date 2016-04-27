@@ -65,7 +65,7 @@ public class GoalManagerImpl implements GoalManager {
                     }
                 });
             } else {
-                listener.onError(mContext.getString(R.string.url_not_found));
+                listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
             AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -92,7 +92,7 @@ public class GoalManagerImpl implements GoalManager {
                     }
                 });
             } else {
-                listener.onError(mContext.getString(R.string.url_not_found));
+                listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
             AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -122,7 +122,7 @@ public class GoalManagerImpl implements GoalManager {
                     }
                 });
             } else {
-                listener.onError(mContext.getString(R.string.url_not_found));
+                listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
             AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -149,7 +149,7 @@ public class GoalManagerImpl implements GoalManager {
                     }
                 });
             } else {
-                listener.onError(mContext.getString(R.string.url_not_found));
+                listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
             AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);

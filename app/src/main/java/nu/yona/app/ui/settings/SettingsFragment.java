@@ -51,19 +51,19 @@ public class SettingsFragment extends BaseFragment {
 
         activity = (YonaActivity) getActivity();
 
-        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.settings_list_item, new String[]{getString(R.string.change_pin), getString(R.string.privacy), getString(R.string.add_device), getString(R.string.delete_user)}));
+        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.settings_list_item, new String[]{getString(R.string.changepin), getString(R.string.privacy), getString(R.string.adddevice), getString(R.string.deleteuser)}));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.change_pin))) {
+                if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.changepin))) {
                     //Load change pin screen
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.privacy))) {
                     //Load privacy screen
-                } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.add_device))) {
+                } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.adddevice))) {
                     activity.showLoadingView(true, null);
                     addDevice(AppUtils.getRandomString(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT));
-                } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.delete_user))) {
+                } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.deleteuser))) {
                     unsubscribeUser();
                 }
             }
@@ -73,7 +73,7 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void unsubscribeUser() {
-        CustomAlertDialog.show(activity, getString(R.string.delete_user), getString(R.string.delete_user_message),
+        CustomAlertDialog.show(activity, getString(R.string.deleteuser), getString(R.string.deleteusermessage),
                 getString(R.string.ok), getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -120,7 +120,7 @@ public class SettingsFragment extends BaseFragment {
             deviceManager.addDevice(pin, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    showAlert(pin + getString(R.string.yona_add_device_message), true);
+                    showAlert(pin + getString(R.string.yonaadddevicemessage), true);
                 }
 
                 @Override

@@ -37,7 +37,7 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
         showCurrentGoalListView(ChallengesEnum.NO_GO_TAB.getTab());
         btnGoalAdd.setOnClickListener(this);
         showCurrentGoalListView(ChallengesEnum.NO_GO_TAB.getTab());
-        mDescTab.setText(getActivity().getString(R.string.challenges_nogo_header_text));
+        mDescTab.setText(getActivity().getString(R.string.challengesnogoheader));
         YonaApplication.getEventChangeManager().registerListener(this);
         return view;
     }

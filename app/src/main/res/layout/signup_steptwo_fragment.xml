@@ -28,7 +28,7 @@
             android:digits="1234567890 "
             android:drawableRight="@drawable/icn_mobile"
             android:ellipsize="end"
-            android:hint="@string/mobile_number"
+            android:hint="@string/mobilenumber"
             android:imeOptions="actionNext"
             android:inputType="phone"
             android:maxLength="@integer/number_limit"
@@ -49,7 +49,7 @@
             android:capitalize="words"
             android:drawableRight="@drawable/icn_nickname"
             android:ellipsize="end"
-            android:hint="@string/nick_name"
+            android:hint="@string/nickname"
             android:imeOptions="actionDone"
             android:maxLength="@integer/char_limit"
             android:singleLine="true"
@@ -61,5 +61,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ten"
-        android:text="@string/user_signup_message" />
+        android:text="@string/usersignupmessage" />
 </LinearLayout>

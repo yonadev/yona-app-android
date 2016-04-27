@@ -52,7 +52,7 @@ public class ProfileFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ProfileDetailsFragment(), getString(R.string.profile_details));
+        adapter.addFragment(new ProfileDetailsFragment(), getString(R.string.profiledetails));
         adapter.addFragment(new BadgesFragment(), getString(R.string.badges));
         viewPager.setAdapter(adapter);
     }

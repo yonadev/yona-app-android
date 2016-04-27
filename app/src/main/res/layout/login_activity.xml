@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/thirty_six"
-                    android:text="@string/loggedin_add_device_message"
+                    android:text="@string/loggedinadddevicemessage"
                     android:textColor="@color/black" />
 
                 <android.support.design.widget.TextInputLayout
@@ -62,7 +62,7 @@
                         android:digits="1234567890 "
                         android:drawableRight="@drawable/icn_mobile"
                         android:ellipsize="end"
-                        android:hint="@string/mobile_number"
+                        android:hint="@string/mobilenumber"
                         android:imeOptions="actionNext"
                         android:inputType="phone"
                         android:maxLength="@integer/number_limit"
