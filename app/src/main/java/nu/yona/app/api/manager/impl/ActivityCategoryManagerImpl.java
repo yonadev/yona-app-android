@@ -9,13 +9,16 @@
 package nu.yona.app.api.manager.impl;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import nu.yona.app.R;
 import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.dao.ActivityCategoriesDAO;
 import nu.yona.app.api.manager.dao.AuthenticateDAO;
 import nu.yona.app.api.manager.network.ActivityCategoriesNetworkImpl;
 import nu.yona.app.api.model.ActivityCategories;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.listener.DataLoadListener;
 
 /**
@@ -26,11 +29,13 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
     private ActivityCategoriesNetworkImpl activityCategoriesNetwork;
     private ActivityCategoriesDAO activityCategoriesDAO;
     private AuthenticateDAO authenticateDao;
+    private Context mContext;
 
     public ActivityCategoryManagerImpl(Context context) {
         activityCategoriesNetwork = new ActivityCategoriesNetworkImpl();
         activityCategoriesDAO = new ActivityCategoriesDAO(DatabaseHelper.getInstance(context), context);
         authenticateDao = new AuthenticateDAO(context);
+        this.mContext = context;
     }
 
     /**
@@ -40,22 +45,30 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
      */
     @Override
     public void getActivityCategoriesById(final DataLoadListener listener) {
-        activityCategoriesNetwork.getActivityCategories(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref(), new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                updateActivityCategories(result, null);
-                if (listener != null) {
-                    listener.onDataLoad(result);
-                }
-            }
+        try {
+            if(!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref())) {
+                activityCategoriesNetwork.getActivityCategories(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        updateActivityCategories(result, null);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
+                    }
 
-            @Override
-            public void onError(Object errorMessage) {
-                if (listener != null) {
-                    listener.onError(errorMessage);
-                }
+                    @Override
+                    public void onError(Object errorMessage) {
+                        if (listener != null) {
+                            listener.onError(errorMessage);
+                        }
+                    }
+                });
+            } else {
+                listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
-        });
+        } catch (Exception e) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        }
     }
 
     /**
@@ -75,21 +88,25 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
      * @param listener
      */
     private void updateActivityCategories(Object result, final DataLoadListener listener) {
-        activityCategoriesDAO.saveActivityCategories(((ActivityCategories) result), new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                if (listener != null) {
-                    listener.onDataLoad(result);
+        try {
+            activityCategoriesDAO.saveActivityCategories(((ActivityCategories) result), new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    if (listener != null) {
+                        listener.onDataLoad(result);
+                    }
                 }
-            }
 
-            @Override
-            public void onError(Object errorMessage) {
-                if (listener != null) {
-                    listener.onError(errorMessage);
+                @Override
+                public void onError(Object errorMessage) {
+                    if (listener != null) {
+                        listener.onError(errorMessage);
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        }
     }
 
 }

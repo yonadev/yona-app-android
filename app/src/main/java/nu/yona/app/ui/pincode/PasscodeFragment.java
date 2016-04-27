@@ -167,7 +167,6 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private void populateLoginView() {
         accont_image.setImageResource(R.drawable.icn_y);
         passcode_title.setText(getString(R.string.passcode_title));
-//        ((LoginActivity) getActivity()).updateTitle(getString(R.string.login));
     }
 
     /**

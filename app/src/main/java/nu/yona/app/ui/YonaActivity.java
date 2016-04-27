@@ -32,9 +32,7 @@ import android.widget.ImageView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.AuthenticateManager;
-import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.manager.impl.GoalManagerImpl;
@@ -184,7 +182,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private void getUser() {
         AuthenticateManager authenticateManager = new AuthenticateManagerImpl(this);
         User user = authenticateManager.getUser();
-        if(user != null) {
+        if (user != null) {
             authenticateManager.getUser(user.getLinks().getSelf().getHref(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
@@ -531,5 +529,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     public void replaceFragment(Intent intent) {
         replaceFragmentWithAction(intent);
+    }
+
+    public ImageView getRightIcon() {
+        return rightIcon;
     }
 }

@@ -13,6 +13,7 @@ package nu.yona.app.api.manager.impl;
 import android.content.Context;
 import android.text.TextUtils;
 
+import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.DeviceManager;
 import nu.yona.app.api.manager.network.DeviceNetworkImpl;
@@ -39,6 +40,7 @@ public class DeviceManagerImpl implements DeviceManager {
      * @param mobileNumber user's mobile number
      * @return true if number is in expected format
      */
+    @Override
     public boolean validateMobileNumber(String mobileNumber) {
         // do validation for mobile number
         if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != AppConstant.MOBILE_NUMBER_LENGTH) { // 9 digits of mobile number and '+31'
@@ -50,6 +52,11 @@ public class DeviceManagerImpl implements DeviceManager {
         return true;
     }
 
+    /**
+     * @param passcode String of passcode
+     * @return
+     */
+    @Override
     public boolean validatePasscode(String passcode) {
         if (TextUtils.isEmpty(passcode)) {
             return false;
@@ -65,6 +72,7 @@ public class DeviceManagerImpl implements DeviceManager {
      * @param devicePassword password generated from device
      * @param listener
      */
+    @Override
     public void addDevice(final String devicePassword, final DataLoadListener listener) {
         if (YonaApplication.getUserPreferences().getBoolean(AppConstant.NEW_DEVICE_REQUESTED, false)) {
             deleteDevice(new DataLoadListener() {
@@ -75,11 +83,7 @@ public class DeviceManagerImpl implements DeviceManager {
 
                 @Override
                 public void onError(Object errorMessage) {
-                    if (errorMessage instanceof ErrorMessage) {
-                        listener.onError(errorMessage);
-                    } else {
-                        listener.onError(new ErrorMessage(errorMessage.toString()));
-                    }
+                    addDeviceAgain(devicePassword, listener); // we don't worray about delete device, we just add device again.
                 }
             });
         } else {
@@ -88,13 +92,46 @@ public class DeviceManagerImpl implements DeviceManager {
     }
 
     private void addDeviceAgain(String devicePassword, final DataLoadListener listener) {
-        deviceNetwork.addDevice(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref(),
-                new NewDeviceRequest(devicePassword), YonaApplication.getYonaPassword(),
-                new DataLoadListener() {
+        try {
+            if (!TextUtils.isEmpty(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref())) {
+                deviceNetwork.addDevice(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref(),
+                        new NewDeviceRequest(devicePassword), YonaApplication.getYonaPassword(),
+                        new DataLoadListener() {
 
+                            @Override
+                            public void onDataLoad(Object result) {
+                                YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, true).commit();
+                                listener.onDataLoad(result);
+                            }
+
+                            @Override
+                            public void onError(Object errorMessage) {
+                                if (errorMessage instanceof ErrorMessage) {
+                                    listener.onError(errorMessage);
+                                } else {
+                                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                                }
+                            }
+                        });
+            } else {
+                listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
+            }
+        } catch (Exception e) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        }
+    }
+
+    /**
+     * @param listener
+     */
+    @Override
+    public void deleteDevice(final DataLoadListener listener) {
+        try {
+            if (!TextUtils.isEmpty(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref())) {
+                deviceNetwork.deleteDevice(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, true).commit();
+                        YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, false).commit();
                         listener.onDataLoad(result);
                     }
 
@@ -107,25 +144,12 @@ public class DeviceManagerImpl implements DeviceManager {
                         }
                     }
                 });
-    }
-
-    public void deleteDevice(final DataLoadListener listener) {
-        deviceNetwork.deleteDevice(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, false).commit();
-                listener.onDataLoad(result);
+            } else {
+                listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
-
-            @Override
-            public void onError(Object errorMessage) {
-                if (errorMessage instanceof ErrorMessage) {
-                    listener.onError(errorMessage);
-                } else {
-                    listener.onError(new ErrorMessage(errorMessage.toString()));
-                }
-            }
-        });
+        } catch (Exception e) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        }
     }
 
     /**
@@ -134,16 +158,42 @@ public class DeviceManagerImpl implements DeviceManager {
      * @param devicePassword password generated from device
      * @param listener
      */
+    @Override
     public void validateDevice(String devicePassword, String mobileNumber, final DataLoadListener listener) {
-        deviceNetwork.checkDevice(devicePassword,
-                mobileNumber,
-                new DataLoadListener() {
+        try {
+            deviceNetwork.checkDevice(devicePassword,
+                    mobileNumber,
+                    new DataLoadListener() {
 
+                        @Override
+                        public void onDataLoad(Object result) {
+                            NewDevice device = (NewDevice) result;
+                            YonaApplication.setYonaPassword(device.getYonaPassword());
+                            getUser(device, listener);
+                        }
+
+                        @Override
+                        public void onError(Object errorMessage) {
+                            if (errorMessage instanceof ErrorMessage) {
+                                listener.onError(errorMessage);
+                            } else {
+                                listener.onError(new ErrorMessage(errorMessage.toString()));
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        }
+    }
+
+    private void getUser(NewDevice device, final DataLoadListener listener) {
+        try {
+            if (!TextUtils.isEmpty(device.getLinks().getYonaUser().getHref())) {
+                new AuthenticateManagerImpl(mContext).getUser(device.getLinks().getYonaUser().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        NewDevice device = (NewDevice) result;
-                        YonaApplication.setYonaPassword(device.getYonaPassword());
-                        getUser(device, listener);
+                        listener.onDataLoad(result);
+                        YonaApplication.updateUser();
                     }
 
                     @Override
@@ -155,26 +205,9 @@ public class DeviceManagerImpl implements DeviceManager {
                         }
                     }
                 });
-    }
-
-    private void getUser(NewDevice device, final DataLoadListener listener) {
-        try {
-            new AuthenticateManagerImpl(mContext).getUser(device.getLinks().getYonaUser().getHref(), new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    listener.onDataLoad(result);
-                    YonaApplication.updateUser();
-                }
-
-                @Override
-                public void onError(Object errorMessage) {
-                    if (errorMessage instanceof ErrorMessage) {
-                        listener.onError(errorMessage);
-                    } else {
-                        listener.onError(new ErrorMessage(errorMessage.toString()));
-                    }
-                }
-            });
+            } else {
+                listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
+            }
         } catch (Exception e) {
             if (e != null && e.getMessage() != null) {
                 listener.onError(new ErrorMessage(e.getMessage()));

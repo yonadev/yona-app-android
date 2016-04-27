@@ -19,8 +19,6 @@ import android.view.ViewGroup;
 import nu.yona.app.R;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
-import nu.yona.app.ui.dashboard.PerDayFragment;
-import nu.yona.app.ui.dashboard.PerWeekFragment;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -43,8 +41,8 @@ public class FriendsFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new PerDayFragment(), getString(R.string.timeline));
-        adapter.addFragment(new PerWeekFragment(), getString(R.string.overview));
+        adapter.addFragment(new TimelineFragment(), getString(R.string.timeline));
+        adapter.addFragment(new OverviewFragment(), getString(R.string.overview));
         viewPager.setAdapter(adapter);
     }
 }

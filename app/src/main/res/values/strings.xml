@@ -92,4 +92,5 @@
     <string name="user_override">Mobile Number %1$s already register with Yona, do you want to re-register same number? (Note:All data associated with this number will be removed, if you want to add another device, you can go back and click on InLoggin.)</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="url_not_found">Url Not found.</string>
 </resources>

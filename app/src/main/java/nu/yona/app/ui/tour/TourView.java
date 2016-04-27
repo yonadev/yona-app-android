@@ -29,6 +29,7 @@ public class TourView extends LinearLayout {
 
     private final static int TOTAL_PAGE = 4;
     private final ViewPager viewPager;
+
     private final PagerAdapter pagerAdapter = new PagerAdapter() {
         @Override
         public int getItemPosition(Object object) {
@@ -159,24 +160,8 @@ public class TourView extends LinearLayout {
     }
 
     private int getIdentifierForPage(int pageNo) {
-        switch (pageNo) {
-            case 1:
-                return 1;
-            case 2:
-                return 2;
-            case 3:
-                return 3;
-            case 4:
-                return 4;
-            default:
-                return 0;
-        }
+        return pageNo;
     }
-
-    public ViewPager getViewPager() {
-        return viewPager;
-    }
-
 
     private void moveToLaunchActivity() {
         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_TOUR_COMPLETE, null);

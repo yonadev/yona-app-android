@@ -35,7 +35,8 @@ import nu.yona.app.ui.BaseFragment;
 public class StepOne extends BaseFragment implements EventChangeListener {
 
     private TextInputLayout firstNameLayout, lastNameLayout;
-    TextWatcher watcher = new TextWatcher() {
+
+    private TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -52,6 +53,7 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
         }
     };
+
     private YonaFontEditTextView firstName, lastName;
     private YonaFontTextView privacyPolicy;
     private SignupActivity activity;
