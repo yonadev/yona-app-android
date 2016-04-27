@@ -72,6 +72,16 @@ public class CustomAlertDialog extends AlertDialog.Builder {
         return customAlertDialog.show();
     }
 
+    /**
+     * @param context          Context
+     * @param title            Title of Alert
+     * @param message          Message in Alert
+     * @param positiveButton   Possitive button title
+     * @param negativeButton   Negative button title
+     * @param positiveListener positive button listener
+     * @param negativeListener negative button listener.
+     * @return
+     */
     public static synchronized AlertDialog showReturningActualDialog(Context context,
                                                                      CharSequence title,
                                                                      CharSequence message,
@@ -110,17 +120,16 @@ public class CustomAlertDialog extends AlertDialog.Builder {
         return dialog;
     }
 
-    public static synchronized AlertDialog showReturningActualDialog(Context context,
-                                                                     CharSequence title,
-                                                                     CharSequence message,
-                                                                     CharSequence positiveButton,
-                                                                     OnClickListener positiveListener, boolean is2netReading) {
-
-        CustomAlertDialog customAlertDialog = buildDialog(context, title, message, positiveButton, positiveListener, is2netReading);
-
-        return initDialog(customAlertDialog);
-    }
-
+    /**
+     * @param context          Context
+     * @param title            Title of Alert
+     * @param message          Message in Alert
+     * @param positiveButton   possitve button text
+     * @param negativeButton   negative button text
+     * @param positiveListener positive button listener
+     * @param negativeListener negative button listener
+     * @return CustomAlertDialog object
+     */
     public static synchronized CustomAlertDialog show(Context context, CharSequence title, CharSequence message, CharSequence positiveButton,
                                                       CharSequence negativeButton, OnClickListener positiveListener, OnClickListener negativeListener) {
 
@@ -144,10 +153,24 @@ public class CustomAlertDialog extends AlertDialog.Builder {
         return customAlertDialog;
     }
 
+    /**
+     * @param context          Context
+     * @param title            title of alert
+     * @param message          message in alert
+     * @param positiveButton   positive button text
+     * @param positiveListener positive button listener
+     * @return
+     */
     public static CustomAlertDialog show(Context context, CharSequence title, CharSequence message, CharSequence positiveButton, OnClickListener positiveListener) {
         return show(context, title, message, positiveButton, null, positiveListener, null);
     }
 
+    /**
+     * @param context        Context
+     * @param message        message for alert
+     * @param positiveButton positive button text
+     * @return
+     */
     public static CustomAlertDialog show(Context context, CharSequence message, CharSequence positiveButton) {
 
         CustomAlertDialog customAlertDialog = new CustomAlertDialog(context);
@@ -164,11 +187,18 @@ public class CustomAlertDialog extends AlertDialog.Builder {
         return customAlertDialog;
     }
 
+    /**
+     * @param context          context
+     * @param message          message for alert
+     * @param positiveButton   positve button text
+     * @param positiveListener positive button listener
+     * @return
+     */
     public static CustomAlertDialog show(Context context, CharSequence message, CharSequence positiveButton, OnClickListener positiveListener) {
         return show(context, null, message, positiveButton, positiveListener);
     }
 
-    public static CustomAlertDialog show(Context context, String title, CharSequence message, CharSequence positiveButton, OnClickListener positiveListener) {
+    private static CustomAlertDialog show(Context context, String title, CharSequence message, CharSequence positiveButton, OnClickListener positiveListener) {
 
         CustomAlertDialog customAlertDialog = new CustomAlertDialog(context);
         customAlertDialog.setCancelable(false);
@@ -181,6 +211,16 @@ public class CustomAlertDialog extends AlertDialog.Builder {
         return customAlertDialog;
     }
 
+    /**
+     * @param context          Context
+     * @param message          message in alert
+     * @param listItems        CharSeqance[] for list
+     * @param positiveButton   positive button text
+     * @param positiveListener positive button listener
+     * @param negativeButton   negative button text
+     * @param negativeListener negative button listener
+     * @return CustomAlertDialog
+     */
     public static CustomAlertDialog show(Context context, CharSequence message,
                                          CharSequence[] listItems, CharSequence positiveButton,
                                          OnClickListener positiveListener, CharSequence negativeButton, OnClickListener negativeListener) {

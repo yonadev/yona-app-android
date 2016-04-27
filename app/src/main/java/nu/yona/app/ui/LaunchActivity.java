@@ -38,7 +38,7 @@ public class LaunchActivity extends BaseActivity {
         if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false)) {
             startNewActivity(TourActivity.class);
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
-            // continue on same page.
+            // continue on same page. We need to keep on this position, so this step don't get ignore.
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)
                 || TextUtils.isEmpty(YonaApplication.getAppContext().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
             startNewActivity(OTPActivity.class);

@@ -9,7 +9,9 @@
 package nu.yona.app.api.manager.impl;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.GoalManager;
@@ -30,10 +32,12 @@ public class GoalManagerImpl implements GoalManager {
 
     private GoalNetworkImpl goalNetwork;
     private GoalDAO goalDAO;
+    private Context mContext;
 
     public GoalManagerImpl(Context context) {
         goalNetwork = new GoalNetworkImpl();
         goalDAO = new GoalDAO(DatabaseHelper.getInstance(context), context);
+        this.mContext = context;
     }
 
     /**
@@ -43,68 +47,112 @@ public class GoalManagerImpl implements GoalManager {
      */
     @Override
     public void getUserGoal(final DataLoadListener listener) {
-        goalNetwork.getUserGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                goalDAO.saveGoalData((Goals) result, listener);
-                if (listener != null) {
-                    listener.onDataLoad(result);
-                }
-            }
+        try {
+            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
+                goalNetwork.getUserGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        goalDAO.saveGoalData((Goals) result, listener);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
+                    }
 
-            @Override
-            public void onError(Object errorMessage) {
-                handleError(errorMessage, listener);
+                    @Override
+                    public void onError(Object errorMessage) {
+                        handleError(errorMessage, listener);
+                    }
+                });
+            } else {
+                listener.onError(mContext.getString(R.string.url_not_found));
             }
-        });
+        } catch (Exception e) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        }
     }
 
+    /**
+     * @param goal     PostBudgetYonaGoal object
+     * @param listener
+     */
     @Override
     public void postBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener) {
-        goalNetwork.putUserBudgetGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                getUserGoal(listener);
-            }
+        try {
+            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
+                goalNetwork.putUserBudgetGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        getUserGoal(listener);
+                    }
 
-            @Override
-            public void onError(Object errorMessage) {
-                handleError(errorMessage, listener);
+                    @Override
+                    public void onError(Object errorMessage) {
+                        handleError(errorMessage, listener);
+                    }
+                });
+            } else {
+                listener.onError(mContext.getString(R.string.url_not_found));
             }
-        });
+        } catch (Exception e) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        }
     }
 
+    /**
+     * @param goal     PostTimeZoneYonaGoal object
+     * @param listener
+     */
     @Override
     public void postTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener) {
-        goalNetwork.putUserTimeZoneGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                goalDAO.saveGoalData((Goals) result, listener);
-                if (listener != null) {
-                    listener.onDataLoad(result);
-                }
-            }
+        try {
+            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
+                goalNetwork.putUserTimeZoneGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        goalDAO.saveGoalData((Goals) result, listener);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
+                    }
 
-            @Override
-            public void onError(Object errorMessage) {
-                handleError(errorMessage, listener);
+                    @Override
+                    public void onError(Object errorMessage) {
+                        handleError(errorMessage, listener);
+                    }
+                });
+            } else {
+                listener.onError(mContext.getString(R.string.url_not_found));
             }
-        });
+        } catch (Exception e) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        }
     }
 
+    /**
+     * @param yonaGoal YonaGoal Object
+     * @param listener
+     */
     @Override
     public void deleteGoal(YonaGoal yonaGoal, final DataLoadListener listener) {
-        goalNetwork.deleteGoal(yonaGoal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                getUserGoal(listener);
-            }
+        try {
+            if (yonaGoal != null && yonaGoal.getLinks() != null && yonaGoal.getLinks().getSelf() != null && !TextUtils.isEmpty(yonaGoal.getLinks().getSelf().getHref())) {
+                goalNetwork.deleteGoal(yonaGoal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        getUserGoal(listener);
+                    }
 
-            @Override
-            public void onError(Object errorMessage) {
-                handleError(errorMessage, listener);
+                    @Override
+                    public void onError(Object errorMessage) {
+                        handleError(errorMessage, listener);
+                    }
+                });
+            } else {
+                listener.onError(mContext.getString(R.string.url_not_found));
             }
-        });
+        } catch (Exception e) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        }
     }
 
     /**

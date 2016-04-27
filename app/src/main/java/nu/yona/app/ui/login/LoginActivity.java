@@ -44,6 +44,7 @@ import nu.yona.app.utils.PreferenceConstant;
  * This Activity is used only when user is trying to add another device.
  */
 public class LoginActivity extends BaseActivity implements EventChangeListener {
+
     private YonaFontEditTextView mobileNumber, passcode;
     private TextInputLayout mobileNumberLayout, passcodeLayout;
     private DeviceManager deviceManager;

@@ -81,12 +81,4 @@ public class BaseActivity extends AppCompatActivity {
             UpdateManager.unregister();
         }
     }
-
-    public void dismissActiveDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
-
-
 }

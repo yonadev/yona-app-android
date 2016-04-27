@@ -34,7 +34,13 @@ import retrofit2.Response;
 public class AuthenticateNetworkImpl extends BaseImpl {
 
     public void registerUser(String password, RegisterUser object, final DataLoadListener listener) {
-        getRestApi().registerUser(password, object).enqueue(getUserCallBack(listener));
+        try {
+            getRestApi().registerUser(password, object).enqueue(getUserCallBack(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
     }
 
     /**
@@ -44,7 +50,13 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      * @param listener
      */
     public void registerUserOverride(String password, RegisterUser object, String otp, final DataLoadListener listener) {
-        getRestApi().overrideRegisterUser(password, otp, object).enqueue(getUserCallBack(listener));
+        try {
+            getRestApi().overrideRegisterUser(password, otp, object).enqueue(getUserCallBack(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
     }
 
     /**
@@ -93,6 +105,10 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * @param mobileNumber Registering mobile number
+     * @param listener
+     */
     public void requestUserOverride(String mobileNumber, DataLoadListener listener) {
         try {
             getRestApi().requestUserOverride(mobileNumber).enqueue(getCall(listener));

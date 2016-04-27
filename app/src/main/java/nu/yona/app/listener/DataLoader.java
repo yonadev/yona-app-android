@@ -9,7 +9,6 @@
 package nu.yona.app.listener;
 
 import android.os.AsyncTask;
-import android.os.Build;
 
 public abstract class DataLoader extends AsyncTask<Void, Void, Object> {
 
@@ -21,11 +20,7 @@ public abstract class DataLoader extends AsyncTask<Void, Void, Object> {
     public abstract Object doDBCall();
 
     public void executeAsync() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            execute();
-        }
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
 

@@ -12,6 +12,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -26,19 +27,23 @@ public class ViewPagerIndicator extends View {
     private float currentScroll;
     private float radius;
     private int count;
+    private Context mContext;
 
     public ViewPagerIndicator(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.mContext = context;
         init();
     }
 
     public ViewPagerIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mContext = context;
         init();
     }
 
     public ViewPagerIndicator(Context context) {
         super(context);
+        this.mContext = context;
         init();
     }
 
@@ -77,14 +82,19 @@ public class ViewPagerIndicator extends View {
     public void onScrolled(int position, float positionOffset) {
         scrollPosition = position;
         currentScroll = positionOffset;
-        if (scrollPosition == 0) {
-            frontPaint.setColor(getResources().getColor(R.color.darkish_pink));
-        } else if (scrollPosition == 1) {
-            frontPaint.setColor(getResources().getColor(R.color.pea));
-        } else if (scrollPosition == 2) {
-            frontPaint.setColor(getResources().getColor(R.color.mid_blue));
-        } else {
-            frontPaint.setColor(getResources().getColor(R.color.mango));
+        switch (scrollPosition) {
+            case 0:
+                frontPaint.setColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+                break;
+            case 1:
+                frontPaint.setColor(ContextCompat.getColor(mContext, R.color.pea));
+                break;
+            case 2:
+                frontPaint.setColor(ContextCompat.getColor(mContext, R.color.mid_blue));
+                break;
+            default:
+                frontPaint.setColor(ContextCompat.getColor(mContext, R.color.mango));
+                break;
         }
         invalidate();
     }

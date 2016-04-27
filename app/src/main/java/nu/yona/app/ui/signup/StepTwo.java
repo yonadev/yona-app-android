@@ -32,11 +32,9 @@ import nu.yona.app.ui.BaseFragment;
  */
 public class StepTwo extends BaseFragment implements EventChangeListener {
 
-    private static final char space = ' ';
     private YonaFontEditTextView mobileNumber, nickName;
     private TextInputLayout mobileNumberLayout, nickNameLayout;
     private SignupActivity activity;
-    private int counter = 0;
 
     @Nullable
     @Override

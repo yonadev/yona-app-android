@@ -81,6 +81,7 @@ public interface RestApi {
 
     @POST
     Call<Void> clearPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
     /******** RESET PIN ************/
 
     /********

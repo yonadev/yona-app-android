@@ -34,24 +34,38 @@ public class EventChangeManager {
     public static final int EVENT_TOUR_COMPLETE = 10;
 
     public static final int EVENT_UPDATE_GOALS = 11;
+
     private final Set<EventChangeListener> listeners = new HashSet<EventChangeListener>();
 
+    /**
+     * @param listener do register listener to listen event changes, (Generally in onCreate())
+     */
     public void registerListener(EventChangeListener listener) {
         if (!listeners.contains(listener)) {
             listeners.add(listener);
         }
     }
 
+    /**
+     * @param listener do unregister everytime when that screen/ class is no more in use. (Generally in onDestroy())
+     */
     public void unRegisterListener(EventChangeListener listener) {
         if (listeners.contains(listener)) {
             listeners.remove(listener);
         }
     }
 
+    /**
+     * To clear all registered listener
+     */
     public void clearListeners() {
         listeners.clear();
     }
 
+    /**
+     * @param eventType Eventtype define in EventChangeManager
+     * @param object    object to pass with listener from one activity/fragment to another.
+     */
     public void notifyChange(int eventType, Object object) {
         for (EventChangeListener listener : listeners) {
             if (listener != null) {

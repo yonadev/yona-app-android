@@ -29,20 +29,43 @@ import retrofit2.Response;
 public class GoalNetworkImpl extends BaseImpl {
 
     public void getUserGoals(String url, DataLoadListener listener) {
-        getRestApi().getUserGoals(url, YonaApplication.getYonaPassword()).enqueue(getGoals(listener));
-
+        try {
+            getRestApi().getUserGoals(url, YonaApplication.getYonaPassword()).enqueue(getGoals(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
     }
 
     public void putUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener) {
-        getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
+        try {
+            getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
     }
 
     public void putUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener) {
-        getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
+        try {
+            getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
     }
 
     public void deleteGoal(String url, String yonaPassword, DataLoadListener listener) {
-        getRestApi().deleteUserGoal(url, yonaPassword).enqueue(getCall(listener));
+        try {
+            getRestApi().deleteUserGoal(url, yonaPassword).enqueue(getCall(listener));
+        } catch (Exception e) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            }
+        }
     }
 
     private Callback<Goals> getGoals(final DataLoadListener listener) {

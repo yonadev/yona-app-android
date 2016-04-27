@@ -168,6 +168,9 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         });
     }
 
+    /**
+     * When user is already registered with same number and want to override same user.
+     */
     private void OverrideUser() {
         showLoadingView(true, null);
         authenticateManager.requestUserOverride(getRegisterUser().getMobileNumber(), new DataLoadListener() {
@@ -215,7 +218,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public void showMobileVerificationScreen(Bundle bundle) {
+    private void showMobileVerificationScreen(Bundle bundle) {
         Intent intent = new Intent(SignupActivity.this, OTPActivity.class);
         if (bundle != null) {
             intent.putExtras(bundle);

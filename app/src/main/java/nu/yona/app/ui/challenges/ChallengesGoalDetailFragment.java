@@ -46,7 +46,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private ImageView mHGoalTypeImg;
     private YonaFontTextView mHTxtGoalTitle, mHTxtGoalSubscribe, mFTxtGoalTitle, mFTxtGoalSubscribe, mBudgetGoalTime;
     private View budgetGoalView, timezoneGoalView;
-    private ImageView rightIcon;
     private YonaActivity activity;
     private Object mYonaGoal;
     private GoalsEnum currentGoalType;
@@ -102,9 +101,8 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         mFTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_subscribeTxt);
         timezoneGoalView = view.findViewById(R.id.timezoneView);
         budgetGoalView = view.findViewById(R.id.goal_item_layout);
-        rightIcon = (ImageView) activity.findViewById(R.id.rightIcon);
 
-        rightIcon.setOnClickListener(new View.OnClickListener() {
+        activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doDeleteGoal();
@@ -119,9 +117,9 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 YonaGoal yonaGoal = (YonaGoal) mYonaGoal;
 
                 if (yonaGoal.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaGoal.getLinks().getEdit().getHref())) {
-                    rightIcon.setVisibility(View.VISIBLE);
+                    activity.getRightIcon().setVisibility(View.VISIBLE);
                 } else {
-                    rightIcon.setVisibility(View.GONE);
+                    activity.getRightIcon().setVisibility(View.GONE);
                 }
                 mHTxtGoalTitle.setText(yonaGoal.getActivityCategoryName());
                 if (challengesManager.typeOfGoal(yonaGoal).equals(GoalsEnum.BUDGET_GOAL)) {

@@ -98,6 +98,9 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         }
     }
 
+    /**
+     * @param otpString User's entered OTP
+     */
     private void validateOTP(final String otpString) {
         showLoadingView(true, null);
         authenticateManager.verifyOTP(user, otpString, new DataLoadListener() {
@@ -153,6 +156,9 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         finish();
     }
 
+    /**
+     * @param title Update title in Toolbar.
+     */
     public void updateTitle(String title) {
         txtTitle.setText(title);
     }
