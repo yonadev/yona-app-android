@@ -110,7 +110,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
                     Date date2 = getCurrentCalendar().getTime();
                     if (!date.after(date2)) {
                         timePicker.invalidate();
-                        if (Build.VERSION.SDK_INT >= 23) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             timePicker.setHour(getHours());
                         } else {
                             timePicker.setCurrentHour(getHours());
@@ -129,7 +129,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     }
 
     private void refreshView() {
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             timePicker.setHour(getHours());
         } else {
             timePicker.setCurrentHour(getHours());
@@ -142,9 +142,9 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         switch (v.getId()) {
             case R.id.txtdone:
 
-                String hr = AppUtils.getHourDigit(String.valueOf(timePicker.getCurrentHour()));
-                String minute = AppUtils.getHourDigit(getMinutesFromPicker());
-                String time = hr + ":" + minute;
+                final String hr = AppUtils.getHourDigit(String.valueOf(timePicker.getCurrentHour()));
+                final String minute = AppUtils.getHourDigit(getMinutesFromPicker());
+                final String time = hr + ":" + minute;
                 if (!TextUtils.isEmpty(firstTime)) {
                     timeSetListener.setTime(firstTime + "-" + time);
                 } else {
@@ -153,9 +153,9 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
                 d.dismiss();
                 break;
             case R.id.textSelected:
-                String hr1 = AppUtils.getHourDigit(String.valueOf(timePicker.getCurrentHour()));
-                String minute1 = AppUtils.getHourDigit(getMinutesFromPicker());
-                setFirstTime(hr1 + ":" + minute1);
+                final String selectedHr = AppUtils.getHourDigit(String.valueOf(timePicker.getCurrentHour()));
+                final String selectedMin = AppUtils.getHourDigit(getMinutesFromPicker());
+                setFirstTime(selectedHr + ":" + selectedMin);
                 txtDone.setVisibility(View.VISIBLE);
                 txtSelect.setVisibility(View.GONE);
                 break;
