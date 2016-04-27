@@ -6,99 +6,113 @@
   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/time_zone_goal_item_height"
-    android:background="@drawable/item_gradient"
-    android:orientation="horizontal"
-    android:weightSum="2">
+    android:layout_height="wrap_content"
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp">
 
-    <nu.yona.app.customview.YonaFontTextView
-        android:id="@+id/index_time_zone_goal"
-        style="@style/SeTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/layout_margin"
-        android:layout_marginRight="@dimen/time_zone_goal_index_margin_right"
-        android:layout_weight="1" />
-
-    <View
-        android:id="@+id/view3"
-        android:layout_width="1dp"
+    <ImageView
+        android:id="@+id/swipe_delete_goal"
+        android:layout_width="@dimen/time_zone_goal_item_height"
         android:layout_height="@dimen/time_zone_goal_item_height"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/index_time_zone_goal"
-        android:layout_toRightOf="@id/index_time_zone_goal"
-        android:background="@color/bg_gradient_three" />
+        android:background="@color/darkish_pink"
+        android:orientation="horizontal"
+        android:padding="@dimen/challenges_counter_width"
+        android:src="@drawable/icn_trash" />
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="@dimen/time_zone_goal_item_height"
+        android:background="@drawable/item_gradient"
         android:orientation="horizontal">
 
         <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/textVan"
-            style="@style/FooterTxt"
+            android:id="@+id/index_time_zone_goal"
+            style="@style/SeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/index_time_zone_goal"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
-            android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
-            android:layout_toEndOf="@id/view3"
-            android:layout_toRightOf="@id/view3"
-            android:text="van" />
+            android:layout_marginLeft="@dimen/layout_margin"
+            android:layout_marginRight="@dimen/time_zone_goal_index_margin_right" />
 
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/txtGoalStartTime"
-            style="@style/SeScorePos"
-            android:layout_width="wrap_content"
+        <View
+            android:id="@+id/view3"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/time_zone_goal_item_height"
+            android:background="@color/bg_gradient_three" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_toEndOf="@id/textVan"
-            android:layout_toRightOf="@id/textVan" />
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <nu.yona.app.customview.YonaFontTextView
+                    android:id="@+id/textVan"
+                    style="@style/FooterTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
+                    android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
+                    android:text="van" />
+
+                <nu.yona.app.customview.YonaFontTextView
+                    android:id="@+id/txtGoalStartTime"
+                    style="@style/SeScorePos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
+                    android:maxLines="1" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="1dp"
+                android:layout_height="@dimen/time_zone_goal_item_height"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/time_zone_goal_van_margin_right"
+                android:background="@color/bg_gradient_three" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <nu.yona.app.customview.YonaFontTextView
+                    android:id="@+id/txtTot"
+                    style="@style/FooterTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
+                    android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
+                    android:text="tot" />
+
+                <nu.yona.app.customview.YonaFontTextView
+                    android:id="@+id/txtGoalEndTime"
+                    style="@style/SeScorePos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="18dp"
+                    android:maxLines="1" />
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:id="@+id/view4"
-        android:layout_width="1dp"
-        android:layout_height="@dimen/time_zone_goal_item_height"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/time_zone_goal_van_margin_right"
-        android:layout_toRightOf="@id/txtGoalStartTime"
-        android:background="@color/bg_gradient_three" />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/txtTot"
-            style="@style/FooterTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/textVan"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
-            android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
-            android:layout_toEndOf="@id/view4"
-            android:layout_toRightOf="@id/view4"
-            android:text="tot" />
-
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/txtGoalEndTime"
-            style="@style/SeScorePos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_toEndOf="@id/txtTot"
-            android:layout_toRightOf="@id/txtTot" />
-
-    </LinearLayout>
-</LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

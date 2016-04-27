@@ -16,17 +16,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.ChallengesManager;
+import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class ChallengesFragment extends BaseFragment {
+public class ChallengesFragment extends BaseFragment implements EventChangeListener {
     private final float TAB_ALPHA_SELECTED = 1;
     private final double TAB_ALPHA_UNSELECTED = 0.5;
     private final int TAB_INDEX_ONE = 0;
@@ -39,12 +43,16 @@ public class ChallengesFragment extends BaseFragment {
     private ZoneFragment zoneFragment;
     private NoGoFragment noGoFragment;
 
+    private ChallengesManager challengesManager;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.challenges_layout, null);
+        challengesManager = new ChallengesManagerImpl(getActivity());
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        YonaApplication.getEventChangeManager().registerListener(this);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -81,23 +89,35 @@ public class ChallengesFragment extends BaseFragment {
         adapter.addFragment(zoneFragment, getString(R.string.challenges_zone));
         adapter.addFragment(noGoFragment, getString(R.string.challenges_no_go));
         viewPager.setAdapter(adapter);
+
     }
 
     private void setupTabIcons() {
-        LinearLayout tabOne = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
-        ((YonaFontTextView) tabOne.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_credit));
-        ((ImageView) tabOne.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_timezone);
-        tabLayout.getTabAt(TAB_INDEX_ONE).setCustomView(tabOne);
 
-        LinearLayout tabTwo = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
-        ((YonaFontTextView) tabTwo.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_zone));
-        ((ImageView) tabTwo.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_timebucket);
-        tabLayout.getTabAt(TAB_INDEX_TWO).setCustomView(tabTwo);
+        int budgetGoalCounter = (challengesManager.getListOfBudgetGoals() != null && challengesManager.getListOfNoGoGoals().size() > 0) ? challengesManager.getListOfBudgetGoals().size() : 0;
+        View budgetTab = getTabView(R.drawable.icn_challenge_timezone, R.string.challenges_credit, budgetGoalCounter);
+        tabLayout.getTabAt(TAB_INDEX_ONE).setCustomView(budgetTab);
 
-        LinearLayout tabThree = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
-        ((YonaFontTextView) tabThree.findViewById(R.id.tab_text)).setText(getString(R.string.challenges_no_go));
-        ((ImageView) tabThree.findViewById(R.id.tab_image)).setImageResource(R.drawable.icn_challenge_nogo);
-        tabLayout.getTabAt(TAB_INDEX_THREE).setCustomView(tabThree);
+        int timeZoneGoalCounter = (challengesManager.getListOfTimeZoneGoals() != null && challengesManager.getListOfTimeZoneGoals().size() > 0) ? challengesManager.getListOfTimeZoneGoals().size() : 0;
+        View timeZoneTab = getTabView(R.drawable.icn_challenge_timebucket, R.string.challenges_zone, timeZoneGoalCounter);
+        tabLayout.getTabAt(TAB_INDEX_TWO).setCustomView(timeZoneTab);
+
+        int nogoGoalCounter = (challengesManager.getListOfNoGoGoals() != null && challengesManager.getListOfNoGoGoals().size() > 0) ? challengesManager.getListOfNoGoGoals().size() : 0;
+        View nogoTab = getTabView(R.drawable.icn_challenge_nogo, R.string.challenges_no_go, nogoGoalCounter);
+        tabLayout.getTabAt(TAB_INDEX_THREE).setCustomView(nogoTab);
+
+    }
+
+    private View getTabView(int imgResourceId, int titleTab, int counter) {
+        View tab = LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
+        ((YonaFontTextView) tab.findViewById(R.id.tab_text)).setText(getString(titleTab));
+        ((ImageView) tab.findViewById(R.id.tab_image)).setImageResource(imgResourceId);
+        YonaFontTextView counterTextView = ((YonaFontTextView) tab.findViewById(R.id.tab_item_count));
+        if (counter > 0) {
+            counterTextView.setVisibility(View.VISIBLE);
+            counterTextView.setText("" + counter);
+        }
+        return tab;
     }
 
     /**
@@ -105,10 +125,6 @@ public class ChallengesFragment extends BaseFragment {
      */
     private void updateTabViewBackground(TabLayout.Tab tab, float alpha) {
         tab.getCustomView().setAlpha(alpha);
-    }
-
-    private void updateChallengeCounter(TabLayout.Tab tab, int count) {
-        //Todo update the count of goal set
     }
 
     public boolean isChildViewVisible() {
@@ -142,4 +158,21 @@ public class ChallengesFragment extends BaseFragment {
         }
     }
 
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_UPDATE_GOALS:
+                setupTabIcons();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
+    }
 }

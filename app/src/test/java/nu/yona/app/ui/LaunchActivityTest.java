@@ -11,19 +11,14 @@
 package nu.yona.app.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.widget.Button;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.Robolectric;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaTestCase;
-import nu.yona.app.ui.signup.SignupActivity;
-
-import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Created by kinnarvasa on 30/03/16.
@@ -45,12 +40,12 @@ public class LaunchActivityTest extends YonaTestCase {
     @Test
     public void testSignupClick() {
         jonMeBtn.performClick();
-//        Assert.assertEquals(shadowOf(activity).getNextStartedActivity(), new Intent(activity, SignupActivity.class));
+        //Assert.assertEquals(shadowOf(activity).getNextStartedActivity(), new Intent(activity, SignupActivity.class));
     }
 
     @Test
     public void testLoginClick() {
         loginBtn.performClick();
-//        Assert.assertEquals(shadowOf(activity).getNextStartedActivity(), new Intent(activity, SignupActivity.class));
+        //Assert.assertEquals(shadowOf(activity).getNextStartedActivity(), new Intent(activity, SignupActivity.class));
     }
 }

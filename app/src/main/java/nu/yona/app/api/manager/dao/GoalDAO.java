@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import nu.yona.app.api.db.DBConstant;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.listener.DataLoadListener;
 
@@ -49,7 +50,7 @@ public class GoalDAO extends BaseDAO {
             }
         } catch (Exception e) {
             if (listener != null) {
-                listener.onError(e.getMessage() != null ? e.getMessage() : e.getLocalizedMessage());
+                listener.onError(new ErrorMessage(e.getMessage() != null ? e.getMessage() : e.getLocalizedMessage()));
             }
         }
     }
