@@ -1,3 +1,4 @@
 <resources>
     <string name="server_url">http://85.222.227.142</string>
+    <string name="hockey_app_key">ad6d6ae9670e48b693b8fbf377fffb2f</string>
 </resources>

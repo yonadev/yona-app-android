@@ -17,6 +17,7 @@ import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,9 +33,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().getUserGoals(url, YonaApplication.getYonaPassword()).enqueue(getGoals(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
@@ -42,9 +41,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
@@ -52,9 +49,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
@@ -62,9 +57,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().deleteUserGoal(url, yonaPassword).enqueue(getCall(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 

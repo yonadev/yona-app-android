@@ -13,12 +13,13 @@ package nu.yona.app.api.manager.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import nu.yona.app.api.db.DBConstant;
 import nu.yona.app.api.db.DatabaseHelper;
+import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 28/03/16.
@@ -46,7 +47,7 @@ public class AuthenticateDAO extends BaseDAO {
             }
             listener.onDataLoad(getUser());
         } catch (Exception e) {
-            listener.onError(e.getMessage() != null ? e.getMessage() : e.getLocalizedMessage());
+            AppUtils.throwException(AuthenticateDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -60,7 +61,7 @@ public class AuthenticateDAO extends BaseDAO {
                 }
             }
         } catch (Exception e) {
-            Log.e(AuthenticateDAO.class.getSimpleName(), "get user error", e);
+            AppUtils.throwException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), null);
         } finally {
             if (c != null) {
                 c.close();

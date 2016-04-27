@@ -20,6 +20,7 @@ import nu.yona.app.api.manager.network.ActivityCategoriesNetworkImpl;
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
@@ -46,7 +47,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
     @Override
     public void getActivityCategoriesById(final DataLoadListener listener) {
         try {
-            if(!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref())) {
+            if (!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref())) {
                 activityCategoriesNetwork.getActivityCategories(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
@@ -67,7 +68,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -105,7 +106,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
                 }
             });
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 

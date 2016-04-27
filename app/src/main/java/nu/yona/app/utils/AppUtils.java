@@ -23,10 +23,17 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
+import net.hockeyapp.android.ExceptionHandler;
+
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 import java.util.Random;
+
+import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
+import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.listener.DataLoadListener;
 
 
 /**
@@ -133,8 +140,28 @@ public class AppUtils {
         try {
             return new Period(time, PeriodType.hours()).getHours() + "";
         } catch (Exception e) {
-            Log.e(AppUtils.class.getSimpleName(), e.getMessage());
+            AppUtils.throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         return time;
+    }
+
+    /**
+     * @param className class name where exception throws
+     * @param e         Error
+     * @param t         Current Thread (Thread.currentThread())
+     * @param listener  DataLoadListener to update UI
+     */
+    public static void throwException(String className, Exception e, Thread t, DataLoadListener listener) {
+        if (YonaApplication.getAppContext().getResources().getBoolean(R.bool.enableHockyTracking)) {
+            ExceptionHandler.saveException(e, t, YonaApplication.getYonaCustomCrashManagerListener());
+        } else {
+            Log.e(className, e.getMessage());
+        }
+
+        if (listener != null && e != null && e.getMessage() != null) {
+            listener.onError(new ErrorMessage(e.getMessage()));
+        } else {
+            listener.onError(YonaApplication.getAppContext().getString(R.string.error_message));
+        }
     }
 }

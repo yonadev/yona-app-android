@@ -10,8 +10,6 @@
 
 package nu.yona.app.api.manager.network;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
@@ -22,6 +20,7 @@ import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,9 +36,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().registerUser(password, object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -53,9 +50,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().overrideRegisterUser(password, otp, object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -68,9 +63,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().getUser(url, yonaPassword).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -84,9 +77,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().verifyMobileNumber(url, password, otp).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -99,9 +90,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().resendOTP(url, password).enqueue(getCall(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -113,9 +102,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().requestUserOverride(mobileNumber).enqueue(getCall(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -123,9 +110,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().deleteUser(url, yonaPassword).enqueue(getCall(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -158,9 +143,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.toString()));
-            }
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -173,17 +156,14 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().verifyPin(url, YonaApplication.getYonaPassword(), new OTPVerficationCode(otp)).enqueue(getCall(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.toString()));
-            }
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
     /**
      * @param url          URL for Verify Pin Reset
-     * @param yonaPassword Yona Password
      */
-    public void doClearPin(String url, String yonaPassword) {
+    public void doClearPin(String url) {
         try {
             getRestApi().clearPin(url, YonaApplication.getYonaPassword()).enqueue(getCall(new DataLoadListener() {
                 @Override
@@ -197,7 +177,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
                 }
             }));
         } catch (Exception e) {
-            Log.e(AuthenticateNetworkImpl.class.getSimpleName(), e.getMessage());
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 

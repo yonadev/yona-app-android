@@ -129,6 +129,7 @@ public class SettingsFragment extends BaseFragment {
                 }
             });
         } catch (Exception e) {
+            AppUtils.throwException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
             showAlert(e.toString(), false);
         }
     }
@@ -162,6 +163,7 @@ public class SettingsFragment extends BaseFragment {
                 }
             });
         } catch (Exception e) {
+            AppUtils.throwException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
             showAlert(e.toString(), false);
         }
     }

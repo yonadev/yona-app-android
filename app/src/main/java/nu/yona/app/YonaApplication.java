@@ -15,6 +15,7 @@ import android.text.TextUtils;
 
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.model.User;
+import nu.yona.app.listener.YonaCustomCrashManagerListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
@@ -29,6 +30,7 @@ public class YonaApplication extends Application {
     private static SharedPreferences userPreferences;
     private static EventChangeManager eventChangeManager;
     private static User user;
+    private static YonaCustomCrashManagerListener yonaCustomCrashManagerListener;
 
     public static synchronized YonaApplication getAppContext() {
         return mContext;
@@ -74,6 +76,13 @@ public class YonaApplication extends Application {
     public static User updateUser() {
         user = new AuthenticateManagerImpl(getAppContext()).getUser();
         return user;
+    }
+
+    public static YonaCustomCrashManagerListener getYonaCustomCrashManagerListener() {
+        if (yonaCustomCrashManagerListener == null) {
+            yonaCustomCrashManagerListener = new YonaCustomCrashManagerListener();
+        }
+        return yonaCustomCrashManagerListener;
     }
 
     @Override

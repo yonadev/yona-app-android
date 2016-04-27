@@ -17,6 +17,7 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,9 +39,7 @@ public class DeviceNetworkImpl extends BaseImpl {
         try {
             getRestApi().addDevice(url, yonaPassword, devicePassword).enqueue(getCall(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
@@ -53,9 +52,7 @@ public class DeviceNetworkImpl extends BaseImpl {
         try {
             getRestApi().deleteDevice(url, yonaPassword).enqueue(getCall(listener));
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
@@ -84,9 +81,7 @@ public class DeviceNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 }

@@ -15,13 +15,13 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
 import nu.yona.app.R;
+import nu.yona.app.utils.AppUtils;
 
 public class CustomProgressDialog extends Dialog {
 
@@ -94,7 +94,7 @@ public class CustomProgressDialog extends Dialog {
                 }
             }, duration);
         } catch (Exception e) {
-            Log.e(CustomProgressDialog.class.getSimpleName(), "Dialog Show error", e);
+            AppUtils.throwException(CustomProgressDialog.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 import nu.yona.app.R;
+import nu.yona.app.utils.AppUtils;
 
 
 public class YonaFontUtils {
@@ -76,6 +77,7 @@ public class YonaFontUtils {
             try {
                 typeface = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontname);
             } catch (Exception e) {
+                AppUtils.throwException(YonaFontUtils.class.getSimpleName(), e, Thread.currentThread(), null);
                 return null;
             }
 

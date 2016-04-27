@@ -12,12 +12,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import nu.yona.app.api.db.DBConstant;
-import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by bhargavsuthar on 15/04/16.
@@ -49,9 +48,7 @@ public class GoalDAO extends BaseDAO {
                 listener.onDataLoad(goals);
             }
         } catch (Exception e) {
-            if (listener != null) {
-                listener.onError(new ErrorMessage(e.getMessage() != null ? e.getMessage() : e.getLocalizedMessage()));
-            }
+            AppUtils.throwException(GoalDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -65,7 +62,7 @@ public class GoalDAO extends BaseDAO {
                 }
             }
         } catch (Exception e) {
-            Log.e(AuthenticateDAO.class.getSimpleName(), "get user error", e);
+            AppUtils.throwException(GoalDAO.class.getSimpleName(), e, Thread.currentThread(), null);
         } finally {
             if (c != null) {
                 c.close();

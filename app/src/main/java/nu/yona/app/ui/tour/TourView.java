@@ -134,7 +134,7 @@ public class TourView extends LinearLayout {
                         viewPager.setCurrentItem(viewPageNo, true);
                     }
                 } catch (Exception e) {
-
+                    AppUtils.throwException(TourView.class.getSimpleName(), e, Thread.currentThread(), null);
                 }
             }
         });
