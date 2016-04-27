@@ -81,7 +81,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         mFTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_subscribeTxt);
         timezoneGoalView = view.findViewById(R.id.timezoneView);
         budgetGoalView = view.findViewById(R.id.goal_item_layout);
-
         activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
