@@ -264,7 +264,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     }
 
     /**
-     *
      * @param timesList
      * @param object
      */
@@ -296,6 +295,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
                     }
                 }
+
                 @Override
                 public void onError(Object errorMessage) {
                     showError(errorMessage);
