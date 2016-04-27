@@ -15,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.enums.ChallengesEnum;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
 
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class CreditFragment extends BaseGoalCreateFragment implements View.OnClickListener {
+public class CreditFragment extends BaseGoalCreateFragment implements View.OnClickListener, EventChangeListener {
 
     private GoalListAdapter mGoalListAdapter;
 
@@ -37,6 +40,12 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
+        super.onDestroyView();
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -44,6 +53,18 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
             case R.id.img_add_goal:
                 //show new goal list creation view
                 showNewListOfGoalView(ChallengesEnum.CREDIT_TAB.getTab());
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_UPDATE_GOALS:
+                mGoalListAdapter.notifyDataSetChanged(challengesManager.getListOfBudgetGoals());
                 break;
             default:
                 break;

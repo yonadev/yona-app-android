@@ -14,5 +14,9 @@ import android.view.View;
  * Created by bhargavsuthar on 21/04/16.
  */
 public interface OnItemClickListener {
-    void onItemClick(View view, int position);
+    void onDelete(View v);
+
+    void onClickStartTime(View v);
+
+    void onClickEndTime(View v);
 }

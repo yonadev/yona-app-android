@@ -10,7 +10,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/twenty"
     android:background="@android:color/transparent"
     android:orientation="vertical">
@@ -20,19 +20,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/item_count"
-            style="@style/BdgTxt"
-            android:layout_width="@dimen/challenges_counter_width"
-            android:layout_height="@dimen/challenges_counter_width"
-            android:layout_alignEnd="@+id/tab_image"
-            android:layout_alignRight="@+id/tab_image"
-            android:layout_alignTop="@+id/tab_image"
-            android:layout_marginLeft="@dimen/tab_counter_padding_left"
-            android:background="@drawable/circle_counter"
-            android:gravity="center"
-            android:visibility="gone" />
-
         <ImageView
             android:id="@+id/tab_image"
             android:layout_width="@dimen/tab_icon_height"
@@ -40,6 +27,19 @@
             android:layout_marginTop="@dimen/tab_challenges_margin_top"
             android:padding="@dimen/tab_challenges_image_padding"
             android:src="@drawable/icn_challenge_nogo" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/tab_item_count"
+            style="@style/BdgTxt"
+            android:layout_width="@dimen/challenges_counter_width"
+            android:layout_height="@dimen/challenges_counter_width"
+            android:layout_alignEnd="@id/tab_image"
+            android:layout_alignRight="@id/tab_image"
+            android:layout_alignTop="@id/tab_image"
+            android:background="@drawable/circle_counter"
+            android:gravity="center"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
     <nu.yona.app.customview.YonaFontTextView

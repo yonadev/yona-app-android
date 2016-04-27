@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.NumberPicker;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.lang.reflect.Field;
@@ -37,12 +36,15 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     private Dialog d;
     private TimePicker timePicker;
     private OnTimeSetListener timeSetListener;
-    private boolean showAsSoonAsPossible;
+    private boolean isNextAllow;
     private long minSelectedTime;
+    private long maxSelectedTime;
     private NumberPicker minutePicker;
-    private long preparationTime;
     private boolean isPastTimeSelectionAllow;
     private Calendar cal;
+    private YonaFontButton txtSelect;
+    private YonaFontButton txtDone;
+    private String firstTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,12 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         this.timeSetListener = listener;
     }
 
-    public void setMinTimeTime(Long time) {
+    public void setMinTime(Long time) {
         minSelectedTime = time;
+    }
+
+    public void setMaxTime(Long time) {
+        maxSelectedTime = time;
     }
 
     public void setTimePickerInterval(long tTimeInterval) {
@@ -67,8 +73,12 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         this.isPastTimeSelectionAllow = isAllow;
     }
 
-    public void setPreparationTime(long tPrepTime) {
-        this.preparationTime = tPrepTime;
+    public void setIsNextAllow(boolean isNextAllow) {
+        this.isNextAllow = isNextAllow;
+    }
+
+    private void setFirstTime(String first_Time) {
+        this.firstTime = first_Time;
     }
 
     @Override
@@ -82,17 +92,13 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         // calender.setTimeZone(TimeZone.getDefault());
         d.findViewById(R.id.layoutTime).setVisibility(View.VISIBLE);
         timePicker = (TimePicker) d.findViewById(R.id.time_picker);
-        setTimePickerInterval(timePicker);
-        TextView txtSelect = (TextView) d.findViewById(R.id.textSelected);
-        TextView txtDone = (TextView) d.findViewById(R.id.txtdone);
-        txtSelect.setVisibility(showAsSoonAsPossible ? View.VISIBLE : View.GONE);
         timePicker.setVisibility(View.VISIBLE);
+        setTimePickerInterval(timePicker);
         timePicker.setIs24HourView(true);
-        if (Build.VERSION.SDK_INT >= 23) {
-            timePicker.setHour(getHours());
-        } else {
-            timePicker.setCurrentHour(getHours());
-        }
+        txtSelect = (YonaFontButton) d.findViewById(R.id.textSelected);
+        txtDone = (YonaFontButton) d.findViewById(R.id.txtdone);
+        txtSelect.setVisibility(isNextAllow ? View.VISIBLE : View.GONE);
+        txtDone.setVisibility(isNextAllow ? View.GONE : View.VISIBLE);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
@@ -115,28 +121,59 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
             }
         });
 
-        setMinutesInPicker(getMinutes());
+        refreshView();
         txtSelect.setOnClickListener(this);
         txtDone.setOnClickListener(this);
         d.show();
         return d;
     }
 
+    private void refreshView() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            timePicker.setHour(getHours());
+        } else {
+            timePicker.setCurrentHour(getHours());
+        }
+        setMinutesInPicker(getMinutes());
+    }
+
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.txtdone) {
-            String hr = AppUtils.getHourDigit(String.valueOf(timePicker.getCurrentHour()));
-            String minute = AppUtils.getHourDigit(getMinutesFromPicker());
-            String time = hr + ":" + minute;
-            timeSetListener.setTime(time);
-            d.dismiss();
+        switch (v.getId()) {
+            case R.id.txtdone:
+
+                String hr = AppUtils.getHourDigit(String.valueOf(timePicker.getCurrentHour()));
+                String minute = AppUtils.getHourDigit(getMinutesFromPicker());
+                String time = hr + ":" + minute;
+                if (!TextUtils.isEmpty(firstTime)) {
+                    timeSetListener.setTime(firstTime + "-" + time);
+                } else {
+                    timeSetListener.setTime(time);
+                }
+                d.dismiss();
+                break;
+            case R.id.textSelected:
+                String hr1 = AppUtils.getHourDigit(String.valueOf(timePicker.getCurrentHour()));
+                String minute1 = AppUtils.getHourDigit(getMinutesFromPicker());
+                setFirstTime(hr1 + ":" + minute1);
+                txtDone.setVisibility(View.VISIBLE);
+                txtSelect.setVisibility(View.GONE);
+                break;
+            default:
+                break;
         }
     }
 
     public int getHours() {
         Calendar cal = getCurrentCalendar();
-        if (minSelectedTime > 0) {
-            cal.setTimeInMillis(minSelectedTime);
+        if (txtDone.getVisibility() == View.VISIBLE) {
+            if (maxSelectedTime > 0) {
+                cal.setTimeInMillis(maxSelectedTime);
+            }
+        } else {
+            if (minSelectedTime > 0) {
+                cal.setTimeInMillis(minSelectedTime);
+            }
         }
         if (getMinutes().equalsIgnoreCase("00") || getMinutes().equalsIgnoreCase("0")) {
             cal.add(Calendar.HOUR_OF_DAY, 1);
@@ -146,9 +183,16 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
 
     public String getMinutes() {
         Calendar cal = getCurrentCalendar();
-        if (minSelectedTime > 0) {
-            cal.setTimeInMillis(minSelectedTime);
+        if (txtDone.getVisibility() == View.VISIBLE) {
+            if (maxSelectedTime > 0) {
+                cal.setTimeInMillis(maxSelectedTime);
+            }
+        } else {
+            if (minSelectedTime > 0) {
+                cal.setTimeInMillis(minSelectedTime);
+            }
         }
+
         return getRoundedMinute(cal.get(Calendar.MINUTE));
     }
 
@@ -174,6 +218,17 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
 
     private void setTimePickerInterval(TimePicker timePicker) {
         try {
+
+           /* Class<?> classForid = Class.forName("com.android.internal.R$id");
+            Field timePickerField = classForid.getField("timePicker");
+            this.timePicker = (TimePicker) timePicker.findViewById(timePickerField
+                    .getInt(null));
+            Field field = classForid.getField("minute");
+
+            minutePicker = (NumberPicker) timePicker
+                    .findViewById(field.getInt(null));
+*/
+
             Class<?> classForid = Class.forName("com.android.internal.R$id");
             // Field timePickerField = classForid.getField("timePicker");
 
@@ -222,9 +277,6 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     public Calendar getCurrentCalendar() {
         if (cal == null) {
             cal = Calendar.getInstance();
-            if (preparationTime > 0) {
-                cal.add(Calendar.MINUTE, (int) TimeUnit.MILLISECONDS.toMinutes(preparationTime));
-            }
             cal.setTimeZone(TimeZone.getDefault());
         }
         return cal;

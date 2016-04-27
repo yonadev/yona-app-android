@@ -142,5 +142,6 @@ dependencies {
     compile 'net.hockeyapp.android:HockeySDK:3.7.2'
     compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'joda-time:joda-time:2.9.3'
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 
 }

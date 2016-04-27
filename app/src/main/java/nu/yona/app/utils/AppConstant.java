@@ -20,6 +20,9 @@ public interface AppConstant {
     int ADD_DEVICE_PASSWORD_CHAR_LIMIT = 6;
     int YONA_PASSWORD_CHAR_LIMIT = 20;
     int ONE_SECOND = 1000;
+    int TIME_INTERVAL_ONE = 1;
+    int TIME_INTERVAL_FIFTEEN = 15;
+    int MIN_DEFAULT_TIME = 5;
 
     String PASSCODE = "passcode";
     String PASSCODE_VERIFY = "passcode_verify";
@@ -32,4 +35,7 @@ public interface AppConstant {
     String GOAL_OBJECT = "yonaGoalObject";
     String NEW_GOAL_TYPE = "newGoalType";
     String USER = "user";
+
+    String TIME = "time";
+    String POSITION = "position";
 }

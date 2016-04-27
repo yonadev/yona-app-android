@@ -45,8 +45,8 @@ public class ChallengesManagerImpl implements ChallengesManager {
     private List<YonaGoal> noGoCategoriesGoalList;
 
     public ChallengesManagerImpl(Context context) {
-        goalManager = new GoalManagerImpl(context);
         activityCategoryManager = new ActivityCategoryManagerImpl(context);
+        goalManager = new GoalManagerImpl(context);
         mYonaActivityCategoriesList = new ArrayList<YonaActivityCategories>();
         budgetCategoriesGoalList = new ArrayList<YonaGoal>();
         timeZoneCategoriesGoalList = new ArrayList<YonaGoal>();
@@ -235,11 +235,16 @@ public class ChallengesManagerImpl implements ChallengesManager {
      * @param goal     selected yona Goal
      * @param listener
      */
-    public void postTimeGoals(ArrayList<String> timeGoal, YonaGoal goal, final DataLoadListener listener) {
+    public void postTimeGoals(List<String> timeGoal, YonaGoal goal, final DataLoadListener listener) {
         goalManager.postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, goal), listener);
     }
 
-    private PostTimeZoneYonaGoal getPostYonaGoalForTimeZone(ArrayList<String> timeGoal, YonaGoal goal) {
+    @Override
+    public void postTimeGoals(List<String> timeGoal, YonaActivityCategories categories, DataLoadListener listener) {
+        goalManager.postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, categories), listener);
+    }
+
+    private PostTimeZoneYonaGoal getPostYonaGoalForTimeZone(List<String> timeGoal, YonaGoal goal) {
         PostTimeZoneYonaGoal postBudgetYonaGoal = new PostTimeZoneYonaGoal();
         postBudgetYonaGoal.setType(GoalsEnum.TIME_ZONE_GOAL.getActionString());
         Links links = new Links();
@@ -249,6 +254,16 @@ public class ChallengesManagerImpl implements ChallengesManager {
         postBudgetYonaGoal.setZones(timeGoal);
         postBudgetYonaGoal.setLinks(links);
 
+        return postBudgetYonaGoal;
+    }
+
+    private PostTimeZoneYonaGoal getPostYonaGoalForTimeZone(List<String> timeGoal, YonaActivityCategories category) {
+        PostTimeZoneYonaGoal postBudgetYonaGoal = new PostTimeZoneYonaGoal();
+        postBudgetYonaGoal.setType(GoalsEnum.TIME_ZONE_GOAL.getActionString());
+        Links links = new Links();
+        links.setYonaActivityCategory(category.get_links().getSelf());
+        postBudgetYonaGoal.setLinks(links);
+        postBudgetYonaGoal.setZones(timeGoal);
         return postBudgetYonaGoal;
     }
 
