@@ -14,11 +14,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import nu.yona.app.api.db.DBConstant;
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 14/04/16.
@@ -48,7 +48,7 @@ public class ActivityCategoriesDAO extends BaseDAO {
             }
             listener.onDataLoad(activityCategories);
         } catch (Exception e) {
-            listener.onError(e.getMessage() != null ? e.getMessage() : e.getLocalizedMessage());
+            AppUtils.throwException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -62,7 +62,7 @@ public class ActivityCategoriesDAO extends BaseDAO {
                 }
             }
         } catch (Exception e) {
-            Log.e(AuthenticateDAO.class.getSimpleName(), "get user error", e);
+            AppUtils.throwException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), null);
         } finally {
             if (c != null) {
                 c.close();

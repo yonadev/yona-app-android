@@ -22,6 +22,7 @@ import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 13/04/16.
@@ -117,7 +118,7 @@ public class DeviceManagerImpl implements DeviceManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -148,7 +149,7 @@ public class DeviceManagerImpl implements DeviceManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -182,7 +183,7 @@ public class DeviceManagerImpl implements DeviceManager {
                         }
                     });
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -209,9 +210,7 @@ public class DeviceManagerImpl implements DeviceManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
         } catch (Exception e) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
-            }
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
 
     }

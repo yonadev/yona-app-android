@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.ChallengesManager;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.impl.GoalManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaActivityCategories;
@@ -58,6 +58,56 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private List<String> listOfTimes;
     private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
     private RecyclerView timeZoneGoalView;
+    /**
+     * Use this listener only for budget time picker
+     */
+    private CustomTimePickerDialog.OnTimeSetListener budgetTimeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
+
+        @Override
+        public void setTime(String time) {
+            mBudgetGoalTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(getTimeInMilliseconds(time))));
+        }
+    };
+    /**
+     * Use this listener only for Time zone picker
+     */
+    private CustomTimePickerDialog.OnTimeSetListener timeZoneSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void setTime(String time) {
+            if (time.contains("-")) {
+                String[] str = time.split("-");
+                if (str.length > 0) {
+                    listOfTimes.add(time);
+                    if (timeZoneGoalsAdapter != null) {
+                        timeZoneGoalsAdapter.timeZoneNotifyDataSetChanged(listOfTimes);
+                    }
+                }
+            }
+        }
+    };
+    private OnItemClickListener timeZoneGoalClickListener = new OnItemClickListener() {
+
+        @Override
+        public void onDelete(View v) {
+            final Bundle timebundle = (Bundle) v.getTag();
+            final int position = timebundle.getInt(AppConstant.POSITION);
+            if (timeZoneGoalsAdapter != null) {
+                timeZoneGoalsAdapter.removeItemFromList(position);
+            }
+        }
+
+        @Override
+        public void onClickStartTime(View v) {
+            callTimePickerForTimeZone(v, true);
+
+        }
+
+        @Override
+        public void onClickEndTime(View v) {
+            callTimePickerForTimeZone(v, false);
+
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,14 +164,14 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     mBudgetGoalTime = (YonaFontTextView) view.findViewById(R.id.goal_minutes_num);
                     mHTxtGoalSubscribe.setText(getString(R.string.budgetgoalheadersubtext, yonaGoal.getActivityCategoryName()));
                     mBudgetGoalTime.setText(String.valueOf(yonaGoal.getMaxDurationMinutes()));
-                    (view.findViewById(R.id.goal_item_layout)).setOnClickListener(this);
+                    view.findViewById(R.id.goal_item_layout).setOnClickListener(this);
 
                 } else if (challengesManager.typeOfGoal(yonaGoal).equals(GoalsEnum.TIME_ZONE_GOAL)) {
                     setTimezoneGoalViewVisibility();
                     mHTxtGoalSubscribe.setText(getString(R.string.timezonegoalheadersubtext, yonaGoal.getActivityCategoryName()));
                     listOfTimes.addAll(yonaGoal.getZones());
                     ((YonaFontTextView) view.findViewById(R.id.txt_header_text)).setText(getString(R.string.timezone));
-                    ((ImageView) view.findViewById(R.id.img_add_goal)).setOnClickListener(this);
+                    view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 } else {
                     //todo- for nogo
                     mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_nogo);
@@ -188,36 +238,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         budgetGoalView.setVisibility(View.GONE);
         mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_timebucket);
     }
-
-    /**
-     * Use this listener only for budget time picker
-     */
-    private CustomTimePickerDialog.OnTimeSetListener budgetTimeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
-
-        @Override
-        public void setTime(String time) {
-            mBudgetGoalTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(getTimeInMilliseconds(time))));
-        }
-    };
-
-    /**
-     * Use this listener only for Time zone picker
-     */
-    private CustomTimePickerDialog.OnTimeSetListener timeZoneSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void setTime(String time) {
-            if (time.contains("-")) {
-                String[] str = time.split("-");
-                if (str.length > 0) {
-                    listOfTimes.add(time);
-                    if (timeZoneGoalsAdapter != null) {
-                        timeZoneGoalsAdapter.timeZoneNotifyDataSetChanged(listOfTimes);
-                    }
-                }
-            }
-        }
-    };
-
 
     /**
      * Create or post new budget Goals
@@ -332,7 +352,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -362,32 +381,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 break;
         }
     }
-
-
-    private OnItemClickListener timeZoneGoalClickListener = new OnItemClickListener() {
-
-        @Override
-        public void onDelete(View v) {
-            final Bundle timebundle = (Bundle) v.getTag();
-            final int position = timebundle.getInt(AppConstant.POSITION);
-            if (timeZoneGoalsAdapter != null) {
-                timeZoneGoalsAdapter.removeItemFromList(position);
-            }
-        }
-
-        @Override
-        public void onClickStartTime(View v) {
-            callTimePickerForTimeZone(v, true);
-
-        }
-
-        @Override
-        public void onClickEndTime(View v) {
-            callTimePickerForTimeZone(v, false);
-
-        }
-    };
-
 
     private void callTimePickerForTimeZone(final View v, boolean updatingStartTime) {
         final Bundle bTime = (Bundle) v.getTag();

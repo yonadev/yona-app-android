@@ -21,6 +21,7 @@ import nu.yona.app.api.db.JsonSerializer;
 import nu.yona.app.api.model.BaseEntity;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoader;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Author @MobiquityInc
@@ -79,7 +80,7 @@ public class BaseDAO {
                 }
             }.executeAsync();
         } catch (Exception e) {
-            listener.onError(e);
+            AppUtils.throwException(BaseDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 }

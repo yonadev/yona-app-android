@@ -17,6 +17,7 @@ import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.CustomProgressDialog;
 
 /**
@@ -72,7 +73,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private void checkForCrashes() {
         if (getResources().getBoolean(R.bool.enableHockyTracking)) {
-            CrashManager.register(this);
+            CrashManager.register(this, getResources().getString(R.string.hockey_app_key), YonaApplication.getYonaCustomCrashManagerListener());
         }
     }
 

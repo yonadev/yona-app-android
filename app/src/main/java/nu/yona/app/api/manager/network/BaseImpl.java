@@ -10,8 +10,6 @@
 
 package nu.yona.app.api.manager.network;
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -23,6 +21,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.utils.NetworkUtils;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppUtils;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -68,7 +67,7 @@ public class BaseImpl {
         try {
             httpCacheDirectory = new File(YonaApplication.getAppContext().getCacheDir(), NetworkConstant.CACHING_FILE);
         } catch (Exception e) {
-            Log.e(BaseImpl.class.getSimpleName(), e.getMessage());
+            AppUtils.throwException(BaseImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         cache = new Cache(httpCacheDirectory, cacheSize);
     }

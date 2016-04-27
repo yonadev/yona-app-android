@@ -25,6 +25,7 @@ import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -92,7 +93,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 }
             });
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -149,7 +150,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 });
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -189,7 +190,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                             @Override
                             public void onDataLoad(Object result) {
                                 YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, false).commit();
-                                authNetwork.doClearPin(authenticateDao.getUser().getLinks().getClearPinReset().getHref(), YonaApplication.getYonaPassword());
+                                authNetwork.doClearPin(authenticateDao.getUser().getLinks().getClearPinReset().getHref());
                                 listener.onDataLoad(result);
                             }
 
@@ -210,7 +211,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.invalid_otp)));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -238,7 +239,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -260,7 +261,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -291,7 +292,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
 
     }
@@ -319,7 +320,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -342,7 +343,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 }
             });
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 

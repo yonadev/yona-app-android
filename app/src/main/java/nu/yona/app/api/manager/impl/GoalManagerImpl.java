@@ -23,6 +23,7 @@ import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
@@ -67,7 +68,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.url_not_found));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -94,7 +95,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.url_not_found));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -124,7 +125,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.url_not_found));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -151,7 +152,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.url_not_found));
             }
         } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 

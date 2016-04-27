@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -243,7 +242,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
             }
             minutePicker.setDisplayedValues(displayedValues.toArray(new String[0]));
         } catch (Exception e) {
-            Log.e(CustomTimePickerDialog.class.getName(), e.getMessage());
+            AppUtils.throwException(CustomTimePickerDialog.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
