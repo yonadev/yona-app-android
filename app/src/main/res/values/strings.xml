@@ -27,7 +27,7 @@
     <string name="privacy">Privacy</string>
     <string name="add_device">Device toevoegen</string>
     <string name="delete_user">Unsubscribe</string>
-    <string name="delete_user_message">This is you latest device with private key and your profile and data will be remove from the yona server, please type OK below.</string>
+    <string name="delete_user_message">This is your latest device with private key and your profile and data will be remove from the yona server, please type OK below.</string>
     <string name="app_usage_permission_title">Permission</string>
     <string name="app_usage_permission_message">Permission require for 5.1+ Android devies</string>
     <string name="join">DOE MEE</string>
