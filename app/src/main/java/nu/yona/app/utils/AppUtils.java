@@ -158,10 +158,12 @@ public class AppUtils {
             Log.e(className, e.getMessage());
         }
 
-        if (listener != null && e != null && e.getMessage() != null) {
-            listener.onError(new ErrorMessage(e.getMessage()));
-        } else {
-            listener.onError(YonaApplication.getAppContext().getString(R.string.error_message));
+        if(listener != null) {
+            if (e != null && e.getMessage() != null) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+            } else {
+                listener.onError(YonaApplication.getAppContext().getString(R.string.error_message));
+            }
         }
     }
 }
