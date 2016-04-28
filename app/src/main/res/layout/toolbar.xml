@@ -22,18 +22,6 @@
         android:layout_marginLeft="@dimen/layout_margin"
         android:layout_marginRight="@dimen/challenges_margin_left">
 
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/toolbar_title"
-            style="@style/NavTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twelve"
-            android:layout_toLeftOf="@+id/rightIcon"
-            android:layout_toStartOf="@+id/rightIcon"
-            android:maxLines="1"
-            android:text="Dashboard"
-            android:textColor="@color/white" />
-
         <ImageView
             android:id="@+id/rightIcon"
             android:layout_width="@dimen/toolbar_icon_size"
@@ -43,5 +31,17 @@
             android:layout_centerVertical="true"
             android:scaleType="fitXY"
             android:visibility="gone" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/toolbar_title"
+            style="@style/NavTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twelve"
+            android:layout_toLeftOf="@id/rightIcon"
+            android:layout_toStartOf="@id/rightIcon"
+            android:maxLines="1"
+            android:textColor="@color/white" />
+
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

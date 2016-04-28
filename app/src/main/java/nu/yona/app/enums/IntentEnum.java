@@ -21,7 +21,8 @@ public enum IntentEnum {
     ACTION_SETTINGS("nu.yona.app.action.SETTINGS"),
     ACTION_PROFILE("nu.yona.app.action.PROFILE"),
     ACTION_MESSAGE("nu.yona.app.action.MESSAGE"),
-    ACTION_CHALLENGES_GOAL("nu.yona.app.action.CHALLENGES_GOAL");
+    ACTION_CHALLENGES_GOAL("nu.yona.app.action.CHALLENGES_GOAL"),
+    ACTION_ADD_FRIEND("nu.yona.app.action.ADD_FRIEND");
 
     private static Map<String, IntentEnum> nameToEnumMapping = new HashMap<String, IntentEnum>();
 

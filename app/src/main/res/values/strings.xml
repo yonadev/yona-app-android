@@ -34,6 +34,7 @@
     <string name="connectionnotavailable">"OOPS! No Internet Connection Available</string>
     <string name="firstname">FIRST NAME</string>
     <string name="lastname">LAST NAME</string>
+    <string name="email">Email</string>
     <string name="nickname">NICKNAME</string>
     <string name="privacypolicy">Yona is committed to respecting and protecting your privacy. All sensitive data is secured with encryption.</string>
     <string name="mobilenumber">MOBILE PHONE NUMBER</string>
@@ -92,5 +93,8 @@
     <string name="challengesnogosubText">Vermijd %1$s gerelateerde content</string>
     <string name="challengestimzoesubtext">Timeslot tussen %1$sen tussen %2$s</string>
     <string name="challengesbudgetsubtext">Je kunt per dag %1$s minuten %2$s</string>
-
+    <string name="invitefriend">VRIEND UITNODIGEN</string>
+    <string name="addfriend">VRIEND TOEVOEGEN</string>
+    <string name="addfriendmanually">Handmatig</string>
+    <string name="addfriendcontacts">Uit adresboek</string>
 </resources>

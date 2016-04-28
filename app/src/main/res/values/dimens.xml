@@ -86,5 +86,7 @@
     <dimen name="btn_challenges_opslaan_margin">22dp</dimen>
     <dimen name="btn_challenges_opslaan_margin_top">32dp</dimen>
     <dimen name="btn_challenges_opslaan_paddding">15dp</dimen>
-
+    <dimen name="add_friend_text_item_height">87dp</dimen>
+    <dimen name="add_friend_text_sub_item_height">68dp</dimen>
+    <dimen name="add_friend_bottom_margin">50dp</dimen>
 </resources>
