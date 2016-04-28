@@ -65,7 +65,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.url_not_found)));
+                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
             AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);

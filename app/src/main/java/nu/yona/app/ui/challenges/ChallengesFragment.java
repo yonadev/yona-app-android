@@ -85,9 +85,9 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         creditFragment = new CreditFragment();
         zoneFragment = new ZoneFragment();
         noGoFragment = new NoGoFragment();
-        adapter.addFragment(creditFragment, getString(R.string.challenges_credit));
-        adapter.addFragment(zoneFragment, getString(R.string.challenges_zone));
-        adapter.addFragment(noGoFragment, getString(R.string.challenges_no_go));
+        adapter.addFragment(creditFragment, getString(R.string.challengescredit));
+        adapter.addFragment(zoneFragment, getString(R.string.challengeszone));
+        adapter.addFragment(noGoFragment, getString(R.string.challengesnogo));
         viewPager.setAdapter(adapter);
 
     }
@@ -95,15 +95,15 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     private void setupTabIcons() {
 
         int budgetGoalCounter = (challengesManager.getListOfBudgetGoals() != null && challengesManager.getListOfNoGoGoals().size() > 0) ? challengesManager.getListOfBudgetGoals().size() : 0;
-        View budgetTab = getTabView(R.drawable.icn_challenge_timezone, R.string.challenges_credit, budgetGoalCounter);
+        View budgetTab = getTabView(R.drawable.icn_challenge_timezone, R.string.challengescredit, budgetGoalCounter);
         tabLayout.getTabAt(TAB_INDEX_ONE).setCustomView(budgetTab);
 
         int timeZoneGoalCounter = (challengesManager.getListOfTimeZoneGoals() != null && challengesManager.getListOfTimeZoneGoals().size() > 0) ? challengesManager.getListOfTimeZoneGoals().size() : 0;
-        View timeZoneTab = getTabView(R.drawable.icn_challenge_timebucket, R.string.challenges_zone, timeZoneGoalCounter);
+        View timeZoneTab = getTabView(R.drawable.icn_challenge_timebucket, R.string.challengeszone, timeZoneGoalCounter);
         tabLayout.getTabAt(TAB_INDEX_TWO).setCustomView(timeZoneTab);
 
         int nogoGoalCounter = (challengesManager.getListOfNoGoGoals() != null && challengesManager.getListOfNoGoGoals().size() > 0) ? challengesManager.getListOfNoGoGoals().size() : 0;
-        View nogoTab = getTabView(R.drawable.icn_challenge_nogo, R.string.challenges_no_go, nogoGoalCounter);
+        View nogoTab = getTabView(R.drawable.icn_challenge_nogo, R.string.challengesnogo, nogoGoalCounter);
         tabLayout.getTabAt(TAB_INDEX_THREE).setCustomView(nogoTab);
 
     }

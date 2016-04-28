@@ -149,7 +149,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcode_tryagain));
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcodetryagain));
                 }
             }, AppConstant.TIMER_DELAY);
 

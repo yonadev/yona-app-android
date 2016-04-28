@@ -104,7 +104,7 @@ public class StepOne extends BaseFragment implements EventChangeListener {
     private boolean validateFirstName() {
         if (!activity.getAuthenticateManager().validateText(firstName.getText().toString())) {
             firstNameLayout.setErrorEnabled(true);
-            firstNameLayout.setError(getString(R.string.enter_name_validation));
+            firstNameLayout.setError(getString(R.string.enterfirstnamevalidation));
             activity.showKeyboard(firstName);
             firstName.requestFocus();
             return false;
@@ -115,7 +115,7 @@ public class StepOne extends BaseFragment implements EventChangeListener {
     private boolean validateLastName() {
         if (!activity.getAuthenticateManager().validateText(lastName.getText().toString())) {
             lastNameLayout.setErrorEnabled(true);
-            lastNameLayout.setError(getString(R.string.enter_name_validation));
+            lastNameLayout.setError(getString(R.string.enterlastnamevalidation));
             activity.showKeyboard(lastName);
             lastName.requestFocus();
             return false;

@@ -143,11 +143,11 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
 
     private void populateOTPView() {
         accont_image.setImageResource(R.drawable.add_avatar);
-        passcode_title.setText(getString(R.string.account_login));
-        passcode_description.setText(getString(R.string.account_login_security_message));
+        passcode_title.setText(getString(R.string.accountlogin));
+        passcode_description.setText(getString(R.string.accountloginsecuritymessage));
         ((OTPActivity) getActivity()).updateTitle(getString(R.string.join));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress));
-        passcode_reset.setText(getString(R.string.send_otp_again));
+        passcode_reset.setText(getString(R.string.sendotpagain));
         passcode_reset.setVisibility(View.VISIBLE);
     }
 
@@ -166,7 +166,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
 
     private void populateLoginView() {
         accont_image.setImageResource(R.drawable.icn_y);
-        passcode_title.setText(getString(R.string.passcode_title));
+        passcode_title.setText(getString(R.string.passcodetitle));
     }
 
     /**
@@ -174,8 +174,8 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
      */
     private void populateVerifyPasscodeView() {
         accont_image.setImageResource(R.drawable.icn_secure);
-        passcode_title.setText(getString(R.string.passcode_step2_title));
-        passcode_description.setText(getString(R.string.passcode_step2_desc));
+        passcode_title.setText(getString(R.string.passcodestep2title));
+        passcode_description.setText(getString(R.string.passcodestep2desc));
         ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.pincode));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_verify_progerss));
     }
@@ -185,8 +185,8 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
      */
     private void populatePasscodeView() {
         accont_image.setImageResource(R.drawable.icn_account_created);
-        passcode_title.setText(getString(R.string.passcode_step1_title));
-        passcode_description.setText(getString(R.string.passcode_step1_desc));
+        passcode_title.setText(getString(R.string.passcodestep1title));
+        passcode_description.setText(getString(R.string.passcodestep1desc));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_create_progress));
         ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.pincode));
     }

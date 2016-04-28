@@ -28,7 +28,7 @@
             android:background="@drawable/button_challenges"
             android:paddingBottom="@dimen/btn_challenges_opslaan_paddding"
             android:paddingTop="@dimen/btn_challenges_opslaan_paddding"
-            android:text="@string/challengesGoalCreateText"
+            android:text="@string/challengesgoalcreatebutton"
             android:textColor="@color/mid_blue" />
 
     </LinearLayout>
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_bucket_screen"
             android:gravity="center"
-            android:text="@string/challenges_footer_text" />
+            android:text="@string/challengesfooter" />
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/challenges_goal_footer_subscribeTxt"

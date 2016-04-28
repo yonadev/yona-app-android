@@ -36,7 +36,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
         mGoalListView.setOnItemClickListener(itemClickListener);
         showCurrentGoalListView(ChallengesEnum.ZONE_TAB.getTab());
         btnGoalAdd.setOnClickListener(this);
-        mDescTab.setText(getActivity().getString(R.string.challenges_tijdzone_header_text));
+        mDescTab.setText(getActivity().getString(R.string.challengestijdzoneheader));
         return view;
     }
 

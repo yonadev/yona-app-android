@@ -42,8 +42,8 @@ public class DashboardFragment extends BaseFragment {
     private void setupViewPager(ViewPager viewPager) {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new PerDayFragment(), getString(R.string.per_day));
-        adapter.addFragment(new PerWeekFragment(), getString(R.string.per_week));
+        adapter.addFragment(new PerDayFragment(), getString(R.string.perday));
+        adapter.addFragment(new PerWeekFragment(), getString(R.string.perweek));
         viewPager.setAdapter(adapter);
     }
 }

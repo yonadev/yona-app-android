@@ -115,7 +115,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     case R.string.dashboard:
                         replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
                         break;
-                    case R.string.frineds:
+                    case R.string.friends:
                         replaceFragmentWithAction(new Intent(IntentEnum.ACTION_FRIENDS.getActionString()));
                         break;
                     case R.string.challenges:
@@ -305,7 +305,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 break;
             case 1:
                 img.setImageResource(R.drawable.friends_selector);
-                v.setTag(R.string.frineds);
+                v.setTag(R.string.friends);
                 break;
             case 2:
                 img.setImageResource(R.drawable.challenges_selector);
@@ -352,7 +352,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         if (mContent instanceof FriendsFragment) {
                             return;
                         }
-                        setCustomTitle(R.string.frineds);
+                        setCustomTitle(R.string.friends);
                         clearFragmentStack = true;
                         addToBackstack = true;
                         mContent = friendsFragment;
@@ -494,7 +494,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 rightIcon.setTag(getString(R.string.dashboard));
                 rightIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icn_reminder));
                 break;
-            case R.string.frineds:
+            case R.string.friends:
                 rightIcon.setVisibility(View.GONE);
                 break;
             case R.string.challenges:
