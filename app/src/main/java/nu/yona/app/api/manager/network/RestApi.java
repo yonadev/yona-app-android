@@ -11,6 +11,8 @@
 package nu.yona.app.api.manager.network;
 
 import nu.yona.app.api.model.ActivityCategories;
+import nu.yona.app.api.model.AddBuddy;
+import nu.yona.app.api.model.Buddy;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
@@ -127,4 +129,19 @@ public interface RestApi {
 
 
     /******** GOALS ************/
+
+    /********
+     * FRIENDS / BUDDY
+     ************/
+
+    @POST
+    Call<Void> addBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body AddBuddy buddy);
+
+    @GET
+    Call<Buddy> getBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
+    @DELETE
+    Call<Void> deleteBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
+    /******** FRIENDS / BUDDY ************/
 }

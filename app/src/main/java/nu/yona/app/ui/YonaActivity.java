@@ -39,6 +39,7 @@ import nu.yona.app.api.manager.impl.GoalManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.receiver.YonaReceiver;
+import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
@@ -201,17 +202,26 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void showError(ErrorMessage errorMessage) {
-        CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                SharedPreferences.Editor editor = YonaApplication.getUserPreferences().edit();
-                editor.clear();
-                editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
-                editor.commit();
-                startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
-                dialogInterface.dismiss();
-            }
-        });
+        if (errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND)) {
+            CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    SharedPreferences.Editor editor = YonaApplication.getUserPreferences().edit();
+                    editor.clear();
+                    editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
+                    editor.commit();
+                    startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
+                    dialogInterface.dismiss();
+                }
+            });
+        } else {
+            CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 
     @Override

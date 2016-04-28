@@ -34,6 +34,7 @@ public class AddFriendManually extends BaseFragment {
     private View view;
     private EditText firstName, lastName, email, mobileNumber, nickName;
     private TextInputLayout firstNameLayout, lastNameLayout, emailLayout, mobileNumberLayout, nickNameLayout;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class AddFriendManually extends BaseFragment {
         mobileNumber.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_UP && TextUtils.isEmpty(mobileNumber.getText())){
+                if (event.getAction() == MotionEvent.ACTION_UP && TextUtils.isEmpty(mobileNumber.getText())) {
                     mobileNumber.setText(R.string.country_code_with_zero);
                 }
                 mobileNumber.setSelection(mobileNumber.getText().length());
