@@ -21,6 +21,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 
 import net.hockeyapp.android.ExceptionHandler;
@@ -40,6 +42,7 @@ import nu.yona.app.listener.DataLoadListener;
  * Created by kinnarvasa on 21/03/16.
  */
 public class AppUtils {
+    private static InputFilter filter;
 
     public static Bitmap getCircleBitmap(Bitmap bitmap) {
         final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
@@ -165,5 +168,21 @@ public class AppUtils {
                 listener.onError(YonaApplication.getAppContext().getString(R.string.error_message));
             }
         }
+    }
+
+    public static InputFilter getFilter() {
+        if(filter == null) {
+            filter = new InputFilter() {
+                @Override
+                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                    String blockCharacterSet = "~#^&|$%*!@/()-'\":;,?{}=!$^';,?×÷<>{}€£¥₩%~`¤♡♥_|《》¡¿°•○●□■◇◆♧♣▲▼▶◀↑↓←→☆★▪:-);-):-D:-(:'(:O 1234567890";
+                    if (source != null && blockCharacterSet.contains(("" + source))) {
+                        return "";
+                    }
+                    return null;
+                }
+            };
+        }
+        return filter;
     }
 }

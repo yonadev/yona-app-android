@@ -28,6 +28,7 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -70,11 +71,11 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
         firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
         firstName.addTextChangedListener(watcher);
-        firstName.setFilters(new InputFilter[]{activity.filter});
+        firstName.setFilters(new InputFilter[]{AppUtils.getFilter()});
 
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         lastName.addTextChangedListener(watcher);
-        lastName.setFilters(new InputFilter[]{activity.filter});
+        lastName.setFilters(new InputFilter[]{AppUtils.getFilter()});
 
         privacyPolicy = (YonaFontTextView) view.findViewById(R.id.privacyPolicy);
         privacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());

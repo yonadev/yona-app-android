@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~  This Source Code Form is subject to the terms of the Mozilla Public
+  ~  License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/first_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/add_friend_text_item_height"
+            android:background="@drawable/goal_item_gradient"
+            android:paddingLeft="@dimen/signup_profile_left_right_padding"
+            android:paddingRight="@dimen/signup_profile_left_right_padding"
+            android:paddingTop="@dimen/twenty"
+            android:paddingBottom="@dimen/twenty">
+
+            <nu.yona.app.customview.YonaFontEditTextView
+                android:id="@+id/first_name"
+                style="@style/InputLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:capitalize="words"
+                android:drawableRight="@drawable/icn_name"
+                android:ellipsize="end"
+                android:hint="@string/firstname"
+                android:imeOptions="actionNext"
+                android:maxLength="@integer/char_limit"
+                android:singleLine="true"
+                android:textColorHint="@color/black" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/last_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/add_friend_text_item_height"
+            android:background="@drawable/goal_item_gradient"
+            android:paddingLeft="@dimen/signup_profile_left_right_padding"
+            android:paddingRight="@dimen/signup_profile_left_right_padding"
+            android:paddingTop="@dimen/twenty"
+            android:paddingBottom="@dimen/twenty">
+
+            <nu.yona.app.customview.YonaFontEditTextView
+                android:id="@+id/last_name"
+                style="@style/InputLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:capitalize="words"
+                android:drawableRight="@drawable/icn_name"
+                android:ellipsize="end"
+                android:hint="@string/lastname"
+                android:imeOptions="actionNext"
+                android:maxLength="@integer/char_limit"
+                android:singleLine="true"
+                android:textColorHint="@color/black" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/email_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/add_friend_text_item_height"
+            android:background="@drawable/goal_item_gradient"
+            android:paddingLeft="@dimen/signup_profile_left_right_padding"
+            android:paddingRight="@dimen/signup_profile_left_right_padding"
+            android:paddingTop="@dimen/twenty"
+            android:paddingBottom="@dimen/twenty">
+
+            <nu.yona.app.customview.YonaFontEditTextView
+                android:id="@+id/email"
+                style="@style/InputLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:capitalize="words"
+                android:drawableRight="@drawable/icn_mail"
+                android:ellipsize="end"
+                android:hint="@string/email"
+                android:imeOptions="actionNext"
+                android:maxLength="@integer/char_limit"
+                android:singleLine="true"
+                android:textColorHint="@color/black" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/mobile_number_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/add_friend_text_item_height"
+            android:background="@drawable/goal_item_gradient"
+            android:paddingLeft="@dimen/signup_profile_left_right_padding"
+            android:paddingRight="@dimen/signup_profile_left_right_padding"
+            android:paddingTop="@dimen/twenty"
+            android:paddingBottom="@dimen/twenty">
+
+            <nu.yona.app.customview.YonaFontEditTextView
+                android:id="@+id/mobile_number"
+                style="@style/InputLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:capitalize="words"
+                android:digits="1234567890 "
+                android:drawableRight="@drawable/icn_mobile"
+                android:ellipsize="end"
+                android:hint="@string/mobilenumber"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:maxLength="@integer/number_limit"
+                android:singleLine="true"
+                android:textColorHint="@color/black" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/nick_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/add_friend_text_item_height"
+            android:background="@drawable/goal_item_gradient"
+            android:paddingLeft="@dimen/signup_profile_left_right_padding"
+            android:paddingRight="@dimen/signup_profile_left_right_padding"
+            android:paddingTop="@dimen/twenty"
+            android:paddingBottom="@dimen/twenty">
+
+            <nu.yona.app.customview.YonaFontEditTextView
+                android:id="@+id/nick_name"
+                style="@style/InputLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:capitalize="words"
+                android:drawableRight="@drawable/icn_nickname"
+                android:ellipsize="end"
+                android:hint="@string/nickname"
+                android:imeOptions="actionDone"
+                android:maxLength="@integer/char_limit"
+                android:singleLine="true"
+                android:textColorHint="@color/black" />
+        </android.support.design.widget.TextInputLayout>
+
+        <nu.yona.app.customview.YonaFontButton
+            style="@style/BtnTxtBlue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/signup_profile_left_right_padding"
+            android:layout_marginRight="@dimen/signup_profile_left_right_padding"
+            android:layout_marginTop="@dimen/thirty_two"
+            android:layout_marginBottom="@dimen/add_friend_bottom_margin"
+            android:background="@drawable/round_button"
+            android:text="@string/invitefriend" />
+    </LinearLayout>
+</ScrollView>

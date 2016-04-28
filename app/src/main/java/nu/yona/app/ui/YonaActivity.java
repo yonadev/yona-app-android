@@ -46,6 +46,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
+import nu.yona.app.ui.frinends.AddFriendFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
 import nu.yona.app.ui.message.MessageFragment;
 import nu.yona.app.ui.pincode.PinActivity;
@@ -388,7 +389,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         if (mContent instanceof MessageFragment) {
                             return;
                         }
-                        setTitle(R.string.message);
+                        setCustomTitle(R.string.message);
                         mContent = new MessageFragment();
                         clearFragmentStack = false;
                         addToBackstack = true;
@@ -396,6 +397,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     case ACTION_CHALLENGES_GOAL:
                         mContent = new ChallengesGoalDetailFragment();
                         mContent.setArguments(intent.getExtras());
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
+                    case ACTION_ADD_FRIEND:
+                        setCustomTitle(R.string.addfriend);
+                        mContent = new AddFriendFragment();
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;
@@ -495,7 +502,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 rightIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icn_reminder));
                 break;
             case R.string.friends:
-                rightIcon.setVisibility(View.GONE);
+                rightIcon.setVisibility(View.VISIBLE);
                 break;
             case R.string.challenges:
                 rightIcon.setVisibility(View.GONE);
@@ -511,6 +518,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             case R.string.message:
                 rightIcon.setVisibility(View.GONE);
                 break;
+            case R.string.addfriend:
+                rightIcon.setVisibility(View.GONE);
+                break;
             default:
                 break;
         }
@@ -520,6 +530,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     public void onBackPressed() {
         if (mContent instanceof ChallengesFragment && ((ChallengesFragment) mContent).isChildViewVisible()) {
             ((ChallengesFragment) mContent).updateView();
+        } else if (mContent instanceof AddFriendFragment) {
+            setCustomTitle(R.string.friends);
+            onBackStackChanged();
+            super.onBackPressed();
         } else {
             isBackPressed = true;
             onBackStackChanged();
