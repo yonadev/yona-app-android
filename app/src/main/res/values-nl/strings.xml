@@ -66,13 +66,6 @@
     <string name="useroverride"> do you want to re-register same number? (Note:All data associated with this number will be removed</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="challenges.addBudgetGoal.setChallengeButton">CHALLENGE OPSLAAN</string>
-    <string name="challenges.addBudgetGoal.budgetChallengeMainTitle">TEGOED VASTLEGGEN</string>
-    <string name="challenges.addBudgetGoal.timeZoneLabel">Tijdzone</string>
-    <string name="challenges.addBudgetGoal.minutesPerDayLabel">minuten per dag</string>
-    <string name="challenges.addBudgetGoal.budgetChallengeDescription">Bepaal hier hoeveel tijd je aan %1$s wilt besteden</string>
-    <string name="challenges.addBudgetGoal.bottomLabelText">De volgende apps zijn onderdeel van deze challenge:</string>
-    <string name="challenges.addBudgetGoal.deletedGoalMessage">Verwijder Goal</string>
     <string name="deleteuser">Unsubscribe</string>
     <string name="challengesaddBudgetGoalcannotDeleteMandatoryGoalMessage">Kan verplichte doel niet verwijderen</string>
     <string name="deleteusermessage"> please type OK below."</string>
