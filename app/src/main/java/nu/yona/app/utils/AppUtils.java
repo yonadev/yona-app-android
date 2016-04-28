@@ -161,7 +161,7 @@ public class AppUtils {
             Log.e(className, e.getMessage());
         }
 
-        if(listener != null) {
+        if (listener != null) {
             if (e != null && e.getMessage() != null) {
                 listener.onError(new ErrorMessage(e.getMessage()));
             } else {
@@ -171,7 +171,7 @@ public class AppUtils {
     }
 
     public static InputFilter getFilter() {
-        if(filter == null) {
+        if (filter == null) {
             filter = new InputFilter() {
                 @Override
                 public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {

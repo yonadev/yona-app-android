@@ -161,7 +161,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
-     * @param url          URL for Verify Pin Reset
+     * @param url URL for Verify Pin Reset
      */
     public void doClearPin(String url) {
         try {

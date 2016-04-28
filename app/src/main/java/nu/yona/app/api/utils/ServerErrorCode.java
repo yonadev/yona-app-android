@@ -15,4 +15,5 @@ package nu.yona.app.api.utils;
  */
 public interface ServerErrorCode {
     String USER_EXIST_ERROR = "error.user.exists";
+    String USER_NOT_FOUND = "error.user.not.found.id"; // As per comment on: http://wiki.yona.nu/display/DEV/Flow+-+Unsubscribe?focusedCommentId=14843985#comment-14843985
 }

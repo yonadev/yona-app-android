@@ -13,6 +13,9 @@ package nu.yona.app.api.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by kinnarvasa on 31/03/16.
  */
@@ -26,7 +29,24 @@ public class RegisterUser implements Parcelable {
             return new RegisterUser[size];
         }
     };
-    private String firstName, lastName, nickname, mobileNumber;
+    @SerializedName("nickname")
+    @Expose
+    private String nickname;
+    @SerializedName("firstName")
+    @Expose
+    private String firstName;
+    @SerializedName("lastName")
+    @Expose
+    private String lastName;
+    @SerializedName("mobileNumber")
+    @Expose
+    private String mobileNumber;
+    @SerializedName("emailAddress")
+    @Expose
+    private String emailAddress;
+    @SerializedName("_links")
+    @Expose
+    private Links_ Links;
 
     public RegisterUser() {
 
@@ -81,5 +101,33 @@ public class RegisterUser implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringArray(new String[]{this.firstName, this.lastName, this.nickname, this.mobileNumber});
+    }
+
+    /**
+     * @return The Links
+     */
+    public Links_ getLinks() {
+        return Links;
+    }
+
+    /**
+     * @param Links The _links
+     */
+    public void setLinks(Links_ Links) {
+        this.Links = Links;
+    }
+
+    /**
+     * @return The Email
+     */
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    /**
+     * @param email The Email
+     */
+    public void setEmailAddress(String email) {
+        this.emailAddress = email;
     }
 }

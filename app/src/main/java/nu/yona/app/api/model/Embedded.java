@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Embedded extends BaseEntity {
 
     @SerializedName("yona:goals")
@@ -22,7 +25,19 @@ public class Embedded extends BaseEntity {
     private YonaGoals yonaGoals;
     @SerializedName("yona:buddies")
     @Expose
-    private YonaBuddies yonaBuddies;
+    private List<YonaBuddy> yonaBuddies = new ArrayList<YonaBuddy>();
+    @SerializedName("yona:user")
+    @Expose
+    private RegisterUser yonaUser;
+    @SerializedName("sendingStatus")
+    @Expose
+    private String sendingStatus;
+    @SerializedName("receivingStatus")
+    @Expose
+    private String receivingStatus;
+    @SerializedName("_links")
+    @Expose
+    private Links Links;
 
     /**
      * @return The yonaGoals
@@ -41,19 +56,75 @@ public class Embedded extends BaseEntity {
     /**
      * @return The yonaBuddies
      */
-    public YonaBuddies getYonaBuddies() {
+    public List<YonaBuddy> getYonaBuddies() {
         return yonaBuddies;
     }
 
     /**
      * @param yonaBuddies The yona:buddies
      */
-    public void setYonaBuddies(YonaBuddies yonaBuddies) {
+    public void setYonaBuddies(List<YonaBuddy> yonaBuddies) {
         this.yonaBuddies = yonaBuddies;
     }
 
     @Override
     public ContentValues getDbContentValues() {
         return null;
+    }
+
+    /**
+     * @return The RegisterUser
+     */
+    public RegisterUser getYonaUser() {
+        return yonaUser;
+    }
+
+    /**
+     * @param yonaUser The yona:user
+     */
+    public void setYonaUser(RegisterUser yonaUser) {
+        this.yonaUser = yonaUser;
+    }
+
+    /**
+     * @return The sendingStatus
+     */
+    public String getSendingStatus() {
+        return sendingStatus;
+    }
+
+    /**
+     * @param sendingStatus The sendingStatus
+     */
+    public void setSendingStatus(String sendingStatus) {
+        this.sendingStatus = sendingStatus;
+    }
+
+    /**
+     * @return The receivingStatus
+     */
+    public String getReceivingStatus() {
+        return receivingStatus;
+    }
+
+    /**
+     * @param receivingStatus The receivingStatus
+     */
+    public void setReceivingStatus(String receivingStatus) {
+        this.receivingStatus = receivingStatus;
+    }
+
+    /**
+     * @return The Links
+     */
+    public Links getLinks() {
+        return Links;
+    }
+
+    /**
+     * @param Links The _links
+     */
+    public void setLinks(Links Links) {
+        this.Links = Links;
     }
 }
