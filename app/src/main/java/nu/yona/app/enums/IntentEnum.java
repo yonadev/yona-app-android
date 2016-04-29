@@ -24,7 +24,7 @@ public enum IntentEnum {
     ACTION_CHALLENGES_GOAL("nu.yona.app.action.CHALLENGES_GOAL"),
     ACTION_ADD_FRIEND("nu.yona.app.action.ADD_FRIEND");
 
-    private static Map<String, IntentEnum> nameToEnumMapping = new HashMap<String, IntentEnum>();
+    private static final Map<String, IntentEnum> nameToEnumMapping = new HashMap<>();
 
     static {
         for (IntentEnum intentEnum : IntentEnum.values()) {
@@ -32,7 +32,7 @@ public enum IntentEnum {
         }
     }
 
-    private String actionString;
+    private final String actionString;
 
     IntentEnum(String actionString) {
         this.actionString = actionString;

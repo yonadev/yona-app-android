@@ -22,7 +22,7 @@ public class EmbeddedYonaBuddies extends BaseEntity {
 
     @SerializedName("yona:buddies")
     @Expose
-    private List<YonaBuddy> yonaBuddies = new ArrayList<YonaBuddy>();
+    private List<YonaBuddy> yonaBuddies = new ArrayList<>();
 
     /**
      * @return The yonaBuddies

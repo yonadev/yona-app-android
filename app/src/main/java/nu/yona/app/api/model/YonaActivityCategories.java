@@ -23,15 +23,17 @@ public class YonaActivityCategories extends BaseEntity {
 
     @SerializedName("name")
     @Expose
+    private
     String name;
 
     @SerializedName("mandatoryNoGo")
     @Expose
+    private
     boolean mandatoryNoGo;
 
     @SerializedName("applications")
     @Expose
-    private List<String> applications = new ArrayList<String>();
+    private List<String> applications = new ArrayList<>();
 
     @SerializedName("_links")
     @Expose

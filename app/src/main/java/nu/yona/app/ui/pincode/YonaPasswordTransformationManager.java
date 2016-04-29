@@ -14,8 +14,7 @@ import android.view.View;
 /**
  * Created by bhargavsuthar on 4/1/16.
  */
-public class YonaPasswordTransformationManager extends PasswordTransformationMethod {
-    private static char DOT = '\u2022';
+class YonaPasswordTransformationManager extends PasswordTransformationMethod {
 
     @Override
     public CharSequence getTransformation(CharSequence source, View view) {
@@ -23,13 +22,14 @@ public class YonaPasswordTransformationManager extends PasswordTransformationMet
     }
 
     private class PasswordCharSequence implements CharSequence {
-        private CharSequence mSource;
+        private final CharSequence mSource;
 
         public PasswordCharSequence(CharSequence source) {
             mSource = source; // Store char sequence
         }
 
         public char charAt(int index) {
+            char DOT = '\u2022';
             return DOT; // This is the important part
         }
 

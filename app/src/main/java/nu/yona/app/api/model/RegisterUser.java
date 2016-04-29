@@ -52,7 +52,7 @@ public class RegisterUser implements Parcelable {
 
     }
 
-    public RegisterUser(Parcel in) {
+    private RegisterUser(Parcel in) {
         String[] data = new String[4];
         in.readStringArray(data);
         this.firstName = data[0];

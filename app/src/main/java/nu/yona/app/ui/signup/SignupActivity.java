@@ -43,7 +43,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     private AuthenticateManager authenticateManager;
     private int SIGNUP_STEP = 0;
     private RegisterUser registerUser;
-    private YonaFontButton nextButton, prevButton;
+    private YonaFontButton prevButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
         authenticateManager = new AuthenticateManagerImpl(this);
 
-        nextButton = (YonaFontButton) findViewById(R.id.next);
+        YonaFontButton nextButton = (YonaFontButton) findViewById(R.id.next);
         prevButton = (YonaFontButton) findViewById(R.id.previous);
 
         loadSteopOne();

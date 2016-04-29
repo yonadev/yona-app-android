@@ -46,7 +46,7 @@ public class Links extends BaseEntity {
     private Href yonaAppActivity;
     @SerializedName("curies")
     @Expose
-    private List<Cury> curies = new ArrayList<Cury>();
+    private List<Cury> curies = new ArrayList<>();
     @SerializedName("yona:confirmMobileNumber")
     @Expose
     private Href yonaConfirmMobileNumber;

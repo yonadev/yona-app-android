@@ -48,20 +48,18 @@ import nu.yona.app.utils.AppConstant;
 public class ChallengesGoalDetailFragment extends BaseFragment implements View.OnClickListener {
 
     private ImageView mHGoalTypeImg;
-    private YonaFontTextView mHTxtGoalTitle, mHTxtGoalSubscribe, mFTxtGoalTitle, mFTxtGoalSubscribe, mBudgetGoalTime;
+    private YonaFontTextView mBudgetGoalTime;
     private View budgetGoalView, timezoneGoalView;
     private YonaActivity activity;
     private Object mYonaGoal;
     private ChallengesManager challengesManager;
-    private YonaFontButton btnChallenges;
     private String currentTab;
     private List<String> listOfTimes;
     private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
-    private RecyclerView timeZoneGoalView;
     /**
      * Use this listener only for budget time picker
      */
-    private CustomTimePickerDialog.OnTimeSetListener budgetTimeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
+    private final CustomTimePickerDialog.OnTimeSetListener budgetTimeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
 
         @Override
         public void setTime(String time) {
@@ -71,7 +69,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     /**
      * Use this listener only for Time zone picker
      */
-    private CustomTimePickerDialog.OnTimeSetListener timeZoneSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
+    private final CustomTimePickerDialog.OnTimeSetListener timeZoneSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
         @Override
         public void setTime(String time) {
             if (time.contains("-")) {
@@ -85,7 +83,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             }
         }
     };
-    private OnItemClickListener timeZoneGoalClickListener = new OnItemClickListener() {
+    private final OnItemClickListener timeZoneGoalClickListener = new OnItemClickListener() {
 
         @Override
         public void onDelete(View v) {
@@ -125,10 +123,10 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         View view = inflater.inflate(R.layout.goal_detail_layout, null);
         challengesManager = new ChallengesManagerImpl(getActivity());
         mHGoalTypeImg = (ImageView) view.findViewById(R.id.img_bucket);
-        mHTxtGoalTitle = (YonaFontTextView) view.findViewById(R.id.goal_challenge_type_title);
-        mHTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.goal_challenge_type_subscribeTxt);
-        mFTxtGoalTitle = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_title);
-        mFTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_subscribeTxt);
+        YonaFontTextView mHTxtGoalTitle = (YonaFontTextView) view.findViewById(R.id.goal_challenge_type_title);
+        YonaFontTextView mHTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.goal_challenge_type_subscribeTxt);
+        YonaFontTextView mFTxtGoalTitle = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_title);
+        YonaFontTextView mFTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_subscribeTxt);
         timezoneGoalView = view.findViewById(R.id.timezoneView);
         budgetGoalView = view.findViewById(R.id.goal_item_layout);
         activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
@@ -137,10 +135,10 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 doDeleteGoal();
             }
         });
-        btnChallenges = (YonaFontButton) view.findViewById(R.id.btnChallenges);
+        YonaFontButton btnChallenges = (YonaFontButton) view.findViewById(R.id.btnChallenges);
         btnChallenges.setOnClickListener(this);
 
-        timeZoneGoalView = (RecyclerView) view.findViewById(R.id.listView);
+        RecyclerView timeZoneGoalView = (RecyclerView) view.findViewById(R.id.listView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setAutoMeasureEnabled(true);
         timeZoneGoalView.setLayoutManager(layoutManager);

@@ -64,15 +64,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     private static final int TOTAL_TABS = 4;
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1;
-    boolean isBackPressed = false;
+    private boolean isBackPressed = false;
     private Toolbar mToolBar;
-    private ActionBar mActionBar;
     private TabLayout mTabLayout;
     private Fragment mContent;
-    private DashboardFragment dashboardFragment = new DashboardFragment();
-    private FriendsFragment friendsFragment = new FriendsFragment();
-    private ChallengesFragment challengesFragment = new ChallengesFragment();
-    private SettingsFragment settingsFragment = new SettingsFragment();
+    private final DashboardFragment dashboardFragment = new DashboardFragment();
+    private final FriendsFragment friendsFragment = new FriendsFragment();
+    private final ChallengesFragment challengesFragment = new ChallengesFragment();
+    private final SettingsFragment settingsFragment = new SettingsFragment();
     private YonaFontTextView toolbarTitle;
     private ImageView rightIcon;
     private boolean isToDisplayLogin = false;
@@ -80,7 +79,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
      */
-    public static void registerReceiver() {
+    private static void registerReceiver() {
         YonaApplication.getAppContext().registerReceiver(new YonaReceiver(), new IntentFilter());
     }
 
@@ -99,7 +98,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
-        mActionBar = getSupportActionBar();
+        ActionBar mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowTitleEnabled(false);
 
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);

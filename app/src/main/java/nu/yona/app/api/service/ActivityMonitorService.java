@@ -39,11 +39,11 @@ import nu.yona.app.utils.AppConstant;
 public class ActivityMonitorService extends Service {
 
     private ActivityMonitorService self;
-    private Stopwatch stopWatch = new Stopwatch();
+    private final Stopwatch stopWatch = new Stopwatch();
     private String previousAppName;
     private PowerManager powerManager;
 
-    public static String printForegroundTask(Context context) {
+    private static String printForegroundTask(Context context) {
         String currentApp = "NULL";
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
@@ -54,7 +54,7 @@ public class ActivityMonitorService extends Service {
                 for (UsageStats usageStats : appList) {
                     mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
                 }
-                if (mySortedMap != null && !mySortedMap.isEmpty()) {
+                if (!mySortedMap.isEmpty()) {
                     currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
                 }
             }

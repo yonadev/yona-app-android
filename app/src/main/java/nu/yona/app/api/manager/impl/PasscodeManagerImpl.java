@@ -19,7 +19,6 @@ import nu.yona.app.utils.PreferenceConstant;
 public class PasscodeManagerImpl implements PasscodeManager {
 
     private int counter = 0;
-    private int PASSCODE_LENGTH = 4;
 
     /**
      * Validating the passcode which user has entered
@@ -46,10 +45,8 @@ public class PasscodeManagerImpl implements PasscodeManager {
      */
     @Override
     public boolean checkPasscodeLength(String passcode) {
-        if (passcode.length() == PASSCODE_LENGTH) {
-            return true;
-        }
-        return false;
+        int PASSCODE_LENGTH = 4;
+        return passcode.length() == PASSCODE_LENGTH;
     }
 
 
@@ -75,10 +72,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @return
      */
     public boolean isWrongCounterReached() {
-        if (getWrongPasscodeCounter() >= AppConstant.MAX_COUNTER) {
-            return true;
-        }
-        return false;
+        return getWrongPasscodeCounter() >= AppConstant.MAX_COUNTER;
     }
 
     /**
@@ -87,7 +81,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @return int
      */
     private int getWrongPasscodeCounter() {
-        return YonaApplication.getAppContext().getUserPreferences().getInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, 0);
+        return YonaApplication.getUserPreferences().getInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, 0);
     }
 
 
@@ -97,7 +91,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @param counter
      */
     private void updateWrongPasscodeCounter(int counter) {
-        YonaApplication.getAppContext().getUserPreferences().edit().putInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, counter).commit();
+        YonaApplication.getUserPreferences().edit().putInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, counter).commit();
     }
 
 
@@ -107,7 +101,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @return int
      */
     private String getStoredPassCode() {
-        return YonaApplication.getAppContext().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "");
+        return YonaApplication.getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "");
     }
 
     /**
@@ -116,7 +110,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @param code
      */
     private void storedPassCode(String code) {
-        YonaApplication.getAppContext().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, code).commit();
+        YonaApplication.getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, code).commit();
         YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_PASSCODE, true).commit();
     }
 

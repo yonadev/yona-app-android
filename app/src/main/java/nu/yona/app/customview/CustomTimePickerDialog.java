@@ -11,6 +11,7 @@ package nu.yona.app.customview;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,7 +32,7 @@ import nu.yona.app.R;
 import nu.yona.app.utils.AppUtils;
 
 public class CustomTimePickerDialog extends DialogFragment implements OnClickListener {
-    public int timeInterval = 1;
+    private int timeInterval = 1;
     private Dialog d;
     private TimePicker timePicker;
     private OnTimeSetListener timeSetListener;
@@ -44,11 +45,6 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     private YonaFontButton txtSelect;
     private YonaFontButton txtDone;
     private String firstTime;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     public void setOnTimeSetListener(OnTimeSetListener listener) {
         this.timeSetListener = listener;
@@ -80,6 +76,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         this.firstTime = first_Time;
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -163,7 +160,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         }
     }
 
-    public int getHours() {
+    private int getHours() {
         Calendar cal = getCurrentCalendar();
         if (txtDone.getVisibility() == View.VISIBLE) {
             if (maxSelectedTime > 0) {
@@ -180,7 +177,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         return cal.get(Calendar.HOUR_OF_DAY);
     }
 
-    public String getMinutes() {
+    private String getMinutes() {
         Calendar cal = getCurrentCalendar();
         if (txtDone.getVisibility() == View.VISIBLE) {
             if (maxSelectedTime > 0) {
@@ -195,13 +192,13 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         return getRoundedMinute(cal.get(Calendar.MINUTE));
     }
 
-    public String getRoundedMinute(int minute) {
+    private String getRoundedMinute(int minute) {
         if (minutePicker != null) {
             String[] values = minutePicker.getDisplayedValues();
-            for (int i = 0; i < values.length; i++) {
-                int floorValue = Integer.parseInt(values[i]);
+            for (String value : values) {
+                int floorValue = Integer.parseInt(value);
                 if (minute <= floorValue) {
-                    return values[i];
+                    return value;
                 } else if (minute < (floorValue + timeInterval)) {
                     if ((floorValue + timeInterval) == 60) {
                         return String.valueOf(0);
@@ -236,7 +233,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
 
             minutePicker.setMinValue(0);
             minutePicker.setMaxValue(59 / timeInterval);
-            List<String> displayedValues = new ArrayList<String>();
+            List<String> displayedValues = new ArrayList<>();
             for (int i = 0; i < 60; i += timeInterval) {
                 displayedValues.add(String.format("%02d", i));
             }
@@ -273,7 +270,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         return null;
     }
 
-    public Calendar getCurrentCalendar() {
+    private Calendar getCurrentCalendar() {
         if (cal == null) {
             cal = Calendar.getInstance();
             cal.setTimeZone(TimeZone.getDefault());

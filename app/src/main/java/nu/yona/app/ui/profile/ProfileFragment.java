@@ -27,17 +27,14 @@ import nu.yona.app.utils.AppUtils;
  * Created by kinnarvasa on 21/03/16.
  */
 public class ProfileFragment extends BaseFragment {
-    private View view;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
     private ImageView profileImageView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.profile_fragment, null);
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        View view = inflater.inflate(R.layout.profile_fragment, null);
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         profileImageView = (ImageView) view.findViewById(R.id.profile);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);

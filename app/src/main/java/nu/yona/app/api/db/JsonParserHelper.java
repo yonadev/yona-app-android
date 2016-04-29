@@ -14,7 +14,7 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
-public class JsonParserHelper {
+class JsonParserHelper {
 
     private static ObjectMapper objectMapper;
 

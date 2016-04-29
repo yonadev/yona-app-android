@@ -19,7 +19,7 @@ public enum GoalsEnum {
     TIME_ZONE_GOAL("TimeZoneGoal"),
     NOGO("NOGO"); // we will never received from server as Type, we need to identify by maxDurationMinutes
 
-    private static Map<String, GoalsEnum> nameToEnumMapping = new HashMap<String, GoalsEnum>();
+    private static final Map<String, GoalsEnum> nameToEnumMapping = new HashMap<>();
 
     static {
         for (GoalsEnum goalsEnum : GoalsEnum.values()) {
@@ -27,7 +27,7 @@ public enum GoalsEnum {
         }
     }
 
-    private String actionString;
+    private final String actionString;
 
     GoalsEnum(String actionString) {
         this.actionString = actionString;

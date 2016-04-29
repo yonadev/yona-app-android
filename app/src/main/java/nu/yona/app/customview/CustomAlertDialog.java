@@ -20,7 +20,7 @@ import nu.yona.app.R;
 
 public class CustomAlertDialog extends AlertDialog.Builder {
 
-    public CustomAlertDialog(Context context) {
+    private CustomAlertDialog(Context context) {
         super(context);
     }
 
@@ -90,7 +90,7 @@ public class CustomAlertDialog extends AlertDialog.Builder {
                                                                      OnClickListener positiveListener,
                                                                      OnClickListener negativeListener) {
 
-        CustomAlertDialog customAlertDialog = buildDialog(context, title, message, positiveButton, positiveListener, false);
+        CustomAlertDialog customAlertDialog = buildDialog(context, title, message, positiveButton, positiveListener);
         customAlertDialog.setNegativeButton(negativeButton, negativeListener);
 
         return initDialog(customAlertDialog);
@@ -100,7 +100,7 @@ public class CustomAlertDialog extends AlertDialog.Builder {
                                                  CharSequence title,
                                                  CharSequence message,
                                                  CharSequence positiveButton,
-                                                 OnClickListener positiveListener, boolean is2netReading) {
+                                                 OnClickListener positiveListener) {
 
         CustomAlertDialog customAlertDialog = new CustomAlertDialog(context);
         customAlertDialog.setCancelable(false);
@@ -115,9 +115,8 @@ public class CustomAlertDialog extends AlertDialog.Builder {
 
     private static AlertDialog initDialog(CustomAlertDialog customAlertDialog) {
         //shows then centers the dialog text
-        AlertDialog dialog = customAlertDialog.show();
 
-        return dialog;
+        return customAlertDialog.show();
     }
 
     /**

@@ -23,7 +23,7 @@ public class JsonSerializer implements DbSerializer {
 
     private static final String TAG = JsonSerializer.class.getCanonicalName();
 
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     public JsonSerializer() {
         mapper = JsonParserHelper.getObjectMapper();

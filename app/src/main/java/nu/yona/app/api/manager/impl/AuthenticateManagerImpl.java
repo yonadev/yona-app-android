@@ -33,9 +33,9 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class AuthenticateManagerImpl implements AuthenticateManager {
 
-    private AuthenticateDAO authenticateDao;
-    private AuthenticateNetworkImpl authNetwork;
-    private Context mContext;
+    private final AuthenticateDAO authenticateDao;
+    private final AuthenticateNetworkImpl authNetwork;
+    private final Context mContext;
 
     public AuthenticateManagerImpl(Context context) {
         authenticateDao = new AuthenticateDAO(context);
@@ -50,10 +50,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      */
     public boolean validateText(String string) {
         // do validation for first name and last name
-        if (TextUtils.isEmpty(string)) {
-            return false;
-        }
-        return true;
+        return !TextUtils.isEmpty(string);
     }
 
     /**
@@ -62,10 +59,8 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      */
     public boolean validateMobileNumber(String mobileNumber) {
         // do validation for mobile number
-        if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != AppConstant.MOBILE_NUMBER_LENGTH) { // 9 digits of mobile number and '+31'
-            return false;
-        }
-        return android.util.Patterns.PHONE.matcher(mobileNumber).matches();
+        // 9 digits of mobile number and '+31'
+        return !(TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != AppConstant.MOBILE_NUMBER_LENGTH) && android.util.Patterns.PHONE.matcher(mobileNumber).matches();
     }
 
     /**
@@ -380,7 +375,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      * @param code
      */
     private void storedPassCode(String code) {
-        SharedPreferences.Editor yonaPref = YonaApplication.getAppContext().getUserPreferences().edit();
+        SharedPreferences.Editor yonaPref = YonaApplication.getUserPreferences().edit();
         yonaPref.putString(PreferenceConstant.YONA_PASSCODE, code); // remove user's passcode from device.
         yonaPref.putBoolean(PreferenceConstant.STEP_PASSCODE, true);
         yonaPref.commit();

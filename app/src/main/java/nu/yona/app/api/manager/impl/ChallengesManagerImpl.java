@@ -36,22 +36,22 @@ import nu.yona.app.listener.DataLoadListener;
  */
 public class ChallengesManagerImpl implements ChallengesManager {
 
-    private GoalManager goalManager;
-    private ActivityCategoryManager activityCategoryManager;
-    private List<YonaActivityCategories> mYonaActivityCategoriesList;
-    private HashMap<String, String> mGoalCategoriesMap;
-    private List<YonaGoal> budgetCategoriesGoalList;
-    private List<YonaGoal> timeZoneCategoriesGoalList;
-    private List<YonaGoal> noGoCategoriesGoalList;
+    private final GoalManager goalManager;
+    private final ActivityCategoryManager activityCategoryManager;
+    private final List<YonaActivityCategories> mYonaActivityCategoriesList;
+    private final HashMap<String, String> mGoalCategoriesMap;
+    private final List<YonaGoal> budgetCategoriesGoalList;
+    private final List<YonaGoal> timeZoneCategoriesGoalList;
+    private final List<YonaGoal> noGoCategoriesGoalList;
 
     public ChallengesManagerImpl(Context context) {
         activityCategoryManager = new ActivityCategoryManagerImpl(context);
         goalManager = new GoalManagerImpl(context);
-        mYonaActivityCategoriesList = new ArrayList<YonaActivityCategories>();
-        budgetCategoriesGoalList = new ArrayList<YonaGoal>();
-        timeZoneCategoriesGoalList = new ArrayList<YonaGoal>();
-        noGoCategoriesGoalList = new ArrayList<YonaGoal>();
-        mGoalCategoriesMap = new HashMap<String, String>();
+        mYonaActivityCategoriesList = new ArrayList<>();
+        budgetCategoriesGoalList = new ArrayList<>();
+        timeZoneCategoriesGoalList = new ArrayList<>();
+        noGoCategoriesGoalList = new ArrayList<>();
+        mGoalCategoriesMap = new HashMap<>();
         updateCategoriesAndGoals();
     }
 

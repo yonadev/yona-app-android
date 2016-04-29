@@ -20,7 +20,7 @@ import nu.yona.app.R;
 import nu.yona.app.utils.AppUtils;
 
 
-public class YonaFontUtils {
+class YonaFontUtils {
 
     public static final String ANDROID_SCHEMA = "http://schemas.android.com/apk/res/android";
     //font Style TypeFace
@@ -29,13 +29,11 @@ public class YonaFontUtils {
     private static final int ROBOTO_BOLD = 12;
     private static final int ROBOTO_NORMAL = 13;
     private static final int OSWALD_LIGHT = 14;
-    private static HashMap<String, Typeface> fontCache = new HashMap<>();
+    private static final HashMap<String, Typeface> fontCache = new HashMap<>();
 
     public static void applyCustomFont(TextView customFontTextView, Context context, AttributeSet attrs) {
         TypedArray attributeArray = context.obtainStyledAttributes(
                 attrs, R.styleable.YonaFontTextView);
-
-        String fontName = attributeArray.getString(R.styleable.YonaFontTextView_font);
 
         // check if a special textStyle was used (e.g. extra bold)
         int textStyle = attributeArray.getInt(R.styleable.YonaFontTextView_textStyle, 0);
@@ -70,7 +68,7 @@ public class YonaFontUtils {
         }
     }
 
-    public static Typeface getTypeface(String fontname, Context context) {
+    private static Typeface getTypeface(String fontname, Context context) {
         Typeface typeface = fontCache.get(fontname);
 
         if (typeface == null) {

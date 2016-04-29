@@ -24,14 +24,12 @@ import nu.yona.app.customview.YonaFontTextView;
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public class GoalCategoryListAdapter<T> extends BaseAdapter {
-    private final Context mContext;
+class GoalCategoryListAdapter<T> extends BaseAdapter {
     private final LayoutInflater mInflater;
     private List<T> mListYonaGoal;
-    private GaolViewHolder goalViewHolder;
 
     public GoalCategoryListAdapter(Context context, List<T> listYonaGoal) {
-        this.mContext = context;
+        Context mContext = context;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         this.mListYonaGoal = listYonaGoal;
     }
@@ -58,6 +56,7 @@ public class GoalCategoryListAdapter<T> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        GaolViewHolder goalViewHolder;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.category_goal_item_layout, parent, false);
             goalViewHolder = new GaolViewHolder();

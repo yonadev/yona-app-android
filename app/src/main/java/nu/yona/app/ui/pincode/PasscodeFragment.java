@@ -45,7 +45,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private YonaPasswordTransformationManager yonaPasswordTransformationManager;
     private FieldTextWatcher watcher;
 
-    private View.OnKeyListener keyListener = new View.OnKeyListener() {
+    private final View.OnKeyListener keyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_

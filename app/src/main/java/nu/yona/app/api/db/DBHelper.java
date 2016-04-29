@@ -13,7 +13,7 @@ package nu.yona.app.api.db;
 /**
  * Created by kinnarvasa on 28/03/16.
  */
-public class DBHelper {
+class DBHelper {
     private final String CREATE_TABLE_IF_NOT_EXISTS = "CREATE TABLE IF NOT EXISTS ";
     private final String FIELD_INTEGER = " INTEGER,";
     private final String FIELD_INTEGER_PRIMARY_KEY = " INTEGER PRIMARY KEY,";

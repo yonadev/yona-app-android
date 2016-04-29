@@ -8,7 +8,7 @@
 
 package nu.yona.app.api.service;
 
-public class Stopwatch {
+class Stopwatch {
     private long startTime = 0;
     private boolean running = false;
     private long currentTime = 0;
@@ -37,7 +37,7 @@ public class Stopwatch {
     }
 
     //elaspsed time in milliseconds
-    public long getElapsedTimeMili() {
+    private long getElapsedTimeMili() {
         long elapsed = 0;
         if (running) {
             elapsed = ((System.currentTimeMillis() - startTime) / 100) % 1000;
@@ -64,7 +64,7 @@ public class Stopwatch {
     }
 
     //elaspsed time in hours
-    public long getElapsedTimeHour() {
+    private long getElapsedTimeHour() {
         long elapsed = 0;
         if (running) {
             elapsed = ((((System.currentTimeMillis() - startTime) / 1000) / 60) / 60);

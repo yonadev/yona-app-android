@@ -28,8 +28,7 @@ import static org.junit.Assert.assertTrue;
 public class AuthenticateManagerImplTest {
 
     private AuthenticateManager manager;
-    private RegisterUser registerUser;
-    private String password = "12423423234234324234";
+    private final String password = "12423423234234324234";
 
     @Before
     public void setUp() throws Exception {
@@ -38,7 +37,7 @@ public class AuthenticateManagerImplTest {
 
     @Test
     public void checkRegisterUser() {
-        registerUser = new RegisterUser();
+        RegisterUser registerUser = new RegisterUser();
         registerUser.setFirstName("Kinnar");
         registerUser.setLastName("Vasa");
         registerUser.setMobileNumber("+31873449748");
@@ -58,7 +57,7 @@ public class AuthenticateManagerImplTest {
         });
     }
 
-    public void validateMobileNumber(String password, String code) {
+    private void validateMobileNumber(String password, String code) {
         manager.verifyOTP(code, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {

@@ -37,7 +37,7 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
     private TextInputLayout firstNameLayout, lastNameLayout;
 
-    private TextWatcher watcher = new TextWatcher() {
+    private final TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -56,7 +56,6 @@ public class StepOne extends BaseFragment implements EventChangeListener {
     };
 
     private YonaFontEditTextView firstName, lastName;
-    private YonaFontTextView privacyPolicy;
     private SignupActivity activity;
 
     @Nullable
@@ -77,7 +76,7 @@ public class StepOne extends BaseFragment implements EventChangeListener {
         lastName.addTextChangedListener(watcher);
         lastName.setFilters(new InputFilter[]{AppUtils.getFilter()});
 
-        privacyPolicy = (YonaFontTextView) view.findViewById(R.id.privacyPolicy);
+        YonaFontTextView privacyPolicy = (YonaFontTextView) view.findViewById(R.id.privacyPolicy);
         privacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
 
         YonaApplication.getEventChangeManager().registerListener(this);

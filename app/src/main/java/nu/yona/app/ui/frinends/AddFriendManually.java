@@ -39,13 +39,12 @@ import nu.yona.app.utils.AppUtils;
  * Created by kinnarvasa on 27/04/16.
  */
 public class AddFriendManually extends BaseFragment {
-    private View view;
     private YonaFontEditTextView firstName, lastName, email, mobileNumber;
     private TextInputLayout firstNameLayout, lastNameLayout, emailLayout, mobileNumberLayout;
     private YonaFontButton addFriendButton;
     private BuddyManager buddyManager;
 
-    private TextWatcher textWatcher = new TextWatcher() {
+    private final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -65,7 +64,7 @@ public class AddFriendManually extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.add_friend_manually_fragment, null);
+        View view = inflater.inflate(R.layout.add_friend_manually_fragment, null);
 
         buddyManager = new BuddyManagerImpl(getActivity());
 

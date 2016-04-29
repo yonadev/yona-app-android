@@ -27,7 +27,7 @@ public class ViewPagerIndicator extends View {
     private float currentScroll;
     private float radius;
     private int count;
-    private Context mContext;
+    private final Context mContext;
 
     public ViewPagerIndicator(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -47,8 +47,8 @@ public class ViewPagerIndicator extends View {
         init();
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setCount() {
+        this.count = nu.yona.app.ui.tour.TourView.TOTAL_PAGE;
         invalidate();
     }
 

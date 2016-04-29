@@ -50,7 +50,7 @@ public class User extends BaseEntity {
 
     @SerializedName("devices")
     @Expose
-    private List<String> devices = new ArrayList<String>();
+    private List<String> devices = new ArrayList<>();
 
     @SerializedName("mobileNumberConfirmationCode")
     @Expose

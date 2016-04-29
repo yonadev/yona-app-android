@@ -23,9 +23,9 @@ import nu.yona.app.utils.AppConstant;
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> {
+class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> {
     private List<String> mListYonaGoal;
-    private OnItemClickListener clickListener;
+    private final OnItemClickListener clickListener;
 
     public TimeZoneGoalsAdapter(List<String> listYonaGoal, OnItemClickListener itemClickListener) {
         this.mListYonaGoal = listYonaGoal;
@@ -68,7 +68,7 @@ public class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewH
         return super.getItemId(position);
     }
 
-    public Object getItem(int position) {
+    private Object getItem(int position) {
         return this.mListYonaGoal.get(position);
     }
 

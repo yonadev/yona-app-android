@@ -13,7 +13,7 @@ import nu.yona.app.customview.YonaFontTextView;
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public class GaolViewHolder {
+class GaolViewHolder {
 
     YonaFontTextView title_goal;
     YonaFontTextView desc_goal;
