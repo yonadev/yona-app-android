@@ -28,4 +28,8 @@ public interface GoalManager {
     void postTimeZoneGoals(PostTimeZoneYonaGoal goal, DataLoadListener listener);
 
     void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener);
+
+    void updateBudgetGoals(PostBudgetYonaGoal goal, DataLoadListener listener);
+
+    void updateTimeZoneGoals(PostTimeZoneYonaGoal goal, DataLoadListener listener);
 }

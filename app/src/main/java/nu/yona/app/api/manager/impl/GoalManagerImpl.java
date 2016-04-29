@@ -156,6 +156,52 @@ public class GoalManagerImpl implements GoalManager {
         }
     }
 
+    @Override
+    public void updateBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener) {
+        try {
+            if (!TextUtils.isEmpty(goal.getLinks().getSelf().getHref())) {
+                goalNetwork.updateUserBudgetGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        getUserGoal(listener);
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+                        handleError(errorMessage, listener);
+                    }
+                });
+            } else {
+                listener.onError(mContext.getString(R.string.urlnotfound));
+            }
+        } catch (Exception e) {
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    @Override
+    public void updateTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener) {
+        try {
+            if (!TextUtils.isEmpty(goal.getLinks().getSelf().getHref())) {
+                goalNetwork.updateUserTimeZoneGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        getUserGoal(listener);
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+                        handleError(errorMessage, listener);
+                    }
+                });
+            } else {
+                listener.onError(mContext.getString(R.string.urlnotfound));
+            }
+        } catch (Exception e) {
+            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
     /**
      * Get Goals from Database
      *

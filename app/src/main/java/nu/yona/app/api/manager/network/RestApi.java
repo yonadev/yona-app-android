@@ -123,11 +123,16 @@ public interface RestApi {
     Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body PostBudgetYonaGoal postBudgetYonaGoal);
 
     @POST
-    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body PostTimeZoneYonaGoal postBudgetYonaGoal);
+    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body PostTimeZoneYonaGoal postTimeZoneYonaGoal);
 
     @DELETE
     Call<Void> deleteUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
+    @PUT
+    Call<Goals> updateUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("message") String message, @Body PostBudgetYonaGoal postBudgetYonaGoal);
+
+    @PUT
+    Call<Goals> updateUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("message") String message, @Body PostTimeZoneYonaGoal postTimeZoneYonaGoal);
 
     /******** GOALS ************/
 
