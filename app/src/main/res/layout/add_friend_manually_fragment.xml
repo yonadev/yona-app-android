@@ -25,7 +25,7 @@
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
             android:paddingTop="@dimen/twenty"
-            android:paddingBottom="@dimen/twenty">
+            android:paddingBottom="@dimen/ten">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/first_name"
@@ -51,7 +51,7 @@
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
             android:paddingTop="@dimen/twenty"
-            android:paddingBottom="@dimen/twenty">
+            android:paddingBottom="@dimen/ten">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/last_name"
@@ -77,7 +77,7 @@
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
             android:paddingTop="@dimen/twenty"
-            android:paddingBottom="@dimen/twenty">
+            android:paddingBottom="@dimen/ten">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/email"
@@ -85,8 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:capitalize="words"
                 android:drawableRight="@drawable/icn_mail"
+                android:inputType="textEmailAddress"
                 android:ellipsize="end"
                 android:hint="@string/email"
                 android:imeOptions="actionNext"
@@ -103,7 +103,7 @@
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
             android:paddingTop="@dimen/twenty"
-            android:paddingBottom="@dimen/twenty">
+            android:paddingBottom="@dimen/ten">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/mobile_number"
@@ -116,40 +116,15 @@
                 android:drawableRight="@drawable/icn_mobile"
                 android:ellipsize="end"
                 android:hint="@string/mobilenumber"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:inputType="phone"
                 android:maxLength="@integer/number_limit"
                 android:singleLine="true"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/nick_name_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/add_friend_text_item_height"
-            android:background="@drawable/goal_item_gradient"
-            android:paddingLeft="@dimen/signup_profile_left_right_padding"
-            android:paddingRight="@dimen/signup_profile_left_right_padding"
-            android:paddingTop="@dimen/twenty"
-            android:paddingBottom="@dimen/twenty">
-
-            <nu.yona.app.customview.YonaFontEditTextView
-                android:id="@+id/nick_name"
-                style="@style/InputLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:capitalize="words"
-                android:drawableRight="@drawable/icn_nickname"
-                android:ellipsize="end"
-                android:hint="@string/nickname"
-                android:imeOptions="actionDone"
-                android:maxLength="@integer/char_limit"
-                android:singleLine="true"
-                android:textColorHint="@color/black" />
-        </android.support.design.widget.TextInputLayout>
-
         <nu.yona.app.customview.YonaFontButton
+            android:id="@+id/addFriendButton"
             style="@style/BtnTxtBlue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

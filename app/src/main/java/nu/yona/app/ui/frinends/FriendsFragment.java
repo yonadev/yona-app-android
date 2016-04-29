@@ -25,6 +25,7 @@ import nu.yona.app.ui.YonaActivity;
  * Created by kinnarvasa on 21/03/16.
  */
 public class FriendsFragment extends BaseFragment {
+    private final int TIMELINE = 0, OVERVIEW = 1;
     private View view;
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -54,10 +55,10 @@ public class FriendsFragment extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 0:
+                    case TIMELINE:
                         ((YonaActivity) getActivity()).getRightIcon().setVisibility(View.GONE);
                         break;
-                    case 1:
+                    case OVERVIEW:
                         ((YonaActivity) getActivity()).getRightIcon().setVisibility(View.VISIBLE);
                         break;
                     default:

@@ -325,7 +325,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     }
 
     private void goBackToScreen() {
-        ((YonaActivity) getActivity()).onBackPressed();
+        getActivity().onBackPressed();
     }
 
     private void showTimePicker(boolean allowDualSelection, int interval, long maxTime, long minTime, CustomTimePickerDialog.OnTimeSetListener listener) {

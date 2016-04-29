@@ -19,7 +19,7 @@ import com.google.gson.annotations.SerializedName;
 public class AddBuddy {
     @SerializedName("sendingStatus")
     @Expose
-    private final ThreadLocal<String> sendingStatus = new ThreadLocal<>();
+    private String sendingStatus;
     @SerializedName("receivingStatus")
     @Expose
     private String receivingStatus;
@@ -34,14 +34,14 @@ public class AddBuddy {
      * @return The sendingStatus
      */
     public String getSendingStatus() {
-        return sendingStatus.get();
+        return sendingStatus;
     }
 
     /**
      * @param sendingStatus The sendingStatus
      */
     public void setSendingStatus(String sendingStatus) {
-        this.sendingStatus.set(sendingStatus);
+        this.sendingStatus = sendingStatus;
     }
 
     /**
