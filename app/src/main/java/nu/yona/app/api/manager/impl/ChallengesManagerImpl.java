@@ -75,6 +75,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         }
     }
 
+
     private synchronized void filterCategoriesGoal() {
         budgetCategoriesGoalList.clear();
         timeZoneCategoriesGoalList.clear();
@@ -100,6 +101,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
                 }
             }
         }
+
     }
 
     @Override
@@ -230,6 +232,22 @@ public class ChallengesManagerImpl implements ChallengesManager {
         return postBudgetYonaGoal;
     }
 
+    private PostBudgetYonaGoal getUpdateYonaGoalForBudget(long time, YonaGoal goal) {
+        PostBudgetYonaGoal postBudgetYonaGoal = new PostBudgetYonaGoal();
+        postBudgetYonaGoal.setType(GoalsEnum.BUDGET_GOAL.getActionString());
+        Links links = new Links();
+        Href yonaActivityCategory = new Href();
+        yonaActivityCategory.setHref(goal.getLinks().getYonaActivityCategory().getHref());
+        Href yonaSelfLink = new Href();
+        yonaSelfLink.setHref(goal.getLinks().getSelf().getHref());
+        links.setYonaActivityCategory(yonaActivityCategory);
+        links.setSelf(yonaSelfLink);
+        postBudgetYonaGoal.setMaxDurationMinutes(time);
+        postBudgetYonaGoal.setLinks(links);
+
+        return postBudgetYonaGoal;
+    }
+
     /**
      * @param timeGoal Array of Time Goals
      * @param goal     selected yona Goal
@@ -242,6 +260,16 @@ public class ChallengesManagerImpl implements ChallengesManager {
     @Override
     public void postTimeGoals(List<String> timeGoal, YonaActivityCategories categories, DataLoadListener listener) {
         goalManager.postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, categories), listener);
+    }
+
+    @Override
+    public void updateTimeGoals(List<String> timeGoal, YonaGoal goal, DataLoadListener listener) {
+        goalManager.updateTimeZoneGoals(getUpdateYonaGoalForTimeZone(timeGoal, goal), listener);
+    }
+
+    @Override
+    public void updateBudgetGoals(long time, YonaGoal goal, DataLoadListener listener) {
+        goalManager.updateBudgetGoals(getUpdateYonaGoalForBudget(time, goal), listener);
     }
 
     private PostTimeZoneYonaGoal getPostYonaGoalForTimeZone(List<String> timeGoal, YonaGoal goal) {
@@ -264,6 +292,22 @@ public class ChallengesManagerImpl implements ChallengesManager {
         links.setYonaActivityCategory(category.get_links().getSelf());
         postBudgetYonaGoal.setLinks(links);
         postBudgetYonaGoal.setZones(timeGoal);
+        return postBudgetYonaGoal;
+    }
+
+    private PostTimeZoneYonaGoal getUpdateYonaGoalForTimeZone(List<String> timeGoal, YonaGoal goal) {
+        PostTimeZoneYonaGoal postBudgetYonaGoal = new PostTimeZoneYonaGoal();
+        postBudgetYonaGoal.setType(GoalsEnum.TIME_ZONE_GOAL.getActionString());
+        Links links = new Links();
+        Href yonaActivityCategory = new Href();
+        yonaActivityCategory.setHref(goal.getLinks().getYonaActivityCategory().getHref());
+        Href yonaSelf = new Href();
+        yonaSelf.setHref(goal.getLinks().getSelf().getHref());
+        links.setYonaActivityCategory(yonaActivityCategory);
+        links.setSelf(yonaSelf);
+        postBudgetYonaGoal.setZones(timeGoal);
+        postBudgetYonaGoal.setLinks(links);
+
         return postBudgetYonaGoal;
     }
 

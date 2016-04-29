@@ -61,6 +61,22 @@ public class GoalNetworkImpl extends BaseImpl {
         }
     }
 
+    public void updateUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener) {
+        try {
+            getRestApi().updateUserGoal(url, yonaPassword,"", goal).enqueue(getGoals(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
+    }
+
+    public void updateUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener) {
+        try {
+            getRestApi().updateUserGoal(url, yonaPassword,"", goal).enqueue(getGoals(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
+    }
+
     private Callback<Goals> getGoals(final DataLoadListener listener) {
         return new Callback<Goals>() {
             @Override
