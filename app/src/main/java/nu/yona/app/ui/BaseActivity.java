@@ -30,10 +30,6 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showLoadingView(boolean loading, String message) {
 
-        if (this == null) {
-            return;
-        }
-
         String dialogText = getResources().getString(R.string.loading);
         if (!TextUtils.isEmpty(message)) {
             dialogText = message;

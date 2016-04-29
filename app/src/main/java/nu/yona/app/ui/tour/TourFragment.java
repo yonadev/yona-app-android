@@ -17,12 +17,10 @@ import nu.yona.app.ui.BaseFragment;
 
 public class TourFragment extends BaseFragment {
 
-    private TourView tourView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         int page = savedInstanceState == null ? 0 : savedInstanceState.getInt("Page");
-        tourView = new TourView(this.getActivity(), page);
+        TourView tourView = new TourView(this.getActivity(), page);
 
         return tourView;
     }

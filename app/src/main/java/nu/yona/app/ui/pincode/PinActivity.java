@@ -61,7 +61,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         fragmentTransaction.commit();
     }
 
-    public void updateTitle(String title) {
+    private void updateTitle(String title) {
         txtTitle.setText(title);
     }
 
@@ -109,7 +109,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
     }
 
-    public void showChallengesScreen() {
+    private void showChallengesScreen() {
         startActivity(new Intent(PinActivity.this, YonaActivity.class));
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();

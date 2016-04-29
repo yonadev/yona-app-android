@@ -26,8 +26,6 @@ import nu.yona.app.utils.AppUtils;
  */
 public class AuthenticateDAO extends BaseDAO {
 
-    private String USER_ID = "1"; // single user app and default id in db for that is 1.
-
 
     public AuthenticateDAO(Context context) {
         super(DatabaseHelper.getInstance(context), context);
@@ -37,6 +35,7 @@ public class AuthenticateDAO extends BaseDAO {
         // do process for storing data in database.
         try {
             ContentValues values = new ContentValues();
+            String USER_ID = "1";
             values.put(DBConstant.ID, USER_ID);
             values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(result));
             // we will store only one user in database, so check if already user exist in db, just update.
@@ -52,7 +51,7 @@ public class AuthenticateDAO extends BaseDAO {
     }
 
     public User getUser() {
-        Cursor c = query(DBConstant.TBL_USER_DATA, null, null, null, null, null);
+        Cursor c = query(DBConstant.TBL_USER_DATA);
         try {
             if (c != null && c.getCount() > 0) {
 

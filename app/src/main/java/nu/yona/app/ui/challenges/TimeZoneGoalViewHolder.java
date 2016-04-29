@@ -20,11 +20,11 @@ import nu.yona.app.customview.YonaFontTextView;
  */
 public class TimeZoneGoalViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public YonaFontTextView indexGoalTxt;
-    public YonaFontTextView startTimeTxt;
-    public YonaFontTextView endTimeTxt;
-    public ImageView imgDelete;
-    private OnItemClickListener mClickListener;
+    public final YonaFontTextView indexGoalTxt;
+    public final YonaFontTextView startTimeTxt;
+    public final YonaFontTextView endTimeTxt;
+    public final ImageView imgDelete;
+    private final OnItemClickListener mClickListener;
 
     public TimeZoneGoalViewHolder(View itemView, OnItemClickListener listener) {
         super(itemView);

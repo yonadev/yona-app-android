@@ -27,7 +27,7 @@ import nu.yona.app.utils.AppUtils;
 
 public class TourView extends LinearLayout {
 
-    private final static int TOTAL_PAGE = 4;
+    public final static int TOTAL_PAGE = 4;
     private final ViewPager viewPager;
 
     private final PagerAdapter pagerAdapter = new PagerAdapter() {
@@ -84,7 +84,7 @@ public class TourView extends LinearLayout {
 
         final ViewPagerIndicator indicator = new ViewPagerIndicator(context);
         indicator.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, (int) AppUtils.getDp(context, 60)));
-        indicator.setCount(TOTAL_PAGE);
+        indicator.setCount();
         indicator.onScrolled(startPage, 0);
 
         viewPager = new ViewPager(context);
@@ -107,11 +107,7 @@ public class TourView extends LinearLayout {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (state == 1) {
-                    moveToNextActivity = true;
-                } else {
-                    moveToNextActivity = false;
-                }
+                moveToNextActivity = state == 1;
             }
         });
         addView(indicator);

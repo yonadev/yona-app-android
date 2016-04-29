@@ -48,7 +48,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     private YonaFontEditTextView mobileNumber, passcode;
     private TextInputLayout mobileNumberLayout, passcodeLayout;
     private DeviceManager deviceManager;
-    private InputFilter filter = new InputFilter() {
+    private final InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             String blockCharacterSet = "~#^&|$%*!@/()-'\":;,?{}=!$^';,?×÷<>{}€£¥₩%~`¤♡♥_|《》¡¿°•○●□■◇◆♧♣▲▼▶◀↑↓←→☆★▪:-);-):-D:-(:'(:";
@@ -97,11 +97,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 cursorComplement = s.length() - mobileNumber.getSelectionStart();
-                if (count > after) {
-                    backspacingFlag = true;
-                } else {
-                    backspacingFlag = false;
-                }
+                backspacingFlag = count > after;
             }
 
             @Override

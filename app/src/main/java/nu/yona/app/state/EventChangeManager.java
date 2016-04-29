@@ -35,7 +35,7 @@ public class EventChangeManager {
 
     public static final int EVENT_UPDATE_GOALS = 11;
 
-    private final Set<EventChangeListener> listeners = new HashSet<EventChangeListener>();
+    private final Set<EventChangeListener> listeners = new HashSet<>();
 
     /**
      * @param listener do register listener to listen event changes, (Generally in onCreate())

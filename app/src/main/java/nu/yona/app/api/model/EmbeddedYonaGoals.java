@@ -22,7 +22,7 @@ public class EmbeddedYonaGoals extends BaseEntity {
 
     @SerializedName("yona:goals")
     @Expose
-    private List<YonaGoal> yonaGoals = new ArrayList<YonaGoal>();
+    private List<YonaGoal> yonaGoals = new ArrayList<>();
 
     /**
      * @return The yonaGoals

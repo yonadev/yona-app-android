@@ -34,8 +34,8 @@ import nu.yona.app.utils.AppUtils;
  */
 public class BuddyManagerImpl implements BuddyManager {
 
-    private BuddyNetworkImpl buddyNetwork;
-    private Context mContext;
+    private final BuddyNetworkImpl buddyNetwork;
+    private final Context mContext;
 
     public BuddyManagerImpl(Context context) {
         buddyNetwork = new BuddyNetworkImpl();
@@ -55,10 +55,7 @@ public class BuddyManagerImpl implements BuddyManager {
 
     @Override
     public boolean validateEmail(String email) {
-        if (TextUtils.isEmpty(toString())) {
-            return false;
-        }
-        return (Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")).matcher(email).matches();
+        return !TextUtils.isEmpty(toString()) && (Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")).matcher(email).matches();
     }
 
     /**
@@ -73,10 +70,7 @@ public class BuddyManagerImpl implements BuddyManager {
         }
         String number = mContext.getString(R.string.country_code) + mobileNumber.substring(mContext.getString(R.string.country_code_with_zero).length());
         String phonenumber = number.replace(" ", "");
-        if (phonenumber.length() != AppConstant.MOBILE_NUMBER_LENGTH) {
-            return false;
-        }
-        return android.util.Patterns.PHONE.matcher(phonenumber).matches();
+        return phonenumber.length() == AppConstant.MOBILE_NUMBER_LENGTH && android.util.Patterns.PHONE.matcher(phonenumber).matches();
     }
 
     /**

@@ -36,7 +36,6 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     private final int TAB_INDEX_ONE = 0;
     private final int TAB_INDEX_TWO = 1;
     private final int TAB_INDEX_THREE = 2;
-    private View view;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private CreditFragment creditFragment;
@@ -48,7 +47,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.challenges_layout, null);
+        View view = inflater.inflate(R.layout.challenges_layout, null);
         challengesManager = new ChallengesManagerImpl(getActivity());
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);

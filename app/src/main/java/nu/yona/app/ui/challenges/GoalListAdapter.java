@@ -25,11 +25,10 @@ import nu.yona.app.enums.GoalsEnum;
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public class GoalListAdapter<T> extends BaseAdapter {
+class GoalListAdapter<T> extends BaseAdapter {
     private final Context mContext;
     private final LayoutInflater mInflater;
     private List<T> mListYonaGoal;
-    private GaolViewHolder goalViewHolder;
 
 
     public GoalListAdapter(Context context, List<T> listYonaGoal) {
@@ -61,6 +60,7 @@ public class GoalListAdapter<T> extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
+        GaolViewHolder goalViewHolder;
         if (view == null) {
             view = mInflater.inflate(R.layout.goal_item_layout, parent, false);
             goalViewHolder = new GaolViewHolder();

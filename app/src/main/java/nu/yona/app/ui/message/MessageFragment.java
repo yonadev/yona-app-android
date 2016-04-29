@@ -21,12 +21,11 @@ import nu.yona.app.ui.BaseFragment;
  * Created by kinnarvasa on 21/03/16.
  */
 public class MessageFragment extends BaseFragment {
-    private View view;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.message_layout, null);
+        View view = inflater.inflate(R.layout.message_layout, null);
         return view;
     }
 }

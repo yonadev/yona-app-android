@@ -30,8 +30,6 @@ import nu.yona.app.utils.AppConstant;
  */
 public class PasscodeActivity extends BaseActivity implements EventChangeListener {
 
-    private PasscodeFragment passcodeFragment;
-    private PasscodeFragment verifyPasscodeFragment;
     private int PASSCODE_STEP = 0;
     private String first_passcode;
     private PasscodeManagerImpl passcodeMangerImpl;
@@ -76,7 +74,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private Fragment getPasscodeFragment() {
         Bundle bPasscode = new Bundle();
         bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PASSCODE);
-        passcodeFragment = new PasscodeFragment();
+        PasscodeFragment passcodeFragment = new PasscodeFragment();
         passcodeFragment.setArguments(bPasscode);
         return passcodeFragment;
     }
@@ -84,7 +82,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private Fragment getPasscodeVerifyFragment() {
         Bundle bVerifyPasscode = new Bundle();
         bVerifyPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PASSCODE_VERIFY);
-        verifyPasscodeFragment = new PasscodeFragment();
+        PasscodeFragment verifyPasscodeFragment = new PasscodeFragment();
         verifyPasscodeFragment.setArguments(bVerifyPasscode);
         return verifyPasscodeFragment;
     }
@@ -98,10 +96,10 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
         fragmentTransaction.commit();
     }
 
-    private void loadVerifyPasscodeView(boolean isEntryAnim) {
+    private void loadVerifyPasscodeView() {
         PASSCODE_STEP = 1;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentAnimation(fragmentTransaction, isEntryAnim);
+        fragmentAnimation(fragmentTransaction, true);
         fragmentTransaction.replace(R.id.blank_container, getPasscodeVerifyFragment());
         fragmentTransaction.commit();
     }
@@ -121,7 +119,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
                 loadPasscodeView(false);
                 break;
             case EventChangeManager.EVENT_PASSCODE_STEP_TWO:
-                loadVerifyPasscodeView(true);
+                loadVerifyPasscodeView();
                 if (TextUtils.isEmpty(first_passcode)) {
                     first_passcode = (String) object;
                 } else {
@@ -157,7 +155,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     }
 
-    public void showChallengesScreen() {
+    private void showChallengesScreen() {
         startActivity(new Intent(PasscodeActivity.this, YonaActivity.class).putExtra(AppConstant.FROM_LOGIN, true));
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();

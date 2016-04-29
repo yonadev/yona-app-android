@@ -21,7 +21,7 @@ import org.robolectric.res.FsFile;
  * Created by kinnarvasa on 30/03/16.
  */
 public class YonaRunner extends RobolectricGradleTestRunner {
-    public static final int MAX_SDK_SUPPORTED_BY_ROBOLECTRIC = 23;
+    private static final int MAX_SDK_SUPPORTED_BY_ROBOLECTRIC = 23;
 
     public YonaRunner(Class<?> testClass) throws InitializationError {
         super(testClass);

@@ -27,16 +27,12 @@ import nu.yona.app.ui.ViewPagerAdapter;
  */
 public class AddFriendFragment extends BaseFragment {
 
-    private View view;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.add_friend_fragment, null);
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        View view = inflater.inflate(R.layout.add_friend_fragment, null);
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         return view;

@@ -27,10 +27,10 @@ import nu.yona.app.utils.AppUtils;
  */
 public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
 
-    private ActivityCategoriesNetworkImpl activityCategoriesNetwork;
-    private ActivityCategoriesDAO activityCategoriesDAO;
-    private AuthenticateDAO authenticateDao;
-    private Context mContext;
+    private final ActivityCategoriesNetworkImpl activityCategoriesNetwork;
+    private final ActivityCategoriesDAO activityCategoriesDAO;
+    private final AuthenticateDAO authenticateDao;
+    private final Context mContext;
 
     public ActivityCategoryManagerImpl(Context context) {
         activityCategoriesNetwork = new ActivityCategoriesNetworkImpl();

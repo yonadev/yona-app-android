@@ -36,20 +36,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by kinnarvasa on 28/03/16.
  */
-public class BaseImpl {
+class BaseImpl {
     private Retrofit retrofit;
     private RestApi restApi;
-    private Cache cache;
+    private final Cache cache;
     private File httpCacheDirectory;
-    private int maxStale = 60 * 60 * 24 * 28;
-    private int cacheSize = 10 * 1024 * 1024;
 
-    private Interceptor getInterceptor = new Interceptor() {
+    private final Interceptor getInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             chain.request().newBuilder().addHeader(NetworkConstant.ACCEPT_LAUNGUAGE, Locale.getDefault().toString().replace('_', '-'));
             chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
+            int maxStale = 60 * 60 * 24 * 28;
             if (NetworkUtils.isOnline(YonaApplication.getAppContext())) {
                 chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
             } else if (request.method().equalsIgnoreCase("GET") && !request.cacheControl().noCache()) {
@@ -63,16 +62,17 @@ public class BaseImpl {
         }
     };
 
-    public BaseImpl() {
+    BaseImpl() {
         try {
             httpCacheDirectory = new File(YonaApplication.getAppContext().getCacheDir(), NetworkConstant.CACHING_FILE);
         } catch (Exception e) {
             AppUtils.throwException(BaseImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
+        int cacheSize = 10 * 1024 * 1024;
         cache = new Cache(httpCacheDirectory, cacheSize);
     }
 
-    protected Retrofit getRetrofit() {
+    Retrofit getRetrofit() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(YonaApplication.getAppContext().getString(R.string.server_url))
@@ -84,24 +84,23 @@ public class BaseImpl {
     }
 
     private OkHttpClient gethttpClient() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        return new OkHttpClient.Builder()
                 .connectTimeout(NetworkConstant.API_CONNECT_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
                 .writeTimeout(NetworkConstant.API_WRITE_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
                 .readTimeout(NetworkConstant.API_READ_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
                 .addInterceptor(getInterceptor)
                 .cache(cache)
                 .build();
-        return okHttpClient;
     }
 
-    public RestApi getRestApi() {
+    RestApi getRestApi() {
         if (restApi == null) {
             restApi = getRetrofit().create(RestApi.class);
         }
         return restApi;
     }
 
-    public Callback getCall(final DataLoadListener listener) {
+    Callback getCall(final DataLoadListener listener) {
         return new Callback() {
             @Override
             public void onResponse(retrofit2.Call call, retrofit2.Response response) {

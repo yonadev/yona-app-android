@@ -26,7 +26,6 @@ import nu.yona.app.customview.YonaFontEditTextView;
  */
 public class StepOneTest extends YonaTestCase {
 
-    private StepOne stepOne;
     private SignupActivity activity;
     private YonaFontEditTextView firstName, lastName;
 
@@ -37,7 +36,7 @@ public class StepOneTest extends YonaTestCase {
                 .start()
                 .resume()
                 .get();
-        stepOne = new StepOne();
+        StepOne stepOne = new StepOne();
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(stepOne, null);

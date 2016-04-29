@@ -26,16 +26,14 @@ import nu.yona.app.ui.YonaActivity;
  */
 public class FriendsFragment extends BaseFragment {
     private final int TIMELINE = 0, OVERVIEW = 1;
-    private View view;
     private ViewPager viewPager;
-    private TabLayout tabLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.frineds_layout, null);
+        View view = inflater.inflate(R.layout.frineds_layout, null);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         return view;

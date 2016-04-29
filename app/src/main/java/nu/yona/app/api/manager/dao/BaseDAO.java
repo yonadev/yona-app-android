@@ -26,12 +26,12 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Author @MobiquityInc
  */
-public class BaseDAO {
+class BaseDAO {
 
-    protected final SQLiteOpenHelper mOpenHelper;
-    protected DbSerializer serializer = new JsonSerializer();
+    private final SQLiteOpenHelper mOpenHelper;
+    final DbSerializer serializer = new JsonSerializer();
 
-    public BaseDAO(SQLiteOpenHelper mOpenHelper, Context context) {
+    BaseDAO(SQLiteOpenHelper mOpenHelper, Context context) {
         this.mOpenHelper = mOpenHelper;
     }
 
@@ -41,24 +41,24 @@ public class BaseDAO {
         }
     }
 
-    protected long insert(String tableName, ContentValues initialValues) {
+    long insert(String tableName, ContentValues initialValues) {
         if (mOpenHelper != null) {
             return mOpenHelper.getWritableDatabase().insertOrThrow(tableName, null, initialValues);
         }
         return 0;
     }
 
-    protected void update(String tableName, ContentValues values, String where, String... whereArgs) {
+    void update(String tableName, ContentValues values, String where, String... whereArgs) {
         if (mOpenHelper != null) {
             mOpenHelper.getWritableDatabase().update(tableName, values, where, whereArgs);
         }
     }
 
-    protected Cursor query(String tableName, String[] projection, String selection, String[] selectionArgs, String groupBy, String sortOrder) {
+    Cursor query(String tableName) {
         if (mOpenHelper == null) {
             return null;
         }
-        return mOpenHelper.getWritableDatabase().query(tableName, projection, selection, selectionArgs, groupBy, null, sortOrder);
+        return mOpenHelper.getWritableDatabase().query(tableName, null, null, null, null, null, null);
     }
 
     protected void bulkInsert(final String tableName, final List<? extends BaseEntity> items, final DataLoadListener listener) {

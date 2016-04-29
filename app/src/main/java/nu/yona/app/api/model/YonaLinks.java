@@ -41,7 +41,7 @@ public class YonaLinks extends BaseEntity {
     private Href yonaAppActivity;
     @SerializedName("curies")
     @Expose
-    private List<Cury> curies = new ArrayList<Cury>();
+    private List<Cury> curies = new ArrayList<>();
     @SerializedName("self")
     @Expose
     private Href self;

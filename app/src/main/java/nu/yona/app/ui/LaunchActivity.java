@@ -40,7 +40,7 @@ public class LaunchActivity extends BaseActivity {
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
             // continue on same page. We need to keep on this position, so this step don't get ignore.
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)
-                || TextUtils.isEmpty(YonaApplication.getAppContext().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
+                || TextUtils.isEmpty(YonaApplication.getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
             startNewActivity(OTPActivity.class);
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
             startNewActivity(PasscodeActivity.class);
@@ -63,7 +63,7 @@ public class LaunchActivity extends BaseActivity {
         });
     }
 
-    public void startNewActivity(Class mClass) {
+    private void startNewActivity(Class mClass) {
         startActivity(new Intent(LaunchActivity.this, mClass));
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();

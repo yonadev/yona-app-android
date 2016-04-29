@@ -46,11 +46,11 @@ import nu.yona.app.utils.AppConstant;
  */
 public class BaseGoalCreateFragment extends BaseFragment {
 
-    public ChallengesManager challengesManager;
-    protected ListView mGoalListView;
-    protected ListView mGoalCreationListView;
-    protected ImageButton btnGoalAdd;
-    protected YonaFontTextView mDescTab;
+    ChallengesManager challengesManager;
+    ListView mGoalListView;
+    private ListView mGoalCreationListView;
+    ImageButton btnGoalAdd;
+    YonaFontTextView mDescTab;
     protected List<YonaGoal> budgetCategoriesGoalList;
     protected List<YonaGoal> timeZoneCategoriesGoalList;
     protected List<YonaGoal> noGoCategoriesGoalList;
@@ -58,10 +58,9 @@ public class BaseGoalCreateFragment extends BaseFragment {
     protected HashMap<String, String> mGoalCategoriesMap;
     private GoalManager goalManager;
     private ActivityCategoryManager activityCategoryManager;
-    private GoalCategoryListAdapter categoryGoalListAdapter;
     private YonaActivity activity;
     private int CURRENT_TAB;
-    public AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+    final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             handleClickEvent(parent.getAdapter().getItem(position));
@@ -77,7 +76,7 @@ public class BaseGoalCreateFragment extends BaseFragment {
         challengesManager = new ChallengesManagerImpl(activity);
         mGoalListView = (ListView) view.findViewById(R.id.goal_listview);
         mGoalCreationListView = (ListView) view.findViewById(R.id.new_goal_listview);
-        categoryGoalListAdapter = new GoalCategoryListAdapter(activity, challengesManager.getListOfCategories());
+        GoalCategoryListAdapter categoryGoalListAdapter = new GoalCategoryListAdapter(activity, challengesManager.getListOfCategories());
         mGoalCreationListView.setAdapter(categoryGoalListAdapter);
         btnGoalAdd = (ImageButton) view.findViewById(R.id.img_add_goal);
         mDescTab = (YonaFontTextView) view.findViewById(R.id.txt_header_text);
@@ -85,14 +84,14 @@ public class BaseGoalCreateFragment extends BaseFragment {
         return view;
     }
 
-    public synchronized void showCurrentGoalListView(int tab) {
+    synchronized void showCurrentGoalListView(int tab) {
         btnGoalAdd.setVisibility(View.VISIBLE);
         mGoalListView.setVisibility(View.VISIBLE);
         mGoalCreationListView.setVisibility(View.GONE);
         CURRENT_TAB = tab;
     }
 
-    public synchronized void showNewListOfGoalView(int tab) {
+    synchronized void showNewListOfGoalView(int tab) {
         btnGoalAdd.setVisibility(View.GONE);
         mGoalListView.setVisibility(View.GONE);
         mGoalCreationListView.setVisibility(View.VISIBLE);
@@ -103,7 +102,7 @@ public class BaseGoalCreateFragment extends BaseFragment {
      * It will check the visibility of child View
      */
     public boolean checkIsChildViewVisible() {
-        return mGoalCreationListView.getVisibility() == View.VISIBLE ? true : false;
+        return mGoalCreationListView.getVisibility() == View.VISIBLE;
     }
 
     /**

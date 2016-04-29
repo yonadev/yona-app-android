@@ -29,8 +29,8 @@ import nu.yona.app.utils.AppUtils;
  */
 public class DeviceManagerImpl implements DeviceManager {
 
-    private DeviceNetworkImpl deviceNetwork;
-    private Context mContext;
+    private final DeviceNetworkImpl deviceNetwork;
+    private final Context mContext;
 
     public DeviceManagerImpl(Context context) {
         mContext = context;
@@ -44,13 +44,8 @@ public class DeviceManagerImpl implements DeviceManager {
     @Override
     public boolean validateMobileNumber(String mobileNumber) {
         // do validation for mobile number
-        if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != AppConstant.MOBILE_NUMBER_LENGTH) { // 9 digits of mobile number and '+31'
-            return false;
-        }
-        if (!android.util.Patterns.PHONE.matcher(mobileNumber).matches()) {
-            return false;
-        }
-        return true;
+        // 9 digits of mobile number and '+31'
+        return !(TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != AppConstant.MOBILE_NUMBER_LENGTH) && android.util.Patterns.PHONE.matcher(mobileNumber).matches();
     }
 
     /**

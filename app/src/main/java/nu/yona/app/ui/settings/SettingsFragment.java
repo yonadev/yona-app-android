@@ -36,22 +36,20 @@ import nu.yona.app.utils.AppUtils;
  * Created by kinnarvasa on 21/03/16.
  */
 public class SettingsFragment extends BaseFragment {
-    private View view;
-    private ListView listView;
     private DeviceManagerImpl deviceManager;
     private YonaActivity activity;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.settings_fragment, null);
+        View view = inflater.inflate(R.layout.settings_fragment, null);
 
-        listView = (ListView) view.findViewById(R.id.list_view);
+        ListView listView = (ListView) view.findViewById(R.id.list_view);
         deviceManager = new DeviceManagerImpl(getActivity());
 
         activity = (YonaActivity) getActivity();
 
-        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.settings_list_item, new String[]{getString(R.string.changepin), getString(R.string.privacy), getString(R.string.adddevice), getString(R.string.deleteuser)}));
+        listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.settings_list_item, new String[]{getString(R.string.changepin), getString(R.string.privacy), getString(R.string.adddevice), getString(R.string.deleteuser)}));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

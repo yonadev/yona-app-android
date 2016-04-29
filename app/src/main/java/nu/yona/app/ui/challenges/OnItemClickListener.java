@@ -13,7 +13,7 @@ import android.view.View;
 /**
  * Created by bhargavsuthar on 21/04/16.
  */
-public interface OnItemClickListener {
+interface OnItemClickListener {
     void onDelete(View v);
 
     void onClickStartTime(View v);

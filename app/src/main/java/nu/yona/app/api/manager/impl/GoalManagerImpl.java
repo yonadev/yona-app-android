@@ -31,9 +31,9 @@ import nu.yona.app.utils.AppUtils;
 public class GoalManagerImpl implements GoalManager {
 
 
-    private GoalNetworkImpl goalNetwork;
-    private GoalDAO goalDAO;
-    private Context mContext;
+    private final GoalNetworkImpl goalNetwork;
+    private final GoalDAO goalDAO;
+    private final Context mContext;
 
     public GoalManagerImpl(Context context) {
         goalNetwork = new GoalNetworkImpl();

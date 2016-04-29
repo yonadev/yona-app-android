@@ -61,11 +61,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 cursorComplement = s.length() - mobileNumber.getSelectionStart();
-                if (count > after) {
-                    backspacingFlag = true;
-                } else {
-                    backspacingFlag = false;
-                }
+                backspacingFlag = count > after;
             }
 
             @Override

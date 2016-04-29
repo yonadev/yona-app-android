@@ -74,7 +74,7 @@ public class AppUtils {
         try {
             PackageManager packageManager = context.getPackageManager();
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
-            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(context.APP_OPS_SERVICE);
+            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
             int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
             return (mode == AppOpsManager.MODE_ALLOWED);
         } catch (PackageManager.NameNotFoundException e) {
@@ -92,7 +92,7 @@ public class AppUtils {
      * @return true if service already running else return false
      */
     public static boolean isYonaServiceRunning(Context context, Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
                 return true;
@@ -162,7 +162,7 @@ public class AppUtils {
         }
 
         if (listener != null) {
-            if (e != null && e.getMessage() != null) {
+            if (e.getMessage() != null) {
                 listener.onError(new ErrorMessage(e.getMessage()));
             } else {
                 listener.onError(YonaApplication.getAppContext().getString(R.string.error_message));

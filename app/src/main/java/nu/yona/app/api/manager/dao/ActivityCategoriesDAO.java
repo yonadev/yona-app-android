@@ -25,8 +25,6 @@ import nu.yona.app.utils.AppUtils;
  */
 public class ActivityCategoriesDAO extends BaseDAO {
 
-    private final String ID = "1";
-
     public ActivityCategoriesDAO(SQLiteOpenHelper mOpenHelper, Context context) {
         super(mOpenHelper, context);
     }
@@ -39,6 +37,7 @@ public class ActivityCategoriesDAO extends BaseDAO {
     public void saveActivityCategories(final ActivityCategories activityCategories, final DataLoadListener listener) {
         try {
             ContentValues values = new ContentValues();
+            String ID = "1";
             values.put(DBConstant.ID, ID);
             values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(activityCategories));
             if (getActivityCategories() == null) {
@@ -53,7 +52,7 @@ public class ActivityCategoriesDAO extends BaseDAO {
     }
 
     public ActivityCategories getActivityCategories() {
-        Cursor c = query(DBConstant.TBL_ACTIVITY_CATEGORIES, null, null, null, null, null);
+        Cursor c = query(DBConstant.TBL_ACTIVITY_CATEGORIES);
         try {
             if (c != null && c.getCount() > 0) {
 

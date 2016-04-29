@@ -28,7 +28,7 @@ public class CustomProgressDialog extends Dialog {
     private Button okBtn;
     private TextView progressTxt;
 
-    public CustomProgressDialog(Context context) {
+    private CustomProgressDialog(Context context) {
         super(context);
         init(false, true);
     }
@@ -46,16 +46,16 @@ public class CustomProgressDialog extends Dialog {
         }
     }
 
-    public CustomProgressDialog(Context context, boolean hideProgressBar, boolean hideDefaultMessage) {
+    private CustomProgressDialog(Context context, boolean hideProgressBar, boolean hideDefaultMessage) {
         super(context);
         init(hideProgressBar, hideDefaultMessage);
     }
 
-    public CustomProgressDialog(Context context, int theme) {
+    private CustomProgressDialog(Context context, int theme) {
         super(context, theme);
     }
 
-    protected CustomProgressDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    private CustomProgressDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 
@@ -83,7 +83,7 @@ public class CustomProgressDialog extends Dialog {
         try {
             super.show();
             hideOkBtn();
-            Handler handler = null;
+            Handler handler;
             handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
@@ -110,7 +110,7 @@ public class CustomProgressDialog extends Dialog {
         return okBtn;
     }
 
-    public void hideOkBtn() {
+    private void hideOkBtn() {
         okBtn.setVisibility(View.GONE);
     }
 
