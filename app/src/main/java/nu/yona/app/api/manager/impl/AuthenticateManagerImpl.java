@@ -65,10 +65,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         if (TextUtils.isEmpty(mobileNumber) || mobileNumber.length() != AppConstant.MOBILE_NUMBER_LENGTH) { // 9 digits of mobile number and '+31'
             return false;
         }
-        if (!android.util.Patterns.PHONE.matcher(mobileNumber).matches()) {
-            return false;
-        }
-        return true;
+        return android.util.Patterns.PHONE.matcher(mobileNumber).matches();
     }
 
     /**

@@ -13,14 +13,20 @@ package nu.yona.app.api.manager.impl;
 import android.content.Context;
 import android.text.TextUtils;
 
+import java.util.regex.Pattern;
+
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.BuddyManager;
 import nu.yona.app.api.manager.network.BuddyNetworkImpl;
 import nu.yona.app.api.model.AddBuddy;
+import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.YonaBuddy;
+import nu.yona.app.enums.FriendStatusEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -37,6 +43,43 @@ public class BuddyManagerImpl implements BuddyManager {
     }
 
     /**
+     * Validate user's first and last name
+     *
+     * @return true if first name and last name are correct.
+     */
+    @Override
+    public boolean validateText(String string) {
+        // do validation for first name and last name
+        return !TextUtils.isEmpty(string);
+    }
+
+    @Override
+    public boolean validateEmail(String email) {
+        if (TextUtils.isEmpty(toString())) {
+            return false;
+        }
+        return (Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")).matcher(email).matches();
+    }
+
+    /**
+     * @param mobileNumber
+     * @return true if number is in expected format
+     */
+    @Override
+    public boolean validateMobileNumber(String mobileNumber) {
+        // do validation for mobile number
+        if (TextUtils.isEmpty(mobileNumber)) { // 9 digits of mobile number and '+31'
+            return false;
+        }
+        String number = mContext.getString(R.string.country_code) + mobileNumber.substring(mContext.getString(R.string.country_code_with_zero).length());
+        String phonenumber = number.replace(" ", "");
+        if (phonenumber.length() != AppConstant.MOBILE_NUMBER_LENGTH) {
+            return false;
+        }
+        return android.util.Patterns.PHONE.matcher(phonenumber).matches();
+    }
+
+    /**
      * To get buddies list from server
      *
      * @param listener
@@ -44,8 +87,8 @@ public class BuddyManagerImpl implements BuddyManager {
     @Override
     public void getBuddies(final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaBuddies().get(0).getLinks().getSelf().getHref())) {
-                buddyNetwork.getBuddies(YonaApplication.getUser().getEmbedded().getYonaBuddies().get(0).getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
+            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref())) {
+                buddyNetwork.getBuddies(YonaApplication.getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
                         new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {
@@ -70,17 +113,18 @@ public class BuddyManagerImpl implements BuddyManager {
     }
 
     /**
-     * Add Buddy
-     *
-     * @param buddy    AddBuddy object
+     * @param firstName    First Name of Friend
+     * @param lastName     last name of friend
+     * @param email        email address
+     * @param mobileNumber mobile number
      * @param listener
      */
     @Override
-    public void addBuddy(AddBuddy buddy, final DataLoadListener listener) {
+    public void addBuddy(String firstName, String lastName, String email, String mobileNumber, final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaBuddies().get(0).getLinks().getSelf().getHref())) {
-                buddyNetwork.addBuddy(YonaApplication.getUser().getEmbedded().getYonaBuddies().get(0).getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
-                        buddy, new DataLoadListener() {
+            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref())) {
+                buddyNetwork.addBuddy(YonaApplication.getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
+                        getBuddy(firstName, lastName, email, mobileNumber), new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {
                                 listener.onDataLoad(result);
@@ -101,6 +145,25 @@ public class BuddyManagerImpl implements BuddyManager {
         } catch (Exception e) {
             AppUtils.throwException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
+    }
+
+    private AddBuddy getBuddy(String firstName, String lastName, String email, String mobileNumber) {
+        String number = mContext.getString(R.string.country_code) + mobileNumber.substring(mContext.getString(R.string.country_code_with_zero).length());
+        String phonenumber = number.replace(" ", "");
+        AddBuddy addBuddy = new AddBuddy();
+        String status = FriendStatusEnum.REQUESTED.getStatus();
+        addBuddy.setSendingStatus(status);
+        addBuddy.setReceivingStatus(status);
+        addBuddy.setMessage("");
+        Embedded embedded = new Embedded();
+        RegisterUser user = new RegisterUser();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmailAddress(email);
+        user.setMobileNumber(phonenumber);
+        embedded.setYonaUser(user);
+        addBuddy.setEmbedded(embedded);
+        return addBuddy;
     }
 
     /**

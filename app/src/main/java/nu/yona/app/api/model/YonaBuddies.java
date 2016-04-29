@@ -21,7 +21,7 @@ public class YonaBuddies extends BaseEntity {
     @SerializedName("_embedded")
     @Expose
     private EmbeddedYonaBuddies Embedded;
-    @SerializedName("links")
+    @SerializedName("_links")
     @Expose
     private Links_ links;
 

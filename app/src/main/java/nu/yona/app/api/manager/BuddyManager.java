@@ -10,7 +10,6 @@
 
 package nu.yona.app.api.manager;
 
-import nu.yona.app.api.model.AddBuddy;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.listener.DataLoadListener;
 
@@ -19,9 +18,16 @@ import nu.yona.app.listener.DataLoadListener;
  */
 public interface BuddyManager {
 
-    public void getBuddies(DataLoadListener listener);
+    boolean validateText(String string);
 
-    public void addBuddy(AddBuddy buddy, DataLoadListener listener);
+    boolean validateEmail(String email);
 
-    public void deleteBuddy(YonaBuddy buddy, DataLoadListener listener);
+    boolean validateMobileNumber(String mobileNumber);
+
+    void getBuddies(DataLoadListener listener);
+
+    void addBuddy(String firstName, String lastName, String email, String mobileNumber, final DataLoadListener listener);
+
+    void deleteBuddy(YonaBuddy buddy, DataLoadListener listener);
+
 }

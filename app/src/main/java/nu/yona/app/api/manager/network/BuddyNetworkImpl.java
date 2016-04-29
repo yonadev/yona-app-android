@@ -16,6 +16,7 @@ import java.lang.annotation.Annotation;
 import nu.yona.app.api.model.AddBuddy;
 import nu.yona.app.api.model.Buddy;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
 import okhttp3.ResponseBody;
@@ -35,40 +36,69 @@ public class BuddyNetworkImpl extends BaseImpl {
      * @param buddy
      * @param listener
      */
-    public void addBuddy(String url, String yonaPassowrd, AddBuddy buddy, DataLoadListener listener) {
+    public void addBuddy(String url, String yonaPassowrd, AddBuddy buddy, final DataLoadListener listener) {
         try {
-            getRestApi().addBuddy(url, yonaPassowrd, buddy).enqueue(getCall(listener));
+            getRestApi().addBuddy(url, yonaPassowrd, buddy).enqueue(new Callback<YonaBuddy>() {
+                @Override
+                public void onResponse(Call<YonaBuddy> call, Response<YonaBuddy> response) {
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        try {
+                            Converter<ResponseBody, ErrorMessage> errorConverter =
+                                    getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                            ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
+                            listener.onError(errorMessage);
+                        } catch (IOException e) {
+                            listener.onError(new ErrorMessage(e.getMessage()));
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<YonaBuddy> call, Throwable t) {
+                    listener.onError(new ErrorMessage(t.getMessage()));
+                }
+            });
         } catch (Exception e) {
             AppUtils.throwException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
     public void getBuddies(String url, String password, final DataLoadListener listener) {
-        getRestApi().getBuddy(url, password).enqueue(new Callback<Buddy>() {
-            @Override
-            public void onResponse(Call<Buddy> call, Response<Buddy> response) {
-                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
-                } else {
-                    try {
-                        Converter<ResponseBody, ErrorMessage> errorConverter =
-                                getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
-                        ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
-                        listener.onError(errorMessage);
-                    } catch (IOException e) {
-                        listener.onError(new ErrorMessage(e.getMessage()));
+        try {
+            getRestApi().getBuddy(url, password).enqueue(new Callback<Buddy>() {
+                @Override
+                public void onResponse(Call<Buddy> call, Response<Buddy> response) {
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        try {
+                            Converter<ResponseBody, ErrorMessage> errorConverter =
+                                    getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                            ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
+                            listener.onError(errorMessage);
+                        } catch (IOException e) {
+                            listener.onError(new ErrorMessage(e.getMessage()));
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Buddy> call, Throwable t) {
-                listener.onError(new ErrorMessage(t.getMessage()));
-            }
-        });
+                @Override
+                public void onFailure(Call<Buddy> call, Throwable t) {
+                    listener.onError(new ErrorMessage(t.getMessage()));
+                }
+            });
+        } catch (Exception e) {
+            AppUtils.throwException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
     }
 
     public void deleteBuddy(String url, String passwrod, DataLoadListener listener) {
-        getRestApi().deleteBuddy(url, passwrod).enqueue(getCall(listener));
+        try {
+            getRestApi().deleteBuddy(url, passwrod).enqueue(getCall(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
     }
 }

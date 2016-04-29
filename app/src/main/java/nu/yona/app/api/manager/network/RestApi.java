@@ -22,6 +22,7 @@ import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.utils.ApiList;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -135,7 +136,7 @@ public interface RestApi {
      ************/
 
     @POST
-    Call<Void> addBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body AddBuddy buddy);
+    Call<YonaBuddy> addBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body AddBuddy buddy);
 
     @GET
     Call<Buddy> getBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);

@@ -15,9 +15,6 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Embedded extends BaseEntity {
 
     @SerializedName("yona:goals")
@@ -25,7 +22,7 @@ public class Embedded extends BaseEntity {
     private YonaGoals yonaGoals;
     @SerializedName("yona:buddies")
     @Expose
-    private List<YonaBuddy> yonaBuddies = new ArrayList<YonaBuddy>();
+    private YonaBuddies yonaBuddies;
     @SerializedName("yona:user")
     @Expose
     private RegisterUser yonaUser;
@@ -56,14 +53,14 @@ public class Embedded extends BaseEntity {
     /**
      * @return The yonaBuddies
      */
-    public List<YonaBuddy> getYonaBuddies() {
+    public YonaBuddies getYonaBuddies() {
         return yonaBuddies;
     }
 
     /**
      * @param yonaBuddies The yona:buddies
      */
-    public void setYonaBuddies(List<YonaBuddy> yonaBuddies) {
+    public void setYonaBuddies(YonaBuddies yonaBuddies) {
         this.yonaBuddies = yonaBuddies;
     }
 
