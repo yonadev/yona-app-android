@@ -23,6 +23,12 @@ public class NetworkUtils {
 
     }
 
+    /**
+     * Is online boolean.
+     *
+     * @param mContext the m context
+     * @return the boolean
+     */
     public static boolean isOnline(Context mContext) {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();

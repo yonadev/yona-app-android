@@ -46,20 +46,50 @@ import nu.yona.app.utils.AppConstant;
  */
 public class BaseGoalCreateFragment extends BaseFragment {
 
+    /**
+     * The Challenges manager.
+     */
     ChallengesManager challengesManager;
+    /**
+     * The M goal list view.
+     */
     ListView mGoalListView;
     private ListView mGoalCreationListView;
+    /**
+     * The Btn goal add.
+     */
     ImageButton btnGoalAdd;
+    /**
+     * The M desc tab.
+     */
     YonaFontTextView mDescTab;
+    /**
+     * The Budget categories goal list.
+     */
     protected List<YonaGoal> budgetCategoriesGoalList;
+    /**
+     * The Time zone categories goal list.
+     */
     protected List<YonaGoal> timeZoneCategoriesGoalList;
+    /**
+     * The No go categories goal list.
+     */
     protected List<YonaGoal> noGoCategoriesGoalList;
+    /**
+     * The M yona activity categories list.
+     */
     protected List<YonaActivityCategories> mYonaActivityCategoriesList;
+    /**
+     * The M goal categories map.
+     */
     protected HashMap<String, String> mGoalCategoriesMap;
     private GoalManager goalManager;
     private ActivityCategoryManager activityCategoryManager;
     private YonaActivity activity;
     private int CURRENT_TAB;
+    /**
+     * The Item click listener.
+     */
     final AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -84,6 +114,11 @@ public class BaseGoalCreateFragment extends BaseFragment {
         return view;
     }
 
+    /**
+     * Show current goal list view.
+     *
+     * @param tab the tab
+     */
     synchronized void showCurrentGoalListView(int tab) {
         btnGoalAdd.setVisibility(View.VISIBLE);
         mGoalListView.setVisibility(View.VISIBLE);
@@ -91,6 +126,11 @@ public class BaseGoalCreateFragment extends BaseFragment {
         CURRENT_TAB = tab;
     }
 
+    /**
+     * Show new list of goal view.
+     *
+     * @param tab the tab
+     */
     synchronized void showNewListOfGoalView(int tab) {
         btnGoalAdd.setVisibility(View.GONE);
         mGoalListView.setVisibility(View.GONE);
@@ -100,6 +140,8 @@ public class BaseGoalCreateFragment extends BaseFragment {
 
     /**
      * It will check the visibility of child View
+     *
+     * @return the boolean
      */
     public boolean checkIsChildViewVisible() {
         return mGoalCreationListView.getVisibility() == View.VISIBLE;

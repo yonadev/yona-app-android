@@ -33,8 +33,10 @@ public class BuddyNetworkImpl extends BaseImpl {
     /**
      * Add Buddy
      *
-     * @param buddy
-     * @param listener
+     * @param url          the url
+     * @param yonaPassowrd the yona passowrd
+     * @param buddy        the buddy
+     * @param listener     the listener
      */
     public void addBuddy(String url, String yonaPassowrd, AddBuddy buddy, final DataLoadListener listener) {
         try {
@@ -65,6 +67,13 @@ public class BuddyNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * Gets buddies.
+     *
+     * @param url      the url
+     * @param password the password
+     * @param listener the listener
+     */
     public void getBuddies(String url, String password, final DataLoadListener listener) {
         try {
             getRestApi().getBuddy(url, password).enqueue(new Callback<Buddy>() {
@@ -94,6 +103,13 @@ public class BuddyNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * Delete buddy.
+     *
+     * @param url      the url
+     * @param passwrod the passwrod
+     * @param listener the listener
+     */
     public void deleteBuddy(String url, String passwrod, DataLoadListener listener) {
         try {
             getRestApi().deleteBuddy(url, passwrod).enqueue(getCall(listener));

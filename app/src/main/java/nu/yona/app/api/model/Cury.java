@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The type Cury.
+ */
 public class Cury extends BaseEntity {
 
     @SerializedName("name")
@@ -28,6 +31,8 @@ public class Cury extends BaseEntity {
     private Boolean templated;
 
     /**
+     * Gets name.
+     *
      * @return The name
      */
     public String getName() {
@@ -35,6 +40,8 @@ public class Cury extends BaseEntity {
     }
 
     /**
+     * Sets name.
+     *
      * @param name The name
      */
     public void setName(String name) {
@@ -42,6 +49,8 @@ public class Cury extends BaseEntity {
     }
 
     /**
+     * Gets href.
+     *
      * @return The href
      */
     public String getHref() {
@@ -49,6 +58,8 @@ public class Cury extends BaseEntity {
     }
 
     /**
+     * Sets href.
+     *
      * @param href The href
      */
     public void setHref(String href) {
@@ -56,6 +67,8 @@ public class Cury extends BaseEntity {
     }
 
     /**
+     * Gets templated.
+     *
      * @return The templated
      */
     public Boolean getTemplated() {
@@ -63,6 +76,8 @@ public class Cury extends BaseEntity {
     }
 
     /**
+     * Sets templated.
+     *
      * @param templated The templated
      */
     public void setTemplated(Boolean templated) {

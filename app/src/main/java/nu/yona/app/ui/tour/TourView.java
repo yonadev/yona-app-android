@@ -25,8 +25,14 @@ import nu.yona.app.customview.ViewPagerIndicator;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppUtils;
 
+/**
+ * The type Tour view.
+ */
 public class TourView extends LinearLayout {
 
+    /**
+     * The constant TOTAL_PAGE.
+     */
     public final static int TOTAL_PAGE = 4;
     private final ViewPager viewPager;
 
@@ -78,6 +84,12 @@ public class TourView extends LinearLayout {
     };
     private boolean moveToNextActivity;
 
+    /**
+     * Instantiates a new Tour view.
+     *
+     * @param context   the context
+     * @param startPage the start page
+     */
     public TourView(Context context, int startPage) {
         super(context);
         setOrientation(LinearLayout.VERTICAL);

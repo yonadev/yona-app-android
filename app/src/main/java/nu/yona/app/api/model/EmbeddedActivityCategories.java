@@ -25,10 +25,20 @@ public class EmbeddedActivityCategories extends BaseEntity {
     @Expose
     private List<YonaActivityCategories> yonaActivityCategories = new ArrayList<>();
 
+    /**
+     * Gets yona activity categories.
+     *
+     * @return the yona activity categories
+     */
     public List<YonaActivityCategories> getYonaActivityCategories() {
         return yonaActivityCategories;
     }
 
+    /**
+     * Sets yona activity categories.
+     *
+     * @param yonaActivityCategories the yona activity categories
+     */
     public void setYonaActivityCategories(List<YonaActivityCategories> yonaActivityCategories) {
         this.yonaActivityCategories = yonaActivityCategories;
     }

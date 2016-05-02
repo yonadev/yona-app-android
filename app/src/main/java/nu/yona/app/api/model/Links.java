@@ -18,6 +18,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Links.
+ */
 public class Links extends BaseEntity {
 
     @SerializedName("self")
@@ -67,6 +70,8 @@ public class Links extends BaseEntity {
     private Href yonaUser;
 
     /**
+     * Gets self.
+     *
      * @return The self
      */
     public Href getSelf() {
@@ -74,6 +79,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets self.
+     *
      * @param self The self
      */
     public void setSelf(Href self) {
@@ -81,6 +88,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets edit.
+     *
      * @return The edit
      */
     public Href getEdit() {
@@ -88,6 +97,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets edit.
+     *
      * @param edit The edit
      */
     public void setEdit(Href edit) {
@@ -95,6 +106,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets yona messages.
+     *
      * @return The yonaMessages
      */
     public Href getYonaMessages() {
@@ -102,6 +115,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets yona messages.
+     *
      * @param yonaMessages The yona:messages
      */
     public void setYonaMessages(Href yonaMessages) {
@@ -109,6 +124,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets yona daily activity reports.
+     *
      * @return The yonaDailyActivityReports
      */
     public Href getYonaDailyActivityReports() {
@@ -116,6 +133,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets yona daily activity reports.
+     *
      * @param yonaDailyActivityReports The yona:dailyActivityReports
      */
     public void setYonaDailyActivityReports(Href yonaDailyActivityReports) {
@@ -123,6 +142,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets yona weekly activity reports.
+     *
      * @return The yonaWeeklyActivityReports
      */
     public Href getYonaWeeklyActivityReports() {
@@ -130,6 +151,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets yona weekly activity reports.
+     *
      * @param yonaWeeklyActivityReports The yona:weeklyActivityReports
      */
     public void setYonaWeeklyActivityReports(Href yonaWeeklyActivityReports) {
@@ -137,6 +160,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets yona new device request.
+     *
      * @return The yonaNewDeviceRequest
      */
     public Href getYonaNewDeviceRequest() {
@@ -144,6 +169,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets yona new device request.
+     *
      * @param yonaNewDeviceRequest The yona:newDeviceRequest
      */
     public void setYonaNewDeviceRequest(Href yonaNewDeviceRequest) {
@@ -151,6 +178,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets yona app activity.
+     *
      * @return The yonaAppActivity
      */
     public Href getYonaAppActivity() {
@@ -158,6 +187,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets yona app activity.
+     *
      * @param yonaAppActivity The yona:appActivity
      */
     public void setYonaAppActivity(Href yonaAppActivity) {
@@ -165,6 +196,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets curies.
+     *
      * @return The curies
      */
     public List<Cury> getCuries() {
@@ -172,53 +205,107 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets curies.
+     *
      * @param curies The curies
      */
     public void setCuries(List<Cury> curies) {
         this.curies = curies;
     }
 
+    /**
+     * Gets yona confirm mobile number.
+     *
+     * @return the yona confirm mobile number
+     */
     public Href getYonaConfirmMobileNumber() {
         return yonaConfirmMobileNumber;
     }
 
+    /**
+     * Sets yona confirm mobile number.
+     *
+     * @param yonaConfirmMobileNumber the yona confirm mobile number
+     */
     public void setYonaConfirmMobileNumber(Href yonaConfirmMobileNumber) {
         this.yonaConfirmMobileNumber = yonaConfirmMobileNumber;
     }
 
+    /**
+     * Gets resend mobile number confirmation code.
+     *
+     * @return the resend mobile number confirmation code
+     */
     public Href getResendMobileNumberConfirmationCode() {
         return resendMobileNumberConfirmationCode;
     }
 
+    /**
+     * Sets resend mobile number confirmation code.
+     *
+     * @param resendMobileNumberConfirmationCode the resend mobile number confirmation code
+     */
     public void setResendMobileNumberConfirmationCode(Href resendMobileNumberConfirmationCode) {
         this.resendMobileNumberConfirmationCode = resendMobileNumberConfirmationCode;
     }
 
+    /**
+     * Gets request pin reset.
+     *
+     * @return the request pin reset
+     */
     public Href getRequestPinReset() {
         return requestPinReset;
     }
 
+    /**
+     * Sets request pin reset.
+     *
+     * @param requestPinReset the request pin reset
+     */
     public void setRequestPinReset(Href requestPinReset) {
         this.requestPinReset = requestPinReset;
     }
 
+    /**
+     * Gets verify pin reset.
+     *
+     * @return the verify pin reset
+     */
     public Href getVerifyPinReset() {
         return verifyPinReset;
     }
 
+    /**
+     * Sets verify pin reset.
+     *
+     * @param verifyPinReset the verify pin reset
+     */
     public void setVerifyPinReset(Href verifyPinReset) {
         this.verifyPinReset = verifyPinReset;
     }
 
+    /**
+     * Gets clear pin reset.
+     *
+     * @return the clear pin reset
+     */
     public Href getClearPinReset() {
         return clearPinReset;
     }
 
+    /**
+     * Sets clear pin reset.
+     *
+     * @param clearPinReset the clear pin reset
+     */
     public void setClearPinReset(Href clearPinReset) {
         this.clearPinReset = clearPinReset;
     }
 
     /**
+     * Gets yona user.
+     *
      * @return The yonaUser
      */
     public Href getYonaUser() {
@@ -226,16 +313,28 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets yona user.
+     *
      * @param yonaUser The yona:user
      */
     public void setYonaUser(Href yonaUser) {
         this.yonaUser = yonaUser;
     }
 
+    /**
+     * Gets yona activity category.
+     *
+     * @return the yona activity category
+     */
     public Href getYonaActivityCategory() {
         return yonaActivityCategory;
     }
 
+    /**
+     * Sets yona activity category.
+     *
+     * @param yonaActivityCategory the yona activity category
+     */
     public void setYonaActivityCategory(Href yonaActivityCategory) {
         this.yonaActivityCategory = yonaActivityCategory;
     }

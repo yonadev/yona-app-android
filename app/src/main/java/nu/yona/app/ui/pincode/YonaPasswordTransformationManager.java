@@ -24,6 +24,11 @@ class YonaPasswordTransformationManager extends PasswordTransformationMethod {
     private class PasswordCharSequence implements CharSequence {
         private final CharSequence mSource;
 
+        /**
+         * Instantiates a new Password char sequence.
+         *
+         * @param source the source
+         */
         public PasswordCharSequence(CharSequence source) {
             mSource = source; // Store char sequence
         }

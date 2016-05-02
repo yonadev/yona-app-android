@@ -35,6 +35,11 @@ public class GoalManagerImpl implements GoalManager {
     private final GoalDAO goalDAO;
     private final Context mContext;
 
+    /**
+     * Instantiates a new Goal manager.
+     *
+     * @param context the context
+     */
     public GoalManagerImpl(Context context) {
         goalNetwork = new GoalNetworkImpl();
         goalDAO = new GoalDAO(DatabaseHelper.getInstance(context), context);

@@ -24,11 +24,18 @@ public class OTPVerficationCode extends BaseEntity {
     @Expose
     private String code;
 
+    /**
+     * Instantiates a new Otp verfication code.
+     *
+     * @param otp the otp
+     */
     public OTPVerficationCode(String otp) {
         this.code = otp;
     }
 
     /**
+     * Gets code.
+     *
      * @return The code
      */
     public String getCode() {
@@ -36,6 +43,8 @@ public class OTPVerficationCode extends BaseEntity {
     }
 
     /**
+     * Sets code.
+     *
      * @param code The code
      */
     public void setCode(String code) {

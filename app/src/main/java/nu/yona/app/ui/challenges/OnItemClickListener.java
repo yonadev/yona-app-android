@@ -14,9 +14,24 @@ import android.view.View;
  * Created by bhargavsuthar on 21/04/16.
  */
 interface OnItemClickListener {
+    /**
+     * On delete.
+     *
+     * @param v the v
+     */
     void onDelete(View v);
 
+    /**
+     * On click start time.
+     *
+     * @param v the v
+     */
     void onClickStartTime(View v);
 
+    /**
+     * On click end time.
+     *
+     * @param v the v
+     */
     void onClickEndTime(View v);
 }

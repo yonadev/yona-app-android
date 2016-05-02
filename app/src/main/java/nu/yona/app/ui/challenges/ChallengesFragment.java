@@ -126,6 +126,11 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         tab.getCustomView().setAlpha(alpha);
     }
 
+    /**
+     * Is child view visible boolean.
+     *
+     * @return the boolean
+     */
     public boolean isChildViewVisible() {
 
         switch (tabLayout.getSelectedTabPosition()) {
@@ -140,6 +145,9 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         }
     }
 
+    /**
+     * Update view.
+     */
     public void updateView() {
 
         switch (tabLayout.getSelectedTabPosition()) {

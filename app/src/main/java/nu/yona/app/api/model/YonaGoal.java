@@ -18,6 +18,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Yona goal.
+ */
 public class YonaGoal extends BaseEntity {
 
     @SerializedName("_links")
@@ -37,6 +40,8 @@ public class YonaGoal extends BaseEntity {
     private List<String> zones = new ArrayList<>();
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public Links getLinks() {
@@ -44,6 +49,8 @@ public class YonaGoal extends BaseEntity {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(nu.yona.app.api.model.Links Links) {
@@ -51,6 +58,8 @@ public class YonaGoal extends BaseEntity {
     }
 
     /**
+     * Gets type.
+     *
      * @return The Type
      */
     public String getType() {
@@ -58,6 +67,8 @@ public class YonaGoal extends BaseEntity {
     }
 
     /**
+     * Sets type.
+     *
      * @param Type The @type
      */
     public void setType(String Type) {
@@ -65,6 +76,8 @@ public class YonaGoal extends BaseEntity {
     }
 
     /**
+     * Gets activity category name.
+     *
      * @return The activityCategoryName
      */
     public String getActivityCategoryName() {
@@ -72,24 +85,46 @@ public class YonaGoal extends BaseEntity {
     }
 
     /**
+     * Sets activity category name.
+     *
      * @param activityCategoryName The activityCategoryName
      */
     public void setActivityCategoryName(String activityCategoryName) {
         this.activityCategoryName = activityCategoryName;
     }
 
+    /**
+     * Gets max duration minutes.
+     *
+     * @return the max duration minutes
+     */
     public long getMaxDurationMinutes() {
         return maxDurationMinutes;
     }
 
+    /**
+     * Sets max duration minutes.
+     *
+     * @param maxDurationMinutes the max duration minutes
+     */
     public void setMaxDurationMinutes(long maxDurationMinutes) {
         this.maxDurationMinutes = maxDurationMinutes;
     }
 
+    /**
+     * Gets zones.
+     *
+     * @return the zones
+     */
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Sets zones.
+     *
+     * @param zones the zones
+     */
     public void setZones(List<String> zones) {
         this.zones = zones;
     }

@@ -32,6 +32,11 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
     private final AuthenticateDAO authenticateDao;
     private final Context mContext;
 
+    /**
+     * Instantiates a new Activity category manager.
+     *
+     * @param context the context
+     */
     public ActivityCategoryManagerImpl(Context context) {
         activityCategoriesNetwork = new ActivityCategoriesNetworkImpl();
         activityCategoriesDAO = new ActivityCategoriesDAO(DatabaseHelper.getInstance(context), context);

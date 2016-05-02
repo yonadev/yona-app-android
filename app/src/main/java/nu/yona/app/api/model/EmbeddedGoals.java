@@ -25,10 +25,20 @@ public class EmbeddedGoals extends BaseEntity {
     @Expose
     private List<YonaGoal> yonaGoals = new ArrayList<>();
 
+    /**
+     * Gets yona goals.
+     *
+     * @return the yona goals
+     */
     public List<YonaGoal> getYonaGoals() {
         return yonaGoals;
     }
 
+    /**
+     * Sets yona goals.
+     *
+     * @param yonaGoals the yona goals
+     */
     public void setYonaGoals(List<YonaGoal> yonaGoals) {
         this.yonaGoals = yonaGoals;
     }

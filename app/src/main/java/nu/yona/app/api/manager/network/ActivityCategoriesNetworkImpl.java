@@ -27,6 +27,12 @@ import retrofit2.Response;
  */
 public class ActivityCategoriesNetworkImpl extends BaseImpl {
 
+    /**
+     * Gets activity categories.
+     *
+     * @param url      the url
+     * @param listener the listener
+     */
     public void getActivityCategories(String url, final DataLoadListener listener) {
         getRestApi().getActivityCategories().enqueue(new Callback<ActivityCategories>() {
             @Override

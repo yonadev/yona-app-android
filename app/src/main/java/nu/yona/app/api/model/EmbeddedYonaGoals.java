@@ -18,6 +18,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Embedded yona goals.
+ */
 public class EmbeddedYonaGoals extends BaseEntity {
 
     @SerializedName("yona:goals")
@@ -25,6 +28,8 @@ public class EmbeddedYonaGoals extends BaseEntity {
     private List<YonaGoal> yonaGoals = new ArrayList<>();
 
     /**
+     * Gets yona goals.
+     *
      * @return The yonaGoals
      */
     public List<YonaGoal> getYonaGoals() {
@@ -32,6 +37,8 @@ public class EmbeddedYonaGoals extends BaseEntity {
     }
 
     /**
+     * Sets yona goals.
+     *
      * @param yonaGoals The yona:goals
      */
     public void setYonaGoals(List<YonaGoal> yonaGoals) {

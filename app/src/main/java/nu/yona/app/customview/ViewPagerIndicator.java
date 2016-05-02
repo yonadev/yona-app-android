@@ -19,6 +19,9 @@ import android.view.View;
 import nu.yona.app.R;
 import nu.yona.app.utils.AppUtils;
 
+/**
+ * The type View pager indicator.
+ */
 public class ViewPagerIndicator extends View {
     private static final float SPACING = 2.0f;
     private final Paint backPaint = new Paint();
@@ -29,24 +32,45 @@ public class ViewPagerIndicator extends View {
     private int count;
     private final Context mContext;
 
+    /**
+     * Instantiates a new View pager indicator.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public ViewPagerIndicator(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.mContext = context;
         init();
     }
 
+    /**
+     * Instantiates a new View pager indicator.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public ViewPagerIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
         init();
     }
 
+    /**
+     * Instantiates a new View pager indicator.
+     *
+     * @param context the context
+     */
     public ViewPagerIndicator(Context context) {
         super(context);
         this.mContext = context;
         init();
     }
 
+    /**
+     * Sets count.
+     */
     public void setCount() {
         this.count = nu.yona.app.ui.tour.TourView.TOTAL_PAGE;
         invalidate();
@@ -79,6 +103,12 @@ public class ViewPagerIndicator extends View {
         canvas.drawCircle(leftOffset + (scrollPosition + currentScroll) * radius * SPACING * 2, topOffset, radius, frontPaint);
     }
 
+    /**
+     * On scrolled.
+     *
+     * @param position       the position
+     * @param positionOffset the position offset
+     */
     public void onScrolled(int position, float positionOffset) {
         scrollPosition = position;
         currentScroll = positionOffset;

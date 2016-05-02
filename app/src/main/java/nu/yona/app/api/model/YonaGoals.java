@@ -16,6 +16,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
+/**
+ * The type Yona goals.
+ */
 public class YonaGoals extends BaseEntity {
 
     @SerializedName("_embedded")
@@ -26,6 +29,8 @@ public class YonaGoals extends BaseEntity {
     private Links_ links;
 
     /**
+     * Gets embedded.
+     *
      * @return The Embedded
      */
     public EmbeddedYonaGoals getEmbedded() {
@@ -33,6 +38,8 @@ public class YonaGoals extends BaseEntity {
     }
 
     /**
+     * Sets embedded.
+     *
      * @param Embedded The _embedded
      */
     public void setEmbedded(EmbeddedYonaGoals Embedded) {
@@ -40,6 +47,8 @@ public class YonaGoals extends BaseEntity {
     }
 
     /**
+     * Gets links.
+     *
      * @return The links
      */
     public Links_ getLinks() {
@@ -47,6 +56,8 @@ public class YonaGoals extends BaseEntity {
     }
 
     /**
+     * Sets links.
+     *
      * @param links The links
      */
     public void setLinks(Links_ links) {

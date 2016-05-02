@@ -18,6 +18,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type User.
+ */
 public class User extends BaseEntity {
 
     @SerializedName("_embedded")
@@ -56,16 +59,28 @@ public class User extends BaseEntity {
     @Expose
     private String mobileNumberConfirmationCode;
 
+    /**
+     * Gets mobile number confirmation code.
+     *
+     * @return the mobile number confirmation code
+     */
     public String getMobileNumberConfirmationCode() {
         return mobileNumberConfirmationCode;
     }
 
+    /**
+     * Sets mobile number confirmation code.
+     *
+     * @param mobileNumberConfirmationCode the mobile number confirmation code
+     */
     public void setMobileNumberConfirmationCode(String mobileNumberConfirmationCode) {
         this.mobileNumberConfirmationCode = mobileNumberConfirmationCode;
     }
 
 
     /**
+     * Gets embedded.
+     *
      * @return The Embedded
      */
     public nu.yona.app.api.model.Embedded getEmbedded() {
@@ -73,6 +88,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Sets embedded.
+     *
      * @param Embedded The _embedded
      */
     public void setEmbedded(nu.yona.app.api.model.Embedded Embedded) {
@@ -80,6 +97,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public Links getLinks() {
@@ -87,6 +106,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(Links Links) {
@@ -94,6 +115,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Gets first name.
+     *
      * @return The firstName
      */
     public String getFirstName() {
@@ -101,6 +124,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Sets first name.
+     *
      * @param firstName The firstName
      */
     public void setFirstName(String firstName) {
@@ -108,6 +133,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Gets last name.
+     *
      * @return The lastName
      */
     public String getLastName() {
@@ -115,6 +142,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Sets last name.
+     *
      * @param lastName The lastName
      */
     public void setLastName(String lastName) {
@@ -122,6 +151,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Gets mobile number.
+     *
      * @return The mobileNumber
      */
     public String getMobileNumber() {
@@ -129,6 +160,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Sets mobile number.
+     *
      * @param mobileNumber The mobileNumber
      */
     public void setMobileNumber(String mobileNumber) {
@@ -136,6 +169,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Gets vpn profile.
+     *
      * @return The vpnProfile
      */
     public VpnProfile getVpnProfile() {
@@ -143,6 +178,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Sets vpn profile.
+     *
      * @param vpnProfile The vpnProfile
      */
     public void setVpnProfile(VpnProfile vpnProfile) {
@@ -150,6 +187,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Gets nickname.
+     *
      * @return The nickname
      */
     public String getNickname() {
@@ -157,6 +196,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Sets nickname.
+     *
      * @param nickname The nickname
      */
     public void setNickname(String nickname) {
@@ -164,6 +205,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Gets devices.
+     *
      * @return The devices
      */
     public List<String> getDevices() {
@@ -171,6 +214,8 @@ public class User extends BaseEntity {
     }
 
     /**
+     * Sets devices.
+     *
      * @param devices The devices
      */
     public void setDevices(List<String> devices) {

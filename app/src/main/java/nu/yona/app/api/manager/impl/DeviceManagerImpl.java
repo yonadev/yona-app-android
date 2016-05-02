@@ -32,6 +32,11 @@ public class DeviceManagerImpl implements DeviceManager {
     private final DeviceNetworkImpl deviceNetwork;
     private final Context mContext;
 
+    /**
+     * Instantiates a new Device manager.
+     *
+     * @param context the context
+     */
     public DeviceManagerImpl(Context context) {
         mContext = context;
         deviceNetwork = new DeviceNetworkImpl();

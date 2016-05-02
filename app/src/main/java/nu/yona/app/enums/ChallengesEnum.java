@@ -15,8 +15,17 @@ package nu.yona.app.enums;
  */
 public enum ChallengesEnum {
 
+    /**
+     * Credit tab challenges enum.
+     */
     CREDIT_TAB(0),
+    /**
+     * Zone tab challenges enum.
+     */
     ZONE_TAB(1),
+    /**
+     * No go tab challenges enum.
+     */
     NO_GO_TAB(2);
 
     private int tab;
@@ -25,6 +34,12 @@ public enum ChallengesEnum {
         this.tab = tab;
     }
 
+    /**
+     * Gets enum.
+     *
+     * @param value the value
+     * @return the enum
+     */
     public static ChallengesEnum getEnum(int value) {
         for (ChallengesEnum v : values()) {
             if (v.getTab() == value) {
@@ -34,10 +49,20 @@ public enum ChallengesEnum {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Gets tab.
+     *
+     * @return the tab
+     */
     public int getTab() {
         return tab;
     }
 
+    /**
+     * Sets tab.
+     *
+     * @param tab the tab
+     */
     public void setTab(int tab) {
         this.tab = tab;
     }

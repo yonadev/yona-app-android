@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The type Embedded.
+ */
 public class Embedded extends BaseEntity {
 
     @SerializedName("yona:goals")
@@ -37,6 +40,8 @@ public class Embedded extends BaseEntity {
     private Links Links;
 
     /**
+     * Gets yona goals.
+     *
      * @return The yonaGoals
      */
     public YonaGoals getYonaGoals() {
@@ -44,6 +49,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Sets yona goals.
+     *
      * @param yonaGoals The yona:goals
      */
     public void setYonaGoals(YonaGoals yonaGoals) {
@@ -51,6 +58,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Gets yona buddies.
+     *
      * @return The yonaBuddies
      */
     public YonaBuddies getYonaBuddies() {
@@ -58,6 +67,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Sets yona buddies.
+     *
      * @param yonaBuddies The yona:buddies
      */
     public void setYonaBuddies(YonaBuddies yonaBuddies) {
@@ -70,6 +81,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Gets yona user.
+     *
      * @return The RegisterUser
      */
     public RegisterUser getYonaUser() {
@@ -77,6 +90,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Sets yona user.
+     *
      * @param yonaUser The yona:user
      */
     public void setYonaUser(RegisterUser yonaUser) {
@@ -84,6 +99,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Gets sending status.
+     *
      * @return The sendingStatus
      */
     public String getSendingStatus() {
@@ -91,6 +108,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Sets sending status.
+     *
      * @param sendingStatus The sendingStatus
      */
     public void setSendingStatus(String sendingStatus) {
@@ -98,6 +117,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Gets receiving status.
+     *
      * @return The receivingStatus
      */
     public String getReceivingStatus() {
@@ -105,6 +126,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Sets receiving status.
+     *
      * @param receivingStatus The receivingStatus
      */
     public void setReceivingStatus(String receivingStatus) {
@@ -112,6 +135,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public Links getLinks() {
@@ -119,6 +144,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(Links Links) {

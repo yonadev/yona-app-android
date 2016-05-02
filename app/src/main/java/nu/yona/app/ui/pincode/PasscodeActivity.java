@@ -47,6 +47,11 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
         loadPasscodeView(true);
     }
 
+    /**
+     * Update title.
+     *
+     * @param title the title
+     */
     public void updateTitle(String title) {
         txtTitle.setText(title);
     }

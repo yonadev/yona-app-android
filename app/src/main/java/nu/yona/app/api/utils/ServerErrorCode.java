@@ -14,6 +14,12 @@ package nu.yona.app.api.utils;
  * Created by kinnarvasa on 21/04/16.
  */
 public interface ServerErrorCode {
+    /**
+     * The constant USER_EXIST_ERROR.
+     */
     String USER_EXIST_ERROR = "error.user.exists";
+    /**
+     * The constant USER_NOT_FOUND.
+     */
     String USER_NOT_FOUND = "error.user.not.found.id"; // As per comment on: http://wiki.yona.nu/display/DEV/Flow+-+Unsubscribe?focusedCommentId=14843985#comment-14843985
 }

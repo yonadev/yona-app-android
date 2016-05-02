@@ -14,7 +14,21 @@ package nu.yona.app.api.db;
  * Created by kinnarvasa on 04/04/16.
  */
 public interface DbSerializer {
+    /**
+     * Serialize byte [ ].
+     *
+     * @param obj the obj
+     * @return the byte [ ]
+     */
     byte[] serialize(Object obj);
 
+    /**
+     * Deserialize t.
+     *
+     * @param <T>  the type parameter
+     * @param data the data
+     * @param type the type
+     * @return the t
+     */
     <T> T deserialize(byte[] data, Class<T> type);
 }

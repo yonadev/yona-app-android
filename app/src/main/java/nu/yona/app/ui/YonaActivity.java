@@ -550,10 +550,20 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
+    /**
+     * Replace fragment.
+     *
+     * @param intent the intent
+     */
     public void replaceFragment(Intent intent) {
         replaceFragmentWithAction(intent);
     }
 
+    /**
+     * Gets right icon.
+     *
+     * @return the right icon
+     */
     public ImageView getRightIcon() {
         return rightIcon;
     }

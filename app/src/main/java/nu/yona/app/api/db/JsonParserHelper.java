@@ -14,10 +14,18 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
+/**
+ * The type Json parser helper.
+ */
 class JsonParserHelper {
 
     private static ObjectMapper objectMapper;
 
+    /**
+     * Gets object mapper.
+     *
+     * @return the object mapper
+     */
     public static synchronized ObjectMapper getObjectMapper() {
         if (objectMapper == null) {
             objectMapper = new ObjectMapper();

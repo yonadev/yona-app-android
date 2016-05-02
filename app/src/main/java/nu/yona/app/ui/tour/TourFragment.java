@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 
 import nu.yona.app.ui.BaseFragment;
 
+/**
+ * The type Tour fragment.
+ */
 public class TourFragment extends BaseFragment {
 
     @Override

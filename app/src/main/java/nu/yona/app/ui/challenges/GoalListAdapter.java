@@ -24,6 +24,8 @@ import nu.yona.app.enums.GoalsEnum;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
+ *
+ * @param <T> the type parameter
  */
 class GoalListAdapter<T> extends BaseAdapter {
     private final Context mContext;
@@ -31,12 +33,23 @@ class GoalListAdapter<T> extends BaseAdapter {
     private List<T> mListYonaGoal;
 
 
+    /**
+     * Instantiates a new Goal list adapter.
+     *
+     * @param context      the context
+     * @param listYonaGoal the list yona goal
+     */
     public GoalListAdapter(Context context, List<T> listYonaGoal) {
         this.mContext = context;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         this.mListYonaGoal = listYonaGoal;
     }
 
+    /**
+     * Notify data set changed.
+     *
+     * @param listYonaGoal the list yona goal
+     */
     public void notifyDataSetChanged(List<T> listYonaGoal) {
         this.mListYonaGoal = listYonaGoal;
         super.notifyDataSetChanged();
@@ -87,6 +100,11 @@ class GoalListAdapter<T> extends BaseAdapter {
         return view;
     }
 
+    /**
+     * Update goals list.
+     *
+     * @param yonaGoalList the yona goal list
+     */
     public void updateGoalsList(final List<T> yonaGoalList) {
         this.mListYonaGoal = yonaGoalList;
         notifyDataSetChanged();

@@ -23,6 +23,12 @@ import nu.yona.app.utils.AppUtils;
  */
 public class GoalDAO extends BaseDAO {
 
+    /**
+     * Instantiates a new Goal dao.
+     *
+     * @param mOpenHelper the m open helper
+     * @param context     the context
+     */
     public GoalDAO(SQLiteOpenHelper mOpenHelper, Context context) {
         super(mOpenHelper, context);
     }
@@ -30,8 +36,8 @@ public class GoalDAO extends BaseDAO {
     /**
      * Insert or Update the User Goals into Database
      *
-     * @param goals
-     * @param listener
+     * @param goals    the goals
+     * @param listener the listener
      */
     public void saveGoalData(Goals goals, DataLoadListener listener) {
         try {
@@ -52,6 +58,11 @@ public class GoalDAO extends BaseDAO {
         }
     }
 
+    /**
+     * Gets user goal.
+     *
+     * @return the user goal
+     */
     public Goals getUserGoal() {
         Cursor c = query(DBConstant.TBL_GOAL);
         try {

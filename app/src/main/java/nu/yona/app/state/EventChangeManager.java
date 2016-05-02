@@ -18,26 +18,61 @@ import java.util.Set;
  */
 public class EventChangeManager {
 
+    /**
+     * The constant EVENT_SIGNUP_STEP_ONE_NEXT.
+     */
     public static final int EVENT_SIGNUP_STEP_ONE_NEXT = 1;
+    /**
+     * The constant EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT.
+     */
     public static final int EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT = 2;
 
+    /**
+     * The constant EVENT_SIGNUP_STEP_TWO_NEXT.
+     */
     public static final int EVENT_SIGNUP_STEP_TWO_NEXT = 3;
+    /**
+     * The constant EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT.
+     */
     public static final int EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT = 4;
 
+    /**
+     * The constant EVENT_PASSCODE_STEP_ONE.
+     */
     public static final int EVENT_PASSCODE_STEP_ONE = 5;
+    /**
+     * The constant EVENT_PASSCODE_STEP_TWO.
+     */
     public static final int EVENT_PASSCODE_STEP_TWO = 6;
+    /**
+     * The constant EVENT_PASSCODE_ERROR.
+     */
     public static final int EVENT_PASSCODE_ERROR = 7;
+    /**
+     * The constant EVENT_PASSCODE_RESET.
+     */
     public static final int EVENT_PASSCODE_RESET = 8;
 
+    /**
+     * The constant EVENT_OTP_RESEND.
+     */
     public static final int EVENT_OTP_RESEND = 9;
 
+    /**
+     * The constant EVENT_TOUR_COMPLETE.
+     */
     public static final int EVENT_TOUR_COMPLETE = 10;
 
+    /**
+     * The constant EVENT_UPDATE_GOALS.
+     */
     public static final int EVENT_UPDATE_GOALS = 11;
 
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     /**
+     * Register listener.
+     *
      * @param listener do register listener to listen event changes, (Generally in onCreate())
      */
     public void registerListener(EventChangeListener listener) {
@@ -47,6 +82,8 @@ public class EventChangeManager {
     }
 
     /**
+     * Un register listener.
+     *
      * @param listener do unregister everytime when that screen/ class is no more in use. (Generally in onDestroy())
      */
     public void unRegisterListener(EventChangeListener listener) {
@@ -63,6 +100,8 @@ public class EventChangeManager {
     }
 
     /**
+     * Notify change.
+     *
      * @param eventType Eventtype define in EventChangeManager
      * @param object    object to pass with listener from one activity/fragment to another.
      */

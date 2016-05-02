@@ -23,6 +23,9 @@ import android.widget.TextView;
 import nu.yona.app.R;
 import nu.yona.app.utils.AppUtils;
 
+/**
+ * The type Custom progress dialog.
+ */
 public class CustomProgressDialog extends Dialog {
 
     private Button okBtn;
@@ -33,6 +36,13 @@ public class CustomProgressDialog extends Dialog {
         init(false, true);
     }
 
+    /**
+     * Instantiates a new Custom progress dialog.
+     *
+     * @param context        the context
+     * @param message        the message
+     * @param isErrorMessage the is error message
+     */
     public CustomProgressDialog(Context context, String message, boolean isErrorMessage) {
         super(context);
         init(false, false);
@@ -79,6 +89,11 @@ public class CustomProgressDialog extends Dialog {
         super.show();
     }
 
+    /**
+     * Show.
+     *
+     * @param duration the duration
+     */
     public void show(int duration) {
         try {
             super.show();
@@ -98,14 +113,27 @@ public class CustomProgressDialog extends Dialog {
         }
     }
 
+    /**
+     * Update progress message.
+     *
+     * @param message the message
+     */
     public void updateProgressMessage(String message) {
         progressTxt.setText(message);
     }
 
+    /**
+     * Show ok btn.
+     */
     public void showOkBtn() {
         okBtn.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Gets ok btn.
+     *
+     * @return the ok btn
+     */
     public Button getOkBtn() {
         return okBtn;
     }

@@ -43,30 +43,76 @@ public interface RestApi {
 
     /********
      * USER
-     ************/
-
+     *
+     * @param yonaPassword the yona password
+     * @param body         the body
+     * @return the call
+     */
     @Headers("Cache-Control: public, max-age=640000, s-maxage=640000 , max-stale=2419200")
     @POST(ApiList.USER)
     Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
                             @Body RegisterUser body);
 
+    /**
+     * Override register user call.
+     *
+     * @param yonaPassword the yona password
+     * @param otp          the otp
+     * @param body         the body
+     * @return the call
+     */
     @POST(ApiList.USER)
     Call<User> overrideRegisterUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Query("overwriteUserConfirmationCode") String otp,
                                     @Body RegisterUser body);
 
+    /**
+     * Gets user.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @return the user
+     */
     @GET
     Call<User> getUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword);
 
+    /**
+     * Verify mobile number call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @param code     the code
+     * @return the call
+     */
     @POST
     Call<User> verifyMobileNumber(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
                                   @Body OTPVerficationCode code);
 
+    /**
+     * Resend otp call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the call
+     */
     @POST
     Call<Void> resendOTP(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
+    /**
+     * Request user override call.
+     *
+     * @param number the number
+     * @return the call
+     */
     @POST(ApiList.ADMIN_OVERRIDE_USER)
     Call<Void> requestUserOverride(@Query("mobileNumber") String number);
 
+    /**
+     * Delete user call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the call
+     */
     @DELETE
     Call<Void> deleteUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
@@ -74,14 +120,32 @@ public interface RestApi {
 
     /********
      * RESET PIN
-     ************/
-
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the call
+     */
     @POST
     Call<PinResetDelay> requestPinReset(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
+    /**
+     * Verify pin call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @param code     the code
+     * @return the call
+     */
     @POST
     Call<Void> verifyPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body OTPVerficationCode code);
 
+    /**
+     * Clear pin call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the call
+     */
     @POST
     Call<Void> clearPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
@@ -89,15 +153,33 @@ public interface RestApi {
 
     /********
      * DEVICE
-     ************/
-
+     *
+     * @param url              the url
+     * @param password         the password
+     * @param newDeviceRequest the new device request
+     * @return the call
+     */
     @PUT
     Call<Void> addDevice(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
                          @Body NewDeviceRequest newDeviceRequest);
 
+    /**
+     * Delete device call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the call
+     */
     @DELETE
     Call<Void> deleteDevice(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
+    /**
+     * Check device call.
+     *
+     * @param mobileNumber the mobile number
+     * @param password     the password
+     * @return the call
+     */
     @GET(ApiList.NEW_DEVICE_REQUEST)
     Call<NewDevice> checkDevice(@Path("mobileNumber") String mobileNumber, @Header(NetworkConstant.YONA_NEW_PASSWORD) String password);
 
@@ -105,8 +187,9 @@ public interface RestApi {
 
     /********
      * ActivityCategory
-     ************/
-
+     *
+     * @return the activity categories
+     */
     @GET(ApiList.ACTIVITY_CATEGORIES)
     Call<ActivityCategories> getActivityCategories();
 
@@ -114,23 +197,67 @@ public interface RestApi {
 
     /********
      * GOALS
-     ************/
-
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the user goals
+     */
     @GET
     Call<Goals> getUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
+    /**
+     * Put user goals call.
+     *
+     * @param url                the url
+     * @param password           the password
+     * @param postBudgetYonaGoal the post budget yona goal
+     * @return the call
+     */
     @POST
     Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body PostBudgetYonaGoal postBudgetYonaGoal);
 
+    /**
+     * Put user goals call.
+     *
+     * @param url                  the url
+     * @param password             the password
+     * @param postTimeZoneYonaGoal the post time zone yona goal
+     * @return the call
+     */
     @POST
     Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body PostTimeZoneYonaGoal postTimeZoneYonaGoal);
 
+    /**
+     * Delete user goal call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the call
+     */
     @DELETE
     Call<Void> deleteUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
+    /**
+     * Update user goal call.
+     *
+     * @param url                the url
+     * @param password           the password
+     * @param message            the message
+     * @param postBudgetYonaGoal the post budget yona goal
+     * @return the call
+     */
     @PUT
     Call<Goals> updateUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("message") String message, @Body PostBudgetYonaGoal postBudgetYonaGoal);
 
+    /**
+     * Update user goal call.
+     *
+     * @param url                  the url
+     * @param password             the password
+     * @param message              the message
+     * @param postTimeZoneYonaGoal the post time zone yona goal
+     * @return the call
+     */
     @PUT
     Call<Goals> updateUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("message") String message, @Body PostTimeZoneYonaGoal postTimeZoneYonaGoal);
 
@@ -138,14 +265,32 @@ public interface RestApi {
 
     /********
      * FRIENDS / BUDDY
-     ************/
-
+     *
+     * @param url      the url
+     * @param password the password
+     * @param buddy    the buddy
+     * @return the call
+     */
     @POST
     Call<YonaBuddy> addBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body AddBuddy buddy);
 
+    /**
+     * Gets buddy.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the buddy
+     */
     @GET
     Call<Buddy> getBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
+    /**
+     * Delete buddy call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the call
+     */
     @DELETE
     Call<Void> deleteBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 

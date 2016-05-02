@@ -18,6 +18,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Embedded yona buddies.
+ */
 public class EmbeddedYonaBuddies extends BaseEntity {
 
     @SerializedName("yona:buddies")
@@ -25,6 +28,8 @@ public class EmbeddedYonaBuddies extends BaseEntity {
     private List<YonaBuddy> yonaBuddies = new ArrayList<>();
 
     /**
+     * Gets yona buddies.
+     *
      * @return The yonaBuddies
      */
     public List<YonaBuddy> getYonaBuddies() {
@@ -32,6 +37,8 @@ public class EmbeddedYonaBuddies extends BaseEntity {
     }
 
     /**
+     * Sets yona buddies.
+     *
      * @param yonaBuddies The yona:buddies
      */
     public void setYonaBuddies(List<YonaBuddy> yonaBuddies) {

@@ -22,6 +22,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
+    /**
+     * Instantiates a new View pager adapter.
+     *
+     * @param fm the fm
+     */
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -36,6 +41,12 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return mFragmentList.size();
     }
 
+    /**
+     * Add fragment.
+     *
+     * @param fragment the fragment
+     * @param title    the title
+     */
     public void addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);

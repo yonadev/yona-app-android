@@ -19,17 +19,57 @@ import nu.yona.app.listener.DataLoadListener;
  */
 public interface GoalManager {
 
+    /**
+     * Gets user goal.
+     *
+     * @param listener the listener
+     */
     void getUserGoal(DataLoadListener listener);
 
+    /**
+     * Gets user goal from db.
+     *
+     * @return the user goal from db
+     */
     Goals getUserGoalFromDb();
 
+    /**
+     * Post budget goals.
+     *
+     * @param goal     the goal
+     * @param listener the listener
+     */
     void postBudgetGoals(PostBudgetYonaGoal goal, DataLoadListener listener);
 
+    /**
+     * Post time zone goals.
+     *
+     * @param goal     the goal
+     * @param listener the listener
+     */
     void postTimeZoneGoals(PostTimeZoneYonaGoal goal, DataLoadListener listener);
 
+    /**
+     * Delete goal.
+     *
+     * @param yonaGoal the yona goal
+     * @param listener the listener
+     */
     void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener);
 
+    /**
+     * Update budget goals.
+     *
+     * @param goal     the goal
+     * @param listener the listener
+     */
     void updateBudgetGoals(PostBudgetYonaGoal goal, DataLoadListener listener);
 
+    /**
+     * Update time zone goals.
+     *
+     * @param goal     the goal
+     * @param listener the listener
+     */
     void updateTimeZoneGoals(PostTimeZoneYonaGoal goal, DataLoadListener listener);
 }

@@ -16,6 +16,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
+/**
+ * The type Links.
+ */
 public class Links_ extends BaseEntity {
 
     @SerializedName("self")
@@ -23,6 +26,8 @@ public class Links_ extends BaseEntity {
     private Href self;
 
     /**
+     * Gets self.
+     *
      * @return The self
      */
     public Href getSelf() {
@@ -30,6 +35,8 @@ public class Links_ extends BaseEntity {
     }
 
     /**
+     * Sets self.
+     *
      * @param self The self
      */
     public void setSelf(Href self) {

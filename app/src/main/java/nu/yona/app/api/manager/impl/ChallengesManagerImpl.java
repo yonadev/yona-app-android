@@ -44,6 +44,11 @@ public class ChallengesManagerImpl implements ChallengesManager {
     private final List<YonaGoal> timeZoneCategoriesGoalList;
     private final List<YonaGoal> noGoCategoriesGoalList;
 
+    /**
+     * Instantiates a new Challenges manager.
+     *
+     * @param context the context
+     */
     public ChallengesManagerImpl(Context context) {
         activityCategoryManager = new ActivityCategoryManagerImpl(context);
         goalManager = new GoalManagerImpl(context);

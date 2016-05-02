@@ -19,6 +19,9 @@ import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.utils.PreferenceConstant;
 
+/**
+ * The type Tour activity.
+ */
 public class TourActivity extends BaseActivity implements EventChangeListener {
 
     @Override

@@ -25,6 +25,12 @@ import nu.yona.app.utils.AppUtils;
  */
 public class ActivityCategoriesDAO extends BaseDAO {
 
+    /**
+     * Instantiates a new Activity categories dao.
+     *
+     * @param mOpenHelper the m open helper
+     * @param context     the context
+     */
     public ActivityCategoriesDAO(SQLiteOpenHelper mOpenHelper, Context context) {
         super(mOpenHelper, context);
     }
@@ -32,7 +38,8 @@ public class ActivityCategoriesDAO extends BaseDAO {
     /**
      * This method will clear all data from db and store new data in table.
      *
-     * @param listener
+     * @param activityCategories the activity categories
+     * @param listener           the listener
      */
     public void saveActivityCategories(final ActivityCategories activityCategories, final DataLoadListener listener) {
         try {
@@ -51,6 +58,11 @@ public class ActivityCategoriesDAO extends BaseDAO {
         }
     }
 
+    /**
+     * Gets activity categories.
+     *
+     * @return the activity categories
+     */
     public ActivityCategories getActivityCategories() {
         Cursor c = query(DBConstant.TBL_ACTIVITY_CATEGORIES);
         try {

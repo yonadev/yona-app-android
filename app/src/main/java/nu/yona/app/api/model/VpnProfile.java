@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The type Vpn profile.
+ */
 public class VpnProfile extends BaseEntity {
 
     @SerializedName("vpnLoginID")
@@ -28,6 +31,8 @@ public class VpnProfile extends BaseEntity {
     private String openVPNProfile;
 
     /**
+     * Gets vpn login id.
+     *
      * @return The vpnLoginID
      */
     public String getVpnLoginID() {
@@ -35,6 +40,8 @@ public class VpnProfile extends BaseEntity {
     }
 
     /**
+     * Sets vpn login id.
+     *
      * @param vpnLoginID The vpnLoginID
      */
     public void setVpnLoginID(String vpnLoginID) {
@@ -42,6 +49,8 @@ public class VpnProfile extends BaseEntity {
     }
 
     /**
+     * Gets vpn password.
+     *
      * @return The vpnPassword
      */
     public String getVpnPassword() {
@@ -49,6 +58,8 @@ public class VpnProfile extends BaseEntity {
     }
 
     /**
+     * Sets vpn password.
+     *
      * @param vpnPassword The vpnPassword
      */
     public void setVpnPassword(String vpnPassword) {
@@ -56,6 +67,8 @@ public class VpnProfile extends BaseEntity {
     }
 
     /**
+     * Gets open vpn profile.
+     *
      * @return The openVPNProfile
      */
     public String getOpenVPNProfile() {
@@ -63,6 +76,8 @@ public class VpnProfile extends BaseEntity {
     }
 
     /**
+     * Sets open vpn profile.
+     *
      * @param openVPNProfile The openVPNProfile
      */
     public void setOpenVPNProfile(String openVPNProfile) {

@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The type Yona buddy.
+ */
 public class YonaBuddy extends BaseEntity {
 
     @SerializedName("_links")
@@ -34,6 +37,8 @@ public class YonaBuddy extends BaseEntity {
     private EmbeddedYonaUser Embedded;
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public Links getLinks() {
@@ -41,6 +46,8 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(Links Links) {
@@ -48,6 +55,8 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * Gets nickname.
+     *
      * @return The nickname
      */
     public String getNickname() {
@@ -55,6 +64,8 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * Sets nickname.
+     *
      * @param nickname The nickname
      */
     public void setNickname(String nickname) {
@@ -62,6 +73,8 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * Gets sending status.
+     *
      * @return The sendingStatus
      */
     public String getSendingStatus() {
@@ -69,6 +82,8 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * Sets sending status.
+     *
      * @param sendingStatus The sendingStatus
      */
     public void setSendingStatus(String sendingStatus) {
@@ -76,6 +91,8 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * Gets receiving status.
+     *
      * @return The receivingStatus
      */
     public String getReceivingStatus() {
@@ -83,6 +100,8 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * Sets receiving status.
+     *
      * @param receivingStatus The receivingStatus
      */
     public void setReceivingStatus(String receivingStatus) {
@@ -90,6 +109,8 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * Gets embedded.
+     *
      * @return The Embedded
      */
     public EmbeddedYonaUser getEmbedded() {
@@ -97,6 +118,8 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * Sets embedded.
+     *
      * @param Embedded The _embedded
      */
     public void setEmbedded(EmbeddedYonaUser Embedded) {
