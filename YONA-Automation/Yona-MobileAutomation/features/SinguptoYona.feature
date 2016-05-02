@@ -4,8 +4,8 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
 
   @demo_login
   Scenario: User wants to Join the Yona
-	Given User is on Home page and can see two options Login and Join
-	When User clicks on Join button
+    Given User is on Home page and can see two options Login and Join
+    When User clicks on Join button
     And Enters first name and last name
     Then Clicks on Next button
     And Then enters Mobile number and Nick Name on next screen
@@ -15,5 +15,3 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
     Then Enters pincode fetched from alert
     Then Sets the pin for application login
     And Confirms the pin for application login
-
-

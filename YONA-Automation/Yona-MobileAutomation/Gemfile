@@ -8,9 +8,16 @@ gem 'rake'
 gem 'appium_lib'
 gem 'activesupport'
 gem 'syntax'
-gem 'rest-client'
+# gem 'rest-client'
 gem 'mobpage'
 gem 'sauce_whisk'
 # gem 'mobmanager'
 gem 'mail'
+gem 'json'
+gem 'rest-client'
+gem 'oauth'
+gem "crack"
+gem 'rest-open-uri'
+
+
 gem 'mobmanager', :git => 'https://github.com/sanjayahuja/mobmanager'

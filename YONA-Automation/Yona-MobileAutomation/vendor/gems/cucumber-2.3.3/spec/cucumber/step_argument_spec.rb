@@ -10,9 +10,9 @@ module Cucumber
     end
 
     it "creates 2 arguments when first group is optional" do
-      arguments = StepArgument.arguments_from(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Login failed.'")
+      arguments = StepArgument.arguments_from(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Signup failed.'")
 
-      expect(arguments.map{|argument| [argument.val, argument.offset]}).to eq [[nil, nil], ["Login failed.", 21]]
+      expect(arguments.map{|argument| [argument.val, argument.offset]}).to eq [[nil, nil], ["Signup failed.", 21]]
     end
   end
 end

@@ -4,7 +4,7 @@ require 'appium_lib'
 driver = start_selenium_driver
 
 bool_status = false
-
+puts "Hooks Ruby"
 Before do
   @driver = driver
 end

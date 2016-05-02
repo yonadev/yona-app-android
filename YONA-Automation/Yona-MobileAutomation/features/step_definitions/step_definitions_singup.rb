@@ -4,33 +4,33 @@ Given(/^User is on Home page and can see two options Login and Join$/) do
 end
 
 When(/^User clicks on Join button$/) do
-  on(Login).join_element.click()
+  on(Signup).join_element.click()
 
 end
 
 And(/^Enters first name and last name$/) do
   sleep 1
-  on(Login).setText('fname', 'lname')
+  on(Signup).setText('fname', 'lname')
 end
 
 
 
 Then(/^Clicks on Next button$/) do
   sleep 1
-  on(Login).next('namescreen')
+  on(Signup).next('namescreen')
 end
 
 
 And(/^Then enters Mobile number and Nick Name on next screen$/) do
   sleep 1
-  on(Login).setText('155881488', 'Jacky')
+  on(Signup).setText('155881488', 'Jacky')
 end
 
 
 
 Then(/^Clicks on Next button on this screen$/) do
   sleep 1
-  on(Login).next('mobnumscreen')
+  on(Signup).next('mobnumscreen')
   sleep 4
 
 end
@@ -39,25 +39,25 @@ end
 
 Then(/^Clicks on OK button in alert$/) do
 
-  on(Login).clickOK
+  on(Signup).clickOK
 end
 
 Then(/^Enters pincode fetched from alert$/) do
   sleep 1
-  on(Login).enterPin
+  on(Signup).enterPin
 
 
 end
 
 Then(/^Sets the pin for application login$/) do
   sleep 1
-  on(Login).enterPin
+  on(Signup).enterPin
 
 end
 
 And(/^Confirms the pin for application login$/) do
   sleep 1
-  on(Login).enterPin
+  on(Signup).enterPin
   sleep 4
 end
 
