@@ -41,7 +41,7 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
 
     @Override
     public TimeZoneGoalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.timezoen_goal_item_layout, null);
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.timezoen_goal_item_layout, parent, false);
         TimeZoneGoalViewHolder rHolder = new TimeZoneGoalViewHolder(layoutView, clickListener);
         return rHolder;
     }
