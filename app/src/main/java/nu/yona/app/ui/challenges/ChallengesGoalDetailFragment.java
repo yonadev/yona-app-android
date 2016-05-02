@@ -437,7 +437,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                         if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
                             updateBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), (YonaGoal) mYonaGoal);
                         } else {
-                            createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), (YonaGoal) mYonaGoal);
+                            createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
                         }
                     } else if (mYonaGoal instanceof YonaActivityCategories) {
                         createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
@@ -447,7 +447,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                         if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
                             updateTimeZoneGoal(listOfTimes, (YonaGoal) mYonaGoal);
                         } else {
-                            createTimeZoneGoal(listOfTimes, (YonaGoal) mYonaGoal);
+                            createTimeZoneGoal(listOfTimes, mYonaGoal);
                         }
                     } else if (mYonaGoal instanceof YonaActivityCategories) {
                         createTimeZoneGoal(listOfTimes, mYonaGoal);
