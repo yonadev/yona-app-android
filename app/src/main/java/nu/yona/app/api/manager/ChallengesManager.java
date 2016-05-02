@@ -146,4 +146,6 @@ public interface ChallengesManager {
      * @return the goals enum
      */
     GoalsEnum typeOfGoal(YonaGoal yonaGoal);
+
+    YonaActivityCategories getSelectedGoalCategories(String budgetType);
 }

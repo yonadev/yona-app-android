@@ -69,7 +69,7 @@
                 <nu.yona.app.customview.YonaFontTextView
                     android:id="@+id/txtGoalStartTime"
                     style="@style/SeScorePos"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginRight="20dp"
@@ -104,11 +104,9 @@
                 <nu.yona.app.customview.YonaFontTextView
                     android:id="@+id/txtGoalEndTime"
                     style="@style/SeScorePos"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center"
-                    android:layout_marginRight="18dp"
                     android:maxLines="1" />
 
             </LinearLayout>

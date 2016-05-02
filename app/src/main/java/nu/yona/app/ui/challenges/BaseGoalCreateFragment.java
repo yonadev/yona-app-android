@@ -167,7 +167,6 @@ public class BaseGoalCreateFragment extends BaseFragment {
                 } else {
                     CustomAlertDialog.show(getActivity(), "You already Added this category.", "Ok");
                     return;
-                    //goalIntent.putExtra(AppConstant.GOAL_OBJECT, yonaGoal);
                 }
             }
         }
@@ -184,6 +183,7 @@ public class BaseGoalCreateFragment extends BaseFragment {
                 if (object instanceof YonaActivityCategories) {
                     addNoGoChallange(object);
                 } else if (object instanceof YonaGoal) {
+                    goalIntent.putExtra(AppConstant.NEW_GOAL_TYPE, GoalsEnum.BUDGET_GOAL.getActionString());
                     activity.replaceFragment(goalIntent);
                 }
                 break;

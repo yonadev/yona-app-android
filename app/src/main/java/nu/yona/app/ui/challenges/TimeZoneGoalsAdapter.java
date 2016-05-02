@@ -19,6 +19,7 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
@@ -50,13 +51,13 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
         String txtTime = (String) getItem(position);
         if (!TextUtils.isEmpty(txtTime)) {
             holder.indexGoalTxt.setText("" + (position + 1));
-            String[] times = getSplitedTime(txtTime);
+            String[] times = AppUtils.getSplitedTime(txtTime);
             Bundle tagBundle = new Bundle();
             if (times.length > 0) {
                 holder.startTimeTxt.setText(times[0]);
                 holder.endTimeTxt.setText(times[1]);
-                tagBundle.putString(AppConstant.TIME, times[0]);
             }
+            tagBundle.putString(AppConstant.TIME, txtTime);
             tagBundle.putInt(AppConstant.POSITION, position);
             holder.startTimeTxt.setTag(tagBundle);
             holder.endTimeTxt.setTag(tagBundle);
@@ -89,13 +90,11 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
     }
 
     /**
-     * Get splited time. ex: 21:00 - 23:54 whill return 21:00 and 23:54
-     *
-     * @param time
-     * @return
+     * update time for selected Cell
      */
-    private String[] getSplitedTime(String time) {
-        return time.split("-", 2);
+    public void updateTimeForItem(int position, String updateTime) {
+        mListYonaGoal.set(position, updateTime);
+        notifyDataSetChanged();
     }
 
     /**
@@ -108,7 +107,7 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
     public void updateListItem(int position, String updateTime, boolean isStartTime) {
         StringBuilder timebuilder = new StringBuilder();
         String time = (String) getItem(position);
-        String[] times = getSplitedTime(time);
+        String[] times = AppUtils.getSplitedTime(time);
         if (isStartTime) {
             timebuilder.append(updateTime);
             timebuilder.append("-");

@@ -110,6 +110,7 @@ public class SettingsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((YonaActivity)getActivity()).updateTitle(R.string.settings);
 
     }
 
@@ -118,7 +119,7 @@ public class SettingsFragment extends BaseFragment {
             deviceManager.addDevice(pin, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    showAlert(pin + getString(R.string.yonaadddevicemessage), true);
+                    showAlert(getString(R.string.yonaadddevicemessage, pin), true);
                 }
 
                 @Override

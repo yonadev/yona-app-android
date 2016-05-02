@@ -8,10 +8,18 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/thirty_two"
     android:gravity="center"
     android:orientation="vertical">
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/timepickerDialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/four"
+        android:textSize="14sp" />
 
     <NumberPicker
         android:id="@+id/number_picker"
@@ -33,30 +41,52 @@
         android:layout_height="wrap_content"
         android:background="@color/white_three"
         android:orientation="horizontal"
-        android:padding="10dip"
-        android:visibility="gone"
-        android:weightSum="1">
+        android:padding="@dimen/ten"
+        android:visibility="gone">
 
         <nu.yona.app.customview.YonaFontButton
-            android:id="@+id/textSelected"
+            android:id="@+id/txtNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.30"
-            android:paddingBottom="10dip"
-            android:paddingTop="10dip"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/ten"
+            android:paddingTop="@dimen/ten"
             android:text="Next"
+            app:textStyle="@integer/roboto_bold" />
+
+        <nu.yona.app.customview.YonaFontButton
+            android:id="@+id/txtPrevious"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="@dimen/ten"
+            android:paddingTop="@dimen/ten"
+            android:text="Previous"
             app:textStyle="@integer/roboto_bold" />
 
         <nu.yona.app.customview.YonaFontButton
             android:id="@+id/txtdone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.70"
+            android:layout_weight="1"
             android:gravity="center"
-            android:paddingBottom="10dip"
-            android:paddingTop="10dip"
+            android:paddingBottom="@dimen/ten"
+            android:paddingTop="@dimen/ten"
             android:text="Done"
             app:textStyle="@integer/roboto_bold" />
+
+
     </LinearLayout>
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/errorTimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lines="2"
+        android:maxLines="2"
+        android:padding="@dimen/four"
+        android:textColor="@android:color/holo_red_dark" />
 
 </LinearLayout>

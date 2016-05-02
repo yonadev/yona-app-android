@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.ui.YonaActivity;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -27,5 +28,11 @@ public class MessageFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.message_layout, null);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((YonaActivity)getActivity()).updateTitle(R.string.message);
     }
 }

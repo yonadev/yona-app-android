@@ -89,6 +89,7 @@ public class AddFriendFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         viewPager.setCurrentItem(ADD_FRIEND_MANUALLY, true);
+        ((YonaActivity)getActivity()).updateTitle(R.string.friends);
     }
 
     @Override

@@ -56,7 +56,7 @@
     <string name="accountloginsecuritymessage"> you will receive a code by SMS. Please enter code below."</string>
     <string name="sendotpagain">Stuur code opnieuw</string>
     <string name="adddevice">Apparaat toevoegen</string>
-    <string name="yonaadddevicemessage">Toets deze pincode in op het apparaat waar je Yona op gaat gebruiken.</string>
+    <string name="yonaadddevicemessage">%1$s toets deze pincode in op het apparaat waar je Yona op gaat gebruiken.</string>
     <string name="loggedinadddevicemessage"> open Yona</string>
     <string name="passcode">CODE</string>
     <string name="inloggin">INLOGGEN</string>
@@ -65,6 +65,13 @@
     <string name="useroverride"> do you want to re-register same number? (Note:All data associated with this number will be removed</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="challenges.addBudgetGoal.setChallengeButton">CHALLENGE OPSLAAN</string>
+    <string name="challenges.addBudgetGoal.budgetChallengeMainTitle">TEGOED VASTLEGGEN</string>
+    <string name="challenges.addBudgetGoal.timeZoneLabel">Tijdzone</string>
+    <string name="challenges.addBudgetGoal.minutesPerDayLabel">minuten per dag</string>
+    <string name="challenges.addBudgetGoal.budgetChallengeDescription">Bepaal hier hoeveel tijd je aan %1$s wilt besteden</string>
+    <string name="challenges.addBudgetGoal.bottomLabelText">De volgende apps zijn onderdeel van deze challenge:</string>
+    <string name="challenges.addBudgetGoal.deletedGoalMessage">Verwijder Goal</string>
     <string name="deleteuser">Unsubscribe</string>
     <string name="challengesaddBudgetGoalcannotDeleteMandatoryGoalMessage">Kan verplichte doel niet verwijderen</string>
     <string name="deleteusermessage"> please type OK below."</string>
@@ -91,5 +98,17 @@
     <string name="challengesnogosubText">Vermijd %1$s gerelateerde content</string>
     <string name="challengestimzoesubtext">Timeslot tussen %1$sen tussen %2$s</string>
     <string name="challengesbudgetsubtext">Je kunt per dag %1$s minuten %2$s</string>
+    <string name="email">Email</string>
+    <string name="invitefriend">VRIEND UITNODIGEN</string>
+    <string name="addfriendmanually">Handmatig</string>
+    <string name="addfriendcontacts">Uit adresboek</string>
+    <string name="enteremailvalidation">You need to enter email address of friend.</string>
+    <string name="nogoheadersubtext">Hiermee geef je aan dat je op geen enkele manier online wilt %1$s</string>
+    <string name="challengedeletemsg">Are you sure?</string>
+    <string name="timepickerstarttimelable">Select time from you want to spent:</string>
+    <string name="timepickerendtimelable">Select time till you want to spent:</string>
+    <string name="timepickererror">You can not select past time, it should be future time.</string>
+    <string name="timepickerselect">Select time you want to spent:</string>
+
 
 </resources>

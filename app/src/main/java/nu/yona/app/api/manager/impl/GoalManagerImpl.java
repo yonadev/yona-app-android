@@ -23,6 +23,7 @@ import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -59,9 +60,10 @@ public class GoalManagerImpl implements GoalManager {
                     @Override
                     public void onDataLoad(Object result) {
                         goalDAO.saveGoalData((Goals) result, listener);
-                        if (listener != null) {
+                        /*if (listener != null) {
                             listener.onDataLoad(result);
-                        }
+                        }*/
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
                     }
 
                     @Override
@@ -115,10 +117,7 @@ public class GoalManagerImpl implements GoalManager {
                 goalNetwork.putUserTimeZoneGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        goalDAO.saveGoalData((Goals) result, listener);
-                        if (listener != null) {
-                            listener.onDataLoad(result);
-                        }
+                        getUserGoal(listener);
                     }
 
                     @Override

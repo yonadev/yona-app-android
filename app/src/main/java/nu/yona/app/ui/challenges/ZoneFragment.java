@@ -31,6 +31,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        YonaApplication.getEventChangeManager().registerListener(this);
         mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfTimeZoneGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
         mGoalListView.setOnItemClickListener(itemClickListener);

@@ -51,7 +51,7 @@ public class GoalDAO extends BaseDAO {
                 update(DBConstant.TBL_GOAL, values, DBConstant.ID + " = ?", ID);
             }
             if (listener != null) {
-                listener.onDataLoad(goals);
+                listener.onDataLoad(getUserGoal());
             }
         } catch (Exception e) {
             AppUtils.throwException(GoalDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
