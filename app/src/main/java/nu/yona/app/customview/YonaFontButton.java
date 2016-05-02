@@ -12,20 +12,41 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
 
+/**
+ * The type Yona font button.
+ */
 public class YonaFontButton extends Button {
 
+    /**
+     * Instantiates a new Yona font button.
+     *
+     * @param context the context
+     */
     public YonaFontButton(Context context) {
         super(context);
 
         YonaFontUtils.applyCustomFont(this, context, null);
     }
 
+    /**
+     * Instantiates a new Yona font button.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public YonaFontButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         YonaFontUtils.applyCustomFont(this, context, attrs);
     }
 
+    /**
+     * Instantiates a new Yona font button.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public YonaFontButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 

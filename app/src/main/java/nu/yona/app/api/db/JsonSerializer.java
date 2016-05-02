@@ -25,6 +25,9 @@ public class JsonSerializer implements DbSerializer {
 
     private final ObjectMapper mapper;
 
+    /**
+     * Instantiates a new Json serializer.
+     */
     public JsonSerializer() {
         mapper = JsonParserHelper.getObjectMapper();
     }

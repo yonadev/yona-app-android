@@ -31,6 +31,8 @@ public class AddBuddy {
     private Embedded Embedded;
 
     /**
+     * Gets sending status.
+     *
      * @return The sendingStatus
      */
     public String getSendingStatus() {
@@ -38,6 +40,8 @@ public class AddBuddy {
     }
 
     /**
+     * Sets sending status.
+     *
      * @param sendingStatus The sendingStatus
      */
     public void setSendingStatus(String sendingStatus) {
@@ -45,6 +49,8 @@ public class AddBuddy {
     }
 
     /**
+     * Gets receiving status.
+     *
      * @return The receivingStatus
      */
     public String getReceivingStatus() {
@@ -52,6 +58,8 @@ public class AddBuddy {
     }
 
     /**
+     * Sets receiving status.
+     *
      * @param receivingStatus The receivingStatus
      */
     public void setReceivingStatus(String receivingStatus) {
@@ -59,6 +67,8 @@ public class AddBuddy {
     }
 
     /**
+     * Gets message.
+     *
      * @return The message
      */
     public String getMessage() {
@@ -66,6 +76,8 @@ public class AddBuddy {
     }
 
     /**
+     * Sets message.
+     *
      * @param message The message
      */
     public void setMessage(String message) {
@@ -73,6 +85,8 @@ public class AddBuddy {
     }
 
     /**
+     * Gets embedded.
+     *
      * @return The Embedded
      */
     public nu.yona.app.api.model.Embedded getEmbedded() {
@@ -80,6 +94,8 @@ public class AddBuddy {
     }
 
     /**
+     * Sets embedded.
+     *
      * @param Embedded The _embedded
      */
     public void setEmbedded(nu.yona.app.api.model.Embedded Embedded) {

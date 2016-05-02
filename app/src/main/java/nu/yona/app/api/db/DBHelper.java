@@ -27,16 +27,25 @@ class DBHelper {
     private final String FIELD_BOOLEAN = " BOOLEAN,";
     private final String FIELD_BOOLEAN_WITHOUT_COMMA = " BOOLEAN";
     private final String FIELD_BLOB_WITHOUT_COMMA = " BLOB";
+    /**
+     * The Table user register.
+     */
     public final String TABLE_USER_REGISTER = CREATE_TABLE_IF_NOT_EXISTS + DBConstant.TBL_USER_DATA
             + "("
             + DBConstant.ID + FIELD_TEXT
             + DBConstant.SOURCE_OBJECT + FIELD_BLOB_WITHOUT_COMMA
             + ")";
+    /**
+     * The Table activity category.
+     */
     public final String TABLE_ACTIVITY_CATEGORY = CREATE_TABLE_IF_NOT_EXISTS + DBConstant.TBL_ACTIVITY_CATEGORIES
             + "("
             + DBConstant.ID + FIELD_TEXT
             + DBConstant.SOURCE_OBJECT + FIELD_BLOB_WITHOUT_COMMA
             + ")";
+    /**
+     * The Table goal.
+     */
     public final String TABLE_GOAL = CREATE_TABLE_IF_NOT_EXISTS + DBConstant.TBL_GOAL
             + "("
             + DBConstant.ID + FIELD_TEXT

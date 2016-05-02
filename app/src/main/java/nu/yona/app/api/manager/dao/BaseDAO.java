@@ -29,18 +29,41 @@ import nu.yona.app.utils.AppUtils;
 class BaseDAO {
 
     private final SQLiteOpenHelper mOpenHelper;
+    /**
+     * The Serializer.
+     */
     final DbSerializer serializer = new JsonSerializer();
 
+    /**
+     * Instantiates a new Base dao.
+     *
+     * @param mOpenHelper the m open helper
+     * @param context     the context
+     */
     BaseDAO(SQLiteOpenHelper mOpenHelper, Context context) {
         this.mOpenHelper = mOpenHelper;
     }
 
+    /**
+     * Delete.
+     *
+     * @param tableName the table name
+     * @param where     the where
+     * @param whereArgs the where args
+     */
     protected void delete(String tableName, String where, String[] whereArgs) {
         if (mOpenHelper != null) {
             mOpenHelper.getWritableDatabase().delete(tableName, where, whereArgs);
         }
     }
 
+    /**
+     * Insert long.
+     *
+     * @param tableName     the table name
+     * @param initialValues the initial values
+     * @return the long
+     */
     long insert(String tableName, ContentValues initialValues) {
         if (mOpenHelper != null) {
             return mOpenHelper.getWritableDatabase().insertOrThrow(tableName, null, initialValues);
@@ -48,12 +71,26 @@ class BaseDAO {
         return 0;
     }
 
+    /**
+     * Update.
+     *
+     * @param tableName the table name
+     * @param values    the values
+     * @param where     the where
+     * @param whereArgs the where args
+     */
     void update(String tableName, ContentValues values, String where, String... whereArgs) {
         if (mOpenHelper != null) {
             mOpenHelper.getWritableDatabase().update(tableName, values, where, whereArgs);
         }
     }
 
+    /**
+     * Query cursor.
+     *
+     * @param tableName the table name
+     * @return the cursor
+     */
     Cursor query(String tableName) {
         if (mOpenHelper == null) {
             return null;
@@ -61,6 +98,13 @@ class BaseDAO {
         return mOpenHelper.getWritableDatabase().query(tableName, null, null, null, null, null, null);
     }
 
+    /**
+     * Bulk insert.
+     *
+     * @param tableName the table name
+     * @param items     the items
+     * @param listener  the listener
+     */
     protected void bulkInsert(final String tableName, final List<? extends BaseEntity> items, final DataLoadListener listener) {
         try {
 

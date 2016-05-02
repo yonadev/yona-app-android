@@ -23,17 +23,30 @@ import nu.yona.app.customview.YonaFontTextView;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
+ *
+ * @param <T> the type parameter
  */
 class GoalCategoryListAdapter<T> extends BaseAdapter {
     private final LayoutInflater mInflater;
     private List<T> mListYonaGoal;
 
+    /**
+     * Instantiates a new Goal category list adapter.
+     *
+     * @param context      the context
+     * @param listYonaGoal the list yona goal
+     */
     public GoalCategoryListAdapter(Context context, List<T> listYonaGoal) {
         Context mContext = context;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         this.mListYonaGoal = listYonaGoal;
     }
 
+    /**
+     * Notify data set changed.
+     *
+     * @param mListYonaGoal the m list yona goal
+     */
     public void notifyDataSetChanged(List<T> mListYonaGoal) {
         this.mListYonaGoal = mListYonaGoal;
         super.notifyDataSetChanged();
@@ -76,6 +89,11 @@ class GoalCategoryListAdapter<T> extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * Update goals list.
+     *
+     * @param yonaGoalList the yona goal list
+     */
     public void updateGoalsList(final List<T> yonaGoalList) {
         this.mListYonaGoal = yonaGoalList;
         notifyDataSetChanged();

@@ -19,9 +19,17 @@ public abstract class BaseEntity implements Cloneable, Serializable {
 
     private static final long serialVersionUID = 4243329623573859700L;
 
+    /**
+     * Instantiates a new Base entity.
+     */
     BaseEntity() {
 
     }
 
+    /**
+     * Gets db content values.
+     *
+     * @return the db content values
+     */
     public abstract ContentValues getDbContentValues();
 }

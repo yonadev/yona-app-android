@@ -31,6 +31,9 @@ import java.util.concurrent.TimeUnit;
 import nu.yona.app.R;
 import nu.yona.app.utils.AppUtils;
 
+/**
+ * The type Custom time picker dialog.
+ */
 public class CustomTimePickerDialog extends DialogFragment implements OnClickListener {
     private int timeInterval = 1;
     private Dialog d;
@@ -46,28 +49,58 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     private YonaFontButton txtDone;
     private String firstTime;
 
+    /**
+     * Sets on time set listener.
+     *
+     * @param listener the listener
+     */
     public void setOnTimeSetListener(OnTimeSetListener listener) {
         this.timeSetListener = listener;
     }
 
+    /**
+     * Sets min time.
+     *
+     * @param time the time
+     */
     public void setMinTime(Long time) {
         minSelectedTime = time;
     }
 
+    /**
+     * Sets max time.
+     *
+     * @param time the time
+     */
     public void setMaxTime(Long time) {
         maxSelectedTime = time;
     }
 
+    /**
+     * Sets time picker interval.
+     *
+     * @param tTimeInterval the t time interval
+     */
     public void setTimePickerInterval(long tTimeInterval) {
         if (tTimeInterval > 0) {
             this.timeInterval = (int) TimeUnit.MILLISECONDS.toMinutes(tTimeInterval);
         }
     }
 
+    /**
+     * Sets past time selection allow.
+     *
+     * @param isAllow the is allow
+     */
     public void setPastTimeSelectionAllow(boolean isAllow) {
         this.isPastTimeSelectionAllow = isAllow;
     }
 
+    /**
+     * Sets is next allow.
+     *
+     * @param isNextAllow the is next allow
+     */
     public void setIsNextAllow(boolean isNextAllow) {
         this.isNextAllow = isNextAllow;
     }
@@ -278,7 +311,15 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         return cal;
     }
 
+    /**
+     * The interface On time set listener.
+     */
     public interface OnTimeSetListener {
+        /**
+         * Sets time.
+         *
+         * @param time the time
+         */
         void setTime(String time);
     }
 

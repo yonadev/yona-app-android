@@ -20,8 +20,14 @@ import nu.yona.app.R;
 import nu.yona.app.utils.AppUtils;
 
 
+/**
+ * The type Yona font utils.
+ */
 class YonaFontUtils {
 
+    /**
+     * The constant ANDROID_SCHEMA.
+     */
     public static final String ANDROID_SCHEMA = "http://schemas.android.com/apk/res/android";
     //font Style TypeFace
     private static final int ROBOTO_LIGHT = 10;
@@ -31,6 +37,13 @@ class YonaFontUtils {
     private static final int OSWALD_LIGHT = 14;
     private static final HashMap<String, Typeface> fontCache = new HashMap<>();
 
+    /**
+     * Apply custom font.
+     *
+     * @param customFontTextView the custom font text view
+     * @param context            the context
+     * @param attrs              the attrs
+     */
     public static void applyCustomFont(TextView customFontTextView, Context context, AttributeSet attrs) {
         TypedArray attributeArray = context.obtainStyledAttributes(
                 attrs, R.styleable.YonaFontTextView);

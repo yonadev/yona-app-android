@@ -22,10 +22,20 @@ public class PostBudgetYonaGoal extends PostYonaGoal {
     @Expose
     private long maxDurationMinutes;
 
+    /**
+     * Gets max duration minutes.
+     *
+     * @return the max duration minutes
+     */
     public long getMaxDurationMinutes() {
         return maxDurationMinutes;
     }
 
+    /**
+     * Sets max duration minutes.
+     *
+     * @param maxDurationMinutes the max duration minutes
+     */
     public void setMaxDurationMinutes(long maxDurationMinutes) {
         this.maxDurationMinutes = maxDurationMinutes;
     }

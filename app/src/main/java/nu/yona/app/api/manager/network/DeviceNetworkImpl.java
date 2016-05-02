@@ -32,8 +32,10 @@ public class DeviceNetworkImpl extends BaseImpl {
     /**
      * Add device on server
      *
+     * @param url            the url
      * @param devicePassword : random generated from devcie
      * @param yonaPassword   : yona application password need to pass in header
+     * @param listener       the listener
      */
     public void addDevice(String url, NewDeviceRequest devicePassword, String yonaPassword, final DataLoadListener listener) {
         try {
@@ -44,9 +46,11 @@ public class DeviceNetworkImpl extends BaseImpl {
     }
 
     /**
+     * Delete device.
+     *
      * @param url          url to send delete request
      * @param yonaPassword applicaiton password need to pass in header
-     * @param listener
+     * @param listener     the listener
      */
     public void deleteDevice(String url, String yonaPassword, DataLoadListener listener) {
         try {
@@ -56,6 +60,13 @@ public class DeviceNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * Check device.
+     *
+     * @param devicePassword the device password
+     * @param mobileNumber   the mobile number
+     * @param listener       the listener
+     */
     public void checkDevice(String devicePassword, String mobileNumber, final DataLoadListener listener) {
         try {
             getRestApi().checkDevice(mobileNumber, devicePassword).enqueue(new Callback<NewDevice>() {

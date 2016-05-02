@@ -17,18 +17,36 @@ import android.widget.EditText;
  */
 public class YonaFontEditTextView extends EditText {
 
+    /**
+     * Instantiates a new Yona font edit text view.
+     *
+     * @param context the context
+     */
     public YonaFontEditTextView(Context context) {
         super(context);
 
         YonaFontUtils.applyCustomFont(this, context, null);
     }
 
+    /**
+     * Instantiates a new Yona font edit text view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public YonaFontEditTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         YonaFontUtils.applyCustomFont(this, context, attrs);
     }
 
+    /**
+     * Instantiates a new Yona font edit text view.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public YonaFontEditTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 

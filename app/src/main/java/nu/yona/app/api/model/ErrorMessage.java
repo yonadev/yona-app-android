@@ -26,16 +26,26 @@ public class ErrorMessage extends BaseEntity {
     @Expose
     private String code;
 
+    /**
+     * Instantiates a new Error message.
+     */
     public ErrorMessage() {
 
     }
 
+    /**
+     * Instantiates a new Error message.
+     *
+     * @param message the message
+     */
     public ErrorMessage(String message) {
         this.code = "";
         this.message = message;
     }
 
     /**
+     * Gets message.
+     *
      * @return The message
      */
     public String getMessage() {
@@ -43,6 +53,8 @@ public class ErrorMessage extends BaseEntity {
     }
 
     /**
+     * Sets message.
+     *
      * @param message The message
      */
     public void setMessage(String message) {
@@ -50,6 +62,8 @@ public class ErrorMessage extends BaseEntity {
     }
 
     /**
+     * Gets code.
+     *
      * @return The code
      */
     public String getCode() {
@@ -57,6 +71,8 @@ public class ErrorMessage extends BaseEntity {
     }
 
     /**
+     * Sets code.
+     *
      * @param code The code
      */
     public void setCode(String code) {

@@ -44,6 +44,12 @@ import nu.yona.app.listener.DataLoadListener;
 public class AppUtils {
     private static InputFilter filter;
 
+    /**
+     * Gets circle bitmap.
+     *
+     * @param bitmap the bitmap
+     * @return the circle bitmap
+     */
     public static Bitmap getCircleBitmap(Bitmap bitmap) {
         final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
@@ -68,6 +74,9 @@ public class AppUtils {
     }
 
     /**
+     * Has permission boolean.
+     *
+     * @param context the context
      * @return false if user has not given permission for package access so far.
      */
     public static boolean hasPermission(Context context) {
@@ -83,11 +92,21 @@ public class AppUtils {
 
     }
 
+    /**
+     * Gets dp.
+     *
+     * @param context the context
+     * @param dp      the dp
+     * @return the dp
+     */
     public static int getDp(Context context, int dp) {
         return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
     }
 
     /**
+     * Is yona service running boolean.
+     *
+     * @param context      the context
      * @param serviceClass Name of class to check whether running or not.
      * @return true if service already running else return false
      */
@@ -103,6 +122,8 @@ public class AppUtils {
 
     /**
      * Start service once user grant permission for application permission (for 5.1+ version)
+     *
+     * @param context the context
      */
     public static void startService(Context context) {
 //        if (!AppUtils.isYonaServiceRunning(context, ActivityMonitorService.class)) {
@@ -113,7 +134,8 @@ public class AppUtils {
     /**
      * Generate Random String length of 20
      *
-     * @return
+     * @param charLimit the char limit
+     * @return random string
      */
     public static String getRandomString(int charLimit) {
         char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
@@ -129,8 +151,8 @@ public class AppUtils {
     /**
      * get the two digit length if digit length is one
      *
-     * @param digit
-     * @return digit
+     * @param digit the digit
+     * @return digit hour digit
      */
     public static String getHourDigit(String digit) {
         if (digit.length() != 2) {
@@ -139,6 +161,12 @@ public class AppUtils {
         return digit;
     }
 
+    /**
+     * Gets time for otp.
+     *
+     * @param time the time
+     * @return the time for otp
+     */
     public static String getTimeForOTP(String time) {
         try {
             return new Period(time, PeriodType.hours()).getHours() + "";
@@ -149,6 +177,8 @@ public class AppUtils {
     }
 
     /**
+     * Throw exception.
+     *
      * @param className class name where exception throws
      * @param e         Error
      * @param t         Current Thread (Thread.currentThread())
@@ -170,6 +200,11 @@ public class AppUtils {
         }
     }
 
+    /**
+     * Gets filter.
+     *
+     * @return the filter
+     */
     public static InputFilter getFilter() {
         if (filter == null) {
             filter = new InputFilter() {

@@ -62,6 +62,9 @@ class BaseImpl {
         }
     };
 
+    /**
+     * Instantiates a new Base.
+     */
     BaseImpl() {
         try {
             httpCacheDirectory = new File(YonaApplication.getAppContext().getCacheDir(), NetworkConstant.CACHING_FILE);
@@ -72,6 +75,11 @@ class BaseImpl {
         cache = new Cache(httpCacheDirectory, cacheSize);
     }
 
+    /**
+     * Gets retrofit.
+     *
+     * @return the retrofit
+     */
     Retrofit getRetrofit() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
@@ -93,6 +101,11 @@ class BaseImpl {
                 .build();
     }
 
+    /**
+     * Gets rest api.
+     *
+     * @return the rest api
+     */
     RestApi getRestApi() {
         if (restApi == null) {
             restApi = getRetrofit().create(RestApi.class);
@@ -100,6 +113,12 @@ class BaseImpl {
         return restApi;
     }
 
+    /**
+     * Gets call.
+     *
+     * @param listener the listener
+     * @return the call
+     */
     Callback getCall(final DataLoadListener listener) {
         return new Callback() {
             @Override

@@ -15,17 +15,47 @@ package nu.yona.app.api.manager.network;
  */
 public interface NetworkConstant {
 
+    /**
+     * The constant YONA_PASSWORD.
+     */
     String YONA_PASSWORD = "Yona-Password";
+    /**
+     * The constant ACCEPT_LAUNGUAGE.
+     */
     String ACCEPT_LAUNGUAGE = "Accept-Language";
+    /**
+     * The constant CONTENT_TYPE.
+     */
     String CONTENT_TYPE = "Content-Type";
+    /**
+     * The constant YONA_NEW_PASSWORD.
+     */
     String YONA_NEW_PASSWORD = "Yona-NewDeviceRequestPassword";
+    /**
+     * The constant BODY.
+     */
     String BODY = "body";
 
+    /**
+     * The constant CACHING_FILE.
+     */
     String CACHING_FILE = "apiResponse";
 
+    /**
+     * The constant API_CONNECT_TIMEOUT_IN_SECONDS.
+     */
     long API_CONNECT_TIMEOUT_IN_SECONDS = 60;
+    /**
+     * The constant API_WRITE_TIMEOUT_IN_SECONDS.
+     */
     int API_WRITE_TIMEOUT_IN_SECONDS = 60;
+    /**
+     * The constant API_READ_TIMEOUT_IN_SECONDS.
+     */
     int API_READ_TIMEOUT_IN_SECONDS = 60;
 
+    /**
+     * The constant RESPONSE_STATUS.
+     */
     int RESPONSE_STATUS = 300;
 }

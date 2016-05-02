@@ -16,7 +16,17 @@ import nu.yona.app.listener.DataLoadListener;
  */
 public interface ActivityCategoryManager {
 
+    /**
+     * Gets activity categories by id.
+     *
+     * @param listener the listener
+     */
     void getActivityCategoriesById(DataLoadListener listener);
 
+    /**
+     * Gets list of activity categories.
+     *
+     * @return the list of activity categories
+     */
     ActivityCategories getListOfActivityCategories();
 }

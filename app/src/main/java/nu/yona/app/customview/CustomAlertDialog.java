@@ -18,16 +18,34 @@ import android.text.TextUtils;
 
 import nu.yona.app.R;
 
+/**
+ * The type Custom alert dialog.
+ */
 public class CustomAlertDialog extends AlertDialog.Builder {
 
     private CustomAlertDialog(Context context) {
         super(context);
     }
 
+    /**
+     * Instantiates a new Custom alert dialog.
+     *
+     * @param context the context
+     * @param theme   the theme
+     */
     public CustomAlertDialog(Context context, int theme) {
         super(context, theme);
     }
 
+    /**
+     * Show custom alert dialog.
+     *
+     * @param context        the context
+     * @param title          the title
+     * @param message        the message
+     * @param positiveButton the positive button
+     * @return the custom alert dialog
+     */
     public static synchronized CustomAlertDialog show(Context context, CharSequence title, CharSequence message, CharSequence positiveButton) {
 
         CustomAlertDialog customAlertDialog = new CustomAlertDialog(context);
@@ -53,7 +71,15 @@ public class CustomAlertDialog extends AlertDialog.Builder {
         return customAlertDialog;
     }
 
-    /*
+    /**
+     * Show alert dialog alert dialog.
+     *
+     * @param context        the context
+     * @param message        the message
+     * @param positiveButton the positive button
+     * @return the alert dialog
+     */
+/*
     * This method is in exception to CustomAlertDialog. method returns AlertDialog instead of AlertDialog.Builder
     * AlertDialog's method of isShowing is useful for tracking whether same dialog already delivered to user or not.
     */
@@ -73,6 +99,8 @@ public class CustomAlertDialog extends AlertDialog.Builder {
     }
 
     /**
+     * Show returning actual dialog alert dialog.
+     *
      * @param context          Context
      * @param title            Title of Alert
      * @param message          Message in Alert
@@ -80,7 +108,7 @@ public class CustomAlertDialog extends AlertDialog.Builder {
      * @param negativeButton   Negative button title
      * @param positiveListener positive button listener
      * @param negativeListener negative button listener.
-     * @return
+     * @return alert dialog
      */
     public static synchronized AlertDialog showReturningActualDialog(Context context,
                                                                      CharSequence title,
@@ -120,6 +148,8 @@ public class CustomAlertDialog extends AlertDialog.Builder {
     }
 
     /**
+     * Show custom alert dialog.
+     *
      * @param context          Context
      * @param title            Title of Alert
      * @param message          Message in Alert
@@ -153,22 +183,26 @@ public class CustomAlertDialog extends AlertDialog.Builder {
     }
 
     /**
+     * Show custom alert dialog.
+     *
      * @param context          Context
      * @param title            title of alert
      * @param message          message in alert
      * @param positiveButton   positive button text
      * @param positiveListener positive button listener
-     * @return
+     * @return custom alert dialog
      */
     public static CustomAlertDialog show(Context context, CharSequence title, CharSequence message, CharSequence positiveButton, OnClickListener positiveListener) {
         return show(context, title, message, positiveButton, null, positiveListener, null);
     }
 
     /**
+     * Show custom alert dialog.
+     *
      * @param context        Context
      * @param message        message for alert
      * @param positiveButton positive button text
-     * @return
+     * @return custom alert dialog
      */
     public static CustomAlertDialog show(Context context, CharSequence message, CharSequence positiveButton) {
 
@@ -187,11 +221,13 @@ public class CustomAlertDialog extends AlertDialog.Builder {
     }
 
     /**
+     * Show custom alert dialog.
+     *
      * @param context          context
      * @param message          message for alert
      * @param positiveButton   positve button text
      * @param positiveListener positive button listener
-     * @return
+     * @return custom alert dialog
      */
     public static CustomAlertDialog show(Context context, CharSequence message, CharSequence positiveButton, OnClickListener positiveListener) {
         return show(context, null, message, positiveButton, positiveListener);
@@ -211,6 +247,8 @@ public class CustomAlertDialog extends AlertDialog.Builder {
     }
 
     /**
+     * Show custom alert dialog.
+     *
      * @param context          Context
      * @param message          message in alert
      * @param listItems        CharSeqance[] for list
@@ -218,7 +256,7 @@ public class CustomAlertDialog extends AlertDialog.Builder {
      * @param positiveListener positive button listener
      * @param negativeButton   negative button text
      * @param negativeListener negative button listener
-     * @return CustomAlertDialog
+     * @return CustomAlertDialog custom alert dialog
      */
     public static CustomAlertDialog show(Context context, CharSequence message,
                                          CharSequence[] listItems, CharSequence positiveButton,

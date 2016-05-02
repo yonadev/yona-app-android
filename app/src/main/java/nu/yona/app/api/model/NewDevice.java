@@ -27,6 +27,8 @@ public class NewDevice extends BaseEntity {
     private Links Links;
 
     /**
+     * Gets yona password.
+     *
      * @return The yonaPassword
      */
     public String getYonaPassword() {
@@ -34,6 +36,8 @@ public class NewDevice extends BaseEntity {
     }
 
     /**
+     * Sets yona password.
+     *
      * @param yonaPassword The yonaPassword
      */
     public void setYonaPassword(String yonaPassword) {
@@ -41,6 +45,8 @@ public class NewDevice extends BaseEntity {
     }
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public Links getLinks() {
@@ -48,6 +54,8 @@ public class NewDevice extends BaseEntity {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(Links Links) {

@@ -10,6 +10,9 @@ package nu.yona.app.listener;
 
 import android.os.AsyncTask;
 
+/**
+ * The type Data loader.
+ */
 public abstract class DataLoader extends AsyncTask<Void, Void, Object> {
 
     @Override
@@ -17,8 +20,16 @@ public abstract class DataLoader extends AsyncTask<Void, Void, Object> {
         return doDBCall();
     }
 
+    /**
+     * Do db call object.
+     *
+     * @return the object
+     */
     public abstract Object doDBCall();
 
+    /**
+     * Execute async.
+     */
     public void executeAsync() {
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

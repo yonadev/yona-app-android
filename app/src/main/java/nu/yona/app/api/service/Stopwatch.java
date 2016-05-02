@@ -8,29 +8,49 @@
 
 package nu.yona.app.api.service;
 
+/**
+ * The type Stopwatch.
+ */
 class Stopwatch {
     private long startTime = 0;
     private boolean running = false;
     private long currentTime = 0;
 
+    /**
+     * Start.
+     */
     public void start() {
         this.startTime = System.currentTimeMillis();
         this.running = true;
     }
 
+    /**
+     * Is started boolean.
+     *
+     * @return the boolean
+     */
     public boolean isStarted() {
         return this.running;
     }
 
+    /**
+     * Stop.
+     */
     public void stop() {
         this.running = false;
     }
 
+    /**
+     * Pause.
+     */
     public void pause() {
         this.running = false;
         currentTime = System.currentTimeMillis() - startTime;
     }
 
+    /**
+     * Resume.
+     */
     public void resume() {
         this.running = true;
         this.startTime = System.currentTimeMillis() - currentTime;
@@ -45,7 +65,12 @@ class Stopwatch {
         return elapsed;
     }
 
-    //elaspsed time in seconds
+    /**
+     * Gets elapsed time secs.
+     *
+     * @return the elapsed time secs
+     */
+//elaspsed time in seconds
     public long getElapsedTimeSecs() {
         long elapsed = 0;
         if (running) {
@@ -54,7 +79,12 @@ class Stopwatch {
         return elapsed;
     }
 
-    //elaspsed time in minutes
+    /**
+     * Gets elapsed time min.
+     *
+     * @return the elapsed time min
+     */
+//elaspsed time in minutes
     public long getElapsedTimeMin() {
         long elapsed = 0;
         if (running) {
@@ -77,6 +107,11 @@ class Stopwatch {
                 + getElapsedTimeSecs() + "." + getElapsedTimeMili();
     }
 
+    /**
+     * Gets strat time.
+     *
+     * @return the strat time
+     */
     public long getStratTime() {
         return startTime;
     }

@@ -157,6 +157,8 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
     }
 
     /**
+     * Update title.
+     *
      * @param title Update title in Toolbar.
      */
     public void updateTitle(String title) {

@@ -23,10 +23,20 @@ public class PostTimeZoneYonaGoal extends PostYonaGoal {
     @Expose
     private List<String> zones;
 
+    /**
+     * Gets zones.
+     *
+     * @return the zones
+     */
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Sets zones.
+     *
+     * @param zones the zones
+     */
     public void setZones(List<String> zones) {
         this.zones = zones;
     }

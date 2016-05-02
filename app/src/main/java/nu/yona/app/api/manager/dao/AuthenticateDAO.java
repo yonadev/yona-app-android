@@ -27,10 +27,21 @@ import nu.yona.app.utils.AppUtils;
 public class AuthenticateDAO extends BaseDAO {
 
 
+    /**
+     * Instantiates a new Authenticate dao.
+     *
+     * @param context the context
+     */
     public AuthenticateDAO(Context context) {
         super(DatabaseHelper.getInstance(context), context);
     }
 
+    /**
+     * Update data for register user.
+     *
+     * @param result   the result
+     * @param listener the listener
+     */
     public void updateDataForRegisterUser(Object result, DataLoadListener listener) {
         // do process for storing data in database.
         try {
@@ -50,6 +61,11 @@ public class AuthenticateDAO extends BaseDAO {
         }
     }
 
+    /**
+     * Gets user.
+     *
+     * @return the user
+     */
     public User getUser() {
         Cursor c = query(DBConstant.TBL_USER_DATA);
         try {

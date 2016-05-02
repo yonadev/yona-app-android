@@ -37,6 +37,11 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     private final AuthenticateNetworkImpl authNetwork;
     private final Context mContext;
 
+    /**
+     * Instantiates a new Authenticate manager.
+     *
+     * @param context the context
+     */
     public AuthenticateManagerImpl(Context context) {
         authenticateDao = new AuthenticateDAO(context);
         authNetwork = new AuthenticateNetworkImpl();

@@ -29,6 +29,12 @@ import retrofit2.Response;
  */
 public class GoalNetworkImpl extends BaseImpl {
 
+    /**
+     * Gets user goals.
+     *
+     * @param url      the url
+     * @param listener the listener
+     */
     public void getUserGoals(String url, DataLoadListener listener) {
         try {
             getRestApi().getUserGoals(url, YonaApplication.getYonaPassword()).enqueue(getGoals(listener));
@@ -37,6 +43,14 @@ public class GoalNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * Put user budget goals.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @param goal         the goal
+     * @param listener     the listener
+     */
     public void putUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener) {
         try {
             getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
@@ -45,6 +59,14 @@ public class GoalNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * Put user time zone goals.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @param goal         the goal
+     * @param listener     the listener
+     */
     public void putUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener) {
         try {
             getRestApi().putUserGoals(url, yonaPassword, goal).enqueue(getGoals(listener));
@@ -53,6 +75,13 @@ public class GoalNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * Delete goal.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @param listener     the listener
+     */
     public void deleteGoal(String url, String yonaPassword, DataLoadListener listener) {
         try {
             getRestApi().deleteUserGoal(url, yonaPassword).enqueue(getCall(listener));
@@ -61,6 +90,14 @@ public class GoalNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * Update user budget goals.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @param goal         the goal
+     * @param listener     the listener
+     */
     public void updateUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener) {
         try {
             getRestApi().updateUserGoal(url, yonaPassword,"", goal).enqueue(getGoals(listener));
@@ -69,6 +106,14 @@ public class GoalNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * Update user time zone goals.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @param goal         the goal
+     * @param listener     the listener
+     */
     public void updateUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener) {
         try {
             getRestApi().updateUserGoal(url, yonaPassword,"", goal).enqueue(getGoals(listener));

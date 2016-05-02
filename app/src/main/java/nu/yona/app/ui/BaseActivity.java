@@ -28,6 +28,12 @@ public class BaseActivity extends AppCompatActivity {
     private CustomProgressDialog progressDialog;
     private InputMethodManager inputMethodManager;
 
+    /**
+     * Show loading view.
+     *
+     * @param loading the loading
+     * @param message the message
+     */
     public void showLoadingView(boolean loading, String message) {
 
         String dialogText = getResources().getString(R.string.loading);

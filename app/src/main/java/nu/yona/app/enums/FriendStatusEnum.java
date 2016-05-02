@@ -15,14 +15,34 @@ package nu.yona.app.enums;
  */
 public enum FriendStatusEnum {
 
-    NOT_REQUESTED("NOT_REQUESTED"), REQUESTED("REQUESTED"), ACCEPTED("ACCEPTED"), REJECTED("REJECTED");
+    /**
+     * Not requested friend status enum.
+     */
+    NOT_REQUESTED("NOT_REQUESTED"), /**
+     * Requested friend status enum.
+     */
+    REQUESTED("REQUESTED"), /**
+     * Accepted friend status enum.
+     */
+    ACCEPTED("ACCEPTED"), /**
+     * Rejected friend status enum.
+     */
+    REJECTED("REJECTED");
 
+    /**
+     * The Status.
+     */
     final String status;
 
     FriendStatusEnum(String status) {
         this.status = status;
     }
 
+    /**
+     * Gets status.
+     *
+     * @return the status
+     */
     public String getStatus() {
         return status;
     }

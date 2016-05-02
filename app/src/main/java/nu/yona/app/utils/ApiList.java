@@ -14,8 +14,20 @@ package nu.yona.app.utils;
  * Author @@MobiquityInc
  */
 public interface ApiList {
+    /**
+     * The constant USER.
+     */
     String USER = "/users/";
+    /**
+     * The constant ADMIN_OVERRIDE_USER.
+     */
     String ADMIN_OVERRIDE_USER = "/admin/requestUserOverwrite/";
+    /**
+     * The constant NEW_DEVICE_REQUEST.
+     */
     String NEW_DEVICE_REQUEST = "newDeviceRequests/{mobileNumber}";
+    /**
+     * The constant ACTIVITY_CATEGORIES.
+     */
     String ACTIVITY_CATEGORIES = "activityCategories/";
 }

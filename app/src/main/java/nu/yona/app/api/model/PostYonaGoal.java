@@ -25,6 +25,8 @@ public class PostYonaGoal {
     private Links Links;
 
     /**
+     * Gets type.
+     *
      * @return The Type
      */
     public String getType() {
@@ -32,6 +34,8 @@ public class PostYonaGoal {
     }
 
     /**
+     * Sets type.
+     *
      * @param Type The @type
      */
     public void setType(String Type) {
@@ -39,6 +43,8 @@ public class PostYonaGoal {
     }
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public Links getLinks() {
@@ -46,6 +52,8 @@ public class PostYonaGoal {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(Links Links) {

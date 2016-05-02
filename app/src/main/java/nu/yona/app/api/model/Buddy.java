@@ -25,6 +25,8 @@ public class Buddy {
     private Links Links;
 
     /**
+     * Gets embedded.
+     *
      * @return The Embedded
      */
     public Embedded getEmbedded() {
@@ -32,6 +34,8 @@ public class Buddy {
     }
 
     /**
+     * Sets embedded.
+     *
      * @param Embedded The _embedded
      */
     public void setEmbedded(Embedded Embedded) {
@@ -39,6 +43,8 @@ public class Buddy {
     }
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public Links getLinks() {
@@ -46,6 +52,8 @@ public class Buddy {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(Links Links) {

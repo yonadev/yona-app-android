@@ -20,35 +20,130 @@ import nu.yona.app.listener.DataLoadListener;
  */
 public interface ChallengesManager {
 
+    /**
+     * Gets list of categories.
+     *
+     * @return the list of categories
+     */
     List<YonaActivityCategories> getListOfCategories();
 
+    /**
+     * Gets list of budget goals.
+     *
+     * @return the list of budget goals
+     */
     List<YonaGoal> getListOfBudgetGoals();
 
+    /**
+     * Gets list of time zone goals.
+     *
+     * @return the list of time zone goals
+     */
     List<YonaGoal> getListOfTimeZoneGoals();
 
+    /**
+     * Gets list of no go goals.
+     *
+     * @return the list of no go goals
+     */
     List<YonaGoal> getListOfNoGoGoals();
 
+    /**
+     * Gets yona goal by category type.
+     *
+     * @param activityCategories the activity categories
+     * @return the yona goal by category type
+     */
     YonaGoal getYonaGoalByCategoryType(YonaActivityCategories activityCategories);
 
+    /**
+     * Delete goal.
+     *
+     * @param goalId   the goal id
+     * @param listener the listener
+     */
     void deleteGoal(String goalId, DataLoadListener listener);
 
+    /**
+     * Create new goal.
+     *
+     * @param yonaGoal the yona goal
+     * @param listener the listener
+     */
     void createNewGoal(YonaGoal yonaGoal, DataLoadListener listener);
 
+    /**
+     * Post budget goals.
+     *
+     * @param time     the time
+     * @param goal     the goal
+     * @param listener the listener
+     */
     void postBudgetGoals(long time, YonaGoal goal, final DataLoadListener listener);
 
+    /**
+     * Post budget goals.
+     *
+     * @param time       the time
+     * @param categories the categories
+     * @param listener   the listener
+     */
     void postBudgetGoals(long time, YonaActivityCategories categories, final DataLoadListener listener);
 
+    /**
+     * Post time goals.
+     *
+     * @param timeGoal the time goal
+     * @param goal     the goal
+     * @param listener the listener
+     */
     void postTimeGoals(List<String> timeGoal, YonaGoal goal, final DataLoadListener listener);
 
+    /**
+     * Post time goals.
+     *
+     * @param timeGoal   the time goal
+     * @param categories the categories
+     * @param listener   the listener
+     */
     void postTimeGoals(List<String> timeGoal, YonaActivityCategories categories, final DataLoadListener listener);
 
+    /**
+     * Update time goals.
+     *
+     * @param timeGoal the time goal
+     * @param goal     the goal
+     * @param listener the listener
+     */
     void updateTimeGoals(List<String> timeGoal, YonaGoal goal, final DataLoadListener listener);
 
+    /**
+     * Update budget goals.
+     *
+     * @param time     the time
+     * @param goal     the goal
+     * @param listener the listener
+     */
     void updateBudgetGoals(long time, YonaGoal goal, final DataLoadListener listener);
 
+    /**
+     * Delete goal.
+     *
+     * @param yonaGoal the yona goal
+     * @param listener the listener
+     */
     void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener);
 
+    /**
+     * Update categories and goals.
+     */
     void updateCategoriesAndGoals();
 
+    /**
+     * Type of goal goals enum.
+     *
+     * @param yonaGoal the yona goal
+     * @return the goals enum
+     */
     GoalsEnum typeOfGoal(YonaGoal yonaGoal);
 }

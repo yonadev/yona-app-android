@@ -15,13 +15,37 @@ import java.util.Map;
  * Created by kinnarvasa on 21/03/16.
  */
 public enum IntentEnum {
+    /**
+     * Action dashboard intent enum.
+     */
     ACTION_DASHBOARD("nu.yona.app.action.DASHBOARD"),
+    /**
+     * Action friends intent enum.
+     */
     ACTION_FRIENDS("nu.yona.app.action.FRIENDS"),
+    /**
+     * Action challenges intent enum.
+     */
     ACTION_CHALLENGES("nu.yona.app.action.CHALLENGES"),
+    /**
+     * Action settings intent enum.
+     */
     ACTION_SETTINGS("nu.yona.app.action.SETTINGS"),
+    /**
+     * Action profile intent enum.
+     */
     ACTION_PROFILE("nu.yona.app.action.PROFILE"),
+    /**
+     * Action message intent enum.
+     */
     ACTION_MESSAGE("nu.yona.app.action.MESSAGE"),
+    /**
+     * Action challenges goal intent enum.
+     */
     ACTION_CHALLENGES_GOAL("nu.yona.app.action.CHALLENGES_GOAL"),
+    /**
+     * Action add friend intent enum.
+     */
     ACTION_ADD_FRIEND("nu.yona.app.action.ADD_FRIEND");
 
     private static final Map<String, IntentEnum> nameToEnumMapping = new HashMap<>();
@@ -38,10 +62,21 @@ public enum IntentEnum {
         this.actionString = actionString;
     }
 
+    /**
+     * From name intent enum.
+     *
+     * @param actionString the action string
+     * @return the intent enum
+     */
     public static IntentEnum fromName(String actionString) {
         return nameToEnumMapping.get(actionString);
     }
 
+    /**
+     * Gets action string.
+     *
+     * @return the action string
+     */
     public String getActionString() {
         return actionString;
     }

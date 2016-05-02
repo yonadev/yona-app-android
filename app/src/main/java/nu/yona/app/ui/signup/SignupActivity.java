@@ -179,10 +179,20 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         });
     }
 
+    /**
+     * Gets register user.
+     *
+     * @return the register user
+     */
     public RegisterUser getRegisterUser() {
         return registerUser;
     }
 
+    /**
+     * Gets authenticate manager.
+     *
+     * @return the authenticate manager
+     */
     public AuthenticateManager getAuthenticateManager() {
         return authenticateManager;
     }
@@ -201,6 +211,11 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         }
     }
 
+    /**
+     * Show keyboard.
+     *
+     * @param editText the edit text
+     */
     public void showKeyboard(EditText editText) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);

@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The type Href.
+ */
 public class Href extends BaseEntity {
 
     @SerializedName("href")
@@ -22,6 +25,8 @@ public class Href extends BaseEntity {
     private String href;
 
     /**
+     * Gets href.
+     *
      * @return The href
      */
     public String getHref() {
@@ -29,6 +34,8 @@ public class Href extends BaseEntity {
     }
 
     /**
+     * Sets href.
+     *
      * @param href The href
      */
     public void setHref(String href) {

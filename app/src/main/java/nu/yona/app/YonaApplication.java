@@ -32,10 +32,20 @@ public class YonaApplication extends Application {
     private static User user;
     private static YonaCustomCrashManagerListener yonaCustomCrashManagerListener;
 
+    /**
+     * Gets app context.
+     *
+     * @return the app context
+     */
     public static synchronized YonaApplication getAppContext() {
         return mContext;
     }
 
+    /**
+     * Gets user preferences.
+     *
+     * @return the user preferences
+     */
     public static synchronized SharedPreferences getUserPreferences() {
         if (userPreferences == null) {
             userPreferences = getAppContext().getSharedPreferences(PreferenceConstant.USER_PREFERENCE_KEY, Context.MODE_PRIVATE);
@@ -43,11 +53,18 @@ public class YonaApplication extends Application {
         return userPreferences;
     }
 
+    /**
+     * Gets event change manager.
+     *
+     * @return the event change manager
+     */
     public static EventChangeManager getEventChangeManager() {
         return eventChangeManager;
     }
 
     /**
+     * Gets yona password.
+     *
      * @return return yona password
      */
     public static String getYonaPassword() {
@@ -60,12 +77,19 @@ public class YonaApplication extends Application {
     }
 
     /**
+     * Sets yona password.
+     *
      * @param password yona password
      */
     public static void setYonaPassword(String password) {
         getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, password).commit();
     }
 
+    /**
+     * Gets user.
+     *
+     * @return the user
+     */
     public static User getUser() {
         if (user == null) {
             user = new AuthenticateManagerImpl(getAppContext()).getUser();
@@ -73,11 +97,21 @@ public class YonaApplication extends Application {
         return user;
     }
 
+    /**
+     * Update user user.
+     *
+     * @return the user
+     */
     public static User updateUser() {
         user = new AuthenticateManagerImpl(getAppContext()).getUser();
         return user;
     }
 
+    /**
+     * Gets yona custom crash manager listener.
+     *
+     * @return the yona custom crash manager listener
+     */
     public static YonaCustomCrashManagerListener getYonaCustomCrashManagerListener() {
         if (yonaCustomCrashManagerListener == null) {
             yonaCustomCrashManagerListener = new YonaCustomCrashManagerListener();

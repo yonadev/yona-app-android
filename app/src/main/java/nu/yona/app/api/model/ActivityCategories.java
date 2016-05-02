@@ -25,18 +25,38 @@ public class ActivityCategories extends BaseEntity {
     @Expose
     private Links links;
 
+    /**
+     * Gets links.
+     *
+     * @return the links
+     */
     public Links getLinks() {
         return links;
     }
 
+    /**
+     * Sets links.
+     *
+     * @param links the links
+     */
     public void setLinks(Links links) {
         this.links = links;
     }
 
+    /**
+     * Gets embedded activity categories.
+     *
+     * @return the embedded activity categories
+     */
     public EmbeddedActivityCategories getEmbeddedActivityCategories() {
         return embeddedActivityCategories;
     }
 
+    /**
+     * Sets embedded activity categories.
+     *
+     * @param embeddedActivityCategories the embedded activity categories
+     */
     public void setEmbeddedActivityCategories(EmbeddedActivityCategories embeddedActivityCategories) {
         this.embeddedActivityCategories = embeddedActivityCategories;
     }

@@ -32,6 +32,13 @@ import retrofit2.Response;
  */
 public class AuthenticateNetworkImpl extends BaseImpl {
 
+    /**
+     * Register user.
+     *
+     * @param password the password
+     * @param object   the object
+     * @param listener the listener
+     */
     public void registerUser(String password, RegisterUser object, final DataLoadListener listener) {
         try {
             getRestApi().registerUser(password, object).enqueue(getUserCallBack(listener));
@@ -41,10 +48,12 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
+     * Register user override.
+     *
      * @param password Yona Password
      * @param object   RegisterUser object
      * @param otp      SMS
-     * @param listener
+     * @param listener the listener
      */
     public void registerUserOverride(String password, RegisterUser object, String otp, final DataLoadListener listener) {
         try {
@@ -55,9 +64,11 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
+     * Gets user.
+     *
      * @param url          url from user object to get/update user
      * @param yonaPassword yona password
-     * @param listener
+     * @param listener     the listener
      */
     public void getUser(String url, String yonaPassword, DataLoadListener listener) {
         try {
@@ -68,10 +79,12 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
+     * Verify mobile number.
+     *
      * @param password yona password
      * @param url      url for verify mobile number
      * @param otp      sms verification code
-     * @param listener
+     * @param listener the listener
      */
     public void verifyMobileNumber(String password, String url, OTPVerficationCode otp, final DataLoadListener listener) {
         try {
@@ -82,9 +95,11 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
+     * Resend otp.
+     *
      * @param url      url to resend sms
      * @param password yona password
-     * @param listener
+     * @param listener the listener
      */
     public void resendOTP(String url, String password, final DataLoadListener listener) {
         try {
@@ -95,8 +110,10 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
+     * Request user override.
+     *
      * @param mobileNumber Registering mobile number
-     * @param listener
+     * @param listener     the listener
      */
     public void requestUserOverride(String mobileNumber, DataLoadListener listener) {
         try {
@@ -106,6 +123,13 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         }
     }
 
+    /**
+     * Delete user.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @param listener     the listener
+     */
     public void deleteUser(String url, String yonaPassword, DataLoadListener listener) {
         try {
             getRestApi().deleteUser(url, yonaPassword).enqueue(getCall(listener));
@@ -115,9 +139,11 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
+     * Do passcode reset.
+     *
      * @param url          : URL for passcode reset
      * @param yonaPassword : Yona password
-     * @param listener
+     * @param listener     the listener
      */
     public void doPasscodeReset(String url, String yonaPassword, final DataLoadListener listener) {
         try {
@@ -148,9 +174,11 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
+     * Do verify pin.
+     *
      * @param url      URL for verify pin
      * @param otp      SMS received value
-     * @param listener
+     * @param listener the listener
      */
     public void doVerifyPin(String url, String otp, final DataLoadListener listener) {
         try {
@@ -161,6 +189,8 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     /**
+     * Do clear pin.
+     *
      * @param url URL for Verify Pin Reset
      */
     public void doClearPin(String url) {

@@ -27,6 +27,12 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
     private List<String> mListYonaGoal;
     private final OnItemClickListener clickListener;
 
+    /**
+     * Instantiates a new Time zone goals adapter.
+     *
+     * @param listYonaGoal      the list yona goal
+     * @param itemClickListener the item click listener
+     */
     public TimeZoneGoalsAdapter(List<String> listYonaGoal, OnItemClickListener itemClickListener) {
         this.mListYonaGoal = listYonaGoal;
         this.clickListener = itemClickListener;
@@ -72,6 +78,11 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
         return this.mListYonaGoal.get(position);
     }
 
+    /**
+     * Time zone notify data set changed.
+     *
+     * @param timesList the times list
+     */
     public void timeZoneNotifyDataSetChanged(List<String> timesList) {
         this.mListYonaGoal = timesList;
         notifyDataSetChanged();
@@ -90,9 +101,9 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
     /**
      * Update time on positon of cell which user has recently updated
      *
-     * @param position
-     * @param updateTime
-     * @param isStartTime
+     * @param position    the position
+     * @param updateTime  the update time
+     * @param isStartTime the is start time
      */
     public void updateListItem(int position, String updateTime, boolean isStartTime) {
         StringBuilder timebuilder = new StringBuilder();
@@ -115,7 +126,7 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
     /**
      * removed item from position
      *
-     * @param position
+     * @param position the position
      */
     public void removeItemFromList(int position) {
         mListYonaGoal.remove(position);

@@ -37,6 +37,11 @@ public class BuddyManagerImpl implements BuddyManager {
     private final BuddyNetworkImpl buddyNetwork;
     private final Context mContext;
 
+    /**
+     * Instantiates a new Buddy manager.
+     *
+     * @param context the context
+     */
     public BuddyManagerImpl(Context context) {
         buddyNetwork = new BuddyNetworkImpl();
         this.mContext = context;

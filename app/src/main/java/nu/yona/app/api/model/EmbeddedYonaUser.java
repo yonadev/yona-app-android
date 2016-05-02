@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The type Embedded yona user.
+ */
 public class EmbeddedYonaUser extends BaseEntity {
 
     @SerializedName("yona:user")
@@ -22,6 +25,8 @@ public class EmbeddedYonaUser extends BaseEntity {
     private YonaUser yonaUser;
 
     /**
+     * Gets yona user.
+     *
      * @return The yonaUser
      */
     public YonaUser getYonaUser() {
@@ -29,6 +34,8 @@ public class EmbeddedYonaUser extends BaseEntity {
     }
 
     /**
+     * Sets yona user.
+     *
      * @param yonaUser The yona:user
      */
     public void setYonaUser(YonaUser yonaUser) {

@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The type Yona links.
+ */
 public class YonaLinks extends BaseEntity {
 
     @SerializedName("yona:confirmMobileNumber")
@@ -50,6 +53,8 @@ public class YonaLinks extends BaseEntity {
     private Href edit;
 
     /**
+     * Gets yona confirm mobile number.
+     *
      * @return The yonaConfirmMobileNumber
      */
     public Href getYonaConfirmMobileNumber() {
@@ -57,6 +62,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Sets yona confirm mobile number.
+     *
      * @param yonaConfirmMobileNumber The yona:confirmMobileNumber
      */
     public void setYonaConfirmMobileNumber(Href yonaConfirmMobileNumber) {
@@ -64,6 +71,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Gets yona messages.
+     *
      * @return The yonaMessages
      */
     public Href getYonaMessages() {
@@ -71,6 +80,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Sets yona messages.
+     *
      * @param yonaMessages The yona:messages
      */
     public void setYonaMessages(Href yonaMessages) {
@@ -78,6 +89,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Gets yona weekly activity reports.
+     *
      * @return The yonaWeeklyActivityReports
      */
     public Href getYonaWeeklyActivityReports() {
@@ -85,6 +98,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Sets yona weekly activity reports.
+     *
      * @param yonaWeeklyActivityReports The yona:weeklyActivityReports
      */
     public void setYonaWeeklyActivityReports(Href yonaWeeklyActivityReports) {
@@ -92,6 +107,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Gets yona daily activity reports.
+     *
      * @return The yonaDailyActivityReports
      */
     public Href getYonaDailyActivityReports() {
@@ -99,6 +116,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Sets yona daily activity reports.
+     *
      * @param yonaDailyActivityReports The yona:dailyActivityReports
      */
     public void setYonaDailyActivityReports(Href yonaDailyActivityReports) {
@@ -106,6 +125,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Gets yona new device request.
+     *
      * @return The yonaNewDeviceRequest
      */
     public Href getYonaNewDeviceRequest() {
@@ -113,6 +134,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Sets yona new device request.
+     *
      * @param yonaNewDeviceRequest The yona:newDeviceRequest
      */
     public void setYonaNewDeviceRequest(Href yonaNewDeviceRequest) {
@@ -120,6 +143,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Gets yona app activity.
+     *
      * @return The yonaAppActivity
      */
     public Href getYonaAppActivity() {
@@ -127,6 +152,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Sets yona app activity.
+     *
      * @param yonaAppActivity The yona:appActivity
      */
     public void setYonaAppActivity(Href yonaAppActivity) {
@@ -134,6 +161,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Gets curies.
+     *
      * @return The curies
      */
     public List<Cury> getCuries() {
@@ -141,6 +170,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Sets curies.
+     *
      * @param curies The curies
      */
     public void setCuries(List<Cury> curies) {
@@ -148,6 +179,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Gets self.
+     *
      * @return The self
      */
     public Href getSelf() {
@@ -155,6 +188,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Sets self.
+     *
      * @param self The self
      */
     public void setSelf(Href self) {
@@ -162,6 +197,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Gets edit.
+     *
      * @return The edit
      */
     public Href getEdit() {
@@ -169,6 +206,8 @@ public class YonaLinks extends BaseEntity {
     }
 
     /**
+     * Sets edit.
+     *
      * @param edit The edit
      */
     public void setEdit(Href edit) {

@@ -20,6 +20,9 @@ import com.google.gson.annotations.SerializedName;
  * Created by kinnarvasa on 31/03/16.
  */
 public class RegisterUser implements Parcelable {
+    /**
+     * The constant CREATOR.
+     */
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public RegisterUser createFromParcel(Parcel in) {
             return new RegisterUser(in);
@@ -48,6 +51,9 @@ public class RegisterUser implements Parcelable {
     @Expose
     private Links_ Links;
 
+    /**
+     * Instantiates a new Register user.
+     */
     public RegisterUser() {
 
     }
@@ -61,34 +67,74 @@ public class RegisterUser implements Parcelable {
         this.mobileNumber = data[3];
     }
 
+    /**
+     * Gets first name.
+     *
+     * @return the first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Sets first name.
+     *
+     * @param firstName the first name
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Gets last name.
+     *
+     * @return the last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Sets last name.
+     *
+     * @param lastName the last name
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Gets mobile number.
+     *
+     * @return the mobile number
+     */
     public String getMobileNumber() {
         return mobileNumber;
     }
 
+    /**
+     * Sets mobile number.
+     *
+     * @param mobileNumber the mobile number
+     */
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
+    /**
+     * Gets nick name.
+     *
+     * @return the nick name
+     */
     public String getNickName() {
         return nickname;
     }
 
+    /**
+     * Sets nick name.
+     *
+     * @param nickname the nickname
+     */
     public void setNickName(String nickname) {
         this.nickname = nickname;
     }
@@ -104,6 +150,8 @@ public class RegisterUser implements Parcelable {
     }
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public Links_ getLinks() {
@@ -111,6 +159,8 @@ public class RegisterUser implements Parcelable {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(Links_ Links) {
@@ -118,6 +168,8 @@ public class RegisterUser implements Parcelable {
     }
 
     /**
+     * Gets email address.
+     *
      * @return The Email
      */
     public String getEmailAddress() {
@@ -125,6 +177,8 @@ public class RegisterUser implements Parcelable {
     }
 
     /**
+     * Sets email address.
+     *
      * @param email The Email
      */
     public void setEmailAddress(String email) {

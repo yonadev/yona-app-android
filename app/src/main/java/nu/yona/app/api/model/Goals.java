@@ -31,18 +31,38 @@ public class Goals extends BaseEntity {
         return null;
     }
 
+    /**
+     * Gets links.
+     *
+     * @return the links
+     */
     public Links getLinks() {
         return links;
     }
 
+    /**
+     * Sets links.
+     *
+     * @param links the links
+     */
     public void setLinks(Links links) {
         this.links = links;
     }
 
+    /**
+     * Gets embedded.
+     *
+     * @return the embedded
+     */
     public EmbeddedGoals getEmbedded() {
         return embedded;
     }
 
+    /**
+     * Sets embedded.
+     *
+     * @param embedded the embedded
+     */
     public void setEmbedded(EmbeddedGoals embedded) {
         this.embedded = embedded;
     }
