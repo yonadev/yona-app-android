@@ -3,6 +3,7 @@ require 'cucumber'
 require 'cucumber/rake/task'
 require 'rake/task'
 
+
 Cucumber::Rake::Task.new(:features) do |t|
   t.profile = 'default'
 end
@@ -33,7 +34,6 @@ end
 task :android_avd, [:tag, :avd] do |t, args|
   Cucumber::Rake::Task.new :cucumber_android_avd do |t|
     ENV['DEVICE'] = args[:avd].to_s.gsub('avd:', '').strip
-
     emulator = ENV['DEVICE']
     tag = args[:tag]
 
@@ -126,6 +126,7 @@ end
 
 task :android_device, [:tag, :device] do |t, args|
   Cucumber::Rake::Task.new :cucumber_android_device do |t|
+
     devices = all_android_devices
     test_device_name = args[:device].to_s.gsub('device:', '').strip
     device_name = devices.values_at(test_device_name)

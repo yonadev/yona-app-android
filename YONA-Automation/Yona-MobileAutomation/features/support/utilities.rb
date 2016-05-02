@@ -1,4 +1,6 @@
 module Utils
+
+  puts "Utils Ruby"
   def take_screenshot(scenario, driver)
     dt = Time.new
     path = "#{Dir.pwd}/features/results"

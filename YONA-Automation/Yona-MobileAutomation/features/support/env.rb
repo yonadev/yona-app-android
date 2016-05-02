@@ -19,12 +19,16 @@ extend Mobile::Platform
 
 ENV['IOS_DERIVED_DATA_PATH'] = '~/Build/Products/Debug-iphonesimulator'
 
+
 android do
+
+
   start_appium_server unless ENV['TARGET'] == 'sauce'
   prepare_android_phone(android_settings)
 end unless ENV['TARGET'] == 'web'
 
 ios do
+  puts "Environment.Ruby"
   start_appium_server unless ENV['TARGET'] == 'sauce'
   prepare_ios_phone(ios_settings)
 end unless ENV['TARGET'] == 'web'

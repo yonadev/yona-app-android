@@ -2,7 +2,7 @@
 # FOLLOW THE BELLOW EXAMPLE TO CREATE YOUR PAGE OBJECT CLASSES
 #------------------------------------------------------------------
 
-class Login < MobTest::Base
+class Signup < MobTest::Base
 
   ios do
 

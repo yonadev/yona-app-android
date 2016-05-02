@@ -71,9 +71,9 @@ module Cucumber
     end
 
     it "formats groups even when first group is optional and not matched" do
-      m = step_match(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Login failed.'")
+      m = step_match(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Signup failed.'")
 
-      expect(m.format_args("<span>%s</span>")).to eq "I should be flashed '<span>Login failed.</span>'"
+      expect(m.format_args("<span>%s</span>")).to eq "I should be flashed '<span>Signup failed.</span>'"
     end
 
     it "formats embedded groups" do
