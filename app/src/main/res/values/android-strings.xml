@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2016 Stichting Yona Foundation
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -15,4 +14,6 @@
     <string name="country_code_with_zero">"+31 (0) "</string>
     <string name="country_code">"+31"</string>
     <string name="error_message">Error retruns null.</string>
+    <string name="space">" "</string>
+    <string name="blank"></string>
 </resources>

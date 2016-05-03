@@ -27,8 +27,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class AuthenticateManagerImplTest {
 
-    private AuthenticateManager manager;
     private final String password = "12423423234234324234";
+    private AuthenticateManager manager;
 
     @Before
     public void setUp() throws Exception {

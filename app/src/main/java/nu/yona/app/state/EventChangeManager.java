@@ -68,6 +68,9 @@ public class EventChangeManager {
      */
     public static final int EVENT_UPDATE_GOALS = 11;
 
+    public static final int EVENT_OPEN_CONTACT_BOOK = 12;
+    public static final int EVENT_CONTAT_CHOOSED = 13;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     /**

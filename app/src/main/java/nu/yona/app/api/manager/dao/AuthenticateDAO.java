@@ -53,7 +53,7 @@ public class AuthenticateDAO extends BaseDAO {
             if (getUser() == null) {
                 insert(DBConstant.TBL_USER_DATA, values);
             } else {
-                update(DBConstant.TBL_USER_DATA, values, DBConstant.ID + " = ?", new String[]{USER_ID});
+                update(DBConstant.TBL_USER_DATA, values, DBConstant.ID + " = ?", USER_ID);
             }
             listener.onDataLoad(getUser());
         } catch (Exception e) {

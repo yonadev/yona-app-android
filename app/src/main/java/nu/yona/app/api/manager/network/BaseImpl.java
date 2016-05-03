@@ -37,11 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by kinnarvasa on 28/03/16.
  */
 class BaseImpl {
-    private Retrofit retrofit;
-    private RestApi restApi;
     private final Cache cache;
-    private File httpCacheDirectory;
-
     private final Interceptor getInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -61,6 +57,9 @@ class BaseImpl {
                     .build();
         }
     };
+    private Retrofit retrofit;
+    private RestApi restApi;
+    private File httpCacheDirectory;
 
     /**
      * Instantiates a new Base.

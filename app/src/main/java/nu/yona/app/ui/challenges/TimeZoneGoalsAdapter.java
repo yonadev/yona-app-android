@@ -24,8 +24,8 @@ import nu.yona.app.utils.AppConstant;
  * Created by bhargavsuthar on 14/04/16.
  */
 class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> {
-    private List<String> mListYonaGoal;
     private final OnItemClickListener clickListener;
+    private List<String> mListYonaGoal;
 
     /**
      * Instantiates a new Time zone goals adapter.

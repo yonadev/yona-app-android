@@ -45,9 +45,6 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class LoginActivity extends BaseActivity implements EventChangeListener {
 
-    private YonaFontEditTextView mobileNumber, passcode;
-    private TextInputLayout mobileNumberLayout, passcodeLayout;
-    private DeviceManager deviceManager;
     private final InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -58,6 +55,9 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
             return null;
         }
     };
+    private YonaFontEditTextView mobileNumber, passcode;
+    private TextInputLayout mobileNumberLayout, passcodeLayout;
+    private DeviceManager deviceManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

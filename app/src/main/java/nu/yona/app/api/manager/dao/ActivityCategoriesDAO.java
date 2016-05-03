@@ -50,7 +50,7 @@ public class ActivityCategoriesDAO extends BaseDAO {
             if (getActivityCategories() == null) {
                 insert(DBConstant.TBL_ACTIVITY_CATEGORIES, values);
             } else {
-                update(DBConstant.TBL_ACTIVITY_CATEGORIES, values, DBConstant.ID + " = ?", new String[]{ID});
+                update(DBConstant.TBL_ACTIVITY_CATEGORIES, values, DBConstant.ID + " = ?", ID);
             }
             listener.onDataLoad(activityCategories);
         } catch (Exception e) {
