@@ -34,6 +34,7 @@ import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -76,7 +77,6 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         buddyManager = new BuddyManagerImpl(getActivity());
 
         getView(view);
-        addTextWatcher();
         addButtonListener();
 
         return view;
@@ -113,6 +113,12 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
         firstName.setFilters(new InputFilter[]{AppUtils.getFilter()});
         lastName.setFilters(new InputFilter[]{AppUtils.getFilter()});
+
+        mobileNumber.setText(R.string.country_code_with_zero);
+        mobileNumber.requestFocus();
+        mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
+        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity()));
+
     }
 
     private void addButtonListener() {
@@ -179,66 +185,6 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         firstNameLayout.setError(null);
         lastNameLayout.setError(null);
         emailLayout.setError(null);
-    }
-
-    private void addTextWatcher() {
-        mobileNumber.setText(R.string.country_code_with_zero);
-        mobileNumber.addTextChangedListener(new TextWatcher() {
-
-            private boolean backspacingFlag = false;
-            private boolean editedFlag = false;
-            private int cursorComplement;
-
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (!fromContactBook) {
-                    cursorComplement = s.length() - mobileNumber.getSelectionStart();
-                    backspacingFlag = count > after;
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!fromContactBook) {
-                    if (s.toString().length() < getString(R.string.country_code_with_zero).length()
-                            || !s.toString().startsWith(getString(R.string.country_code_with_zero))
-                            || s.toString().equals((getString(R.string.country_code_with_zero) + "0"))) {
-                        mobileNumber.setText(R.string.country_code_with_zero);
-                        mobileNumber.setSelection(mobileNumber.getText().length());
-                    }
-
-                    String string = s.toString();
-                    String phone = string.replaceAll("[^\\d]", "");
-
-                    if (!editedFlag) {
-                        editedFlag = true;
-                        String ans = "";
-                        if (!backspacingFlag) {
-                            if (phone.length() >= 13) {
-                                ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9, 13);
-                            } else if (phone.length() > 10) {
-                                ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9);
-                            } else if (phone.length() > 7) {
-                                ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6);
-                            } else if (phone.length() >= 3) {
-                                ans = getString(R.string.country_code_with_zero) + phone.substring(3);
-                            }
-                            mobileNumber.setText(ans);
-                            mobileNumber.setSelection(mobileNumber.getText().length() - cursorComplement);
-                        }
-                    } else {
-                        editedFlag = false;
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
     }
 
     private void showKeyboard(EditText editText) {

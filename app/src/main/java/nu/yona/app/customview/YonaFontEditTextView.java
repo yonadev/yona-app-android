@@ -17,6 +17,7 @@ import android.widget.EditText;
  */
 public class YonaFontEditTextView extends EditText {
 
+    private int lenghtBlock;
     /**
      * Instantiates a new Yona font edit text view.
      *
@@ -52,4 +53,21 @@ public class YonaFontEditTextView extends EditText {
 
         YonaFontUtils.applyCustomFont(this, context, attrs);
     }
+
+    @Override
+    public void setSelection(int index) {
+        super.setSelection(index);
+    }
+
+    @Override
+    protected void onSelectionChanged(int selStart, int selEnd) {
+        if(selStart < lenghtBlock || selEnd < lenghtBlock) {
+            setSelection(getText().length());
+        }
+    }
+
+    public void setNotEditableLength(int etLength) {
+        this.lenghtBlock = etLength;
+    }
+
 }
