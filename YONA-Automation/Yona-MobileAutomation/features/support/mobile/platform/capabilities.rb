@@ -64,7 +64,7 @@ module Platform
               :'appium-version' => '1.5.1',
               platformVersion: ENV['VERSION'],
               deviceName: ENV['DEVICE'],
-              app: 'sauce-storage:Yona-develop-1.0.0.1-1.apk',
+              app: '_Yona_Android-develop-1.0.0.15-unaligned.apk',
               # name: app,
               :'access-key' => sauce_key
           },
