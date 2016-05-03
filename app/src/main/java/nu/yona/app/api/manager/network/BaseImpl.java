@@ -16,7 +16,6 @@ import java.lang.annotation.Annotation;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.utils.NetworkUtils;
@@ -82,7 +81,7 @@ class BaseImpl {
     Retrofit getRetrofit() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(YonaApplication.getAppContext().getString(R.string.server_url))
+                    .baseUrl(YonaApplication.getServerUrl())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(gethttpClient())
                     .build();

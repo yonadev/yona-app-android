@@ -31,6 +31,8 @@ public class YonaApplication extends Application {
     private static EventChangeManager eventChangeManager;
     private static User user;
     private static YonaCustomCrashManagerListener yonaCustomCrashManagerListener;
+    private static String serverUrl;
+
 
     /**
      * Gets app context.
@@ -119,10 +121,20 @@ public class YonaApplication extends Application {
         return yonaCustomCrashManagerListener;
     }
 
+    public static String getServerUrl() {
+        serverUrl = TextUtils.isEmpty(serverUrl) ? YonaApplication.getAppContext().getString(R.string.server_url) : serverUrl;
+        return serverUrl;
+    }
+
+    public static void setServerUrl(String serverUrl) {
+        YonaApplication.serverUrl = serverUrl;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this;
         eventChangeManager = new EventChangeManager();
     }
+
 }

@@ -54,7 +54,8 @@
         <activity
             android:name=".ui.tour.TourActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
 
 
         <activity

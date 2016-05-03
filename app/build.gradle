@@ -66,6 +66,9 @@ android {
         zproduction {
             //do nothing here, just merge in custom res
         }
+        zacceptance {
+            //do nothing here, just merge in custom res
+        }
 
     }
 

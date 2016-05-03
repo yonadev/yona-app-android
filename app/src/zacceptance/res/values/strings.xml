@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<!--
   ~  Copyright (c) 2016 Stichting Yona Foundation
   ~
   ~  This Source Code Form is subject to the terms of the Mozilla Public
@@ -9,6 +9,6 @@
   -->
 
 <resources>
-    <bool name="enableHockyTracking">false</bool>
-    <bool name="allowEnvironmentSwitch">true</bool>
+    <string name="server_url">http://85.222.227.84</string>
+    <string name="hockey_app_key">ad6d6ae9670e48b693b8fbf377fffb2f</string>
 </resources>

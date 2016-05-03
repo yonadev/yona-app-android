@@ -16,4 +16,5 @@
     <string name="error_message">Error retruns null.</string>
     <string name="space">" "</string>
     <string name="blank"></string>
+    <string name="choose_environment">Choose Environment</string>
 </resources>
