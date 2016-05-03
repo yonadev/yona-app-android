@@ -73,5 +73,5 @@ def fetch_InvoiceNoFromEmail
   return strVerCode
 end
 
-strCode=fetch_CodeFromEmail
-puts "Code is #{strCode}"
+# strCode=fetch_CodeFromEmail
+# puts "Code is #{strCode}"
