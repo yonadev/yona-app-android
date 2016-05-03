@@ -159,7 +159,7 @@ public class TourView extends LinearLayout {
         title.setTextColor(colorId);
         tour_desc.setText(infoId);
         if (imgAndroid > 0) {
-            imageAndorid.setImageResource(imgAndroid);
+            imageAndorid.setBackground(getResources().getDrawable(imgAndroid, context.getTheme()));
             imageAndorid.setVisibility(View.VISIBLE);
         } else {
             imageAndorid.setVisibility(View.GONE);
