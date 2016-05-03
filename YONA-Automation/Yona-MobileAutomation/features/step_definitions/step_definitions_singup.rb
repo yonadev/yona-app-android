@@ -23,7 +23,7 @@ end
 
 And(/^Then enters Mobile number and Nick Name on next screen$/) do
   sleep 1
-  on(Signup).setText('155881488', 'Jacky')
+  on(Signup).setText(rand(1000000000).to_s, 'Jacky')
 end
 
 
