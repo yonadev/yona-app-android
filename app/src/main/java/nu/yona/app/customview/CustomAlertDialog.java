@@ -249,26 +249,19 @@ public class CustomAlertDialog extends AlertDialog.Builder {
     /**
      * Show custom alert dialog.
      *
-     * @param context          Context
-     * @param message          message in alert
-     * @param listItems        CharSeqance[] for list
-     * @param positiveButton   positive button text
-     * @param positiveListener positive button listener
-     * @param negativeButton   negative button text
-     * @param negativeListener negative button listener
+     * @param context            Context
+     * @param message            message in alert
+     * @param listItems          CharSeqance[] for list
+     * @param itemChooseListener selected item from list listener
      * @return CustomAlertDialog custom alert dialog
      */
     public static CustomAlertDialog show(Context context, CharSequence message,
-                                         CharSequence[] listItems, CharSequence positiveButton,
-                                         OnClickListener positiveListener, CharSequence negativeButton, OnClickListener negativeListener) {
+                                         CharSequence[] listItems, OnClickListener itemChooseListener, int selectedItem) {
         CustomAlertDialog customAlertDialog = new CustomAlertDialog(context);
         customAlertDialog.setCancelable(false);
 
         customAlertDialog.setTitle(message);
-        customAlertDialog.setSingleChoiceItems(listItems, 0, null);
-        customAlertDialog.setPositiveButton(positiveButton, positiveListener);
-        customAlertDialog.setNegativeButton(negativeButton, negativeListener);
-
+        customAlertDialog.setSingleChoiceItems(listItems, selectedItem, itemChooseListener);
         customAlertDialog.show();
         return customAlertDialog;
     }
