@@ -99,6 +99,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/signup_profile_btn_height"
         android:background="@color/darkish_pink"
-        android:text="@string/previous"
+        android:text="@string/next"
         android:textColor="@android:color/white" />
 </LinearLayout>
