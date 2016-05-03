@@ -52,13 +52,13 @@ module Platform
 
     def sauce_android_capabilities
       cap = android_settings
-      app = cap[:apk_path].split('/').select{|element| element.include?'.apk'}.first
+      # app = cap[:apk_path].split('/').select{|element| element.include?'.apk'}.first
       sauce_user = 'sharma_jai'
       sauce_key = 'aa43b0c6-3ead-4051-9a3b-db95d73a5ce5'
       {
           caps: {
               platformName: 'Android',
-              app: cap[:apk_path],
+              # app: cap[:apk_path],
               appPackage: cap[:android_package],
               appActivity: cap[:android_activity],
               :'appium-version' => '1.5.1',
