@@ -38,8 +38,8 @@ import nu.yona.app.utils.AppConstant;
  */
 public class ActivityMonitorService extends Service {
 
-    private ActivityMonitorService self;
     private final Stopwatch stopWatch = new Stopwatch();
+    private ActivityMonitorService self;
     private String previousAppName;
     private PowerManager powerManager;
 

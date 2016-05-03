@@ -22,10 +22,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/add_friend_text_item_height"
             android:background="@drawable/goal_item_gradient"
+            android:paddingBottom="@dimen/ten"
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
-            android:paddingTop="@dimen/twenty"
-            android:paddingBottom="@dimen/ten">
+            android:paddingTop="@dimen/twenty">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/first_name"
@@ -48,10 +48,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/add_friend_text_item_height"
             android:background="@drawable/goal_item_gradient"
+            android:paddingBottom="@dimen/ten"
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
-            android:paddingTop="@dimen/twenty"
-            android:paddingBottom="@dimen/ten">
+            android:paddingTop="@dimen/twenty">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/last_name"
@@ -74,10 +74,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/add_friend_text_item_height"
             android:background="@drawable/goal_item_gradient"
+            android:paddingBottom="@dimen/ten"
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
-            android:paddingTop="@dimen/twenty"
-            android:paddingBottom="@dimen/ten">
+            android:paddingTop="@dimen/twenty">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/email"
@@ -86,10 +86,10 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:drawableRight="@drawable/icn_mail"
-                android:inputType="textEmailAddress"
                 android:ellipsize="end"
                 android:hint="@string/email"
                 android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
                 android:maxLength="@integer/char_limit"
                 android:singleLine="true"
                 android:textColorHint="@color/black" />
@@ -100,10 +100,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/add_friend_text_item_height"
             android:background="@drawable/goal_item_gradient"
+            android:paddingBottom="@dimen/ten"
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
-            android:paddingTop="@dimen/twenty"
-            android:paddingBottom="@dimen/ten">
+            android:paddingTop="@dimen/twenty">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/mobile_number"
@@ -128,10 +128,10 @@
             style="@style/BtnTxtBlue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/add_friend_bottom_margin"
             android:layout_marginLeft="@dimen/signup_profile_left_right_padding"
             android:layout_marginRight="@dimen/signup_profile_left_right_padding"
             android:layout_marginTop="@dimen/thirty_two"
-            android:layout_marginBottom="@dimen/add_friend_bottom_margin"
             android:background="@drawable/round_button"
             android:text="@string/invitefriend" />
     </LinearLayout>

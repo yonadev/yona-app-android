@@ -12,9 +12,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -37,6 +40,7 @@ import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.manager.impl.GoalManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.utils.ServerErrorCode;
@@ -44,6 +48,8 @@ import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
@@ -60,21 +66,23 @@ import nu.yona.app.utils.PreferenceConstant;
 /**
  * Created by kinnarvasa on 18/03/16.
  */
-public class YonaActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener {
+public class YonaActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener, EventChangeListener {
 
     private static final int TOTAL_TABS = 4;
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1;
-    private boolean isBackPressed = false;
-    private Toolbar mToolBar;
-    private TabLayout mTabLayout;
-    private Fragment mContent;
+    private static final int PICK_CONTACT = 2;
     private final DashboardFragment dashboardFragment = new DashboardFragment();
     private final FriendsFragment friendsFragment = new FriendsFragment();
     private final ChallengesFragment challengesFragment = new ChallengesFragment();
     private final SettingsFragment settingsFragment = new SettingsFragment();
+    private boolean isBackPressed = false;
+    private Toolbar mToolBar;
+    private TabLayout mTabLayout;
+    private Fragment mContent;
     private YonaFontTextView toolbarTitle;
     private ImageView rightIcon;
     private boolean isToDisplayLogin = false;
+    private boolean skipVerification = false;
 
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
@@ -105,6 +113,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         setupTabs();
         mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
 
+        YonaApplication.getEventChangeManager().registerListener(this);
         clearAllFragment();
 
         getSupportFragmentManager().addOnBackStackChangedListener(this);
@@ -176,8 +185,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         super.onResume();
         if (isToDisplayLogin) {
             startActivity(new Intent(YonaActivity.this, PinActivity.class));
-            finish();
+//            finish();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
     private void getUser() {
@@ -226,7 +241,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     @Override
     protected void onPause() {
         super.onPause();
-        isToDisplayLogin = true;
+        if (!skipVerification) {
+            isToDisplayLogin = true;
+        } else {
+            skipVerification = false;
+        }
     }
 
     /**
@@ -250,6 +269,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     AppUtils.startService(this);
                 } else {
                     checkPermission();
+                }
+                break;
+            case PICK_CONTACT:
+                if (resultCode == RESULT_OK) {
+                    showContactDetails(data);
                 }
                 break;
             default:
@@ -566,5 +590,70 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      */
     public ImageView getRightIcon() {
         return rightIcon;
+    }
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_OPEN_CONTACT_BOOK:
+                openContactBook();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void openContactBook() {
+        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(intent, PICK_CONTACT);
+        skipVerification = true;
+    }
+
+    private void showContactDetails(Intent data) {
+        final RegisterUser user = new RegisterUser();
+        Cursor cursor = null;
+        try {
+            Uri result = data.getData();
+            String id = result.getLastPathSegment();
+
+            //To get email address of user
+            cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                    null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?", new String[]{id},
+                    null);
+
+            if (cursor.moveToFirst()) {
+                user.setEmailAddress(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
+            }
+            cursor.close();
+
+            // To get contact name etc of user
+            String whereName = ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ? ";
+            String[] whereNameParams = new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, id};
+            Cursor nameCur = getContentResolver().query(ContactsContract.Data.CONTENT_URI, null, whereName, whereNameParams, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME);
+            while (nameCur.moveToNext()) {
+                user.setFirstName(nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME)));
+                user.setLastName(nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME)));
+
+            }
+            nameCur.close();
+
+            // To get Mobile number of contact
+            Cursor phoneCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
+            if (phoneCur.moveToFirst()) {
+                user.setMobileNumber(phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA4)));
+            }
+            phoneCur.close();
+        } catch (Exception e) {
+            AppUtils.throwException(YonaActivity.class.getSimpleName(), e, Thread.currentThread(), null);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+
+        }
+        showLoadingView(false, null);
+        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CONTAT_CHOOSED, user);
+
     }
 }

@@ -26,11 +26,11 @@ public class ViewPagerIndicator extends View {
     private static final float SPACING = 2.0f;
     private final Paint backPaint = new Paint();
     private final Paint frontPaint = new Paint();
+    private final Context mContext;
     private int scrollPosition;
     private float currentScroll;
     private float radius;
     private int count;
-    private final Context mContext;
 
     /**
      * Instantiates a new View pager indicator.

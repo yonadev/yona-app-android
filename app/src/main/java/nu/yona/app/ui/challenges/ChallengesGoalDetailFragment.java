@@ -49,13 +49,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
     private ImageView mHGoalTypeImg;
     private YonaFontTextView mBudgetGoalTime;
-    private View budgetGoalView, timezoneGoalView;
-    private YonaActivity activity;
-    private Object mYonaGoal;
-    private ChallengesManager challengesManager;
-    private String currentTab;
-    private List<String> listOfTimes;
-    private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
     /**
      * Use this listener only for budget time picker
      */
@@ -66,6 +59,13 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             mBudgetGoalTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(getTimeInMilliseconds(time))));
         }
     };
+    private View budgetGoalView, timezoneGoalView;
+    private YonaActivity activity;
+    private Object mYonaGoal;
+    private ChallengesManager challengesManager;
+    private String currentTab;
+    private List<String> listOfTimes;
+    private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
     /**
      * Use this listener only for Time zone picker
      */
@@ -187,7 +187,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     setTimezoneGoalViewVisibility();
                     mHTxtGoalSubscribe.setText(getString(R.string.timezonegoalheadersubtext, yonaActivityCategories.getName()));
                     ((YonaFontTextView) view.findViewById(R.id.txt_header_text)).setText(getString(R.string.timezone));
-                    ((ImageView) view.findViewById(R.id.img_add_goal)).setOnClickListener(this);
+                    view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 }
             }
         }
@@ -356,15 +356,15 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             case R.id.btnChallenges:
                 if (currentTab.equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && !TextUtils.isEmpty(mBudgetGoalTime.getText())) {
                     if (mYonaGoal instanceof YonaGoal) {
-                        createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), (YonaGoal) mYonaGoal);
+                        createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
                     } else if (mYonaGoal instanceof YonaActivityCategories) {
-                        createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), (YonaActivityCategories) mYonaGoal);
+                        createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
                     }
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
                     if (mYonaGoal instanceof YonaGoal) {
-                        createTimeZoneGoal(listOfTimes, (YonaGoal) mYonaGoal);
+                        createTimeZoneGoal(listOfTimes, mYonaGoal);
                     } else if (mYonaGoal instanceof YonaActivityCategories) {
-                        createTimeZoneGoal(listOfTimes, (YonaActivityCategories) mYonaGoal);
+                        createTimeZoneGoal(listOfTimes, mYonaGoal);
                     }
                 }
                 break;

@@ -48,7 +48,7 @@ public class GoalDAO extends BaseDAO {
             if (getUserGoal() == null) {
                 insert(DBConstant.TBL_GOAL, values);
             } else {
-                update(DBConstant.TBL_GOAL, values, DBConstant.ID + " = ?", new String[]{ID});
+                update(DBConstant.TBL_GOAL, values, DBConstant.ID + " = ?", ID);
             }
             if (listener != null) {
                 listener.onDataLoad(goals);

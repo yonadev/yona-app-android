@@ -1,4 +1,4 @@
 <resources>
     <string name="server_url"></string>
-    <string name="hockey_app_key"/>
+    <string name="hockey_app_key" />
 </resources>

@@ -47,23 +47,6 @@ import nu.yona.app.utils.AppConstant;
 public class BaseGoalCreateFragment extends BaseFragment {
 
     /**
-     * The Challenges manager.
-     */
-    ChallengesManager challengesManager;
-    /**
-     * The M goal list view.
-     */
-    ListView mGoalListView;
-    private ListView mGoalCreationListView;
-    /**
-     * The Btn goal add.
-     */
-    ImageButton btnGoalAdd;
-    /**
-     * The M desc tab.
-     */
-    YonaFontTextView mDescTab;
-    /**
      * The Budget categories goal list.
      */
     protected List<YonaGoal> budgetCategoriesGoalList;
@@ -83,6 +66,23 @@ public class BaseGoalCreateFragment extends BaseFragment {
      * The M goal categories map.
      */
     protected HashMap<String, String> mGoalCategoriesMap;
+    /**
+     * The Challenges manager.
+     */
+    ChallengesManager challengesManager;
+    /**
+     * The M goal list view.
+     */
+    ListView mGoalListView;
+    /**
+     * The Btn goal add.
+     */
+    ImageButton btnGoalAdd;
+    /**
+     * The M desc tab.
+     */
+    YonaFontTextView mDescTab;
+    private ListView mGoalCreationListView;
     private GoalManager goalManager;
     private ActivityCategoryManager activityCategoryManager;
     private YonaActivity activity;

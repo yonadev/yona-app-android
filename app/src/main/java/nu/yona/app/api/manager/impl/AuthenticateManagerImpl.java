@@ -158,7 +158,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     public void verifyOTP(String otp, final DataLoadListener listener) {
         try {
             if (otp.length() == AppConstant.OTP_LENGTH) {
-                if (!YonaApplication.getAppContext().getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
+                if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
                     if (!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber().getHref())) {
                         authNetwork.verifyMobileNumber(YonaApplication.getYonaPassword(), authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber().getHref(),
                                 new OTPVerficationCode(otp), new DataLoadListener() {
@@ -273,7 +273,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 authNetwork.getUser(url, YonaApplication.getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        updateDataForRegisterUser((User) result, listener);
+                        updateDataForRegisterUser(result, listener);
                     }
 
                     @Override

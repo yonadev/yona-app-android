@@ -62,7 +62,7 @@ public class TourView extends LinearLayout {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view == (View) object;
+            return view == object;
         }
 
         @Override
@@ -95,7 +95,7 @@ public class TourView extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
 
         final ViewPagerIndicator indicator = new ViewPagerIndicator(context);
-        indicator.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, (int) AppUtils.getDp(context, 60)));
+        indicator.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, AppUtils.getDp(context, 60)));
         indicator.setCount();
         indicator.onScrolled(startPage, 0);
 

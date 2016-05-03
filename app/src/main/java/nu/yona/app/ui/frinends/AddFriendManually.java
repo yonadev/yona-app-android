@@ -10,12 +10,14 @@
 
 package nu.yona.app.ui.frinends;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,13 +26,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.BuddyManager;
 import nu.yona.app.api.manager.impl.BuddyManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppUtils;
@@ -38,12 +44,10 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by kinnarvasa on 27/04/16.
  */
-public class AddFriendManually extends BaseFragment {
+public class AddFriendManually extends BaseFragment implements EventChangeListener {
+    private final int NUMBER_LENGTH = 9;
     private YonaFontEditTextView firstName, lastName, email, mobileNumber;
     private TextInputLayout firstNameLayout, lastNameLayout, emailLayout, mobileNumberLayout;
-    private YonaFontButton addFriendButton;
-    private BuddyManager buddyManager;
-
     private final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -60,6 +64,9 @@ public class AddFriendManually extends BaseFragment {
 
         }
     };
+    private YonaFontButton addFriendButton;
+    private BuddyManager buddyManager;
+    private boolean fromContactBook;
 
     @Nullable
     @Override
@@ -71,7 +78,20 @@ public class AddFriendManually extends BaseFragment {
         getView(view);
         addTextWatcher();
         addButtonListener();
+
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        YonaApplication.getEventChangeManager().registerListener(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
     private void getView(View view) {
@@ -172,43 +192,45 @@ public class AddFriendManually extends BaseFragment {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                cursorComplement = s.length() - mobileNumber.getSelectionStart();
-                backspacingFlag = count > after;
+                if (!fromContactBook) {
+                    cursorComplement = s.length() - mobileNumber.getSelectionStart();
+                    backspacingFlag = count > after;
+                }
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (s.toString().length() < getString(R.string.country_code_with_zero).length()
-                        || !s.toString().startsWith(getString(R.string.country_code_with_zero))
-                        || s.toString().equals((getString(R.string.country_code_with_zero) + "0"))) {
-                    mobileNumber.setText(R.string.country_code_with_zero);
-                    mobileNumber.setSelection(mobileNumber.getText().length());
-                }
-
-                String string = s.toString();
-                String phone = string.replaceAll("[^\\d]", "");
-
-                if (!editedFlag) {
-                    editedFlag = true;
-                    String ans = "";
-                    if (!backspacingFlag) {
-                        if (phone.length() >= 13) {
-                            ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9, 13);
-                        } else if (phone.length() > 10) {
-                            ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9);
-                        } else if (phone.length() > 7) {
-                            ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6);
-                        } else if (phone.length() >= 3) {
-                            ans = getString(R.string.country_code_with_zero) + phone.substring(3);
-                        }
-                        mobileNumber.setText(ans);
-                        mobileNumber.setSelection(mobileNumber.getText().length() - cursorComplement);
+                if (!fromContactBook) {
+                    if (s.toString().length() < getString(R.string.country_code_with_zero).length()
+                            || !s.toString().startsWith(getString(R.string.country_code_with_zero))
+                            || s.toString().equals((getString(R.string.country_code_with_zero) + "0"))) {
+                        mobileNumber.setText(R.string.country_code_with_zero);
+                        mobileNumber.setSelection(mobileNumber.getText().length());
                     }
-                } else {
-                    editedFlag = false;
-                }
 
+                    String string = s.toString();
+                    String phone = string.replaceAll("[^\\d]", "");
+
+                    if (!editedFlag) {
+                        editedFlag = true;
+                        String ans = "";
+                        if (!backspacingFlag) {
+                            if (phone.length() >= 13) {
+                                ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9, 13);
+                            } else if (phone.length() > 10) {
+                                ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9);
+                            } else if (phone.length() > 7) {
+                                ans = getString(R.string.country_code_with_zero) + phone.substring(3, 6) + " " + phone.substring(6);
+                            } else if (phone.length() >= 3) {
+                                ans = getString(R.string.country_code_with_zero) + phone.substring(3);
+                            }
+                            mobileNumber.setText(ans);
+                            mobileNumber.setSelection(mobileNumber.getText().length() - cursorComplement);
+                        }
+                    } else {
+                        editedFlag = false;
+                    }
+                }
             }
 
             @Override
@@ -222,5 +244,33 @@ public class AddFriendManually extends BaseFragment {
     private void showKeyboard(EditText editText) {
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_CONTAT_CHOOSED:
+                if (object instanceof RegisterUser) {
+                    RegisterUser user = (RegisterUser) object;
+                    firstName.setText(user.getFirstName());
+                    lastName.setText(user.getLastName());
+                    email.setText(user.getEmailAddress());
+                    if (!TextUtils.isEmpty(user.getMobileNumber())) {
+                        String number = user.getMobileNumber().replace(getString(R.string.space), getString(R.string.blank));
+                        if (number.length() > NUMBER_LENGTH) {
+                            number = number.substring(number.length() - NUMBER_LENGTH);
+                            number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
+                        }
+                        fromContactBook = true;
+                        mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
+                        fromContactBook = false;
+                    } else {
+                        mobileNumber.setText(getString(R.string.country_code_with_zero));
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

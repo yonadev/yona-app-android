@@ -28,11 +28,11 @@ import nu.yona.app.utils.AppUtils;
  */
 class BaseDAO {
 
-    private final SQLiteOpenHelper mOpenHelper;
     /**
      * The Serializer.
      */
     final DbSerializer serializer = new JsonSerializer();
+    private final SQLiteOpenHelper mOpenHelper;
 
     /**
      * Instantiates a new Base dao.
