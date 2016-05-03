@@ -117,7 +117,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         mobileNumber.setText(R.string.country_code_with_zero);
         mobileNumber.requestFocus();
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
-        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero)));
+        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity()));
 
     }
 

@@ -12,6 +12,7 @@ package nu.yona.app.customview;
  * Created by bhargavsuthar on 11/04/16.
  */
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -25,10 +26,13 @@ public class YonaPhoneWatcher implements TextWatcher {
     private int cursorComplement;
     private EditText mobileNumber;
     private String prefixText;
-    public YonaPhoneWatcher(EditText editText, String prefix) {
+    private Context mContext;
+
+    public YonaPhoneWatcher(EditText editText, String prefix, Context context) {
         super();
         mobileNumber = editText;
         prefixText = prefix;
+        mContext = context;
     }
 
     @Override
@@ -47,18 +51,18 @@ public class YonaPhoneWatcher implements TextWatcher {
         }
 
         String string = s.toString();
-        String phone = string.replaceAll("[^\\d]", "");
+        String phone = string.replaceAll("[^\\d]", mContext.getString(R.string.blank));
 
         if (!editedFlag) {
             editedFlag = true;
             String ans = "";
             if (!backspacingFlag) {
                 if (phone.length() >= 13) {
-                    ans = prefixText + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9, 13);
+                    ans = prefixText + phone.substring(3, 6) + mContext.getString(R.string.space) + phone.substring(6, 9) + mContext.getString(R.string.space) + phone.substring(9, 13);
                 } else if (phone.length() > 10) {
-                    ans = prefixText + phone.substring(3, 6) + " " + phone.substring(6, 9) + " " + phone.substring(9);
+                    ans = prefixText + phone.substring(3, 6) + mContext.getString(R.string.space) + phone.substring(6, 9) + mContext.getString(R.string.space) + phone.substring(9);
                 } else if (phone.length() > 7) {
-                    ans = prefixText + phone.substring(3, 6) + " " + phone.substring(6);
+                    ans = prefixText + phone.substring(3, 6) + mContext.getString(R.string.space) + phone.substring(6);
                 } else if (phone.length() >= 3) {
                     ans = prefixText + phone.substring(3);
                 }

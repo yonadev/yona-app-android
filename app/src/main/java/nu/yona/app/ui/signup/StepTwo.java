@@ -51,7 +51,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         mobileNumber.requestFocus();
         activity.showKeyboard(mobileNumber);
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
-        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero)));
+        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity()));
 
         mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
         nickNameLayout = (TextInputLayout) view.findViewById(R.id.nick_name_layout);
