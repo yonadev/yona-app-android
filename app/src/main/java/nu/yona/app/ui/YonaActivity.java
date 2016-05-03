@@ -656,4 +656,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CONTAT_CHOOSED, user);
 
     }
+
+    public boolean isSkipVerification() {
+        return skipVerification;
+    }
+
+    public void setSkipVerification(boolean skipVerification) {
+        this.skipVerification = skipVerification;
+    }
 }
