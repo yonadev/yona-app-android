@@ -110,6 +110,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         new GoalManagerImpl(getActivity()).getUserGoal(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+
             }
 
             @Override

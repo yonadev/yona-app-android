@@ -154,22 +154,10 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
 
 
     private void updateMinutesOnTimeInterval(int hourOfDay, int minute) {
-        int curMin = 0;
-        if (minute >= 0 && minute < 7) {
-            curMin = 0;
-        } else if ((minute >= 7 && minute < 17)) {
-            curMin = 15;
-        } else if ((minute >= 17.5 && minute < 37)) {
-            curMin = 30;
-        } else if ((minute >= 37 && minute < 52)) {
-            curMin = 45;
-        } else if (minute >= 52 && minute < 60) {
-            curMin = 0;
-        }
 
         Calendar calUpdate = getCurrentCalendar();
         calUpdate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calUpdate.set(Calendar.MINUTE, curMin);
+        calUpdate.set(Calendar.MINUTE, minute);
         timePicker.clearFocus();
         //timePicker.invalidate();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

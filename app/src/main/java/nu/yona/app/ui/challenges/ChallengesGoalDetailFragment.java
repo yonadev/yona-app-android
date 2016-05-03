@@ -231,7 +231,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 } else {
                     //todo- for nogo
-                    btnChallenges.setEnabled(false);
+                    btnChallenges.setVisibility(View.GONE);
                     mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, yonaActivityCategories.getName()));
                     mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_nogo);
                     view.findViewById(R.id.goalTypeView).setVisibility(View.GONE);
@@ -249,6 +249,10 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     mHTxtGoalSubscribe.setText(getString(R.string.timezonegoalheadersubtext, yonaActivityCategories.getName()));
                     ((YonaFontTextView) view.findViewById(R.id.txt_header_text)).setText(getString(R.string.timezone));
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
+                } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
+                    mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, yonaActivityCategories.getName()));
+                    mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_nogo);
+                    view.findViewById(R.id.goalTypeView).setVisibility(View.GONE);
                 }
             }
         }
@@ -452,6 +456,8 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     } else if (mYonaGoal instanceof YonaActivityCategories) {
                         createTimeZoneGoal(listOfTimes, mYonaGoal);
                     }
+                } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
+                    createNewBudgetGoal(0, mYonaGoal);
                 }
                 break;
             case R.id.goal_item_layout:

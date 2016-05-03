@@ -8,7 +8,9 @@
 
 package nu.yona.app.ui.tour;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -126,6 +128,7 @@ public class TourView extends LinearLayout {
         addView(viewPager);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private View createPage(final int pageNo) {
         final Context context = getContext();
         View pageView = LayoutInflater.from(context).inflate(R.layout.tour_page, null);
@@ -159,6 +162,7 @@ public class TourView extends LinearLayout {
         title.setTextColor(colorId);
         tour_desc.setText(infoId);
         if (imgAndroid > 0) {
+            //Todo - on changes of welcome will going to change this
             imageAndorid.setBackground(getResources().getDrawable(imgAndroid, context.getTheme()));
             imageAndorid.setVisibility(View.VISIBLE);
         } else {
