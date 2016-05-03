@@ -45,7 +45,7 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((YonaActivity)getActivity()).updateTitle(R.string.profile);
+        ((YonaActivity) getActivity()).updateTitle(R.string.profile);
         profileImageView.setImageBitmap(AppUtils.getCircleBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.profile)));
     }
 

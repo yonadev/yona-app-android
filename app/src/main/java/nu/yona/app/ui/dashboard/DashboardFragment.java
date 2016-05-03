@@ -40,7 +40,7 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((YonaActivity)getActivity()).updateTitle(R.string.dashboard);
+        ((YonaActivity) getActivity()).updateTitle(R.string.dashboard);
     }
 
     private void setupViewPager(ViewPager viewPager) {

@@ -22,9 +22,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 

@@ -44,6 +44,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     private String firstTime;
     private YonaFontTextView titleOfDialog;
     private YonaFontTextView errorDialog;
+    private String secondTime;
 
     public String getSecondTime() {
         return secondTime;
@@ -52,8 +53,6 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     public void setSecondTime(String secondTime) {
         this.secondTime = secondTime;
     }
-
-    private String secondTime;
 
     /**
      * Sets on time set listener.
@@ -102,13 +101,13 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         this.isNextAllow = isNextAllow;
     }
 
-    private void setFirstTime(String first_Time) {
-        this.firstTime = first_Time;
-    }
-
     @NonNull
     public String getFirstTime() {
         return firstTime;
+    }
+
+    private void setFirstTime(String first_Time) {
+        this.firstTime = first_Time;
     }
 
     @Override

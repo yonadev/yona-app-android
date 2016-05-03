@@ -52,15 +52,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
     private ImageView mHGoalTypeImg;
     private YonaFontTextView mBudgetGoalTime;
-    private View budgetGoalView, timezoneGoalView;
-    private YonaActivity activity;
-    private Object mYonaGoal;
-    private ChallengesManager challengesManager;
-    private String currentTab;
-    private List<String> listOfTimes;
-    private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
-    private RecyclerView timeZoneGoalView;
-
     /**
      * Use this listener only for budget time picker
      */
@@ -71,6 +62,13 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             mBudgetGoalTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(getTimeInMilliseconds(time))));
         }
     };
+    private View budgetGoalView, timezoneGoalView;
+    private YonaActivity activity;
+    private Object mYonaGoal;
+    private ChallengesManager challengesManager;
+    private String currentTab;
+    private List<String> listOfTimes;
+    private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
     /**
      * Use this listener only for Time zone picker
      */
@@ -88,18 +86,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             }
         }
     };
-
-    private long getTimeInMilliseconds(String time) {
-        if (!TextUtils.isEmpty(time)) {
-            String[] min = time.split(":");
-            long minutes = TimeUnit.MINUTES.toMillis(Integer.parseInt(min[1]));
-            long hr = TimeUnit.HOURS.toMillis(Integer.parseInt(min[0]));
-            return (minutes + hr);
-        } else {
-            return 0;
-        }
-    }
-
+    private RecyclerView timeZoneGoalView;
     private OnItemClickListener timeZoneGoalClickListener = new OnItemClickListener() {
 
         @Override
@@ -135,6 +122,17 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
         }
     };
+
+    private long getTimeInMilliseconds(String time) {
+        if (!TextUtils.isEmpty(time)) {
+            String[] min = time.split(":");
+            long minutes = TimeUnit.MINUTES.toMillis(Integer.parseInt(min[1]));
+            long hr = TimeUnit.HOURS.toMillis(Integer.parseInt(min[0]));
+            return (minutes + hr);
+        } else {
+            return 0;
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

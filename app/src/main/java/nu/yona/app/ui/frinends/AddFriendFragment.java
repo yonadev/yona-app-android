@@ -35,8 +35,8 @@ import nu.yona.app.ui.YonaActivity;
 public class AddFriendFragment extends BaseFragment {
 
     private final int ADD_FRIEND_MANUALLY = 0, ADD_FRIENT_CONTACT = 1;
-    private ViewPager viewPager;
     private final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
+    private ViewPager viewPager;
 
     @Nullable
     @Override
@@ -89,7 +89,7 @@ public class AddFriendFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         viewPager.setCurrentItem(ADD_FRIEND_MANUALLY, true);
-        ((YonaActivity)getActivity()).updateTitle(R.string.friends);
+        ((YonaActivity) getActivity()).updateTitle(R.string.friends);
     }
 
     @Override

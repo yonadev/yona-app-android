@@ -110,7 +110,7 @@ public class SettingsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((YonaActivity)getActivity()).updateTitle(R.string.settings);
+        ((YonaActivity) getActivity()).updateTitle(R.string.settings);
 
     }
 

@@ -33,6 +33,6 @@ public class MessageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((YonaActivity)getActivity()).updateTitle(R.string.message);
+        ((YonaActivity) getActivity()).updateTitle(R.string.message);
     }
 }
