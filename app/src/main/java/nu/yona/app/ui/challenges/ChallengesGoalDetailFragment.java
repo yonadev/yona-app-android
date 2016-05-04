@@ -342,7 +342,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 public void run() {
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
                 }
-            }, 500);
+            }, AppConstant.TIMER_DELAY);
         }
     }
 
