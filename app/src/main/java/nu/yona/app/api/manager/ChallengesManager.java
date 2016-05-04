@@ -147,5 +147,11 @@ public interface ChallengesManager {
      */
     GoalsEnum typeOfGoal(YonaGoal yonaGoal);
 
+    /**
+     * Gets selected goal categories.
+     *
+     * @param budgetType the budget type
+     * @return the selected goal categories
+     */
     YonaActivityCategories getSelectedGoalCategories(String budgetType);
 }

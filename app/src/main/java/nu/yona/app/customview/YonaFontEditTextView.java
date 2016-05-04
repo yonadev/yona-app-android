@@ -67,6 +67,11 @@ public class YonaFontEditTextView extends EditText {
         }
     }
 
+    /**
+     * Sets not editable length.
+     *
+     * @param etLength the et length
+     */
     public void setNotEditableLength(int etLength) {
         this.lenghtBlock = etLength;
     }

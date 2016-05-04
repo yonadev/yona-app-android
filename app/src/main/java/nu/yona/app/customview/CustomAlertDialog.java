@@ -253,6 +253,7 @@ public class CustomAlertDialog extends AlertDialog.Builder {
      * @param message            message in alert
      * @param listItems          CharSeqance[] for list
      * @param itemChooseListener selected item from list listener
+     * @param selectedItem       the selected item
      * @return CustomAlertDialog custom alert dialog
      */
     public static CustomAlertDialog show(Context context, CharSequence message,

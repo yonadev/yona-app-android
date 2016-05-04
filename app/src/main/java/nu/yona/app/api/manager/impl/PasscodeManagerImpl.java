@@ -69,7 +69,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
     /**
      * Checked the counter of wrong enter passocode limit is reached or not
      *
-     * @return boolean
+     * @return boolean boolean
      */
     public boolean isWrongCounterReached() {
         return getWrongPasscodeCounter() >= AppConstant.MAX_COUNTER;

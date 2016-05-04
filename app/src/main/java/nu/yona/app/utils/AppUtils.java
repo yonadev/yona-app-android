@@ -229,19 +229,31 @@ public class AppUtils {
     /**
      * Get splited time. ex: 21:00 - 23:54 whill return 21:00 and 23:54
      *
-     * @param time
-     * @return
+     * @param time the time
+     * @return string [ ]
      */
     public static String[] getSplitedTime(String time) {
         return time.split("-", 2);
     }
 
 
+    /**
+     * Get splited hr string [ ].
+     *
+     * @param time the time
+     * @return the string [ ]
+     */
     public static String[] getSplitedHr(String time) {
         return time.split(":", 2);
     }
 
 
+    /**
+     * Gets time in milliseconds.
+     *
+     * @param time the time
+     * @return the time in milliseconds
+     */
     public static long getTimeInMilliseconds(String time) {
         if (!TextUtils.isEmpty(time) && time.contains(":")) {
             String[] min = time.split(":");
