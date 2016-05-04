@@ -615,13 +615,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     private void showContactDetails(Intent data) {
         final RegisterUser user = new RegisterUser();
-        Cursor cursor = null;
         try {
             Uri result = data.getData();
             String id = result.getLastPathSegment();
 
             //To get email address of user
-            cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+            Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
                     null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?", new String[]{id}, null);
 
             if (cursor.moveToFirst()) {
@@ -651,11 +650,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             phoneCur.close();
         } catch (Exception e) {
             AppUtils.throwException(YonaActivity.class.getSimpleName(), e, Thread.currentThread(), null);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-
         }
         showLoadingView(false, null);
         new Handler().postDelayed(new Runnable() {
