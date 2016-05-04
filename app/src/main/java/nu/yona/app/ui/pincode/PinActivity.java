@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import nu.yona.app.R;
@@ -83,6 +84,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
     private void updateBlockMsg() {
         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.msgblockuser));
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         passcodeFragment.disableEditable();
     }
 

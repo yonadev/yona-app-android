@@ -44,15 +44,15 @@ public interface NetworkConstant {
     /**
      * The constant API_CONNECT_TIMEOUT_IN_SECONDS.
      */
-    long API_CONNECT_TIMEOUT_IN_SECONDS = 60;
+    long API_CONNECT_TIMEOUT_IN_SECONDS = 30;
     /**
      * The constant API_WRITE_TIMEOUT_IN_SECONDS.
      */
-    int API_WRITE_TIMEOUT_IN_SECONDS = 60;
+    int API_WRITE_TIMEOUT_IN_SECONDS = 30;
     /**
      * The constant API_READ_TIMEOUT_IN_SECONDS.
      */
-    int API_READ_TIMEOUT_IN_SECONDS = 60;
+    int API_READ_TIMEOUT_IN_SECONDS = 30;
 
     /**
      * The constant RESPONSE_STATUS.

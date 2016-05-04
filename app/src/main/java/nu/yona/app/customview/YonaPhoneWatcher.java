@@ -19,6 +19,9 @@ import android.widget.EditText;
 
 import nu.yona.app.R;
 
+/**
+ * The type Yona phone watcher.
+ */
 public class YonaPhoneWatcher implements TextWatcher {
 
     private boolean backspacingFlag = false;
@@ -28,6 +31,13 @@ public class YonaPhoneWatcher implements TextWatcher {
     private String prefixText;
     private Context mContext;
 
+    /**
+     * Instantiates a new Yona phone watcher.
+     *
+     * @param editText the edit text
+     * @param prefix   the prefix
+     * @param context  the context
+     */
     public YonaPhoneWatcher(EditText editText, String prefix, Context context) {
         super();
         mobileNumber = editText;

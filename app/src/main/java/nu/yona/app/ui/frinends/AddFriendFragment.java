@@ -72,6 +72,11 @@ public class AddFriendFragment extends BaseFragment {
         });
     }
 
+    /**
+     * Gets permission to read user contacts.
+     *
+     * @return the permission to read user contacts
+     */
     public boolean getPermissionToReadUserContacts() {
         ((YonaActivity) getActivity()).setSkipVerification(true);
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {

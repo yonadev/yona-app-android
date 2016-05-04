@@ -91,6 +91,9 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
 
     /**
      * update time for selected Cell
+     *
+     * @param position   the position
+     * @param updateTime the update time
      */
     public void updateTimeForItem(int position, String updateTime) {
         mListYonaGoal.set(position, updateTime);

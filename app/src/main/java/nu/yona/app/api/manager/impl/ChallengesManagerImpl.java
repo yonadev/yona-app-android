@@ -113,7 +113,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
     /**
      * Checked wheather user has created any goal or not
      *
-     * @return
+     * @return boolean
      */
     public boolean hasUserCreatedGoal() {
         Goals userGoals = goalManager.getUserGoalFromDb();

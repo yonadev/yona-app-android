@@ -217,6 +217,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
+    /**
+     * Show error.
+     *
+     * @param errorMessage the error message
+     */
     public void showError(ErrorMessage errorMessage) {
         if (!isFinishing()) {
             if (errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND)) {
@@ -509,6 +514,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
 
+    /**
+     * Remove current fragment.
+     */
     public void removeCurrentFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment currentFrag = getSupportFragmentManager().findFragmentById(R.id.container);
@@ -541,6 +549,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
+    /**
+     * Update title.
+     *
+     * @param titleId the title id
+     */
     public void updateTitle(int titleId) {
         toolbarTitle.setText(getString(titleId));
     }
@@ -663,10 +676,20 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }, AppConstant.TIMER_DELAY);
     }
 
+    /**
+     * Is skip verification boolean.
+     *
+     * @return the boolean
+     */
     public boolean isSkipVerification() {
         return skipVerification;
     }
 
+    /**
+     * Sets skip verification.
+     *
+     * @param skipVerification the skip verification
+     */
     public void setSkipVerification(boolean skipVerification) {
         this.skipVerification = skipVerification;
     }

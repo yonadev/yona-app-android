@@ -121,11 +121,21 @@ public class YonaApplication extends Application {
         return yonaCustomCrashManagerListener;
     }
 
+    /**
+     * Gets server url.
+     *
+     * @return the server url
+     */
     public static String getServerUrl() {
         serverUrl = TextUtils.isEmpty(serverUrl) ? YonaApplication.getAppContext().getString(R.string.server_url) : serverUrl;
         return serverUrl;
     }
 
+    /**
+     * Sets server url.
+     *
+     * @param serverUrl the server url
+     */
     public static void setServerUrl(String serverUrl) {
         YonaApplication.serverUrl = serverUrl;
     }
