@@ -216,7 +216,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     public void requestPinReset(final DataLoadListener listener) {
         try {
             storedPassCode("");
-            YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, true).commit();
+            YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, false).commit();
             if (!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getRequestPinReset().getHref())) {
                 authNetwork.doPasscodeReset(authenticateDao.getUser().getLinks().getRequestPinReset().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
                     @Override
