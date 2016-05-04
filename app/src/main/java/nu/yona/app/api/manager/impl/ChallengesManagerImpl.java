@@ -116,9 +116,12 @@ public class ChallengesManagerImpl implements ChallengesManager {
      * @return
      */
     public boolean hasUserCreatedGoal() {
-        if (budgetCategoriesGoalList.size() > 0 || timeZoneCategoriesGoalList.size() > 0 || noGoCategoriesGoalList.size() > 1) {
-            YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
-            return true;
+        Goals userGoals = goalManager.getUserGoalFromDb();
+        if (userGoals != null) {
+            if (YonaApplication.getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() < userGoals.getEmbedded().getYonaGoals().size()) {
+                YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
+                return true;
+            }
         }
         return false;
     }

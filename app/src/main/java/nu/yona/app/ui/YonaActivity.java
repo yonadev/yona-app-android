@@ -526,6 +526,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             if (fragment != null && !fragment.equals(mContent)) {
                 mContent = fragment;
                 mContent.setUserVisibleHint(true);
+                if (mContent instanceof ChallengesFragment && ((ChallengesFragment) mContent).isChildViewVisible()) {
+                    ((ChallengesFragment) mContent).updateView();
+                }
                 mContent.onStart();
                 mContent.onResume();
                 updateToolBar();

@@ -19,7 +19,9 @@ import android.widget.ImageView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.ChallengesManager;
+import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
 import nu.yona.app.api.manager.impl.GoalManagerImpl;
@@ -46,6 +48,16 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     private ZoneFragment zoneFragment;
     private NoGoFragment noGoFragment;
     private ChallengesManager challengesManager;
+    private ActivityCategoryManager activityCategoryManager;
+    private GoalManager goalManager;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        challengesManager = new ChallengesManagerImpl(getActivity());
+        activityCategoryManager = new ActivityCategoryManagerImpl(getActivity());
+        goalManager = new GoalManagerImpl(getActivity());
+    }
 
     @Nullable
     @Override
@@ -112,11 +124,12 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         new GoalManagerImpl(getActivity()).getUserGoal(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
             }
 
             @Override
             public void onError(Object errorMessage) {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
             }
         });
     }
