@@ -8,7 +8,6 @@
 
 package nu.yona.app.ui.challenges;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -37,7 +36,7 @@ import nu.yona.app.ui.YonaActivity;
  */
 public class ChallengesFragment extends BaseFragment implements EventChangeListener {
     private final float TAB_ALPHA_SELECTED = 1;
-    private final double TAB_ALPHA_UNSELECTED = 0.5;
+    private final float TAB_ALPHA_UNSELECTED = 0.5f;
     private final int TAB_INDEX_ONE = 0;
     private final int TAB_INDEX_TWO = 1;
     private final int TAB_INDEX_THREE = 2;
@@ -46,7 +45,6 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     private CreditFragment creditFragment;
     private ZoneFragment zoneFragment;
     private NoGoFragment noGoFragment;
-    private Activity activity;
     private ChallengesManager challengesManager;
 
     @Nullable
@@ -56,8 +54,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         creditFragment = new CreditFragment();
         zoneFragment = new ZoneFragment();
         noGoFragment = new NoGoFragment();
-        activity = (YonaActivity) getActivity();
-        challengesManager = new ChallengesManagerImpl(activity);
+        challengesManager = new ChallengesManagerImpl(getActivity());
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         YonaApplication.getEventChangeManager().registerListener(this);
@@ -72,7 +69,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                updateTabViewBackground(tab, (float) TAB_ALPHA_UNSELECTED);
+                updateTabViewBackground(tab, TAB_ALPHA_UNSELECTED);
             }
 
             @Override
@@ -81,9 +78,10 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
             }
         });
         setupTabIcons();
-        updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_ONE), TAB_ALPHA_SELECTED);
-        updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_TWO), (float) TAB_ALPHA_UNSELECTED);
-        updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_THREE), (float) TAB_ALPHA_UNSELECTED);
+        tabLayout.getTabAt(TAB_INDEX_THREE).select();
+        updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_ONE), TAB_ALPHA_UNSELECTED);
+        updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_TWO), TAB_ALPHA_UNSELECTED);
+        updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_THREE), TAB_ALPHA_SELECTED);
 
         return view;
     }
@@ -91,11 +89,15 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getActivityCategories();
+    }
+
+    private void getActivityCategories() {
 
         new ActivityCategoryManagerImpl(getActivity()).getActivityCategoriesById(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                getUserGoalData();
+                getUserGoal();
             }
 
             @Override
@@ -106,7 +108,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
 
     }
 
-    private void getUserGoalData() {
+    private void getUserGoal() {
         new GoalManagerImpl(getActivity()).getUserGoal(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
@@ -115,7 +117,6 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
 
             @Override
             public void onError(Object errorMessage) {
-
             }
         });
     }
