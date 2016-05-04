@@ -59,8 +59,8 @@ module Platform
           caps: {
               platformName: 'Android',
               # app: cap[:apk_path],
-              appPackage: cap[:android_package],
-              appActivity: cap[:android_activity],
+              # appPackage: cap[:android_package],
+              # appActivity: cap[:android_activity],
               :'appium-version' => '1.5.1',
               platformVersion: ENV['VERSION'],
               deviceName: ENV['DEVICE'],
