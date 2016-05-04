@@ -48,7 +48,7 @@ public class LaunchActivity extends BaseActivity {
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
             startNewActivity(PasscodeActivity.class);
         } else if (!TextUtils.isEmpty(YonaApplication.getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
-            startNewActivity(PinActivity.class);
+            startNewActivity(YonaActivity.class);
         }
 
         findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {

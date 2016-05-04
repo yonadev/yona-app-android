@@ -81,8 +81,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private Fragment mContent;
     private YonaFontTextView toolbarTitle;
     private ImageView rightIcon;
-    private boolean isToDisplayLogin = false;
+    private boolean isToDisplayLogin = true;
     private boolean skipVerification = false;
+    private boolean launchedPinActiivty = false;
 
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
@@ -185,7 +186,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         super.onResume();
         if (isToDisplayLogin) {
             startActivity(new Intent(YonaActivity.this, PinActivity.class));
-//            finish();
+            launchedPinActiivty = true;
         }
     }
 
@@ -241,7 +242,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     @Override
     protected void onPause() {
         super.onPause();
-        if (!skipVerification) {
+        if (launchedPinActiivty) {
+            isToDisplayLogin = false;
+            launchedPinActiivty = false;
+        } else if (!skipVerification) {
             isToDisplayLogin = true;
         } else {
             skipVerification = false;
@@ -618,8 +622,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
             //To get email address of user
             cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-                    null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?", new String[]{id},
-                    null);
+                    null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?", new String[]{id}, null);
 
             if (cursor.moveToFirst()) {
                 user.setEmailAddress(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
@@ -638,10 +641,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             nameCur.close();
 
             // To get Mobile number of contact
-            Cursor phoneCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
+            Cursor phoneCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[]{id}, null);
             if (phoneCur.moveToFirst()) {
-                user.setMobileNumber(phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA4)));
+                String number = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                number = TextUtils.isEmpty(number) ? getString(R.string.blank) : number.replace(getString(R.string.space), getString(R.string.blank));
+                user.setMobileNumber(number);
             }
             phoneCur.close();
         } catch (Exception e) {
@@ -653,8 +658,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
         }
         showLoadingView(false, null);
-        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CONTAT_CHOOSED, user);
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CONTAT_CHOOSED, user);
+            }
+        }, AppConstant.TIMER_DELAY);
     }
 
     public boolean isSkipVerification() {
