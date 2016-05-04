@@ -8,6 +8,7 @@
 
 package nu.yona.app.utils;
 
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.content.Context;
@@ -21,8 +22,10 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 
 import net.hockeyapp.android.ExceptionHandler;
@@ -30,6 +33,7 @@ import net.hockeyapp.android.ExceptionHandler;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
+import java.util.Calendar;
 import java.util.Random;
 
 import nu.yona.app.R;
@@ -79,6 +83,7 @@ public class AppUtils {
      * @param context the context
      * @return false if user has not given permission for package access so far.
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public static boolean hasPermission(Context context) {
         try {
             PackageManager packageManager = context.getPackageManager();
@@ -219,5 +224,35 @@ public class AppUtils {
             };
         }
         return filter;
+    }
+
+    /**
+     * Get splited time. ex: 21:00 - 23:54 whill return 21:00 and 23:54
+     *
+     * @param time
+     * @return
+     */
+    public static String[] getSplitedTime(String time) {
+        return time.split("-", 2);
+    }
+
+
+    public static String[] getSplitedHr(String time) {
+        return time.split(":", 2);
+    }
+
+
+    public static long getTimeInMilliseconds(String time) {
+        if (!TextUtils.isEmpty(time) && time.contains(":")) {
+            String[] min = time.split(":");
+
+            Calendar date = Calendar.getInstance();
+            date.set(Calendar.HOUR_OF_DAY, Integer.parseInt(min[0]));
+            date.set(Calendar.MINUTE, Integer.parseInt(min[1]));
+            date.set(Calendar.AM_PM, date.get(Calendar.AM_PM));
+            return date.getTimeInMillis();
+        } else {
+            return 0;
+        }
     }
 }

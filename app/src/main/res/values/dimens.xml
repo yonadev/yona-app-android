@@ -9,6 +9,7 @@
     <dimen name="one">1dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="twelve">12dp</dimen>
+    <dimen name="four">4dp</dimen>
     <dimen name="thirteen">13dp</dimen>
     <dimen name="twenty">20dp</dimen>
     <dimen name="thirty">30dp</dimen>
@@ -50,6 +51,7 @@
     <dimen name="img_width">56dp</dimen>
     <dimen name="img_height">56dp</dimen>
     <dimen name="circle_margin">13dp</dimen>
+    <dimen name="triangle_height">47dp</dimen>
 
     <dimen name="goal_view_height">114dp</dimen>
     <dimen name="goal_title_margin_top">29dp</dimen>

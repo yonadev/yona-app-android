@@ -37,8 +37,7 @@ class GoalCategoryListAdapter<T> extends BaseAdapter {
      * @param listYonaGoal the list yona goal
      */
     public GoalCategoryListAdapter(Context context, List<T> listYonaGoal) {
-        Context mContext = context;
-        this.mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         this.mListYonaGoal = listYonaGoal;
     }
 

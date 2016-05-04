@@ -41,4 +41,5 @@
     <color name="color2">@color/mid_blue</color>
     <color name="color3">@color/pea</color>
     <color name="color4">@color/mango</color>
+    <color name="white_one">#f1f1f1</color>
 </resources>

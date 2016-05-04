@@ -10,7 +10,9 @@ package nu.yona.app.ui.challenges;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -41,6 +43,7 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by bhargavsuthar on 20/04/16.
@@ -83,15 +86,28 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             }
         }
     };
-    private final OnItemClickListener timeZoneGoalClickListener = new OnItemClickListener() {
+    private RecyclerView timeZoneGoalView;
+    private OnItemClickListener timeZoneGoalClickListener = new OnItemClickListener() {
 
         @Override
         public void onDelete(View v) {
             final Bundle timebundle = (Bundle) v.getTag();
             final int position = timebundle.getInt(AppConstant.POSITION);
-            if (timeZoneGoalsAdapter != null) {
-                timeZoneGoalsAdapter.removeItemFromList(position);
-            }
+
+            CustomAlertDialog.show(getActivity(), "", getString(R.string.challengedeletemsg), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (timeZoneGoalsAdapter != null) {
+                        timeZoneGoalsAdapter.removeItemFromList(position);
+                    }
+                    dialog.dismiss();
+                }
+            }, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
         }
 
         @Override
@@ -106,6 +122,17 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
         }
     };
+
+    private long getTimeInMilliseconds(String time) {
+        if (!TextUtils.isEmpty(time)) {
+            String[] min = time.split(":");
+            long minutes = TimeUnit.MINUTES.toMillis(Integer.parseInt(min[1]));
+            long hr = TimeUnit.HOURS.toMillis(Integer.parseInt(min[0]));
+            return (minutes + hr);
+        } else {
+            return 0;
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,17 +149,28 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.goal_detail_layout, null);
         challengesManager = new ChallengesManagerImpl(getActivity());
+
         mHGoalTypeImg = (ImageView) view.findViewById(R.id.img_bucket);
         YonaFontTextView mHTxtGoalTitle = (YonaFontTextView) view.findViewById(R.id.goal_challenge_type_title);
         YonaFontTextView mHTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.goal_challenge_type_subscribeTxt);
-        YonaFontTextView mFTxtGoalTitle = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_title);
         YonaFontTextView mFTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_subscribeTxt);
         timezoneGoalView = view.findViewById(R.id.timezoneView);
         budgetGoalView = view.findViewById(R.id.goal_item_layout);
         activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doDeleteGoal();
+                CustomAlertDialog.show(getActivity(), "", getString(R.string.challengedeletemsg), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        doDeleteGoal();
+                        dialog.dismiss();
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
         YonaFontButton btnChallenges = (YonaFontButton) view.findViewById(R.id.btnChallenges);
@@ -146,13 +184,32 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         timeZoneGoalsAdapter = new TimeZoneGoalsAdapter(listOfTimes, timeZoneGoalClickListener);
         timeZoneGoalView.setAdapter(timeZoneGoalsAdapter);
 
+        YonaActivityCategories yonaActivityCategories = null;
+        if (mYonaGoal instanceof YonaActivityCategories) {
+            yonaActivityCategories = (YonaActivityCategories) mYonaGoal;
+        } else {
+            yonaActivityCategories = challengesManager.getSelectedGoalCategories(((YonaGoal) mYonaGoal).getActivityCategoryName());
+        }
+
+        if (yonaActivityCategories != null && yonaActivityCategories.getApplications() != null) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String activityName : yonaActivityCategories.getApplications()) {
+                stringBuilder.append(activityName);
+                stringBuilder.append(", ");
+            }
+            if (!TextUtils.isEmpty(stringBuilder.toString()) && stringBuilder.toString().trim().length() > 0) {
+                stringBuilder.deleteCharAt(stringBuilder.toString().trim().length() - 1);
+                mFTxtGoalSubscribe.setText(stringBuilder.toString());
+            }
+        }
+
         if (mYonaGoal != null) {
             if (mYonaGoal instanceof YonaGoal) {
-                btnChallenges.setEnabled(false);
                 YonaGoal yonaGoal = (YonaGoal) mYonaGoal;
 
                 if (yonaGoal.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaGoal.getLinks().getEdit().getHref())) {
                     activity.getRightIcon().setVisibility(View.VISIBLE);
+                    activity.getRightIcon().setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.icn_trash));
                 } else {
                     activity.getRightIcon().setVisibility(View.GONE);
                 }
@@ -172,15 +229,17 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 } else {
                     //todo- for nogo
+                    btnChallenges.setVisibility(View.GONE);
+                    mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, yonaActivityCategories.getName()));
                     mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_nogo);
+                    view.findViewById(R.id.goalTypeView).setVisibility(View.GONE);
                 }
             } else if (mYonaGoal instanceof YonaActivityCategories) {
-                YonaActivityCategories yonaActivityCategories = (YonaActivityCategories) mYonaGoal;
+                //YonaActivityCategories yonaActivityCategories = (YonaActivityCategories) mYonaGoal;
                 mHTxtGoalTitle.setText(yonaActivityCategories.getName());
                 if (currentTab.equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString())) {
                     setBudgetGoalViewVisibility();
                     mBudgetGoalTime = (YonaFontTextView) view.findViewById(R.id.goal_minutes_num);
-                    mBudgetGoalTime.setText(String.valueOf(AppConstant.MIN_DEFAULT_TIME));
                     mHTxtGoalSubscribe.setText(getString(R.string.budgetgoalheadersubtext, yonaActivityCategories.getName()));
                     (view.findViewById(R.id.goal_item_layout)).setOnClickListener(this);
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
@@ -188,6 +247,10 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     mHTxtGoalSubscribe.setText(getString(R.string.timezonegoalheadersubtext, yonaActivityCategories.getName()));
                     ((YonaFontTextView) view.findViewById(R.id.txt_header_text)).setText(getString(R.string.timezone));
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
+                } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
+                    mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, yonaActivityCategories.getName()));
+                    mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_nogo);
+                    view.findViewById(R.id.goalTypeView).setVisibility(View.GONE);
                 }
             }
         }
@@ -202,9 +265,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         new GoalManagerImpl(getActivity()).deleteGoal((YonaGoal) mYonaGoal, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
-                activity.showLoadingView(false, null);
-                goBackToScreen();
+                updateGoalNotify(result);
             }
 
             @Override
@@ -249,11 +310,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             challengesManager.postBudgetGoals(minutes, ((YonaGoal) object), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    activity.showLoadingView(false, null);
-                    if (result != null) {
-                        goBackToScreen();
-                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
-                    }
+                    updateGoalNotify(result);
                 }
 
                 @Override
@@ -265,11 +322,37 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             challengesManager.postBudgetGoals(minutes, ((YonaActivityCategories) object), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    activity.showLoadingView(false, null);
-                    if (result != null) {
-                        goBackToScreen();
-                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
-                    }
+                    updateGoalNotify(result);
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    showError(errorMessage);
+                }
+            });
+        }
+    }
+
+    private void updateGoalNotify(final Object result) {
+        activity.showLoadingView(false, null);
+        if (result != null) {
+            goBackToScreen();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
+                }
+            }, AppConstant.TIMER_DELAY);
+        }
+    }
+
+    private void updateBudgetGoal(long minutes, YonaGoal yonaGoal) {
+        activity.showLoadingView(true, null);
+        if (yonaGoal != null) {
+            challengesManager.updateBudgetGoals(minutes, yonaGoal, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    updateGoalNotify(result);
                 }
 
                 @Override
@@ -290,11 +373,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             challengesManager.postTimeGoals(timesList, (YonaGoal) object, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    activity.showLoadingView(false, null);
-                    if (result != null) {
-                        goBackToScreen();
-                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
-                    }
+                    updateGoalNotify(result);
                 }
 
                 @Override
@@ -306,11 +385,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             challengesManager.postTimeGoals(timesList, (YonaActivityCategories) object, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    activity.showLoadingView(false, null);
-                    if (result != null) {
-                        goBackToScreen();
-                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
-                    }
+                    updateGoalNotify(result);
                 }
 
                 @Override
@@ -320,6 +395,23 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             });
         }
 
+    }
+
+    private void updateTimeZoneGoal(List<String> timeList, YonaGoal yonaGoal) {
+        activity.showLoadingView(true, null);
+        if (yonaGoal != null) {
+            challengesManager.updateTimeGoals(timeList, yonaGoal, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    updateGoalNotify(result);
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    showError(errorMessage);
+                }
+            });
+        }
     }
 
     private void goBackToScreen() {
@@ -332,22 +424,10 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         fragmentTime.setMinTime(minTime);
         fragmentTime.setMaxTime(maxTime);
         fragmentTime.setTimePickerInterval(interval);
-        fragmentTime.setPastTimeSelectionAllow(false);
         fragmentTime.setIsNextAllow(allowDualSelection);
         Bundle args = new Bundle();
         fragmentTime.setArguments(args);
         fragmentTime.show(getFragmentManager(), "dialog");
-    }
-
-    private long getTimeInMilliseconds(String time) {
-        if (!TextUtils.isEmpty(time)) {
-            String[] min = time.split(":");
-            long minutes = TimeUnit.MINUTES.toMillis(Integer.parseInt(min[1]));
-            long hr = TimeUnit.HOURS.toMillis(Integer.parseInt(min[0]));
-            return (minutes + hr);
-        } else {
-            return 0;
-        }
     }
 
     @Override
@@ -356,20 +436,34 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             case R.id.btnChallenges:
                 if (currentTab.equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && !TextUtils.isEmpty(mBudgetGoalTime.getText())) {
                     if (mYonaGoal instanceof YonaGoal) {
-                        createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
+                        if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
+                            updateBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), (YonaGoal) mYonaGoal);
+                        } else {
+                            createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
+                        }
                     } else if (mYonaGoal instanceof YonaActivityCategories) {
                         createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
                     }
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
                     if (mYonaGoal instanceof YonaGoal) {
-                        createTimeZoneGoal(listOfTimes, mYonaGoal);
+                        if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
+                            updateTimeZoneGoal(listOfTimes, (YonaGoal) mYonaGoal);
+                        } else {
+                            createTimeZoneGoal(listOfTimes, mYonaGoal);
+                        }
                     } else if (mYonaGoal instanceof YonaActivityCategories) {
                         createTimeZoneGoal(listOfTimes, mYonaGoal);
                     }
+                } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
+                    createNewBudgetGoal(0, mYonaGoal);
                 }
                 break;
             case R.id.goal_item_layout:
-                showTimePicker(false, AppConstant.TIME_INTERVAL_ONE, 0, TimeUnit.MINUTES.toMillis(Integer.parseInt(mBudgetGoalTime.getText().toString())), budgetTimeSetListener);
+                if (!TextUtils.isEmpty(mBudgetGoalTime.getText())) {
+                    showTimePicker(false, AppConstant.TIME_INTERVAL_ONE, 0, TimeUnit.MINUTES.toMillis(Integer.parseInt(mBudgetGoalTime.getText().toString())), budgetTimeSetListener);
+                } else {
+                    showTimePicker(false, AppConstant.TIME_INTERVAL_ONE, 0, 0, budgetTimeSetListener);
+                }
                 break;
             case R.id.img_add_goal:
                 showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, 0, 0, timeZoneSetListener);
@@ -383,22 +477,23 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private void callTimePickerForTimeZone(final View v, boolean updatingStartTime) {
         final Bundle bTime = (Bundle) v.getTag();
         final String updatedTime = bTime.getString(AppConstant.TIME);
+        String[] startTime = AppUtils.getSplitedTime(updatedTime);
         final int position = bTime.getInt(AppConstant.POSITION);
         if (updatingStartTime) {
-            showTimePicker(false, AppConstant.TIME_INTERVAL_FIFTEEN, 0, getTimeInMilliseconds(updatedTime), new CustomTimePickerDialog.OnTimeSetListener() {
+            showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, AppUtils.getTimeInMilliseconds(startTime[1]), AppUtils.getTimeInMilliseconds(startTime[0]), new CustomTimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void setTime(String time) {
                     if (timeZoneGoalsAdapter != null) {
-                        timeZoneGoalsAdapter.updateListItem(position, time, true);
+                        timeZoneGoalsAdapter.updateTimeForItem(position, time);
                     }
                 }
             });
         } else {
-            showTimePicker(false, AppConstant.TIME_INTERVAL_FIFTEEN, 0, getTimeInMilliseconds(updatedTime), new CustomTimePickerDialog.OnTimeSetListener() {
+            showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, AppUtils.getTimeInMilliseconds(startTime[0]), AppUtils.getTimeInMilliseconds(startTime[1]), new CustomTimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void setTime(String time) {
                     if (timeZoneGoalsAdapter != null) {
-                        timeZoneGoalsAdapter.updateListItem(position, time, false);
+                        timeZoneGoalsAdapter.updateTimeForItem(position, time);
                     }
                 }
             });

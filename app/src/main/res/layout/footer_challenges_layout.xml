@@ -15,6 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/challenge_opslaan_height"
+        android:background="@color/white_one"
         android:orientation="vertical">
 
         <nu.yona.app.customview.YonaFontButton
@@ -37,15 +38,18 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/footer_challenges_detail"
         android:background="@color/white_three"
-        android:gravity="center"
         android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/triangle_height"
+            android:background="@drawable/triangle_shadow_gray" />
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/challenges_goal_footer_title"
             style="@style/FooterTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_bucket_screen"
             android:gravity="center"
             android:text="@string/challengesfooter" />
 

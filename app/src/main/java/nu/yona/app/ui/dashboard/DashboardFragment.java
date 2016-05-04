@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import nu.yona.app.R;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
+import nu.yona.app.ui.YonaActivity;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -34,6 +35,12 @@ public class DashboardFragment extends BaseFragment {
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((YonaActivity) getActivity()).updateTitle(R.string.dashboard);
     }
 
     private void setupViewPager(ViewPager viewPager) {

@@ -28,8 +28,6 @@
             android:id="@+id/goalTypeView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/headerView"
             android:layout_weight="1"
             android:orientation="vertical">

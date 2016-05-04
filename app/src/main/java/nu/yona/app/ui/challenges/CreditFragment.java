@@ -31,6 +31,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        YonaApplication.getEventChangeManager().registerListener(this);
         showCurrentGoalListView(ChallengesEnum.CREDIT_TAB.getTab());
         mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfBudgetGoals());
         mGoalListView.setAdapter(mGoalListAdapter);

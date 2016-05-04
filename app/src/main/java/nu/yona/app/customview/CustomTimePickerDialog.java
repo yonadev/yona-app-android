@@ -17,15 +17,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.R;
@@ -42,12 +37,22 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     private boolean isNextAllow;
     private long minSelectedTime;
     private long maxSelectedTime;
-    private NumberPicker minutePicker;
-    private boolean isPastTimeSelectionAllow;
     private Calendar cal;
-    private YonaFontButton txtSelect;
-    private YonaFontButton txtDone;
+    private YonaFontButton btnNext;
+    private YonaFontButton btnDone;
+    private YonaFontButton btnPrevious;
     private String firstTime;
+    private YonaFontTextView titleOfDialog;
+    private YonaFontTextView errorDialog;
+    private String secondTime;
+
+    public String getSecondTime() {
+        return secondTime;
+    }
+
+    public void setSecondTime(String secondTime) {
+        this.secondTime = secondTime;
+    }
 
     /**
      * Sets on time set listener.
@@ -88,15 +93,6 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     }
 
     /**
-     * Sets past time selection allow.
-     *
-     * @param isAllow the is allow
-     */
-    public void setPastTimeSelectionAllow(boolean isAllow) {
-        this.isPastTimeSelectionAllow = isAllow;
-    }
-
-    /**
      * Sets is next allow.
      *
      * @param isNextAllow the is next allow
@@ -105,11 +101,15 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         this.isNextAllow = isNextAllow;
     }
 
+    @NonNull
+    public String getFirstTime() {
+        return firstTime;
+    }
+
     private void setFirstTime(String first_Time) {
         this.firstTime = first_Time;
     }
 
-    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -122,48 +122,74 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         d.findViewById(R.id.layoutTime).setVisibility(View.VISIBLE);
         timePicker = (TimePicker) d.findViewById(R.id.time_picker);
         timePicker.setVisibility(View.VISIBLE);
-        setTimePickerInterval(timePicker);
+        //setTimePickerInterval(timePicker);
         timePicker.setIs24HourView(true);
-        txtSelect = (YonaFontButton) d.findViewById(R.id.textSelected);
-        txtDone = (YonaFontButton) d.findViewById(R.id.txtdone);
-        txtSelect.setVisibility(isNextAllow ? View.VISIBLE : View.GONE);
-        txtDone.setVisibility(isNextAllow ? View.GONE : View.VISIBLE);
+        btnNext = (YonaFontButton) d.findViewById(R.id.txtNext);
+        btnDone = (YonaFontButton) d.findViewById(R.id.txtdone);
+        btnPrevious = (YonaFontButton) d.findViewById(R.id.txtPrevious);
+        titleOfDialog = (YonaFontTextView) d.findViewById(R.id.timepickerDialogTitle);
+        errorDialog = (YonaFontTextView) d.findViewById(R.id.errorTimer);
+        btnNext.setVisibility(isNextAllow ? View.VISIBLE : View.GONE);
+        btnPrevious.setVisibility(View.GONE);
+        btnDone.setVisibility(isNextAllow ? View.GONE : View.VISIBLE);
+        String title = isNextAllow ? getString(R.string.timepickerstarttimelable) : getString(R.string.timepickerselect);
+        titleOfDialog.setText(title);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                if (!isPastTimeSelectionAllow) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                    cal.set(Calendar.MINUTE, minute);
-                    Date date = cal.getTime();
-                    Date date2 = getCurrentCalendar().getTime();
-                    if (!date.after(date2)) {
-                        timePicker.invalidate();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            timePicker.setHour(getHours());
-                        } else {
-                            timePicker.setCurrentHour(getHours());
-                        }
-                        setMinutesInPicker(getMinutes());
-                    }
-                }
+                errorDialog.setText("");
+                updateMinutesOnTimeInterval(hourOfDay, minute);
             }
         });
 
+
         refreshView();
-        txtSelect.setOnClickListener(this);
-        txtDone.setOnClickListener(this);
+        btnNext.setOnClickListener(this);
+        btnDone.setOnClickListener(this);
+        btnPrevious.setOnClickListener(this);
         d.show();
         return d;
     }
 
+
+    private void updateMinutesOnTimeInterval(int hourOfDay, int minute) {
+
+        Calendar calUpdate = getCurrentCalendar();
+        calUpdate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calUpdate.set(Calendar.MINUTE, minute);
+        timePicker.clearFocus();
+        //timePicker.invalidate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            timePicker.setHour(calUpdate.get(Calendar.HOUR_OF_DAY));
+            timePicker.setMinute(calUpdate.get(Calendar.MINUTE));
+        } else {
+            timePicker.setCurrentHour(calUpdate.get(Calendar.HOUR_OF_DAY));
+            timePicker.setCurrentMinute(calUpdate.get(Calendar.MINUTE));
+        }
+    }
+
     private void refreshView() {
+        timePicker.clearFocus();
+        timePicker.invalidate();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             timePicker.setHour(getHours());
+            timePicker.setMinute(getMinutes());
         } else {
             timePicker.setCurrentHour(getHours());
+            timePicker.setCurrentMinute(getMinutes());
         }
-        setMinutesInPicker(getMinutes());
+    }
+
+    private void hideFirstScreenView() {
+        btnNext.setVisibility(View.GONE);
+        btnPrevious.setVisibility(View.VISIBLE);
+        btnDone.setVisibility(View.VISIBLE);
+    }
+
+    private void hideSecondScreenView() {
+        btnNext.setVisibility(View.VISIBLE);
+        btnPrevious.setVisibility(View.GONE);
+        btnDone.setVisibility(View.GONE);
     }
 
     @Override
@@ -171,142 +197,151 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         switch (v.getId()) {
             case R.id.txtdone:
 
-                final String hr = AppUtils.getHourDigit(String.valueOf(timePicker.getCurrentHour()));
-                final String minute = AppUtils.getHourDigit(getMinutesFromPicker());
+                final String hr = AppUtils.getHourDigit(String.valueOf(getTimePickerCurrentHour()));
+                final String minute = AppUtils.getHourDigit(String.valueOf(getTimePickerCurrentMin()));
                 final String time = hr + ":" + minute;
-                if (!TextUtils.isEmpty(firstTime)) {
-                    timeSetListener.setTime(firstTime + "-" + time);
-                } else {
-                    timeSetListener.setTime(time);
+                setSecondTime(time);
+
+                if (timeSetListener != null) {
+                    if (isNextAllow && checkDateIsPast()) {
+                        errorDialog.setText(getString(R.string.timepickererror));
+                        return;
+                    } else if (isNextAllow && !checkDateIsPast()) {
+                        timeSetListener.setTime(firstTime + "-" + time);
+                    } else {
+                        timeSetListener.setTime(time);
+                    }
                 }
                 d.dismiss();
                 break;
-            case R.id.textSelected:
-                final String selectedHr = AppUtils.getHourDigit(String.valueOf(timePicker.getCurrentHour()));
-                final String selectedMin = AppUtils.getHourDigit(getMinutesFromPicker());
+            case R.id.txtNext:
+                hideFirstScreenView();
+                String selectedHr = AppUtils.getHourDigit(String.valueOf(getTimePickerCurrentHour()));
+                String selectedMin = AppUtils.getHourDigit(String.valueOf(getTimePickerCurrentMin()));
                 setFirstTime(selectedHr + ":" + selectedMin);
-                txtDone.setVisibility(View.VISIBLE);
-                txtSelect.setVisibility(View.GONE);
+                setMinTime(AppUtils.getTimeInMilliseconds(getFirstTime()));
+                refreshView();
+                updateTitleText(getActivity().getString(R.string.timepickerendtimelable));
                 break;
+            case R.id.txtPrevious:
+                //To get the first selected time and display on time picker
+                hideSecondScreenView();
+                String preHr = AppUtils.getHourDigit(String.valueOf(getTimePickerCurrentHour()));
+                String preMin = AppUtils.getHourDigit(String.valueOf(getTimePickerCurrentMin()));
+                setSecondTime(preHr + ":" + preMin);
+                setMaxTime(AppUtils.getTimeInMilliseconds(getSecondTime()));
+                refreshView();
+                updateTitleText(getActivity().getString(R.string.timepickerstarttimelable));
+
             default:
                 break;
         }
     }
 
-    private int getHours() {
-        Calendar cal = getCurrentCalendar();
-        if (txtDone.getVisibility() == View.VISIBLE) {
-            if (maxSelectedTime > 0) {
-                cal.setTimeInMillis(maxSelectedTime);
+    private boolean checkDateIsPast() {
+        Date fromDate = null;
+        Date toDate = null;
+        String[] fromTimes = AppUtils.getSplitedHr(getFirstTime());
+        if (fromTimes.length > 0) {
+            String fromHr = fromTimes[0];
+            String fromMin = fromTimes[1];
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(fromHr));
+            cal.set(Calendar.MINUTE, Integer.parseInt(fromMin));
+            fromDate = cal.getTime();
+        }
+
+        String[] toTimes = AppUtils.getSplitedHr(getSecondTime());
+        if (toTimes.length > 0) {
+            String toHr = toTimes[0];
+            String toMin = toTimes[1];
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(toHr));
+            cal.set(Calendar.MINUTE, Integer.parseInt(toMin));
+            toDate = cal.getTime();
+        }
+
+        if (fromDate != null && toDate != null) {
+            if (!toDate.after(fromDate)) {
+                return true;
             }
+        }
+
+        return false;
+    }
+
+    private void updateTitleText(String titleText) {
+        titleOfDialog.setText(titleText);
+    }
+
+    /**
+     * Get time picker's Current hour selected
+     *
+     * @return
+     */
+    private int getTimePickerCurrentHour() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return timePicker.getHour();
         } else {
-            if (minSelectedTime > 0) {
-                cal.setTimeInMillis(minSelectedTime);
+            return timePicker.getCurrentHour();
+        }
+    }
+
+
+    private int getTimePickerCurrentMin() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return timePicker.getMinute();
+        } else {
+            return timePicker.getCurrentMinute();
+        }
+    }
+
+    public int getHours() {
+        Calendar cal = getCurrentCalendar();
+        if ((maxSelectedTime == 0 || minSelectedTime == 0) && TextUtils.isEmpty(getFirstTime())) {
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+        } else {
+            if (btnDone.getVisibility() == View.VISIBLE) {
+                if (maxSelectedTime > 0) {
+                    cal.setTimeInMillis(maxSelectedTime);
+                }
+            } else {
+                if (minSelectedTime > 0) {
+                    cal.setTimeInMillis(minSelectedTime);
+                }
             }
         }
-        if (getMinutes().equalsIgnoreCase("00") || getMinutes().equalsIgnoreCase("0")) {
-            cal.add(Calendar.HOUR_OF_DAY, 1);
-        }
+
         return cal.get(Calendar.HOUR_OF_DAY);
     }
 
-    private String getMinutes() {
+    private int getMinutes() {
         Calendar cal = getCurrentCalendar();
-        if (txtDone.getVisibility() == View.VISIBLE) {
-            if (maxSelectedTime > 0) {
-                cal.setTimeInMillis(maxSelectedTime);
-            }
+        if ((maxSelectedTime == 0 || minSelectedTime == 0) && TextUtils.isEmpty(getFirstTime())) {
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
         } else {
-            if (minSelectedTime > 0) {
-                cal.setTimeInMillis(minSelectedTime);
-            }
-        }
-
-        return getRoundedMinute(cal.get(Calendar.MINUTE));
-    }
-
-    private String getRoundedMinute(int minute) {
-        if (minutePicker != null) {
-            String[] values = minutePicker.getDisplayedValues();
-            for (String value : values) {
-                int floorValue = Integer.parseInt(value);
-                if (minute <= floorValue) {
-                    return value;
-                } else if (minute < (floorValue + timeInterval)) {
-                    if ((floorValue + timeInterval) == 60) {
-                        return String.valueOf(0);
-                    } else {
-                        return String.valueOf(floorValue + timeInterval);
-                    }
+            if (btnDone.getVisibility() == View.VISIBLE) {
+                if (maxSelectedTime > 0) {
+                    cal.setTimeInMillis(maxSelectedTime);
+                }
+            } else {
+                if (minSelectedTime > 0) {
+                    cal.setTimeInMillis(minSelectedTime);
                 }
             }
         }
-
-        return "";
+        return cal.get(Calendar.MINUTE);
     }
 
-    private void setTimePickerInterval(TimePicker timePicker) {
-        try {
-
-           /* Class<?> classForid = Class.forName("com.android.internal.R$id");
-            Field timePickerField = classForid.getField("timePicker");
-            this.timePicker = (TimePicker) timePicker.findViewById(timePickerField
-                    .getInt(null));
-            Field field = classForid.getField("minute");
-
-            minutePicker = (NumberPicker) timePicker
-                    .findViewById(field.getInt(null));
-*/
-
-            Class<?> classForid = Class.forName("com.android.internal.R$id");
-            // Field timePickerField = classForid.getField("timePicker");
-
-            Field field = classForid.getField("minute");
-            minutePicker = (NumberPicker) timePicker.findViewById(field.getInt(null));
-
-            minutePicker.setMinValue(0);
-            minutePicker.setMaxValue(59 / timeInterval);
-            List<String> displayedValues = new ArrayList<>();
-            for (int i = 0; i < 60; i += timeInterval) {
-                displayedValues.add(String.format("%02d", i));
-            }
-            minutePicker.setDisplayedValues(displayedValues.toArray(new String[0]));
-        } catch (Exception e) {
-            AppUtils.throwException(CustomTimePickerDialog.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-    }
-
-    private void setMinutesInPicker(String minutes) {
-
-        if (minutePicker != null && !TextUtils.isEmpty(minutes)) {
-            if (minutes.length() == 1) {
-                minutes = "0" + minutes;
-            }
-
-            String[] values = minutePicker.getDisplayedValues();
-            for (int i = 0; i < values.length; i++) {
-                if (values[i].equalsIgnoreCase(minutes)) {
-                    minutePicker.setValue(i);
-                    break;
-                }
-            }
-        }
-    }
-
-    private String getMinutesFromPicker() {
-        if (minutePicker != null) {
-            String[] values = minutePicker.getDisplayedValues();
-            return values[minutePicker.getValue()];
-        } else if (timePicker != null) {
-            return String.valueOf(timePicker.getCurrentMinute());
-        }
-        return null;
-    }
 
     private Calendar getCurrentCalendar() {
         if (cal == null) {
             cal = Calendar.getInstance();
-            cal.setTimeZone(TimeZone.getDefault());
+            //cal.setTimeZone(TimeZone.getDefault());
         }
         return cal;
     }

@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import nu.yona.app.R;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -44,6 +45,7 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((YonaActivity) getActivity()).updateTitle(R.string.profile);
         profileImageView.setImageBitmap(AppUtils.getCircleBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.profile)));
     }
 

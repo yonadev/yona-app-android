@@ -22,12 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.ChallengesManager;
 import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
-import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -35,8 +33,6 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.enums.IntentEnum;
-import nu.yona.app.listener.DataLoadListener;
-import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -167,54 +163,23 @@ public class BaseGoalCreateFragment extends BaseFragment {
                 } else {
                     CustomAlertDialog.show(getActivity(), "You already Added this category.", "Ok");
                     return;
-                    //goalIntent.putExtra(AppConstant.GOAL_OBJECT, yonaGoal);
                 }
             }
         }
         switch (ChallengesEnum.getEnum(CURRENT_TAB)) {
             case CREDIT_TAB:
                 goalIntent.putExtra(AppConstant.NEW_GOAL_TYPE, GoalsEnum.BUDGET_GOAL.getActionString());
-                activity.replaceFragment(goalIntent);
                 break;
             case ZONE_TAB:
                 goalIntent.putExtra(AppConstant.NEW_GOAL_TYPE, GoalsEnum.TIME_ZONE_GOAL.getActionString());
-                activity.replaceFragment(goalIntent);
                 break;
             case NO_GO_TAB:
-                if (object instanceof YonaActivityCategories) {
-                    addNoGoChallange(object);
-                } else if (object instanceof YonaGoal) {
-                    activity.replaceFragment(goalIntent);
-                }
+                goalIntent.putExtra(AppConstant.NEW_GOAL_TYPE, GoalsEnum.NOGO.getActionString());
                 break;
             default:
                 break;
         }
+        activity.replaceFragment(goalIntent);
     }
 
-    private void addNoGoChallange(final Object object) {
-
-        YonaActivityCategories categories = (YonaActivityCategories) object;
-        activity.showLoadingView(true, null);
-        challengesManager.postBudgetGoals(0, categories, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                activity.showLoadingView(false, null);
-                showCurrentGoalListView(CURRENT_TAB);
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, result);
-            }
-
-            @Override
-            public void onError(Object errorMessage) {
-                activity.showLoadingView(false, null);
-                String message;
-                if (errorMessage instanceof ErrorMessage) {
-                    message = ((ErrorMessage) errorMessage).getMessage();
-                } else {
-                    message = errorMessage.toString();
-                }
-                CustomAlertDialog.show(activity, message, getString(R.string.ok));
-            }
-        });
-    }
 }

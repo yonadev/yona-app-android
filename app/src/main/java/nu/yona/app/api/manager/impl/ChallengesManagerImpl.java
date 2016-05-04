@@ -16,11 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.ChallengesManager;
 import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.model.ActivityCategories;
-import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.Links;
@@ -30,6 +30,7 @@ import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by bhargavsuthar on 20/04/16.
@@ -57,11 +58,11 @@ public class ChallengesManagerImpl implements ChallengesManager {
         timeZoneCategoriesGoalList = new ArrayList<>();
         noGoCategoriesGoalList = new ArrayList<>();
         mGoalCategoriesMap = new HashMap<>();
-        updateCategoriesAndGoals();
+        //updateCategoriesAndGoals();
     }
 
     @Override
-    public void updateCategoriesAndGoals() {
+    public synchronized void updateCategoriesAndGoals() {
         getListOfCategory();
         filterCategoriesGoal();
     }
@@ -106,7 +107,43 @@ public class ChallengesManagerImpl implements ChallengesManager {
                 }
             }
         }
+        hasUserCreatedGoal();
+    }
 
+    /**
+     * Checked wheather user has created any goal or not
+     *
+     * @return
+     */
+    public boolean hasUserCreatedGoal() {
+        Goals userGoals = goalManager.getUserGoalFromDb();
+        if (userGoals != null) {
+            if (YonaApplication.getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() < userGoals.getEmbedded().getYonaGoals().size()) {
+                YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Get YonaActivityCategories by selection of budgetType
+     *
+     * @param budgetType
+     * @return
+     */
+    public YonaActivityCategories getSelectedGoalCategories(String budgetType) {
+        ActivityCategories embeddedActivityCategories = activityCategoryManager.getListOfActivityCategories();
+        if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
+            for (YonaActivityCategories activityCategories : embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories()) {
+                if (!TextUtils.isEmpty(activityCategories.getName()) && budgetType.equalsIgnoreCase(activityCategories.getName())) {
+                    return activityCategories;
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -195,22 +232,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
     }
 
     public void postBudgetGoals(long time, final YonaActivityCategories category, final DataLoadListener listener) {
-        goalManager.postBudgetGoals(getPostYonaGoalForBudget(time, category), new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-
-                listener.onDataLoad(result);
-            }
-
-            @Override
-            public void onError(Object errorMessage) {
-                if (errorMessage instanceof ErrorMessage) {
-                    listener.onError(errorMessage);
-                } else {
-                    listener.onError(new ErrorMessage(errorMessage.toString()));
-                }
-            }
-        });
+        goalManager.postBudgetGoals(getPostYonaGoalForBudget(time, category), listener);
     }
 
     private PostBudgetYonaGoal getPostYonaGoalForBudget(long time, YonaActivityCategories category) {
