@@ -46,14 +46,14 @@
     <string name="passcodetryagain">Probeer opnieuw</string>
     <string name="pincode">PINCODE</string>
     <string name="passcodestep1title">Account aangemaakt</string>
-    <string name="passcodestep1desc"> it is mandatory to provide the Yona app with a pincode. Set your PIN below."</string>
+    <string name="passcodestep1desc">Voor een goede beveiliging is het verplicht om de Yona app te voorzien van een pincode. Stel je pincode hieronder in.</string>
     <string name="passcodestep2title">Bevestig pincode</string>
     <string name="passcodestep2desc">Vul je pincode nog een keer in ter bevestiging.</string>
     <string name="msgblockuser"> use the ""reset pin"" option to enable our account."</string>
     <string name="passcodereset">PIN reset</string>
     <string name="invalidotp">Ongeldige toegangcode</string>
     <string name="accountlogin">Account wordt aangemaakt</string>
-    <string name="accountloginsecuritymessage"> you will receive a code by SMS. Please enter code below."</string>
+    <string name="accountloginsecuritymessage">Als extra beveiliging ontvang je een code per SMS. Graag deze code hieronder invullen.</string>
     <string name="sendotpagain">Stuur code opnieuw</string>
     <string name="adddevice">Apparaat toevoegen</string>
     <string name="yonaadddevicemessage">%1$s toets deze pincode in op het apparaat waar je Yona op gaat gebruiken.</string>
@@ -62,7 +62,7 @@
     <string name="inloggin">INLOGGEN</string>
     <string name="enterpasscode">You need to enter 6 digits alphanumeric passcode.</string>
     <string name="resetpinrequest">Your request for reset has been received. You will receive an text message with a PIN reset confirmation code within %1$s hours.</string>
-    <string name="useroverride"> do you want to re-register same number? (Note:All data associated with this number will be removed</string>
+    <string name="useroverride">Mobile Number %1$s already register with Yona, do you want to re-register same number? (Note:All data associated with this number will be removed, if you want to add another device, you can go back and click on InLoggin.)</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="challenges.addBudgetGoal.setChallengeButton">CHALLENGE OPSLAAN</string>
@@ -74,7 +74,7 @@
     <string name="challenges.addBudgetGoal.deletedGoalMessage">Verwijder Goal</string>
     <string name="deleteuser">Unsubscribe</string>
     <string name="challengesaddBudgetGoalcannotDeleteMandatoryGoalMessage">Kan verplichte doel niet verwijderen</string>
-    <string name="deleteusermessage"> please type OK below."</string>
+    <string name="deleteusermessage">This is your latest device with private key and your profile and data will be remove from the yona server, please tap OK below.</string>
     <string name="cancel">Cancel</string>
     <string name="challengesnogoheader">Hier leg je vast waar je helemaal niet wilt komen.</string>
     <string name="challengestijdzoneheader">Kies een categorie waar je een tijdzone voor wilt instellen</string>
