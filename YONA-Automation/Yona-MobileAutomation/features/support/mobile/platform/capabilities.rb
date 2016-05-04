@@ -64,7 +64,7 @@ module Platform
               :'appium-version' => '1.5.1',
               platformVersion: ENV['VERSION'],
               deviceName: ENV['DEVICE'],
-              app: 'Yona_Android-develop-1.0.0.15.apk',
+              app: 'Yona-develop-1.0.0.1.apk',
               # name: app,
               :'access-key' => sauce_key
           },
