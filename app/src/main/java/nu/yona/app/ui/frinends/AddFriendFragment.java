@@ -61,8 +61,8 @@ public class AddFriendFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == ADD_FRIENT_CONTACT && getPermissionToReadUserContacts()) {
-                    openContactBook();
+                if (position == ADD_FRIENT_CONTACT) {
+                    getPermissionToReadUserContacts();
                 }
             }
 
@@ -77,8 +77,10 @@ public class AddFriendFragment extends BaseFragment {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSIONS_REQUEST);
             return false;
+        } else {
+            openContactBook();
+            return true;
         }
-        return true;
     }
 
     private void openContactBook() {

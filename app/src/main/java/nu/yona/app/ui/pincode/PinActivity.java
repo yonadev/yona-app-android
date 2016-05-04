@@ -110,7 +110,6 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
     }
 
     private void showChallengesScreen() {
-        startActivity(new Intent(PinActivity.this, YonaActivity.class));
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }

@@ -78,19 +78,18 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
         getView(view);
         addButtonListener();
-
         return view;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onResume() {
+        super.onResume();
         YonaApplication.getEventChangeManager().registerListener(this);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onPause() {
+        super.onPause();
         YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 

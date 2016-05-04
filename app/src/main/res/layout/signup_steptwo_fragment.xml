@@ -50,6 +50,7 @@
             android:drawableRight="@drawable/icn_nickname"
             android:ellipsize="end"
             android:hint="@string/nickname"
+            android:inputType="textFilter"
             android:imeOptions="actionDone"
             android:maxLength="@integer/char_limit"
             android:singleLine="true"
