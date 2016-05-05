@@ -1,9 +1,12 @@
 Given(/^User is on Home page and can see two options Login and Join$/) do
   sleep 2
 
+  on(Signup).checkWelcomeScreen
+
 end
 
 When(/^User clicks on Join button$/) do
+  sleep 2
   on(Signup).join_element.click()
 
 end

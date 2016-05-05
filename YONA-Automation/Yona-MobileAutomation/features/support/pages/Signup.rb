@@ -49,12 +49,33 @@ class Signup < MobTest::Base
   next_element.click();
   end
 
+  def checkWelcomeScreen
+    displayed=false
+    begin
+    # puts "Element=#{welcome_element.displayed?}"
+    if (welcome_element.displayed?)
 
+      while not(displayed)
+        begin
+          puts "Displayed=#{displayed}"
+          nextwlk_element.click
+          displayed=join_element.displayed?
+        rescue => e
+          displayed=false
+        end
+      end
+    end
+    rescue => e
+      puts "Exception message #{e.message}"
+      puts "No welcome screen"
+    end
+  end
 
   android do
 
 
     button(:join, xpath: '//android.widget.Button[1]')
+    label(:welcome, xpath: '//android.widget.TextView[contains(@text,"Transparantie")]')
     text_field(:text1, xpath: '//android.widget.LinearLayout[1]/android.widget.EditText[1]')
     text_field(:text2, xpath: '//android.widget.LinearLayout[2]/android.widget.EditText[1]')
     button(:next, xpath: '//android.widget.Button[@resource-id="nu.yona.app:id/next"]')
@@ -62,6 +83,8 @@ class Signup < MobTest::Base
     text_field(:pin2, xpath: '//android.widget.EditText[2]')
     text_field(:pin3, xpath: '//android.widget.EditText[3]')
     text_field(:pin4, xpath: '//android.widget.EditText[4]')
+    element(:welscreen, xpath:'//android.support.v4.view.ViewPager[1]')
+    button(:nextwlk, xpath: '//android.widget.ImageButton[1]')
 
     def clickOK
       puts "No popup, we are in Android"
@@ -71,6 +94,14 @@ class Signup < MobTest::Base
 
       pin1_element.send_keys '1234'
 
+    end
+
+
+
+
+    def appium_swipe(start_x, start_y, end_x, end_y, duration)
+      action = Appium::TouchAction.new.swipe(start_x: start_x, start_y: start_y, end_x: end_x, end_y: end_y, duration: duration * 1000)
+      action.perform
     end
 
   end
