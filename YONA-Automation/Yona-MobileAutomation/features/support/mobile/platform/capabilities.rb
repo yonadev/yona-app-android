@@ -37,9 +37,10 @@ module Platform
       capabilities =
           {
               platformName: 'Android',
+              fullReset: true,
               app: caps[:apk_path],
               appPackage: caps[:android_package],
-              appActivity: caps[:app_activity]
+              appActivity: caps[:android_activity]
           }
       if ENV['ANDROID_PHONE'] == 'emulator'
         capabilities = capabilities.merge(deviceName: 'Android Emulator', avd: ENV['DEVICE'])
@@ -59,12 +60,12 @@ module Platform
           caps: {
               platformName: 'Android',
               # app: cap[:apk_path],
-              # appPackage: cap[:android_package],
-              # appActivity: cap[:android_activity],
+              appPackage: cap[:android_package],
+              appActivity: cap[:android_activity],
               :'appium-version' => '1.5.1',
               platformVersion: ENV['VERSION'],
               deviceName: ENV['DEVICE'],
-              app: 'Yona-develop-1.0.0.1.apk',
+              app: 'sauce-storage:Yona_Android-develop-1.0.0.15.apk',
               # name: app,
               :'access-key' => sauce_key
           },
