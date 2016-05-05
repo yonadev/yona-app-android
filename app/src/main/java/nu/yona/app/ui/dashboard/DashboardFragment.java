@@ -26,6 +26,8 @@ import nu.yona.app.ui.YonaActivity;
  */
 public class DashboardFragment extends BaseFragment {
 
+    YonaActivity activity;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,6 +36,14 @@ public class DashboardFragment extends BaseFragment {
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        activity = (YonaActivity) getActivity();
+
+        activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO Load Message Notification fragment
+            }
+        });
         return view;
     }
 

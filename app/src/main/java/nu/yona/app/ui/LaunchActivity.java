@@ -22,7 +22,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.ui.login.LoginActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
-import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
 import nu.yona.app.ui.tour.TourActivity;

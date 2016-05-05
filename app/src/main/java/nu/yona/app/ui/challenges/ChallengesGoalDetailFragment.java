@@ -445,7 +445,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                         createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
                     }
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
-                    if(listOfTimes == null || listOfTimes.size() == 0) {
+                    if (listOfTimes == null || listOfTimes.size() == 0) {
                         showError(new ErrorMessage(getString(R.string.add_timezone)));
                         return;
                     }

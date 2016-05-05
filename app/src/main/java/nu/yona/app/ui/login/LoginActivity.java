@@ -15,11 +15,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -56,6 +61,23 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     };
     private YonaFontEditTextView mobileNumber, passcode;
     private TextInputLayout mobileNumberLayout, passcodeLayout;
+    private final TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            passcodeLayout.setError(null);
+            mobileNumberLayout.setError(null);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
     private DeviceManager deviceManager;
 
     @Override
@@ -71,14 +93,21 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         mobileNumber = (YonaFontEditTextView) findViewById(R.id.mobile_number);
         passcode = (YonaFontEditTextView) findViewById(R.id.passcode);
         passcode.setFilters(new InputFilter[]{new InputFilter.LengthFilter(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT), filter});
+        passcode.addTextChangedListener(watcher);
+        passcode.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    goToNext();
+                }
+                return false;
+            }
+        });
 
         findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateMobileNumber(getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length()).replace(" ", ""))
-                        && validatePasscode(passcode.getText().toString())) {
-                    doLogin();
-                }
+                goToNext();
             }
         });
 
@@ -87,11 +116,9 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         mobileNumber.setText(R.string.country_code_with_zero);
         mobileNumber.requestFocus();
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
-        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), this));
-
+        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), this, mobileNumberLayout));
 
         YonaApplication.getEventChangeManager().registerListener(this);
-
     }
 
     @Override
@@ -179,5 +206,12 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         startActivity(new Intent(LoginActivity.this, PasscodeActivity.class));
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
+    }
+
+    private void goToNext() {
+        if (validateMobileNumber(getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length()).replace(getString(R.string.space), getString(R.string.blank)))
+                && validatePasscode(passcode.getText().toString())) {
+            doLogin();
+        }
     }
 }

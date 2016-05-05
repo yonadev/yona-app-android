@@ -10,7 +10,6 @@
 
 package nu.yona.app.ui.frinends;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,11 +18,14 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -67,7 +69,6 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
     };
     private YonaFontButton addFriendButton;
     private BuddyManager buddyManager;
-    private boolean fromContactBook;
 
     @Nullable
     @Override
@@ -113,20 +114,42 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         firstName.setFilters(new InputFilter[]{AppUtils.getFilter()});
         lastName.setFilters(new InputFilter[]{AppUtils.getFilter()});
 
-        mobileNumber.setText(R.string.country_code_with_zero);
-        mobileNumber.requestFocus();
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
-        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity()));
+        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity(), mobileNumberLayout));
 
+        mobileNumber.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    goToNext();
+                }
+                return false;
+            }
+        });
+
+        mobileNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus && TextUtils.isEmpty(mobileNumber.getText())) {
+                    mobileNumber.setText(R.string.country_code_with_zero);
+                }
+            }
+        });
+
+        firstName.requestFocus();
+    }
+
+    private void goToNext() {
+        if (validateFields()) {
+            addFriend();
+        }
     }
 
     private void addButtonListener() {
         addFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateFields()) {
-                    addFriend();
-                }
+                goToNext();
             }
         });
     }
@@ -184,11 +207,11 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         firstNameLayout.setError(null);
         lastNameLayout.setError(null);
         emailLayout.setError(null);
+        mobileNumberLayout.setError(null);
     }
 
     private void showKeyboard(EditText editText) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        ((InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE)).showSoftInput(editText, InputMethodManager.SHOW_FORCED);
     }
 
     @Override
@@ -206,9 +229,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
                             number = number.substring(number.length() - NUMBER_LENGTH);
                             number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
                         }
-                        fromContactBook = true;
                         mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
-                        fromContactBook = false;
                     } else {
                         mobileNumber.setText(getString(R.string.country_code_with_zero));
                     }
