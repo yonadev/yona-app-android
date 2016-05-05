@@ -142,6 +142,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             currentTab = getArguments().getString(AppConstant.NEW_GOAL_TYPE);
         }
         activity = (YonaActivity) getActivity();
+        updateTitle();
     }
 
     @Nullable
@@ -257,6 +258,18 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         return view;
     }
 
+    private void updateTitle() {
+        String title = null;
+        if (currentTab.equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString())) {
+            title = getString(R.string.challengescredit);
+        } else if (currentTab.equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
+            title = getString(R.string.challengeszone);
+        } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
+            title = getString(R.string.challengesnogo);
+        }
+        activity.udpateTitle(getString(R.string.challengesdetail, title));
+    }
+
     /**
      * Delete a goal which aleady added on server
      */
@@ -278,7 +291,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private void showError(Object errorMessage) {
         ErrorMessage message = (ErrorMessage) errorMessage;
         activity.showLoadingView(false, null);
-        CustomAlertDialog.show(activity, message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+        CustomAlertDialog.show(activity, message.getMessage(), activity.getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

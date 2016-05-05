@@ -558,6 +558,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         toolbarTitle.setText(getString(titleId));
     }
 
+    public void udpateTitle(String title) {
+        toolbarTitle.setText(title);
+    }
+
     private void updateToolbarRightIcon() {
         if (mContent instanceof DashboardFragment || mContent instanceof FriendsFragment || mContent instanceof ProfileFragment) {
             rightIcon.setVisibility(View.VISIBLE);

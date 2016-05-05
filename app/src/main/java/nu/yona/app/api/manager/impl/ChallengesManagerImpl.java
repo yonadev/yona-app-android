@@ -72,13 +72,15 @@ public class ChallengesManagerImpl implements ChallengesManager {
         ActivityCategories embeddedActivityCategories = activityCategoryManager.getListOfActivityCategories();
         if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
             for (YonaActivityCategories activityCategories : embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories()) {
-                mYonaActivityCategoriesList.add(activityCategories);
-                if (!TextUtils.isEmpty(activityCategories.getName()) && !TextUtils.isEmpty(activityCategories.get_links().getSelf().getHref())) {
-                    mGoalCategoriesMap.put(activityCategories.getName(), activityCategories.get_links().getSelf().getHref());
+                if (activityCategories != null) {
+                    mYonaActivityCategoriesList.add(activityCategories);
+                    if (!TextUtils.isEmpty(activityCategories.getName()) && !TextUtils.isEmpty(activityCategories.get_links().getSelf().getHref())) {
+                        mGoalCategoriesMap.put(activityCategories.getName(), activityCategories.get_links().getSelf().getHref());
+                    }
                 }
             }
-
         }
+
     }
 
 
@@ -137,7 +139,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         ActivityCategories embeddedActivityCategories = activityCategoryManager.getListOfActivityCategories();
         if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
             for (YonaActivityCategories activityCategories : embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories()) {
-                if (!TextUtils.isEmpty(activityCategories.getName()) && budgetType.equalsIgnoreCase(activityCategories.getName())) {
+                if (!TextUtils.isEmpty(activityCategories.getName()) && activityCategories.getName().equalsIgnoreCase(budgetType)) {
                     return activityCategories;
                 }
             }
