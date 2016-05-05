@@ -58,7 +58,7 @@
     <string name="sendotpagain">Stuur code opnieuw</string>
     <string name="adddevice">Apparaat toevoegen</string>
     <string name="yonaadddevicemessage">%1$s toets deze pincode in op het apparaat waar je Yona op gaat gebruiken.</string>
-    <string name="loggedinadddevicemessage"> open Yona</string>
+    <string name="loggedinadddevicemessage">Je hebt nog niet eerder ingelogd op dit apparaat. Ga naar je primaire device (waarschijnlijk je mobiel), open Yona, vervolgens naar instellingen en klik op ‘apparaat toevoegen’. Vul vervolgens onderstaande velden in.</string>
     <string name="passcode">CODE</string>
     <string name="inloggin">INLOGGEN</string>
     <string name="enterpasscode">You need to enter 6 digits alphanumeric passcode.</string>
@@ -111,5 +111,5 @@
     <string name="timepickererror">You can not select past time, it should be future time.</string>
     <string name="timepickerselect">Select time you want to spent:</string>
     <string name="add_timezone">Please add atlest one time to add in timezone.</string>
-
+    <string name="challengesdetail">%1$s VASTLEGGEN</string>
 </resources>

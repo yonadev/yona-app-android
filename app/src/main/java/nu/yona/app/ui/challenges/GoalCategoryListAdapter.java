@@ -88,13 +88,4 @@ class GoalCategoryListAdapter<T> extends BaseAdapter {
         return convertView;
     }
 
-    /**
-     * Update goals list.
-     *
-     * @param yonaGoalList the yona goal list
-     */
-    public void updateGoalsList(final List<T> yonaGoalList) {
-        this.mListYonaGoal = yonaGoalList;
-        notifyDataSetChanged();
-    }
 }

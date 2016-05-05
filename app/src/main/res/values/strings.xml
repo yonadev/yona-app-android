@@ -111,5 +111,6 @@
     <string name="timepickererror">You can not select past time, it should be future time.</string>
     <string name="timepickerselect">Select time you want to spent:</string>
     <string name="add_timezone">Please add atlest one time to add in timezone.</string>
+    <string name="challengesdetail">%1$s VASTLEGGEN</string>
 
 </resources>

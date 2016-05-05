@@ -50,6 +50,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     private ChallengesManager challengesManager;
     private ActivityCategoryManager activityCategoryManager;
     private GoalManager goalManager;
+    private YonaActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         creditFragment = new CreditFragment();
         zoneFragment = new ZoneFragment();
         noGoFragment = new NoGoFragment();
+        activity = (YonaActivity) getActivity();
         challengesManager = new ChallengesManagerImpl(getActivity());
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
@@ -76,6 +78,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                updateCounterTab();
                 updateTabViewBackground(tab, TAB_ALPHA_SELECTED);
             }
 
@@ -105,7 +108,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     }
 
     private void getActivityCategories() {
-
+        activity.showLoadingView(true, null);
         new ActivityCategoryManagerImpl(getActivity()).getActivityCategoriesById(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
@@ -114,6 +117,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
 
             @Override
             public void onError(Object errorMessage) {
+                activity.showLoadingView(false, null);
 
             }
         });
@@ -125,11 +129,13 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
             @Override
             public void onDataLoad(Object result) {
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
+                activity.showLoadingView(false, null);
             }
 
             @Override
             public void onError(Object errorMessage) {
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
+                activity.showLoadingView(false, null);
             }
         });
     }
