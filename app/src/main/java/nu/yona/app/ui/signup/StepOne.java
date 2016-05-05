@@ -45,8 +45,8 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            firstNameLayout.setErrorEnabled(false);
-            lastNameLayout.setErrorEnabled(false);
+            firstNameLayout.setError(null);
+            lastNameLayout.setError(null);
         }
 
         @Override
