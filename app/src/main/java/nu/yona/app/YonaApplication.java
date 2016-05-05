@@ -127,7 +127,10 @@ public class YonaApplication extends Application {
      * @return the server url
      */
     public static String getServerUrl() {
-        serverUrl = TextUtils.isEmpty(serverUrl) ? YonaApplication.getAppContext().getString(R.string.server_url) : serverUrl;
+        if (TextUtils.isEmpty(getUserPreferences().getString(AppConstant.SERVER_URL, getAppContext().getString(R.string.blank)))) {
+            getUserPreferences().edit().putString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url)).commit();
+        }
+        serverUrl = getUserPreferences().getString(AppConstant.SERVER_URL, getAppContext().getString(R.string.blank));
         return serverUrl;
     }
 
@@ -137,6 +140,7 @@ public class YonaApplication extends Application {
      * @param serverUrl the server url
      */
     public static void setServerUrl(String serverUrl) {
+        getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
         YonaApplication.serverUrl = serverUrl;
     }
 

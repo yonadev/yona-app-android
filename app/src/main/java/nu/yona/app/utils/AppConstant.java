@@ -16,6 +16,11 @@ public interface AppConstant {
      * The constant CLEAR_FRAGMENT_STACK.
      */
     String CLEAR_FRAGMENT_STACK = "clearFragmentStack";
+
+    /**
+     * The constant SERVER_URL.
+     */
+    String SERVER_URL = "serverUrl";
     /**
      * The constant MAX_COUNTER.
      */

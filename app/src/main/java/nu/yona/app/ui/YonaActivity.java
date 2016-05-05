@@ -45,7 +45,6 @@ import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
-import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.challenges.ChallengesFragment;
@@ -176,7 +175,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             AppUtils.startService(this);
         }
         registerReceiver();
-        getUser();
     }
 
     @Override
@@ -203,17 +201,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         AuthenticateManager authenticateManager = new AuthenticateManagerImpl(this);
         User user = authenticateManager.getUser();
         if (user != null) {
-            authenticateManager.getUser(user.getLinks().getSelf().getHref(), new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                }
-
-                @Override
-                public void onError(Object errorMessage) {
-                    showError((ErrorMessage) errorMessage);
-                }
-            });
-
+            authenticateManager.getUser(user.getLinks().getSelf().getHref(), null);
         }
     }
 
@@ -558,6 +546,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         toolbarTitle.setText(getString(titleId));
     }
 
+    /**
+     * Udpate title.
+     *
+     * @param title the title
+     */
     public void udpateTitle(String title) {
         toolbarTitle.setText(title);
     }

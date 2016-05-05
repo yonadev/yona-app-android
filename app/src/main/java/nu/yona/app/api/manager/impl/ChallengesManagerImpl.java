@@ -19,9 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.ActivityCategoryManager;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.ChallengesManager;
-import nu.yona.app.api.manager.GoalManager;
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.Href;
@@ -39,39 +38,29 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class ChallengesManagerImpl implements ChallengesManager {
 
-    private final GoalManager goalManager;
-    private final ActivityCategoryManager activityCategoryManager;
-    private final List<YonaActivityCategories> mYonaActivityCategoriesList;
-    private final HashMap<String, String> mGoalCategoriesMap;
-    private final List<YonaGoal> budgetCategoriesGoalList;
-    private final List<YonaGoal> timeZoneCategoriesGoalList;
-    private final List<YonaGoal> noGoCategoriesGoalList;
+    private List<YonaActivityCategories> mYonaActivityCategoriesList;
+    private HashMap<String, String> mGoalCategoriesMap;
+    private List<YonaGoal> budgetCategoriesGoalList;
+    private List<YonaGoal> timeZoneCategoriesGoalList;
+    private List<YonaGoal> noGoCategoriesGoalList;
 
     /**
      * Instantiates a new Challenges manager.
      *
-     * @param context the context
      */
-    public ChallengesManagerImpl(Context context) {
-        activityCategoryManager = new ActivityCategoryManagerImpl(context);
-        goalManager = new GoalManagerImpl(context);
+    public ChallengesManagerImpl() {
         mYonaActivityCategoriesList = new ArrayList<>();
         budgetCategoriesGoalList = new ArrayList<>();
         timeZoneCategoriesGoalList = new ArrayList<>();
         noGoCategoriesGoalList = new ArrayList<>();
         mGoalCategoriesMap = new HashMap<>();
-        //updateCategoriesAndGoals();
-    }
-
-    @Override
-    public synchronized void updateCategoriesAndGoals() {
         getListOfCategory();
-        filterCategoriesGoal();
+        filterCategoriesGoal(APIManager.getInstance().getGoalManager().getUserGoalFromDb());
     }
 
     private synchronized void getListOfCategory() {
         mYonaActivityCategoriesList.clear();
-        ActivityCategories embeddedActivityCategories = activityCategoryManager.getListOfActivityCategories();
+        ActivityCategories embeddedActivityCategories = APIManager.getInstance().getActivityCategoryManager().getListOfActivityCategories();
         if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
             for (YonaActivityCategories activityCategories : embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories()) {
                 if (activityCategories != null) {
@@ -86,13 +75,11 @@ public class ChallengesManagerImpl implements ChallengesManager {
     }
 
 
-    private synchronized void filterCategoriesGoal() {
+    private synchronized Goals filterCategoriesGoal(Goals userGoals) {
         budgetCategoriesGoalList.clear();
         timeZoneCategoriesGoalList.clear();
         noGoCategoriesGoalList.clear();
-        Goals userGoals = goalManager.getUserGoalFromDb();
-
-        if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals()!= null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
+        if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals() != null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
             List<YonaGoal> yonaGoals = sortGoals(userGoals.getEmbedded().getYonaGoals());
             for (YonaGoal mYonaGoal : yonaGoals) {
                 if (mYonaGoal != null) {
@@ -111,8 +98,10 @@ public class ChallengesManagerImpl implements ChallengesManager {
                     }
                 }
             }
+            userGoals.getEmbedded().setYonaGoals(yonaGoals);
         }
         hasUserCreatedGoal();
+        return userGoals;
     }
 
     private List<YonaGoal> sortGoals(List<YonaGoal> yonaGoals) {
@@ -128,7 +117,10 @@ public class ChallengesManagerImpl implements ChallengesManager {
         }
         Collections.sort(yonaGoals, new Comparator<YonaGoal>() {
             public int compare(YonaGoal o1, YonaGoal o2) {
-                return o1.getActivityCategoryName().compareTo(o2.getActivityCategoryName());
+                if (!TextUtils.isEmpty(o1.getActivityCategoryName()) && !TextUtils.isEmpty(o2.getActivityCategoryName())) {
+                    return o1.getActivityCategoryName().compareTo(o2.getActivityCategoryName());
+                }
+                return 0;
             }
         });
         return yonaGoals;
@@ -137,10 +129,10 @@ public class ChallengesManagerImpl implements ChallengesManager {
     /**
      * Checked wheather user has created any goal or not
      *
-     * @return boolean
+     * @return boolean boolean
      */
     public boolean hasUserCreatedGoal() {
-        Goals userGoals = goalManager.getUserGoalFromDb();
+        Goals userGoals = APIManager.getInstance().getGoalManager().getUserGoalFromDb();
         if (userGoals != null) {
             if (YonaApplication.getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() < userGoals.getEmbedded().getYonaGoals().size()) {
                 YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
@@ -158,7 +150,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
      * @return
      */
     public YonaActivityCategories getSelectedGoalCategories(String budgetType) {
-        ActivityCategories embeddedActivityCategories = activityCategoryManager.getListOfActivityCategories();
+        ActivityCategories embeddedActivityCategories = APIManager.getInstance().getActivityCategoryManager().getListOfActivityCategories();
         if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
             for (YonaActivityCategories activityCategories : embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories()) {
                 if (!TextUtils.isEmpty(activityCategories.getName()) && activityCategories.getName().equalsIgnoreCase(budgetType)) {
@@ -175,7 +167,10 @@ public class ChallengesManagerImpl implements ChallengesManager {
         getListOfCategory();
         Collections.sort(mYonaActivityCategoriesList, new Comparator<YonaActivityCategories>() {
             public int compare(YonaActivityCategories o1, YonaActivityCategories o2) {
-                return o1.getName().compareTo(o2.getName());
+                if (!TextUtils.isEmpty(o1.getName()) && !TextUtils.isEmpty(o2.getName())) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+                return 0;
             }
         });
         return mYonaActivityCategoriesList;
@@ -188,7 +183,6 @@ public class ChallengesManagerImpl implements ChallengesManager {
      */
     @Override
     public List<YonaGoal> getListOfBudgetGoals() {
-        filterCategoriesGoal();
         return budgetCategoriesGoalList;
     }
 
@@ -199,7 +193,6 @@ public class ChallengesManagerImpl implements ChallengesManager {
      */
     @Override
     public List<YonaGoal> getListOfTimeZoneGoals() {
-        filterCategoriesGoal();
         return timeZoneCategoriesGoalList;
     }
 
@@ -210,13 +203,12 @@ public class ChallengesManagerImpl implements ChallengesManager {
      */
     @Override
     public List<YonaGoal> getListOfNoGoGoals() {
-        filterCategoriesGoal();
         return noGoCategoriesGoalList;
     }
 
     @Override
     public YonaGoal getYonaGoalByCategoryType(YonaActivityCategories activityCategories) {
-        Goals userGoals = goalManager.getUserGoalFromDb();
+        Goals userGoals = APIManager.getInstance().getGoalManager().getUserGoalFromDb();
         if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
             for (YonaGoal mYonaGoal : userGoals.getEmbedded().getYonaGoals()) {
                 if (mYonaGoal != null && activityCategories.get_links().getSelf().getHref().equalsIgnoreCase(mYonaGoal.getLinks().getYonaActivityCategory().getHref())) {
@@ -257,11 +249,31 @@ public class ChallengesManagerImpl implements ChallengesManager {
      * @param listener
      */
     public void postBudgetGoals(long time, YonaGoal goal, final DataLoadListener listener) {
-        goalManager.postBudgetGoals(getPostYonaGoalForBudget(time, goal), listener);
+        APIManager.getInstance().getGoalManager().postBudgetGoals(getPostYonaGoalForBudget(time, goal), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                getUserGoal(listener);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
     }
 
     public void postBudgetGoals(long time, final YonaActivityCategories category, final DataLoadListener listener) {
-        goalManager.postBudgetGoals(getPostYonaGoalForBudget(time, category), listener);
+        APIManager.getInstance().getGoalManager().postBudgetGoals(getPostYonaGoalForBudget(time, category), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                getUserGoal(listener);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
     }
 
     private PostBudgetYonaGoal getPostYonaGoalForBudget(long time, YonaActivityCategories category) {
@@ -310,22 +322,62 @@ public class ChallengesManagerImpl implements ChallengesManager {
      * @param listener
      */
     public void postTimeGoals(List<String> timeGoal, YonaGoal goal, final DataLoadListener listener) {
-        goalManager.postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, goal), listener);
+        APIManager.getInstance().getGoalManager().postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, goal), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                getUserGoal(listener);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
     }
 
     @Override
-    public void postTimeGoals(List<String> timeGoal, YonaActivityCategories categories, DataLoadListener listener) {
-        goalManager.postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, categories), listener);
+    public void postTimeGoals(List<String> timeGoal, YonaActivityCategories categories, final DataLoadListener listener) {
+        APIManager.getInstance().getGoalManager().postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, categories), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                getUserGoal(listener);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
     }
 
     @Override
-    public void updateTimeGoals(List<String> timeGoal, YonaGoal goal, DataLoadListener listener) {
-        goalManager.updateTimeZoneGoals(getUpdateYonaGoalForTimeZone(timeGoal, goal), listener);
+    public void updateTimeGoals(List<String> timeGoal, YonaGoal goal, final DataLoadListener listener) {
+        APIManager.getInstance().getGoalManager().updateTimeZoneGoals(getUpdateYonaGoalForTimeZone(timeGoal, goal), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                getUserGoal(listener);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
     }
 
     @Override
-    public void updateBudgetGoals(long time, YonaGoal goal, DataLoadListener listener) {
-        goalManager.updateBudgetGoals(getUpdateYonaGoalForBudget(time, goal), listener);
+    public void updateBudgetGoals(long time, YonaGoal goal, final DataLoadListener listener) {
+        APIManager.getInstance().getGoalManager().updateBudgetGoals(getUpdateYonaGoalForBudget(time, goal), new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                getUserGoal(listener);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
     }
 
     private PostTimeZoneYonaGoal getPostYonaGoalForTimeZone(List<String> timeGoal, YonaGoal goal) {
@@ -371,8 +423,18 @@ public class ChallengesManagerImpl implements ChallengesManager {
      * @param yonaGoal YonaGoal object to delete it.
      * @param listener
      */
-    public void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener) {
-        goalManager.deleteGoal(yonaGoal, listener);
+    public void deleteGoal(YonaGoal yonaGoal, final DataLoadListener listener) {
+        APIManager.getInstance().getGoalManager().deleteGoal(yonaGoal, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                getUserGoal(listener);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
     }
 
     /**
@@ -394,5 +456,36 @@ public class ChallengesManagerImpl implements ChallengesManager {
             }
         }
         return null;
+    }
+
+    public void getUserGoal(final DataLoadListener listener) {
+        APIManager.getInstance().getGoalManager().getUserGoal(new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                saveGoals((Goals) result, listener);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
+    }
+
+    private void saveGoals(Goals goals, final DataLoadListener listener) {
+        getListOfCategory();
+        filterCategoriesGoal(goals);
+        APIManager.getInstance().getGoalManager().saveGoals(goals, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                listener.onDataLoad(result);
+                filterCategoriesGoal(APIManager.getInstance().getGoalManager().getUserGoalFromDb());
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                listener.onError(errorMessage);
+            }
+        });
     }
 }

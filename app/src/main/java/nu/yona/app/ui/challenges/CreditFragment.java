@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -33,7 +34,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
         View view = super.onCreateView(inflater, container, savedInstanceState);
         YonaApplication.getEventChangeManager().registerListener(this);
         showCurrentGoalListView(ChallengesEnum.CREDIT_TAB.getTab());
-        mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfBudgetGoals());
+        mGoalListAdapter = new GoalListAdapter(getActivity(), APIManager.getInstance().getChallengesManager().getListOfBudgetGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
         mGoalListView.setOnItemClickListener(itemClickListener);
         mDescTab.setText(getActivity().getString(R.string.challengestegoedheader));
@@ -65,7 +66,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_UPDATE_GOALS:
-                mGoalListAdapter.notifyDataSetChanged(challengesManager.getListOfBudgetGoals());
+                mGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfBudgetGoals());
                 break;
             default:
                 break;

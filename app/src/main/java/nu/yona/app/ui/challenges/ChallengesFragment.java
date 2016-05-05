@@ -19,12 +19,8 @@ import android.widget.ImageView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.ActivityCategoryManager;
-import nu.yona.app.api.manager.ChallengesManager;
-import nu.yona.app.api.manager.GoalManager;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
-import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
-import nu.yona.app.api.manager.impl.GoalManagerImpl;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
@@ -47,17 +43,11 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     private CreditFragment creditFragment;
     private ZoneFragment zoneFragment;
     private NoGoFragment noGoFragment;
-    private ChallengesManager challengesManager;
-    private ActivityCategoryManager activityCategoryManager;
-    private GoalManager goalManager;
     private YonaActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        challengesManager = new ChallengesManagerImpl(getActivity());
-        activityCategoryManager = new ActivityCategoryManagerImpl(getActivity());
-        goalManager = new GoalManagerImpl(getActivity());
     }
 
     @Nullable
@@ -68,7 +58,6 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         zoneFragment = new ZoneFragment();
         noGoFragment = new NoGoFragment();
         activity = (YonaActivity) getActivity();
-        challengesManager = new ChallengesManagerImpl(getActivity());
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         YonaApplication.getEventChangeManager().registerListener(this);
@@ -108,7 +97,6 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     }
 
     private void getActivityCategories() {
-        activity.showLoadingView(true, null);
         new ActivityCategoryManagerImpl(getActivity()).getActivityCategoriesById(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
@@ -125,7 +113,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     }
 
     private void getUserGoal() {
-        new GoalManagerImpl(getActivity()).getUserGoal(new DataLoadListener() {
+        APIManager.getInstance().getChallengesManager().getUserGoal(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
@@ -156,22 +144,21 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     }
 
     private void setupTabIcons() {
-        challengesManager.getListOfCategories();
-
-        if (challengesManager.getListOfBudgetGoals() != null) {
-            int budgetGoalCounter = challengesManager.getListOfBudgetGoals().size();
+        APIManager.getInstance().getChallengesManager().getListOfCategories();
+        if (APIManager.getInstance().getChallengesManager().getListOfBudgetGoals() != null) {
+            int budgetGoalCounter = APIManager.getInstance().getChallengesManager().getListOfBudgetGoals().size();
             View budgetTab = getTabView(R.drawable.icn_challenge_timezone, R.string.challengescredit, budgetGoalCounter);
             tabLayout.getTabAt(TAB_INDEX_ONE).setCustomView(budgetTab);
         }
 
-        if (challengesManager.getListOfTimeZoneGoals() != null) {
-            int timeZoneGoalCounter = challengesManager.getListOfTimeZoneGoals().size();
+        if (APIManager.getInstance().getChallengesManager().getListOfTimeZoneGoals() != null) {
+            int timeZoneGoalCounter = APIManager.getInstance().getChallengesManager().getListOfTimeZoneGoals().size();
             View timeZoneTab = getTabView(R.drawable.icn_challenge_timebucket, R.string.challengeszone, timeZoneGoalCounter);
             tabLayout.getTabAt(TAB_INDEX_TWO).setCustomView(timeZoneTab);
         }
 
-        if (challengesManager.getListOfNoGoGoals() != null) {
-            int nogoGoalCounter = challengesManager.getListOfNoGoGoals().size();
+        if (APIManager.getInstance().getChallengesManager().getListOfNoGoGoals() != null) {
+            int nogoGoalCounter = APIManager.getInstance().getChallengesManager().getListOfNoGoGoals().size();
             View nogoTab = getTabView(R.drawable.icn_challenge_nogo, R.string.challengesnogo, nogoGoalCounter);
             tabLayout.getTabAt(TAB_INDEX_THREE).setCustomView(nogoTab);
         }
@@ -191,13 +178,13 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     }
 
     private void updateCounterTab() {
-        challengesManager.getListOfCategories();
+        APIManager.getInstance().getChallengesManager().getListOfCategories();
         YonaFontTextView counterTextView;
         switch (tabLayout.getSelectedTabPosition()) {
             case TAB_INDEX_ONE:
                 counterTextView = ((YonaFontTextView) tabLayout.getTabAt(TAB_INDEX_ONE).getCustomView().findViewById(R.id.tab_item_count));
-                if (challengesManager.getListOfBudgetGoals().size() > 0) {
-                    counterTextView.setText("" + challengesManager.getListOfBudgetGoals().size());
+                if (APIManager.getInstance().getChallengesManager().getListOfBudgetGoals().size() > 0) {
+                    counterTextView.setText("" + APIManager.getInstance().getChallengesManager().getListOfBudgetGoals().size());
                     counterTextView.setVisibility(View.VISIBLE);
                 } else {
                     counterTextView.setVisibility(View.GONE);
@@ -205,8 +192,8 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
                 break;
             case TAB_INDEX_TWO:
                 counterTextView = ((YonaFontTextView) tabLayout.getTabAt(TAB_INDEX_TWO).getCustomView().findViewById(R.id.tab_item_count));
-                if (challengesManager.getListOfTimeZoneGoals().size() > 0) {
-                    counterTextView.setText("" + challengesManager.getListOfTimeZoneGoals().size());
+                if (APIManager.getInstance().getChallengesManager().getListOfTimeZoneGoals().size() > 0) {
+                    counterTextView.setText("" + APIManager.getInstance().getChallengesManager().getListOfTimeZoneGoals().size());
                     counterTextView.setVisibility(View.VISIBLE);
                 } else {
                     counterTextView.setVisibility(View.GONE);
@@ -214,8 +201,8 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
                 break;
             case TAB_INDEX_THREE:
                 counterTextView = ((YonaFontTextView) tabLayout.getTabAt(TAB_INDEX_THREE).getCustomView().findViewById(R.id.tab_item_count));
-                if (challengesManager.getListOfNoGoGoals().size() > 0) {
-                    counterTextView.setText("" + challengesManager.getListOfNoGoGoals().size());
+                if (APIManager.getInstance().getChallengesManager().getListOfNoGoGoals().size() > 0) {
+                    counterTextView.setText("" + APIManager.getInstance().getChallengesManager().getListOfNoGoGoals().size());
                     counterTextView.setVisibility(View.VISIBLE);
                 } else {
                     counterTextView.setVisibility(View.GONE);

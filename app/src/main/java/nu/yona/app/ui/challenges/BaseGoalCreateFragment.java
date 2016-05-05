@@ -23,8 +23,7 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.ChallengesManager;
-import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -64,10 +63,6 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
      */
     protected HashMap<String, String> mGoalCategoriesMap;
     /**
-     * The Challenges manager.
-     */
-    ChallengesManager challengesManager;
-    /**
      * The M goal list view.
      */
     ListView mGoalListView;
@@ -79,10 +74,13 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
      * The M desc tab.
      */
     YonaFontTextView mDescTab;
+    /**
+     * The Category goal list adapter.
+     */
+    GoalCategoryListAdapter categoryGoalListAdapter;
     private ListView mGoalCreationListView;
     private YonaActivity activity;
     private int CURRENT_TAB;
-    GoalCategoryListAdapter categoryGoalListAdapter;
     /**
      * The Item click listener.
      */
@@ -100,10 +98,14 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
 
         activity = (YonaActivity) getActivity();
         YonaApplication.getEventChangeManager().registerListener(this);
-        challengesManager = new ChallengesManagerImpl(activity);
         mGoalListView = (ListView) view.findViewById(R.id.goal_listview);
         mGoalCreationListView = (ListView) view.findViewById(R.id.new_goal_listview);
-        categoryGoalListAdapter = new GoalCategoryListAdapter(activity, challengesManager.getListOfCategories());
+        List<YonaActivityCategories> goals = APIManager.getInstance().getChallengesManager().getListOfCategories();
+        if (goals != null && goals.size() > 0) {
+            categoryGoalListAdapter = new GoalCategoryListAdapter(activity, goals);
+        } else {
+            activity.showLoadingView(true, null);
+        }
         mGoalCreationListView.setAdapter(categoryGoalListAdapter);
         btnGoalAdd = (ImageButton) view.findViewById(R.id.img_add_goal);
         mDescTab = (YonaFontTextView) view.findViewById(R.id.txt_header_text);
@@ -158,7 +160,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
             if (object instanceof YonaGoal) {
                 goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaGoal) object);
             } else if (object instanceof YonaActivityCategories) {
-                YonaGoal yonaGoal = challengesManager.getYonaGoalByCategoryType((YonaActivityCategories) object);
+                YonaGoal yonaGoal = APIManager.getInstance().getChallengesManager().getYonaGoalByCategoryType((YonaActivityCategories) object);
                 if (yonaGoal == null) {
                     goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaActivityCategories) object);
                 } else {
@@ -193,7 +195,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_UPDATE_GOALS:
-                categoryGoalListAdapter.notifyDataSetChanged(challengesManager.getListOfCategories());
+                categoryGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfCategories());
                 break;
             default:
                 break;

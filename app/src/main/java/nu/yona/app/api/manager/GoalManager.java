@@ -72,4 +72,12 @@ public interface GoalManager {
      * @param listener the listener
      */
     void updateTimeZoneGoals(PostTimeZoneYonaGoal goal, DataLoadListener listener);
+
+    /**
+     * Save goals.
+     *
+     * @param goals    the goals
+     * @param listener the listener
+     */
+    void saveGoals(Goals goals, DataLoadListener listener);
 }

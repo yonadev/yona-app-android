@@ -8,20 +8,14 @@
 
 package nu.yona.app.api.manager.network;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Converter;
 import retrofit2.Response;
 
 /**
@@ -126,23 +120,19 @@ public class GoalNetworkImpl extends BaseImpl {
         return new Callback<Goals>() {
             @Override
             public void onResponse(Call<Goals> call, Response<Goals> response) {
+                if (listener == null) {
+                    return;
+                }
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
                     listener.onDataLoad(response.body());
                 } else {
-                    try {
-                        Converter<ResponseBody, ErrorMessage> errorConverter =
-                                getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
-                        ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
-                        listener.onError(errorMessage);
-                    } catch (IOException e) {
-                        listener.onError(new ErrorMessage(e.getMessage()));
-                    }
+                    onError(response, listener);
                 }
             }
 
             @Override
             public void onFailure(Call<Goals> call, Throwable t) {
-                listener.onError(new ErrorMessage(t.getMessage()));
+                onError(t, listener);
             }
         };
     }

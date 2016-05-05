@@ -36,7 +36,7 @@
             style="@style/NavTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twelve"
+            android:layout_marginTop="@dimen/thirty_two"
             android:layout_toLeftOf="@id/rightIcon"
             android:layout_toStartOf="@id/rightIcon"
             android:maxLines="1"

@@ -32,7 +32,7 @@ public class ActivityCategoriesDAO extends BaseDAO {
      * @param context     the context
      */
     public ActivityCategoriesDAO(SQLiteOpenHelper mOpenHelper, Context context) {
-        super(mOpenHelper, context);
+        super(mOpenHelper);
     }
 
     /**

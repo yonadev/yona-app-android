@@ -17,10 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.ActivityCategoryManager;
-import nu.yona.app.api.manager.AuthenticateManager;
-import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
-import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -40,17 +37,12 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
 
     private PasscodeFragment otpFragment;
     private YonaFontTextView txtTitle;
-    private AuthenticateManager authenticateManager;
-    private ActivityCategoryManager activityCategoryManager;
     private RegisterUser user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blank_container_layout);
-
-        authenticateManager = new AuthenticateManagerImpl(this);
-        activityCategoryManager = new ActivityCategoryManagerImpl(this);
 
         txtTitle = (YonaFontTextView) findViewById(R.id.toolbar_title);
         YonaApplication.getEventChangeManager().registerListener(this);
@@ -103,7 +95,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
      */
     private void validateOTP(final String otpString) {
         showLoadingView(true, null);
-        authenticateManager.verifyOTP(user, otpString, new DataLoadListener() {
+        APIManager.getInstance().getAuthenticateManager().verifyOTP(user, otpString, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 getActivityCategories();
@@ -131,13 +123,13 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
      * Get all activity categories
      */
     private void getActivityCategories() {
-        activityCategoryManager.getActivityCategoriesById(null);
+        APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(null);
     }
 
     private void resendOTP() {
         showLoadingView(true, null);
         otpFragment.resetDigit();
-        authenticateManager.resendOTP(new DataLoadListener() {
+        APIManager.getInstance().getAuthenticateManager().resendOTP(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);

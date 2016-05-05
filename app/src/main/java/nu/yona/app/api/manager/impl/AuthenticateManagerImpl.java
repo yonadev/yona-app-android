@@ -105,15 +105,19 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
             @Override
             public void onDataLoad(Object result) {
                 YonaApplication.updateUser();
-                listener.onDataLoad(result);
+                if (listener != null) {
+                    listener.onDataLoad(result);
+                }
             }
 
             @Override
             public void onError(Object errorMessage) {
-                if (errorMessage instanceof ErrorMessage) {
-                    listener.onError(errorMessage);
-                } else {
-                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                if (listener != null) {
+                    if (errorMessage instanceof ErrorMessage) {
+                        listener.onError(errorMessage);
+                    } else {
+                        listener.onError(new ErrorMessage(errorMessage.toString()));
+                    }
                 }
             }
         });
@@ -159,7 +163,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         try {
             if (otp.length() == AppConstant.OTP_LENGTH) {
                 if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
-                    if (!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber().getHref())) {
+                    if (authenticateDao.getUser() != null && authenticateDao.getUser().getLinks() != null
+                            && authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber() != null
+                            && !TextUtils.isEmpty(authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber().getHref())) {
                         authNetwork.verifyMobileNumber(YonaApplication.getYonaPassword(), authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber().getHref(),
                                 new OTPVerficationCode(otp), new DataLoadListener() {
 
@@ -279,15 +285,19 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
                     @Override
                     public void onError(Object errorMessage) {
-                        if (errorMessage instanceof ErrorMessage) {
-                            listener.onError(errorMessage);
-                        } else {
-                            listener.onError(new ErrorMessage(errorMessage.toString()));
+                        if (listener != null) {
+                            if (errorMessage instanceof ErrorMessage) {
+                                listener.onError(errorMessage);
+                            } else {
+                                listener.onError(new ErrorMessage(errorMessage.toString()));
+                            }
                         }
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                if (listener != null) {
+                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                }
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -298,7 +308,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     @Override
     public void resendOTP(final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode().getHref())) {
+            if (authenticateDao.getUser() != null && authenticateDao.getUser().getLinks() != null
+                    && authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode() != null
+                    && !TextUtils.isEmpty(authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode().getHref())) {
                 authNetwork.resendOTP(authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {

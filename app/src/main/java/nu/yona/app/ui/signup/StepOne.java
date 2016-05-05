@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
@@ -119,7 +120,7 @@ public class StepOne extends BaseFragment implements EventChangeListener {
     }
 
     private boolean validateFirstName() {
-        if (!activity.getAuthenticateManager().validateText(firstName.getText().toString())) {
+        if (!APIManager.getInstance().getAuthenticateManager().validateText(firstName.getText().toString())) {
             firstNameLayout.setErrorEnabled(true);
             firstNameLayout.setError(getString(R.string.enterfirstnamevalidation));
             activity.showKeyboard(firstName);
@@ -130,7 +131,7 @@ public class StepOne extends BaseFragment implements EventChangeListener {
     }
 
     private boolean validateLastName() {
-        if (!activity.getAuthenticateManager().validateText(lastName.getText().toString())) {
+        if (!APIManager.getInstance().getAuthenticateManager().validateText(lastName.getText().toString())) {
             lastNameLayout.setErrorEnabled(true);
             lastNameLayout.setError(getString(R.string.enterlastnamevalidation));
             activity.showKeyboard(lastName);

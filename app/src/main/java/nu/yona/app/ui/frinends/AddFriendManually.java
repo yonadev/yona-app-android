@@ -29,8 +29,7 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.BuddyManager;
-import nu.yona.app.api.manager.impl.BuddyManagerImpl;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -48,7 +47,6 @@ import nu.yona.app.utils.AppUtils;
  * Created by kinnarvasa on 27/04/16.
  */
 public class AddFriendManually extends BaseFragment implements EventChangeListener {
-    private final int NUMBER_LENGTH = 9;
     private YonaFontEditTextView firstName, lastName, email, mobileNumber;
     private TextInputLayout firstNameLayout, lastNameLayout, emailLayout, mobileNumberLayout;
     private final TextWatcher textWatcher = new TextWatcher() {
@@ -68,14 +66,11 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         }
     };
     private YonaFontButton addFriendButton;
-    private BuddyManager buddyManager;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_friend_manually_fragment, null);
-
-        buddyManager = new BuddyManagerImpl(getActivity());
 
         getView(view);
         addButtonListener();
@@ -155,22 +150,22 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
     }
 
     private boolean validateFields() {
-        if (!buddyManager.validateText(firstName.getText().toString())) {
+        if (!APIManager.getInstance().getBuddyManager().validateText(firstName.getText().toString())) {
             firstNameLayout.setErrorEnabled(true);
             firstNameLayout.setError(getString(R.string.enterfirstnamevalidation));
             showKeyboard(firstName);
             return false;
-        } else if (!buddyManager.validateText(lastName.getText().toString())) {
+        } else if (!APIManager.getInstance().getBuddyManager().validateText(lastName.getText().toString())) {
             lastNameLayout.setErrorEnabled(true);
             lastNameLayout.setError(getString(R.string.enterlastnamevalidation));
             showKeyboard(lastName);
             return false;
-        } else if (!buddyManager.validateEmail(email.getText().toString())) {
+        } else if (!APIManager.getInstance().getBuddyManager().validateEmail(email.getText().toString())) {
             emailLayout.setErrorEnabled(true);
             emailLayout.setError(getString(R.string.enteremailvalidation));
             showKeyboard(email);
             return false;
-        } else if (!buddyManager.validateMobileNumber(mobileNumber.getText().toString())) {
+        } else if (!APIManager.getInstance().getBuddyManager().validateMobileNumber(mobileNumber.getText().toString())) {
             mobileNumberLayout.setErrorEnabled(true);
             mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
             showKeyboard(mobileNumber);
@@ -181,7 +176,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
     private void addFriend() {
         ((YonaActivity) getActivity()).showLoadingView(true, null);
-        buddyManager.addBuddy(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), mobileNumber.getText().toString(), new DataLoadListener() {
+        APIManager.getInstance().getBuddyManager().addBuddy(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), mobileNumber.getText().toString(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 ((YonaActivity) getActivity()).showLoadingView(false, null);
@@ -216,6 +211,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
     @Override
     public void onStateChange(int eventType, Object object) {
+        int NUMBER_LENGTH = 9;
         switch (eventType) {
             case EventChangeManager.EVENT_CONTAT_CHOOSED:
                 if (object instanceof RegisterUser) {

@@ -28,8 +28,7 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.DeviceManager;
-import nu.yona.app.api.manager.impl.DeviceManagerImpl;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontEditTextView;
@@ -78,7 +77,6 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
 
         }
     };
-    private DeviceManager deviceManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,8 +109,6 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
             }
         });
 
-        deviceManager = new DeviceManagerImpl(this);
-
         mobileNumber.setText(R.string.country_code_with_zero);
         mobileNumber.requestFocus();
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
@@ -144,7 +140,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     }
 
     private boolean validateMobileNumber(String number) {
-        if (!deviceManager.validateMobileNumber(number)) {
+        if (!APIManager.getInstance().getDeviceManager().validateMobileNumber(number)) {
             mobileNumberLayout.setErrorEnabled(true);
             mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
             showKeyboard(mobileNumber);
@@ -155,7 +151,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     }
 
     private boolean validatePasscode(String passcodeStr) {
-        if (!deviceManager.validatePasscode(passcodeStr)) {
+        if (!APIManager.getInstance().getDeviceManager().validatePasscode(passcodeStr)) {
             passcodeLayout.setErrorEnabled(true);
             passcodeLayout.setError(getString(R.string.enterpasscode));
             showKeyboard(passcode);
@@ -170,7 +166,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
      */
     private void doLogin() {
         showLoadingView(true, null);
-        deviceManager.validateDevice(passcode.getText().toString(), getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length()).replace(" ", ""), new DataLoadListener() {
+        APIManager.getInstance().getDeviceManager().validateDevice(passcode.getText().toString(), getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length()).replace(" ", ""), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);

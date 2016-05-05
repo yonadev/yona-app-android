@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.state.EventChangeListener;
@@ -47,14 +48,14 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
         nickName.setFilters(new InputFilter[]{AppUtils.getFilter()});
 
+        mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
+        nickNameLayout = (TextInputLayout) view.findViewById(R.id.nick_name_layout);
+
         mobileNumber.setText(R.string.country_code_with_zero);
         mobileNumber.requestFocus();
         activity.showKeyboard(mobileNumber);
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
         mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity(), mobileNumberLayout));
-
-        mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
-        nickNameLayout = (TextInputLayout) view.findViewById(R.id.nick_name_layout);
 
         YonaApplication.getEventChangeManager().registerListener(this);
 
@@ -81,7 +82,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     }
 
     private boolean validateMobileNumber(String number) {
-        if (!activity.getAuthenticateManager().validateMobileNumber(number)) {
+        if (!APIManager.getInstance().getAuthenticateManager().validateMobileNumber(number)) {
             mobileNumberLayout.setErrorEnabled(true);
             mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
             activity.showKeyboard(mobileNumber);
@@ -92,7 +93,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     }
 
     private boolean validateNickName() {
-        if (!activity.getAuthenticateManager().validateText(nickName.getText().toString())) {
+        if (!APIManager.getInstance().getAuthenticateManager().validateText(nickName.getText().toString())) {
             nickNameLayout.setErrorEnabled(true);
             nickNameLayout.setError(getString(R.string.enternumbervalidation));
             activity.showKeyboard(nickName);
