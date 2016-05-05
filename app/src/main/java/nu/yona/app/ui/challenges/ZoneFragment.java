@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -32,7 +33,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         YonaApplication.getEventChangeManager().registerListener(this);
-        mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfTimeZoneGoals());
+        mGoalListAdapter = new GoalListAdapter(getActivity(), APIManager.getInstance().getChallengesManager().getListOfTimeZoneGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
         mGoalListView.setOnItemClickListener(itemClickListener);
         showCurrentGoalListView(ChallengesEnum.ZONE_TAB.getTab());
@@ -64,7 +65,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_UPDATE_GOALS:
-                mGoalListAdapter.notifyDataSetChanged(challengesManager.getListOfTimeZoneGoals());
+                mGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfTimeZoneGoals());
                 break;
             default:
                 break;

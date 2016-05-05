@@ -19,6 +19,7 @@ import org.robolectric.Robolectric;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaTestCase;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
 
 /**
@@ -47,6 +48,6 @@ public class StepTwoTest extends YonaTestCase {
     @Test
     public void validateMobileNumber() {
         mobileNumber.setText("+31123456789");
-        assertTrue(activity.getAuthenticateManager().validateMobileNumber(mobileNumber.getText().toString()));
+        assertTrue(APIManager.getInstance().getAuthenticateManager().validateMobileNumber(mobileNumber.getText().toString()));
     }
 }

@@ -19,6 +19,7 @@ import org.robolectric.Robolectric;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaTestCase;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
 
 /**
@@ -48,12 +49,12 @@ public class StepOneTest extends YonaTestCase {
     @Test
     public void validateFirstName() {
         firstName.setText("Kinnar");
-        assertTrue(activity.getAuthenticateManager().validateText(firstName.getText().toString()));
+        assertTrue(APIManager.getInstance().getAuthenticateManager().validateText(firstName.getText().toString()));
     }
 
     @Test
     public void validateLastName() {
         lastName.setText("Vasa");
-        assertTrue(activity.getAuthenticateManager().validateText(lastName.getText().toString()));
+        assertTrue(APIManager.getInstance().getAuthenticateManager().validateText(lastName.getText().toString()));
     }
 }

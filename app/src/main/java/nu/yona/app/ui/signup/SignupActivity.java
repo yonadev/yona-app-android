@@ -18,8 +18,7 @@ import android.widget.EditText;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.AuthenticateManager;
-import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.utils.ServerErrorCode;
@@ -40,7 +39,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     private StepOne stepOne;
     private StepTwo stepTwo;
-    private AuthenticateManager authenticateManager;
     private int SIGNUP_STEP = 0;
     private RegisterUser registerUser;
     private YonaFontButton prevButton;
@@ -53,8 +51,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         stepOne = new StepOne();
         stepTwo = new StepTwo();
         registerUser = new RegisterUser();
-
-        authenticateManager = new AuthenticateManagerImpl(this);
 
         YonaFontButton nextButton = (YonaFontButton) findViewById(R.id.next);
         prevButton = (YonaFontButton) findViewById(R.id.previous);
@@ -128,7 +124,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     private void doRegister() {
         showLoadingView(true, null);
-        authenticateManager.registerUser(getRegisterUser(), new DataLoadListener() {
+        APIManager.getInstance().getAuthenticateManager().registerUser(getRegisterUser(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
@@ -161,7 +157,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
      */
     private void OverrideUser() {
         showLoadingView(true, null);
-        authenticateManager.requestUserOverride(getRegisterUser().getMobileNumber(), new DataLoadListener() {
+        APIManager.getInstance().getAuthenticateManager().requestUserOverride(getRegisterUser().getMobileNumber(), new DataLoadListener() {
 
             @Override
             public void onDataLoad(Object result) {
@@ -186,15 +182,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
      */
     public RegisterUser getRegisterUser() {
         return registerUser;
-    }
-
-    /**
-     * Gets authenticate manager.
-     *
-     * @return the authenticate manager
-     */
-    public AuthenticateManager getAuthenticateManager() {
-        return authenticateManager;
     }
 
     @Override

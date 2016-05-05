@@ -30,7 +30,8 @@
     <string name="login">INLOGGEN</string>
     <string name="previous">VORIGE</string>
     <string name="next">VOLGENDE</string>
-    <string name="connectionnotavailable"> please connect and try again."</string>
+    <string name="connectionnotavailable">OOPS! Geen internet verbinding beschikbaar, maak opnieuw verbinding en probeer opnieuw.</string>
+    <string name="somethingwentwrong">Something went wrong, please try again.</string>
     <string name="firstname">VOORNAAM</string>
     <string name="lastname">ACHTERNAAM</string>
     <string name="nickname">NICKNAME</string>

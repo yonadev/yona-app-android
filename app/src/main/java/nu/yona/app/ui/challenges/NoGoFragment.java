@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -32,7 +33,7 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         YonaApplication.getEventChangeManager().registerListener(this);
-        mGoalListAdapter = new GoalListAdapter(getActivity(), challengesManager.getListOfNoGoGoals());
+        mGoalListAdapter = new GoalListAdapter(getActivity(), APIManager.getInstance().getChallengesManager().getListOfNoGoGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
         mGoalListView.setOnItemClickListener(itemClickListener);
         showCurrentGoalListView(ChallengesEnum.NO_GO_TAB.getTab());
@@ -65,7 +66,7 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_UPDATE_GOALS:
-                mGoalListAdapter.notifyDataSetChanged(challengesManager.getListOfNoGoGoals());
+                mGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfNoGoGoals());
                 break;
             default:
                 break;

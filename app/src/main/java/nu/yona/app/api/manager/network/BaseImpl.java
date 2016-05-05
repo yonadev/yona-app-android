@@ -13,9 +13,11 @@ package nu.yona.app.api.manager.network;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.net.ConnectException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.utils.NetworkUtils;
@@ -124,20 +126,40 @@ class BaseImpl {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
                     listener.onDataLoad(response.body());
                 } else {
-                    try {
-                        Converter<ResponseBody, ErrorMessage> errorConverter =
-                                getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
-                        listener.onError(errorConverter.convert(response.errorBody()));
-                    } catch (IOException e) {
-                        listener.onError(new ErrorMessage(e.getMessage()));
-                    }
+                    onError(response, listener);
                 }
             }
 
             @Override
             public void onFailure(retrofit2.Call call, Throwable t) {
-                listener.onError(new ErrorMessage(t.getMessage()));
+                onError(t, listener);
             }
         };
+    }
+
+    void onError(Throwable t, DataLoadListener listener) {
+        if (listener != null) {
+            if (t instanceof ConnectException) {
+                listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.connectionnotavailable)));
+            } else {
+                listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.somethingwentwrong)));
+            }
+        }
+    }
+
+    void onError(retrofit2.Response response, DataLoadListener listener) {
+        if (listener != null) {
+            if (response.code() == NetworkConstant.RESPONSE_ERROR_CODE) {
+                try {
+                    Converter<ResponseBody, ErrorMessage> errorConverter =
+                            getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                    listener.onError(errorConverter.convert(response.errorBody()));
+                } catch (IOException e) {
+                    listener.onError(new ErrorMessage(e.getMessage()));
+                }
+            } else {
+                listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.somethingwentwrong)));
+            }
+        }
     }
 }

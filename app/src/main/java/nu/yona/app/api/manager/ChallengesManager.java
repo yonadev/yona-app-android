@@ -135,11 +135,6 @@ public interface ChallengesManager {
     void deleteGoal(YonaGoal yonaGoal, DataLoadListener listener);
 
     /**
-     * Update categories and goals.
-     */
-    void updateCategoriesAndGoals();
-
-    /**
      * Type of goal goals enum.
      *
      * @param yonaGoal the yona goal
@@ -154,4 +149,6 @@ public interface ChallengesManager {
      * @return the selected goal categories
      */
     YonaActivityCategories getSelectedGoalCategories(String budgetType);
+
+    void getUserGoal(DataLoadListener listener);
 }

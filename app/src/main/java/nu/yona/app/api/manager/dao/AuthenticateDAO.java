@@ -55,7 +55,9 @@ public class AuthenticateDAO extends BaseDAO {
             } else {
                 update(DBConstant.TBL_USER_DATA, values, DBConstant.ID + " = ?", USER_ID);
             }
-            listener.onDataLoad(getUser());
+            if (listener != null) {
+                listener.onDataLoad(getUser());
+            }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
