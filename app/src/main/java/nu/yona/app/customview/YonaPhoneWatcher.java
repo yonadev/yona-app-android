@@ -36,9 +36,10 @@ public class YonaPhoneWatcher implements TextWatcher {
     /**
      * Instantiates a new Yona phone watcher.
      *
-     * @param editText the edit text
-     * @param prefix   the prefix
-     * @param context  the context
+     * @param editText           the edit text
+     * @param prefix             the prefix
+     * @param context            the context
+     * @param mobileNumberLayout the mobile number layout
      */
     public YonaPhoneWatcher(EditText editText, String prefix, Context context, TextInputLayout mobileNumberLayout) {
         super();

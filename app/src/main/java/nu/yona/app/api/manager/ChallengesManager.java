@@ -150,5 +150,10 @@ public interface ChallengesManager {
      */
     YonaActivityCategories getSelectedGoalCategories(String budgetType);
 
+    /**
+     * Gets user goal.
+     *
+     * @param listener the listener
+     */
     void getUserGoal(DataLoadListener listener);
 }

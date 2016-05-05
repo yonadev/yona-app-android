@@ -546,6 +546,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         toolbarTitle.setText(getString(titleId));
     }
 
+    /**
+     * Udpate title.
+     *
+     * @param title the title
+     */
     public void udpateTitle(String title) {
         toolbarTitle.setText(title);
     }

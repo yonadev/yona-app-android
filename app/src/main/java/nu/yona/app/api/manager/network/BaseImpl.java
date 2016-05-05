@@ -137,6 +137,12 @@ class BaseImpl {
         };
     }
 
+    /**
+     * On error.
+     *
+     * @param t        the t
+     * @param listener the listener
+     */
     void onError(Throwable t, DataLoadListener listener) {
         if (listener != null) {
             if (t instanceof ConnectException) {
@@ -147,6 +153,12 @@ class BaseImpl {
         }
     }
 
+    /**
+     * On error.
+     *
+     * @param response the response
+     * @param listener the listener
+     */
     void onError(retrofit2.Response response, DataLoadListener listener) {
         if (listener != null) {
             if (response.code() == NetworkConstant.RESPONSE_ERROR_CODE) {

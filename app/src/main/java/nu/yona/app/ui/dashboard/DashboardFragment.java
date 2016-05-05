@@ -26,6 +26,9 @@ import nu.yona.app.ui.YonaActivity;
  */
 public class DashboardFragment extends BaseFragment {
 
+    /**
+     * The Activity.
+     */
     YonaActivity activity;
 
     @Nullable

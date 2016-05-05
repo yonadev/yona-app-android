@@ -74,6 +74,9 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
      * The M desc tab.
      */
     YonaFontTextView mDescTab;
+    /**
+     * The Category goal list adapter.
+     */
     GoalCategoryListAdapter categoryGoalListAdapter;
     private ListView mGoalCreationListView;
     private YonaActivity activity;

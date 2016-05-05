@@ -33,6 +33,11 @@ public class APIManager {
     private PasscodeManager passcodeManager;
     private ChallengesManager challengesManager;
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static APIManager getInstance() {
         if (apiManager == null) {
             apiManager = new APIManager();
@@ -40,6 +45,11 @@ public class APIManager {
         return apiManager;
     }
 
+    /**
+     * Gets activity category manager.
+     *
+     * @return the activity category manager
+     */
     public ActivityCategoryManager getActivityCategoryManager() {
         if (activityCategoryManager == null) {
             activityCategoryManager = new ActivityCategoryManagerImpl(YonaApplication.getAppContext());
@@ -47,6 +57,11 @@ public class APIManager {
         return activityCategoryManager;
     }
 
+    /**
+     * Gets authenticate manager.
+     *
+     * @return the authenticate manager
+     */
     public AuthenticateManager getAuthenticateManager() {
         if (authenticateManager == null) {
             authenticateManager = new AuthenticateManagerImpl(YonaApplication.getAppContext());
@@ -54,6 +69,11 @@ public class APIManager {
         return authenticateManager;
     }
 
+    /**
+     * Gets buddy manager.
+     *
+     * @return the buddy manager
+     */
     public BuddyManager getBuddyManager() {
         if (buddyManager == null) {
             buddyManager = new BuddyManagerImpl(YonaApplication.getAppContext());
@@ -61,6 +81,11 @@ public class APIManager {
         return buddyManager;
     }
 
+    /**
+     * Gets device manager.
+     *
+     * @return the device manager
+     */
     public DeviceManager getDeviceManager() {
         if (deviceManager == null) {
             deviceManager = new DeviceManagerImpl(YonaApplication.getAppContext());
@@ -68,6 +93,11 @@ public class APIManager {
         return deviceManager;
     }
 
+    /**
+     * Gets goal manager.
+     *
+     * @return the goal manager
+     */
     public GoalManager getGoalManager() {
         if (goalManager == null) {
             goalManager = new GoalManagerImpl(YonaApplication.getAppContext());
@@ -75,6 +105,11 @@ public class APIManager {
         return goalManager;
     }
 
+    /**
+     * Gets passcode manager.
+     *
+     * @return the passcode manager
+     */
     public PasscodeManager getPasscodeManager() {
         if (passcodeManager == null) {
             passcodeManager = new PasscodeManagerImpl();
@@ -82,6 +117,11 @@ public class APIManager {
         return passcodeManager;
     }
 
+    /**
+     * Gets challenges manager.
+     *
+     * @return the challenges manager
+     */
     public ChallengesManager getChallengesManager() {
         if (challengesManager == null) {
             challengesManager = new ChallengesManagerImpl(YonaApplication.getAppContext());

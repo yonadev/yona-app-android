@@ -59,5 +59,8 @@ public interface NetworkConstant {
      */
     int RESPONSE_STATUS = 300;
 
+    /**
+     * The constant RESPONSE_ERROR_CODE.
+     */
     int RESPONSE_ERROR_CODE = 400;
 }
