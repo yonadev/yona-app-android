@@ -124,7 +124,7 @@ public class APIManager {
      */
     public ChallengesManager getChallengesManager() {
         if (challengesManager == null) {
-            challengesManager = new ChallengesManagerImpl(YonaApplication.getAppContext());
+            challengesManager = new ChallengesManagerImpl();
         }
         return challengesManager;
     }

@@ -36,11 +36,10 @@ class BaseDAO {
 
     /**
      * Instantiates a new Base dao.
+     *  @param mOpenHelper the m open helper
      *
-     * @param mOpenHelper the m open helper
-     * @param context     the context
      */
-    BaseDAO(SQLiteOpenHelper mOpenHelper, Context context) {
+    BaseDAO(SQLiteOpenHelper mOpenHelper) {
         this.mOpenHelper = mOpenHelper;
     }
 

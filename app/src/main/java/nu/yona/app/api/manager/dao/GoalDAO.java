@@ -30,7 +30,7 @@ public class GoalDAO extends BaseDAO {
      * @param context     the context
      */
     public GoalDAO(SQLiteOpenHelper mOpenHelper, Context context) {
-        super(mOpenHelper, context);
+        super(mOpenHelper);
     }
 
     /**

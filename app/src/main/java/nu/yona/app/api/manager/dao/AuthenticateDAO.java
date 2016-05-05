@@ -33,7 +33,7 @@ public class AuthenticateDAO extends BaseDAO {
      * @param context the context
      */
     public AuthenticateDAO(Context context) {
-        super(DatabaseHelper.getInstance(context), context);
+        super(DatabaseHelper.getInstance(context));
     }
 
     /**

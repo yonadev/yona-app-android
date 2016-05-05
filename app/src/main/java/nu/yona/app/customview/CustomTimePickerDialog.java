@@ -167,6 +167,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     }
 
 
+    @SuppressWarnings("deprecation")
     private void updateMinutesOnTimeInterval(int hourOfDay, int minute) {
 
         Calendar calUpdate = getCurrentCalendar();
@@ -183,6 +184,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void refreshView() {
         timePicker.clearFocus();
         timePicker.invalidate();
@@ -294,6 +296,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
      *
      * @return
      */
+    @SuppressWarnings("deprecation")
     private int getTimePickerCurrentHour() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return timePicker.getHour();
@@ -303,6 +306,7 @@ public class CustomTimePickerDialog extends DialogFragment implements OnClickLis
     }
 
 
+    @SuppressWarnings("deprecation")
     private int getTimePickerCurrentMin() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return timePicker.getMinute();

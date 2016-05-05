@@ -47,7 +47,6 @@ import nu.yona.app.utils.AppUtils;
  * Created by kinnarvasa on 27/04/16.
  */
 public class AddFriendManually extends BaseFragment implements EventChangeListener {
-    private final int NUMBER_LENGTH = 9;
     private YonaFontEditTextView firstName, lastName, email, mobileNumber;
     private TextInputLayout firstNameLayout, lastNameLayout, emailLayout, mobileNumberLayout;
     private final TextWatcher textWatcher = new TextWatcher() {
@@ -212,6 +211,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
     @Override
     public void onStateChange(int eventType, Object object) {
+        int NUMBER_LENGTH = 9;
         switch (eventType) {
             case EventChangeManager.EVENT_CONTAT_CHOOSED:
                 if (object instanceof RegisterUser) {

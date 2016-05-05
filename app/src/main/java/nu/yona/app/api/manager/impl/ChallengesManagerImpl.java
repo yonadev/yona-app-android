@@ -47,9 +47,8 @@ public class ChallengesManagerImpl implements ChallengesManager {
     /**
      * Instantiates a new Challenges manager.
      *
-     * @param context the context
      */
-    public ChallengesManagerImpl(Context context) {
+    public ChallengesManagerImpl() {
         mYonaActivityCategoriesList = new ArrayList<>();
         budgetCategoriesGoalList = new ArrayList<>();
         timeZoneCategoriesGoalList = new ArrayList<>();
