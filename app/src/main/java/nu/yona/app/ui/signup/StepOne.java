@@ -17,9 +17,13 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -75,6 +79,15 @@ public class StepOne extends BaseFragment implements EventChangeListener {
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         lastName.addTextChangedListener(watcher);
         lastName.setFilters(new InputFilter[]{AppUtils.getFilter()});
+        lastName.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    goToNext();
+                }
+                return false;
+            }
+        });
 
         YonaFontTextView privacyPolicy = (YonaFontTextView) view.findViewById(R.id.privacyPolicy);
         privacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
@@ -93,11 +106,15 @@ public class StepOne extends BaseFragment implements EventChangeListener {
     @Override
     public void onStateChange(int eventType, Object object) {
         if (eventType == EventChangeManager.EVENT_SIGNUP_STEP_ONE_NEXT) {
-            if (validateFirstName() && validateLastName()) {
-                activity.getRegisterUser().setFirstName(firstName.getText().toString());
-                activity.getRegisterUser().setLastName(lastName.getText().toString());
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT, null);
-            }
+            goToNext();
+        }
+    }
+
+    private void goToNext() {
+        if (validateFirstName() && validateLastName()) {
+            activity.getRegisterUser().setFirstName(firstName.getText().toString());
+            activity.getRegisterUser().setLastName(lastName.getText().toString());
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT, null);
         }
     }
 

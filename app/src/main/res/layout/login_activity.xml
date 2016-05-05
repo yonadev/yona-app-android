@@ -84,7 +84,7 @@
                         android:drawableRight="@drawable/icn_name"
                         android:ellipsize="end"
                         android:hint="@string/passcode"
-                        android:imeOptions="actionNext"
+                        android:imeOptions="actionDone"
                         android:maxLength="@integer/char_limit"
                         android:singleLine="true"
                         android:textColorHint="@color/black" />

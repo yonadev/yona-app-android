@@ -13,6 +13,7 @@ package nu.yona.app.customview;
  */
 
 import android.content.Context;
+import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ public class YonaPhoneWatcher implements TextWatcher {
     private EditText mobileNumber;
     private String prefixText;
     private Context mContext;
+    private TextInputLayout mobileNumberLayout;
 
     /**
      * Instantiates a new Yona phone watcher.
@@ -38,11 +40,12 @@ public class YonaPhoneWatcher implements TextWatcher {
      * @param prefix   the prefix
      * @param context  the context
      */
-    public YonaPhoneWatcher(EditText editText, String prefix, Context context) {
+    public YonaPhoneWatcher(EditText editText, String prefix, Context context, TextInputLayout mobileNumberLayout) {
         super();
         mobileNumber = editText;
         prefixText = prefix;
         mContext = context;
+        this.mobileNumberLayout = mobileNumberLayout;
     }
 
     @Override
@@ -81,6 +84,9 @@ public class YonaPhoneWatcher implements TextWatcher {
             }
         } else {
             editedFlag = false;
+        }
+        if (mobileNumberLayout != null) {
+            mobileNumberLayout.setError(null);
         }
     }
 

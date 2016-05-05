@@ -38,6 +38,7 @@
     <string name="mobilenumber">MOBILE PHONE NUMBER</string>
     <string name="usersignupmessage">We use your mobile phone for a secure registration. Your nickname is mandatory and ensures better privacy.</string>
     <string name="enterfirstnamevalidation">You need to enter a name</string>
+    <string name="enternicknamevalidation">You need to enter a name</string>
     <string name="enterlastnamevalidation">You need to enter a name</string>
     <string name="enternumbervalidation">Number should be 9 digits</string>
     <string name="loading">Loading</string>

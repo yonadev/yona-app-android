@@ -37,8 +37,8 @@
                 android:drawableRight="@drawable/icn_name"
                 android:ellipsize="end"
                 android:hint="@string/firstname"
-                android:inputType="textFilter"
                 android:imeOptions="actionNext"
+                android:inputType="textFilter"
                 android:maxLength="@integer/char_limit"
                 android:singleLine="true"
                 android:textColorHint="@color/black" />
@@ -64,8 +64,8 @@
                 android:drawableRight="@drawable/icn_name"
                 android:ellipsize="end"
                 android:hint="@string/lastname"
-                android:inputType="textFilter"
                 android:imeOptions="actionNext"
+                android:inputType="textFilter"
                 android:maxLength="@integer/char_limit"
                 android:singleLine="true"
                 android:textColorHint="@color/black" />
