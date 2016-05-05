@@ -5,15 +5,9 @@
   ~  License, v. 2.0. If a copy of the MPL was not distributed with this
   ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab_image"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/tab_image"
-        android:layout_width="@dimen/sixty"
-        android:layout_height="@dimen/sixty"
-        android:layout_centerHorizontal="true"
-        android:padding="@dimen/ten" />
-</RelativeLayout>
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:padding="@dimen/ten" />

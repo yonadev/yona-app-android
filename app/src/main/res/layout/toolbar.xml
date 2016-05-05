@@ -9,10 +9,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/sixty"
+    android:layout_height="@dimen/sixty_four"
     android:background="@drawable/triangle_shadow_grape"
     android:minHeight="?attr/actionBarSize"
-    android:paddingLeft="@dimen/thirty_two"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
