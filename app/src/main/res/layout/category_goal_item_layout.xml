@@ -9,7 +9,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/category_goal_height"
-    android:background="@drawable/goal_item_gradient"
+    android:background="@drawable/item_gradient"
     android:orientation="vertical"
     android:paddingLeft="@dimen/layout_margin"
     android:paddingRight="@dimen/layout_margin"

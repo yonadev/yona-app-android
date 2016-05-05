@@ -19,12 +19,16 @@
         android:id="@+id/goal_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:drawSelectorOnTop="true" />
+        android:divider="@null"
+        android:drawSelectorOnTop="true"
+        android:gravity="center" />
 
     <ListView
         android:id="@+id/new_goal_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:drawSelectorOnTop="true" />
+        android:divider="@null"
+        android:drawSelectorOnTop="true"
+        android:gravity="center" />
 
 </LinearLayout>

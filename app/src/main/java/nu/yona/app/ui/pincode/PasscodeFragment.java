@@ -8,7 +8,6 @@
 
 package nu.yona.app.ui.pincode;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -18,8 +17,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -289,11 +286,5 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             }
         }
 
-    }
-
-    private void hideKeyboard() {
-        if (passcode1 != null) {
-
-        }
     }
 }

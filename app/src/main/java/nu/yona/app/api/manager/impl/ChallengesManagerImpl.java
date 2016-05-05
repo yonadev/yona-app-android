@@ -12,6 +12,8 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,8 +92,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
         noGoCategoriesGoalList.clear();
         Goals userGoals = goalManager.getUserGoalFromDb();
 
-        if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
-            for (YonaGoal mYonaGoal : userGoals.getEmbedded().getYonaGoals()) {
+        if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals()!= null && userGoals.getEmbedded().getYonaGoals().size() > 0) {
+            List<YonaGoal> yonaGoals = sortGoals(userGoals.getEmbedded().getYonaGoals());
+            for (YonaGoal mYonaGoal : yonaGoals) {
                 if (mYonaGoal != null) {
                     for (Map.Entry<String, String> entry : mGoalCategoriesMap.entrySet()) {
                         if (entry.getValue().equals(mYonaGoal.getLinks().getYonaActivityCategory().getHref())) {
@@ -110,6 +113,25 @@ public class ChallengesManagerImpl implements ChallengesManager {
             }
         }
         hasUserCreatedGoal();
+    }
+
+    private List<YonaGoal> sortGoals(List<YonaGoal> yonaGoals) {
+        for (YonaGoal mYonaGoal : yonaGoals) {
+            if (mYonaGoal != null) {
+                for (Map.Entry<String, String> entry : mGoalCategoriesMap.entrySet()) {
+                    if (entry.getValue().equals(mYonaGoal.getLinks().getYonaActivityCategory().getHref())) {
+                        mYonaGoal.setActivityCategoryName(entry.getKey());
+                        break;
+                    }
+                }
+            }
+        }
+        Collections.sort(yonaGoals, new Comparator<YonaGoal>() {
+            public int compare(YonaGoal o1, YonaGoal o2) {
+                return o1.getActivityCategoryName().compareTo(o2.getActivityCategoryName());
+            }
+        });
+        return yonaGoals;
     }
 
     /**
@@ -151,6 +173,11 @@ public class ChallengesManagerImpl implements ChallengesManager {
     @Override
     public List<YonaActivityCategories> getListOfCategories() {
         getListOfCategory();
+        Collections.sort(mYonaActivityCategoriesList, new Comparator<YonaActivityCategories>() {
+            public int compare(YonaActivityCategories o1, YonaActivityCategories o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
         return mYonaActivityCategoriesList;
     }
 

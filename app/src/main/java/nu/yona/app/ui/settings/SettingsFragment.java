@@ -10,6 +10,8 @@ package nu.yona.app.ui.settings;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
@@ -66,7 +69,12 @@ public class SettingsFragment extends BaseFragment {
                 }
             }
         });
-
+        try {
+            PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            ((TextView) view.findViewById(R.id.label_version)).setText(getString(R.string.version) + pInfo.versionName + getString(R.string.space) + pInfo.versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            AppUtils.throwException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
         return view;
     }
 

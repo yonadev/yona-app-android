@@ -5,9 +5,26 @@
   ~  License, v. 2.0. If a copy of the MPL was not distributed with this
   ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/list_view"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_two"
-    android:keepScreenOn="true" />
+    android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white_two"
+        android:divider="@null"
+        android:gravity="center"
+        android:keepScreenOn="true" />
+
+    <TextView
+        android:id="@+id/label_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:dividerHeight="0dp"
+        android:gravity="center" />
+</LinearLayout>

@@ -25,7 +25,7 @@
         android:id="@+id/tabLayout"
         style="@style/YonaCustomTabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/fifty"
         android:background="@color/bottomBarColor"
         app1:tabGravity="fill"
         app1:tabIndicatorHeight="0dp"
