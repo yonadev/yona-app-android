@@ -618,6 +618,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             case EventChangeManager.EVENT_OPEN_CONTACT_BOOK:
                 openContactBook();
                 break;
+            case EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY:
+                finish();
+                break;
             default:
                 break;
         }

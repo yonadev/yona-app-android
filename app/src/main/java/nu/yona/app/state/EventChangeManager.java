@@ -77,6 +77,8 @@ public class EventChangeManager {
      */
     public static final int EVENT_CONTAT_CHOOSED = 13;
 
+    public static final int EVENT_CLOSE_YONA_ACTIVITY = 14;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     /**
