@@ -263,7 +263,9 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
             title = getString(R.string.challengesnogo);
         }
-        activity.udpateTitle(getString(R.string.challengesdetail, title));
+        if (!TextUtils.isEmpty(title)) {
+            activity.udpateTitle(getString(R.string.challengesdetail, title));
+        }
     }
 
     /**
@@ -502,7 +504,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 }
             });
         } else {
-            showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, AppUtils.getTimeInMilliseconds(startTime[0]), AppUtils.getTimeInMilliseconds(startTime[1]), new CustomTimePickerDialog.OnTimeSetListener() {
+            showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, AppUtils.getTimeInMilliseconds(startTime[1]), AppUtils.getTimeInMilliseconds(startTime[0]), new CustomTimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void setTime(String time) {
                     if (timeZoneGoalsAdapter != null) {
