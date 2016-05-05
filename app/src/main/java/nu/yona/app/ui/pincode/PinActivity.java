@@ -152,4 +152,10 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         startActivity(new Intent(PinActivity.this, OTPActivity.class));
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
+        finish();
+    }
 }
