@@ -98,7 +98,7 @@
     <string name="screendesc4">Controle houden over de tijd die je online bent</string>
     <string name="urlnotfound">Url Not found.</string>
     <string name="challengesnogosubText">Vermijd %1$s gerelateerde content</string>
-    <string name="challengestimzoesubtext">Timeslot tussen %1$sen tussen %2$s</string>
+    <string name="challengestimzoesubtext">Timeslot</string>
     <string name="challengesbudgetsubtext">Je kunt per dag %1$s minuten %2$s</string>
     <string name="email">Email</string>
     <string name="invitefriend">VRIEND UITNODIGEN</string>
@@ -113,4 +113,5 @@
     <string name="timepickerselect">Select time you want to spent:</string>
     <string name="add_timezone">Please add atlest one time to add in timezone.</string>
     <string name="challengesdetail">%1$s VASTLEGGEN</string>
+    <string name="timesbetween">tussen %1$s en %2$s </string>
 </resources>

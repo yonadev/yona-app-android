@@ -21,6 +21,7 @@ import nu.yona.app.R;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.GoalsEnum;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
@@ -90,7 +91,12 @@ class GoalListAdapter<T> extends BaseAdapter {
                 if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
                     goalViewHolder.desc_goal.setText(mContext.getString(R.string.challengesbudgetsubtext, mYonaGoal.getMaxDurationMinutes(), mYonaGoal.getActivityCategoryName()));
                 } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString()) && (mYonaGoal.getZones() != null && mYonaGoal.getZones().size() > 0)) {
-                    goalViewHolder.desc_goal.setText(mContext.getString(R.string.challengestimzoesubtext, mYonaGoal.getZones().get(0), mYonaGoal.getZones().get(0)));
+                    StringBuilder timesBuilder = new StringBuilder();
+                    for (String timesZone : mYonaGoal.getZones()) {
+                        String[] times = AppUtils.getSplitedTime(timesZone);
+                        timesBuilder.append(mContext.getString(R.string.space) + mContext.getString(R.string.timesbetween, times[0], times[1]));
+                    }
+                    goalViewHolder.desc_goal.setText(mContext.getString(R.string.challengestimzoesubtext, timesBuilder.toString()));
                 } else {
                     goalViewHolder.desc_goal.setText(mContext.getString(R.string.challengesnogosubText, mYonaGoal.getActivityCategoryName()));
                 }
