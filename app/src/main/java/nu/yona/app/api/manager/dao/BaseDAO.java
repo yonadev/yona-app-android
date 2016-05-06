@@ -9,7 +9,6 @@
 package nu.yona.app.api.manager.dao;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -36,8 +35,8 @@ class BaseDAO {
 
     /**
      * Instantiates a new Base dao.
-     *  @param mOpenHelper the m open helper
      *
+     * @param mOpenHelper the m open helper
      */
     BaseDAO(SQLiteOpenHelper mOpenHelper) {
         this.mOpenHelper = mOpenHelper;
@@ -118,7 +117,9 @@ class BaseDAO {
                     }
                     db.setTransactionSuccessful();
                     db.endTransaction();
-                    listener.onDataLoad(null);
+                    if (listener != null) {
+                        listener.onDataLoad(null);
+                    }
                     return null;
                 }
             }.executeAsync();

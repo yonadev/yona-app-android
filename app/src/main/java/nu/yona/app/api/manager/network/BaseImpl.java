@@ -124,7 +124,9 @@ class BaseImpl {
             @Override
             public void onResponse(retrofit2.Call call, retrofit2.Response response) {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
+                    if (listener != null) {
+                        listener.onDataLoad(response.body());
+                    }
                 } else {
                     onError(response, listener);
                 }

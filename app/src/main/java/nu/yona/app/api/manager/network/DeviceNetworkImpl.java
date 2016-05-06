@@ -67,7 +67,9 @@ public class DeviceNetworkImpl extends BaseImpl {
                 @Override
                 public void onResponse(Call<NewDevice> call, Response<NewDevice> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                        listener.onDataLoad(response.body());
+                        if (listener != null) {
+                            listener.onDataLoad(response.body());
+                        }
                     } else {
                         onError(response, listener);
                     }
