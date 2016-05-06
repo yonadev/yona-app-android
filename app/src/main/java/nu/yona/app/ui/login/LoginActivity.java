@@ -194,6 +194,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     }
 
     private void showPasscodeScreen() {
+        YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
         SharedPreferences.Editor editor = YonaApplication.getUserPreferences().edit();
         editor.putBoolean(PreferenceConstant.STEP_REGISTER, true);
         editor.putBoolean(PreferenceConstant.STEP_OTP, true);
