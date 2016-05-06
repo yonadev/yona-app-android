@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.manager.impl.DeviceManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
@@ -75,6 +76,13 @@ public class SettingsFragment extends BaseFragment {
         } catch (PackageManager.NameNotFoundException e) {
             AppUtils.throwException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
         }
+        for (int i = 0; i < AppConstant.environmentList.length; i++) {
+            if (AppConstant.environemntPath[i].toString().equalsIgnoreCase(YonaApplication.getServerUrl())) {
+                ((TextView) view.findViewById(R.id.label_server)).setText(getString(R.string.environemnt, AppConstant.environmentList[i]));
+                break;
+            }
+        }
+
         return view;
     }
 

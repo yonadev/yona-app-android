@@ -14,9 +14,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputFilter;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -57,6 +61,15 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
         mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity(), mobileNumberLayout));
 
+        nickName.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    goToNext();
+                }
+                return false;
+            }
+        });
         YonaApplication.getEventChangeManager().registerListener(this);
 
         return view;
@@ -71,13 +84,17 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     @Override
     public void onStateChange(int eventType, Object object) {
         if (eventType == EventChangeManager.EVENT_SIGNUP_STEP_TWO_NEXT) {
-            String number = getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length());
-            String phonenumber = number.replace(" ", "");
-            if (validateMobileNumber(phonenumber) && validateNickName()) {
-                activity.getRegisterUser().setMobileNumber(phonenumber);
-                activity.getRegisterUser().setNickName(nickName.getText().toString());
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT, null);
-            }
+            goToNext();
+        }
+    }
+
+    private void goToNext() {
+        String number = getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length());
+        String phonenumber = number.replace(" ", "");
+        if (validateMobileNumber(phonenumber) && validateNickName()) {
+            activity.getRegisterUser().setMobileNumber(phonenumber);
+            activity.getRegisterUser().setNickName(nickName.getText().toString());
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT, null);
         }
     }
 

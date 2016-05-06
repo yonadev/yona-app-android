@@ -112,4 +112,7 @@ public interface AppConstant {
      * The constant POSITION.
      */
     String POSITION = "position";
+
+    CharSequence[] environmentList = new CharSequence[]{"Development", "Acceptance"};
+    CharSequence[] environemntPath = new CharSequence[]{"http://85.222.227.142", "http://85.222.227.84"};
 }
