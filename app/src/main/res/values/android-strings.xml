@@ -17,5 +17,6 @@
     <string name="space">" "</string>
     <string name="blank"></string>
     <string name="choose_environment">Choose Environment</string>
+    <string name="environemnt">"Environment: %1$s"</string>
     <string name="version">"Version: "</string>
 </resources>

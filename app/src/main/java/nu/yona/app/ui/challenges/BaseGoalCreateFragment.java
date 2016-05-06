@@ -41,27 +41,6 @@ import nu.yona.app.utils.AppConstant;
  * Created by bhargavsuthar on 13/04/16.
  */
 public class BaseGoalCreateFragment extends BaseFragment implements EventChangeListener {
-
-    /**
-     * The Budget categories goal list.
-     */
-    protected List<YonaGoal> budgetCategoriesGoalList;
-    /**
-     * The Time zone categories goal list.
-     */
-    protected List<YonaGoal> timeZoneCategoriesGoalList;
-    /**
-     * The No go categories goal list.
-     */
-    protected List<YonaGoal> noGoCategoriesGoalList;
-    /**
-     * The M yona activity categories list.
-     */
-    protected List<YonaActivityCategories> mYonaActivityCategoriesList;
-    /**
-     * The M goal categories map.
-     */
-    protected HashMap<String, String> mGoalCategoriesMap;
     /**
      * The M goal list view.
      */

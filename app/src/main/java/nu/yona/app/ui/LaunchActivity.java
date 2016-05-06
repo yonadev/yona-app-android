@@ -25,6 +25,7 @@ import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
 import nu.yona.app.ui.tour.TourActivity;
+import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -41,7 +42,8 @@ public class LaunchActivity extends BaseActivity {
             startNewActivity(TourActivity.class);
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
             // continue on same page. We need to keep on this position, so this step don't get ignore.
-        } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
+        } else if (YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)
+                && !YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
             startNewActivity(OTPActivity.class);
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
             startNewActivity(PasscodeActivity.class);
@@ -78,20 +80,19 @@ public class LaunchActivity extends BaseActivity {
      * This method is just for testing purpose on different environment.
      */
     private void switchEnvironment() {
-        final CharSequence[] environmentList = new CharSequence[]{"Development", "Acceptance"};
-        final CharSequence[] environemntPath = new CharSequence[]{"http://85.222.227.142", "http://85.222.227.84"};
+
         int selectedEnvironment = 0;
-        for (int i = 0; i < environmentList.length; i++) {
-            if (environemntPath[i].toString().equalsIgnoreCase(YonaApplication.getServerUrl())) {
+        for (int i = 0; i < AppConstant.environmentList.length; i++) {
+            if (AppConstant.environemntPath[i].toString().equalsIgnoreCase(YonaApplication.getServerUrl())) {
                 selectedEnvironment = i;
                 break;
             }
         }
-        CustomAlertDialog.show(this, getString(R.string.choose_environment), environmentList, new DialogInterface.OnClickListener() {
+        CustomAlertDialog.show(this, getString(R.string.choose_environment), AppConstant.environmentList, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                YonaApplication.setServerUrl(environemntPath[which].toString());
-                Toast.makeText(LaunchActivity.this, "You are now in :" + environmentList[which].toString(), Toast.LENGTH_LONG).show();
+                YonaApplication.setServerUrl(AppConstant.environemntPath[which].toString());
+                Toast.makeText(LaunchActivity.this, "You are now in :" + AppConstant.environmentList[which].toString(), Toast.LENGTH_LONG).show();
                 dialog.dismiss();
             }
         }, selectedEnvironment);
