@@ -69,6 +69,8 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
                 viewPager.setCurrentItem(tab.getPosition());
                 updateCounterTab();
                 updateTabViewBackground(tab, TAB_ALPHA_SELECTED);
+                updateChildViewVisible();
+
             }
 
             @Override
@@ -139,6 +141,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         adapter.addFragment(creditFragment, getString(R.string.challengescredit));
         adapter.addFragment(zoneFragment, getString(R.string.challengeszone));
         adapter.addFragment(noGoFragment, getString(R.string.challengesnogo));
+        viewPager.setOffscreenPageLimit(0);
         viewPager.setAdapter(adapter);
 
     }
@@ -244,6 +247,22 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         }
     }
 
+    private void updateChildViewVisible() {
+        switch (tabLayout.getSelectedTabPosition()) {
+            case TAB_INDEX_ONE:
+                creditFragment.updateCategoryView();
+                break;
+            case TAB_INDEX_TWO:
+                zoneFragment.updateCategoryView();
+                break;
+            case TAB_INDEX_THREE:
+                noGoFragment.updateCategoryView();
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * Update view.
      */
@@ -270,6 +289,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         switch (eventType) {
             case EventChangeManager.EVENT_UPDATE_GOALS:
                 updateCounterTab();
+                updateChildViewVisible();
                 break;
             default:
                 break;

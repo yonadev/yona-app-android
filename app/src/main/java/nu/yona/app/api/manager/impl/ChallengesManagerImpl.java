@@ -58,6 +58,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
     private synchronized void getListOfCategory() {
         mYonaActivityCategoriesList.clear();
+        Goals mYonaGoals = APIManager.getInstance().getGoalManager().getUserGoalFromDb();
         ActivityCategories embeddedActivityCategories = APIManager.getInstance().getActivityCategoryManager().getListOfActivityCategories();
         if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
             for (YonaActivityCategories activityCategories : embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories()) {
@@ -66,12 +67,20 @@ public class ChallengesManagerImpl implements ChallengesManager {
                     if (!TextUtils.isEmpty(activityCategories.getName()) && !TextUtils.isEmpty(activityCategories.get_links().getSelf().getHref())) {
                         mGoalCategoriesMap.put(activityCategories.getName(), activityCategories.get_links().getSelf().getHref());
                     }
+                    if (mYonaGoals != null && mYonaGoals.getEmbedded() != null && mYonaGoals.getEmbedded().getYonaGoals() != null && mYonaGoals.getEmbedded().getYonaGoals().size() > 0) {
+                        List<YonaGoal> yonaGoals = sortGoals(mYonaGoals.getEmbedded().getYonaGoals());
+                        for (YonaGoal mYonaGoal : yonaGoals) {
+                            if (mYonaGoal != null) {
+                                if (!TextUtils.isEmpty(mYonaGoal.getActivityCategoryName()) && !TextUtils.isEmpty(activityCategories.getName()) && mYonaGoal.getActivityCategoryName().equalsIgnoreCase(activityCategories.getName())) {
+                                    mYonaActivityCategoriesList.remove(activityCategories);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-
     }
-
 
     private synchronized Goals filterCategoriesGoal(Goals userGoals) {
         budgetCategoriesGoalList.clear();

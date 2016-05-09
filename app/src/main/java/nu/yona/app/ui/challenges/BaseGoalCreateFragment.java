@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import java.util.HashMap;
 import java.util.List;
 
 import nu.yona.app.R;
@@ -82,14 +81,37 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
         List<YonaActivityCategories> goals = APIManager.getInstance().getChallengesManager().getListOfCategories();
         if (goals != null && goals.size() > 0) {
             categoryGoalListAdapter = new GoalCategoryListAdapter(activity, goals);
-        } else {
-            activity.showLoadingView(true, null);
-        }
+        } 
         mGoalCreationListView.setAdapter(categoryGoalListAdapter);
         btnGoalAdd = (ImageButton) view.findViewById(R.id.img_add_goal);
         mDescTab = (YonaFontTextView) view.findViewById(R.id.txt_header_text);
         mGoalCreationListView.setOnItemClickListener(itemClickListener);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        updateCategoryView();
+    }
+
+    protected void updateCategoryView() {
+        if (isAdded()) {
+            if (APIManager.getInstance().getChallengesManager().getListOfCategories().size() == 0) {
+                btnGoalAdd.setVisibility(View.GONE);
+                mGoalCreationListView.setVisibility(View.GONE);
+                mGoalListView.setVisibility(View.VISIBLE);
+            } else {
+                if (categoryGoalListAdapter != null && mGoalCreationListView.getVisibility() == View.VISIBLE) {
+                    categoryGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfCategories());
+                    btnGoalAdd.setVisibility(View.GONE);
+                    mGoalListView.setVisibility(View.GONE);
+                } else {
+                    btnGoalAdd.setVisibility(View.VISIBLE);
+                    mGoalListView.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 
     /**
@@ -174,6 +196,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_UPDATE_GOALS:
+                updateCategoryView();
                 categoryGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfCategories());
                 break;
             default:
