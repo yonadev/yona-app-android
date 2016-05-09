@@ -159,18 +159,14 @@ public class Embedded extends BaseEntity {
     }
 
     /**
-     *
-     * @return
-     * The yonaMessages
+     * @return The yonaMessages
      */
     public List<YonaMessage> getYonaMessages() {
         return yonaMessages;
     }
 
     /**
-     *
-     * @param yonaMessages
-     * The yona:messages
+     * @param yonaMessages The yona:messages
      */
     public void setYonaMessages(List<YonaMessage> yonaMessages) {
         this.yonaMessages = yonaMessages;

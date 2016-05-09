@@ -23,7 +23,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -75,6 +74,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private Toolbar mToolBar;
     private TabLayout mTabLayout;
     private YonaFontTextView toolbarTitle;
+    private ImageView leftIcon;
     private ImageView rightIcon;
     private boolean isToDisplayLogin = true;
     private boolean skipVerification = false;
@@ -97,6 +97,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
         mToolBar = (Toolbar) findViewById(R.id.main_toolbar);
         toolbarTitle = (YonaFontTextView) mToolBar.findViewById(R.id.toolbar_title);
+        leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
         rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
 
         setSupportActionBar(mToolBar);
@@ -154,15 +155,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         } else {
             mTabLayout.getTabAt(0).select();
         }
-
-        rightIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mContent instanceof DashboardFragment) {
-                    replaceFragmentWithAction(new Intent(IntentEnum.ACTION_MESSAGE.getActionString()));
-                }
-            }
-        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             new Handler().postDelayed(new Runnable() {
@@ -371,7 +363,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             String callAction = intent.getAction();
             Fragment oldFragment = mContent;
             boolean clearFragmentStack = intent.getBooleanExtra(AppConstant.CLEAR_FRAGMENT_STACK, false);
-
             if (!TextUtils.isEmpty(callAction)) {
                 IntentEnum intentEnum = IntentEnum.fromName(callAction);
 
@@ -447,7 +438,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
-    private void updateToolBar() {
+    private void updateToolBarBackground() {
         if (mContent instanceof ChallengesFragment || mContent instanceof ChallengesGoalDetailFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_green);
         } else if (mContent instanceof DashboardFragment || mContent instanceof MessageFragment) {
@@ -465,6 +456,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * @param oldFragment        pass oldfragment which need to add in back stack.
      */
     private void loadFragment(boolean clearFragmentStack, boolean addToBackstack, Fragment oldFragment) {
+        hideToolbarIcon();
         if (mContent != null && !mContent.isAdded()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.back_slide_in, R.anim.back_slide_out);
@@ -496,8 +488,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 oldFragment.onPause();
                 oldFragment.onStop();
             }
-            updateToolBar();
-            updateToolbarRightIcon();
+            updateToolBarBackground();
         }
     }
 
@@ -531,8 +522,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 }
                 mContent.onStart();
                 mContent.onResume();
-                updateToolBar();
-                updateToolbarRightIcon();
+                updateToolBarBackground();
+                hideToolbarIcon();
             }
         }
     }
@@ -543,7 +534,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * @param titleId the title id
      */
     public void updateTitle(int titleId) {
-        toolbarTitle.setText(getString(titleId));
+        updateTitle(getString(titleId));
     }
 
     /**
@@ -551,21 +542,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      *
      * @param title the title
      */
-    public void udpateTitle(String title) {
+    public void updateTitle(String title) {
         toolbarTitle.setText(title);
     }
 
-    private void updateToolbarRightIcon() {
-        if (mContent instanceof DashboardFragment || mContent instanceof FriendsFragment || mContent instanceof ProfileFragment) {
-            rightIcon.setVisibility(View.VISIBLE);
-        } else if (mContent instanceof ChallengesFragment || mContent instanceof SettingsFragment || mContent instanceof MessageFragment || mContent instanceof AddFriendFragment) {
-            rightIcon.setVisibility(View.GONE);
-        }
-
-        if (mContent instanceof DashboardFragment) {
-            rightIcon.setTag(getString(R.string.dashboard));
-            rightIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.icn_reminder));
-        }
+    public void hideToolbarIcon() {
+        rightIcon.setVisibility(View.GONE);
+        leftIcon.setVisibility(View.GONE);
     }
 
     private boolean isStackEmpty() {
@@ -607,6 +590,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      */
     public ImageView getRightIcon() {
         return rightIcon;
+    }
+
+    public ImageView getLeftIcon() {
+        return leftIcon;
     }
 
     @Override

@@ -11,7 +11,6 @@ package nu.yona.app.ui.frinends;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ public class OverviewFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.friends_overview_fragment, null);
 
         activity = (YonaActivity) getActivity();
-        activity.getRightIcon().setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.icn_add));
         activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

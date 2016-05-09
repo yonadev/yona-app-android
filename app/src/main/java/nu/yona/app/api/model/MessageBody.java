@@ -22,18 +22,14 @@ public class MessageBody {
     private Properties properties;
 
     /**
-     *
-     * @return
-     * The properties
+     * @return The properties
      */
     public Properties getProperties() {
         return properties;
     }
 
     /**
-     *
-     * @param properties
-     * The properties
+     * @param properties The properties
      */
     public void setProperties(Properties properties) {
         this.properties = properties;
