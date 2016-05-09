@@ -39,20 +39,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 class BaseImpl {
     private final Cache cache;
+    private final int maxStale = 60 * 60 * 24 * 28; // keep cache for 28 days.
     private final Interceptor getInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
+            Response response = null;
             Request request = chain.request();
             chain.request().newBuilder().addHeader(NetworkConstant.ACCEPT_LAUNGUAGE, Locale.getDefault().toString().replace('_', '-'));
             chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
-            int maxStale = 60 * 60 * 24 * 28;
+
             if (NetworkUtils.isOnline(YonaApplication.getAppContext())) {
                 chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
             } else if (request.method().equalsIgnoreCase("GET") && !request.cacheControl().noCache()) {
                 chain.request().newBuilder().addHeader("Cache-Control", "public, max-stale=" + maxStale).build();
             }
             request = request.newBuilder().build();
-            Response response = chain.proceed(request);
+            response = chain.proceed(request);
             return response.newBuilder()
                     .header("Cache-Control", "public, max-age=" + maxStale)
                     .build();
