@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The type Embedded.
  */
@@ -29,6 +32,9 @@ public class Embedded extends BaseEntity {
     @SerializedName("yona:user")
     @Expose
     private RegisterUser yonaUser;
+    @SerializedName("yona:messages")
+    @Expose
+    private List<YonaMessage> yonaMessages = new ArrayList<>();
     @SerializedName("sendingStatus")
     @Expose
     private String sendingStatus;
@@ -151,4 +157,23 @@ public class Embedded extends BaseEntity {
     public void setLinks(Links Links) {
         this.Links = Links;
     }
+
+    /**
+     *
+     * @return
+     * The yonaMessages
+     */
+    public List<YonaMessage> getYonaMessages() {
+        return yonaMessages;
+    }
+
+    /**
+     *
+     * @param yonaMessages
+     * The yona:messages
+     */
+    public void setYonaMessages(List<YonaMessage> yonaMessages) {
+        this.yonaMessages = yonaMessages;
+    }
+
 }

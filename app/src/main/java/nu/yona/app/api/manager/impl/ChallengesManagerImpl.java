@@ -8,7 +8,6 @@
 
 package nu.yona.app.api.manager.impl;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -46,7 +45,6 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
     /**
      * Instantiates a new Challenges manager.
-     *
      */
     public ChallengesManagerImpl() {
         mYonaActivityCategoriesList = new ArrayList<>();
