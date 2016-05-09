@@ -10,7 +10,6 @@
 
 package nu.yona.app.api.manager.network;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.ConnectException;
@@ -22,8 +21,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.utils.NetworkUtils;
 import nu.yona.app.listener.DataLoadListener;
-import nu.yona.app.utils.AppUtils;
-import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -38,7 +35,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by kinnarvasa on 28/03/16.
  */
 class BaseImpl {
-    private final Cache cache;
     private final int maxStale = 60 * 60 * 24 * 28; // keep cache for 28 days.
     private final Interceptor getInterceptor = new Interceptor() {
         @Override
@@ -62,20 +58,6 @@ class BaseImpl {
     };
     private Retrofit retrofit;
     private RestApi restApi;
-    private File httpCacheDirectory;
-
-    /**
-     * Instantiates a new Base.
-     */
-    BaseImpl() {
-        try {
-            httpCacheDirectory = new File(YonaApplication.getAppContext().getCacheDir(), NetworkConstant.CACHING_FILE);
-        } catch (Exception e) {
-            AppUtils.throwException(BaseImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-        int cacheSize = 10 * 1024 * 1024;
-        cache = new Cache(httpCacheDirectory, cacheSize);
-    }
 
     /**
      * Gets retrofit.
@@ -99,7 +81,6 @@ class BaseImpl {
                 .writeTimeout(NetworkConstant.API_WRITE_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
                 .readTimeout(NetworkConstant.API_READ_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
                 .addInterceptor(getInterceptor)
-                .cache(cache)
                 .build();
     }
 
