@@ -11,6 +11,7 @@ package nu.yona.app;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.StrictMode;
 import android.text.TextUtils;
 
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
@@ -146,9 +147,26 @@ public class YonaApplication extends Application {
 
     @Override
     public void onCreate() {
+        if (getResources().getBoolean(R.bool.developerMode)) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .penaltyDialog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
         super.onCreate();
         mContext = this;
         eventChangeManager = new EventChangeManager();
+
     }
 
 }

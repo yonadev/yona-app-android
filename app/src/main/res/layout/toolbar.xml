@@ -13,7 +13,7 @@
     android:background="@drawable/triangle_shadow_grape"
     android:minHeight="?attr/actionBarSize"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     <RelativeLayout
         android:layout_width="match_parent"

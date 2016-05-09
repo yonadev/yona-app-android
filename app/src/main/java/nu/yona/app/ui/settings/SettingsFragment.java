@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.manager.impl.DeviceManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
@@ -104,7 +105,7 @@ public class SettingsFragment extends BaseFragment {
 
     private void doUnsubscribe() {
         activity.showLoadingView(true, null);
-        new AuthenticateManagerImpl(activity).deleteUser(new DataLoadListener() {
+        APIManager.getInstance().getAuthenticateManager().deleteUser(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 activity.showLoadingView(false, null);
