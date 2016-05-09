@@ -14,6 +14,7 @@ import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.AddBuddy;
 import nu.yona.app.api.model.Buddy;
 import nu.yona.app.api.model.Goals;
+import nu.yona.app.api.model.MessageBody;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
 import nu.yona.app.api.model.OTPVerficationCode;
@@ -23,6 +24,7 @@ import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaBuddy;
+import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.utils.ApiList;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -295,4 +297,40 @@ public interface RestApi {
     Call<Void> deleteBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
     /******** FRIENDS / BUDDY ************/
+
+    /********
+     * NOTIFICATION MANAGER
+     *
+     * @param url      the url
+     * @param password the password
+     * @param size     the size
+     * @param page     the page
+     * @return the messages
+     */
+    @GET
+    Call<YonaMessages> getMessages(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
+                                   @Query("size") int size, @Query("page") int page);
+
+    /**
+     * Delete message call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the call
+     */
+    @DELETE
+    Call<Void> deleteMessage(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
+
+    /**
+     * Post message call.
+     *
+     * @param url      the url
+     * @param password the password
+     * @param body     the body
+     * @return the call
+     */
+    @POST
+    Call<Void> postMessage(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body MessageBody body);
+    /******** NOTIFICATION MANAGER ************/
 }

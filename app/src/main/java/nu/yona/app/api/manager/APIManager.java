@@ -17,6 +17,7 @@ import nu.yona.app.api.manager.impl.BuddyManagerImpl;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
 import nu.yona.app.api.manager.impl.DeviceManagerImpl;
 import nu.yona.app.api.manager.impl.GoalManagerImpl;
+import nu.yona.app.api.manager.impl.NotificationManagerImpl;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
 
 /**
@@ -32,6 +33,7 @@ public class APIManager {
     private GoalManager goalManager;
     private PasscodeManager passcodeManager;
     private ChallengesManager challengesManager;
+    private NotificationManager notificationManager;
 
     /**
      * Gets instance.
@@ -127,5 +129,17 @@ public class APIManager {
             challengesManager = new ChallengesManagerImpl();
         }
         return challengesManager;
+    }
+
+    /**
+     * Gets notification manager.
+     *
+     * @return the notification manager
+     */
+    public NotificationManager getNotificationManager() {
+        if (notificationManager == null) {
+            notificationManager = new NotificationManagerImpl(YonaApplication.getAppContext());
+        }
+        return notificationManager;
     }
 }
