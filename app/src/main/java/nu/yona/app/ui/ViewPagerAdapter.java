@@ -19,8 +19,8 @@ import java.util.List;
  * Created by kinnarvasa on 21/03/16.
  */
 public class ViewPagerAdapter extends FragmentPagerAdapter {
-    private final List<Fragment> mFragmentList = new ArrayList<>();
-    private final List<String> mFragmentTitleList = new ArrayList<>();
+    private List<Fragment> mFragmentList = new ArrayList<>();
+    private List<String> mFragmentTitleList = new ArrayList<>();
 
     /**
      * Instantiates a new View pager adapter.

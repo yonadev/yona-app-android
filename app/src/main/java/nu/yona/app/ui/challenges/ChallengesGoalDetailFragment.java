@@ -214,20 +214,20 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 if (APIManager.getInstance().getChallengesManager().typeOfGoal(yonaGoal).equals(GoalsEnum.BUDGET_GOAL)) {
                     setBudgetGoalViewVisibility();
                     mBudgetGoalTime = (YonaFontTextView) view.findViewById(R.id.goal_minutes_num);
-                    mHTxtGoalSubscribe.setText(getString(R.string.budgetgoalheadersubtext, yonaGoal.getActivityCategoryName()));
+                    mHTxtGoalSubscribe.setText(getString(R.string.budgetgoalheadersubtext, !TextUtils.isEmpty(yonaActivityCategories.getName()) ? yonaActivityCategories.getName() : ""));
                     mBudgetGoalTime.setText(String.valueOf(yonaGoal.getMaxDurationMinutes()));
                     view.findViewById(R.id.goal_item_layout).setOnClickListener(this);
 
                 } else if (APIManager.getInstance().getChallengesManager().typeOfGoal(yonaGoal).equals(GoalsEnum.TIME_ZONE_GOAL)) {
                     setTimezoneGoalViewVisibility();
-                    mHTxtGoalSubscribe.setText(getString(R.string.timezonegoalheadersubtext, yonaGoal.getActivityCategoryName()));
+                    mHTxtGoalSubscribe.setText(getString(R.string.timezonegoalheadersubtext, !TextUtils.isEmpty(yonaActivityCategories.getName()) ? yonaActivityCategories.getName() : ""));
                     listOfTimes.addAll(yonaGoal.getZones());
                     ((YonaFontTextView) view.findViewById(R.id.txt_header_text)).setText(getString(R.string.timezone));
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 } else {
                     //todo- for nogo
                     btnChallenges.setVisibility(View.GONE);
-                    mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, yonaActivityCategories.getName()));
+                    mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, !TextUtils.isEmpty(yonaActivityCategories.getName()) ? yonaActivityCategories.getName() : ""));
                     mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_nogo);
                     view.findViewById(R.id.goalTypeView).setVisibility(View.GONE);
                 }
