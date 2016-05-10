@@ -15,14 +15,38 @@ package nu.yona.app.enums;
  */
 public enum NotificationEnum {
 
+    /**
+     * Buddyconnectrequestmessage notification enum.
+     */
     BUDDYCONNECTREQUESTMESSAGE("BuddyConnectRequestMessage"),
+    /**
+     * Buddyconnectresponsemessage notification enum.
+     */
     BUDDYCONNECTRESPONSEMESSAGE("BuddyConnectResponseMessage"),
+    /**
+     * Buddydisconnectmessage notification enum.
+     */
     BUDDYDISCONNECTMESSAGE("BuddyDisconnectMessage"),
+    /**
+     * Goalconflictmessage notification enum.
+     */
     GOALCONFLICTMESSAGE("GoalConflictMessage"),
+    /**
+     * Goalchangemessage notification enum.
+     */
     GOALCHANGEMESSAGE("GoalChangeMessage"),
+    /**
+     * Disclosurerequestmessage notification enum.
+     */
     DISCLOSUREREQUESTMESSAGE("DisclosureRequestMessage"),
+    /**
+     * Disclosureresponsemessage notification enum.
+     */
     DISCLOSURERESPONSEMESSAGE("DisclosureResponseMessage");
 
+    /**
+     * The Notification type.
+     */
     String notificationType;
 
     NotificationEnum(String type) {

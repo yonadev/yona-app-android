@@ -22,6 +22,8 @@ public class MessageBody {
     private Properties properties;
 
     /**
+     * Gets properties.
+     *
      * @return The properties
      */
     public Properties getProperties() {
@@ -29,6 +31,8 @@ public class MessageBody {
     }
 
     /**
+     * Sets properties.
+     *
      * @param properties The properties
      */
     public void setProperties(Properties properties) {

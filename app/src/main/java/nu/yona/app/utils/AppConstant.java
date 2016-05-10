@@ -26,6 +26,9 @@ public interface AppConstant {
      */
     int MAX_COUNTER = 4;
 
+    /**
+     * The constant TIMER_DELAY_HUNDRED.
+     */
     int TIMER_DELAY_HUNDRED = 100;
     /**
      * The constant TIMER_DELAY.
@@ -63,6 +66,16 @@ public interface AppConstant {
      * The constant MIN_DEFAULT_TIME.
      */
     int MIN_DEFAULT_TIME = 5;
+
+    /**
+     * The constant PROFILE_IMAGE_BORDER_SIZE.
+     */
+    int PROFILE_IMAGE_BORDER_SIZE = 10;
+
+    /**
+     * The constant PROFILE_ICON_BORDER_SIZE.
+     */
+    int PROFILE_ICON_BORDER_SIZE = 5;
 
     /**
      * The constant PASSCODE.
@@ -115,6 +128,12 @@ public interface AppConstant {
      */
     String POSITION = "position";
 
+    /**
+     * The constant environmentList.
+     */
     CharSequence[] environmentList = new CharSequence[]{"Development", "Acceptance"};
+    /**
+     * The constant environemntPath.
+     */
     CharSequence[] environemntPath = new CharSequence[]{"http://85.222.227.142", "http://85.222.227.84"};
 }

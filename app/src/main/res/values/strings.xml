@@ -33,6 +33,7 @@
     <string name="connectionnotavailable">OOPS! No Internet Connection Available, please connect and try again.</string>
     <string name="somethingwentwrong">Something went wrong, please try again.</string>
     <string name="firstname">FIRST NAME</string>
+    <string name="name">NAAM</string>
     <string name="lastname">LAST NAME</string>
     <string name="nickname">NICKNAME</string>
     <string name="privacypolicy">Yona is committed to respecting and protecting your privacy. All sensitive data is secured with encryption.</string>
@@ -114,5 +115,7 @@
     <string name="add_timezone">Please add atlest one time to add in timezone.</string>
     <string name="challengesdetail">%1$s VASTLEGGEN</string>
     <string name="challengestimesbetween">tussen %1$s en %2$s </string>
+    <string name="edit_profile">EDIT ACCOUNT</string>
+    <string name="enternamevalidation">You need to enter a name</string>
 
 </resources>

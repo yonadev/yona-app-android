@@ -31,6 +31,8 @@ public class Page {
     private Integer number;
 
     /**
+     * Gets size.
+     *
      * @return The size
      */
     public Integer getSize() {
@@ -38,6 +40,8 @@ public class Page {
     }
 
     /**
+     * Sets size.
+     *
      * @param size The size
      */
     public void setSize(Integer size) {
@@ -45,6 +49,8 @@ public class Page {
     }
 
     /**
+     * Gets total elements.
+     *
      * @return The totalElements
      */
     public Integer getTotalElements() {
@@ -52,6 +58,8 @@ public class Page {
     }
 
     /**
+     * Sets total elements.
+     *
      * @param totalElements The totalElements
      */
     public void setTotalElements(Integer totalElements) {
@@ -59,6 +67,8 @@ public class Page {
     }
 
     /**
+     * Gets total pages.
+     *
      * @return The totalPages
      */
     public Integer getTotalPages() {
@@ -66,6 +76,8 @@ public class Page {
     }
 
     /**
+     * Sets total pages.
+     *
      * @param totalPages The totalPages
      */
     public void setTotalPages(Integer totalPages) {
@@ -73,6 +85,8 @@ public class Page {
     }
 
     /**
+     * Gets number.
+     *
      * @return The number
      */
     public Integer getNumber() {
@@ -80,6 +94,8 @@ public class Page {
     }
 
     /**
+     * Sets number.
+     *
      * @param number The number
      */
     public void setNumber(Integer number) {

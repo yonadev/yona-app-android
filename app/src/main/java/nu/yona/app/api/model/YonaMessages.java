@@ -29,6 +29,8 @@ public class YonaMessages {
     private Page page;
 
     /**
+     * Gets embedded.
+     *
      * @return The Embedded
      */
     public nu.yona.app.api.model.Embedded getEmbedded() {
@@ -36,6 +38,8 @@ public class YonaMessages {
     }
 
     /**
+     * Sets embedded.
+     *
      * @param Embedded The _embedded
      */
     public void setEmbedded(nu.yona.app.api.model.Embedded Embedded) {
@@ -43,6 +47,8 @@ public class YonaMessages {
     }
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public Links getLinks() {
@@ -50,6 +56,8 @@ public class YonaMessages {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(Links Links) {
@@ -57,6 +65,8 @@ public class YonaMessages {
     }
 
     /**
+     * Gets page.
+     *
      * @return The page
      */
     public Page getPage() {
@@ -64,6 +74,8 @@ public class YonaMessages {
     }
 
     /**
+     * Sets page.
+     *
      * @param page The page
      */
     public void setPage(Page page) {
