@@ -44,7 +44,7 @@ public class NotificationManagerImpl implements NotificationManager {
     /**
      * Gets message.
      *
-     * @param listener     the listener
+     * @param listener the listener
      */
     public void getMessage(DataLoadListener listener) {
         getMessage(0, 0, listener); //set default page 0, start page = 0

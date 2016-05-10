@@ -133,7 +133,11 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     @Override
     public void onResume() {
         super.onResume();
-        ((YonaActivity) getActivity()).updateTitle(R.string.challenges);
+        setTitleAndIcon();
+    }
+
+    private void setTitleAndIcon() {
+        activity.updateTitle(R.string.challenges);
     }
 
     private void setupViewPager(ViewPager viewPager) {

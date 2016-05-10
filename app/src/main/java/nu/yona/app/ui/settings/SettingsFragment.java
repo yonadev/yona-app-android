@@ -127,8 +127,11 @@ public class SettingsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((YonaActivity) getActivity()).updateTitle(R.string.settings);
+        setTitleAndIcon();
+    }
 
+    private void setTitleAndIcon() {
+        activity.updateTitle(R.string.settings);
     }
 
     private void addDevice(final String pin) {

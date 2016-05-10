@@ -40,126 +40,98 @@ public class YonaMessage {
     private String Type;
 
     /**
-     *
-     * @return
-     * The creationTime
+     * @return The creationTime
      */
     public String getCreationTime() {
         return creationTime;
     }
 
     /**
-     *
-     * @param creationTime
-     * The creationTime
+     * @param creationTime The creationTime
      */
     public void setCreationTime(String creationTime) {
         this.creationTime = creationTime;
     }
 
     /**
-     *
-     * @return
-     * The nickname
+     * @return The nickname
      */
     public String getNickname() {
         return nickname;
     }
 
     /**
-     *
-     * @param nickname
-     * The nickname
+     * @param nickname The nickname
      */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
     /**
-     *
-     * @return
-     * The message
+     * @return The message
      */
     public String getMessage() {
         return message;
     }
 
     /**
-     *
-     * @param message
-     * The message
+     * @param message The message
      */
     public void setMessage(String message) {
         this.message = message;
     }
 
     /**
-     *
-     * @return
-     * The status
+     * @return The status
      */
     public String getStatus() {
         return status;
     }
 
     /**
-     *
-     * @param status
-     * The status
+     * @param status The status
      */
     public void setStatus(String status) {
         this.status = status;
     }
 
     /**
-     *
-     * @return
-     * The Links
+     * @return The Links
      */
     public nu.yona.app.api.model.Links getLinks() {
         return Links;
     }
 
     /**
-     *
-     * @param Links
-     * The _links
+     * @param Links The _links
      */
     public void setLinks(nu.yona.app.api.model.Links Links) {
         this.Links = Links;
     }
 
     /**
-     *
-     * @return
-     * The Embedded
+     * @return The Embedded
      */
     public Embedded getEmbedded() {
         return Embedded;
     }
 
     /**
-     *
-     * @param Embedded
-     * The _embedded
+     * @param Embedded The _embedded
      */
     public void setEmbedded(Embedded Embedded) {
         this.Embedded = Embedded;
     }
 
     /**
-     *
-     * @return
-     * The Type
+     * @return The Type
      */
     public String getType() {
         return Type;
     }
 
     /**
-     *
-     * @param Type
-     * The @type
+     * @param Type The @type
      */
     public void setType(String Type) {
         this.Type = Type;

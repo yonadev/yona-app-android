@@ -74,6 +74,7 @@ public class Links extends BaseEntity {
     @SerializedName("yona:accept")
     @Expose
     private Href yonaAccept;
+
     /**
      * Gets self.
      *
@@ -350,36 +351,28 @@ public class Links extends BaseEntity {
     }
 
     /**
-     *
-     * @return
-     * The yonaReject
+     * @return The yonaReject
      */
     public Href getYonaReject() {
         return yonaReject;
     }
 
     /**
-     *
-     * @param yonaReject
-     * The yona:reject
+     * @param yonaReject The yona:reject
      */
     public void setYonaReject(Href yonaReject) {
         this.yonaReject = yonaReject;
     }
 
     /**
-     *
-     * @return
-     * The yonaAccept
+     * @return The yonaAccept
      */
     public Href getYonaAccept() {
         return yonaAccept;
     }
 
     /**
-     *
-     * @param yonaAccept
-     * The yona:accept
+     * @param yonaAccept The yona:accept
      */
     public void setYonaAccept(Href yonaAccept) {
         this.yonaAccept = yonaAccept;

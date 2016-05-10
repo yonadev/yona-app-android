@@ -9,8 +9,10 @@
 package nu.yona.app.ui.frinends;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import nu.yona.app.R;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -27,6 +30,7 @@ import nu.yona.app.ui.YonaActivity;
 public class FriendsFragment extends BaseFragment {
     private final int TIMELINE = 0, OVERVIEW = 1;
     private ViewPager viewPager;
+    private YonaActivity activity;
 
     @Nullable
     @Override
@@ -34,6 +38,7 @@ public class FriendsFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.frineds_layout, null);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        activity = (YonaActivity) getActivity();
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         return view;
@@ -52,17 +57,7 @@ public class FriendsFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                switch (position) {
-                    case TIMELINE:
-                        ((YonaActivity) getActivity()).getRightIcon().setVisibility(View.GONE);
-                        break;
-                    case OVERVIEW:
-                        ((YonaActivity) getActivity()).getRightIcon().setVisibility(View.VISIBLE);
-                        break;
-                    default:
-                        ((YonaActivity) getActivity()).getRightIcon().setVisibility(View.GONE);
-                        break;
-                }
+                showOptionsInSelectedTab(position);
             }
 
             @Override
@@ -75,7 +70,41 @@ public class FriendsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((YonaActivity) getActivity()).updateTitle(R.string.friends);
-        viewPager.setCurrentItem(1);
+        setTitleAndIcon();
+    }
+
+    private void setTitleAndIcon() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                activity.getLeftIcon().setVisibility(View.GONE);
+                activity.updateTitle(R.string.friends);
+                activity.getRightIcon().setVisibility(View.GONE);
+                showOptionsInSelectedTab(viewPager.getCurrentItem());
+            }
+        }, AppConstant.TIMER_DELAY_HUNDRED);
+
+    }
+
+    private void showOptionsInSelectedTab(int position) {
+        switch (position) {
+            case OVERVIEW:
+                showOverviewFragmentOptions();
+                break;
+            case TIMELINE:
+            default:
+                showTimeLineFragmentOptions();
+                break;
+        }
+    }
+
+    private void showTimeLineFragmentOptions() {
+        activity.getRightIcon().setVisibility(View.GONE);
+    }
+
+    private void showOverviewFragmentOptions() {
+        activity.getRightIcon().setVisibility(View.VISIBLE);
+        activity.getRightIcon().setTag(getString(R.string.overiview));
+        activity.getRightIcon().setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.icn_add));
     }
 }

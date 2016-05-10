@@ -25,6 +25,8 @@ public interface AppConstant {
      * The constant MAX_COUNTER.
      */
     int MAX_COUNTER = 4;
+
+    int TIMER_DELAY_HUNDRED = 100;
     /**
      * The constant TIMER_DELAY.
      */

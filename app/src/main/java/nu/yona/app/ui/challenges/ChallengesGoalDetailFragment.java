@@ -264,7 +264,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             title = getString(R.string.challengesnogo);
         }
         if (!TextUtils.isEmpty(title)) {
-            activity.udpateTitle(getString(R.string.challengesdetail, title));
+            activity.updateTitle(getString(R.string.challengesdetail, title));
         }
     }
 
