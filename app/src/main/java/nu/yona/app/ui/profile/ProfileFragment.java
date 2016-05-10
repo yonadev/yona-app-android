@@ -31,10 +31,10 @@ import nu.yona.app.utils.AppConstant;
  * Created by kinnarvasa on 21/03/16.
  */
 public class ProfileFragment extends BaseProfileFragment {
+    private final int PROFILE = 0, BADGES = 1;
     private ImageView profileImageView;
     private YonaFontTextView name, nickName;
     private ViewPager viewPager;
-    private final int PROFILE = 0, BADGES = 1;
 
     @Nullable
     @Override
@@ -47,7 +47,7 @@ public class ProfileFragment extends BaseProfileFragment {
         profileImageView = (ImageView) view.findViewById(R.id.profileImage);
 
         name = (YonaFontTextView) view.findViewById(R.id.name);
-        nickName =(YonaFontTextView) view.findViewById(R.id.nick_name);
+        nickName = (YonaFontTextView) view.findViewById(R.id.nick_name);
 
         activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
             @Override
