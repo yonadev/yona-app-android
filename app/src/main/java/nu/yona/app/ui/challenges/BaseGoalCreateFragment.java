@@ -81,7 +81,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
         List<YonaActivityCategories> goals = APIManager.getInstance().getChallengesManager().getListOfCategories();
         if (goals != null && goals.size() > 0) {
             categoryGoalListAdapter = new GoalCategoryListAdapter(activity, goals);
-        } 
+        }
         mGoalCreationListView.setAdapter(categoryGoalListAdapter);
         btnGoalAdd = (ImageButton) view.findViewById(R.id.img_add_goal);
         mDescTab = (YonaFontTextView) view.findViewById(R.id.txt_header_text);

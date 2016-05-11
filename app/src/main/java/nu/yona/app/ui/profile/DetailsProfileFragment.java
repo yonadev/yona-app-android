@@ -58,7 +58,7 @@ public class DetailsProfileFragment extends BaseProfileFragment {
         mobileNumber.setClickable(false);
         mobileNumber.setKeyListener(null);
         String number = YonaApplication.getUser().getMobileNumber();
-        if(!TextUtils.isEmpty(number)) {
+        if (!TextUtils.isEmpty(number)) {
             number = number.substring(number.length() - NUMBER_LENGTH);
             number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
             mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
