@@ -10,6 +10,7 @@
 
 package nu.yona.app.ui.profile;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -31,12 +32,14 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 10/05/16.
  */
-public class EditDetailsProfileFragment extends BaseProfileFragment {
+public class EditDetailsProfileFragment extends BaseProfileFragment implements EventChangeListener {
     private YonaFontEditTextView name, nickName, mobileNumber;
     private TextInputLayout nameLayout, nickNameLayout, mobileNumberLayout;
     private ImageView profileImage, updateProfileImage;
@@ -52,7 +55,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment {
         listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openImageChooser();
+                activity.chooseImage();
             }
         };
         textWatcher = new TextWatcher() {
@@ -80,7 +83,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment {
                 goToNext();
             }
         });
-
+        YonaApplication.getEventChangeManager().registerListener(this);
         return view;
     }
 
@@ -118,13 +121,19 @@ public class EditDetailsProfileFragment extends BaseProfileFragment {
 
         updateProfileImage = (ImageView) view.findViewById(R.id.updateProfileImage);
         updateProfileImage.setOnClickListener(listener);
+        profileViewMode();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setTitleAndIcon();
-        profileViewMode();
     }
 
     private void goToNext() {
@@ -147,25 +156,21 @@ public class EditDetailsProfileFragment extends BaseProfileFragment {
     }
 
     private void profileViewMode() {
-        profileImage.setBackground(getImage(true));
+        profileImage.setBackground(getImage(null, true));
 
-        name.setText(getString(R.string.full_name, YonaApplication.getUser().getFirstName(), YonaApplication.getUser().getLastName()));
-        nickName.setText(YonaApplication.getUser().getNickname());
+        name.setText(getString(R.string.full_name,
+                TextUtils.isEmpty(YonaApplication.getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getUser().getFirstName(),
+                TextUtils.isEmpty(YonaApplication.getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getUser().getLastName()));
+        nickName.setText(TextUtils.isEmpty(YonaApplication.getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getUser().getNickname());
         int NUMBER_LENGTH = 9;
 
         String number = YonaApplication.getUser().getMobileNumber();
-        if (!TextUtils.isEmpty(number)) {
+        if (!TextUtils.isEmpty(number) && number.length() >  NUMBER_LENGTH) {
             number = number.substring(number.length() - NUMBER_LENGTH);
             number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
             mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
         }
-        activity.showKeyboard(name);
         name.requestFocus();
-    }
-
-
-    private void openImageChooser() {
-        //TODO open camera or allow to choose from device memory
     }
 
     private boolean validateFields() {
@@ -200,6 +205,22 @@ public class EditDetailsProfileFragment extends BaseProfileFragment {
     }
 
     private void updateUserProfile() {
-        //TODO API Call of PUT /user via AuthenticateManager
+
+    }
+
+    @Override
+    public void onStateChange(int eventType, final Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_RECEIVED_PHOTO:
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        profileImage.setBackground(getImage((Bitmap) object, true));
+                    }
+                }, AppConstant.TIMER_DELAY_HUNDRED);
+                break;
+            default:
+                break;
+        }
     }
 }

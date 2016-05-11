@@ -8,21 +8,31 @@
 
 package nu.yona.app.ui;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -34,10 +44,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.AuthenticateManager;
-import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
@@ -70,6 +83,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static final int TOTAL_TABS = 4;
     private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1;
     private static final int PICK_CONTACT = 2;
+    private static final int PICK_IMAGE = 3;
+    private static final int PICK_CAMERA = 4;
     private Fragment mContent, homeFragment;
     private boolean isStateActive = false;
     private boolean mStateSaved;
@@ -82,6 +97,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private boolean isToDisplayLogin = true;
     private boolean skipVerification = false;
     private boolean launchedPinActiivty = false;
+    private int READ_EXTERNAL_STORAGE_REQUEST = 1;
+    private int CAMERA_REQUEST = 2;
 
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
@@ -193,10 +210,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void getUser() {
-        AuthenticateManager authenticateManager = new AuthenticateManagerImpl(this);
-        User user = authenticateManager.getUser();
+        User user = APIManager.getInstance().getAuthenticateManager().getUser();
         if (user != null) {
-            authenticateManager.getUser(user.getLinks().getSelf().getHref(), null);
+            APIManager.getInstance().getAuthenticateManager().getUser(user.getLinks().getSelf().getHref(), null);
         }
     }
 
@@ -278,14 +294,94 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     showContactDetails(data);
                 }
                 break;
+            case PICK_IMAGE:
+                if (resultCode == RESULT_OK) {
+                    loadPickedImage(data);
+                }
+                break;
+            case PICK_CAMERA:
+                if (resultCode == RESULT_OK) {
+                    loadCaptureImage(data);
+                }
+                break;
             default:
                 break;
+        }
+    }
+
+    private void loadCaptureImage(final Intent data) {
+        new AsyncTask<Void, Void, Object>() {
+
+            @Override
+            protected Object doInBackground(Void... params) {
+                try {
+                    Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                    File destination = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
+                    FileOutputStream fo;
+                    destination.createNewFile();
+                    fo = new FileOutputStream(destination);
+                    fo.write(bytes.toByteArray());
+                    fo.close();
+                    return thumbnail;
+                } catch (Exception e) {
+                    AppUtils.throwException(YonaApplication.class.getSimpleName(), e, Thread.currentThread(), null);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RECEIVED_PHOTO, (Bitmap) o);
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+    }
+
+    private void loadPickedImage(final Intent data) {
+        try {
+            Uri selectedImageUri = data.getData();
+            String[] projection = {MediaStore.MediaColumns.DATA};
+            CursorLoader cursorLoader = new CursorLoader(YonaActivity.this, selectedImageUri, projection, null, null, null);
+            Cursor cursor = cursorLoader.loadInBackground();
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            cursor.moveToFirst();
+            final String selectedImagePath = cursor.getString(column_index);
+            cursor.close();
+            new AsyncTask<Void, Void, Object>() {
+
+                @Override
+                protected Object doInBackground(Void... params) {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeFile(selectedImagePath, options);
+                    final int REQUIRED_SIZE = 200;
+                    int scale = 1;
+                    while (options.outWidth / scale / 2 >= REQUIRED_SIZE && options.outHeight / scale / 2 >= REQUIRED_SIZE) {
+                        scale *= 2;
+                    }
+                    options.inSampleSize = scale;
+                    options.inJustDecodeBounds = false;
+                    return BitmapFactory.decodeFile(selectedImagePath, options);
+                }
+
+                @Override
+                protected void onPostExecute(Object o) {
+                    super.onPostExecute(o);
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RECEIVED_PHOTO, (Bitmap) o);
+                }
+            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            AppUtils.throwException(YonaApplication.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
     /**
      * Show permission alert to user on start of application if permission is not granted.
      */
+
     private void showPermissionAlert() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -635,51 +731,80 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         skipVerification = true;
     }
 
-    private void showContactDetails(Intent data) {
-        final RegisterUser user = new RegisterUser();
-        try {
-            Uri result = data.getData();
-            String id = result.getLastPathSegment();
-
-            //To get email address of user
-            Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-                    null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?", new String[]{id}, null);
-
-            if (cursor.moveToFirst()) {
-                user.setEmailAddress(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
-            }
-            cursor.close();
-
-            // To get contact name etc of user
-            String whereName = ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ? ";
-            String[] whereNameParams = new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, id};
-            Cursor nameCur = getContentResolver().query(ContactsContract.Data.CONTENT_URI, null, whereName, whereNameParams, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME);
-            while (nameCur.moveToNext()) {
-                user.setFirstName(nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME)));
-                user.setLastName(nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME)));
-
-            }
-            nameCur.close();
-
-            // To get Mobile number of contact
-            Cursor phoneCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[]{id}, null);
-            if (phoneCur.moveToFirst()) {
-                String number = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                number = TextUtils.isEmpty(number) ? getString(R.string.blank) : number.replace(getString(R.string.space), getString(R.string.blank));
-                user.setMobileNumber(number);
-            }
-            phoneCur.close();
-        } catch (Exception e) {
-            AppUtils.throwException(YonaActivity.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-        showLoadingView(false, null);
-        new Handler().postDelayed(new Runnable() {
+    public void chooseImage() {
+        final CharSequence[] items = {getString(R.string.profile_take_photo), getString(R.string.profile_choose_from_library)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(YonaActivity.this);
+        builder.setTitle(getString(R.string.profile_choose_photo));
+        builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
-            public void run() {
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CONTAT_CHOOSED, user);
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals(getString(R.string.profile_take_photo))) {
+                    openCamera();
+                } else if (items[item].equals(getString(R.string.profile_choose_from_library))) {
+                    openCaptureImage();
+                }
             }
-        }, AppConstant.TIMER_DELAY);
+        });
+        builder.show();
+    }
+
+    private void showContactDetails(final Intent data) {
+        final RegisterUser user = new RegisterUser();
+        new AsyncTask<Void, Void, Object>() {
+
+            @Override
+            protected Object doInBackground(Void... params) {
+                try {
+                    Uri result = data.getData();
+                    String id = result.getLastPathSegment();
+
+                    //To get email address of user
+                    Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                            null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?", new String[]{id}, null);
+
+                    if (cursor.moveToFirst()) {
+                        user.setEmailAddress(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)));
+                    }
+                    cursor.close();
+
+                    // To get contact name etc of user
+                    String whereName = ContactsContract.Data.MIMETYPE + " = ? AND " + ContactsContract.CommonDataKinds.StructuredName.CONTACT_ID + " = ? ";
+                    String[] whereNameParams = new String[]{ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE, id};
+                    Cursor nameCur = getContentResolver().query(ContactsContract.Data.CONTENT_URI, null, whereName, whereNameParams, ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME);
+                    while (nameCur.moveToNext()) {
+                        user.setFirstName(nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME)));
+                        user.setLastName(nameCur.getString(nameCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME)));
+
+                    }
+                    nameCur.close();
+
+                    // To get Mobile number of contact
+                    Cursor phoneCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[]{id}, null);
+                    if (phoneCur.moveToFirst()) {
+                        String number = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        number = TextUtils.isEmpty(number) ? getString(R.string.blank) : number.replace(getString(R.string.space), getString(R.string.blank));
+                        user.setMobileNumber(number);
+                    }
+                    phoneCur.close();
+                } catch (Exception e) {
+                    AppUtils.throwException(YonaActivity.class.getSimpleName(), e, Thread.currentThread(), null);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                showLoadingView(false, null);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CONTAT_CHOOSED, user);
+                    }
+                }, AppConstant.TIMER_DELAY);
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -708,5 +833,62 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     public void showKeyboard(EditText editText) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    private boolean openCaptureImage() {
+        setSkipVerification(true);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_REQUEST);
+            return false;
+        } else {
+            pickImage();
+            return true;
+        }
+    }
+
+    private boolean openCamera() {
+        setSkipVerification(true);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_REQUEST);
+            return false;
+        } else {
+            pickCamera();
+            return true;
+        }
+    }
+
+    private void pickCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        skipVerification = true;
+        startActivityForResult(intent, PICK_CAMERA);
+    }
+
+    private void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_IMAGE);
+        skipVerification = true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        // Make sure it's our original READ_CONTACTS request
+        if (requestCode == READ_EXTERNAL_STORAGE_REQUEST) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pickImage();
+            } else {
+                openCaptureImage();
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        } else if (requestCode == CAMERA_REQUEST) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pickCamera();
+            } else {
+                openCamera();
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
     }
 }

@@ -71,7 +71,8 @@ public class ProfileFragment extends BaseProfileFragment {
     private void updateProfile() {
         name.setText(getString(R.string.full_name, YonaApplication.getUser().getFirstName(), YonaApplication.getUser().getLastName()));
         nickName.setText(YonaApplication.getUser().getNickname());
-        profileImageView.setBackground(getImage(false));
+        //TODO if server provide profile picture, pass bitmap of that else pass null
+        profileImageView.setBackground(getImage(null, false));
     }
 
     private void setTitleAndIcon() {

@@ -83,14 +83,9 @@ public class EventChangeManager {
     public static final int EVENT_CLOSE_YONA_ACTIVITY = 14;
 
     /**
-     * The constant EVENT_PROFILE_VIEW_MODE.
+     * The constant EVENT_RECEIVED_PHOTO.
      */
-    public static final int EVENT_PROFILE_VIEW_MODE = 15;
-
-    /**
-     * The constant EVENT_PROFILE_EDIT_MODE.
-     */
-    public static final int EVENT_PROFILE_EDIT_MODE = 16;
+    public static final int EVENT_RECEIVED_PHOTO = 15;
 
     private final Set<EventChangeListener> listeners = new HashSet<>();
 

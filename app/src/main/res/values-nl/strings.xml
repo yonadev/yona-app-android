@@ -117,4 +117,7 @@
     <string name="challengestimesbetween">tussen %1$s en %2$s </string>
     <string name="edit_profile">EDIT ACCOUNT</string>
     <string name="enternamevalidation">You need to enter a name</string>
+    <string name="profile_choose_photo">Choose</string>
+    <string name="profile_take_photo">Take Photo</string>
+    <string name="profile_choose_from_library">Choose from Library</string>
 </resources>
