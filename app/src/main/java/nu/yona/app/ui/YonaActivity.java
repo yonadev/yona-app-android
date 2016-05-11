@@ -70,6 +70,7 @@ import nu.yona.app.ui.message.MessageFragment;
 import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.ui.profile.EditDetailsProfileFragment;
 import nu.yona.app.ui.profile.ProfileFragment;
+import nu.yona.app.ui.settings.PrivacyFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
@@ -527,13 +528,27 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         addToBackstack = true;
                         break;
                     case ACTION_CHALLENGES_GOAL:
+                        if (mContent instanceof ChallengesGoalDetailFragment) {
+                            return;
+                        }
                         mContent = new ChallengesGoalDetailFragment();
                         mContent.setArguments(intent.getExtras());
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;
                     case ACTION_ADD_FRIEND:
+                        if (mContent instanceof AddFriendFragment) {
+                            return;
+                        }
                         mContent = new AddFriendFragment();
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
+                    case ACTION_PRIVACY_POLICY:
+                        if (mContent instanceof PrivacyFragment) {
+                            return;
+                        }
+                        mContent = new PrivacyFragment();
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;
