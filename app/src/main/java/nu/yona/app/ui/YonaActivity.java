@@ -30,6 +30,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import nu.yona.app.R;
@@ -53,6 +55,7 @@ import nu.yona.app.ui.frinends.AddFriendFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
 import nu.yona.app.ui.message.MessageFragment;
 import nu.yona.app.ui.pincode.PinActivity;
+import nu.yona.app.ui.profile.EditDetailsProfileFragment;
 import nu.yona.app.ui.profile.ProfileFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
 import nu.yona.app.utils.AppConstant;
@@ -411,6 +414,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;
+                    case ACTION_EDIT_PROFILE:
+                        if (mContent instanceof EditDetailsProfileFragment) {
+                            return;
+                        }
+                        mContent = new EditDetailsProfileFragment();
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
                     case ACTION_MESSAGE:
                         if (mContent instanceof MessageFragment) {
                             return;
@@ -546,6 +557,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         toolbarTitle.setText(title);
     }
 
+    /**
+     * Hide toolbar icon.
+     */
     public void hideToolbarIcon() {
         rightIcon.setVisibility(View.GONE);
         leftIcon.setVisibility(View.GONE);
@@ -592,6 +606,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         return rightIcon;
     }
 
+    /**
+     * Gets left icon.
+     *
+     * @return the left icon
+     */
     public ImageView getLeftIcon() {
         return leftIcon;
     }
@@ -679,5 +698,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      */
     public void setSkipVerification(boolean skipVerification) {
         this.skipVerification = skipVerification;
+    }
+
+    /**
+     * Show keyboard.
+     *
+     * @param editText the edit text
+     */
+    public void showKeyboard(EditText editText) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
     }
 }

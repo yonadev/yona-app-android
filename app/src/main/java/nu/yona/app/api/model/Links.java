@@ -351,6 +351,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets yona reject.
+     *
      * @return The yonaReject
      */
     public Href getYonaReject() {
@@ -358,6 +360,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets yona reject.
+     *
      * @param yonaReject The yona:reject
      */
     public void setYonaReject(Href yonaReject) {
@@ -365,6 +369,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets yona accept.
+     *
      * @return The yonaAccept
      */
     public Href getYonaAccept() {
@@ -372,6 +378,8 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Sets yona accept.
+     *
      * @param yonaAccept The yona:accept
      */
     public void setYonaAccept(Href yonaAccept) {

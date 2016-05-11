@@ -95,6 +95,9 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
         updateCategoryView();
     }
 
+    /**
+     * Update category view.
+     */
     protected void updateCategoryView() {
         if (isAdded()) {
             if (APIManager.getInstance().getChallengesManager().getListOfCategories().size() == 0) {

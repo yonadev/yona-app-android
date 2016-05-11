@@ -159,6 +159,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Gets yona messages.
+     *
      * @return The yonaMessages
      */
     public List<YonaMessage> getYonaMessages() {
@@ -166,6 +168,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Sets yona messages.
+     *
      * @param yonaMessages The yona:messages
      */
     public void setYonaMessages(List<YonaMessage> yonaMessages) {

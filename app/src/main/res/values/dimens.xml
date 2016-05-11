@@ -7,11 +7,14 @@
   -->
 <resources>
     <dimen name="one">1dp</dimen>
+    <dimen name="three">3dp</dimen>
     <dimen name="four">4dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="twelve">12dp</dimen>
     <dimen name="thirteen">13dp</dimen>
+    <dimen name="fifteen">15dp</dimen>
     <dimen name="twenty">20dp</dimen>
+    <dimen name="twenty_three">23dp</dimen>
     <dimen name="twenty_five">25dp</dimen>
     <dimen name="thirty">30dp</dimen>
     <dimen name="thirty_two">32dp</dimen>
@@ -19,6 +22,7 @@
     <dimen name="sixty_four">64dp</dimen>
     <dimen name="fifty">50dp</dimen>
     <dimen name="seventy">70dp</dimen>
+    <dimen name="eighty">80dp</dimen>
     <dimen name="tabIndicatorHeight">4dp</dimen>
     <dimen name="profile_layout">200dp</dimen>
     <dimen name="signup_profile_btn_height">60dp</dimen>
@@ -90,9 +94,12 @@
     <dimen name="btn_challenges_opslaan_margin">22dp</dimen>
     <dimen name="btn_challenges_opslaan_margin_top">32dp</dimen>
     <dimen name="btn_challenges_opslaan_paddding">15dp</dimen>
-    <dimen name="add_friend_text_item_height">87dp</dimen>
+    <dimen name="text_item_height">87dp</dimen>
     <dimen name="add_friend_text_sub_item_height">68dp</dimen>
     <dimen name="add_friend_bottom_margin">50dp</dimen>
     <dimen name="dashboard_profile_icon">32dp</dimen>
     <dimen name="dashboard_profile_icon_padding">16dp</dimen>
+    <dimen name="edit_profile_detail_top_layout_height">234dp</dimen>
+    <dimen name="profile_image_size">125dp</dimen>
+    <dimen name="capture_image_size">48dp</dimen>
 </resources>

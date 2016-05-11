@@ -40,6 +40,8 @@ public class YonaMessage {
     private String Type;
 
     /**
+     * Gets creation time.
+     *
      * @return The creationTime
      */
     public String getCreationTime() {
@@ -47,6 +49,8 @@ public class YonaMessage {
     }
 
     /**
+     * Sets creation time.
+     *
      * @param creationTime The creationTime
      */
     public void setCreationTime(String creationTime) {
@@ -54,6 +58,8 @@ public class YonaMessage {
     }
 
     /**
+     * Gets nickname.
+     *
      * @return The nickname
      */
     public String getNickname() {
@@ -61,6 +67,8 @@ public class YonaMessage {
     }
 
     /**
+     * Sets nickname.
+     *
      * @param nickname The nickname
      */
     public void setNickname(String nickname) {
@@ -68,6 +76,8 @@ public class YonaMessage {
     }
 
     /**
+     * Gets message.
+     *
      * @return The message
      */
     public String getMessage() {
@@ -75,6 +85,8 @@ public class YonaMessage {
     }
 
     /**
+     * Sets message.
+     *
      * @param message The message
      */
     public void setMessage(String message) {
@@ -82,6 +94,8 @@ public class YonaMessage {
     }
 
     /**
+     * Gets status.
+     *
      * @return The status
      */
     public String getStatus() {
@@ -89,6 +103,8 @@ public class YonaMessage {
     }
 
     /**
+     * Sets status.
+     *
      * @param status The status
      */
     public void setStatus(String status) {
@@ -96,6 +112,8 @@ public class YonaMessage {
     }
 
     /**
+     * Gets links.
+     *
      * @return The Links
      */
     public nu.yona.app.api.model.Links getLinks() {
@@ -103,6 +121,8 @@ public class YonaMessage {
     }
 
     /**
+     * Sets links.
+     *
      * @param Links The _links
      */
     public void setLinks(nu.yona.app.api.model.Links Links) {
@@ -110,6 +130,8 @@ public class YonaMessage {
     }
 
     /**
+     * Gets embedded.
+     *
      * @return The Embedded
      */
     public Embedded getEmbedded() {
@@ -117,6 +139,8 @@ public class YonaMessage {
     }
 
     /**
+     * Sets embedded.
+     *
      * @param Embedded The _embedded
      */
     public void setEmbedded(Embedded Embedded) {
@@ -124,6 +148,8 @@ public class YonaMessage {
     }
 
     /**
+     * Gets type.
+     *
      * @return The Type
      */
     public String getType() {
@@ -131,6 +157,8 @@ public class YonaMessage {
     }
 
     /**
+     * Sets type.
+     *
      * @param Type The @type
      */
     public void setType(String Type) {

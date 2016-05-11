@@ -33,6 +33,7 @@
     <string name="connectionnotavailable">OOPS! Geen internet verbinding beschikbaar, maak opnieuw verbinding en probeer opnieuw.</string>
     <string name="somethingwentwrong">Something went wrong, please try again.</string>
     <string name="firstname">VOORNAAM</string>
+    <string name="name">NAAM</string>
     <string name="lastname">ACHTERNAAM</string>
     <string name="nickname">NICKNAME</string>
     <string name="privacypolicy">Yona respecteert en beschermt je privacy. Alle gevoelige informatie is beveiligd met encryptie.</string>
@@ -114,4 +115,6 @@
     <string name="add_timezone">Please add atlest one time to add in timezone.</string>
     <string name="challengesdetail">%1$s VASTLEGGEN</string>
     <string name="challengestimesbetween">tussen %1$s en %2$s </string>
+    <string name="edit_profile">EDIT ACCOUNT</string>
+    <string name="enternamevalidation">You need to enter a name</string>
 </resources>

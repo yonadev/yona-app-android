@@ -15,17 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
-import nu.yona.app.ui.BaseFragment;
 
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class ProfileDetailsFragment extends BaseFragment {
+public class BadgesProfileFragment extends BaseProfileFragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.profile_details_fragment, null);
+        return inflater.inflate(R.layout.profile_badges_fragment, null);
 
     }
 }

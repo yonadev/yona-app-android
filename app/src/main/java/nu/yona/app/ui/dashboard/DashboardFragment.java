@@ -86,7 +86,9 @@ public class DashboardFragment extends BaseFragment {
             public void run() {
                 if (YonaApplication.getUser() != null && !TextUtils.isEmpty(YonaApplication.getUser().getFirstName())) {
                     activity.getLeftIcon().setVisibility(View.VISIBLE);
-                    activity.getLeftIcon().setImageDrawable(TextDrawable.builder().buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase(),
+                    activity.getLeftIcon().setImageDrawable(TextDrawable.builder()
+                            .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
+                            .buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase(),
                             activity.getResources().getColor(R.color.mid_blue, activity.getTheme())));
                 }
                 activity.updateTitle(R.string.dashboard);
