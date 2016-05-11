@@ -29,6 +29,7 @@ import nu.yona.app.api.manager.impl.DeviceManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.LaunchActivity;
@@ -61,7 +62,7 @@ public class SettingsFragment extends BaseFragment {
                 if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.changepin))) {
                     //Load change pin screen
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.privacy))) {
-                    //Load privacy screen
+                    showPrivacy();
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.adddevice))) {
                     activity.showLoadingView(true, null);
                     addDevice(AppUtils.getRandomString(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT));
@@ -84,6 +85,11 @@ public class SettingsFragment extends BaseFragment {
         }
 
         return view;
+    }
+
+    private void showPrivacy() {
+        Intent friendIntent = new Intent(IntentEnum.ACTION_PRIVACY_POLICY.getActionString());
+        activity.replaceFragment(friendIntent);
     }
 
     private void unsubscribeUser() {
