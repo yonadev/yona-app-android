@@ -24,14 +24,15 @@ import nu.yona.app.customview.YonaFontEditTextView;
  */
 public class DetailsProfileFragment extends BaseProfileFragment {
 
-    private YonaFontEditTextView name, nickName, mobileNumber;
+    private YonaFontEditTextView firstName, lastName, nickName, mobileNumber;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.profile_details_fragment, null);
 
-        name = (YonaFontEditTextView) view.findViewById(R.id.name);
+        firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
+        lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
         mobileNumber = (YonaFontEditTextView) view.findViewById(R.id.mobile_number);
 
@@ -45,20 +46,24 @@ public class DetailsProfileFragment extends BaseProfileFragment {
     }
 
     private void profileViewMode() {
-        name.setClickable(false);
-        name.setKeyListener(null);
-        name.setText(getString(R.string.full_name, YonaApplication.getUser().getFirstName(), YonaApplication.getUser().getLastName()));
+        firstName.setClickable(false);
+        firstName.setKeyListener(null);
+        firstName.setText(TextUtils.isEmpty(YonaApplication.getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getUser().getFirstName());
+
+        lastName.setClickable(false);
+        lastName.setKeyListener(null);
+        lastName.setText(TextUtils.isEmpty(YonaApplication.getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getUser().getLastName());
 
         nickName.setClickable(false);
         nickName.setKeyListener(null);
-        nickName.setText(YonaApplication.getUser().getNickname());
+        nickName.setText(TextUtils.isEmpty(YonaApplication.getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getUser().getNickname());
 
         int NUMBER_LENGTH = 9;
 
         mobileNumber.setClickable(false);
         mobileNumber.setKeyListener(null);
         String number = YonaApplication.getUser().getMobileNumber();
-        if (!TextUtils.isEmpty(number)) {
+        if (!TextUtils.isEmpty(number) && number.length() > NUMBER_LENGTH) {
             number = number.substring(number.length() - NUMBER_LENGTH);
             number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
             mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
