@@ -11,7 +11,6 @@
 package nu.yona.app.ui.profile;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -47,14 +46,14 @@ public class BaseProfileFragment extends BaseFragment {
     /**
      * Gets image.
      *
+     * @param bitmap    the bitmap
      * @param withAlpha the with alpha
      * @return the image
      */
-    protected Drawable getImage(boolean withAlpha) {
-        if (false) {// TODO: 10/05/16 When server provides user profile image, we need to check and enable if part on base of that.
-            Bitmap src = BitmapFactory.decodeResource(getResources(), R.mipmap.profile);
-            RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(getResources(), src);
-            drawable.setCornerRadius(Math.max(src.getWidth(), src.getHeight()));
+    protected Drawable getImage(Bitmap bitmap, boolean withAlpha) {
+        if (bitmap != null) {// TODO: 10/05/16 When server provides user profile image, we need to check and enable if part on base of that.
+            RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+            drawable.setCornerRadius(Math.max(bitmap.getWidth(), bitmap.getHeight()));
             drawable.setAlpha(ALPHA);
             return drawable;
         } else {
