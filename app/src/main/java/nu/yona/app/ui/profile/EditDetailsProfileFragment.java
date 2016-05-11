@@ -40,8 +40,8 @@ import nu.yona.app.utils.AppConstant;
  * Created by kinnarvasa on 10/05/16.
  */
 public class EditDetailsProfileFragment extends BaseProfileFragment implements EventChangeListener {
-    private YonaFontEditTextView name, nickName, mobileNumber;
-    private TextInputLayout nameLayout, nickNameLayout, mobileNumberLayout;
+    private YonaFontEditTextView firstName, lastName, nickName, mobileNumber;
+    private TextInputLayout firstnameLayout, lastNameLayout, nickNameLayout, mobileNumberLayout;
     private ImageView profileImage, updateProfileImage;
     private View.OnClickListener listener;
     private TextWatcher textWatcher;
@@ -89,12 +89,16 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
     private void inflateView(View view) {
 
-        nameLayout = (TextInputLayout) view.findViewById(R.id.name_layout);
+        firstnameLayout = (TextInputLayout) view.findViewById(R.id.first_name_layout);
+        lastNameLayout = (TextInputLayout) view.findViewById(R.id.last_name_layout);
         nickNameLayout = (TextInputLayout) view.findViewById(R.id.nick_name_layout);
         mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
 
-        name = (YonaFontEditTextView) view.findViewById(R.id.name);
-        name.addTextChangedListener(textWatcher);
+        firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
+        firstName.addTextChangedListener(textWatcher);
+
+        lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
+        lastName.addTextChangedListener(textWatcher);
 
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
         nickName.addTextChangedListener(textWatcher);
@@ -158,9 +162,8 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     private void profileViewMode() {
         profileImage.setBackground(getImage(null, true));
 
-        name.setText(getString(R.string.full_name,
-                TextUtils.isEmpty(YonaApplication.getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getUser().getFirstName(),
-                TextUtils.isEmpty(YonaApplication.getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getUser().getLastName()));
+        firstName.setText(TextUtils.isEmpty(YonaApplication.getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getUser().getFirstName());
+        lastName.setText(TextUtils.isEmpty(YonaApplication.getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getUser().getLastName());
         nickName.setText(TextUtils.isEmpty(YonaApplication.getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getUser().getNickname());
         int NUMBER_LENGTH = 9;
 
@@ -170,17 +173,23 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
             number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
             mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
         }
-        name.requestFocus();
+        firstName.requestFocus();
     }
 
     private boolean validateFields() {
         String number = getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length());
         String phonenumber = number.replace(" ", "");
-        if (!APIManager.getInstance().getAuthenticateManager().validateText(name.getText().toString())) {
-            nameLayout.setErrorEnabled(true);
-            nameLayout.setError(getString(R.string.enternamevalidation));
-            activity.showKeyboard(name);
-            name.requestFocus();
+        if (!APIManager.getInstance().getAuthenticateManager().validateText(firstName.getText().toString())) {
+            firstnameLayout.setErrorEnabled(true);
+            firstnameLayout.setError(getString(R.string.enternamevalidation));
+            activity.showKeyboard(firstName);
+            firstName.requestFocus();
+            return false;
+        } else if (!APIManager.getInstance().getAuthenticateManager().validateText(lastName.getText().toString())) {
+            lastNameLayout.setErrorEnabled(true);
+            lastNameLayout.setError(getString(R.string.enternamevalidation));
+            activity.showKeyboard(lastName);
+            lastName.requestFocus();
             return false;
         } else if (!APIManager.getInstance().getAuthenticateManager().validateText(nickName.getText().toString())) {
             nickNameLayout.setErrorEnabled(true);
@@ -199,7 +208,8 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     }
 
     private void hideErrorMessages() {
-        nameLayout.setError(null);
+        firstnameLayout.setError(null);
+        lastNameLayout.setError(null);
         nickNameLayout.setError(null);
         mobileNumberLayout.setError(null);
     }
