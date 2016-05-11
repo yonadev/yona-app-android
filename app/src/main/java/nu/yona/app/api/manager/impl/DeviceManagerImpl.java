@@ -102,20 +102,20 @@ public class DeviceManagerImpl implements DeviceManager {
                             @Override
                             public void onDataLoad(Object result) {
                                 YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, true).commit();
-                                listener.onDataLoad(result);
+                                if (listener != null) {
+                                    listener.onDataLoad(result);
+                                }
                             }
 
                             @Override
                             public void onError(Object errorMessage) {
-                                if (errorMessage instanceof ErrorMessage) {
-                                    listener.onError(errorMessage);
-                                } else {
-                                    listener.onError(new ErrorMessage(errorMessage.toString()));
-                                }
+                               onErrorHandler(errorMessage, listener);
                             }
                         });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                if (listener != null) {
+                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                }
             }
         } catch (Exception e) {
             AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -133,20 +133,20 @@ public class DeviceManagerImpl implements DeviceManager {
                     @Override
                     public void onDataLoad(Object result) {
                         YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, false).commit();
-                        listener.onDataLoad(result);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
                     }
 
                     @Override
                     public void onError(Object errorMessage) {
-                        if (errorMessage instanceof ErrorMessage) {
-                            listener.onError(errorMessage);
-                        } else {
-                            listener.onError(new ErrorMessage(errorMessage.toString()));
-                        }
+                        onErrorHandler(errorMessage, listener);
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                if (listener != null) {
+                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                }
             }
         } catch (Exception e) {
             AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -175,11 +175,7 @@ public class DeviceManagerImpl implements DeviceManager {
 
                         @Override
                         public void onError(Object errorMessage) {
-                            if (errorMessage instanceof ErrorMessage) {
-                                listener.onError(errorMessage);
-                            } else {
-                                listener.onError(new ErrorMessage(errorMessage.toString()));
-                            }
+                            onErrorHandler(errorMessage, listener);
                         }
                     });
         } catch (Exception e) {
@@ -193,25 +189,35 @@ public class DeviceManagerImpl implements DeviceManager {
                 new AuthenticateManagerImpl(mContext).getUser(device.getLinks().getYonaUser().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
                         YonaApplication.updateUser();
                     }
 
                     @Override
                     public void onError(Object errorMessage) {
-                        if (errorMessage instanceof ErrorMessage) {
-                            listener.onError(errorMessage);
-                        } else {
-                            listener.onError(new ErrorMessage(errorMessage.toString()));
-                        }
+                        onErrorHandler(errorMessage, listener);
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                if (listener != null) {
+                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                }
             }
         } catch (Exception e) {
             AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
 
+    }
+
+    private void onErrorHandler(Object errorMessage, DataLoadListener listener) {
+        if (listener != null) {
+            if (errorMessage instanceof ErrorMessage) {
+                listener.onError(errorMessage);
+            } else {
+                listener.onError(new ErrorMessage(errorMessage.toString()));
+            }
+        }
     }
 }

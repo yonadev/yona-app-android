@@ -58,7 +58,9 @@ public class GoalManagerImpl implements GoalManager {
                 goalNetwork.getUserGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
                     }
 
                     @Override
@@ -85,7 +87,9 @@ public class GoalManagerImpl implements GoalManager {
                 goalNetwork.putUserBudgetGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
                     }
 
                     @Override
@@ -112,7 +116,9 @@ public class GoalManagerImpl implements GoalManager {
                 goalNetwork.putUserTimeZoneGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
                     }
 
                     @Override
@@ -139,7 +145,9 @@ public class GoalManagerImpl implements GoalManager {
                 goalNetwork.deleteGoal(yonaGoal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
                     }
 
                     @Override
@@ -162,7 +170,9 @@ public class GoalManagerImpl implements GoalManager {
                 goalNetwork.updateUserBudgetGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
                     }
 
                     @Override
@@ -185,7 +195,9 @@ public class GoalManagerImpl implements GoalManager {
                 goalNetwork.updateUserTimeZoneGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
                     }
 
                     @Override

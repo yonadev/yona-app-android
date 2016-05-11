@@ -145,7 +145,9 @@ public class AuthenticateNetworkImpl extends BaseImpl {
                 @Override
                 public void onResponse(Call<PinResetDelay> call, Response<PinResetDelay> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                        listener.onDataLoad(response.body());
+                        if (listener != null) {
+                            listener.onDataLoad(response.body());
+                        }
                     } else {
                         onError(response, listener);
                     }
@@ -205,7 +207,9 @@ public class AuthenticateNetworkImpl extends BaseImpl {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
+                    if (listener != null) {
+                        listener.onDataLoad(response.body());
+                    }
                 } else {
                     onError(response, listener);
                 }

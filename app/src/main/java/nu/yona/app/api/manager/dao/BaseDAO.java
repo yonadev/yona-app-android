@@ -117,7 +117,9 @@ class BaseDAO {
                     }
                     db.setTransactionSuccessful();
                     db.endTransaction();
-                    listener.onDataLoad(null);
+                    if (listener != null) {
+                        listener.onDataLoad(null);
+                    }
                     return null;
                 }
             }.executeAsync();

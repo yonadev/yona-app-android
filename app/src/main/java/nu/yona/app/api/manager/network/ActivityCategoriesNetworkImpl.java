@@ -32,7 +32,9 @@ public class ActivityCategoriesNetworkImpl extends BaseImpl {
             @Override
             public void onResponse(Call<ActivityCategories> call, Response<ActivityCategories> response) {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
+                    if (listener != null) {
+                        listener.onDataLoad(response.body());
+                    }
                 } else {
                     onError(response, listener);
                 }

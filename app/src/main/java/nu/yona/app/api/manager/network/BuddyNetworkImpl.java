@@ -38,7 +38,9 @@ public class BuddyNetworkImpl extends BaseImpl {
                 @Override
                 public void onResponse(Call<YonaBuddy> call, Response<YonaBuddy> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                        listener.onDataLoad(response.body());
+                        if (listener != null) {
+                            listener.onDataLoad(response.body());
+                        }
                     } else {
                         onError(response, listener);
                     }
@@ -67,7 +69,9 @@ public class BuddyNetworkImpl extends BaseImpl {
                 @Override
                 public void onResponse(Call<Buddy> call, Response<Buddy> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                        listener.onDataLoad(response.body());
+                        if (listener != null) {
+                            listener.onDataLoad(response.body());
+                        }
                     } else {
                         onError(response, listener);
                     }

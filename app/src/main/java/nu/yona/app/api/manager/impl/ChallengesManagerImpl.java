@@ -264,7 +264,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
             @Override
             public void onError(Object errorMessage) {
-                listener.onError(errorMessage);
+                if (listener != null) {
+                    listener.onError(errorMessage);
+                }
             }
         });
     }
@@ -278,7 +280,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
             @Override
             public void onError(Object errorMessage) {
-                listener.onError(errorMessage);
+                if (listener != null) {
+                    listener.onError(errorMessage);
+                }
             }
         });
     }
@@ -337,7 +341,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
             @Override
             public void onError(Object errorMessage) {
-                listener.onError(errorMessage);
+                if (listener != null) {
+                    listener.onError(errorMessage);
+                }
             }
         });
     }
@@ -352,7 +358,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
             @Override
             public void onError(Object errorMessage) {
-                listener.onError(errorMessage);
+                if (listener != null) {
+                    listener.onError(errorMessage);
+                }
             }
         });
     }
@@ -367,7 +375,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
             @Override
             public void onError(Object errorMessage) {
-                listener.onError(errorMessage);
+                if (listener != null) {
+                    listener.onError(errorMessage);
+                }
             }
         });
     }
@@ -382,7 +392,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
             @Override
             public void onError(Object errorMessage) {
-                listener.onError(errorMessage);
+                if (listener != null) {
+                    listener.onError(errorMessage);
+                }
             }
         });
     }
@@ -439,7 +451,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
             @Override
             public void onError(Object errorMessage) {
-                listener.onError(errorMessage);
+                if (listener != null) {
+                    listener.onError(errorMessage);
+                }
             }
         });
     }
@@ -474,7 +488,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
             @Override
             public void onError(Object errorMessage) {
-                listener.onError(errorMessage);
+                if (listener != null) {
+                    listener.onError(errorMessage);
+                }
             }
         });
     }
@@ -485,13 +501,17 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().saveGoals(goals, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                listener.onDataLoad(result);
+                if (listener != null) {
+                    listener.onDataLoad(result);
+                }
                 filterCategoriesGoal(APIManager.getInstance().getGoalManager().getUserGoalFromDb());
             }
 
             @Override
             public void onError(Object errorMessage) {
-                listener.onError(errorMessage);
+                if (listener != null) {
+                    listener.onError(errorMessage);
+                }
             }
         });
     }

@@ -86,7 +86,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
                 @Override
                 public void onError(Object errorMessage) {
-                    listener.onError(errorMessage);
+                    onErrorHandler(errorMessage, listener);
                 }
             });
         } catch (Exception e) {
@@ -112,13 +112,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
             @Override
             public void onError(Object errorMessage) {
-                if (listener != null) {
-                    if (errorMessage instanceof ErrorMessage) {
-                        listener.onError(errorMessage);
-                    } else {
-                        listener.onError(new ErrorMessage(errorMessage.toString()));
-                    }
-                }
+                onErrorHandler(errorMessage, listener);
             }
         });
     }
@@ -146,7 +140,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
                     @Override
                     public void onError(Object errorMessage) {
-                        listener.onError(errorMessage);
+                        onErrorHandler(errorMessage, listener);
                     }
                 });
             }
@@ -177,11 +171,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
                                     @Override
                                     public void onError(Object errorMessage) {
-                                        if (errorMessage instanceof ErrorMessage) {
-                                            listener.onError(errorMessage);
-                                        } else {
-                                            listener.onError(new ErrorMessage(errorMessage.toString()));
-                                        }
+                                        onErrorHandler(errorMessage, listener);
                                     }
                                 });
                     } else {
@@ -194,24 +184,26 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                             public void onDataLoad(Object result) {
                                 YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, false).commit();
                                 authNetwork.doClearPin(authenticateDao.getUser().getLinks().getClearPinReset().getHref());
-                                listener.onDataLoad(result);
+                                if (listener != null) {
+                                    listener.onDataLoad(result);
+                                }
                             }
 
                             @Override
                             public void onError(Object errorMessage) {
-                                if (errorMessage instanceof ErrorMessage) {
-                                    listener.onError(errorMessage);
-                                } else {
-                                    listener.onError(new ErrorMessage(errorMessage.toString()));
-                                }
+                                onErrorHandler(errorMessage, listener);
                             }
                         });
                     } else {
-                        listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                        if (listener != null) {
+                            listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                        }
                     }
                 }
             } else {
-                listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.invalidotp)));
+                if (listener != null) {
+                    listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.invalidotp)));
+                }
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -232,15 +224,13 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
                     @Override
                     public void onError(Object errorMessage) {
-                        if (errorMessage instanceof ErrorMessage) {
-                            listener.onError(errorMessage);
-                        } else {
-                            listener.onError(new ErrorMessage(errorMessage.toString()));
-                        }
+                        onErrorHandler(errorMessage, listener);
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                if (listener != null) {
+                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                }
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -253,16 +243,22 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 getUser(getUser().getLinks().getSelf().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(object);
+                        if (listener != null) {
+                            listener.onDataLoad(object);
+                        }
                     }
 
                     @Override
                     public void onError(Object errorMessage) {
-                        listener.onDataLoad(object); // because we want to carry forward object to UI part, we don't worry here about user update.
+                        if (listener != null) {
+                            listener.onDataLoad(object); // because we want to carry forward object to UI part, we don't worry here about user update.
+                        }
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                if (listener != null) {
+                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                }
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -285,13 +281,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
                     @Override
                     public void onError(Object errorMessage) {
-                        if (listener != null) {
-                            if (errorMessage instanceof ErrorMessage) {
-                                listener.onError(errorMessage);
-                            } else {
-                                listener.onError(new ErrorMessage(errorMessage.toString()));
-                            }
-                        }
+                        onErrorHandler(errorMessage, listener);
                     }
                 });
             } else {
@@ -314,20 +304,20 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 authNetwork.resendOTP(authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        if (listener != null) {
+                            listener.onDataLoad(result);
+                        }
                     }
 
                     @Override
                     public void onError(Object errorMessage) {
-                        if (errorMessage instanceof ErrorMessage) {
-                            listener.onError(errorMessage);
-                        } else {
-                            listener.onError(new ErrorMessage(errorMessage.toString()));
-                        }
+                        onErrorHandler(errorMessage, listener);
                     }
                 });
             } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                if (listener != null) {
+                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                }
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -340,16 +330,14 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
             authNetwork.requestUserOverride(mobileNumber, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    listener.onDataLoad(result);
+                    if (listener != null) {
+                        listener.onDataLoad(result);
+                    }
                 }
 
                 @Override
                 public void onError(Object errorMessage) {
-                    if (errorMessage instanceof ErrorMessage) {
-                        listener.onError(errorMessage);
-                    } else {
-                        listener.onError(new ErrorMessage(errorMessage.toString()));
-                    }
+                    onErrorHandler(errorMessage, listener);
                 }
             });
         } catch (Exception e) {
@@ -373,16 +361,14 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 editor.clear();
                 editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
                 editor.commit();
-                listener.onDataLoad(result);
+                if (listener != null) {
+                    listener.onDataLoad(result);
+                }
             }
 
             @Override
             public void onError(Object errorMessage) {
-                if (errorMessage instanceof ErrorMessage) {
-                    listener.onError(errorMessage);
-                } else {
-                    listener.onError(new ErrorMessage(errorMessage.toString()));
-                }
+                onErrorHandler(errorMessage, listener);
             }
         });
     }
@@ -397,5 +383,15 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         yonaPref.putString(PreferenceConstant.YONA_PASSCODE, code); // remove user's passcode from device.
         yonaPref.putBoolean(PreferenceConstant.STEP_PASSCODE, true);
         yonaPref.commit();
+    }
+
+    private void onErrorHandler(Object errorMessage, DataLoadListener listener) {
+        if (listener != null) {
+            if (errorMessage instanceof ErrorMessage) {
+                listener.onError(errorMessage);
+            } else {
+                listener.onError(new ErrorMessage(errorMessage.toString()));
+            }
+        }
     }
 }
