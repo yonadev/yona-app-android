@@ -134,6 +134,7 @@ public class SettingsFragment extends BaseFragment {
 
             @Override
             public void onError(Object errorMessage) {
+                activity.showLoadingView(false, null);
                 CustomAlertDialog.show(activity, ((ErrorMessage) errorMessage).getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
