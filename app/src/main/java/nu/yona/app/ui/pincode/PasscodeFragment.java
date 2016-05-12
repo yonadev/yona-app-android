@@ -75,11 +75,14 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.pincode_layout, container, false);
 
-        YonaApplication.getEventChangeManager().registerListener(this);
-
         if (getArguments() != null) {
             screen_type = getArguments().getString(AppConstant.SCREEN_TYPE);
+            if (getArguments().get(AppConstant.COLOR_CODE) != null) {
+                view.setBackgroundColor(getArguments().getInt(AppConstant.COLOR_CODE));
+            }
         }
+
+        YonaApplication.getEventChangeManager().registerListener(this);
 
         passcode_title = (YonaFontTextView) view.findViewById(R.id.passcode_title);
         passcode_description = (YonaFontTextView) view.findViewById(R.id.passcode_description);
@@ -130,6 +133,16 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             } else if (screen_type.equalsIgnoreCase(AppConstant.OTP)) {
                 populateOTPView();
                 visibleView();
+            } else if (screen_type.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
+                populatePinResetVerificationView();
+                visibleLoginView();
+                visibleView();
+            } else if (screen_type.equalsIgnoreCase(AppConstant.PIN_RESET_FIRST_STEP)) {
+                populatePinResetFirstStep();
+                visibleView();
+            } else if (screen_type.equalsIgnoreCase(AppConstant.PIN_RESET_SECOND_STEP)) {
+                populatePinResetSecondStep();
+                visibleView();
             }
         }
     }
@@ -145,9 +158,36 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode_title.setText(getString(R.string.accountlogin));
         passcode_description.setText(getString(R.string.accountloginsecuritymessage));
         ((OTPActivity) getActivity()).updateTitle(getString(R.string.join));
-        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress));
+        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_sixty));
         passcode_reset.setText(getString(R.string.sendotpagain));
         passcode_reset.setVisibility(View.VISIBLE);
+    }
+
+    private void populatePinResetVerificationView() {
+        accont_image.setImageResource(R.drawable.icn_secure);
+        passcode_title.setText(getString(R.string.settings_current_pin));
+        passcode_description.setText(getString(R.string.settings_current_pin_message));
+        ((PinActivity) getActivity()).updateTitle(getString(R.string.changepin));
+        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_thirty));
+        passcode_reset.setVisibility(View.GONE);
+    }
+
+    private void populatePinResetFirstStep() {
+        accont_image.setImageResource(R.drawable.icn_account_created);
+        passcode_title.setText(getString(R.string.settings_new_pincode));
+        passcode_description.setText(getString(R.string.settings_new_pin_message));
+        ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.changepin));
+        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_sixty));
+        passcode_reset.setVisibility(View.GONE);
+    }
+
+    private void populatePinResetSecondStep() {
+        accont_image.setImageResource(R.drawable.icn_account_created);
+        passcode_title.setText(getString(R.string.settings_confirm_new_pin));
+        passcode_description.setText(getString(R.string.settings_confirm_new_pin_message));
+        ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.changepin));
+        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_complete));
+        passcode_reset.setVisibility(View.GONE);
     }
 
     private void visibleView() {
@@ -234,6 +274,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             case AppConstant.OTP:
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_OTP_RESEND, null);
                 break;
+            case AppConstant.PIN_RESET_VERIFICATION:
             case AppConstant.LOGGED_IN:
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_RESET, null);
                 break;

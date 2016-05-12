@@ -106,6 +106,26 @@ public interface AppConstant {
      * The constant FROM_LOGIN.
      */
     String FROM_LOGIN = "fromLogin";
+
+    /**
+     * The constant FROM_SETTINGS.
+     */
+    String FROM_SETTINGS = "fromSettings";
+
+    /**
+     * The constant PIN_RESET_VERIFICATION.
+     */
+    String PIN_RESET_VERIFICATION = "pinResetVerfication";
+
+    /**
+     * The constant PIN_RESET_FIRST_STEP.
+     */
+    String PIN_RESET_FIRST_STEP = "pinResetFirstStep";
+
+    /**
+     * The constant PIN_RESET_SECOND_STEP.
+     */
+    String PIN_RESET_SECOND_STEP = "pinResetSecondStep";
     /**
      * The constant GOAL_OBJECT.
      */
@@ -114,6 +134,16 @@ public interface AppConstant {
      * The constant NEW_GOAL_TYPE.
      */
     String NEW_GOAL_TYPE = "newGoalType";
+
+    /**
+     * The constant COLOR_CODE.
+     */
+    String COLOR_CODE = "colorCode";
+
+    /**
+     * The constant TITLE_BACKGROUND_RESOURCE.
+     */
+    String TITLE_BACKGROUND_RESOURCE = "titleBackgroundResource";
     /**
      * The constant USER.
      */

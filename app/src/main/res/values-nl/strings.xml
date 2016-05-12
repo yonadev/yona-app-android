@@ -24,7 +24,7 @@
     <string name="challengescredit">TEGOED</string>
     <string name="challengeszone">TIJDZONE</string>
     <string name="challengesnogo">NO GO</string>
-    <string name="changepin">Wijzig Pin</string>
+    <string name="changepin">Wijzig pincode</string>
     <string name="privacy">Privacy</string>
     <string name="join">DOE MEE</string>
     <string name="login">INLOGGEN</string>
@@ -120,4 +120,10 @@
     <string name="profile_choose_photo">Choose</string>
     <string name="profile_take_photo">Take Photo</string>
     <string name="profile_choose_from_library">Choose from Library</string>
+    <string name="settings_current_pin">Huidige pincode</string>
+    <string name="settings_current_pin_message">Om je pincode te wijzigen vragenwe je eerst je oude pincode in te voeren.</string>
+    <string name="settings_new_pincode">Nieuwe pincode</string>
+    <string name="settings_new_pin_message">Vul nu je nieuwe pincode in.</string>
+    <string name="settings_confirm_new_pin">Bevestig pincode</string>
+    <string name="settings_confirm_new_pin_message">Vul je pincode nogmaals in ter bevestiging.</string>
 </resources>

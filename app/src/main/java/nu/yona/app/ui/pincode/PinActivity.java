@@ -12,13 +12,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
-import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -36,24 +39,45 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class PinActivity extends BaseActivity implements EventChangeListener {
 
-    private PasscodeManagerImpl passcodeManagerImpl;
     private TextView txtTitle;
     private PasscodeFragment passcodeFragment;
+    private int colorCode;
+    private Toolbar mToolBar;
+    private String screenType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blank_container_layout);
 
-        passcodeManagerImpl = new PasscodeManagerImpl();
-
         YonaApplication.getEventChangeManager().registerListener(this);
 
+        mToolBar = (Toolbar) findViewById(R.id.toolbar_layout);
         txtTitle = (TextView) findViewById(R.id.toolbar_title);
+
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
+                colorCode = getIntent().getExtras().getInt(AppConstant.COLOR_CODE);
+            } else {
+                colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
+            }
+            if (getIntent().getExtras().get(AppConstant.TITLE_BACKGROUND_RESOURCE) != null) {
+                mToolBar.setBackgroundResource(getIntent().getExtras().getInt(AppConstant.TITLE_BACKGROUND_RESOURCE));
+            } else {
+                mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
+            }
+            if (!TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.SCREEN_TYPE))) {
+                screenType = getIntent().getExtras().getString(AppConstant.SCREEN_TYPE);
+            }
+        } else {
+            colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
+            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
+        }
 
         passcodeFragment = new PasscodeFragment();
         Bundle loginBundle = new Bundle();
-        loginBundle.putString(AppConstant.SCREEN_TYPE, AppConstant.LOGGED_IN);
+        loginBundle.putInt(AppConstant.COLOR_CODE, colorCode);
+        loginBundle.putString(AppConstant.SCREEN_TYPE, screenType);
         passcodeFragment.setArguments(loginBundle);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
@@ -61,7 +85,12 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         fragmentTransaction.commit();
     }
 
-    private void updateTitle(String title) {
+    /**
+     * Update title.
+     *
+     * @param title the title
+     */
+    public void updateTitle(String title) {
         txtTitle.setText(title);
     }
 
@@ -75,7 +104,11 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
     @Override
     protected void onResume() {
         super.onResume();
-        updateTitle(getString(R.string.login));
+        if (!TextUtils.isEmpty(screenType) && screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
+            updateTitle(getString(R.string.pincode));
+        } else {
+            updateTitle(getString(R.string.login));
+        }
         if (YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null) {
             updateBlockMsg();
         }
@@ -92,9 +125,9 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         switch (eventType) {
             case EventChangeManager.EVENT_PASSCODE_STEP_TWO:
                 String passcode = (String) object;
-                if (passcodeManagerImpl.validatePasscode(passcode)) {
+                if (APIManager.getInstance().getPasscodeManager().validatePasscode(passcode)) {
                     showChallengesScreen();
-                } else if (passcodeManagerImpl.isWrongCounterReached()) {
+                } else if (APIManager.getInstance().getPasscodeManager().isWrongCounterReached()) {
                     YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
                     updateBlockMsg();
                 } else {
@@ -112,6 +145,9 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
     private void showChallengesScreen() {
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        if (!TextUtils.isEmpty(screenType) && screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
+            updatePin();
+        }
         finish();
     }
 
@@ -155,7 +191,21 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
     @Override
     public void onBackPressed() {
-        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
+        if (!(!TextUtils.isEmpty(screenType) && screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION))) {
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
+        }
         finish();
+    }
+
+    private void updatePin() {
+        Intent intent = new Intent(this, PasscodeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(AppConstant.FROM_SETTINGS, true);
+        bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_FIRST_STEP);
+        bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_mango);
+        bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(this, R.color.mango));
+        intent.putExtras(bundle);
+        this.overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        startActivity(intent);
     }
 }
