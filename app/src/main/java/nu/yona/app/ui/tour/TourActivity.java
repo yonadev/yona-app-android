@@ -10,6 +10,7 @@ package nu.yona.app.ui.tour;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -28,6 +29,7 @@ public class TourActivity extends BaseActivity implements EventChangeListener {
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.tour_activity);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         YonaApplication.getEventChangeManager().registerListener(this);
     }
 
