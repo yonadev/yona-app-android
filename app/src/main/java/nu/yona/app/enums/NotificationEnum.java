@@ -42,7 +42,12 @@ public enum NotificationEnum {
     /**
      * Disclosureresponsemessage notification enum.
      */
-    DISCLOSURERESPONSEMESSAGE("DisclosureResponseMessage");
+    DISCLOSURERESPONSEMESSAGE("DisclosureResponseMessage"),
+
+    /**
+     * None notification enum.
+     */
+    NONE("none");
 
     /**
      * The Notification type.
@@ -51,5 +56,29 @@ public enum NotificationEnum {
 
     NotificationEnum(String type) {
         this.notificationType = type;
+    }
+
+    /**
+     * Gets notification enum.
+     *
+     * @param notificationType the notification type
+     * @return the notification enum
+     */
+    public static NotificationEnum getNotificationEnum(String notificationType) {
+        for (NotificationEnum v : values()) {
+            if (v.getNotificationType().equalsIgnoreCase(notificationType)) {
+                return v;
+            }
+        }
+        return NONE;
+    }
+
+    /**
+     * Gets notification type.
+     *
+     * @return the notification type
+     */
+    public String getNotificationType() {
+        return notificationType;
     }
 }

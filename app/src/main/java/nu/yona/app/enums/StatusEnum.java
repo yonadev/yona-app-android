@@ -13,7 +13,7 @@ package nu.yona.app.enums;
 /**
  * Created by kinnarvasa on 28/04/16.
  */
-public enum FriendStatusEnum {
+public enum StatusEnum {
 
     /**
      * Not requested friend status enum.
@@ -27,15 +27,34 @@ public enum FriendStatusEnum {
     ACCEPTED("ACCEPTED"), /**
      * Rejected friend status enum.
      */
-    REJECTED("REJECTED");
+    REJECTED("REJECTED"),
 
+    /**
+     * None status enum.
+     */
+    NONE("NONE");
     /**
      * The Status.
      */
     final String status;
 
-    FriendStatusEnum(String status) {
+    StatusEnum(String status) {
         this.status = status;
+    }
+
+    /**
+     * Gets status enum.
+     *
+     * @param status the status
+     * @return the status enum
+     */
+    public static StatusEnum getStatusEnum(String status) {
+        for (StatusEnum v : values()) {
+            if (v.getStatus().equalsIgnoreCase(status)) {
+                return v;
+            }
+        }
+        return NONE;
     }
 
     /**

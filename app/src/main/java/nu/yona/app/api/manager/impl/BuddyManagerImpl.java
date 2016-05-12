@@ -24,7 +24,7 @@ import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.YonaBuddy;
-import nu.yona.app.enums.FriendStatusEnum;
+import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
@@ -150,7 +150,7 @@ public class BuddyManagerImpl implements BuddyManager {
         String number = mContext.getString(R.string.country_code) + mobileNumber.substring(mContext.getString(R.string.country_code_with_zero).length());
         String phonenumber = number.replace(" ", "");
         AddBuddy addBuddy = new AddBuddy();
-        String status = FriendStatusEnum.REQUESTED.getStatus();
+        String status = StatusEnum.REQUESTED.getStatus();
         addBuddy.setSendingStatus(status);
         addBuddy.setReceivingStatus(status);
         addBuddy.setMessage("");
