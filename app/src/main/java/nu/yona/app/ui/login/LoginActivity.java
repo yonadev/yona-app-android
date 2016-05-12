@@ -83,6 +83,8 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         ((YonaFontTextView) findViewById(R.id.toolbar_title)).setText(R.string.inloggin);
 
         mobileNumberLayout = (TextInputLayout) findViewById(R.id.mobile_number_layout);

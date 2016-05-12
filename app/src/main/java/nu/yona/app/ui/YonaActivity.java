@@ -113,6 +113,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yona_layout);
 
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean(AppConstant.FROM_LOGIN)) {
             isToDisplayLogin = false;
         }

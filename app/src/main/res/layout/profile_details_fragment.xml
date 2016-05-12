@@ -31,14 +31,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:capitalize="words"
                 android:drawableRight="@drawable/icn_name"
                 android:ellipsize="end"
                 android:hint="@string/firstname"
                 android:imeOptions="actionNext"
-                android:inputType="textFilter"
+                android:inputType="textFilter|textCapWords"
                 android:maxLength="@integer/char_limit"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
@@ -58,14 +57,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:capitalize="words"
                 android:drawableRight="@drawable/icn_name"
                 android:ellipsize="end"
                 android:hint="@string/lastname"
                 android:imeOptions="actionNext"
-                android:inputType="textFilter"
+                android:inputType="textFilter|textCapWords"
                 android:maxLength="@integer/char_limit"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
@@ -85,14 +83,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:capitalize="words"
                 android:drawableRight="@drawable/icn_nickname"
                 android:ellipsize="end"
                 android:hint="@string/nickname"
                 android:imeOptions="actionNext"
-                android:inputType="textFilter"
+                android:inputType="textFilter|textCapWords"
                 android:maxLength="@integer/char_limit"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
@@ -112,7 +109,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:capitalize="words"
                 android:digits="1234567890 "
                 android:drawableRight="@drawable/icn_mobile"
                 android:ellipsize="end"
@@ -120,7 +116,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="phone"
                 android:maxLength="@integer/number_limit"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
