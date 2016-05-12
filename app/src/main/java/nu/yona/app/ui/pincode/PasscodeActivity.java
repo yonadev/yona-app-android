@@ -13,11 +13,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -32,16 +34,34 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     private int PASSCODE_STEP = 0;
     private String first_passcode;
-    private PasscodeManagerImpl passcodeMangerImpl;
     private YonaFontTextView txtTitle;
+    private int colorCode;
+    private Toolbar mToolBar;
+    private boolean isFromSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blank_container_layout);
 
-        passcodeMangerImpl = new PasscodeManagerImpl();
+        mToolBar = (Toolbar) findViewById(R.id.toolbar_layout);
 
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
+                colorCode = getIntent().getExtras().getInt(AppConstant.COLOR_CODE);
+            } else {
+                colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
+            }
+            if (getIntent().getExtras().get(AppConstant.TITLE_BACKGROUND_RESOURCE) != null) {
+                mToolBar.setBackgroundResource(getIntent().getExtras().getInt(AppConstant.TITLE_BACKGROUND_RESOURCE));
+            } else {
+                mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
+            }
+            isFromSettings = getIntent().getExtras().getBoolean(AppConstant.FROM_SETTINGS);
+        } else {
+            colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
+            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
+        }
         txtTitle = (YonaFontTextView) findViewById(R.id.toolbar_title);
         YonaApplication.getEventChangeManager().registerListener(this);
         loadPasscodeView(true);
@@ -78,7 +98,12 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     private Fragment getPasscodeFragment() {
         Bundle bPasscode = new Bundle();
-        bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PASSCODE);
+        bPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
+        if (isFromSettings) {
+            bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_FIRST_STEP);
+        } else {
+            bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PASSCODE);
+        }
         PasscodeFragment passcodeFragment = new PasscodeFragment();
         passcodeFragment.setArguments(bPasscode);
         return passcodeFragment;
@@ -86,7 +111,12 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     private Fragment getPasscodeVerifyFragment() {
         Bundle bVerifyPasscode = new Bundle();
-        bVerifyPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PASSCODE_VERIFY);
+        bVerifyPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
+        if (isFromSettings) {
+            bVerifyPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_SECOND_STEP);
+        } else {
+            bVerifyPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PASSCODE_VERIFY);
+        }
         PasscodeFragment verifyPasscodeFragment = new PasscodeFragment();
         verifyPasscodeFragment.setArguments(bVerifyPasscode);
         return verifyPasscodeFragment;
@@ -144,8 +174,12 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
      */
     private void validatePasscode(String code) {
 
-        if (passcodeMangerImpl.validateTwoPasscode(first_passcode, code)) {
-            showChallengesScreen();
+        if (APIManager.getInstance().getPasscodeManager().validateTwoPasscode(first_passcode, code)) {
+            if (isFromSettings) {
+                finish();
+            } else {
+                showChallengesScreen();
+            }
         } else {
             doBack();
             first_passcode = "";

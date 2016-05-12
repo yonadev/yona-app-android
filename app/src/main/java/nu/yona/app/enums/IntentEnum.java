@@ -53,6 +53,9 @@ public enum IntentEnum {
      */
     ACTION_ADD_FRIEND("nu.yona.app.action.ADD_FRIEND"),
 
+    /**
+     * Action privacy policy intent enum.
+     */
     ACTION_PRIVACY_POLICY("nu.yona.app.action.PRIVACY_POLICY");
 
     private static final Map<String, IntentEnum> nameToEnumMapping = new HashMap<>();

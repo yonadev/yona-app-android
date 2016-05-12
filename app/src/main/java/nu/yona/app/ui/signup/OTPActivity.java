@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -63,6 +64,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
     private PasscodeFragment getOTPFragment() {
         if (otpFragment == null) {
             Bundle bPasscode = new Bundle();
+            bPasscode.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(this, R.color.grape));
             bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.OTP);
             otpFragment = new PasscodeFragment();
             otpFragment.setArguments(bPasscode);

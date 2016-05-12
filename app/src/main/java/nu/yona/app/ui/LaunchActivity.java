@@ -13,6 +13,7 @@ package nu.yona.app.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -46,7 +47,10 @@ public class LaunchActivity extends BaseActivity {
                 && !YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
             startNewActivity(OTPActivity.class);
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
-            startNewActivity(PasscodeActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_grape);
+            bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(this, R.color.grape));
+            startNewActivity(bundle, PasscodeActivity.class);
         } else if (!TextUtils.isEmpty(YonaApplication.getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
             startNewActivity(YonaActivity.class);
         }
@@ -99,7 +103,15 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void startNewActivity(Class mClass) {
-        startActivity(new Intent(LaunchActivity.this, mClass));
+        startNewActivity(null, mClass);
+    }
+
+    private void startNewActivity(Bundle bundle, Class mClass) {
+        Intent intent = new Intent(LaunchActivity.this, mClass);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }

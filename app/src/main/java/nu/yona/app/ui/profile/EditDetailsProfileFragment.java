@@ -168,7 +168,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         int NUMBER_LENGTH = 9;
 
         String number = YonaApplication.getUser().getMobileNumber();
-        if (!TextUtils.isEmpty(number) && number.length() >  NUMBER_LENGTH) {
+        if (!TextUtils.isEmpty(number) && number.length() > NUMBER_LENGTH) {
             number = number.substring(number.length() - NUMBER_LENGTH);
             number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
             mobileNumber.setText(getString(R.string.country_code_with_zero) + number);

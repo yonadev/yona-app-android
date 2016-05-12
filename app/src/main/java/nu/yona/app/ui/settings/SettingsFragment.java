@@ -14,6 +14,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
@@ -43,6 +45,7 @@ import nu.yona.app.utils.AppUtils;
 public class SettingsFragment extends BaseFragment {
     private DeviceManagerImpl deviceManager;
     private YonaActivity activity;
+    private boolean isPinResetRequested;
 
     @Nullable
     @Override
@@ -60,7 +63,7 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.changepin))) {
-                    //Load change pin screen
+                    showChangePin();
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.privacy))) {
                     showPrivacy();
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.adddevice))) {
@@ -83,8 +86,20 @@ public class SettingsFragment extends BaseFragment {
                 break;
             }
         }
-
         return view;
+    }
+
+    private void showChangePin() {
+        isPinResetRequested = true;
+        activity.setSkipVerification(true);
+        Intent intent = new Intent(getActivity(), PinActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_VERIFICATION);
+        bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(activity, R.color.mango));
+        bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_mango);
+        intent.putExtras(bundle);
+        activity.overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        startActivity(intent);
     }
 
     private void showPrivacy() {
@@ -133,6 +148,7 @@ public class SettingsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setTitleAndIcon();
+        activity.setSkipVerification(false);
     }
 
     private void setTitleAndIcon() {

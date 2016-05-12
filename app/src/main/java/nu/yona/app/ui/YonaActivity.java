@@ -198,7 +198,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
         super.onResume();
         if (isToDisplayLogin) {
-            startActivity(new Intent(YonaActivity.this, PinActivity.class));
+            Intent intent = new Intent(YonaActivity.this, PinActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.LOGGED_IN);
+            bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(this, R.color.grape));
+            bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_grape);
+            intent.putExtras(bundle);
+            startActivity(intent);
             launchedPinActiivty = true;
         }
         getUser();
@@ -746,6 +752,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         skipVerification = true;
     }
 
+    /**
+     * Choose image.
+     */
     public void chooseImage() {
         final CharSequence[] items = {getString(R.string.profile_take_photo), getString(R.string.profile_choose_from_library)};
         AlertDialog.Builder builder = new AlertDialog.Builder(YonaActivity.this);

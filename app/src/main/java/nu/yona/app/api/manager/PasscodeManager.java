@@ -38,4 +38,11 @@ public interface PasscodeManager {
      */
     boolean validateTwoPasscode(String passcode, String passcode2);
 
+    /**
+     * Is wrong counter reached boolean.
+     *
+     * @return the boolean
+     */
+    boolean isWrongCounterReached();
+
 }
