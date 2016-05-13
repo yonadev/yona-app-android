@@ -32,15 +32,10 @@ import nu.yona.app.utils.AppConstant;
  */
 public class BaseProfileFragment extends BaseFragment {
     private final int ALPHA = 50;
-    /**
-     * The Activity.
-     */
-    protected YonaActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (YonaActivity) getActivity();
     }
 
     /**
@@ -60,7 +55,7 @@ public class BaseProfileFragment extends BaseFragment {
             TextDrawable image = TextDrawable.builder().beginConfig().withBorder(AppConstant.PROFILE_IMAGE_BORDER_SIZE)
                     .textColor(Color.WHITE).endConfig()
                     .buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(activity, R.color.mid_blue));
+                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue));
             if (withAlpha) {
                 image.setAlpha(ALPHA);
             }

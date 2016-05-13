@@ -44,7 +44,6 @@ import nu.yona.app.utils.AppUtils;
  */
 public class SettingsFragment extends BaseFragment {
     private DeviceManagerImpl deviceManager;
-    private YonaActivity activity;
     private boolean isPinResetRequested;
 
     @Nullable
@@ -54,8 +53,6 @@ public class SettingsFragment extends BaseFragment {
 
         ListView listView = (ListView) view.findViewById(R.id.list_view);
         deviceManager = new DeviceManagerImpl(getActivity());
-
-        activity = (YonaActivity) getActivity();
 
         listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.settings_list_item, new String[]{getString(R.string.changepin), getString(R.string.privacy), getString(R.string.adddevice), getString(R.string.deleteuser)}));
 
@@ -67,7 +64,7 @@ public class SettingsFragment extends BaseFragment {
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.privacy))) {
                     showPrivacy();
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.adddevice))) {
-                    activity.showLoadingView(true, null);
+                    YonaActivity.getActivity().showLoadingView(true, null);
                     addDevice(AppUtils.getRandomString(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT));
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.deleteuser))) {
                     unsubscribeUser();
@@ -91,24 +88,24 @@ public class SettingsFragment extends BaseFragment {
 
     private void showChangePin() {
         isPinResetRequested = true;
-        activity.setSkipVerification(true);
+        YonaActivity.getActivity().setSkipVerification(true);
         Intent intent = new Intent(getActivity(), PinActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_VERIFICATION);
-        bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(activity, R.color.mango));
+        bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(YonaActivity.getActivity(), R.color.mango));
         bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_mango);
         intent.putExtras(bundle);
-        activity.overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        YonaActivity.getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         startActivity(intent);
     }
 
     private void showPrivacy() {
         Intent friendIntent = new Intent(IntentEnum.ACTION_PRIVACY_POLICY.getActionString());
-        activity.replaceFragment(friendIntent);
+        YonaActivity.getActivity().replaceFragment(friendIntent);
     }
 
     private void unsubscribeUser() {
-        CustomAlertDialog.show(activity, getString(R.string.deleteuser), getString(R.string.deleteusermessage),
+        CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.deleteuser), getString(R.string.deleteusermessage),
                 getString(R.string.ok), getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -124,18 +121,18 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void doUnsubscribe() {
-        activity.showLoadingView(true, null);
+        YonaActivity.getActivity().showLoadingView(true, null);
         APIManager.getInstance().getAuthenticateManager().deleteUser(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                activity.showLoadingView(false, null);
-                startActivity(new Intent(activity, LaunchActivity.class));
+                YonaActivity.getActivity().showLoadingView(false, null);
+                startActivity(new Intent(YonaActivity.getActivity(), LaunchActivity.class));
             }
 
             @Override
             public void onError(Object errorMessage) {
-                activity.showLoadingView(false, null);
-                CustomAlertDialog.show(activity, ((ErrorMessage) errorMessage).getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                CustomAlertDialog.show(YonaActivity.getActivity(), ((ErrorMessage) errorMessage).getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -149,11 +146,11 @@ public class SettingsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setTitleAndIcon();
-        activity.setSkipVerification(false);
+        YonaActivity.getActivity().setSkipVerification(false);
     }
 
     private void setTitleAndIcon() {
-        activity.updateTitle(R.string.settings);
+        YonaActivity.getActivity().updateTitle(R.string.settings);
     }
 
     private void addDevice(final String pin) {
@@ -176,8 +173,8 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void showAlert(String message, final boolean doDelete) {
-        activity.showLoadingView(false, null);
-        CustomAlertDialog.show(activity,
+        YonaActivity.getActivity().showLoadingView(false, null);
+        CustomAlertDialog.show(YonaActivity.getActivity(),
                 message,
                 getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override

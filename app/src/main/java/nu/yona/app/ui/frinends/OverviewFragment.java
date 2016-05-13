@@ -25,16 +25,12 @@ import nu.yona.app.ui.YonaActivity;
  */
 public class OverviewFragment extends BaseFragment {
 
-
-    private YonaActivity activity;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.friends_overview_fragment, null);
 
-        activity = (YonaActivity) getActivity();
-        activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
+        YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addFriend();
@@ -46,6 +42,6 @@ public class OverviewFragment extends BaseFragment {
 
     private void addFriend() {
         Intent friendIntent = new Intent(IntentEnum.ACTION_ADD_FRIEND.getActionString());
-        activity.replaceFragment(friendIntent);
+        YonaActivity.getActivity().replaceFragment(friendIntent);
     }
 }

@@ -38,10 +38,11 @@ public interface AuthenticateManager {
     /**
      * Register user.
      *
-     * @param user     the user
-     * @param listener the listener
+     * @param user       the user
+     * @param isEditMode the is edit mode
+     * @param listener   the listener
      */
-    void registerUser(RegisterUser user, DataLoadListener listener);
+    void registerUser(RegisterUser user, boolean isEditMode, DataLoadListener listener);
 
     /**
      * Verify otp.

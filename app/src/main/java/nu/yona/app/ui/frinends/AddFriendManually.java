@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -112,6 +111,34 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
         mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity(), mobileNumberLayout));
 
+        firstNameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(firstName);
+            }
+        });
+
+        lastNameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(lastName);
+            }
+        });
+
+        mobileNumberLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(mobileNumber);
+            }
+        });
+
+        emailLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(email);
+            }
+        });
+
         mobileNumber.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -153,22 +180,22 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         if (!APIManager.getInstance().getBuddyManager().validateText(firstName.getText().toString())) {
             firstNameLayout.setErrorEnabled(true);
             firstNameLayout.setError(getString(R.string.enterfirstnamevalidation));
-            showKeyboard(firstName);
+            YonaActivity.getActivity().showKeyboard(firstName);
             return false;
         } else if (!APIManager.getInstance().getBuddyManager().validateText(lastName.getText().toString())) {
             lastNameLayout.setErrorEnabled(true);
             lastNameLayout.setError(getString(R.string.enterlastnamevalidation));
-            showKeyboard(lastName);
+            YonaActivity.getActivity().showKeyboard(lastName);
             return false;
         } else if (!APIManager.getInstance().getBuddyManager().validateEmail(email.getText().toString())) {
             emailLayout.setErrorEnabled(true);
             emailLayout.setError(getString(R.string.enteremailvalidation));
-            showKeyboard(email);
+            YonaActivity.getActivity().showKeyboard(email);
             return false;
         } else if (!APIManager.getInstance().getBuddyManager().validateMobileNumber(mobileNumber.getText().toString())) {
             mobileNumberLayout.setErrorEnabled(true);
             mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
-            showKeyboard(mobileNumber);
+            YonaActivity.getActivity().showKeyboard(mobileNumber);
             return false;
         }
         return true;
@@ -203,10 +230,6 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         lastNameLayout.setError(null);
         emailLayout.setError(null);
         mobileNumberLayout.setError(null);
-    }
-
-    private void showKeyboard(EditText editText) {
-        ((InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE)).showSoftInput(editText, InputMethodManager.SHOW_FORCED);
     }
 
     @Override

@@ -14,7 +14,7 @@ import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.text.TextUtils;
 
-import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.YonaCustomCrashManagerListener;
 import nu.yona.app.state.EventChangeManager;
@@ -95,7 +95,7 @@ public class YonaApplication extends Application {
      */
     public static User getUser() {
         if (user == null) {
-            user = new AuthenticateManagerImpl(getAppContext()).getUser();
+            user = APIManager.getInstance().getAuthenticateManager().getUser();
         }
         return user;
     }
@@ -106,7 +106,7 @@ public class YonaApplication extends Application {
      * @return the user
      */
     public static User updateUser() {
-        user = new AuthenticateManagerImpl(getAppContext()).getUser();
+        user = APIManager.getInstance().getAuthenticateManager().getUser();
         return user;
     }
 

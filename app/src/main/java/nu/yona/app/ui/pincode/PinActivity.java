@@ -22,7 +22,6 @@ import android.widget.TextView;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -157,7 +156,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
     private void doPinReset() {
         showLoadingView(true, null);
-        new AuthenticateManagerImpl(this).requestPinReset(new DataLoadListener() {
+        APIManager.getInstance().getAuthenticateManager().requestPinReset(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);

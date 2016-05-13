@@ -30,6 +30,7 @@ import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -60,6 +61,20 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         activity.showKeyboard(mobileNumber);
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
         mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity(), mobileNumberLayout));
+
+        mobileNumberLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(mobileNumber);
+            }
+        });
+
+        nickNameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(nickName);
+            }
+        });
 
         nickName.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override

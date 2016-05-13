@@ -29,13 +29,19 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     /**
      * Register user.
      *
-     * @param password the password
-     * @param object   the object
-     * @param listener the listener
+     * @param url        the url
+     * @param password   the password
+     * @param object     the object
+     * @param isEditMode the is edit mode
+     * @param listener   the listener
      */
-    public void registerUser(String password, RegisterUser object, final DataLoadListener listener) {
+    public void registerUser(String url, String password, RegisterUser object, boolean isEditMode, final DataLoadListener listener) {
         try {
-            getRestApi().registerUser(password, object).enqueue(getUserCallBack(listener));
+            if (!isEditMode) {
+                getRestApi().registerUser(password, object).enqueue(getUserCallBack(listener));
+            } else {
+                getRestApi().updateRegisterUser(url, password, object).enqueue(getUserCallBack(listener));
+            }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

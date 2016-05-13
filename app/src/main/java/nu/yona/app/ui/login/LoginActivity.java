@@ -38,6 +38,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
@@ -94,6 +95,21 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         passcode = (YonaFontEditTextView) findViewById(R.id.passcode);
         passcode.setFilters(new InputFilter[]{new InputFilter.LengthFilter(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT), filter});
         passcode.addTextChangedListener(watcher);
+
+        mobileNumberLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(mobileNumber);
+            }
+        });
+
+        passcodeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(passcode);
+            }
+        });
+
         passcode.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

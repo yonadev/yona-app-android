@@ -34,11 +34,6 @@ import nu.yona.app.utils.AppConstant;
  */
 public class DashboardFragment extends BaseFragment {
 
-    /**
-     * The Activity.
-     */
-    YonaActivity activity;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,21 +42,20 @@ public class DashboardFragment extends BaseFragment {
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
-        activity = (YonaActivity) getActivity();
 
-        activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
+        YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
-                activity.replaceFragment(friendIntent);
+                YonaActivity.getActivity().replaceFragment(friendIntent);
             }
         });
 
-        activity.getLeftIcon().setOnClickListener(new View.OnClickListener() {
+        YonaActivity.getActivity().getLeftIcon().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent friendIntent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
-                activity.replaceFragment(friendIntent);
+                YonaActivity.getActivity().replaceFragment(friendIntent);
             }
         });
         return view;
@@ -85,16 +79,16 @@ public class DashboardFragment extends BaseFragment {
             @Override
             public void run() {
                 if (YonaApplication.getUser() != null && !TextUtils.isEmpty(YonaApplication.getUser().getFirstName())) {
-                    activity.getLeftIcon().setVisibility(View.VISIBLE);
-                    activity.getLeftIcon().setImageDrawable(TextDrawable.builder()
+                    YonaActivity.getActivity().getLeftIcon().setVisibility(View.VISIBLE);
+                    YonaActivity.getActivity().getLeftIcon().setImageDrawable(TextDrawable.builder()
                             .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
                             .buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase(),
-                                    activity.getResources().getColor(R.color.mid_blue, activity.getTheme())));
+                                    YonaActivity.getActivity().getResources().getColor(R.color.mid_blue, YonaActivity.getActivity().getTheme())));
                 }
-                activity.updateTitle(R.string.dashboard);
-                activity.getRightIcon().setTag(getString(R.string.dashboard));
-                activity.getRightIcon().setVisibility(View.VISIBLE);
-                activity.getRightIcon().setImageDrawable(activity.getDrawable(R.drawable.icn_reminder));
+                YonaActivity.getActivity().updateTitle(R.string.dashboard);
+                YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.dashboard));
+                YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
+                YonaActivity.getActivity().getRightIcon().setImageDrawable(YonaActivity.getActivity().getDrawable(R.drawable.icn_reminder));
             }
         }, AppConstant.TIMER_DELAY_HUNDRED);
 

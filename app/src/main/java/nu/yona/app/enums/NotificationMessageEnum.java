@@ -55,6 +55,7 @@ public enum NotificationMessageEnum {
      * The Image id.
      */
     long imageId;
+
     NotificationMessageEnum(NotificationEnum notificationEnum, StatusEnum statusEnum, String userMessage, long imageId) {
         this.notificationEnum = notificationEnum;
         this.statusEnum = statusEnum;

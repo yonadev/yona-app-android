@@ -88,9 +88,9 @@ public class EventChangeManager {
     public static final int EVENT_RECEIVED_PHOTO = 15;
 
     /**
-     * The constant EVENT_PIN_VERIFIED.
+     * The constant EVENT_USER_UPDATE.
      */
-    public static final int EVENT_PIN_VERIFIED = 16;
+    public static final int EVENT_USER_UPDATE = 16;
 
     private final Set<EventChangeListener> listeners = new HashSet<>();
 

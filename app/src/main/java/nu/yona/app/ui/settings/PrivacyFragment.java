@@ -25,12 +25,9 @@ import nu.yona.app.ui.YonaActivity;
  */
 public class PrivacyFragment extends BaseFragment {
 
-    private YonaActivity activity;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        activity = (YonaActivity) getActivity();
         return inflater.inflate(R.layout.privacy_fragment, null);
     }
 
@@ -41,8 +38,8 @@ public class PrivacyFragment extends BaseFragment {
     }
 
     private void setTitleAndIcon() {
-        activity.getLeftIcon().setVisibility(View.GONE);
-        activity.updateTitle(getString(R.string.privacy));
-        activity.getRightIcon().setVisibility(View.GONE);
+        YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
+        YonaActivity.getActivity().updateTitle(getString(R.string.privacy));
+        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
     }
 }

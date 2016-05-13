@@ -31,7 +31,6 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -50,10 +49,21 @@ public interface RestApi {
      * @param body         the body
      * @return the call
      */
-    @Headers("Cache-Control: public, max-age=640000, s-maxage=640000 , max-stale=2419200")
     @POST(ApiList.USER)
     Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
                             @Body RegisterUser body);
+
+    /**
+     * Update register user call.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @param body         the body
+     * @return the call
+     */
+    @PUT
+    Call<User> updateRegisterUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
+                                  @Body RegisterUser body);
 
     /**
      * Override register user call.

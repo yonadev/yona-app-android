@@ -33,6 +33,7 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -80,6 +81,21 @@ public class StepOne extends BaseFragment implements EventChangeListener {
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         lastName.addTextChangedListener(watcher);
         lastName.setFilters(new InputFilter[]{AppUtils.getFilter()});
+
+        firstNameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(firstName);
+            }
+        });
+
+        lastNameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YonaActivity.getActivity().showKeyboard(lastName);
+            }
+        });
+
         lastName.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

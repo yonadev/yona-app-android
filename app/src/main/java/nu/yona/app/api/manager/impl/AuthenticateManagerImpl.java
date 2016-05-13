@@ -73,11 +73,13 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      * @param listener
      */
     @Override
-    public void registerUser(RegisterUser registerUser, final DataLoadListener listener) {
-        // do registration of user on server and save response in database.
+    public void registerUser(RegisterUser registerUser, boolean isEditMode, final DataLoadListener listener) {
         try {
-
-            authNetwork.registerUser(YonaApplication.getYonaPassword(), registerUser, new DataLoadListener() {
+            String url = null;
+            if (isEditMode) {
+                url = YonaApplication.getUser().getLinks().getEdit().getHref();
+            }
+            authNetwork.registerUser(url, YonaApplication.getYonaPassword(), registerUser, isEditMode, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
@@ -188,7 +190,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                         listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
                     }
                 } else {
-                    if (!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref())) {
+                    if (!TextUtils.isEmpty(YonaApplication.getUser().getLinks().getVerifyPinReset().getHref())) {
                         authNetwork.doVerifyPin(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref(), otp, new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {
@@ -340,7 +342,13 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
             authNetwork.requestUserOverride(mobileNumber, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    listener.onDataLoad(result);
+                    if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
+                            && YonaApplication.getUser().getLinks().getSelf() != null
+                            && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getSelf().getHref())) {
+                        getUser(YonaApplication.getUser().getLinks().getSelf().getHref(), listener);
+                    } else {
+                        listener.onDataLoad(result);
+                    }
                 }
 
                 @Override

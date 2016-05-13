@@ -57,7 +57,6 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
      */
     GoalCategoryListAdapter categoryGoalListAdapter;
     private ListView mGoalCreationListView;
-    private YonaActivity activity;
     private int CURRENT_TAB;
     /**
      * The Item click listener.
@@ -74,13 +73,12 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.goal_creation_layout, null);
 
-        activity = (YonaActivity) getActivity();
         YonaApplication.getEventChangeManager().registerListener(this);
         mGoalListView = (ListView) view.findViewById(R.id.goal_listview);
         mGoalCreationListView = (ListView) view.findViewById(R.id.new_goal_listview);
         List<YonaActivityCategories> goals = APIManager.getInstance().getChallengesManager().getListOfCategories();
         if (goals != null && goals.size() > 0) {
-            categoryGoalListAdapter = new GoalCategoryListAdapter(activity, goals);
+            categoryGoalListAdapter = new GoalCategoryListAdapter(YonaActivity.getActivity(), goals);
         }
         mGoalCreationListView.setAdapter(categoryGoalListAdapter);
         btnGoalAdd = (ImageButton) view.findViewById(R.id.img_add_goal);
@@ -186,7 +184,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
             default:
                 break;
         }
-        activity.replaceFragment(goalIntent);
+        YonaActivity.getActivity().replaceFragment(goalIntent);
     }
 
     @Override
