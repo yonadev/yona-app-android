@@ -30,4 +30,6 @@ public interface ApiList {
      * The constant ACTIVITY_CATEGORIES.
      */
     String ACTIVITY_CATEGORIES = "activityCategories/";
+
+    String PRIVACY_PAGE = "http://www.yona.nu/app/privacy";
 }
