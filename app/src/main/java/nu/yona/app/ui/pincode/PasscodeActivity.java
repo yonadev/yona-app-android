@@ -22,7 +22,6 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontTextView;
-import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;

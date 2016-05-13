@@ -61,7 +61,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         }
     };
     private View budgetGoalView, timezoneGoalView;
-    private YonaActivity activity;
     private Object mYonaGoal;
     private String currentTab;
     private List<String> listOfTimes;
@@ -138,7 +137,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             mYonaGoal = getArguments().getSerializable(AppConstant.GOAL_OBJECT);
             currentTab = getArguments().getString(AppConstant.NEW_GOAL_TYPE);
         }
-        activity = (YonaActivity) getActivity();
         updateTitle();
     }
 
@@ -153,7 +151,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         YonaFontTextView mFTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_subscribeTxt);
         timezoneGoalView = view.findViewById(R.id.timezoneView);
         budgetGoalView = view.findViewById(R.id.goal_item_layout);
-        activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
+        YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CustomAlertDialog.show(getActivity(), "", getString(R.string.challengedeletemsg), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -205,10 +203,10 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 YonaGoal yonaGoal = (YonaGoal) mYonaGoal;
 
                 if (yonaGoal.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaGoal.getLinks().getEdit().getHref())) {
-                    activity.getRightIcon().setVisibility(View.VISIBLE);
-                    activity.getRightIcon().setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.icn_trash));
+                    YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
+                    YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_trash));
                 } else {
-                    activity.getRightIcon().setVisibility(View.GONE);
+                    YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
                 }
                 mHTxtGoalTitle.setText(yonaGoal.getActivityCategoryName());
                 if (APIManager.getInstance().getChallengesManager().typeOfGoal(yonaGoal).equals(GoalsEnum.BUDGET_GOAL)) {
@@ -264,7 +262,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             title = getString(R.string.challengesnogo);
         }
         if (!TextUtils.isEmpty(title)) {
-            activity.updateTitle(getString(R.string.challengesdetail, title));
+            YonaActivity.getActivity().updateTitle(getString(R.string.challengesdetail, title));
         }
     }
 
@@ -272,7 +270,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
      * Delete a goal which aleady added on server
      */
     private void doDeleteGoal() {
-        activity.showLoadingView(true, null);
+        YonaActivity.getActivity().showLoadingView(true, null);
         APIManager.getInstance().getChallengesManager().deleteGoal((YonaGoal) mYonaGoal, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
@@ -288,8 +286,8 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
     private void showError(Object errorMessage) {
         ErrorMessage message = (ErrorMessage) errorMessage;
-        activity.showLoadingView(false, null);
-        CustomAlertDialog.show(activity, message.getMessage(), activity.getString(R.string.ok), new DialogInterface.OnClickListener() {
+        YonaActivity.getActivity().showLoadingView(false, null);
+        CustomAlertDialog.show(YonaActivity.getActivity(), message.getMessage(), YonaActivity.getActivity().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -316,7 +314,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
      * @param object
      */
     private void createNewBudgetGoal(long minutes, Object object) {
-        activity.showLoadingView(true, null);
+        YonaActivity.getActivity().showLoadingView(true, null);
         if (object instanceof YonaGoal) {
             APIManager.getInstance().getChallengesManager().postBudgetGoals(minutes, ((YonaGoal) object), new DataLoadListener() {
                 @Override
@@ -345,7 +343,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     }
 
     private void updateGoalNotify(final Object result) {
-        activity.showLoadingView(false, null);
+        YonaActivity.getActivity().showLoadingView(false, null);
         if (result != null) {
             goBackToScreen();
             new Handler().postDelayed(new Runnable() {
@@ -358,7 +356,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     }
 
     private void updateBudgetGoal(long minutes, YonaGoal yonaGoal) {
-        activity.showLoadingView(true, null);
+        YonaActivity.getActivity().showLoadingView(true, null);
         if (yonaGoal != null) {
             APIManager.getInstance().getChallengesManager().updateBudgetGoals(minutes, yonaGoal, new DataLoadListener() {
                 @Override
@@ -379,7 +377,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
      * @param object
      */
     private void createTimeZoneGoal(List<String> timesList, Object object) {
-        activity.showLoadingView(true, null);
+        YonaActivity.getActivity().showLoadingView(true, null);
         if (object instanceof YonaGoal) {
             APIManager.getInstance().getChallengesManager().postTimeGoals(timesList, (YonaGoal) object, new DataLoadListener() {
                 @Override
@@ -409,7 +407,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     }
 
     private void updateTimeZoneGoal(List<String> timeList, YonaGoal yonaGoal) {
-        activity.showLoadingView(true, null);
+        YonaActivity.getActivity().showLoadingView(true, null);
         if (yonaGoal != null) {
             APIManager.getInstance().getChallengesManager().updateTimeGoals(timeList, yonaGoal, new DataLoadListener() {
                 @Override

@@ -25,6 +25,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.ViewPagerAdapter;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
 /**
@@ -49,13 +50,6 @@ public class ProfileFragment extends BaseProfileFragment {
         name = (YonaFontTextView) view.findViewById(R.id.name);
         nickName = (YonaFontTextView) view.findViewById(R.id.nick_name);
 
-        activity.getRightIcon().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent friendIntent = new Intent(IntentEnum.ACTION_EDIT_PROFILE.getActionString());
-                activity.replaceFragment(friendIntent);
-            }
-        });
         setupViewPager();
         tabLayout.setupWithViewPager(viewPager);
         return view;
@@ -79,9 +73,10 @@ public class ProfileFragment extends BaseProfileFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                activity.getLeftIcon().setVisibility(View.GONE);
-                activity.updateTitle(getString(R.string.blank));
-                activity.getRightIcon().setVisibility(View.GONE);
+                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
+                YonaActivity.getActivity().updateTitle(getString(R.string.blank));
+                YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+                viewPager.setCurrentItem(0);
                 showOptionsInSelectedTab(viewPager.getCurrentItem());
             }
         }, AppConstant.TIMER_DELAY_HUNDRED);
@@ -101,13 +96,20 @@ public class ProfileFragment extends BaseProfileFragment {
     }
 
     private void showBadgeOptions() {
-        activity.getRightIcon().setVisibility(View.GONE);
+        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
     }
 
     private void showProfileOptions() {
-        activity.getRightIcon().setVisibility(View.VISIBLE);
-        activity.getRightIcon().setTag(getString(R.string.profile));
-        activity.getRightIcon().setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.icn_edit));
+        YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
+        YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.profile));
+        YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_edit));
+        YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent friendIntent = new Intent(IntentEnum.ACTION_EDIT_PROFILE.getActionString());
+                YonaActivity.getActivity().replaceFragment(friendIntent);
+            }
+        });
     }
 
     private void setupViewPager() {

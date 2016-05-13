@@ -30,7 +30,6 @@ import nu.yona.app.utils.AppConstant;
 public class FriendsFragment extends BaseFragment {
     private final int TIMELINE = 0, OVERVIEW = 1;
     private ViewPager viewPager;
-    private YonaActivity activity;
 
     @Nullable
     @Override
@@ -38,7 +37,6 @@ public class FriendsFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.frineds_layout, null);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        activity = (YonaActivity) getActivity();
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         return view;
@@ -77,9 +75,9 @@ public class FriendsFragment extends BaseFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                activity.getLeftIcon().setVisibility(View.GONE);
-                activity.updateTitle(R.string.friends);
-                activity.getRightIcon().setVisibility(View.GONE);
+                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
+                YonaActivity.getActivity().updateTitle(R.string.friends);
+                YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
                 showOptionsInSelectedTab(viewPager.getCurrentItem());
             }
         }, AppConstant.TIMER_DELAY_HUNDRED);
@@ -99,12 +97,12 @@ public class FriendsFragment extends BaseFragment {
     }
 
     private void showTimeLineFragmentOptions() {
-        activity.getRightIcon().setVisibility(View.GONE);
+        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
     }
 
     private void showOverviewFragmentOptions() {
-        activity.getRightIcon().setVisibility(View.VISIBLE);
-        activity.getRightIcon().setTag(getString(R.string.overiview));
-        activity.getRightIcon().setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.icn_add));
+        YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
+        YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.overiview));
+        YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_add));
     }
 }

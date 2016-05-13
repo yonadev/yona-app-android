@@ -86,6 +86,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static final int PICK_CONTACT = 2;
     private static final int PICK_IMAGE = 3;
     private static final int PICK_CAMERA = 4;
+    private static YonaActivity activity;
     private Fragment mContent, homeFragment;
     private boolean isStateActive = false;
     private boolean mStateSaved;
@@ -108,11 +109,20 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         YonaApplication.getAppContext().registerReceiver(new YonaReceiver(), new IntentFilter());
     }
 
+    /**
+     * Gets activity.
+     *
+     * @return the activity
+     */
+    public static YonaActivity getActivity() {
+        return activity;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yona_layout);
-
+        activity = this;
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean(AppConstant.FROM_LOGIN)) {
@@ -622,7 +632,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
-
     /**
      * Remove current fragment.
      */
@@ -634,7 +643,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
         transaction.commit();
     }
-
 
     /**
      * When user press back button, it will check in back stack, if stack has entry, it will reload previous fragment.

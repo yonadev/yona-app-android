@@ -126,7 +126,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     private void doRegister() {
         showLoadingView(true, null);
-        APIManager.getInstance().getAuthenticateManager().registerUser(getRegisterUser(), new DataLoadListener() {
+        APIManager.getInstance().getAuthenticateManager().registerUser(getRegisterUser(), false, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);

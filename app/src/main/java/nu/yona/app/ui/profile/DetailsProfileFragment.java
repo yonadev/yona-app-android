@@ -9,6 +9,7 @@
 package nu.yona.app.ui.profile;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,11 +19,14 @@ import android.view.ViewGroup;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class DetailsProfileFragment extends BaseProfileFragment {
+public class DetailsProfileFragment extends BaseProfileFragment implements EventChangeListener {
 
     private YonaFontEditTextView firstName, lastName, nickName, mobileNumber;
 
@@ -35,8 +39,14 @@ public class DetailsProfileFragment extends BaseProfileFragment {
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
         mobileNumber = (YonaFontEditTextView) view.findViewById(R.id.mobile_number);
-
+        YonaApplication.getEventChangeManager().registerListener(this);
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
     @Override
@@ -68,5 +78,22 @@ public class DetailsProfileFragment extends BaseProfileFragment {
             number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
             mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
         }
+    }
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_USER_UPDATE:
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        profileViewMode();
+                    }
+                }, AppConstant.TIMER_DELAY_HUNDRED);
+                break;
+            default:
+                break;
+        }
+
     }
 }

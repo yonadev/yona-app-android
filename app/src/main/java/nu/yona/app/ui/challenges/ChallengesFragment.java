@@ -43,7 +43,6 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     private CreditFragment creditFragment;
     private ZoneFragment zoneFragment;
     private NoGoFragment noGoFragment;
-    private YonaActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +56,6 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         creditFragment = new CreditFragment();
         zoneFragment = new ZoneFragment();
         noGoFragment = new NoGoFragment();
-        activity = (YonaActivity) getActivity();
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         YonaApplication.getEventChangeManager().registerListener(this);
@@ -107,7 +105,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
 
             @Override
             public void onError(Object errorMessage) {
-                activity.showLoadingView(false, null);
+                YonaActivity.getActivity().showLoadingView(false, null);
 
             }
         });
@@ -119,13 +117,13 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
             @Override
             public void onDataLoad(Object result) {
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
-                activity.showLoadingView(false, null);
+                YonaActivity.getActivity().showLoadingView(false, null);
             }
 
             @Override
             public void onError(Object errorMessage) {
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
-                activity.showLoadingView(false, null);
+                YonaActivity.getActivity().showLoadingView(false, null);
             }
         });
     }
@@ -137,7 +135,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     }
 
     private void setTitleAndIcon() {
-        activity.updateTitle(R.string.challenges);
+        YonaActivity.getActivity().updateTitle(R.string.challenges);
     }
 
     private void setupViewPager(ViewPager viewPager) {
