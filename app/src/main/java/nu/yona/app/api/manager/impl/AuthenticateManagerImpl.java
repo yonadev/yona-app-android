@@ -194,7 +194,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                         authNetwork.doVerifyPin(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref(), otp, new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {
-                                YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, false).commit();
+                                updatePreferenceForPinReset();
                                 authNetwork.doClearPin(authenticateDao.getUser().getLinks().getClearPinReset().getHref());
                                 listener.onDataLoad(result);
                             }
@@ -220,6 +220,13 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         }
     }
 
+    private void updatePreferenceForPinReset() {
+        SharedPreferences.Editor editor = YonaApplication.getUserPreferences().edit();
+        editor.putBoolean(PreferenceConstant.USER_BLOCKED, false);
+        editor.putBoolean(PreferenceConstant.STEP_OTP, true);
+        editor.putBoolean(PreferenceConstant.STEP_PASSCODE, false);
+        editor.commit();
+    }
     @Override
     public void requestPinReset(final DataLoadListener listener) {
         try {
