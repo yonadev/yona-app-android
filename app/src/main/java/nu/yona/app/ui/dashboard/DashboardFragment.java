@@ -43,21 +43,6 @@ public class DashboardFragment extends BaseFragment {
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
-                YonaActivity.getActivity().replaceFragment(friendIntent);
-            }
-        });
-
-        YonaActivity.getActivity().getLeftIcon().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent friendIntent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
-                YonaActivity.getActivity().replaceFragment(friendIntent);
-            }
-        });
         return view;
     }
 
@@ -89,6 +74,25 @@ public class DashboardFragment extends BaseFragment {
                 YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.dashboard));
                 YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
                 YonaActivity.getActivity().getRightIcon().setImageDrawable(YonaActivity.getActivity().getDrawable(R.drawable.icn_reminder));
+
+                YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
+                        YonaActivity.getActivity().replaceFragment(friendIntent);
+                    }
+                });
+
+                YonaActivity.getActivity().getLeftIcon().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
+                        intent.putExtra(AppConstant.COLOR_CODE, R.color.grape);
+                        intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.mid_blue);
+                        intent.putExtra(AppConstant.USER, YonaApplication.getUser());
+                        YonaActivity.getActivity().replaceFragment(intent);
+                    }
+                });
             }
         }, AppConstant.TIMER_DELAY_HUNDRED);
 

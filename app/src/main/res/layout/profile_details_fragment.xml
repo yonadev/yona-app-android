@@ -86,7 +86,7 @@
                 android:drawableRight="@drawable/icn_nickname"
                 android:ellipsize="end"
                 android:hint="@string/nickname"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:inputType="textFilter|textCapWords"
                 android:maxLength="@integer/char_limit"
                 android:maxLines="1"
@@ -120,5 +120,17 @@
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
+        <nu.yona.app.customview.YonaFontButton
+            android:id="@+id/removeFriendButton"
+            style="@style/BtnTxtBlue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/add_friend_bottom_margin"
+            android:layout_marginLeft="@dimen/signup_profile_left_right_padding"
+            android:layout_marginRight="@dimen/signup_profile_left_right_padding"
+            android:layout_marginTop="@dimen/thirty_two"
+            android:background="@drawable/round_button"
+            android:visibility="gone"
+            android:text="@string/remove_friend_btn" />
     </LinearLayout>
 </ScrollView>

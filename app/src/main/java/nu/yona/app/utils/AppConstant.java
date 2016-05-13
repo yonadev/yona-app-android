@@ -78,6 +78,10 @@ public interface AppConstant {
     int PROFILE_ICON_BORDER_SIZE = 5;
 
     /**
+     * The constant READ_CONTACTS_PERMISSIONS_REQUEST.
+     */
+    int READ_CONTACTS_PERMISSIONS_REQUEST = 10001;
+    /**
      * The constant PASSCODE.
      */
     String PASSCODE = "passcode";
@@ -140,6 +144,10 @@ public interface AppConstant {
      */
     String COLOR_CODE = "colorCode";
 
+    /**
+     * The constant SECOND_COLOR_CODE.
+     */
+    String SECOND_COLOR_CODE = "secondColorCode";
     /**
      * The constant TITLE_BACKGROUND_RESOURCE.
      */

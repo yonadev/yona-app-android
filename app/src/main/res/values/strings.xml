@@ -126,6 +126,7 @@
     <string name="settings_new_pin_message">Vul nu je nieuwe pincode in.</string>
     <string name="settings_confirm_new_pin">Bevestig pincode</string>
     <string name="settings_confirm_new_pin_message">Vul je pincode nogmaals in ter bevestiging.</string>
+    <string name="remove_friend_btn">REMOVING FRIEND</string>
     <!-- Status Messages -->
     <string name="status_friend_request">Friend Request</string>
     <!-- Status Messages -->

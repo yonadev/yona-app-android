@@ -227,6 +227,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         editor.putBoolean(PreferenceConstant.STEP_PASSCODE, false);
         editor.commit();
     }
+
     @Override
     public void requestPinReset(final DataLoadListener listener) {
         try {
