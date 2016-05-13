@@ -167,6 +167,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
+                            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
                             loadOTPScreen();
                         }
                     });
