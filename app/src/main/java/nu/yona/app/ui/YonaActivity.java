@@ -682,7 +682,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * @param title the title
      */
     public void updateTitle(String title) {
-        toolbarTitle.setText(title);
+        if (!TextUtils.isEmpty(title) && toolbarTitle != null) {
+            toolbarTitle.setText(title);
+        }
     }
 
     /**

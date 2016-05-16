@@ -9,6 +9,7 @@
 package nu.yona.app.ui.challenges;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +34,6 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.customview.CustomAlertDialog;
-import nu.yona.app.customview.CustomTimePickerDialog;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.GoalsEnum;
@@ -42,6 +43,8 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.timepicker.time.TimePickerDialog;
+import nu.yona.timepicker.time.Timepoint;
 
 /**
  * Created by bhargavsuthar on 20/04/16.
@@ -50,38 +53,47 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
     private ImageView mHGoalTypeImg;
     private YonaFontTextView mBudgetGoalTime;
-    /**
-     * Use this listener only for budget time picker
-     */
-    private final CustomTimePickerDialog.OnTimeSetListener budgetTimeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
-
-        @Override
-        public void setTime(String time) {
-            mBudgetGoalTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(getTimeInMilliseconds(time))));
-        }
-    };
     private View budgetGoalView, timezoneGoalView;
     private Object mYonaGoal;
     private String currentTab;
     private List<String> listOfTimes;
     private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
+
+    /**
+     * Use this listener only for budget time picker
+     */
+    private final TimePickerDialog.OnTimeSelected budgetTimeSetListener = new TimePickerDialog.OnTimeSelected() {
+        @Override
+        public void setTime(Timepoint firstTime, Timepoint secondTime) {
+            long time = getTimeInMilliseconds(firstTime.getHour() + ":" + firstTime.getMinute());
+            mBudgetGoalTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(time)));
+        }
+    };
+
     /**
      * Use this listener only for Time zone picker
      */
-    private final CustomTimePickerDialog.OnTimeSetListener timeZoneSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
+    private final TimePickerDialog.OnTimeSelected timeZoneSetListener = new TimePickerDialog.OnTimeSelected() {
         @Override
-        public void setTime(String time) {
-            if (time.contains("-")) {
-                String[] str = time.split("-");
-                if (str.length > 0) {
-                    listOfTimes.add(time);
-                    if (timeZoneGoalsAdapter != null) {
-                        timeZoneGoalsAdapter.timeZoneNotifyDataSetChanged(listOfTimes);
-                    }
+        public void setTime(Timepoint firstTime, Timepoint secondTime) {
+            if (firstTime != null && secondTime != null) {
+                StringBuilder strBuilder = new StringBuilder();
+                strBuilder.append(AppUtils.getTimeDigit(firstTime.getHour()))
+                        .append(":")
+                        .append(AppUtils.getTimeDigit(firstTime.getMinute())).append("-")
+                        .append(AppUtils.getTimeDigit(secondTime.getHour()))
+                        .append(":")
+                        .append(AppUtils.getTimeDigit(secondTime.getMinute()));
+
+                listOfTimes.add(strBuilder.toString());
+                if (timeZoneGoalsAdapter != null) {
+                    timeZoneGoalsAdapter.timeZoneNotifyDataSetChanged(listOfTimes);
                 }
             }
+
         }
     };
+
     private RecyclerView timeZoneGoalView;
     private OnItemClickListener timeZoneGoalClickListener = new OnItemClickListener() {
 
@@ -223,7 +235,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     ((YonaFontTextView) view.findViewById(R.id.txt_header_text)).setText(getString(R.string.timezone));
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 } else {
-                    //todo- for nogo
                     btnChallenges.setVisibility(View.GONE);
                     mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, !TextUtils.isEmpty(yonaActivityCategories.getName()) ? yonaActivityCategories.getName() : ""));
                     mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_nogo);
@@ -423,20 +434,33 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         }
     }
 
+    /**
+     * Go back to screen
+     */
     private void goBackToScreen() {
         getActivity().onBackPressed();
     }
 
-    private void showTimePicker(boolean allowDualSelection, int interval, long maxTime, long minTime, CustomTimePickerDialog.OnTimeSetListener listener) {
-        CustomTimePickerDialog fragmentTime = new CustomTimePickerDialog();
-        fragmentTime.setOnTimeSetListener(listener);
-        fragmentTime.setMinTime(minTime);
-        fragmentTime.setMaxTime(maxTime);
-        fragmentTime.setTimePickerInterval(interval);
-        fragmentTime.setIsNextAllow(allowDualSelection);
-        Bundle args = new Bundle();
-        fragmentTime.setArguments(args);
-        fragmentTime.show(getFragmentManager(), "dialog");
+    /**
+     * Show Timepicker with selection time or default minute
+     *
+     * @param allowDualSelection
+     * @param interval
+     * @param maxTime
+     * @param minTime
+     * @param listener
+     */
+    private void showTimePicker(boolean allowDualSelection, int interval, Timepoint maxTime, Timepoint minTime, TimePickerDialog.OnTimeSelected listener) {
+        TimePickerDialog mTimePickerDialog = new TimePickerDialog().newInstance(listener, minTime, maxTime, true, allowDualSelection);
+        mTimePickerDialog.setAccentColor(Color.parseColor("#8ab518"));
+        mTimePickerDialog.setTimeInterval(1, interval, 1);
+        mTimePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                Log.d("TimePicker", "Dialog was cancelled");
+            }
+        });
+        mTimePickerDialog.show(getActivity().getFragmentManager(), "Timepickerdialog");
     }
 
     @Override
@@ -473,13 +497,15 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 break;
             case R.id.goal_item_layout:
                 if (!TextUtils.isEmpty(mBudgetGoalTime.getText())) {
-                    showTimePicker(false, AppConstant.TIME_INTERVAL_ONE, 0, TimeUnit.MINUTES.toMillis(Integer.parseInt(mBudgetGoalTime.getText().toString())), budgetTimeSetListener);
+                    long miliseconds = TimeUnit.MINUTES.toMillis(Integer.parseInt(mBudgetGoalTime.getText().toString()));
+                    Timepoint timepoint = new Timepoint((int) TimeUnit.MILLISECONDS.toHours(miliseconds), (int) TimeUnit.MILLISECONDS.toMinutes(miliseconds), (int) TimeUnit.MILLISECONDS.toSeconds(miliseconds));
+                    showTimePicker(false, AppConstant.TIME_INTERVAL_ONE, null, timepoint, budgetTimeSetListener);
                 } else {
-                    showTimePicker(false, AppConstant.TIME_INTERVAL_ONE, 0, 0, budgetTimeSetListener);
+                    showTimePicker(false, AppConstant.TIME_INTERVAL_ONE, null, new Timepoint(0, 0, 0), budgetTimeSetListener);
                 }
                 break;
             case R.id.img_add_goal:
-                showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, 0, 0, timeZoneSetListener);
+                showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, null, new Timepoint(0, 0, 0), timeZoneSetListener);
                 break;
 
             default:
@@ -493,24 +519,41 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         String[] startTime = AppUtils.getSplitedTime(updatedTime);
         final int position = bTime.getInt(AppConstant.POSITION);
         if (updatingStartTime) {
-            showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, AppUtils.getTimeInMilliseconds(startTime[1]), AppUtils.getTimeInMilliseconds(startTime[0]), new CustomTimePickerDialog.OnTimeSetListener() {
+            showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, AppUtils.getTimeInMilliseconds(startTime[1]), AppUtils.getTimeInMilliseconds(startTime[0]), new TimePickerDialog.OnTimeSelected() {
                 @Override
-                public void setTime(String time) {
-                    if (timeZoneGoalsAdapter != null) {
-                        timeZoneGoalsAdapter.updateTimeForItem(position, time);
+                public void setTime(Timepoint firstTime, Timepoint secondTime) {
+                    if (firstTime != null && secondTime != null) {
+                        if (timeZoneGoalsAdapter != null) {
+                            timeZoneGoalsAdapter.updateTimeForItem(position, mergeZoneTime(firstTime, secondTime));
+                        }
                     }
+
                 }
             });
         } else {
-            showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, AppUtils.getTimeInMilliseconds(startTime[1]), AppUtils.getTimeInMilliseconds(startTime[0]), new CustomTimePickerDialog.OnTimeSetListener() {
+            showTimePicker(true, AppConstant.TIME_INTERVAL_FIFTEEN, AppUtils.getTimeInMilliseconds(startTime[1]), AppUtils.getTimeInMilliseconds(startTime[0]), new TimePickerDialog.OnTimeSelected() {
                 @Override
-                public void setTime(String time) {
-                    if (timeZoneGoalsAdapter != null) {
-                        timeZoneGoalsAdapter.updateTimeForItem(position, time);
+                public void setTime(Timepoint firstTime, Timepoint secondTime) {
+                    if (firstTime != null && secondTime != null) {
+                        if (timeZoneGoalsAdapter != null) {
+                            timeZoneGoalsAdapter.updateTimeForItem(position, mergeZoneTime(firstTime, secondTime));
+                        }
                     }
+
                 }
             });
         }
+    }
+
+    private String mergeZoneTime(Timepoint firstTimepoint, Timepoint secondTimepoint) {
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(AppUtils.getTimeDigit(firstTimepoint.getHour()))
+                .append(":")
+                .append(AppUtils.getTimeDigit(firstTimepoint.getMinute())).append("-")
+                .append(AppUtils.getTimeDigit(secondTimepoint.getHour()))
+                .append(":")
+                .append(AppUtils.getTimeDigit(secondTimepoint.getMinute()));
+        return strBuilder.toString();
     }
 
 
