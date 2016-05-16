@@ -21,15 +21,15 @@ public enum NotificationMessageEnum {
     /**
      * Buddy connect request accepted notification message enum.
      */
-    BUDDY_CONNECT_REQUEST_ACCEPTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.ACCEPTED, getString(R.string.status_friend_request), 0),
+    BUDDY_CONNECT_REQUEST_ACCEPTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.ACCEPTED, getString(R.string.buddyconnectrequested), 0),
     /**
      * Buddy connect request rejected notification message enum.
      */
-    BUDDY_CONNECT_REQUEST_REJECTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.REJECTED, "BUDDY_CONNECT_REQUEST_REJECTED", 0),
+    BUDDY_CONNECT_REQUEST_REJECTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.REJECTED, getString(R.string.buddyconnectrequested), 0),
     /**
      * Buddy connect request requested notification message enum.
      */
-    BUDDY_CONNECT_REQUEST_REQUESTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.REQUESTED, "BUDDY_CONNECT_REQUEST_REQUESTED", 0),
+    BUDDY_CONNECT_REQUEST_REQUESTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.REQUESTED, getString(R.string.buddyconnectrequested), 0),
     /**
      * Buddy connect request not requested notification message enum.
      */
@@ -89,7 +89,7 @@ public enum NotificationMessageEnum {
      * @param statusType       the status type
      * @return the notification message enum
      */
-    public NotificationMessageEnum getNotificationMessageEnum(String notificationType, String statusType) {
+    public static NotificationMessageEnum getNotificationMessageEnum(String notificationType, String statusType) {
         return getNotificationMessageEnum(NotificationEnum.getNotificationEnum(notificationType), StatusEnum.getStatusEnum(statusType));
     }
 
@@ -100,7 +100,7 @@ public enum NotificationMessageEnum {
      * @param statusEnum       the status enum
      * @return the notification message enum
      */
-    public NotificationMessageEnum getNotificationMessageEnum(NotificationEnum notificationEnum, StatusEnum statusEnum) {
+    public static NotificationMessageEnum getNotificationMessageEnum(NotificationEnum notificationEnum, StatusEnum statusEnum) {
         for (NotificationMessageEnum v : values()) {
             if (v.getNotificationEnum() == notificationEnum && v.getStatusEnum() == statusEnum) {
                 return v;

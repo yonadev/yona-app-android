@@ -13,6 +13,8 @@ package nu.yona.app.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import nu.yona.app.enums.NotificationMessageEnum;
+
 /**
  * Created by kinnarvasa on 09/05/16.
  */
@@ -38,6 +40,12 @@ public class YonaMessage {
     @SerializedName("@type")
     @Expose
     private String Type;
+    @SerializedName("@notificationMessageEnum")
+    @Expose
+    private NotificationMessageEnum notificationMessageEnum;
+    @SerializedName("@stickyTitle")
+    @Expose
+    private String stickyTitle;
 
     /**
      * Gets creation time.
@@ -164,4 +172,44 @@ public class YonaMessage {
     public void setType(String Type) {
         this.Type = Type;
     }
+
+
+    /**
+     * Get Notification enum
+     *
+     * @return
+     */
+    public NotificationMessageEnum getNotificationMessageEnum() {
+        return notificationMessageEnum;
+    }
+
+    /**
+     * Set Notification Enum
+     *
+     * @param notificationMessageEnum
+     */
+
+    public void setNotificationMessageEnum(NotificationMessageEnum notificationMessageEnum) {
+        this.notificationMessageEnum = notificationMessageEnum;
+    }
+
+    /**
+     * Get Sticky Title
+     *
+     * @return
+     */
+
+    public String getStickyTitle() {
+        return stickyTitle;
+    }
+
+    /**
+     * Set Sticky Title
+     *
+     * @param stickyTitle
+     */
+    public void setStickyTitle(String stickyTitle) {
+        this.stickyTitle = stickyTitle;
+    }
+
 }

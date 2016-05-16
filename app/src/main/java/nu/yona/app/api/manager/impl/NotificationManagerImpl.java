@@ -12,16 +12,27 @@ package nu.yona.app.api.manager.impl;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.NotificationManager;
 import nu.yona.app.api.manager.network.NotificationNetworkImpl;
+import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.MessageBody;
 import nu.yona.app.api.model.YonaMessage;
+import nu.yona.app.api.model.YonaMessages;
+import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.DateUtility;
 
 /**
  * Created by kinnarvasa on 09/05/16.
@@ -65,7 +76,34 @@ public class NotificationManagerImpl implements NotificationManager {
                     @Override
                     public void onDataLoad(Object result) {
                         if (listener != null) {
-                            listener.onDataLoad(result);
+                            if (result instanceof YonaMessages) {
+                                YonaMessages yonaMessages = (YonaMessages) result;
+                                if (yonaMessages != null && yonaMessages.getEmbedded() != null) {
+                                    Embedded embedded = yonaMessages.getEmbedded();
+                                    List<YonaMessage> listMessages = embedded.getYonaMessages();
+                                    for (YonaMessage message : listMessages) {
+                                        //update enum
+                                        message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));
+                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+                                        String uploadDate = "";
+
+                                        String createdTime = message.getCreationTime();
+                                        try {
+                                            Date date = sdf.parse(createdTime);
+
+                                            Calendar futureCalendar = Calendar.getInstance();
+                                            futureCalendar.setTime(date);
+
+                                            uploadDate = DateUtility.getRelativeDate(futureCalendar);
+                                            message.setStickyTitle(uploadDate);
+                                        } catch (Exception e) {
+                                            Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+                                        }
+                                        yonaMessages.setEmbedded(embedded);
+                                    }
+                                }
+                                listener.onDataLoad(yonaMessages);
+                            }
                         }
                     }
 

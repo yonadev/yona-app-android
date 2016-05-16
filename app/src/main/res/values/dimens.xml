@@ -102,4 +102,11 @@
     <dimen name="edit_profile_detail_top_layout_height">234dp</dimen>
     <dimen name="profile_image_size">125dp</dimen>
     <dimen name="capture_image_size">48dp</dimen>
+    <!--<dimen name="img_padding">16dp</dimen>-->
+
+    <!-- Messages -->
+    <dimen name="message_item_height">88dp</dimen>
+    <dimen name="user_avatar_padding">16dp</dimen>
+    <dimen name="img_badges_padding_top_bottom">24dp</dimen>
+    <dimen name="message_header">53dp</dimen>
 </resources>
