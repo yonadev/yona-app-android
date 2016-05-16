@@ -15,6 +15,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
+
 /**
  * Created by bhargavsuthar on 10/05/16.
  */
@@ -28,9 +31,9 @@ public class DateUtility {
         long days = getDateDiff(future.getTime(), Calendar.getInstance().getTime(), TimeUnit.DAYS);
 
         if (days == 0) {
-            relativeDate = "Today";
+            relativeDate = YonaApplication.getAppContext().getString(R.string.today);
         } else if (days < 2) {
-            relativeDate = "Yesterday";
+            relativeDate = YonaApplication.getAppContext().getString(R.string.yesterday);
         } else {
             try {
                 Date date = new Date(future.getTimeInMillis());
