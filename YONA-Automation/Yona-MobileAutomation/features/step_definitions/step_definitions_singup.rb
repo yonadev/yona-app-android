@@ -32,9 +32,9 @@ end
 
 
 Then(/^Clicks on Next button on this screen$/) do
-  sleep 1
+  sleep 2
   on(Signup).next('mobnumscreen')
-  sleep 4
+  sleep 5
 
 end
 
@@ -46,22 +46,26 @@ Then(/^Clicks on OK button in alert$/) do
 end
 
 Then(/^Enters pincode fetched from alert$/) do
-  sleep 1
+  sleep 2
   on(Signup).enterPin
 
 
 end
 
 Then(/^Sets the pin for application login$/) do
-  sleep 1
+  sleep 2
   on(Signup).enterPin
 
 end
 
 And(/^Confirms the pin for application login$/) do
-  sleep 1
+  sleep 2
   on(Signup).enterPin
   sleep 4
+end
+
+Then(/^User is landed on Challenges screen$/) do
+  expect(on(Signup).landed_on_challenges?).to be_truthy
 end
 
 # Then(/^I enter user name$/) do

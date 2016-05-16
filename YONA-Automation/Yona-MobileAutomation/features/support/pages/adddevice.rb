@@ -20,6 +20,9 @@ puts "Mobile = #{$strMobliNumb}"
         button(:vorige, xpath: '//android.widget.Button[1]')
         text_field(:mobnumber, xpath: '//android.widget.LinearLayout[1]/android.widget.EditText[1]')
         text_field(:passcode, xpath: '//android.widget.LinearLayout[2]/android.widget.EditText[1]')
+        element(:chlgs_title, xpath: '//android.widget.TextView[@text="CHALLENGES"]')
+        element(:otpscreen_title, id: "#{$android_package}:id/passcode_title")
+        puts "package=#{$android_package}"
       end
 
       def enterDetails(strMbNum)
@@ -52,6 +55,21 @@ puts "Mobile = #{$strMobliNumb}"
         end
       end
       # Makes a POST API call to create user
+
+
+      def landed_on_OTP?
+        bool = false
+        sleep 4
+        begin
+          puts "Displayed=#{otpscreen_title_element.displayed?}"
+          bool=self.otpscreen_title_element.displayed?
+
+        rescue Exception => e
+          puts "Message=#{e.message}"
+          return false
+        end
+        bool
+      end
 
 
   end

@@ -11,3 +11,4 @@ Feature: Once signup to Yona application, user should be able to login to Yona f
     And Enters Mobile number and code generated above
     Then Clicks on VORIGE button
     And User is logged in to new device
+    Then User is landed on enter OTP screen
