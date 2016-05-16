@@ -131,6 +131,7 @@ def getBranch() {
 }
 
 dependencies {
+    compile project(':libTimepicker')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23+'
     compile 'com.android.support:design:23+'
@@ -143,6 +144,7 @@ dependencies {
     compile 'net.hockeyapp.android:HockeySDK:4.1.0-beta.1'
     compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'joda-time:joda-time:2.9.3'
+    //using for swipe layout on recyclerview
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     //using for sticky header recyclerview

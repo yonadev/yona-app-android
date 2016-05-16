@@ -33,13 +33,13 @@ import net.hockeyapp.android.ExceptionHandler;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
-import java.util.Calendar;
 import java.util.Random;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.timepicker.time.Timepoint;
 
 
 /**
@@ -254,17 +254,23 @@ public class AppUtils {
      * @param time the time
      * @return the time in milliseconds
      */
-    public static long getTimeInMilliseconds(String time) {
+    public static Timepoint getTimeInMilliseconds(String time) {
         if (!TextUtils.isEmpty(time) && time.contains(":")) {
             String[] min = time.split(":");
-
-            Calendar date = Calendar.getInstance();
-            date.set(Calendar.HOUR_OF_DAY, Integer.parseInt(min[0]));
-            date.set(Calendar.MINUTE, Integer.parseInt(min[1]));
-            date.set(Calendar.AM_PM, date.get(Calendar.AM_PM));
-            return date.getTimeInMillis();
+            return new Timepoint(Integer.parseInt(min[0]), Integer.parseInt(min[1]), 0);
         } else {
-            return 0;
+            return new Timepoint(0, 0, 0);
         }
+    }
+
+    /**
+     * convert one digit number to two digit number appending with 0 if its length is one else return same
+     */
+    public static String getTimeDigit(int time) {
+        String timeDigit = String.valueOf(time);
+        if (timeDigit.length() == 1) {
+            timeDigit = "0" + timeDigit;
+        }
+        return timeDigit;
     }
 }
