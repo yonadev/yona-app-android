@@ -10,25 +10,47 @@
 
 package nu.yona.app.ui.settings;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import nu.yona.app.R;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.utils.ApiList;
 
 /**
  * Created by kinnarvasa on 11/05/16.
  */
 public class PrivacyFragment extends BaseFragment {
 
+    private WebView webView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.privacy_fragment, null);
+        View view = inflater.inflate(R.layout.privacy_fragment, null);
+        webView = (WebView) view.findViewById(R.id.webView);
+        webView.loadUrl(ApiList.PRIVACY_PAGE);
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                YonaActivity.getActivity().showLoadingView(true, null);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                YonaActivity.getActivity().showLoadingView(false, null);
+            }
+        });
+        return view;
     }
 
     @Override
