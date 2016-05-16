@@ -10,24 +10,20 @@
 
 package nu.yona.app.ui.frinends;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
-import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 27/04/16.
@@ -35,7 +31,6 @@ import nu.yona.app.ui.YonaActivity;
 public class AddFriendFragment extends BaseFragment {
 
     private final int ADD_FRIEND_MANUALLY = 0, ADD_FRIENT_CONTACT = 1;
-    private final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
     private ViewPager viewPager;
 
     @Nullable
@@ -62,7 +57,7 @@ public class AddFriendFragment extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 if (position == ADD_FRIENT_CONTACT) {
-                    getPermissionToReadUserContacts();
+                    YonaActivity.getActivity().checkContactPermission();
                 }
             }
 
@@ -72,45 +67,22 @@ public class AddFriendFragment extends BaseFragment {
         });
     }
 
-    /**
-     * Gets permission to read user contacts.
-     *
-     * @return the permission to read user contacts
-     */
-    public boolean getPermissionToReadUserContacts() {
-        ((YonaActivity) getActivity()).setSkipVerification(true);
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSIONS_REQUEST);
-            return false;
-        } else {
-            openContactBook();
-            return true;
-        }
-    }
-
-    private void openContactBook() {
-        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_OPEN_CONTACT_BOOK, null);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         viewPager.setCurrentItem(ADD_FRIEND_MANUALLY, true);
-        ((YonaActivity) getActivity()).updateTitle(R.string.friends);
+        setTitleAndIcon();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        // Make sure it's our original READ_CONTACTS request
-        if (requestCode == READ_CONTACTS_PERMISSIONS_REQUEST) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openContactBook();
-            } else {
-                viewPager.setCurrentItem(ADD_FRIEND_MANUALLY);
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    private void setTitleAndIcon() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
+                YonaActivity.getActivity().updateTitle(getString(R.string.friends));
+                YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
             }
-        }
+        }, AppConstant.TIMER_DELAY_HUNDRED);
+
     }
 }

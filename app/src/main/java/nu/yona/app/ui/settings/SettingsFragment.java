@@ -176,7 +176,7 @@ public class SettingsFragment extends BaseFragment {
         YonaActivity.getActivity().showLoadingView(false, null);
         CustomAlertDialog.show(YonaActivity.getActivity(),
                 message,
-                getString(R.string.ok), new DialogInterface.OnClickListener() {
+                YonaActivity.getActivity().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (doDelete) {

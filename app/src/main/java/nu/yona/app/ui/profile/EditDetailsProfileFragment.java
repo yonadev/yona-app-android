@@ -146,7 +146,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         });
 
 
-        nickName.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        mobileNumber.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -203,7 +203,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     }
 
     private void profileViewMode() {
-        profileImage.setBackground(getImage(null, true));
+        profileImage.setBackground(getImage(null, true, R.color.mid_blue));
 
         firstName.setText(TextUtils.isEmpty(YonaApplication.getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getUser().getFirstName());
         lastName.setText(TextUtils.isEmpty(YonaApplication.getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getUser().getLastName());
@@ -285,7 +285,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     private void redirectToNextPage() {
         if (YonaApplication.getUser() != null && oldUserNumber.equalsIgnoreCase(YonaApplication.getUser().getMobileNumber())) {
             YonaActivity.getActivity().onBackPressed();
-            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, null);
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, YonaApplication.getUser());
         } else {
             showMobileVerificationScreen(null);
         }
@@ -298,7 +298,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        profileImage.setBackground(getImage((Bitmap) object, true));
+                        profileImage.setBackground(getImage((Bitmap) object, true, R.color.mid_blue));
                     }
                 }, AppConstant.TIMER_DELAY_HUNDRED);
                 break;

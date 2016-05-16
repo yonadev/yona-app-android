@@ -526,6 +526,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                             return;
                         }
                         mContent = new ProfileFragment();
+                        mContent.setArguments(intent.getExtras());
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;
@@ -745,9 +746,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     @Override
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
-            case EventChangeManager.EVENT_OPEN_CONTACT_BOOK:
-                openContactBook();
-                break;
             case EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY:
                 finish();
                 break;
@@ -756,7 +754,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
-    private void openContactBook() {
+    /**
+     * Open contact book.
+     */
+    public void openContactBook() {
+        isToDisplayLogin = false;
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, PICK_CONTACT);
         skipVerification = true;
@@ -865,8 +867,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * @param editText the edit text
      */
     public void showKeyboard(EditText editText) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        if (editText != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        }
     }
 
     private boolean openCaptureImage() {
@@ -888,6 +892,17 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         } else {
             pickCamera();
             return true;
+        }
+    }
+
+    /**
+     * Check contact permission.
+     */
+    public void checkContactPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, AppConstant.READ_CONTACTS_PERMISSIONS_REQUEST);
+        } else {
+            openContactBook();
         }
     }
 
@@ -923,6 +938,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 openCamera();
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
+        } else if (requestCode == AppConstant.READ_CONTACTS_PERMISSIONS_REQUEST) {
+            openContactBook();
         }
     }
 }

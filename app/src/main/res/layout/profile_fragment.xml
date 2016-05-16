@@ -14,9 +14,9 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/profile_top_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/profile_layout"
-        android:background="@color/dashboard"
         android:orientation="vertical">
 
         <ImageView
@@ -49,7 +49,6 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dashboard"
         app:tabGravity="fill"
         app:tabIndicatorColor="@android:color/white"
         app:tabIndicatorHeight="@dimen/tabIndicatorHeight"

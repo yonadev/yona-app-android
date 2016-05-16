@@ -69,28 +69,24 @@ public class EventChangeManager {
     public static final int EVENT_UPDATE_GOALS = 11;
 
     /**
-     * The constant EVENT_OPEN_CONTACT_BOOK.
-     */
-    public static final int EVENT_OPEN_CONTACT_BOOK = 12;
-    /**
      * The constant EVENT_CONTAT_CHOOSED.
      */
-    public static final int EVENT_CONTAT_CHOOSED = 13;
+    public static final int EVENT_CONTAT_CHOOSED = 12;
 
     /**
      * The constant EVENT_CLOSE_YONA_ACTIVITY.
      */
-    public static final int EVENT_CLOSE_YONA_ACTIVITY = 14;
+    public static final int EVENT_CLOSE_YONA_ACTIVITY = 13;
 
     /**
      * The constant EVENT_RECEIVED_PHOTO.
      */
-    public static final int EVENT_RECEIVED_PHOTO = 15;
+    public static final int EVENT_RECEIVED_PHOTO = 14;
 
     /**
      * The constant EVENT_USER_UPDATE.
      */
-    public static final int EVENT_USER_UPDATE = 16;
+    public static final int EVENT_USER_UPDATE = 15;
 
     private final Set<EventChangeListener> listeners = new HashSet<>();
 

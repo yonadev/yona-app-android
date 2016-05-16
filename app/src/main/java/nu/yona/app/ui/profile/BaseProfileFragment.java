@@ -21,7 +21,6 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
-import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
@@ -41,11 +40,12 @@ public class BaseProfileFragment extends BaseFragment {
     /**
      * Gets image.
      *
-     * @param bitmap    the bitmap
-     * @param withAlpha the with alpha
+     * @param bitmap          the bitmap
+     * @param withAlpha       the with alpha
+     * @param backgroundColor the background color
      * @return the image
      */
-    protected Drawable getImage(Bitmap bitmap, boolean withAlpha) {
+    protected Drawable getImage(Bitmap bitmap, boolean withAlpha, int backgroundColor) {
         if (bitmap != null) {// TODO: 10/05/16 When server provides user profile image, we need to check and enable if part on base of that.
             RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
             drawable.setCornerRadius(Math.max(bitmap.getWidth(), bitmap.getHeight()));
@@ -54,8 +54,8 @@ public class BaseProfileFragment extends BaseFragment {
         } else {
             TextDrawable image = TextDrawable.builder().beginConfig().withBorder(AppConstant.PROFILE_IMAGE_BORDER_SIZE)
                     .textColor(Color.WHITE).endConfig()
-                    .buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue));
+                    .buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase() + YonaApplication.getUser().getLastName().substring(0, 1).toUpperCase(),
+                            ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor));
             if (withAlpha) {
                 image.setAlpha(ALPHA);
             }
