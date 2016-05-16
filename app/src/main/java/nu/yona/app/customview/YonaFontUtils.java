@@ -12,9 +12,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.LruCache;
 import android.widget.TextView;
-
-import java.util.HashMap;
 
 import nu.yona.app.R;
 import nu.yona.app.utils.AppUtils;
@@ -35,7 +34,7 @@ class YonaFontUtils {
     private static final int ROBOTO_BOLD = 12;
     private static final int ROBOTO_NORMAL = 13;
     private static final int OSWALD_LIGHT = 14;
-    private static final HashMap<String, Typeface> fontCache = new HashMap<>();
+    private static final LruCache<String, Typeface> fontCache = new LruCache<>(17);
 
     /**
      * Apply custom font.

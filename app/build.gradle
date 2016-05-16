@@ -145,4 +145,6 @@ dependencies {
     compile 'joda-time:joda-time:2.9.3'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    //using for sticky header recyclerview
+    compile 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
 }

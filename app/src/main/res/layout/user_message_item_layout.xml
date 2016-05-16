@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp">
+
+
+    <ImageView
+        android:id="@+id/swipe_delete_goal"
+        android:layout_width="@dimen/message_item_height"
+        android:layout_height="@dimen/message_item_height"
+        android:background="@color/darkish_pink"
+        android:padding="@dimen/img_badges_padding_top_bottom"
+        android:src="@drawable/icn_trash" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/message_item_height"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_user_icon"
+            android:layout_width="@dimen/img_width"
+            android:layout_height="@dimen/img_height"
+            android:layout_margin="16dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/icn_avatar" />
+
+        <ImageView
+            android:id="@+id/img_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/img_badges_padding_top_bottom"
+            android:layout_marginRight="@dimen/user_avatar_padding"
+            android:layout_marginTop="@dimen/img_badges_padding_top_bottom" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txt_title"
+            style="@style/SeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/img_badges_padding_top_bottom"
+            android:layout_toEndOf="@id/img_user_icon"
+            android:layout_toLeftOf="@id/img_status"
+            android:layout_toRightOf="@id/img_user_icon"
+            android:layout_toStartOf="@id/img_status"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txt_footer"
+            style="@style/FooterTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img_status"
+            android:layout_alignLeft="@id/txt_title"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@id/txt_title"
+            android:layout_marginBottom="@dimen/twenty_five"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+
+    </RelativeLayout>
+
+</com.daimajia.swipe.SwipeLayout>

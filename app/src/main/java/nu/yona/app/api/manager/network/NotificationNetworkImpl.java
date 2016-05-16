@@ -11,8 +11,12 @@
 package nu.yona.app.api.manager.network;
 
 import nu.yona.app.api.model.MessageBody;
+import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by kinnarvasa on 09/05/16.
@@ -28,9 +32,23 @@ public class NotificationNetworkImpl extends BaseImpl {
      * @param pageNo       the page no
      * @param listener     the listener
      */
-    public void getMessage(String url, String yonaPassword, int itemsPerPage, int pageNo, DataLoadListener listener) {
+    public void getMessage(String url, String yonaPassword, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
-            getRestApi().getMessages(url, yonaPassword, itemsPerPage, pageNo);
+            getRestApi().getMessages(url, yonaPassword, itemsPerPage, pageNo).enqueue(new Callback<YonaMessages>() {
+                @Override
+                public void onResponse(Call<YonaMessages> call, Response<YonaMessages> response) {
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        onError(response, listener);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<YonaMessages> call, Throwable t) {
+                    onError(t, listener);
+                }
+            });
         } catch (Exception e) {
             AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -66,4 +84,5 @@ public class NotificationNetworkImpl extends BaseImpl {
             AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
+
 }

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -68,12 +69,12 @@ public class DashboardFragment extends BaseFragment {
                     YonaActivity.getActivity().getLeftIcon().setImageDrawable(TextDrawable.builder()
                             .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
                             .buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase(),
-                                    YonaActivity.getActivity().getResources().getColor(R.color.mid_blue, YonaActivity.getActivity().getTheme())));
+                                    ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
                 }
                 YonaActivity.getActivity().updateTitle(R.string.dashboard);
                 YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.dashboard));
                 YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
-                YonaActivity.getActivity().getRightIcon().setImageDrawable(YonaActivity.getActivity().getDrawable(R.drawable.icn_reminder));
+                YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
 
                 YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -43,7 +43,7 @@ public class AuthenticateManagerImplTest {
         registerUser.setMobileNumber("+31873449748");
         registerUser.setNickName("Kinnar");
 
-        manager.registerUser(registerUser, new DataLoadListener() {
+        manager.registerUser(registerUser, true, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 validateMobileNumber(password, ((User) result).getMobileNumberConfirmationCode());

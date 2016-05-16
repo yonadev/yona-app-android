@@ -110,7 +110,7 @@
     <string name="challengedeletemsg">Are you sure?</string>
     <string name="timepickerstarttimelable">Select time from you want to spent:</string>
     <string name="timepickerendtimelable">Select time till you want to spent:</string>
-    <string name="timepickererror">You can not select past time, it should be future time.</string>
+    <string name="timepickererror">Current time must be future time.</string>
     <string name="timepickerselect">Select time you want to spent:</string>
     <string name="add_timezone">Please add atlest one time to add in timezone.</string>
     <string name="challengesdetail">%1$s VASTLEGGEN</string>
@@ -129,5 +129,11 @@
     <string name="remove_friend_btn">REMOVING FRIEND</string>
     <!-- Status Messages -->
     <string name="status_friend_request">Friend Request</string>
-    <!-- Status Messages -->
+    <string name="delete">Verwijder</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="buddyconnectrequested">Vriendenverzoek</string>
+    <string name="buddyconnectresponseaccepted">Vriendenverzoek geaccepteerd</string>
+    <string name="buddyconnectresponserejected">Vriendenverzoek geweigerd</string>
+    <string name="buddydisconnectmessageuserromovedbuddy">Je bent verwijderd als vriend</string>
 </resources>
