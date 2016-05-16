@@ -24,17 +24,8 @@ import nu.yona.app.utils.AppUtils;
  */
 class YonaFontUtils {
 
-    /**
-     * The constant ANDROID_SCHEMA.
-     */
-    public static final String ANDROID_SCHEMA = "http://schemas.android.com/apk/res/android";
     //font Style TypeFace
-    private static final int ROBOTO_LIGHT = 10;
-    private static final int ROBOTO_MEDIUM = 11;
-    private static final int ROBOTO_BOLD = 12;
-    private static final int ROBOTO_NORMAL = 13;
-    private static final int OSWALD_LIGHT = 14;
-    private static final LruCache<String, Typeface> fontCache = new LruCache<>(17);
+    private static LruCache<String, Typeface> fontCache;
 
     /**
      * Apply custom font.
@@ -62,25 +53,28 @@ class YonaFontUtils {
             http://developer.android.com/reference/android/R.styleable.html#TextView_textStyle
             */
         switch (textStyle) {
-            case ROBOTO_LIGHT: // extra light, equals @integer/font_style_extra_light
+            case R.integer.roboto_light: // extra light, equals @integer/font_style_extra_light
                 return getTypeface("roboto-light.ttf", context);
 
-            case ROBOTO_MEDIUM:
+            case R.integer.roboto_medium:
                 return getTypeface("roboto-medium.ttf", context);
 
-            case ROBOTO_BOLD: // bold
+            case R.integer.roboto_bold: // bold
                 return getTypeface("roboto-bold.ttf", context);
 
-            case OSWALD_LIGHT:
+            case R.integer.oswald_light:
                 return getTypeface("oswald-light.ttf", context);
 
-            case ROBOTO_NORMAL: // regular
+            case R.integer.roboto_normal: // regular
             default:
                 return getTypeface("roboto-regular.ttf", context);
         }
     }
 
     private static Typeface getTypeface(String fontname, Context context) {
+        if (fontCache == null) {
+            fontCache = new LruCache<>(context.getResources().getInteger(R.integer.total_font_count));
+        }
         Typeface typeface = fontCache.get(fontname);
 
         if (typeface == null) {

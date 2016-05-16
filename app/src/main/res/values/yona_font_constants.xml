@@ -7,6 +7,8 @@
   -->
 
 <resources>
+    <!-- change the total_font_count when adding new -->
+    <integer name="total_font_count">5</integer>
     <integer name="roboto_light">10</integer>
     <integer name="roboto_medium">11</integer>
     <integer name="roboto_bold">12</integer>
