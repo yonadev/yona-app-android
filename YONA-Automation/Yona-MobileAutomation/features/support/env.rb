@@ -25,6 +25,7 @@ android do
 
   start_appium_server unless ENV['TARGET'] == 'sauce'
   prepare_android_phone(android_settings)
+  $android_package='nu.yona.app'
 end unless ENV['TARGET'] == 'web'
 
 ios do

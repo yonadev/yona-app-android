@@ -15,3 +15,4 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
     Then Enters pincode fetched from alert
     Then Sets the pin for application login
     And Confirms the pin for application login
+    Then User is landed on Challenges screen

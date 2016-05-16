@@ -30,6 +30,7 @@ And(/^Enters Mobile number and code generated above$/) do
   sleep 2
   puts "Mobile=#{$strMobliNumb}"
   on(AddDevice).enterDetails($strMobliNumb)
+
 end
 
 Then(/^Clicks on VORIGE button$/) do
@@ -40,10 +41,14 @@ end
 
 
 And(/^User is logged in to new device$/) do
+  sleep 5
   puts "New divce added successfully"
   sleep 2
 end
 
+Then(/User is landed on enter OTP screen$/) do
+  expect(on(AddDevice).landed_on_OTP?).to be_truthy
+end
 
 
 
