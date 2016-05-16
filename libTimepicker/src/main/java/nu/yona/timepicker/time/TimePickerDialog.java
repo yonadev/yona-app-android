@@ -458,7 +458,7 @@ public class TimePickerDialog extends DialogFragment implements
      * @return
      */
     public boolean checkValidTimeSelection() {
-        if(mFirstTime != null && mSecondTime != null && mSecondTime.compareTo(mFirstTime) < 0){
+        if(mFirstTime != null && mSecondTime != null && mSecondTime.compareTo(mFirstTime) <= 0){
             if (mErrorMsg != null) {
                 mErrorMsg.setText(getString(R.string.error_msg_dual_screen));
                 mErrorMsg.setVisibility(View.VISIBLE);
