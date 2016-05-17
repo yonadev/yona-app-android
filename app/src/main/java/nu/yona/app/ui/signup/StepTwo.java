@@ -65,14 +65,14 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         mobileNumberLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YonaActivity.getActivity().showKeyboard(mobileNumber);
+                activity.showKeyboard(mobileNumber);
             }
         });
 
         nickNameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YonaActivity.getActivity().showKeyboard(nickName);
+                activity.showKeyboard(nickName);
             }
         });
 

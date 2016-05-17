@@ -9,6 +9,7 @@
 package nu.yona.app.ui.message;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -94,8 +96,19 @@ public class MessageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((YonaActivity) getActivity()).updateTitle(R.string.message);
+        setTitleAndIcon();
         refreshAdapter();
+    }
+
+    private void setTitleAndIcon() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
+                YonaActivity.getActivity().updateTitle(R.string.message);
+                YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+            }
+        }, AppConstant.TIMER_DELAY_THREE_HUNDRED);
     }
 
     private void refreshAdapter() {
@@ -126,7 +139,7 @@ public class MessageFragment extends BaseFragment {
             @Override
             public void onError(Object errorMessage) {
                 YonaActivity.getActivity().showLoadingView(false, null);
-                YonaActivity.getActivity().showError(new ErrorMessage(errorMessage.toString()));
+                YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
             }
         });
     }

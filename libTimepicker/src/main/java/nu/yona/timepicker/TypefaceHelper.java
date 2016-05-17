@@ -23,11 +23,11 @@ import android.support.v4.util.SimpleArrayMap;
     adb shell dumpsys meminfo com.your.packagenage
     You will see output like:
      Asset Allocations
-        zip:/data/app/com.your.packagenage-1.apk:/assets/Roboto-Medium.ttf: 125K
-        zip:/data/app/com.your.packagenage-1.apk:/assets/Roboto-Medium.ttf: 125K
-        zip:/data/app/com.your.packagenage-1.apk:/assets/Roboto-Medium.ttf: 125K
+        zip:/data/app/com.your.packagenage-1.apk:/assets/lib-roboto-medium.ttf: 125K
+        zip:/data/app/com.your.packagenage-1.apk:/assets/lib-roboto-medium.ttf: 125K
+        zip:/data/app/com.your.packagenage-1.apk:/assets/lib-roboto-medium.ttf: 125K
         zip:/data/app/com.your.packagenage-1.apk:/assets/Roboto-Regular.ttf: 123K
-        zip:/data/app/com.your.packagenage-1.apk:/assets/Roboto-Medium.ttf: 125K
+        zip:/data/app/com.your.packagenage-1.apk:/assets/lib-roboto-medium.ttf: 125K
 */
 public class TypefaceHelper {
 
