@@ -30,6 +30,8 @@ public interface AppConstant {
      * The constant TIMER_DELAY_HUNDRED.
      */
     int TIMER_DELAY_HUNDRED = 100;
+
+    int TIMER_DELAY_THREE_HUNDRED = 300;
     /**
      * The constant TIMER_DELAY.
      */

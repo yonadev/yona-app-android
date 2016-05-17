@@ -218,8 +218,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             intent.putExtras(bundle);
             startActivity(intent);
             launchedPinActiivty = true;
+            getUser();
         }
-        getUser();
     }
 
     @Override
@@ -750,6 +750,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         switch (eventType) {
             case EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY:
                 finish();
+                break;
+            case EventChangeManager.EVENT_USER_NOT_EXIST:
+                if(object != null && object instanceof ErrorMessage) {
+                    showError((ErrorMessage) object);
+                }
                 break;
             default:
                 break;
