@@ -20,7 +20,9 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.utils.NetworkUtils;
+import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeManager;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -148,6 +150,9 @@ class BaseImpl {
                 try {
                     Converter<ResponseBody, ErrorMessage> errorConverter =
                             getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                    if (errorConverter.convert(response.errorBody()) != null && errorConverter.convert(response.errorBody()).getCode().equals(ServerErrorCode.USER_NOT_FOUND)) {
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, (errorConverter.convert(response.errorBody())));
+                    }
                     listener.onError(errorConverter.convert(response.errorBody()));
                 } catch (IOException e) {
                     listener.onError(new ErrorMessage(e.getMessage()));

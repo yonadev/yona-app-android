@@ -117,7 +117,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                 viewPager.setCurrentItem(0);
                 showOptionsInSelectedTab(viewPager.getCurrentItem());
             }
-        }, AppConstant.TIMER_DELAY_HUNDRED);
+        }, AppConstant.TIMER_DELAY_THREE_HUNDRED);
 
     }
 

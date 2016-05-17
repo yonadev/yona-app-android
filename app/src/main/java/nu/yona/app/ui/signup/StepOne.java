@@ -85,14 +85,14 @@ public class StepOne extends BaseFragment implements EventChangeListener {
         firstNameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YonaActivity.getActivity().showKeyboard(firstName);
+                activity.showKeyboard(firstName);
             }
         });
 
         lastNameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YonaActivity.getActivity().showKeyboard(lastName);
+                activity.showKeyboard(lastName);
             }
         });
 
