@@ -43,4 +43,6 @@ public interface NotificationManager {
      * @param listener     the listener
      */
     void postMessage(String url, MessageBody body, int itemsPerPage, int pageNo, DataLoadListener listener);
+
+    void deleteMessage(String url, final int itemsPerPage, final int pageNo, DataLoadListener listener);
 }
