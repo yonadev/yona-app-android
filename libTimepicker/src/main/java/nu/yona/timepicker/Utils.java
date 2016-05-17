@@ -35,6 +35,7 @@ public class Utils {
     public static final int SELECTED_ALPHA_THEME_DARK = 255;
     // Alpha level for fully opaque.
     public static final int FULL_ALPHA = 255;
+    public static final String ROBOTO_MEDIUM = "lib-roboto-medium";
 
     public static boolean isJellybeanOrLater() {
       return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
