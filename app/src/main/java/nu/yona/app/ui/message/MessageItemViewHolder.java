@@ -20,10 +20,27 @@ import nu.yona.app.customview.YonaFontTextView;
  */
 public class MessageItemViewHolder extends RecyclerView.ViewHolder {
 
+    /**
+     * The Img avtar.
+     */
     public ImageView img_avtar;
+    /**
+     * The Img status.
+     */
     public ImageView img_status;
-    public YonaFontTextView txtTitleMsg, txtFooterMsg;
+    /**
+     * The Txt title msg.
+     */
+    public YonaFontTextView txtTitleMsg, /**
+     * The Txt footer msg.
+     */
+    txtFooterMsg;
 
+    /**
+     * Instantiates a new Message item view holder.
+     *
+     * @param itemView the item view
+     */
     public MessageItemViewHolder(View itemView) {
         super(itemView);
         img_avtar = (ImageView) itemView.findViewById(R.id.img_user_icon);

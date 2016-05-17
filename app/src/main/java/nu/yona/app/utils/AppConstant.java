@@ -31,6 +31,9 @@ public interface AppConstant {
      */
     int TIMER_DELAY_HUNDRED = 100;
 
+    /**
+     * The constant TIMER_DELAY_THREE_HUNDRED.
+     */
     int TIMER_DELAY_THREE_HUNDRED = 300;
     /**
      * The constant TIMER_DELAY.
@@ -108,6 +111,11 @@ public interface AppConstant {
      * The constant SCREEN_TYPE.
      */
     String SCREEN_TYPE = "screen_type";
+
+    /**
+     * The constant PROGRESS_DRAWABLE.
+     */
+    String PROGRESS_DRAWABLE = "progress_drawable";
     /**
      * The constant FROM_LOGIN.
      */

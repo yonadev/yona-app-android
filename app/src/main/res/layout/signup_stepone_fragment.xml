@@ -28,7 +28,7 @@
             android:ellipsize="end"
             android:hint="@string/firstname"
             android:imeOptions="actionNext"
-            android:inputType="textFilter|textCapWords"
+            android:inputType="textVisiblePassword|textCapWords"
             android:maxLength="@integer/char_limit"
             android:maxLines="1"
             android:textColorHint="@color/black" />
@@ -48,7 +48,7 @@
             android:ellipsize="end"
             android:hint="@string/lastname"
             android:imeOptions="actionDone"
-            android:inputType="textFilter|textCapWords"
+            android:inputType="textVisiblePassword|textCapWords"
             android:maxLength="@integer/char_limit"
             android:maxLines="1"
             android:textColorHint="@color/black" />

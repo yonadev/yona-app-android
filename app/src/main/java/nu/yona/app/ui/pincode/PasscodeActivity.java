@@ -36,7 +36,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private int PASSCODE_STEP = 0;
     private String first_passcode;
     private YonaFontTextView txtTitle;
-    private int colorCode;
+    private int colorCode, progressDrawable;
     private Toolbar mToolBar;
     private boolean isFromSettings;
 
@@ -49,6 +49,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar_layout);
 
+        progressDrawable = R.drawable.progress_bar;
         if (getIntent() != null && getIntent().getExtras() != null) {
             if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
                 colorCode = getIntent().getExtras().getInt(AppConstant.COLOR_CODE);
@@ -60,7 +61,10 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
             } else {
                 mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
             }
-            isFromSettings = getIntent().getExtras().getBoolean(AppConstant.FROM_SETTINGS);
+            if(getIntent().getExtras().get(AppConstant.PROGRESS_DRAWABLE) != null) {
+                progressDrawable = getIntent().getExtras().getInt(AppConstant.PROGRESS_DRAWABLE);
+            }
+            isFromSettings = getIntent().getExtras().getBoolean(AppConstant.FROM_SETTINGS, false);
         } else {
             colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
@@ -102,6 +106,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private Fragment getPasscodeFragment() {
         Bundle bPasscode = new Bundle();
         bPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
+        bPasscode.putInt(AppConstant.PROGRESS_DRAWABLE, progressDrawable);
         if (isFromSettings) {
             bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_FIRST_STEP);
         } else {
@@ -115,6 +120,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private Fragment getPasscodeVerifyFragment() {
         Bundle bVerifyPasscode = new Bundle();
         bVerifyPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
+        bVerifyPasscode.putInt(AppConstant.PROGRESS_DRAWABLE, progressDrawable);
         if (isFromSettings) {
             bVerifyPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_SECOND_STEP);
         } else {

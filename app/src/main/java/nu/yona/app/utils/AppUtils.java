@@ -265,6 +265,9 @@ public class AppUtils {
 
     /**
      * convert one digit number to two digit number appending with 0 if its length is one else return same
+     *
+     * @param time the time
+     * @return the time digit
      */
     public static String getTimeDigit(int time) {
         String timeDigit = String.valueOf(time);

@@ -58,6 +58,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     private TextWatcher textWatcher;
     private String oldUserNumber;
     private RegisterUser user;
+    private View.OnFocusChangeListener onFocusChangeListener;
 
     @Nullable
     @Override
@@ -88,6 +89,14 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
             }
         };
 
+        onFocusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    ((EditText) view).setSelection(((EditText) view).getText().length());
+                }
+            }
+        };
         inflateView(view);
 
         YonaApplication.getEventChangeManager().registerListener(this);
@@ -103,12 +112,15 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
         firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
         firstName.addTextChangedListener(textWatcher);
+        firstName.setOnFocusChangeListener(onFocusChangeListener);
 
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         lastName.addTextChangedListener(textWatcher);
+        lastName.setOnFocusChangeListener(onFocusChangeListener);
 
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
         nickName.addTextChangedListener(textWatcher);
+        nickName.setOnFocusChangeListener(onFocusChangeListener);
 
         mobileNumber = (YonaFontEditTextView) view.findViewById(R.id.mobile_number);
         mobileNumber.setText(R.string.country_code_with_zero);
@@ -145,7 +157,6 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
             }
         });
 
-
         mobileNumber.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -155,6 +166,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
                 return false;
             }
         });
+
 
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
         profileImage.setOnClickListener(listener);

@@ -131,8 +131,7 @@ public class YonaApplication extends Application {
         if (TextUtils.isEmpty(getUserPreferences().getString(AppConstant.SERVER_URL, getAppContext().getString(R.string.blank)))) {
             getUserPreferences().edit().putString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url)).commit();
         }
-        serverUrl = getUserPreferences().getString(AppConstant.SERVER_URL, getAppContext().getString(R.string.blank));
-        return serverUrl;
+        return getUserPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
     }
 
     /**

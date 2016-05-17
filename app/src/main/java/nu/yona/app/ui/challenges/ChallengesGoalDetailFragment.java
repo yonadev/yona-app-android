@@ -53,12 +53,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
     private ImageView mHGoalTypeImg;
     private YonaFontTextView mBudgetGoalTime;
-    private View budgetGoalView, timezoneGoalView;
-    private Object mYonaGoal;
-    private String currentTab;
-    private List<String> listOfTimes;
-    private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
-
     /**
      * Use this listener only for budget time picker
      */
@@ -69,7 +63,11 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             mBudgetGoalTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(time)));
         }
     };
-
+    private View budgetGoalView, timezoneGoalView;
+    private Object mYonaGoal;
+    private String currentTab;
+    private List<String> listOfTimes;
+    private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
     /**
      * Use this listener only for Time zone picker
      */

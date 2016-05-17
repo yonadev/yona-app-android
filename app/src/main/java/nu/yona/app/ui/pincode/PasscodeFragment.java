@@ -10,6 +10,7 @@ package nu.yona.app.ui.pincode;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -38,6 +39,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
 
     private YonaFontTextView passcode_title, passcode_description, passcode_error, passcode_reset;
     private YonaFontEditTextView passcode1, passcode2, passcode3, passcode4;
+    private int progressDrawable;
     private final View.OnKeyListener keyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -75,10 +77,14 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.pincode_layout, container, false);
 
+        progressDrawable = R.drawable.progress_bar;
         if (getArguments() != null) {
             screen_type = getArguments().getString(AppConstant.SCREEN_TYPE);
             if (getArguments().get(AppConstant.COLOR_CODE) != null) {
                 view.setBackgroundColor(getArguments().getInt(AppConstant.COLOR_CODE));
+            }
+            if(getArguments().get(AppConstant.PROGRESS_DRAWABLE) != null) {
+                progressDrawable= getArguments().getInt(AppConstant.PROGRESS_DRAWABLE);
             }
         }
 
@@ -159,6 +165,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode_description.setText(getString(R.string.accountloginsecuritymessage));
         ((OTPActivity) getActivity()).updateTitle(getString(R.string.join));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_sixty));
+        profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
         passcode_reset.setText(getString(R.string.sendotpagain));
         passcode_reset.setVisibility(View.VISIBLE);
     }
@@ -169,6 +176,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode_description.setText(getString(R.string.settings_current_pin_message));
         ((PinActivity) getActivity()).updateTitle(getString(R.string.changepin));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_thirty));
+        profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
         passcode_reset.setVisibility(View.GONE);
     }
 
@@ -178,6 +186,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode_description.setText(getString(R.string.settings_new_pin_message));
         ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.changepin));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_sixty));
+        profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
         passcode_reset.setVisibility(View.GONE);
     }
 
@@ -187,6 +196,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode_description.setText(getString(R.string.settings_confirm_new_pin_message));
         ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.changepin));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_complete));
+        profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
         passcode_reset.setVisibility(View.GONE);
     }
 

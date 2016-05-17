@@ -8,30 +8,36 @@
   ~
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/edit_profile_detail_top_layout_height"
-        android:background="@color/dashboard">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/profileImage"
-            android:layout_width="@dimen/profile_image_size"
-            android:layout_height="@dimen/profile_image_size"
-            android:layout_centerInParent="true"/>
-        <ImageView
-            android:id="@+id/updateProfileImage"
-            android:layout_width="@dimen/capture_image_size"
-            android:layout_height="@dimen/capture_image_size"
-            android:layout_centerInParent="true"
-            android:src="@drawable/icn_add_picture"
-            android:scaleType="centerInside"/>
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_profile_detail_top_layout_height"
+            android:background="@color/dashboard">
 
-    <include layout="@layout/profile_details_fragment" />
-</LinearLayout>
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="@dimen/profile_image_size"
+                android:layout_height="@dimen/profile_image_size"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:id="@+id/updateProfileImage"
+                android:layout_width="@dimen/capture_image_size"
+                android:layout_height="@dimen/capture_image_size"
+                android:layout_centerInParent="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/icn_add_picture" />
+        </RelativeLayout>
+
+        <include layout="@layout/profile_details_view" />
+    </LinearLayout>
+</ScrollView>

@@ -77,6 +77,10 @@ class BaseImpl {
         return retrofit;
     }
 
+    private void reinitializeRetrofit() {
+        retrofit = null; // this method is require when user do signout and want to change environment, it should update with new environemnt.
+    }
+
     private OkHttpClient gethttpClient() {
         return new OkHttpClient.Builder()
                 .connectTimeout(NetworkConstant.API_CONNECT_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
@@ -150,10 +154,13 @@ class BaseImpl {
                 try {
                     Converter<ResponseBody, ErrorMessage> errorConverter =
                             getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
-                    if (errorConverter.convert(response.errorBody()) != null && errorConverter.convert(response.errorBody()).getCode().equals(ServerErrorCode.USER_NOT_FOUND)) {
-                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, (errorConverter.convert(response.errorBody())));
+                    ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
+                    if (errorMessage != null && errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND)) {
+                        reinitializeRetrofit();
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, errorMessage);
+                    } else {
+                        listener.onError(errorMessage);
                     }
-                    listener.onError(errorConverter.convert(response.errorBody()));
                 } catch (IOException e) {
                     listener.onError(new ErrorMessage(e.getMessage()));
                 }
