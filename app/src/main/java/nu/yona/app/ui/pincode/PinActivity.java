@@ -41,7 +41,6 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
 
     private TextView txtTitle;
     private PasscodeFragment passcodeFragment;
-    private int colorCode;
     private Toolbar mToolBar;
     private String screenType;
 
@@ -58,11 +57,6 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         txtTitle = (TextView) findViewById(R.id.toolbar_title);
 
         if (getIntent() != null && getIntent().getExtras() != null) {
-            if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
-                colorCode = getIntent().getExtras().getInt(AppConstant.COLOR_CODE);
-            } else {
-                colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
-            }
             if (getIntent().getExtras().get(AppConstant.TITLE_BACKGROUND_RESOURCE) != null) {
                 mToolBar.setBackgroundResource(getIntent().getExtras().getInt(AppConstant.TITLE_BACKGROUND_RESOURCE));
             } else {
@@ -72,15 +66,11 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
                 screenType = getIntent().getExtras().getString(AppConstant.SCREEN_TYPE);
             }
         } else {
-            colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
         }
 
         passcodeFragment = new PasscodeFragment();
-        Bundle loginBundle = new Bundle();
-        loginBundle.putInt(AppConstant.COLOR_CODE, colorCode);
-        loginBundle.putString(AppConstant.SCREEN_TYPE, screenType);
-        passcodeFragment.setArguments(loginBundle);
+        passcodeFragment.setArguments(getIntent().getExtras());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
         fragmentTransaction.replace(R.id.blank_container, passcodeFragment);
@@ -207,6 +197,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_FIRST_STEP);
         bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_mango);
         bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(this, R.color.mango));
+        bundle.putInt(AppConstant.PROGRESS_DRAWABLE, R.drawable.pin_reset_progress_bar);
         intent.putExtras(bundle);
         this.overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         startActivity(intent);

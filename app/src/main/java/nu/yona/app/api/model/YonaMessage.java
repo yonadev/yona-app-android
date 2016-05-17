@@ -177,7 +177,7 @@ public class YonaMessage {
     /**
      * Get Notification enum
      *
-     * @return
+     * @return notification message enum
      */
     public NotificationMessageEnum getNotificationMessageEnum() {
         return notificationMessageEnum;
@@ -186,9 +186,8 @@ public class YonaMessage {
     /**
      * Set Notification Enum
      *
-     * @param notificationMessageEnum
+     * @param notificationMessageEnum the notification message enum
      */
-
     public void setNotificationMessageEnum(NotificationMessageEnum notificationMessageEnum) {
         this.notificationMessageEnum = notificationMessageEnum;
     }
@@ -196,9 +195,8 @@ public class YonaMessage {
     /**
      * Get Sticky Title
      *
-     * @return
+     * @return sticky title
      */
-
     public String getStickyTitle() {
         return stickyTitle;
     }
@@ -206,7 +204,7 @@ public class YonaMessage {
     /**
      * Set Sticky Title
      *
-     * @param stickyTitle
+     * @param stickyTitle the sticky title
      */
     public void setStickyTitle(String stickyTitle) {
         this.stickyTitle = stickyTitle;

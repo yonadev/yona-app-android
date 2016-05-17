@@ -33,6 +33,12 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
     private List<YonaMessage> listYonaMessage;
     private YonaActivity activity;
 
+    /**
+     * Instantiates a new Message sticky recycler adapter.
+     *
+     * @param yonaMessages the yona messages
+     * @param yonaActivity the yona activity
+     */
     public MessageStickyRecyclerAdapter(List<YonaMessage> yonaMessages, YonaActivity yonaActivity) {
         this.listYonaMessage = yonaMessages;
         this.activity = yonaActivity;
@@ -63,6 +69,12 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
         }
     }
 
+    /**
+     * Gets item.
+     *
+     * @param position the position
+     * @return the item
+     */
     public Object getItem(int position) {
         return listYonaMessage.get(position);
     }
@@ -95,22 +107,40 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
         return listYonaMessage.size();
     }
 
+    /**
+     * Update data.
+     *
+     * @param yonaMessages the yona messages
+     */
     public void updateData(final List<YonaMessage> yonaMessages) {
         listYonaMessage.addAll(yonaMessages);
         notifyDataSetChanged();
     }
 
+    /**
+     * Notify data set change.
+     *
+     * @param yonaMessages the yona messages
+     */
     public void notifyDataSetChange(final List<YonaMessage> yonaMessages) {
         this.listYonaMessage = yonaMessages;
         notifyDataSetChanged();
     }
 
+    /**
+     * Clear.
+     */
     public void clear() {
         while (getItemCount() > 0) {
             remove((YonaMessage) getItem(0));
         }
     }
 
+    /**
+     * Remove.
+     *
+     * @param item the item
+     */
     public void remove(YonaMessage item) {
         int position = listYonaMessage.indexOf(item);
         if (position > -1) {

@@ -18,9 +18,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.TextUtils;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
+import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
@@ -54,7 +56,7 @@ public class BaseProfileFragment extends BaseFragment {
         } else {
             TextDrawable image = TextDrawable.builder().beginConfig().withBorder(AppConstant.PROFILE_IMAGE_BORDER_SIZE)
                     .textColor(Color.WHITE).endConfig()
-                    .buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase() + YonaApplication.getUser().getLastName().substring(0, 1).toUpperCase(),
+                    .buildRound(getName(),
                             ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor));
             if (withAlpha) {
                 image.setAlpha(ALPHA);
@@ -62,4 +64,14 @@ public class BaseProfileFragment extends BaseFragment {
             return image;
         }
     }
+    private String getName() {
+        StringBuffer displayName = new StringBuffer();
+        if(YonaApplication.getUser() != null){
+            displayName.append(TextUtils.isEmpty(YonaApplication.getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getUser().getFirstName().substring(0, 1));
+            displayName.append(TextUtils.isEmpty(YonaApplication.getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getUser().getLastName().substring(0, 1));
+        }
+        return displayName.toString();
+    }
+
 }
+

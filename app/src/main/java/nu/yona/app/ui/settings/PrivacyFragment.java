@@ -37,7 +37,7 @@ public class PrivacyFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.privacy_fragment, null);
         webView = (WebView) view.findViewById(R.id.webView);
         webView.loadUrl(ApiList.PRIVACY_PAGE);
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);

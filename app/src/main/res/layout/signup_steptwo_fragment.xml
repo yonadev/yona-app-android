@@ -49,7 +49,7 @@
             android:ellipsize="end"
             android:hint="@string/nickname"
             android:imeOptions="actionDone"
-            android:inputType="textFilter|textCapWords"
+            android:inputType="textVisiblePassword|textCapWords"
             android:maxLength="@integer/char_limit"
             android:maxLines="1"
             android:textColorHint="@color/black" />

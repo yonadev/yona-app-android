@@ -77,7 +77,7 @@
     <string name="challenges.addBudgetGoal.deletedGoalMessage">Verwijder Goal</string>
     <string name="deleteuser">Unsubscribe</string>
     <string name="challengesaddBudgetGoalcannotDeleteMandatoryGoalMessage">Kan verplichte doel niet verwijderen</string>
-    <string name="deleteusermessage">This is your latest device with private key and your profile and data will be remove from the yona server, please type OK below.</string>
+    <string name="deleteusermessage">Unsubscribing means you loose all information (friends, notifications, challenges, activities, etc.) on all of your devices. Press OK if this is intended.</string>
     <string name="cancel">Cancel</string>
     <string name="challengesnogoheader">Hier leg je vast waar je helemaal niet wilt komen.</string>
     <string name="challengestijdzoneheader">Kies een categorie waar je een tijdzone voor wilt instellen</string>

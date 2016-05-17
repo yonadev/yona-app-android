@@ -74,15 +74,6 @@ public enum NotificationMessageEnum {
     }
 
     /**
-     * Gets user message.
-     *
-     * @return the user message
-     */
-    public String getUserMessage() {
-        return userMessage;
-    }
-
-    /**
      * Gets notification message enum.
      *
      * @param notificationType the notification type
@@ -107,6 +98,15 @@ public enum NotificationMessageEnum {
             }
         }
         return NONE_NONE;
+    }
+
+    /**
+     * Gets user message.
+     *
+     * @return the user message
+     */
+    public String getUserMessage() {
+        return userMessage;
     }
 
     /**

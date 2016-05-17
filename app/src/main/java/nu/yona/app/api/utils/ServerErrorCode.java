@@ -18,6 +18,11 @@ public interface ServerErrorCode {
      * The constant USER_EXIST_ERROR.
      */
     String USER_EXIST_ERROR = "error.user.exists";
+
+    /**
+     * The constant ADD_BUDDY_USER_EXIST_ERROR.
+     */
+    String ADD_BUDDY_USER_EXIST_ERROR = "error.user.exists.created.on.buddy.request";
     /**
      * The constant USER_NOT_FOUND.
      * As per comment on: http://wiki.yona.nu/display/DEV/Flow+-+Unsubscribe?focusedCommentId=14843985#comment-14843985

@@ -223,7 +223,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     private void showError(Object errorMessage) {
         ErrorMessage message = (ErrorMessage) errorMessage;
         showLoadingView(false, null);
-        if (message.getCode() != null && message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)) {
+        if (message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR) || message.getCode().equalsIgnoreCase(ServerErrorCode.ADD_BUDDY_USER_EXIST_ERROR))) {
             showAlertForReRegisteruser(message.getMessage());
         } else {
             CustomAlertDialog.show(SignupActivity.this, message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {

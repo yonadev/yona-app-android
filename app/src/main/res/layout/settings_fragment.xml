@@ -27,6 +27,7 @@
         android:layout_gravity="center"
         android:dividerHeight="0dp"
         android:gravity="center" />
+
     <TextView
         android:id="@+id/label_version"
         android:layout_width="match_parent"

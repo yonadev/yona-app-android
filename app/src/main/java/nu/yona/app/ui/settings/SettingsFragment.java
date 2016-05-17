@@ -92,6 +92,7 @@ public class SettingsFragment extends BaseFragment {
         Intent intent = new Intent(getActivity(), PinActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_VERIFICATION);
+        bundle.putInt(AppConstant.PROGRESS_DRAWABLE, R.drawable.pin_reset_progress_bar);
         bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(YonaActivity.getActivity(), R.color.mango));
         bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_mango);
         intent.putExtras(bundle);

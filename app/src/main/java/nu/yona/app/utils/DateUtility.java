@@ -24,6 +24,12 @@ import nu.yona.app.YonaApplication;
 public class DateUtility {
 
 
+    /**
+     * Gets relative date.
+     *
+     * @param future the future
+     * @return the relative date
+     */
     public static String getRelativeDate(Calendar future) {
 
         String relativeDate = "";
@@ -49,6 +55,14 @@ public class DateUtility {
         return relativeDate;
     }
 
+    /**
+     * Gets date diff.
+     *
+     * @param date1    the date 1
+     * @param date2    the date 2
+     * @param timeUnit the time unit
+     * @return the date diff
+     */
     public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime() - date1.getTime();
         return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);

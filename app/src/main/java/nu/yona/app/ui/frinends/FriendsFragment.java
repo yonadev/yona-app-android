@@ -80,7 +80,7 @@ public class FriendsFragment extends BaseFragment {
                 YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
                 showOptionsInSelectedTab(viewPager.getCurrentItem());
             }
-        }, AppConstant.TIMER_DELAY_HUNDRED);
+        }, AppConstant.TIMER_DELAY_THREE_HUNDRED);
 
     }
 

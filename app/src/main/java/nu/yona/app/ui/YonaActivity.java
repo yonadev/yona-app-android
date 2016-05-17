@@ -752,7 +752,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 finish();
                 break;
             case EventChangeManager.EVENT_USER_NOT_EXIST:
-                if(object != null && object instanceof ErrorMessage) {
+                if (object != null && object instanceof ErrorMessage) {
                     showError((ErrorMessage) object);
                 }
                 break;

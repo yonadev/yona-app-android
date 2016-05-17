@@ -39,12 +39,12 @@ import nu.yona.app.utils.AppConstant;
  */
 public class MessageFragment extends BaseFragment {
 
+    private static final int PAGE_SIZE = 20;
     private List<YonaMessage> listYonaMsgs;
     private RecyclerView mMessageRecyclerView;
     private MessageStickyRecyclerAdapter mMessageStickyRecyclerAdapter;
     private YonaMessages mYonaMessages;
     private int currentPage = 0;
-    private static final int PAGE_SIZE = 20;
     private boolean mIsLoading = false;
     private LinearLayoutManager mLayoutManager;
 
