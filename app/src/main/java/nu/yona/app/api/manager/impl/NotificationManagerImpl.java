@@ -11,6 +11,7 @@
 package nu.yona.app.api.manager.impl;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -173,6 +174,24 @@ public class NotificationManagerImpl implements NotificationManager {
                     }
                 });
             }
+        } catch (Exception e) {
+            AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    public void deleteMessage(@NonNull String url, final int itemsPerPage, final int pageNo, final DataLoadListener listener) {
+        try {
+            notificationNetwork.deleteMessage(url, YonaApplication.getYonaPassword(), new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    getMessage(itemsPerPage, pageNo, listener);
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    throwError(listener, errorMessage);
+                }
+            });
         } catch (Exception e) {
             AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
