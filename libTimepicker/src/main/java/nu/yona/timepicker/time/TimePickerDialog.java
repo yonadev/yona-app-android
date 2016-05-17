@@ -739,7 +739,7 @@ public class TimePickerDialog extends DialogFragment implements
         mOkButton = (Button) view.findViewById(R.id.ok);
         mOkButton.setOnClickListener(clickListener);
         mOkButton.setOnKeyListener(keyboardListener);
-        mOkButton.setTypeface(TypefaceHelper.get(context, "Roboto-Medium"));
+        mOkButton.setTypeface(TypefaceHelper.get(context, Utils.ROBOTO_MEDIUM));
         if (mOkString != null) mOkButton.setText(mOkString);
         else mOkButton.setText(mOkResid);
 
@@ -753,7 +753,7 @@ public class TimePickerDialog extends DialogFragment implements
 
         mCancelButton = (Button) view.findViewById(R.id.cancel);
         mCancelButton.setOnClickListener(clickListener);
-        mCancelButton.setTypeface(TypefaceHelper.get(context, "Roboto-Medium"));
+        mCancelButton.setTypeface(TypefaceHelper.get(context, Utils.ROBOTO_MEDIUM));
         if (mCancelString != null) mCancelButton.setText(mCancelString);
         else mCancelButton.setText(mCancelResid);
         mCancelButton.setVisibility(isCancelable() ? View.VISIBLE : View.GONE);
