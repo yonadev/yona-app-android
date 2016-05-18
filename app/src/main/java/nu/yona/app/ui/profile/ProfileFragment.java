@@ -102,7 +102,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             nickName.setText(!TextUtils.isEmpty(user.getNickname()) ? user.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
         }
         //TODO if server provide profile picture, pass bitmap of that else pass null
-        profileImageView.setBackground(getImage(null, false, profileBgColor));
+        profileImageView.setImageDrawable(getImage(null, false, profileBgColor));
         profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor));
         tabLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor));
     }

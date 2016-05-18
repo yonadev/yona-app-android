@@ -8,6 +8,7 @@
 
 package nu.yona.app.ui.message;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -28,10 +29,12 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
+import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
 import nu.yona.app.utils.AppConstant;
 
 /**
@@ -48,6 +51,51 @@ public class MessageFragment extends BaseFragment {
     private boolean mIsLoading = false;
     private LinearLayoutManager mLayoutManager;
 
+    /**
+     * Click listener for item click and delete click of recycler view's item
+     */
+    private OnFriendsItemClickListener onFriendsItemClickListener = new OnFriendsItemClickListener() {
+        @Override
+        public void onFriendsItemClick(View view) {
+            if (view.getTag() instanceof YonaMessage) {
+                YonaMessage yonaMessage = (YonaMessage) view.getTag();
+                Intent mMessageIntent = null;
+                if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null) {
+                    mMessageIntent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
+                    mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
+                } else {
+                    mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_REQUEST.getActionString());
+                    mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
+                }
+                YonaActivity.getActivity().replaceFragment(mMessageIntent);
+            }
+        }
+
+        @Override
+        public void onFriendsItemDeleteClick(View view) {
+            if (view.getTag() instanceof YonaMessage) {
+                YonaMessage yonaMessage = (YonaMessage) view.getTag();
+                YonaActivity.getActivity().showLoadingView(true, null);
+                APIManager.getInstance().getNotificationManager().deleteMessage(yonaMessage.getLinks().getEdit().getHref(), 0, 0, new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        YonaActivity.getActivity().showLoadingView(false, null);
+                        refreshAdapter();
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+                        YonaActivity.getActivity().showLoadingView(false, null);
+                        YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                    }
+                });
+            }
+        }
+    };
+
+    /**
+     * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
+     */
     private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -71,6 +119,9 @@ public class MessageFragment extends BaseFragment {
         }
     };
 
+    /**
+     * load more items
+     */
     private void loadMoreItems() {
         mIsLoading = true;
         currentPage += 1;
@@ -85,7 +136,7 @@ public class MessageFragment extends BaseFragment {
         mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
         mMessageRecyclerView.setLayoutManager(mLayoutManager);
-        mMessageStickyRecyclerAdapter = new MessageStickyRecyclerAdapter(listYonaMsgs, YonaActivity.getActivity());
+        mMessageStickyRecyclerAdapter = new MessageStickyRecyclerAdapter(listYonaMsgs, YonaActivity.getActivity(), onFriendsItemClickListener);
         //mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(YonaActivity.getActivity()));
         mMessageRecyclerView.setAdapter(mMessageStickyRecyclerAdapter);
         mMessageRecyclerView.addOnScrollListener(mRecyclerViewOnScrollListener);
@@ -100,6 +151,9 @@ public class MessageFragment extends BaseFragment {
         refreshAdapter();
     }
 
+    /**
+     * update toolbar'r Item
+     */
     private void setTitleAndIcon() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -111,12 +165,18 @@ public class MessageFragment extends BaseFragment {
         }, AppConstant.TIMER_DELAY_THREE_HUNDRED);
     }
 
+    /**
+     * Refresh recyclerview's adapter
+     */
     private void refreshAdapter() {
         mMessageStickyRecyclerAdapter.clear();
         currentPage = 0;
         getUserMessages();
     }
 
+    /**
+     * to get the list of user's messages
+     */
     private void getUserMessages() {
         YonaActivity.getActivity().showLoadingView(true, null);
         APIManager.getInstance().getNotificationManager().getMessage(PAGE_SIZE, currentPage, new DataLoadListener() {
@@ -144,6 +204,11 @@ public class MessageFragment extends BaseFragment {
         });
     }
 
+    /**
+     * update RecyclerView item header for grouping section
+     *
+     * @param headerDecor
+     */
     private void setRecyclerHeaderAdapterUpdate(StickyRecyclerHeadersDecoration headerDecor) {
         mMessageRecyclerView.addItemDecoration(headerDecor);
 

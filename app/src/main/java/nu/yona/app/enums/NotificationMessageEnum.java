@@ -21,7 +21,7 @@ public enum NotificationMessageEnum {
     /**
      * Buddy connect request accepted notification message enum.
      */
-    BUDDY_CONNECT_REQUEST_ACCEPTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.ACCEPTED, getString(R.string.buddyconnectrequested), 0),
+    BUDDY_CONNECT_REQUEST_ACCEPTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.ACCEPTED, getString(R.string.buddyconnectrequested), R.drawable.icn_ok),
     /**
      * Buddy connect request rejected notification message enum.
      */
@@ -54,9 +54,9 @@ public enum NotificationMessageEnum {
     /**
      * The Image id.
      */
-    long imageId;
+    int imageId;
 
-    NotificationMessageEnum(NotificationEnum notificationEnum, StatusEnum statusEnum, String userMessage, long imageId) {
+    NotificationMessageEnum(NotificationEnum notificationEnum, StatusEnum statusEnum, String userMessage, int imageId) {
         this.notificationEnum = notificationEnum;
         this.statusEnum = statusEnum;
         this.userMessage = userMessage;
@@ -123,7 +123,7 @@ public enum NotificationMessageEnum {
      *
      * @return the image id
      */
-    public long getImageId() {
+    public int getImageId() {
         return imageId;
     }
 

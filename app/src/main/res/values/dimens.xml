@@ -109,4 +109,8 @@
     <dimen name="user_avatar_padding">16dp</dimen>
     <dimen name="img_badges_padding_top_bottom">24dp</dimen>
     <dimen name="message_header">53dp</dimen>
+
+
+    <!-- Friend Request -->
+    <dimen name="marginTop_for_button">27dp</dimen>
 </resources>

@@ -13,37 +13,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/profile_top_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/profile_layout"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/profileImage"
-            android:layout_width="@dimen/eighty"
-            android:layout_height="@dimen/eighty"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/twenty_three"
-            android:background="@drawable/profile_selector"
-            android:gravity="center_horizontal" />
-
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/name"
-            style="@style/SplashTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fifteen"
-            android:gravity="center_horizontal" />
-
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@id/nick_name"
-            style="@style/NavTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/three"
-            android:gravity="center_horizontal" />
-    </LinearLayout>
+    <include layout="@layout/profile_top_layout" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"

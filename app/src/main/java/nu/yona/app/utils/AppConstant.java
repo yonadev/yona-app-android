@@ -177,6 +177,11 @@ public interface AppConstant {
     String POSITION = "position";
 
     /**
+     * The constant YONAMESSAGE_OBJ
+     */
+    String YONAMESSAGE_OBJ = "yonaMessageObj";
+
+    /**
      * The constant environmentList.
      */
     CharSequence[] environmentList = new CharSequence[]{"Development", "Acceptance"};

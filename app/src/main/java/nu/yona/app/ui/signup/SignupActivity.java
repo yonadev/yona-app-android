@@ -165,7 +165,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(AppConstant.USER, getRegisterUser());
+                bundle.putSerializable(AppConstant.USER, getRegisterUser());
                 showMobileVerificationScreen(bundle);
             }
 
