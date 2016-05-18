@@ -24,6 +24,7 @@ import nu.yona.app.R;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
 
 /**
  * Created by bhargavsuthar on 10/05/16.
@@ -32,40 +33,53 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 
     private List<YonaMessage> listYonaMessage;
     private YonaActivity activity;
+    private OnFriendsItemClickListener mOnFriendsItemClickListener;
 
     /**
      * Instantiates a new Message sticky recycler adapter.
      *
-     * @param yonaMessages the yona messages
-     * @param yonaActivity the yona activity
+     * @param yonaMessages      the yona messages
+     * @param yonaActivity      the yona activity
+     * @param itemClickListener
      */
-    public MessageStickyRecyclerAdapter(List<YonaMessage> yonaMessages, YonaActivity yonaActivity) {
+    public MessageStickyRecyclerAdapter(List<YonaMessage> yonaMessages, YonaActivity yonaActivity, OnFriendsItemClickListener itemClickListener) {
         this.listYonaMessage = yonaMessages;
         this.activity = yonaActivity;
+        this.mOnFriendsItemClickListener = itemClickListener;
 
     }
 
     @Override
     public MessageItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_message_item_layout, parent, false);
-        return new MessageItemViewHolder(layoutView);
+        return new MessageItemViewHolder(layoutView, mOnFriendsItemClickListener);
     }
 
     @Override
     public void onBindViewHolder(MessageItemViewHolder holder, int position) {
         YonaMessage yonaObject = (YonaMessage) getItem(position);
         if (yonaObject != null) {
-            if (yonaObject.getEmbedded() != null && yonaObject.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getFirstName())) {
-                String username = yonaObject.getEmbedded().getYonaUser().getFirstName();
-                holder.txtFooterMsg.setText(username);
-                if (username.length() > 0) {
-                    holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(username.substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(activity, R.color.dashboard)));
+            if (yonaObject.getEmbedded() != null) {
+                if (yonaObject.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getFirstName())) {
+                    String username = yonaObject.getEmbedded().getYonaUser().getFirstName();
+                    holder.txtFooterMsg.setText(username);
+                    if (username.length() > 0) {
+                        holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(username.substring(0, 1).toUpperCase(),
+                                ContextCompat.getColor(activity, R.color.dashboard)));
+                    }
+                }
+                if (yonaObject.getNotificationMessageEnum() != null && !TextUtils.isEmpty(yonaObject.getNotificationMessageEnum().getUserMessage())) {
+                    holder.txtTitleMsg.setText(yonaObject.getNotificationMessageEnum().getUserMessage());
+                    holder.img_status.setImageResource(yonaObject.getNotificationMessageEnum().getImageId());
+                }
+                if (yonaObject.getLinks() != null && yonaObject.getLinks().getEdit() != null) {
+                    holder.swipeLayout.setRightSwipeEnabled(true);
+                } else {
+                    holder.swipeLayout.setRightSwipeEnabled(false);
                 }
             }
-            if (yonaObject.getNotificationMessageEnum() != null && !TextUtils.isEmpty(yonaObject.getNotificationMessageEnum().getUserMessage())) {
-                holder.txtTitleMsg.setText(yonaObject.getNotificationMessageEnum().getUserMessage());
-            }
+            holder.deleteMsg.setTag(yonaObject);
+            holder.swipeLayout.setTag(yonaObject);
         }
     }
 

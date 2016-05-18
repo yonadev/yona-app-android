@@ -356,7 +356,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
             public void onDataLoad(Object result) {
                 YonaActivity.getActivity().showLoadingView(false, null);
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(AppConstant.USER, user);
+                bundle.putSerializable(AppConstant.USER, user);
                 showMobileVerificationScreen(bundle);
             }
 

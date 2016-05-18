@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kinnarvasa on 09/05/16.
  */
-public class MessageBody {
+public class MessageBody extends BaseEntity{
     @SerializedName("properties")
     @Expose
     private Properties properties;
@@ -37,5 +39,10 @@ public class MessageBody {
      */
     public void setProperties(Properties properties) {
         this.properties = properties;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

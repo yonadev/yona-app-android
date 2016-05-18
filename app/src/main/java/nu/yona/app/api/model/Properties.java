@@ -14,4 +14,8 @@ package nu.yona.app.api.model;
  * Created by kinnarvasa on 09/05/16.
  */
 public class Properties {
+
+    public Properties() {
+
+    }
 }

@@ -51,7 +51,7 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         loadOTPFragment();
 
         if (getIntent() != null && getIntent().getExtras() != null) {
-            user = getIntent().getExtras().getParcelable(AppConstant.USER);
+            user = (RegisterUser) getIntent().getExtras().getSerializable(AppConstant.USER);
         }
     }
 

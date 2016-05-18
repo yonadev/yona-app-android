@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/button_challenges_radius" />
+            <stroke android:width="@dimen/button_challenges_stroke_width" android:color="@color/darkish_pink" />
+            <solid android:color="@color/darkish_pink" />
+        </shape>
+    </item>
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/button_challenges_radius" />
+            <stroke android:width="@dimen/button_challenges_stroke_width" android:color="@color/darkish_pink" />
+            <solid android:color="@color/darkish_pink" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/button_challenges_radius" />
+            <stroke android:width="@dimen/button_challenges_stroke_width" android:color="@color/darkish_pink" />
+            <solid android:color="@color/darkish_pink" />
+        </shape>
+    </item>
+</selector>

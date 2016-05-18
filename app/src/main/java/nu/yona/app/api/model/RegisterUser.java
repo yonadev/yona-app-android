@@ -10,8 +10,8 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -19,19 +19,8 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by kinnarvasa on 31/03/16.
  */
-public class RegisterUser implements Parcelable {
-    /**
-     * The constant CREATOR.
-     */
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public RegisterUser createFromParcel(Parcel in) {
-            return new RegisterUser(in);
-        }
+public class RegisterUser extends BaseEntity {
 
-        public RegisterUser[] newArray(int size) {
-            return new RegisterUser[size];
-        }
-    };
     @SerializedName("nickname")
     @Expose
     private String nickname;
@@ -56,6 +45,11 @@ public class RegisterUser implements Parcelable {
      */
     public RegisterUser() {
 
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 
     private RegisterUser(Parcel in) {
@@ -137,16 +131,6 @@ public class RegisterUser implements Parcelable {
      */
     public void setNickName(String nickname) {
         this.nickname = nickname;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{this.firstName, this.lastName, this.nickname, this.mobileNumber});
     }
 
     /**

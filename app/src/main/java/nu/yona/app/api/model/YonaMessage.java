@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -18,7 +20,7 @@ import nu.yona.app.enums.NotificationMessageEnum;
 /**
  * Created by kinnarvasa on 09/05/16.
  */
-public class YonaMessage {
+public class YonaMessage extends BaseEntity {
     @SerializedName("creationTime")
     @Expose
     private String creationTime;
@@ -210,4 +212,8 @@ public class YonaMessage {
         this.stickyTitle = stickyTitle;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

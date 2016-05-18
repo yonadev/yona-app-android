@@ -9,6 +9,7 @@
 package nu.yona.app.ui;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -66,6 +67,7 @@ import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
 import nu.yona.app.ui.frinends.AddFriendFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
+import nu.yona.app.ui.frinends.FriendsRequestFragment;
 import nu.yona.app.ui.message.MessageFragment;
 import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.ui.profile.EditDetailsProfileFragment;
@@ -571,6 +573,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;
+                    case ACTION_FRIEND_REQUEST:
+                        if (mContent instanceof FriendsRequestFragment) {
+                            return;
+                        }
+                        mContent = new FriendsRequestFragment();
+                        mContent.setArguments(intent.getExtras());
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
                     default:
                         break;
                 }
@@ -586,7 +597,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
         } else if (mContent instanceof SettingsFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_mango);
-        } else if (mContent instanceof FriendsFragment) {
+        } else if (mContent instanceof FriendsFragment || mContent instanceof FriendsRequestFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
         }
     }
@@ -880,6 +891,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private boolean openCaptureImage() {
         setSkipVerification(true);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -891,6 +903,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private boolean openCamera() {
         setSkipVerification(true);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -905,6 +918,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     /**
      * Check contact permission.
      */
+    @TargetApi(Build.VERSION_CODES.M)
     public void checkContactPermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, AppConstant.READ_CONTACTS_PERMISSIONS_REQUEST);
