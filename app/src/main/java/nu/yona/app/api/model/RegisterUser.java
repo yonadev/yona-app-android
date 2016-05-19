@@ -47,11 +47,6 @@ public class RegisterUser extends BaseEntity {
 
     }
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
-
     private RegisterUser(Parcel in) {
         String[] data = new String[4];
         in.readStringArray(data);
@@ -59,6 +54,11 @@ public class RegisterUser extends BaseEntity {
         this.lastName = data[1];
         this.nickname = data[2];
         this.mobileNumber = data[3];
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 
     /**

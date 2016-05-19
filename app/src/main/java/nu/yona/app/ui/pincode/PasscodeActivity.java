@@ -61,7 +61,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
             } else {
                 mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
             }
-            if(getIntent().getExtras().get(AppConstant.PROGRESS_DRAWABLE) != null) {
+            if (getIntent().getExtras().get(AppConstant.PROGRESS_DRAWABLE) != null) {
                 progressDrawable = getIntent().getExtras().getInt(AppConstant.PROGRESS_DRAWABLE);
             }
             isFromSettings = getIntent().getExtras().getBoolean(AppConstant.FROM_SETTINGS, false);

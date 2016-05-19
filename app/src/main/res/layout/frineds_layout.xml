@@ -16,7 +16,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/friends"
+        android:background="@color/mid_blue_two"
         app:tabGravity="fill"
         app:tabIndicatorColor="@android:color/white"
         app:tabIndicatorHeight="@dimen/tabIndicatorHeight"

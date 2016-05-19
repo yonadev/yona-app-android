@@ -23,9 +23,7 @@
         app:tabIndicatorColor="@android:color/white"
         app:tabIndicatorHeight="@dimen/tabIndicatorHeight"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/dashboard_selected_tab"
-        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-        app:tabTextColor="@color/dashboard_deselected_tab" />
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"

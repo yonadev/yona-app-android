@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.state.EventChangeListener;
@@ -33,6 +34,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
     private YonaFontEditTextView firstName, lastName, nickName, mobileNumber;
     private YonaFontButton removeFriendButton;
     private User user;
+    private YonaMessage yonaMessage;
 
     @Nullable
     @Override
@@ -53,8 +55,12 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
             }
         });
         YonaApplication.getEventChangeManager().registerListener(this);
-        if (getArguments() != null && getArguments().get(AppConstant.USER) != null) {
-            user = (User) getArguments().get(AppConstant.USER);
+        if (getArguments() != null) {
+            if (getArguments().get(AppConstant.USER) != null) {
+                user = (User) getArguments().get(AppConstant.USER);
+            } else if (getArguments().get(AppConstant.YONAMESSAGE_OBJ) != null) {
+                yonaMessage = (YonaMessage) getArguments().get(AppConstant.YONAMESSAGE_OBJ);
+            }
         }
         return view;
     }
@@ -72,31 +78,40 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
     }
 
     private void profileViewMode() {
+        String number;
+
+        firstName.setClickable(false);
+        firstName.setKeyListener(null);
+
+        lastName.setClickable(false);
+        lastName.setKeyListener(null);
+
+        nickName.setClickable(false);
+        nickName.setKeyListener(null);
+
         if (user != null) {
-            firstName.setClickable(false);
-            firstName.setKeyListener(null);
             firstName.setText(TextUtils.isEmpty(user.getFirstName()) ? getString(R.string.blank) : user.getFirstName());
-
-            lastName.setClickable(false);
-            lastName.setKeyListener(null);
             lastName.setText(TextUtils.isEmpty(user.getLastName()) ? getString(R.string.blank) : user.getLastName());
-
-            nickName.setClickable(false);
-            nickName.setKeyListener(null);
             nickName.setText(TextUtils.isEmpty(user.getNickname()) ? getString(R.string.blank) : user.getNickname());
-
-            if (isNull(user) && isNull(YonaApplication.getUser())
-                    && user.getLinks().getEdit().getHref().equals(YonaApplication.getUser().getLinks().getEdit().getHref())) {
-                removeFriendButton.setVisibility(View.VISIBLE);
-            } else {
-                removeFriendButton.setVisibility(View.GONE);
-            }
+            number = user.getMobileNumber();
+        } else if (yonaMessage != null && yonaMessage.getEmbedded() != null && yonaMessage.getEmbedded().getYonaUser() != null) {
+            firstName.setText(TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getFirstName()) ? getString(R.string.blank) : yonaMessage.getEmbedded().getYonaUser().getFirstName());
+            lastName.setText(TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getLastName()) ? getString(R.string.blank) : yonaMessage.getEmbedded().getYonaUser().getLastName());
+            nickName.setText(TextUtils.isEmpty(yonaMessage.getNickname()) ? getString(R.string.blank) : yonaMessage.getNickname());
+            number = TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getMobileNumber()) ? getString(R.string.blank) : yonaMessage.getEmbedded().getYonaUser().getMobileNumber();
+        } else {
+            number = null;
+        }
+        if (isNull(yonaMessage)) {
+            removeFriendButton.setVisibility(View.VISIBLE);
+        } else {
+            removeFriendButton.setVisibility(View.GONE);
         }
         int NUMBER_LENGTH = 9;
 
         mobileNumber.setClickable(false);
         mobileNumber.setKeyListener(null);
-        String number = user.getMobileNumber();
+
         if (!TextUtils.isEmpty(number) && number.length() > NUMBER_LENGTH) {
             number = number.substring(number.length() - NUMBER_LENGTH);
             number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
@@ -104,9 +119,9 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         }
     }
 
-    private boolean isNull(User user) {
-        if (user != null && user.getLinks() != null && user.getLinks().getEdit() != null
-                && !TextUtils.isEmpty(user.getLinks().getEdit().getHref())) {
+    private boolean isNull(YonaMessage yonaMessage) {
+        if (yonaMessage != null && yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null
+                && !TextUtils.isEmpty(yonaMessage.getLinks().getEdit().getHref())) {
             return false;
         }
         return true;

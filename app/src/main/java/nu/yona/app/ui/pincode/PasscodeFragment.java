@@ -39,7 +39,6 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
 
     private YonaFontTextView passcode_title, passcode_description, passcode_error, passcode_reset;
     private YonaFontEditTextView passcode1, passcode2, passcode3, passcode4;
-    private int progressDrawable;
     private final View.OnKeyListener keyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -65,6 +64,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             return false;
         }
     };
+    private int progressDrawable;
     private ProgressBar profile_progress;
     private PasscodeManagerImpl passcodeManagerImpl;
     private ImageView accont_image;
@@ -83,8 +83,8 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             if (getArguments().get(AppConstant.COLOR_CODE) != null) {
                 view.setBackgroundColor(getArguments().getInt(AppConstant.COLOR_CODE));
             }
-            if(getArguments().get(AppConstant.PROGRESS_DRAWABLE) != null) {
-                progressDrawable= getArguments().getInt(AppConstant.PROGRESS_DRAWABLE);
+            if (getArguments().get(AppConstant.PROGRESS_DRAWABLE) != null) {
+                progressDrawable = getArguments().getInt(AppConstant.PROGRESS_DRAWABLE);
             }
         }
 

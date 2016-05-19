@@ -17,11 +17,15 @@ public interface OnFriendsItemClickListener {
 
     /**
      * on Item click of Friends
+     *
+     * @param v the view
      */
     void onFriendsItemClick(View v);
 
     /**
      * on Item swipe delete click of friends
+     *
+     * @param v the view
      */
     void onFriendsItemDeleteClick(View v);
 }

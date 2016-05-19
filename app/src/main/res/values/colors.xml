@@ -10,8 +10,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="bottomBarColor">#FFFFFF</color>
-    <color name="dashboard">#6F2D5B</color>
-    <color name="friends">#2E7BBC</color>
     <color name="challanges">#9CC52F</color>
     <color name="dashboard_selected_tab">@android:color/white</color>
     <color name="dashboard_deselected_tab">#B795AD</color>
@@ -25,6 +23,7 @@
     <color name="mango_two">#eaa221</color>
     <color name="grape">#6c2a58</color>
     <color name="mid_blue">#1d71b8</color>
+    <color name="mid_blue_two">#3881be</color>
     <color name="pea">#95c11f</color>
     <color name="white_two">#f3f3f3</color>
     <color name="white">#FFFFFF</color>

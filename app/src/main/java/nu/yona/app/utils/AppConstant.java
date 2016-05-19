@@ -162,6 +162,11 @@ public interface AppConstant {
      * The constant TITLE_BACKGROUND_RESOURCE.
      */
     String TITLE_BACKGROUND_RESOURCE = "titleBackgroundResource";
+
+    /**
+     * The constant TAB_DESELECTED_COLOR.
+     */
+    String TAB_DESELECTED_COLOR = "tabSelectedColor";
     /**
      * The constant USER.
      */

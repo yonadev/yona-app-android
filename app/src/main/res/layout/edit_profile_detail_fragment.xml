@@ -21,7 +21,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_profile_detail_top_layout_height"
-            android:background="@color/dashboard">
+            android:background="@color/grape">
 
             <ImageView
                 android:id="@+id/profileImage"
