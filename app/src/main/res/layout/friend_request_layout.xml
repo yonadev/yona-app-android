@@ -9,15 +9,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_gradient_three"
     android:orientation="vertical">
 
     <include layout="@layout/profile_top_layout" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin"
-        android:orientation="vertical">
+        android:background="@color/white">
 
 
         <nu.yona.app.customview.YonaFontTextView
@@ -25,6 +25,9 @@
             style="@style/SeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/layout_margin"
+            android:layout_marginRight="@dimen/layout_margin"
+            android:layout_marginTop="@dimen/layout_margin"
             android:maxLines="1" />
 
         <nu.yona.app.customview.YonaFontTextView
@@ -32,42 +35,48 @@
             style="@style/FooterTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/content_title"
+            android:layout_marginBottom="@dimen/layout_margin"
+            android:layout_marginLeft="@dimen/layout_margin"
+            android:layout_marginRight="@dimen/layout_margin"
             android:layout_marginTop="@dimen/fifteen" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/marginTop_for_button"
-        android:orientation="horizontal">
-
-        <nu.yona.app.customview.YonaFontButton
-            android:id="@+id/btnReject"
-            style="@style/BtnTxtLg"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/fifteen"
-            android:layout_weight="1"
-            android:background="@drawable/button_cancel"
-            android:paddingBottom="@dimen/fifteen"
-            android:paddingTop="@dimen/fifteen"
-            android:text="@string/reject"
-            android:textColor="@color/white" />
+            android:layout_below="@id/content_desc"
+            android:layout_margin="@dimen/marginTop_for_button"
+            android:background="@color/white"
+            android:orientation="horizontal">
 
-        <nu.yona.app.customview.YonaFontButton
-            android:id="@+id/btnAccepter"
-            style="@style/BtnTxtLg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/button_accepter"
-            android:paddingBottom="@dimen/fifteen"
-            android:paddingTop="@dimen/fifteen"
-            android:text="@string/accept"
-            android:textColor="@color/white" />
+            <nu.yona.app.customview.YonaFontButton
+                android:id="@+id/btnReject"
+                style="@style/BtnTxtLg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/fifteen"
+                android:layout_weight="1"
+                android:background="@drawable/button_cancel"
+                android:paddingBottom="@dimen/fifteen"
+                android:paddingTop="@dimen/fifteen"
+                android:text="@string/reject"
+                android:textColor="@color/white" />
 
-    </LinearLayout>
+            <nu.yona.app.customview.YonaFontButton
+                android:id="@+id/btnAccepter"
+                style="@style/BtnTxtLg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_accepter"
+                android:paddingBottom="@dimen/fifteen"
+                android:paddingTop="@dimen/fifteen"
+                android:text="@string/accept"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
 </LinearLayout>

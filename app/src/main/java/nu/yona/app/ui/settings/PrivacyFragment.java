@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -37,6 +38,8 @@ public class PrivacyFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.privacy_fragment, null);
         webView = (WebView) view.findViewById(R.id.webView);
         webView.loadUrl(ApiList.PRIVACY_PAGE);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
