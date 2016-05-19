@@ -77,7 +77,7 @@ class BaseImpl {
         return retrofit;
     }
 
-    private void reinitializeRetrofit() {
+    protected void reinitializeRetrofit() {
         retrofit = null; // this method is require when user do signout and want to change environment, it should update with new environemnt.
     }
 

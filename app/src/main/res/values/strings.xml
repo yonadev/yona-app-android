@@ -64,7 +64,7 @@
     <string name="passcode">CODE</string>
     <string name="inloggin">LOGIN</string>
     <string name="enterpasscode">Je moet een 6 cijferig alfanumeriek code invoeren.</string>
-    <string name="resetpinrequest">Your request for reset has been received. You will receive an text message with a PIN reset confirmation code within %1$s hours.</string>
+    <string name="resetpinrequest">Your request for reset has been received. You will receive an text message with a PIN reset confirmation code within %1$s.</string>
     <string name="useroverride">Mobile Number %1$s already register with Yona, do you want to re-register same number? (Note:All data associated with this number will be removed, if you want to add another device, you can go back and click on InLoggin.)</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
