@@ -50,7 +50,7 @@
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".ui.tour.TourActivity"
+            android:name=".ui.tour.YonaCarrouselActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"></activity>
 

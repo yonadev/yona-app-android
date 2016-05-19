@@ -25,7 +25,7 @@ import nu.yona.app.ui.login.LoginActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
-import nu.yona.app.ui.tour.TourActivity;
+import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
@@ -41,7 +41,7 @@ public class LaunchActivity extends BaseActivity {
         setContentView(R.layout.launch_layout);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false)) {
-            startNewActivity(TourActivity.class);
+            startNewActivity(YonaCarrouselActivity.class);
         } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
             // continue on same page. We need to keep on this position, so this step don't get ignore.
         } else if (YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)

@@ -19,4 +19,7 @@
     <integer name="passcode_progress_complete">100</integer>
     <integer name="passcode_create_progress">80</integer>
     <integer name="passcode_verify_progerss">100</integer>
+    <integer name="animation_duration">2</integer>
+    <integer name="margin_pager_indicator">12</integer>
+    <integer name="margin_pager_zero">0</integer>
 </resources>

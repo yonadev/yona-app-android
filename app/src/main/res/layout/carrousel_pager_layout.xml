@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+      ~ Copyright (c) 2016 Stichting Yona Foundation
+      ~
+      ~ This Source Code Form is subject to the terms of the Mozilla Public
+      ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+      ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+      -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <nu.yona.app.ui.tour.CarrouselViewPager
+        android:id="@+id/pager_introduction"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:listitem="@layout/carrousel_pager_item" />
+
+
+    <LinearLayout
+        android:id="@+id/viewPagerCountDots"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignEnd="@+id/layout_btn"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/layout_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:orientation="horizontal" />
+
+    <RelativeLayout
+        android:id="@+id/layout_btn"
+        android:layout_width="180dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/carroussel_triangle"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@drawable/icn_next" />
+    </RelativeLayout>
+
+</RelativeLayout>
