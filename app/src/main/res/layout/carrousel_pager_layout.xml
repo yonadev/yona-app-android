@@ -22,20 +22,20 @@
     <LinearLayout
         android:id="@+id/viewPagerCountDots"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="@dimen/carrousel_dot_layout_height"
         android:layout_alignEnd="@+id/layout_btn"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/layout_btn"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/carrousel_dot_margin_top"
         android:gravity="center"
         android:orientation="horizontal" />
 
     <RelativeLayout
         android:id="@+id/layout_btn"
-        android:layout_width="180dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/carrousel_layout_button_next_width"
+        android:layout_height="@dimen/carrousel_layout_button_next_height"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -44,14 +44,14 @@
 
         <ImageButton
             android:id="@+id/btn_next"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/carrousel_button_next_size"
+            android:layout_height="@dimen/carrousel_button_next_size"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="right|bottom"
-            android:layout_marginBottom="24dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginBottom="@dimen/carrousel_button_margin"
+            android:layout_marginRight="@dimen/carrousel_button_margin"
             android:background="@drawable/icn_next" />
     </RelativeLayout>
 

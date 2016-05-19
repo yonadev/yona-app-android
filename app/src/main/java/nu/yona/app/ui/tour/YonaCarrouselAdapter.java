@@ -72,7 +72,7 @@ public class YonaCarrouselAdapter extends PagerAdapter {
             case 2:
                 carrouselTitle.setText(R.string.screentitle3);
                 carrouselDesc.setText(R.string.screendesc3);
-                carrouselTitle.setTextColor(ContextCompat.getColor(mContext, R.color.friends));
+                carrouselTitle.setTextColor(ContextCompat.getColor(mContext, R.color.mid_blue));
                 img_center.setImageResource(R.drawable.img_borders);
                 break;
             case 3:

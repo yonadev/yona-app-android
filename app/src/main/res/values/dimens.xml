@@ -117,4 +117,17 @@
     <!-- Welcome carrousel -->
     <dimen name="carrousel_center_image_width">256dp</dimen>
     <dimen name="carrousel_center_image_height">256dp</dimen>
+    <dimen name="carrousel_bullet_item_size">12dp</dimen>
+    <dimen name="carrousel_title_text_top">61dp</dimen>
+    <dimen name="carrousel_img_center_top">24dp</dimen>
+    <dimen name="carrousel_desc_text_margin_left">40dp</dimen>
+    <dimen name="carrousel_desc_text_margin_right">40dp</dimen>
+    <dimen name="carrousel_dot_margin_top">40dp</dimen>
+    <dimen name="carrousel_dot_layout_height">10dp</dimen>
+    <dimen name="carrousel_desc_margin_top">37dp</dimen>
+    <dimen name="carrousel_layout_button_next_height">100dp</dimen>
+    <dimen name="carrousel_layout_button_next_width">180dp</dimen>
+    <dimen name="carrousel_button_next_size">24dp</dimen>
+    <dimen name="carrousel_button_margin">24dp</dimen>
+
 </resources>

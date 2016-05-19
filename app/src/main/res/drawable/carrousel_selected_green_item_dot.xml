@@ -11,8 +11,8 @@
     android:useLevel="true">
 
     <size
-        android:width="12dip"
-        android:height="12dip" />
+        android:width="@dimen/carrousel_bullet_item_size"
+        android:height="@dimen/carrousel_bullet_item_size" />
 
     <solid android:color="@color/pea" />
 </shape>
