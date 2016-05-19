@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,20 +81,22 @@ public class NotificationFragment extends BaseFragment {
         public void onFriendsItemDeleteClick(View view) {
             if (view.getTag() instanceof YonaMessage) {
                 YonaMessage yonaMessage = (YonaMessage) view.getTag();
-                YonaActivity.getActivity().showLoadingView(true, null);
-                APIManager.getInstance().getNotificationManager().deleteMessage(yonaMessage.getLinks().getEdit().getHref(), 0, 0, new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        YonaActivity.getActivity().showLoadingView(false, null);
-                        refreshAdapter();
-                    }
+                if (yonaMessage != null && yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getEdit().getHref())) {
+                    YonaActivity.getActivity().showLoadingView(true, null);
+                    APIManager.getInstance().getNotificationManager().deleteMessage(yonaMessage.getLinks().getEdit().getHref(), 0, 0, new DataLoadListener() {
+                        @Override
+                        public void onDataLoad(Object result) {
+                            YonaActivity.getActivity().showLoadingView(false, null);
+                            refreshAdapter();
+                        }
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        YonaActivity.getActivity().showLoadingView(false, null);
-                        YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
-                    }
-                });
+                        @Override
+                        public void onError(Object errorMessage) {
+                            YonaActivity.getActivity().showLoadingView(false, null);
+                            YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                        }
+                    });
+                }
             }
         }
     };
