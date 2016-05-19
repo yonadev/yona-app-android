@@ -11,6 +11,7 @@ package nu.yona.app.ui.message;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import nu.yona.app.R;
 import nu.yona.app.customview.YonaFontTextView;
@@ -46,9 +47,8 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
      */
     public ImageView deleteMsg;
     private OnFriendsItemClickListener onFriendsItemClickListener;
-
+    public RelativeLayout messageContainer;
     /**
-     * Instantiates a new Message item view holder.
      *
      * @param itemView          the item view
      * @param itemClickListener click of item view
@@ -57,12 +57,13 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
         super(itemView);
         this.onFriendsItemClickListener = itemClickListener;
         swipeLayout = (com.daimajia.swipe.SwipeLayout) itemView.findViewById(R.id.swipe_layout);
+        messageContainer = (RelativeLayout) itemView.findViewById(R.id.messageContainer);
         deleteMsg = (ImageView) itemView.findViewById(R.id.swipe_delete_goal);
         img_avtar = (ImageView) itemView.findViewById(R.id.img_user_icon);
         img_status = (ImageView) itemView.findViewById(R.id.img_status);
         txtTitleMsg = (YonaFontTextView) itemView.findViewById(R.id.txt_title);
         txtFooterMsg = (YonaFontTextView) itemView.findViewById(R.id.txt_footer);
-        swipeLayout.setOnClickListener(this);
+        messageContainer.setOnClickListener(this);
         deleteMsg.setOnClickListener(this);
     }
 
@@ -72,7 +73,7 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
             case R.id.swipe_delete_goal:
                 onFriendsItemClickListener.onFriendsItemDeleteClick(v);
                 break;
-            case R.id.swipe_layout:
+            case R.id.messageContainer:
                 onFriendsItemClickListener.onFriendsItemClick(v);
                 break;
             default:

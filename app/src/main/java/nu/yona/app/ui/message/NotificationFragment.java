@@ -30,6 +30,7 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.ui.BaseFragment;
@@ -60,14 +61,14 @@ public class NotificationFragment extends BaseFragment {
             if (view.getTag() instanceof YonaMessage) {
                 YonaMessage yonaMessage = (YonaMessage) view.getTag();
                 Intent mMessageIntent = null;
-                if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null) {
+                if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null && yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.ACCEPTED) {
                     mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_PROFILE.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
                     mMessageIntent.putExtra(AppConstant.COLOR_CODE, R.color.mid_blue_two);
                     mMessageIntent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
                     mMessageIntent.putExtra(AppConstant.TAB_DESELECTED_COLOR, R.color.friends_deselected_tab);
                     mMessageIntent.putExtra(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_blue);
-                } else {
+                } else if(yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.REQUESTED){
                     mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_REQUEST.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
                 }

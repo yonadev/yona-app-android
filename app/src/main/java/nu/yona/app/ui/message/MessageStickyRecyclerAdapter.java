@@ -79,7 +79,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                 }
             }
             holder.deleteMsg.setTag(yonaObject);
-            holder.swipeLayout.setTag(yonaObject);
+            holder.messageContainer.setTag(yonaObject);
         }
     }
 

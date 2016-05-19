@@ -18,12 +18,15 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
 /**
@@ -104,6 +107,12 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         }
         if (isNull(yonaMessage)) {
             removeFriendButton.setVisibility(View.VISIBLE);
+            removeFriendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteBuddy();
+                }
+            });
         } else {
             removeFriendButton.setVisibility(View.GONE);
         }
@@ -119,12 +128,26 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         }
     }
 
+    private void deleteBuddy() {
+        YonaActivity.getActivity().showLoadingView(true, null);
+        APIManager.getInstance().getBuddyManager().deleteBuddy(yonaMessage, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                YonaActivity.getActivity().onBackPressed();
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                YonaActivity.getActivity().onBackPressed();
+            }
+        });
+    }
+
     private boolean isNull(YonaMessage yonaMessage) {
-        if (yonaMessage != null && yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null
-                && !TextUtils.isEmpty(yonaMessage.getLinks().getEdit().getHref())) {
-            return false;
-        }
-        return true;
+        return (yonaMessage != null && yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null
+                && !TextUtils.isEmpty(yonaMessage.getLinks().getEdit().getHref()));
     }
 
     @Override
