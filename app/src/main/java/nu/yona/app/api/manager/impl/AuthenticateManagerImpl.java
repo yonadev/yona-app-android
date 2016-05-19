@@ -185,8 +185,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     }
 
     /**
+     * Verify otp after user.
+     *
      * @param otp      OTP received in sms
-     * @param listener
+     * @param listener the listener
      */
     public void verifyOTPAfterUser(String otp, final DataLoadListener listener) {
         try {
@@ -343,9 +345,40 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     }
 
     @Override
+    public void getFriendProfile(final String url, final DataLoadListener listener) {
+        try {
+            if (!TextUtils.isEmpty(url)) {
+                authNetwork.getUser(url, YonaApplication.getYonaPassword(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        listener.onDataLoad(result);
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+                        if (listener != null) {
+                            if (errorMessage instanceof ErrorMessage) {
+                                listener.onError(errorMessage);
+                            } else {
+                                listener.onError(new ErrorMessage(errorMessage.toString()));
+                            }
+                        }
+                    }
+                });
+            } else {
+                if (listener != null) {
+                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                }
+            }
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    @Override
     public void resendOTP(final DataLoadListener listener) {
         try {
-            if(YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
+            if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
                     && YonaApplication.getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getSelf().getHref())) {
                 getUser(YonaApplication.getUser().getLinks().getSelf().getHref(), new DataLoadListener() {
                     @Override

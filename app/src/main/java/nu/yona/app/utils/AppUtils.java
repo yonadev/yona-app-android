@@ -178,15 +178,15 @@ public class AppUtils {
             int HOUR = 3600; // 3600 seconds
             StringBuffer buffer = new StringBuffer();
             int seconds = new Period(time, PeriodType.seconds()).getSeconds();
-            if(seconds / HOUR > 0) {
-                buffer.append(seconds/HOUR + " hour(s) ");
-                seconds = seconds%HOUR;
+            if (seconds / HOUR > 0) {
+                buffer.append(seconds / HOUR + " hour(s) ");
+                seconds = seconds % HOUR;
             }
-            if(seconds /MINUTE >0){
-                buffer.append(seconds/MINUTE + " minute(s) ");
+            if (seconds / MINUTE > 0) {
+                buffer.append(seconds / MINUTE + " minute(s) ");
                 seconds = seconds % MINUTE;
             }
-            if(seconds > 0) {
+            if (seconds > 0) {
                 buffer.append(seconds + " second(s) ");
             }
             return buffer.toString();

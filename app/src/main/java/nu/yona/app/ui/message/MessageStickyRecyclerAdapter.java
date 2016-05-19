@@ -58,7 +58,17 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
     @Override
     public void onBindViewHolder(MessageItemViewHolder holder, int position) {
         YonaMessage yonaObject = (YonaMessage) getItem(position);
+
         if (yonaObject != null) {
+            if (yonaObject.getNotificationMessageEnum() != null && !TextUtils.isEmpty(yonaObject.getNotificationMessageEnum().getUserMessage())) {
+                holder.txtTitleMsg.setText(yonaObject.getNotificationMessageEnum().getUserMessage());
+                holder.img_status.setImageResource(yonaObject.getNotificationMessageEnum().getImageId());
+            }
+            if (yonaObject.getLinks() != null && yonaObject.getLinks().getEdit() != null) {
+                holder.swipeLayout.setRightSwipeEnabled(true);
+            } else {
+                holder.swipeLayout.setRightSwipeEnabled(false);
+            }
             if (yonaObject.getEmbedded() != null) {
                 if (yonaObject.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getFirstName())) {
                     String username = yonaObject.getEmbedded().getYonaUser().getFirstName();
@@ -68,15 +78,10 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                                 ContextCompat.getColor(activity, R.color.grape)));
                     }
                 }
-                if (yonaObject.getNotificationMessageEnum() != null && !TextUtils.isEmpty(yonaObject.getNotificationMessageEnum().getUserMessage())) {
-                    holder.txtTitleMsg.setText(yonaObject.getNotificationMessageEnum().getUserMessage());
-                    holder.img_status.setImageResource(yonaObject.getNotificationMessageEnum().getImageId());
-                }
-                if (yonaObject.getLinks() != null && yonaObject.getLinks().getEdit() != null) {
-                    holder.swipeLayout.setRightSwipeEnabled(true);
-                } else {
-                    holder.swipeLayout.setRightSwipeEnabled(false);
-                }
+            } else if (!TextUtils.isEmpty(yonaObject.getNickname())) {
+                holder.txtFooterMsg.setText(yonaObject.getNickname());
+                holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(yonaObject.getNickname().substring(0, 1).toUpperCase(),
+                        ContextCompat.getColor(activity, R.color.grape)));
             }
             holder.deleteMsg.setTag(yonaObject);
             holder.messageContainer.setTag(yonaObject);

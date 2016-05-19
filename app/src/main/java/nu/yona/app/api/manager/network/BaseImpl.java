@@ -77,6 +77,9 @@ class BaseImpl {
         return retrofit;
     }
 
+    /**
+     * Reinitialize retrofit.
+     */
     protected void reinitializeRetrofit() {
         retrofit = null; // this method is require when user do signout and want to change environment, it should update with new environemnt.
     }
@@ -112,7 +115,7 @@ class BaseImpl {
         return new Callback() {
             @Override
             public void onResponse(retrofit2.Call call, retrofit2.Response response) {
-                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                if (response.code() < NetworkConstant.RESPONSE_STATUS && listener != null) {
                     listener.onDataLoad(response.body());
                 } else {
                     onError(response, listener);

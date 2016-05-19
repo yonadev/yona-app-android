@@ -44,6 +44,9 @@ public class Links extends BaseEntity {
     @SerializedName("yona:newDeviceRequest")
     @Expose
     private Href yonaNewDeviceRequest;
+    @SerializedName("yona:process")
+    @Expose
+    private Href yonaPreocess;
     @SerializedName("yona:appActivity")
     @Expose
     private Href yonaAppActivity;
@@ -386,4 +389,22 @@ public class Links extends BaseEntity {
         this.yonaAccept = yonaAccept;
     }
 
+
+    /**
+     * Gets yona preocess.
+     *
+     * @return the yona preocess
+     */
+    public Href getYonaPreocess() {
+        return yonaPreocess;
+    }
+
+    /**
+     * Sets yona preocess.
+     *
+     * @param yonaPreocess the yona preocess
+     */
+    public void setYonaPreocess(Href yonaPreocess) {
+        this.yonaPreocess = yonaPreocess;
+    }
 }

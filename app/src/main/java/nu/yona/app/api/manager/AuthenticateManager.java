@@ -91,6 +91,14 @@ public interface AuthenticateManager {
     void getUser(final String url, final DataLoadListener listener);
 
     /**
+     * Gets friend profile.
+     *
+     * @param url      the url
+     * @param listener the listener
+     */
+    void getFriendProfile(final String url, final DataLoadListener listener);
+
+    /**
      * Request user override.
      *
      * @param mobileNumber the mobile number

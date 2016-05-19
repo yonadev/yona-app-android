@@ -20,17 +20,28 @@ import java.lang.reflect.Field;
  */
 public class CarrouselViewPager extends ViewPager {
 
+    private CarrouselScroller mScroller = null;
+
+    /**
+     * Instantiates a new Carrousel view pager.
+     *
+     * @param context the context
+     */
     public CarrouselViewPager(Context context) {
         super(context);
         postInitViewPager();
     }
 
+    /**
+     * Instantiates a new Carrousel view pager.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public CarrouselViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         postInitViewPager();
     }
-
-    private CarrouselScroller mScroller = null;
 
     /**
      * Override the Scroller instance with our own class so we can change the

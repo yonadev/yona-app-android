@@ -10,7 +10,6 @@
 
 package nu.yona.app.api.manager;
 
-import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.listener.DataLoadListener;
 
