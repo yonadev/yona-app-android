@@ -9,6 +9,8 @@
 package nu.yona.app.ui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -83,5 +85,19 @@ public class BaseActivity extends AppCompatActivity {
         if (getResources().getBoolean(R.bool.enableHockyTracking)) {
             UpdateManager.unregister();
         }
+    }
+
+    public void startNewActivity(Class mClass) {
+        startNewActivity(null, mClass);
+    }
+
+    public void startNewActivity(Bundle bundle, Class mClass) {
+        Intent intent = new Intent(this, mClass);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        finish();
     }
 }
