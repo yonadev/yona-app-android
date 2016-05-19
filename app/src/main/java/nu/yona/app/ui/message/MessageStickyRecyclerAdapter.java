@@ -40,7 +40,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
      *
      * @param yonaMessages      the yona messages
      * @param yonaActivity      the yona activity
-     * @param itemClickListener
+     * @param itemClickListener the item click listener
      */
     public MessageStickyRecyclerAdapter(List<YonaMessage> yonaMessages, YonaActivity yonaActivity, OnFriendsItemClickListener itemClickListener) {
         this.listYonaMessage = yonaMessages;
@@ -65,7 +65,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                     holder.txtFooterMsg.setText(username);
                     if (username.length() > 0) {
                         holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(username.substring(0, 1).toUpperCase(),
-                                ContextCompat.getColor(activity, R.color.dashboard)));
+                                ContextCompat.getColor(activity, R.color.grape)));
                     }
                 }
                 if (yonaObject.getNotificationMessageEnum() != null && !TextUtils.isEmpty(yonaObject.getNotificationMessageEnum().getUserMessage())) {

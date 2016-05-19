@@ -18,7 +18,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by kinnarvasa on 09/05/16.
  */
-public class MessageBody extends BaseEntity{
+public class MessageBody extends BaseEntity {
     @SerializedName("properties")
     @Expose
     private Properties properties;

@@ -215,7 +215,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     }
 
     private void profileViewMode() {
-        profileImage.setBackground(getImage(null, true, R.color.mid_blue));
+        profileImage.setBackground(getImage(null, true, R.color.mid_blue, YonaApplication.getUser().getFirstName(), YonaApplication.getUser().getLastName()));
 
         firstName.setText(TextUtils.isEmpty(YonaApplication.getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getUser().getFirstName());
         lastName.setText(TextUtils.isEmpty(YonaApplication.getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getUser().getLastName());
@@ -310,7 +310,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        profileImage.setBackground(getImage((Bitmap) object, true, R.color.mid_blue));
+                        profileImage.setBackground(getImage((Bitmap) object, true, R.color.mid_blue, YonaApplication.getUser().getFirstName(), YonaApplication.getUser().getLastName()));
                     }
                 }, AppConstant.TIMER_DELAY_HUNDRED);
                 break;

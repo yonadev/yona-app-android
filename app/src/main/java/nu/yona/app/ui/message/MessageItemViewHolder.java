@@ -41,6 +41,9 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
      */
     txtFooterMsg;
 
+    /**
+     * The Delete msg.
+     */
     public ImageView deleteMsg;
     private OnFriendsItemClickListener onFriendsItemClickListener;
 

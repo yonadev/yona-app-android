@@ -37,6 +37,11 @@ public enum IntentEnum {
     ACTION_PROFILE("nu.yona.app.action.PROFILE"),
 
     /**
+     * Action friend profile intent enum.
+     */
+    ACTION_FRIEND_PROFILE("nu.yona.app.action.FRIEND_PROFILE"),
+
+    /**
      * Action edit profile intent enum.
      */
     ACTION_EDIT_PROFILE("nu.yona.app.action.EDIT_PROFILE"),

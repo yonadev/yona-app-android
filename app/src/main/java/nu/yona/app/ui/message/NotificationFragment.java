@@ -40,7 +40,7 @@ import nu.yona.app.utils.AppConstant;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class MessageFragment extends BaseFragment {
+public class NotificationFragment extends BaseFragment {
 
     private static final int PAGE_SIZE = 20;
     private List<YonaMessage> listYonaMsgs;
@@ -61,8 +61,12 @@ public class MessageFragment extends BaseFragment {
                 YonaMessage yonaMessage = (YonaMessage) view.getTag();
                 Intent mMessageIntent = null;
                 if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null) {
-                    mMessageIntent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
+                    mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_PROFILE.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
+                    mMessageIntent.putExtra(AppConstant.COLOR_CODE, R.color.mid_blue_two);
+                    mMessageIntent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
+                    mMessageIntent.putExtra(AppConstant.TAB_DESELECTED_COLOR, R.color.friends_deselected_tab);
+                    mMessageIntent.putExtra(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_blue);
                 } else {
                     mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_REQUEST.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
@@ -131,7 +135,7 @@ public class MessageFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.message_layout, null);
+        View view = inflater.inflate(R.layout.notification_layout, null);
         listYonaMsgs = new ArrayList<>();
         mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());

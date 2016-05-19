@@ -45,9 +45,11 @@ public class BaseProfileFragment extends BaseFragment {
      * @param bitmap          the bitmap
      * @param withAlpha       the with alpha
      * @param backgroundColor the background color
+     * @param firstName       the first name
+     * @param lastName        the last name
      * @return the image
      */
-    protected Drawable getImage(Bitmap bitmap, boolean withAlpha, int backgroundColor) {
+    protected Drawable getImage(Bitmap bitmap, boolean withAlpha, int backgroundColor, String firstName, String lastName) {
         if (bitmap != null) {// TODO: 10/05/16 When server provides user profile image, we need to check and enable if part on base of that.
             RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
             drawable.setCornerRadius(Math.max(bitmap.getWidth(), bitmap.getHeight()));
@@ -56,7 +58,7 @@ public class BaseProfileFragment extends BaseFragment {
         } else {
             TextDrawable image = TextDrawable.builder().beginConfig().withBorder(AppConstant.PROFILE_IMAGE_BORDER_SIZE)
                     .textColor(Color.WHITE).endConfig()
-                    .buildRound(getName(),
+                    .buildRound(getName(firstName, lastName),
                             ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor));
             if (withAlpha) {
                 image.setAlpha(ALPHA);
@@ -64,11 +66,12 @@ public class BaseProfileFragment extends BaseFragment {
             return image;
         }
     }
-    private String getName() {
+
+    private String getName(String firstName, String lastName) {
         StringBuffer displayName = new StringBuffer();
-        if(YonaApplication.getUser() != null){
-            displayName.append(TextUtils.isEmpty(YonaApplication.getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getUser().getFirstName().substring(0, 1));
-            displayName.append(TextUtils.isEmpty(YonaApplication.getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getUser().getLastName().substring(0, 1));
+        if (YonaApplication.getUser() != null) {
+            displayName.append(TextUtils.isEmpty(firstName) ? getString(R.string.blank) : firstName.substring(0, 1));
+            displayName.append(TextUtils.isEmpty(lastName) ? getString(R.string.blank) : lastName.substring(0, 1));
         }
         return displayName.toString();
     }

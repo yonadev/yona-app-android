@@ -68,7 +68,7 @@ import nu.yona.app.ui.dashboard.DashboardFragment;
 import nu.yona.app.ui.frinends.AddFriendFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
 import nu.yona.app.ui.frinends.FriendsRequestFragment;
-import nu.yona.app.ui.message.MessageFragment;
+import nu.yona.app.ui.message.NotificationFragment;
 import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.ui.profile.EditDetailsProfileFragment;
 import nu.yona.app.ui.profile.ProfileFragment;
@@ -532,6 +532,16 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;
+                    case ACTION_FRIEND_PROFILE:
+                        if (mContent instanceof ProfileFragment) {
+                            return;
+                        }
+                        mContent = new ProfileFragment();
+                        mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
+                        mContent.setArguments(intent.getExtras());
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
                     case ACTION_EDIT_PROFILE:
                         if (mContent instanceof EditDetailsProfileFragment) {
                             return;
@@ -541,10 +551,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         addToBackstack = true;
                         break;
                     case ACTION_MESSAGE:
-                        if (mContent instanceof MessageFragment) {
+                        if (mContent instanceof NotificationFragment) {
                             return;
                         }
-                        mContent = new MessageFragment();
+                        mContent = new NotificationFragment();
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;
@@ -593,7 +603,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private void updateToolBarBackground() {
         if (mContent instanceof ChallengesFragment || mContent instanceof ChallengesGoalDetailFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_green);
-        } else if (mContent instanceof DashboardFragment || mContent instanceof MessageFragment) {
+        } else if (mContent instanceof DashboardFragment || mContent instanceof NotificationFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
         } else if (mContent instanceof SettingsFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_mango);
@@ -693,7 +703,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * @param title the title
      */
     public void updateTitle(String title) {
-        if (!TextUtils.isEmpty(title) && toolbarTitle != null) {
+        if (toolbarTitle != null) {
             toolbarTitle.setText(title);
         }
     }

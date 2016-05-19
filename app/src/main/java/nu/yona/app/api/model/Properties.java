@@ -15,6 +15,9 @@ package nu.yona.app.api.model;
  */
 public class Properties {
 
+    /**
+     * Instantiates a new Properties.
+     */
     public Properties() {
 
     }
