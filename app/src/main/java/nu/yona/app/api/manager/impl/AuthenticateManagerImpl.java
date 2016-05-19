@@ -157,11 +157,38 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         }
     }
 
+    public void verifyOTP(final String otp, final DataLoadListener listener) {
+        try {
+            if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
+                    && YonaApplication.getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getSelf().getHref())) {
+                getUser(YonaApplication.getUser().getLinks().getSelf().getHref(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        verifyOTPAfterUser(otp, listener);
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+                        if (errorMessage instanceof ErrorMessage) {
+                            listener.onError(errorMessage);
+                        } else {
+                            listener.onError(new ErrorMessage(errorMessage.toString()));
+                        }
+                    }
+                });
+            } else {
+                verifyOTPAfterUser(otp, listener);
+            }
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
     /**
      * @param otp      OTP received in sms
      * @param listener
      */
-    public void verifyOTP(String otp, final DataLoadListener listener) {
+    public void verifyOTPAfterUser(String otp, final DataLoadListener listener) {
         try {
             if (otp.length() == AppConstant.OTP_LENGTH) {
                 if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
@@ -317,6 +344,33 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
     @Override
     public void resendOTP(final DataLoadListener listener) {
+        try {
+            if(YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
+                    && YonaApplication.getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getSelf().getHref())) {
+                getUser(YonaApplication.getUser().getLinks().getSelf().getHref(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        resendOTPAfterUser(listener);
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+                        if (errorMessage instanceof ErrorMessage) {
+                            listener.onError(errorMessage);
+                        } else {
+                            listener.onError(new ErrorMessage(errorMessage.toString()));
+                        }
+                    }
+                });
+            } else {
+                resendOTPAfterUser(listener);
+            }
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    private void resendOTPAfterUser(final DataLoadListener listener) {
         try {
             if (authenticateDao.getUser() != null && authenticateDao.getUser().getLinks() != null
                     && authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode() != null

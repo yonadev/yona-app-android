@@ -174,7 +174,22 @@ public class AppUtils {
      */
     public static String getTimeForOTP(String time) {
         try {
-            return new Period(time, PeriodType.hours()).getHours() + "";
+            int MINUTE = 60; // 60 seconds
+            int HOUR = 3600; // 3600 seconds
+            StringBuffer buffer = new StringBuffer();
+            int seconds = new Period(time, PeriodType.seconds()).getSeconds();
+            if(seconds / HOUR > 0) {
+                buffer.append(seconds/HOUR + " hour(s) ");
+                seconds = seconds%HOUR;
+            }
+            if(seconds /MINUTE >0){
+                buffer.append(seconds/MINUTE + " minute(s) ");
+                seconds = seconds % MINUTE;
+            }
+            if(seconds > 0) {
+                buffer.append(seconds + " second(s) ");
+            }
+            return buffer.toString();
         } catch (Exception e) {
             AppUtils.throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
         }
