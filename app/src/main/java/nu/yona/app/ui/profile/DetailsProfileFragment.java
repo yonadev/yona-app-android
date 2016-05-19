@@ -74,6 +74,15 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
+    /**
+     * Update user.
+     *
+     * @param user the user
+     */
+    public void updateUser(User user){
+        this.user = user;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -92,7 +101,12 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         nickName.setClickable(false);
         nickName.setKeyListener(null);
 
-        if (user != null) {
+        if(user != null && yonaMessage != null) {
+            firstName.setText(TextUtils.isEmpty(user.getFirstName()) ? getString(R.string.blank) : user.getFirstName());
+            lastName.setText(TextUtils.isEmpty(user.getLastName()) ? getString(R.string.blank) : user.getLastName());
+            nickName.setText(TextUtils.isEmpty(yonaMessage.getNickname()) ? getString(R.string.blank) : yonaMessage.getNickname());
+            number = user.getMobileNumber();
+        } else if (user != null) {
             firstName.setText(TextUtils.isEmpty(user.getFirstName()) ? getString(R.string.blank) : user.getFirstName());
             lastName.setText(TextUtils.isEmpty(user.getLastName()) ? getString(R.string.blank) : user.getLastName());
             nickName.setText(TextUtils.isEmpty(user.getNickname()) ? getString(R.string.blank) : user.getNickname());

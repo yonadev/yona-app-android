@@ -28,6 +28,7 @@ import nu.yona.app.api.manager.network.NotificationNetworkImpl;
 import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.MessageBody;
+import nu.yona.app.api.model.Properties;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.enums.NotificationMessageEnum;
@@ -69,7 +70,7 @@ public class NotificationManagerImpl implements NotificationManager {
      * @param pageNo       the page no
      * @param listener     the listener
      */
-    public void getMessage(int itemsPerPage, int pageNo, final DataLoadListener listener) {
+    public void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener) {
         try {
             if (YonaApplication.getUser().getLinks() != null && YonaApplication.getUser().getLinks().getYonaMessages() != null
                     && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getYonaMessages().getHref())) {
@@ -82,6 +83,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                 if (yonaMessages != null && yonaMessages.getEmbedded() != null) {
                                     Embedded embedded = yonaMessages.getEmbedded();
                                     List<YonaMessage> listMessages = embedded.getYonaMessages();
+                                    boolean isAnyProcessed = false;
                                     for (YonaMessage message : listMessages) {
                                         //update enum
                                         message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));
@@ -101,6 +103,16 @@ public class NotificationManagerImpl implements NotificationManager {
                                             Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
                                         }
                                         yonaMessages.setEmbedded(embedded);
+                                        if (message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null
+                                                && !TextUtils.isEmpty(message.getLinks().getYonaPreocess().getHref())) {
+                                            isAnyProcessed = true;
+                                            MessageBody body = new MessageBody();
+                                            body.setProperties(new Properties());
+                                            postMessageForProcess(message.getLinks().getYonaPreocess().getHref(), body);
+                                        }
+                                    }
+                                    if (isAnyProcessed) {
+                                        getMessage(itemsPerPage, pageNo, listener);
                                     }
                                 }
                                 listener.onDataLoad(yonaMessages);
@@ -148,6 +160,10 @@ public class NotificationManagerImpl implements NotificationManager {
         } catch (Exception e) {
             AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
+    }
+
+    private void postMessageForProcess(String url, MessageBody body) {
+        notificationNetwork.postMessage(url, YonaApplication.getYonaPassword(), body, null);
     }
 
     /**

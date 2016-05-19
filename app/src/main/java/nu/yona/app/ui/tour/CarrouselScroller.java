@@ -20,14 +20,32 @@ public class CarrouselScroller extends Scroller {
     private double mScrollFactor = 1;
     private int mDuration = 5000;
 
+    /**
+     * Instantiates a new Carrousel scroller.
+     *
+     * @param context the context
+     */
     public CarrouselScroller(Context context) {
         super(context);
     }
 
+    /**
+     * Instantiates a new Carrousel scroller.
+     *
+     * @param context      the context
+     * @param interpolator the interpolator
+     */
     public CarrouselScroller(Context context, Interpolator interpolator) {
         super(context, interpolator);
     }
 
+    /**
+     * Instantiates a new Carrousel scroller.
+     *
+     * @param context      the context
+     * @param interpolator the interpolator
+     * @param flywheel     the flywheel
+     */
     public CarrouselScroller(Context context, Interpolator interpolator, boolean flywheel) {
         super(context, interpolator, flywheel);
     }

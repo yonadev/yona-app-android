@@ -133,6 +133,8 @@
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="buddyconnectrequested">Vriendenverzoek</string>
+    <string name="buddyresponserejected">Vriendenverzoek geweigerd</string>
+    <string name="buddyresponseaccepted">Vriendenverzoek geaccepteerd</string>
     <string name="buddyconnectresponseaccepted">Vriendenverzoek geaccepteerd</string>
     <string name="buddyconnectresponserejected">Vriendenverzoek geweigerd</string>
     <string name="buddydisconnectmessageuserromovedbuddy">Je bent verwijderd als vriend</string>

@@ -8,6 +8,7 @@
 
 package nu.yona.app.ui.profile;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,10 +25,14 @@ import android.widget.LinearLayout;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaMessage;
+import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.ViewPagerAdapter;
@@ -47,6 +52,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     private int backgroundColor, profileBgColor, tabDeSelectedColor;
     private User user;
     private YonaMessage yonaMessage;
+    private DetailsProfileFragment detailsProfileFragment;
 
     @Nullable
     @Override
@@ -75,6 +81,10 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                 user = (User) getArguments().get(AppConstant.USER);
             } else if (getArguments().get(AppConstant.YONAMESSAGE_OBJ) != null) {
                 yonaMessage = (YonaMessage) getArguments().get(AppConstant.YONAMESSAGE_OBJ);
+                if (yonaMessage.getEmbedded() == null && yonaMessage.getLinks() != null
+                        && yonaMessage.getLinks().getYonaUser() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getYonaUser().getHref())) {
+                    loadFriendProfile(yonaMessage.getLinks().getYonaUser().getHref());
+                }
             }
             if (getArguments().get(AppConstant.TAB_DESELECTED_COLOR) != null) {
                 tabDeSelectedColor = getArguments().getInt(AppConstant.TAB_DESELECTED_COLOR);
@@ -105,6 +115,35 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
+    private void loadFriendProfile(String url) {
+        YonaActivity.getActivity().showLoadingView(true, null);
+        APIManager.getInstance().getAuthenticateManager().getFriendProfile(url, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                if (result instanceof User) {
+                    user = (User) result;
+                    detailsProfileFragment.updateUser(user);
+                    detailsProfileFragment.onResume();
+                    setTitleAndIcon();
+                    updateProfile();
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                ErrorMessage message = (ErrorMessage) errorMessage;
+                CustomAlertDialog.show(YonaActivity.getActivity(), message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+            }
+        });
+    }
+
     private void updateProfile() {
         if (user != null) {
             name.setText(getString(R.string.full_name, !TextUtils.isEmpty(user.getFirstName()) ? user.getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
@@ -112,10 +151,12 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             nickName.setText(!TextUtils.isEmpty(user.getNickname()) ? user.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
             profileImageView.setImageDrawable(getImage(null, false, profileBgColor, user.getFirstName(), user.getLastName()));
         } else if (yonaMessage != null) {
-            name.setText(getString(R.string.full_name, !TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getFirstName()) ? yonaMessage.getEmbedded().getYonaUser().getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
-                    !TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getLastName()) ? yonaMessage.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
+            if (yonaMessage.getEmbedded() != null && yonaMessage.getEmbedded().getYonaUser() != null) {
+                name.setText(getString(R.string.full_name, !TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getFirstName()) ? yonaMessage.getEmbedded().getYonaUser().getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
+                        !TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getLastName()) ? yonaMessage.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
+                profileImageView.setImageDrawable(getImage(null, false, profileBgColor, yonaMessage.getEmbedded().getYonaUser().getFirstName(), yonaMessage.getEmbedded().getYonaUser().getLastName()));
+            }
             nickName.setText(!TextUtils.isEmpty(yonaMessage.getNickname()) ? yonaMessage.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
-            profileImageView.setImageDrawable(getImage(null, false, profileBgColor, yonaMessage.getEmbedded().getYonaUser().getFirstName(), yonaMessage.getEmbedded().getYonaUser().getLastName()));
         }
         //TODO if server provide profile picture, pass bitmap of that else pass null
         profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor));
@@ -154,7 +195,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void showProfileOptions() {
-        if (user != null) {
+        if (user != null && yonaMessage == null) {
             YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
             YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.profile));
             YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_edit));
@@ -170,7 +211,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
 
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        DetailsProfileFragment detailsProfileFragment = new DetailsProfileFragment();
+        detailsProfileFragment = new DetailsProfileFragment();
         detailsProfileFragment.setArguments(getArguments());
         adapter.addFragment(detailsProfileFragment, getString(R.string.profiledetails));
         adapter.addFragment(new BadgesProfileFragment(), getString(R.string.badges));

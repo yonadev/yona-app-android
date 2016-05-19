@@ -34,6 +34,11 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener, ViewPager.PageTransformer {
 
+    private final int TIMER_DELAY = 1000;
+    private final int TIMER_PERIOD = 2000;
+    /**
+     * The View.
+     */
     protected View view;
     private ImageButton btnNext;
     private CarrouselViewPager intro_images;
@@ -42,10 +47,13 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
     private ImageView[] dots;
     private YonaCarrouselAdapter mAdapter;
     private int currentPage = 0;
-    private final int TIMER_DELAY = 1000;
-    private final int TIMER_PERIOD = 2000;
     private Timer timer = new Timer();
-
+    private int[] mImageResources = {
+            R.drawable.slider_transparantie_clean,
+            R.drawable.slider_delen_clean,
+            R.drawable.slider_grenzen_clean,
+            R.drawable.slider_tijdsbesteding_clean
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,13 +65,6 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
         setContentView(R.layout.carrousel_pager_layout);
         initializeView();
     }
-
-    private int[] mImageResources = {
-            R.drawable.slider_transparantie_clean,
-            R.drawable.slider_delen_clean,
-            R.drawable.slider_grenzen_clean,
-            R.drawable.slider_tijdsbesteding_clean
-    };
 
     /**
      * set Layout reference

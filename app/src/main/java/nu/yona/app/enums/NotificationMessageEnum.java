@@ -34,6 +34,16 @@ public enum NotificationMessageEnum {
      * Buddy connect request not requested notification message enum.
      */
     BUDDY_CONNECT_REQUEST_NOT_REQUESTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.NOT_REQUESTED, "BUDDY_CONNECT_REQUEST_NOT_REQUESTED", 0),
+
+    /**
+     * Buddy connect response message rejected notification message enum.
+     */
+    BUDDY_CONNECT_RESPONSE_MESSAGE_REJECTED(NotificationEnum.BUDDYCONNECTRESPONSEMESSAGE, StatusEnum.REJECTED, getString(R.string.buddyresponserejected), R.drawable.icn_no),
+
+    /**
+     * Buddy connect response message accepted notification message enum.
+     */
+    BUDDY_CONNECT_RESPONSE_MESSAGE_ACCEPTED(NotificationEnum.BUDDYCONNECTRESPONSEMESSAGE, StatusEnum.ACCEPTED, getString(R.string.buddyresponseaccepted), R.drawable.icn_ok),
     /**
      * None none notification message enum.
      */

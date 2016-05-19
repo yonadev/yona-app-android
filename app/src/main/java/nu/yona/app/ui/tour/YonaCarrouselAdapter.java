@@ -28,6 +28,12 @@ public class YonaCarrouselAdapter extends PagerAdapter {
     private Context mContext;
     private int[] mResources;
 
+    /**
+     * Instantiates a new Yona carrousel adapter.
+     *
+     * @param mContext   the m context
+     * @param mResources the m resources
+     */
     public YonaCarrouselAdapter(Context mContext, int[] mResources) {
         this.mContext = mContext;
         this.mResources = mResources;

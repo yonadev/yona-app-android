@@ -23,7 +23,6 @@ import nu.yona.app.api.model.AddBuddy;
 import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
-import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
