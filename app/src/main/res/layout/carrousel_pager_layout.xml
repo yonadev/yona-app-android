@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+      ~ Copyright (c) 2016 Stichting Yona Foundation
+      ~
+      ~ This Source Code Form is subject to the terms of the Mozilla Public
+      ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+      ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+      -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <nu.yona.app.ui.tour.CarrouselViewPager
+        android:id="@+id/pager_introduction"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:listitem="@layout/carrousel_pager_item" />
+
+
+    <LinearLayout
+        android:id="@+id/viewPagerCountDots"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/carrousel_dot_layout_height"
+        android:layout_alignEnd="@+id/layout_btn"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/layout_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/carrousel_dot_margin_top"
+        android:gravity="center"
+        android:orientation="horizontal" />
+
+    <RelativeLayout
+        android:id="@+id/layout_btn"
+        android:layout_width="@dimen/carrousel_layout_button_next_width"
+        android:layout_height="@dimen/carrousel_layout_button_next_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/carroussel_triangle"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="@dimen/carrousel_button_next_size"
+            android:layout_height="@dimen/carrousel_button_next_size"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="@dimen/carrousel_button_margin"
+            android:layout_marginRight="@dimen/carrousel_button_margin"
+            android:background="@drawable/icn_next" />
+    </RelativeLayout>
+
+</RelativeLayout>
