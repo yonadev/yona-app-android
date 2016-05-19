@@ -34,8 +34,6 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener, ViewPager.PageTransformer {
 
-    private final int TIMER_DELAY = 1000;
-    private final int TIMER_PERIOD = 2000;
     /**
      * The View.
      */
@@ -47,6 +45,8 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
     private ImageView[] dots;
     private YonaCarrouselAdapter mAdapter;
     private int currentPage = 0;
+    private final int TIMER_DELAY = 3000;
+    private final int TIMER_PERIOD = 4000;
     private Timer timer = new Timer();
     private int[] mImageResources = {
             R.drawable.slider_transparantie_clean,

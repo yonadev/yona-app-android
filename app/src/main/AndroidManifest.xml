@@ -35,14 +35,21 @@
             android:value="${HOCKEYAPP_APP_ID}" />
 
         <activity
-            android:name=".ui.LaunchActivity"
+            android:name=".ui.YonaSplashScreenActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreen"
+            android:uiOptions="none">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.LaunchActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
 
         <activity
             android:name=".ui.signup.SignupActivity"
