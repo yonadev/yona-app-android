@@ -71,6 +71,10 @@ public class NotificationManagerImpl implements NotificationManager {
      * @param listener     the listener
      */
     public void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener) {
+       getMessage(itemsPerPage, pageNo, listener, false);
+    }
+
+    private void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener, final boolean isProcessUpdate) {
         try {
             if (YonaApplication.getUser().getLinks() != null && YonaApplication.getUser().getLinks().getYonaMessages() != null
                     && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getYonaMessages().getHref())) {
@@ -103,7 +107,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                             Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
                                         }
                                         yonaMessages.setEmbedded(embedded);
-                                        if (message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null
+                                        if (!isProcessUpdate && message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null
                                                 && !TextUtils.isEmpty(message.getLinks().getYonaPreocess().getHref())) {
                                             isAnyProcessed = true;
                                             MessageBody body = new MessageBody();
@@ -112,7 +116,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                         }
                                     }
                                     if (isAnyProcessed) {
-                                        getMessage(itemsPerPage, pageNo, listener);
+                                        getMessage(itemsPerPage, pageNo, listener, true);
                                     }
                                 }
                                 listener.onDataLoad(yonaMessages);
@@ -132,7 +136,6 @@ public class NotificationManagerImpl implements NotificationManager {
             AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
-
     /**
      * Delete message.
      *

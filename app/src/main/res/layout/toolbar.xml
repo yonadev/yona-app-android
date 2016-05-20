@@ -29,7 +29,8 @@
             android:layout_marginTop="@dimen/twenty_five"
             android:background="@drawable/icn_avatar"
             android:scaleType="fitXY"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:transitionName="@string/profile_transition"/>
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/toolbar_title"

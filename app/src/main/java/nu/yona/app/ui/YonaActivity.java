@@ -9,6 +9,7 @@
 package nu.yona.app.ui;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +39,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +64,7 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.ui.anim.DetailsTransition;
 import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
@@ -103,6 +106,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private boolean launchedPinActiivty = false;
     private int READ_EXTERNAL_STORAGE_REQUEST = 1;
     private int CAMERA_REQUEST = 2;
+    private Animator mCurrentAnimator;
+    private int mShortAnimationDuration = 200;
+    private Fragment oldFragment;
 
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
@@ -123,9 +129,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(R.layout.yona_layout);
         activity = this;
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean(AppConstant.FROM_LOGIN)) {
             isToDisplayLogin = false;
@@ -473,7 +479,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
         return v;
     }
-
+    
     /**
      * @param intent pass intent as input for replace current fragment with new.
      */
@@ -481,7 +487,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         if (intent != null) {
             boolean addToBackstack = false;
             String callAction = intent.getAction();
-            Fragment oldFragment = mContent;
+            oldFragment = mContent;
             boolean clearFragmentStack = intent.getBooleanExtra(AppConstant.CLEAR_FRAGMENT_STACK, false);
             if (!TextUtils.isEmpty(callAction)) {
                 IntentEnum intentEnum = IntentEnum.fromName(callAction);
@@ -528,6 +534,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                             return;
                         }
                         mContent = new ProfileFragment();
+                        profileIcon();
                         mContent.setArguments(intent.getExtras());
                         clearFragmentStack = false;
                         addToBackstack = true;
@@ -600,6 +607,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
+    private void profileIcon() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mContent.setSharedElementEnterTransition(new DetailsTransition());
+            mContent.setEnterTransition(new Fade());
+            getWindow().setExitTransition(new Fade());
+            mContent.setSharedElementReturnTransition(new DetailsTransition());
+        }
+    }
+
     private void updateToolBarBackground() {
         if (mContent instanceof ChallengesFragment || mContent instanceof ChallengesGoalDetailFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_green);
@@ -621,7 +637,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         hideToolbarIcon();
         if (mContent != null && !mContent.isAdded()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.back_slide_in, R.anim.back_slide_out);
             if (clearFragmentStack) {
                 getSupportFragmentManager().removeOnBackStackChangedListener(this);
                 int count = getSupportFragmentManager().getBackStackEntryCount();
@@ -639,7 +654,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 removeCurrentFragment();
                 // adding back stack change listener again.
                 getSupportFragmentManager().addOnBackStackChangedListener(this);
-                ft.replace(R.id.container, mContent).commit();
+                ft.replace(R.id.container, mContent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mContent instanceof ProfileFragment) {
+                    ft.addSharedElement(getLeftIcon(), getString(R.string.profile_transition));
+                }
+                ft.commit();
+                getFragmentManager().executePendingTransactions();
             } else {
                 oldFragment.setUserVisibleHint(false);
                 if (!clearFragmentStack && addToBackstack) {

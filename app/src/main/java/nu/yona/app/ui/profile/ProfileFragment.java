@@ -165,17 +165,11 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void setTitleAndIcon() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-                YonaActivity.getActivity().updateTitle(getString(R.string.blank));
-                YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
-                viewPager.setCurrentItem(0);
-                showOptionsInSelectedTab(viewPager.getCurrentItem());
-            }
-        }, AppConstant.TIMER_DELAY_THREE_HUNDRED);
-
+        YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
+        YonaActivity.getActivity().updateTitle(getString(R.string.blank));
+        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+        viewPager.setCurrentItem(0);
+        showOptionsInSelectedTab(viewPager.getCurrentItem());
     }
 
     private void showOptionsInSelectedTab(int position) {

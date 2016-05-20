@@ -11,115 +11,124 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/bg_gradient_two">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/first_name_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/text_item_height"
-        android:background="@drawable/item_gradient"
-        android:paddingBottom="@dimen/ten"
-        android:paddingLeft="@dimen/signup_profile_left_right_padding"
-        android:paddingRight="@dimen/signup_profile_left_right_padding"
-        android:paddingTop="@dimen/twenty">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <nu.yona.app.customview.YonaFontEditTextView
-            android:id="@+id/first_name"
-            style="@style/InputLabel"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/first_name_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:drawableRight="@drawable/icn_name"
-            android:ellipsize="end"
-            android:hint="@string/firstname"
-            android:imeOptions="actionNext"
-            android:nextFocusForward="@id/last_name"
-            android:inputType="textVisiblePassword|textCapWords"
-            android:maxLength="@integer/char_limit"
-            android:maxLines="1"
-            android:textColorHint="@color/black" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="@dimen/text_item_height"
+            android:background="@drawable/item_gradient"
+            android:paddingBottom="@dimen/ten"
+            android:paddingLeft="@dimen/signup_profile_left_right_padding"
+            android:paddingRight="@dimen/signup_profile_left_right_padding"
+            android:paddingTop="@dimen/twenty">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/last_name_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/text_item_height"
-        android:background="@drawable/item_gradient"
-        android:paddingBottom="@dimen/ten"
-        android:paddingLeft="@dimen/signup_profile_left_right_padding"
-        android:paddingRight="@dimen/signup_profile_left_right_padding"
-        android:paddingTop="@dimen/twenty">
+            <nu.yona.app.customview.YonaFontEditTextView
+                android:id="@+id/first_name"
+                style="@style/InputLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableRight="@drawable/icn_name"
+                android:ellipsize="end"
+                android:hint="@string/firstname"
+                android:imeOptions="actionNext"
+                android:inputType="textVisiblePassword|textCapWords"
+                android:maxLength="@integer/char_limit"
+                android:maxLines="1"
+                android:nextFocusForward="@id/last_name"
+                android:textColorHint="@color/black" />
+        </android.support.design.widget.TextInputLayout>
 
-        <nu.yona.app.customview.YonaFontEditTextView
-            android:id="@+id/last_name"
-            style="@style/InputLabel"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/last_name_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:drawableRight="@drawable/icn_name"
-            android:ellipsize="end"
-            android:hint="@string/lastname"
-            android:imeOptions="actionNext"
-            android:nextFocusForward="@+id/nick_name"
-            android:inputType="textVisiblePassword|textCapWords"
-            android:maxLength="@integer/char_limit"
-            android:maxLines="1"
-            android:textColorHint="@color/black" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="@dimen/text_item_height"
+            android:background="@drawable/item_gradient"
+            android:paddingBottom="@dimen/ten"
+            android:paddingLeft="@dimen/signup_profile_left_right_padding"
+            android:paddingRight="@dimen/signup_profile_left_right_padding"
+            android:paddingTop="@dimen/twenty">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/nick_name_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/text_item_height"
-        android:background="@drawable/item_gradient"
-        android:paddingBottom="@dimen/ten"
-        android:paddingLeft="@dimen/signup_profile_left_right_padding"
-        android:paddingRight="@dimen/signup_profile_left_right_padding"
-        android:paddingTop="@dimen/twenty">
+            <nu.yona.app.customview.YonaFontEditTextView
+                android:id="@+id/last_name"
+                style="@style/InputLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableRight="@drawable/icn_name"
+                android:ellipsize="end"
+                android:hint="@string/lastname"
+                android:imeOptions="actionNext"
+                android:inputType="textVisiblePassword|textCapWords"
+                android:maxLength="@integer/char_limit"
+                android:maxLines="1"
+                android:nextFocusForward="@+id/nick_name"
+                android:textColorHint="@color/black" />
+        </android.support.design.widget.TextInputLayout>
 
-        <nu.yona.app.customview.YonaFontEditTextView
-            android:id="@+id/nick_name"
-            style="@style/InputLabel"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/nick_name_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:drawableRight="@drawable/icn_nickname"
-            android:ellipsize="end"
-            android:hint="@string/nickname"
-            android:nextFocusForward="@id/mobile_number"
-            android:imeOptions="actionNext"
-            android:inputType="textVisiblePassword|textCapWords"
-            android:maxLength="@integer/char_limit"
-            android:maxLines="1"
-            android:textColorHint="@color/black" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="@dimen/text_item_height"
+            android:background="@drawable/item_gradient"
+            android:paddingBottom="@dimen/ten"
+            android:paddingLeft="@dimen/signup_profile_left_right_padding"
+            android:paddingRight="@dimen/signup_profile_left_right_padding"
+            android:paddingTop="@dimen/twenty">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/mobile_number_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/text_item_height"
-        android:background="@drawable/item_gradient"
-        android:paddingBottom="@dimen/ten"
-        android:paddingLeft="@dimen/signup_profile_left_right_padding"
-        android:paddingRight="@dimen/signup_profile_left_right_padding"
-        android:paddingTop="@dimen/twenty">
+            <nu.yona.app.customview.YonaFontEditTextView
+                android:id="@+id/nick_name"
+                style="@style/InputLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableRight="@drawable/icn_nickname"
+                android:ellipsize="end"
+                android:hint="@string/nickname"
+                android:imeOptions="actionNext"
+                android:inputType="textVisiblePassword|textCapWords"
+                android:maxLength="@integer/char_limit"
+                android:maxLines="1"
+                android:nextFocusForward="@id/mobile_number"
+                android:textColorHint="@color/black" />
+        </android.support.design.widget.TextInputLayout>
 
-        <nu.yona.app.customview.YonaFontEditTextView
-            android:id="@+id/mobile_number"
-            style="@style/InputLabel"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/mobile_number_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:digits="1234567890 "
-            android:drawableRight="@drawable/icn_mobile"
-            android:ellipsize="end"
-            android:hint="@string/mobilenumber"
-            android:imeOptions="actionDone"
-            android:inputType="phone"
-            android:maxLength="@integer/number_limit"
-            android:maxLines="1"
-            android:textColorHint="@color/black" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="@dimen/text_item_height"
+            android:background="@drawable/item_gradient"
+            android:paddingBottom="@dimen/ten"
+            android:paddingLeft="@dimen/signup_profile_left_right_padding"
+            android:paddingRight="@dimen/signup_profile_left_right_padding"
+            android:paddingTop="@dimen/twenty">
+
+            <nu.yona.app.customview.YonaFontEditTextView
+                android:id="@+id/mobile_number"
+                style="@style/InputLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:digits="1234567890 "
+                android:drawableRight="@drawable/icn_mobile"
+                android:ellipsize="end"
+                android:hint="@string/mobilenumber"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="@integer/number_limit"
+                android:maxLines="1"
+                android:textColorHint="@color/black" />
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
 
     <nu.yona.app.customview.YonaFontButton
         android:id="@+id/removeFriendButton"

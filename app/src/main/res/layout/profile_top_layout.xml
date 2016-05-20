@@ -19,7 +19,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/twenty_three"
         android:background="@drawable/profile_selector"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:transitionName="@string/profile_transition"/>
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/name"

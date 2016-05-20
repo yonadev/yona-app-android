@@ -33,6 +33,11 @@ public class YonaSplashScreenActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Handler handler = new Handler();
+        int delay = 0;
+        if(YonaApplication.getUserPreferences().getBoolean(AppConstant.FIRST_TIME_APP_OPEN, false)) {
+            delay = SPLASH_TIME_OUT;
+            YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.FIRST_TIME_APP_OPEN, true).commit();
+        }
         handler.postDelayed(new Runnable() {
 
             @Override
@@ -53,7 +58,7 @@ public class YonaSplashScreenActivity extends BaseActivity {
                     startNewActivity(YonaActivity.class);
                 }
             }
-        }, SPLASH_TIME_OUT);
+        }, delay);
     }
 
 

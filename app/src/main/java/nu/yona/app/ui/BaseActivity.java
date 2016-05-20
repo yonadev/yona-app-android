@@ -97,7 +97,7 @@ public class BaseActivity extends AppCompatActivity {
             intent.putExtras(bundle);
         }
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+//        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
 }
