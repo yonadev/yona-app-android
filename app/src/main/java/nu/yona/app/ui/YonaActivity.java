@@ -479,7 +479,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
         return v;
     }
-    
+
     /**
      * @param intent pass intent as input for replace current fragment with new.
      */

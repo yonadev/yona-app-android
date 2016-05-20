@@ -107,6 +107,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         super.onResume();
         setTitleAndIcon();
         updateProfile();
+        showOptionsInSelectedTab(viewPager.getCurrentItem());
     }
 
     @Override
@@ -189,18 +190,23 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void showProfileOptions() {
-        if (user != null && yonaMessage == null) {
-            YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
-            YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.profile));
-            YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_edit));
-            YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent friendIntent = new Intent(IntentEnum.ACTION_EDIT_PROFILE.getActionString());
-                    YonaActivity.getActivity().replaceFragment(friendIntent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (user != null && yonaMessage == null) {
+                    YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
+                    YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.profile));
+                    YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_edit));
+                    YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent friendIntent = new Intent(IntentEnum.ACTION_EDIT_PROFILE.getActionString());
+                            YonaActivity.getActivity().replaceFragment(friendIntent);
+                        }
+                    });
                 }
-            });
-        }
+            }
+        }, AppConstant.TIMER_DELAY_THREE_HUNDRED);
     }
 
     private void setupViewPager() {
