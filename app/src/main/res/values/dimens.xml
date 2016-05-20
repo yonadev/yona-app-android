@@ -76,7 +76,7 @@
     <dimen name="footer_challenges_detail">170dp</dimen>
     <dimen name="challenge_opslaan_margin">22dp</dimen>
     <dimen name="challenge_opslaan_margin_top">32dp</dimen>
-    <dimen name="challenge_opslaan_height">176dp</dimen>
+    <dimen name="challenge_opslaan_height">110dp</dimen>
     <dimen name="footer_detail_margin_top">20dp</dimen>
 
     <dimen name="goal_item_height">110dp</dimen>
