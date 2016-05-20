@@ -10,7 +10,6 @@ package nu.yona.app.ui.message;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -160,17 +159,12 @@ public class NotificationFragment extends BaseFragment {
     }
 
     /**
-     * update toolbar'r Item
+     * update toolbar's Item
      */
     private void setTitleAndIcon() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-                YonaActivity.getActivity().updateTitle(R.string.message);
-                YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
-            }
-        }, AppConstant.TIMER_DELAY_THREE_HUNDRED);
+        YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
+        YonaActivity.getActivity().updateTitle(R.string.message);
+        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
     }
 
     /**

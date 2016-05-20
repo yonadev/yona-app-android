@@ -131,6 +131,7 @@ public interface AppConstant {
      */
     String PIN_RESET_VERIFICATION = "pinResetVerfication";
 
+    String FIRST_TIME_APP_OPEN = "firstTimeAppOpen";
     /**
      * The constant PIN_RESET_FIRST_STEP.
      */

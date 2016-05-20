@@ -122,9 +122,15 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     /*
-     * Get all activity categories
-     */
+         * Get all activity categories
+         */
     private void getActivityCategories() {
         APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(null);
     }
