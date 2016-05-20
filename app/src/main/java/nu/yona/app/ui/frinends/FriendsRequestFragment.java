@@ -196,6 +196,6 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
      * Go back to screen
      */
     private void goBackToScreen() {
-        getActivity().onBackPressed();
+        YonaActivity.getActivity().onBackPressed();
     }
 }
