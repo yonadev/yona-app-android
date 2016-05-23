@@ -12,6 +12,8 @@ package nu.yona.app.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,8 +21,12 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.ui.login.LoginActivity;
+import nu.yona.app.ui.pincode.PasscodeActivity;
+import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
+import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -33,6 +39,22 @@ public class LaunchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_layout);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false)) {
+            startNewActivity(YonaCarrouselActivity.class);
+        } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
+            // We will skip here to load same activity
+        } else if (YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)
+                && !YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
+            startNewActivity(OTPActivity.class);
+        } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_grape);
+            bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(LaunchActivity.this, R.color.grape));
+            startNewActivity(bundle, PasscodeActivity.class);
+        } else if (!TextUtils.isEmpty(YonaApplication.getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
+            startNewActivity(YonaActivity.class);
+        }
 
         findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {
             @Override
