@@ -37,7 +37,8 @@ module Platform
       capabilities =
           {
               platformName: 'Android',
-              fullReset: true,
+              # fullReset: true,
+              noReset: true,
               app: caps[:apk_path],
               appPackage: caps[:android_package],
               appActivity: caps[:android_activity]

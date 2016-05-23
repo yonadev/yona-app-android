@@ -1,6 +1,5 @@
 Given(/^User is on Home page and can see two options Login and Join$/) do
   sleep 2
-
   on(Signup).checkWelcomeScreen
 
 end
@@ -13,7 +12,7 @@ end
 
 And(/^Enters first name and last name$/) do
   sleep 1
-  on(Signup).setText('fname', 'lname')
+  on(Signup).enterName('fname', 'lname')
 end
 
 
@@ -25,8 +24,10 @@ end
 
 
 And(/^Then enters Mobile number and Nick Name on next screen$/) do
-  sleep 1
-  on(Signup).setText(rand(1000000000).to_s, 'Jacky')
+  begin
+    strMob=rand(1000000000).to_s
+  end while strMob.length!=9
+  on(Signup).enterMobile(strMob.to_s, 'Jacky')
 end
 
 
@@ -67,22 +68,3 @@ end
 Then(/^User is landed on Challenges screen$/) do
   expect(on(Signup).landed_on_challenges?).to be_truthy
 end
-
-# Then(/^I enter user name$/) do
-#   puts "User entered user name"
-#   sleep 3
-# end
-#
-# Then(/^I enter password$/) do
-#   puts "User entered password"
-# end
-#
-# Then(/^I click on login button$/) do
-#   puts "User clicked on login button"
-#   sleep 3
-# end
-#
-# Then(/^I should be logged in$/) do
-#   puts "User is logged in to app"
-#   sleep 3
-# end
