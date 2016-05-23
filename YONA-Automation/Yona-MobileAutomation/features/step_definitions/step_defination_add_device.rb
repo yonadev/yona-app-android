@@ -6,7 +6,9 @@ end
 Then(/^User has sign to Yona from first device$/) do
   sleep 2
   strPrfx="+31".to_s
-  $strMobliNumb = rand(1000000000).to_s
+  begin
+    $strMobliNumb = rand(1000000000).to_s
+  end while $strMobliNumb.length!=9
   mNum=strPrfx+$strMobliNumb
   on(AddDevice).singUpAPIs(mNum)
 end
@@ -22,13 +24,13 @@ end
 
 Then(/^Click on Login button in another device$/) do
   sleep 2
-  puts "Mobile=#{$strMobliNumb}"
+  # puts "Mobile=#{$strMobliNumb}"
   on(AddDevice).login_element.click()
 end
 
 And(/^Enters Mobile number and code generated above$/) do
   sleep 2
-  puts "Mobile=#{$strMobliNumb}"
+  # puts "Mobile=#{$strMobliNumb}"
   on(AddDevice).enterDetails($strMobliNumb)
 
 end
@@ -41,13 +43,15 @@ end
 
 
 And(/^User is logged in to new device$/) do
-  sleep 5
-  puts "New divce added successfully"
   sleep 2
+  puts "New divce added successfully"
+
 end
 
 Then(/User is landed on enter OTP screen$/) do
+  sleep 2
   expect(on(AddDevice).landed_on_OTP?).to be_truthy
+  sleep 2
 end
 
 

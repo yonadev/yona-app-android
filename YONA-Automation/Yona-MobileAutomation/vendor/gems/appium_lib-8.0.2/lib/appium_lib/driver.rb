@@ -309,6 +309,7 @@ module Appium
       @sauce_access_key = nil if !@sauce_access_key || (@sauce_access_key.is_a?(String) && @sauce_access_key.empty?)
       @appium_port      = appium_lib_opts.fetch :port, 4723
 
+
       # Path to the .apk, .app or .app.zip.
       # The path can be local or remote for Sauce.
       if @caps && @caps[:app] && ! @caps[:app].empty?
@@ -437,7 +438,7 @@ module Appium
       if !@sauce_username.nil? && !@sauce_access_key.nil?
         "http://#{@sauce_username}:#{@sauce_access_key}@ondemand.saucelabs.com:80/wd/hub"
       else
-        "http://127.0.0.1:#{@appium_port}/wd/hub"
+        "http://127.0.0.1:#{@appium_port}/wd/hub" 
       end
     end
 

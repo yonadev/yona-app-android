@@ -19,7 +19,7 @@ After do |scenario|
     # TODO: close_all_windows_except_main(@driver) if ENV['PLATFORM'] == 'web'
   end
 
-  @driver.reset unless ENV['TARGET'] == 'web'
+  # @driver.reset unless ENV['TARGET'] == 'web'
 end
 
 at_exit do

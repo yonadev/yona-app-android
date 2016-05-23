@@ -59,10 +59,8 @@ class ADDCHELLENGS<MobTest::Base
         if(lsweGls!=nil && lsweGls.length>0)
           lsweGls[1].click
           sleep 2
-          puts "Context=#{@driver.available_contexts}"
           delgoal_element.click
           sleep 2
-          puts "Context=#{@driver.available_contexts}"
           acceptdelete_element.click
         end
     end

@@ -1,4 +1,5 @@
 require_relative '../../../features/support/pages/common/APIs_Yona'
+require_relative '../../../features/support/pages/common/common_UI_Functions'
 require 'json'
 #------------------------------------------------------------------
 # Class with Yona API methods for varous operations
@@ -23,14 +24,29 @@ puts "Mobile = #{$strMobliNumb}"
         element(:chlgs_title, xpath: '//android.widget.TextView[@text="CHALLENGES"]')
         element(:otpscreen_title, id: "#{$android_package}:id/passcode_title")
         puts "package=#{$android_package}"
+
+        # Check for Android Native Keybaord and dissmiss it if present
+        def checkKeyBoard
+          if (ENV['PLATFORM'] == 'android')
+            if(COMMON_UI.checkUIKeyboard)
+              @driver.navigate.back
+            end
+          end
+        end
+
       end
 
       def enterDetails(strMbNum)
+        checkKeyBoard
         mobnumber_element.send_keys strMbNum
+        sleep 2
+        checkKeyBoard
         passcode_element.send_keys $newDevicePwd
+        sleep 2
+        checkKeyBoard
       end
 
-
+      # Makes a POST API call to create user
        def singUpAPIs(strMobileNumb)
          begin
            url="http://85.222.227.142/users/"
@@ -54,23 +70,19 @@ puts "Mobile = #{$strMobliNumb}"
           puts "Exceptions occurred #{e.message}"
         end
       end
-      # Makes a POST API call to create user
 
 
       def landed_on_OTP?
         bool = false
         sleep 4
         begin
-          puts "Displayed=#{otpscreen_title_element.displayed?}"
           bool=self.otpscreen_title_element.displayed?
-
         rescue Exception => e
           puts "Message=#{e.message}"
           return false
         end
         bool
       end
-
 
   end
 
