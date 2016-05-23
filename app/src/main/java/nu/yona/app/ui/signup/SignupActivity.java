@@ -11,6 +11,7 @@ package nu.yona.app.ui.signup;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -226,12 +227,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         if (message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR) || message.getCode().equalsIgnoreCase(ServerErrorCode.ADD_BUDDY_USER_EXIST_ERROR))) {
             showAlertForReRegisteruser(message.getMessage());
         } else {
-            CustomAlertDialog.show(SignupActivity.this, message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+            Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }
 }

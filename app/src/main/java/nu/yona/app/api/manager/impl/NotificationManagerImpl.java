@@ -71,7 +71,7 @@ public class NotificationManagerImpl implements NotificationManager {
      * @param listener     the listener
      */
     public void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener) {
-       getMessage(itemsPerPage, pageNo, listener, false);
+        getMessage(itemsPerPage, pageNo, listener, false);
     }
 
     private void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener, final boolean isProcessUpdate) {
@@ -136,6 +136,7 @@ public class NotificationManagerImpl implements NotificationManager {
             AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
+
     /**
      * Delete message.
      *

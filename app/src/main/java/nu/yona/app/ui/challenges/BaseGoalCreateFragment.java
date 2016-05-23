@@ -11,6 +11,7 @@ package nu.yona.app.ui.challenges;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
-import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.enums.GoalsEnum;
@@ -166,7 +166,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
                 if (yonaGoal == null) {
                     goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaActivityCategories) object);
                 } else {
-                    CustomAlertDialog.show(getActivity(), "You already Added this category.", "Ok");
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.category_added), Snackbar.LENGTH_LONG).show();
                     return;
                 }
             }

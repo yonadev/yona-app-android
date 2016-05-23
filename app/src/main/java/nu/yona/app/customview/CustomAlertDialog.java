@@ -12,11 +12,8 @@ package nu.yona.app.customview;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.text.TextUtils;
-
-import nu.yona.app.R;
 
 /**
  * The type Custom alert dialog.
@@ -35,116 +32,6 @@ public class CustomAlertDialog extends AlertDialog.Builder {
      */
     public CustomAlertDialog(Context context, int theme) {
         super(context, theme);
-    }
-
-    /**
-     * Show custom alert dialog.
-     *
-     * @param context        the context
-     * @param title          the title
-     * @param message        the message
-     * @param positiveButton the positive button
-     * @return the custom alert dialog
-     */
-    public static synchronized CustomAlertDialog show(Context context, CharSequence title, CharSequence message, CharSequence positiveButton) {
-
-        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context);
-        customAlertDialog.setCancelable(false);
-
-        // for setting title view in center
-        YonaFontTextView titleTextView = new YonaFontTextView(context);
-        titleTextView.setText(title);
-        titleTextView.setPadding(context.getResources().getInteger(R.integer.margin_ten), context.getResources().getInteger(R.integer.margin_ten),
-                context.getResources().getInteger(R.integer.margin_twenty), context.getResources().getInteger(R.integer.margin_twenty));
-        customAlertDialog.setCustomTitle(titleTextView);
-        customAlertDialog.setMessage(message);
-
-        customAlertDialog.setPositiveButton(positiveButton, new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        customAlertDialog.show();
-        return customAlertDialog;
-    }
-
-    /**
-     * Show alert dialog alert dialog.
-     *
-     * @param context        the context
-     * @param message        the message
-     * @param positiveButton the positive button
-     * @return the alert dialog
-     */
-/*
-    * This method is in exception to CustomAlertDialog. method returns AlertDialog instead of AlertDialog.Builder
-    * AlertDialog's method of isShowing is useful for tracking whether same dialog already delivered to user or not.
-    */
-    public static synchronized AlertDialog showAlertDialog(Context context, CharSequence message, CharSequence positiveButton) {
-        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context);
-        customAlertDialog.setCancelable(false);
-        customAlertDialog.setMessage(message);
-
-        customAlertDialog.setPositiveButton(positiveButton, new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        return customAlertDialog.show();
-    }
-
-    /**
-     * Show returning actual dialog alert dialog.
-     *
-     * @param context          Context
-     * @param title            Title of Alert
-     * @param message          Message in Alert
-     * @param positiveButton   Possitive button title
-     * @param negativeButton   Negative button title
-     * @param positiveListener positive button listener
-     * @param negativeListener negative button listener.
-     * @return alert dialog
-     */
-    public static synchronized AlertDialog showReturningActualDialog(Context context,
-                                                                     CharSequence title,
-                                                                     CharSequence message,
-                                                                     CharSequence positiveButton,
-                                                                     CharSequence negativeButton,
-                                                                     OnClickListener positiveListener,
-                                                                     OnClickListener negativeListener) {
-
-        CustomAlertDialog customAlertDialog = buildDialog(context, title, message, positiveButton, positiveListener);
-        customAlertDialog.setNegativeButton(negativeButton, negativeListener);
-
-        return initDialog(customAlertDialog);
-    }
-
-    private static CustomAlertDialog buildDialog(Context context,
-                                                 CharSequence title,
-                                                 CharSequence message,
-                                                 CharSequence positiveButton,
-                                                 OnClickListener positiveListener) {
-
-        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context);
-        customAlertDialog.setCancelable(false);
-        if (!TextUtils.isEmpty(title)) {
-            customAlertDialog.setTitle(title);
-        }
-        customAlertDialog.setMessage(message);
-        customAlertDialog.setPositiveButton(positiveButton, positiveListener);
-
-        return customAlertDialog;
-    }
-
-    private static AlertDialog initDialog(CustomAlertDialog customAlertDialog) {
-        //shows then centers the dialog text
-
-        return customAlertDialog.show();
     }
 
     /**
@@ -178,44 +65,6 @@ public class CustomAlertDialog extends AlertDialog.Builder {
             customAlertDialog.setNegativeButton(negativeButton, negativeListener);
         }
 
-        customAlertDialog.show();
-        return customAlertDialog;
-    }
-
-    /**
-     * Show custom alert dialog.
-     *
-     * @param context          Context
-     * @param title            title of alert
-     * @param message          message in alert
-     * @param positiveButton   positive button text
-     * @param positiveListener positive button listener
-     * @return custom alert dialog
-     */
-    public static CustomAlertDialog show(Context context, CharSequence title, CharSequence message, CharSequence positiveButton, OnClickListener positiveListener) {
-        return show(context, title, message, positiveButton, null, positiveListener, null);
-    }
-
-    /**
-     * Show custom alert dialog.
-     *
-     * @param context        Context
-     * @param message        message for alert
-     * @param positiveButton positive button text
-     * @return custom alert dialog
-     */
-    public static CustomAlertDialog show(Context context, CharSequence message, CharSequence positiveButton) {
-
-        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context);
-        customAlertDialog.setCancelable(false);
-        customAlertDialog.setMessage(message);
-        customAlertDialog.setPositiveButton(positiveButton, new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
         customAlertDialog.show();
         return customAlertDialog;
     }

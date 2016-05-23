@@ -10,9 +10,9 @@
 
 package nu.yona.app.ui.signup;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -22,7 +22,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
-import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
@@ -110,13 +109,14 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
             public void onError(Object errorMessage) {
                 if (errorMessage instanceof ErrorMessage) {
                     showLoadingView(false, null);
-                    CustomAlertDialog.show(OTPActivity.this, ((ErrorMessage) errorMessage).getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            otpFragment.resetDigit();
-                            dialogInterface.dismiss();
-                        }
-                    });
+                    Snackbar.make(findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_INDEFINITE)
+                            .setAction(getString(R.string.ok), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    otpFragment.resetDigit();
+                                }
+                            })
+                            .show();
                 }
             }
         });

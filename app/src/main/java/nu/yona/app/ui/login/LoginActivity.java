@@ -10,10 +10,10 @@
 
 package nu.yona.app.ui.login;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -30,7 +30,6 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
@@ -195,12 +194,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
                 showLoadingView(false, null);
                 ErrorMessage message = (ErrorMessage) errorMessage;
                 showLoadingView(false, null);
-                CustomAlertDialog.show(LoginActivity.this, message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
     }

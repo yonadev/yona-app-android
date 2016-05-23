@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -296,12 +297,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private void showError(Object errorMessage) {
         ErrorMessage message = (ErrorMessage) errorMessage;
         YonaActivity.getActivity().showLoadingView(false, null);
-        CustomAlertDialog.show(YonaActivity.getActivity(), message.getMessage(), YonaActivity.getActivity().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+        Snackbar.make(getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
     }
 
     private void setBudgetGoalViewVisibility() {
