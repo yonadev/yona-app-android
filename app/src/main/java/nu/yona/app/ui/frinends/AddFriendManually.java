@@ -10,9 +10,9 @@
 
 package nu.yona.app.ui.frinends;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -31,7 +31,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
-import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
@@ -215,12 +214,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
                 ErrorMessage message = (ErrorMessage) errorMessage;
                 ((YonaActivity) getActivity()).showLoadingView(false, null);
 
-                CustomAlertDialog.show(getActivity(), message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                Snackbar.make(getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
     }

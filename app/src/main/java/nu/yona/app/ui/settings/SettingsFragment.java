@@ -14,6 +14,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,12 +134,7 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onError(Object errorMessage) {
                 YonaActivity.getActivity().showLoadingView(false, null);
-                CustomAlertDialog.show(YonaActivity.getActivity(), ((ErrorMessage) errorMessage).getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                Snackbar.make(getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -175,17 +171,16 @@ public class SettingsFragment extends BaseFragment {
 
     private void showAlert(String message, final boolean doDelete) {
         YonaActivity.getActivity().showLoadingView(false, null);
-        CustomAlertDialog.show(YonaActivity.getActivity(),
-                message,
-                YonaActivity.getActivity().getString(R.string.ok), new DialogInterface.OnClickListener() {
+        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.ok), new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(View v) {
                         if (doDelete) {
                             doDeleteDeviceRequest();
                         }
-                        dialogInterface.dismiss();
                     }
-                });
+                })
+                .show();
     }
 
     private void doDeleteDeviceRequest() {

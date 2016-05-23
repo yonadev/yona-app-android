@@ -79,7 +79,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
      *
      * @param user the user
      */
-    public void updateUser(User user){
+    public void updateUser(User user) {
         this.user = user;
     }
 
@@ -101,7 +101,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         nickName.setClickable(false);
         nickName.setKeyListener(null);
 
-        if(user != null && yonaMessage != null) {
+        if (user != null && yonaMessage != null) {
             firstName.setText(TextUtils.isEmpty(user.getFirstName()) ? getString(R.string.blank) : user.getFirstName());
             lastName.setText(TextUtils.isEmpty(user.getLastName()) ? getString(R.string.blank) : user.getLastName());
             nickName.setText(TextUtils.isEmpty(yonaMessage.getNickname()) ? getString(R.string.blank) : yonaMessage.getNickname());

@@ -29,6 +29,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -263,12 +264,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     }
                 });
             } else {
-                CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                Snackbar.make(findViewById(android.R.id.content), errorMessage.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         }
     }

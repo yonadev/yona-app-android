@@ -11,6 +11,7 @@ package nu.yona.app.ui.pincode;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
@@ -167,12 +168,9 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
             public void onError(Object errorMessage) {
                 ErrorMessage message = (ErrorMessage) errorMessage;
                 showLoadingView(false, null);
-                CustomAlertDialog.show(PinActivity.this, message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.ok), null)
+                        .show();
             }
         });
     }

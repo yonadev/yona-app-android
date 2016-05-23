@@ -8,11 +8,11 @@
 
 package nu.yona.app.ui.profile;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -29,7 +29,6 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaMessage;
-import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
@@ -135,12 +134,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             public void onError(Object errorMessage) {
                 YonaActivity.getActivity().showLoadingView(false, null);
                 ErrorMessage message = (ErrorMessage) errorMessage;
-                CustomAlertDialog.show(YonaActivity.getActivity(), message.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                Snackbar.make(getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
     }
