@@ -103,8 +103,10 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
                 mGoalCreationListView.setVisibility(View.GONE);
                 mGoalListView.setVisibility(View.VISIBLE);
             } else {
-                if (categoryGoalListAdapter != null && mGoalCreationListView.getVisibility() == View.VISIBLE) {
+                if (categoryGoalListAdapter != null) {
                     categoryGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfCategories());
+                }
+                if (mGoalCreationListView.getVisibility() == View.VISIBLE) {
                     btnGoalAdd.setVisibility(View.GONE);
                     mGoalListView.setVisibility(View.GONE);
                 } else {
