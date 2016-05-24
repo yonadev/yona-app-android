@@ -337,7 +337,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
                         }
                     });
         } else {
-            Snackbar.make(getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }
 
