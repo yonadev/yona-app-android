@@ -489,10 +489,34 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnChallenges:
-                if (currentTab.equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && !TextUtils.isEmpty(mBudgetGoalTime.getText())) {
-                    createUpdateBudgetGoal();
+                if (currentTab.equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString())) {
+                    if (TextUtils.isEmpty(mBudgetGoalTime.getText())) {
+                        showError(new ErrorMessage(getString(R.string.add_goal_error, getString(R.string.challengescredit))));
+                        return;
+                    }
+                    if (mYonaGoal instanceof YonaGoal) {
+                        if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
+                            updateBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), (YonaGoal) mYonaGoal);
+                        } else {
+                            createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
+                        }
+                    } else if (mYonaGoal instanceof YonaActivityCategories) {
+                        createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
+                    }
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
-                    createUpdateTimeZoneGoal();
+                    if (listOfTimes == null || listOfTimes.size() == 0) {
+                        showError(new ErrorMessage(getString(R.string.add_goal_error, getString(R.string.challengeszone))));
+                        return;
+                    }
+                    if (mYonaGoal instanceof YonaGoal) {
+                        if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
+                            updateTimeZoneGoal(listOfTimes, (YonaGoal) mYonaGoal);
+                        } else {
+                            createTimeZoneGoal(listOfTimes, mYonaGoal);
+                        }
+                    } else if (mYonaGoal instanceof YonaActivityCategories) {
+                        createTimeZoneGoal(listOfTimes, mYonaGoal);
+                    }
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
                     createNewBudgetGoal(0, mYonaGoal);
                 }
