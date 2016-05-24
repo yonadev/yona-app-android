@@ -166,7 +166,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
                 if (yonaGoal == null) {
                     goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaActivityCategories) object);
                 } else {
-                    Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.category_added), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), getString(R.string.category_added), Snackbar.LENGTH_LONG).show();
                     return;
                 }
             }

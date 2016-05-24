@@ -297,7 +297,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private void showError(Object errorMessage) {
         ErrorMessage message = (ErrorMessage) errorMessage;
         YonaActivity.getActivity().showLoadingView(false, null);
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
     }
 
     private void setBudgetGoalViewVisibility() {

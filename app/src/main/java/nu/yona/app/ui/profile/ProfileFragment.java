@@ -134,7 +134,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             public void onError(Object errorMessage) {
                 YonaActivity.getActivity().showLoadingView(false, null);
                 ErrorMessage message = (ErrorMessage) errorMessage;
-                Snackbar.make(getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
     }

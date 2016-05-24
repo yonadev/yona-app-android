@@ -205,16 +205,15 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         APIManager.getInstance().getBuddyManager().addBuddy(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), mobileNumber.getText().toString(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                ((YonaActivity) getActivity()).showLoadingView(false, null);
-                getActivity().onBackPressed();
+                YonaActivity.getActivity().showLoadingView(false, null);
+                YonaActivity.getActivity().onBackPressed();
             }
 
             @Override
             public void onError(Object errorMessage) {
                 ErrorMessage message = (ErrorMessage) errorMessage;
-                ((YonaActivity) getActivity()).showLoadingView(false, null);
-
-                Snackbar.make(getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+                YonaActivity.getActivity().showLoadingView(false, null);
+                Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
     }

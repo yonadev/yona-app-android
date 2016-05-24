@@ -134,7 +134,7 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onError(Object errorMessage) {
                 YonaActivity.getActivity().showLoadingView(false, null);
-                Snackbar.make(getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -171,7 +171,7 @@ public class SettingsFragment extends BaseFragment {
 
     private void showAlert(String message, final boolean doDelete) {
         YonaActivity.getActivity().showLoadingView(false, null);
-        Snackbar.make(getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(R.string.ok), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
