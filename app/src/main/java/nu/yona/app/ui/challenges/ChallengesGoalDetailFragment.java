@@ -262,6 +262,9 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         return view;
     }
 
+    /**
+     * Update toolbar Title
+     */
     private void updateTitle() {
         String title = null;
         if (currentTab.equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString())) {
@@ -300,12 +303,18 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         Snackbar.make(getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     * Show Budget Goal View
+     */
     private void setBudgetGoalViewVisibility() {
         timezoneGoalView.setVisibility(View.GONE);
         budgetGoalView.setVisibility(View.VISIBLE);
         mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_timezone);
     }
 
+    /**
+     * Show Time Zone Goal view
+     */
     private void setTimezoneGoalViewVisibility() {
         timezoneGoalView.setVisibility(View.VISIBLE);
         budgetGoalView.setVisibility(View.GONE);
@@ -347,6 +356,11 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         }
     }
 
+    /**
+     * Call back
+     *
+     * @param result
+     */
     private void updateGoalNotify(final Object result) {
         YonaActivity.getActivity().showLoadingView(false, null);
         if (result != null) {
@@ -360,6 +374,12 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         }
     }
 
+    /**
+     * Call BudgetGoal API for update
+     *
+     * @param minutes
+     * @param yonaGoal
+     */
     private void updateBudgetGoal(long minutes, YonaGoal yonaGoal) {
         YonaActivity.getActivity().showLoadingView(true, null);
         if (yonaGoal != null) {
@@ -378,6 +398,8 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     }
 
     /**
+     * Call TimeZone Goal API for creating new goal
+     *
      * @param timesList
      * @param object
      */
@@ -411,6 +433,12 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
     }
 
+    /**
+     * Call API of update time zone goal
+     *
+     * @param timeList
+     * @param yonaGoal
+     */
     private void updateTimeZoneGoal(List<String> timeList, YonaGoal yonaGoal) {
         YonaActivity.getActivity().showLoadingView(true, null);
         if (yonaGoal != null) {
@@ -462,29 +490,9 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         switch (v.getId()) {
             case R.id.btnChallenges:
                 if (currentTab.equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && !TextUtils.isEmpty(mBudgetGoalTime.getText())) {
-                    if (mYonaGoal instanceof YonaGoal) {
-                        if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
-                            updateBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), (YonaGoal) mYonaGoal);
-                        } else {
-                            createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
-                        }
-                    } else if (mYonaGoal instanceof YonaActivityCategories) {
-                        createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
-                    }
+                    createUpdateBudgetGoal();
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
-                    if (listOfTimes == null || listOfTimes.size() == 0) {
-                        showError(new ErrorMessage(getString(R.string.add_timezone)));
-                        return;
-                    }
-                    if (mYonaGoal instanceof YonaGoal) {
-                        if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
-                            updateTimeZoneGoal(listOfTimes, (YonaGoal) mYonaGoal);
-                        } else {
-                            createTimeZoneGoal(listOfTimes, mYonaGoal);
-                        }
-                    } else if (mYonaGoal instanceof YonaActivityCategories) {
-                        createTimeZoneGoal(listOfTimes, mYonaGoal);
-                    }
+                    createUpdateTimeZoneGoal();
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
                     createNewBudgetGoal(0, mYonaGoal);
                 }
@@ -507,6 +515,46 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         }
     }
 
+    /**
+     * Create or update Budget Goal
+     */
+    private void createUpdateBudgetGoal() {
+        if (mYonaGoal instanceof YonaGoal) {
+            if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
+                updateBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), (YonaGoal) mYonaGoal);
+            } else {
+                createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
+            }
+        } else if (mYonaGoal instanceof YonaActivityCategories) {
+            createNewBudgetGoal(Long.valueOf(mBudgetGoalTime.getText().toString()), mYonaGoal);
+        }
+    }
+
+    /**
+     * Create or update Timezone Goal
+     */
+    private void createUpdateTimeZoneGoal() {
+        if (listOfTimes == null || listOfTimes.size() == 0) {
+            showError(new ErrorMessage(getString(R.string.add_timezone)));
+            return;
+        }
+        if (mYonaGoal instanceof YonaGoal) {
+            if (((YonaGoal) mYonaGoal).getLinks().getEdit() != null && !TextUtils.isEmpty(((YonaGoal) mYonaGoal).getLinks().getEdit().getHref())) {
+                updateTimeZoneGoal(listOfTimes, (YonaGoal) mYonaGoal);
+            } else {
+                createTimeZoneGoal(listOfTimes, mYonaGoal);
+            }
+        } else if (mYonaGoal instanceof YonaActivityCategories) {
+            createTimeZoneGoal(listOfTimes, mYonaGoal);
+        }
+    }
+
+    /**
+     * call Timepicker for TimeZone with time
+     *
+     * @param v
+     * @param updatingStartTime
+     */
     private void callTimePickerForTimeZone(final View v, boolean updatingStartTime) {
         final Bundle bTime = (Bundle) v.getTag();
         final String updatedTime = bTime.getString(AppConstant.TIME);
@@ -539,6 +587,13 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         }
     }
 
+    /**
+     * Merge Two times in format of HH:MM-HH:MM
+     *
+     * @param firstTimepoint
+     * @param secondTimepoint
+     * @return
+     */
     private String mergeZoneTime(Timepoint firstTimepoint, Timepoint secondTimepoint) {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append(AppUtils.getTimeDigit(firstTimepoint.getHour()))
