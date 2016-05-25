@@ -8,10 +8,11 @@
 
 package nu.yona.app.ui.pincode;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -207,8 +208,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     private void showChallengesScreen() {
         Intent intent = new Intent(PasscodeActivity.this, YonaActivity.class);
         intent.putExtra(AppConstant.FROM_LOGIN, true);
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-//        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        ActivityCompat.startActivity(this, intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
         finish();
     }
 }
