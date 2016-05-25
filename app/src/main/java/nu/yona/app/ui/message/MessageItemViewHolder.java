@@ -76,10 +76,14 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.swipe_delete_goal:
-                onFriendsItemClickListener.onFriendsItemDeleteClick(v);
+                if (onFriendsItemClickListener != null) {
+                    onFriendsItemClickListener.onFriendsItemDeleteClick(v);
+                }
                 break;
             case R.id.messageContainer:
-                onFriendsItemClickListener.onFriendsItemClick(v);
+                if (onFriendsItemClickListener != null) {
+                    onFriendsItemClickListener.onFriendsItemClick(v);
+                }
                 break;
             default:
                 break;
