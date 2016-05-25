@@ -36,6 +36,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
 
     private final int TIMER_DELAY = 3000;
     private final int TIMER_PERIOD = 4000;
+    private final float TRANFORMATION_POSITION = 0.999f;
     /**
      * The View.
      */
@@ -176,14 +177,54 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
 
     @Override
     public void transformPage(View view, float position) {
-        view.setAlpha(1 - Math.abs(position));
-        if (position < 0) {
-            view.setScrollX((int) ((float) (view.getWidth()) * position));
-        } else if (position > 0) {
-            view.setScrollX(-(int) ((float) (view.getWidth()) * -position));
-        } else {
-            view.setScrollX(0);
+
+        final int pageWidth = view.getWidth();
+
+        /*
+         * When a page's alpha is set to 0 it's visibility should also be set to gone.
+         * Even though the view isn't visible it can still be interacted with if it isn't gone and is drawn on top.
+         */
+
+        /*
+         * Position is checked right up next to -1 and 1. The reason is because sometimes the position doesn't seem to come
+         * all the way through as a whole number. Meaning it seems it would stop so very close to -1 or 0 (for example) and
+         * the code to make necessary views 'gone' never gets called. So then there could be an invisible view on top that is
+         * still able to be interacted with.
+         */
+
+        if (position < -TRANFORMATION_POSITION) { // [-Infinity,-1)
+            // This page is way off-screen to the left so hide it.
+            view.setAlpha(0);
+            view.setVisibility(View.GONE);
+            view.setTranslationX(pageWidth);
+        } else if (position <= TRANFORMATION_POSITION) { // (-1, 1)
+            // The further the page is from being center page the more transparent it is.
+            view.setAlpha(getAlpha(position));
+            // Counteract the default slide transition
+            view.setTranslationX(pageWidth * -position);
+            // Make sure the page is visible
+            view.setVisibility(View.VISIBLE);
+        } else { // (1,+Infinity]
+            // This page is way off-screen to the right so hide it.
+            view.setAlpha(0);
+            view.setVisibility(View.GONE);
+            view.setTranslationX(-pageWidth);
         }
+    }
+
+    /***
+     * Get the alpha value that should be applied to a position.
+     *
+     * @param position Position to find an alpha for.
+     * @return An alpha value.
+     */
+    private static final float getAlpha(final float position) {
+        return getSlowQuadraticAlpha(position);
+    }
+
+
+    private static final float getSlowQuadraticAlpha(final float position) {
+        return 1 - position * position;
     }
 
     /**
