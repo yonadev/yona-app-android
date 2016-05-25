@@ -12,7 +12,6 @@ package nu.yona.app.api.manager.network;
 
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.AddBuddy;
-import nu.yona.app.api.model.Buddy;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.MessageBody;
 import nu.yona.app.api.model.NewDevice;
@@ -23,6 +22,7 @@ import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.utils.ApiList;
@@ -294,7 +294,7 @@ public interface RestApi {
      * @return the buddy
      */
     @GET
-    Call<Buddy> getBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+    Call<YonaBuddies> getBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
     /**
      * Delete buddy call.

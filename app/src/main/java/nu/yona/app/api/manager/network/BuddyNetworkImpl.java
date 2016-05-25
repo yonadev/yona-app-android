@@ -11,7 +11,7 @@
 package nu.yona.app.api.manager.network;
 
 import nu.yona.app.api.model.AddBuddy;
-import nu.yona.app.api.model.Buddy;
+import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
@@ -63,9 +63,9 @@ public class BuddyNetworkImpl extends BaseImpl {
      */
     public void getBuddies(String url, String password, final DataLoadListener listener) {
         try {
-            getRestApi().getBuddy(url, password).enqueue(new Callback<Buddy>() {
+            getRestApi().getBuddy(url, password).enqueue(new Callback<YonaBuddies>() {
                 @Override
-                public void onResponse(Call<Buddy> call, Response<Buddy> response) {
+                public void onResponse(Call<YonaBuddies> call, Response<YonaBuddies> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
                         listener.onDataLoad(response.body());
                     } else {
@@ -74,7 +74,7 @@ public class BuddyNetworkImpl extends BaseImpl {
                 }
 
                 @Override
-                public void onFailure(Call<Buddy> call, Throwable t) {
+                public void onFailure(Call<YonaBuddies> call, Throwable t) {
                     onError(t, listener);
                 }
             });
