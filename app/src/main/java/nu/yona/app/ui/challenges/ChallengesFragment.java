@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
@@ -97,7 +96,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     }
 
     private void getActivityCategories() {
-        new ActivityCategoryManagerImpl(getActivity()).getActivityCategoriesById(new DataLoadListener() {
+        APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 getUserGoal();
