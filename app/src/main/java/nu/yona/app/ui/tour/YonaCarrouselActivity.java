@@ -36,6 +36,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
 
     private final int TIMER_DELAY = 3000;
     private final int TIMER_PERIOD = 4000;
+    private final float TRANFORMATION_POSITION = 0.999f;
     /**
      * The View.
      */
@@ -191,12 +192,12 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
          * still able to be interacted with.
          */
 
-        if (position < -0.999f) { // [-Infinity,-1)
+        if (position < -TRANFORMATION_POSITION) { // [-Infinity,-1)
             // This page is way off-screen to the left so hide it.
             view.setAlpha(0);
             view.setVisibility(View.GONE);
             view.setTranslationX(pageWidth);
-        } else if (position <= 0.999f) { // (-1, 1)
+        } else if (position <= TRANFORMATION_POSITION) { // (-1, 1)
             // The further the page is from being center page the more transparent it is.
             view.setAlpha(getAlpha(position));
             // Counteract the default slide transition
