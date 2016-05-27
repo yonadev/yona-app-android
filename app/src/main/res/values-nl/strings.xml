@@ -112,7 +112,7 @@
     <string name="timepickerendtimelable">Select time till you want to spent:</string>
     <string name="timepickererror">Current time must be future time.</string>
     <string name="timepickerselect">Select time you want to spent:</string>
-    <string name="add_goal_error">Please add atlest one time to add in %1$s.</string>
+    <string name="add_goal_error">Please add atleast one time to add in %1$s.</string>
     <string name="challengesdetail">%1$s VASTLEGGEN</string>
     <string name="challengestimesbetween">tussen %1$s en %2$s </string>
     <string name="edit_profile">EDIT ACCOUNT</string>
