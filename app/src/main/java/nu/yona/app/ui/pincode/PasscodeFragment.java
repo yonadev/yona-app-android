@@ -47,17 +47,17 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
                 if (v.getId() == R.id.passcode4) {
                     if (passcode4.getText().length() == 0) {
                         setFocus(passcode4, passcode3);
-                        passcode3.setText("");
+                        passcode3.getText().clear();
                     }
                 } else if (v.getId() == R.id.passcode3) {
                     if (passcode3.getText().length() == 0) {
                         setFocus(passcode3, passcode2);
-                        passcode2.setText("");
+                        passcode2.getText().clear();
                     }
                 } else if (v.getId() == R.id.passcode2) {
                     if (passcode2.getText().length() == 0) {
                         setFocus(passcode2, passcode1);
-                        passcode1.setText("");
+                        passcode1.getText().clear();
                     }
                 }
             }
@@ -78,15 +78,6 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         View view = inflater.inflate(R.layout.pincode_layout, container, false);
 
         progressDrawable = R.drawable.progress_bar;
-        if (getArguments() != null) {
-            screen_type = getArguments().getString(AppConstant.SCREEN_TYPE);
-            if (getArguments().get(AppConstant.COLOR_CODE) != null) {
-                view.setBackgroundColor(getArguments().getInt(AppConstant.COLOR_CODE));
-            }
-            if (getArguments().get(AppConstant.PROGRESS_DRAWABLE) != null) {
-                progressDrawable = getArguments().getInt(AppConstant.PROGRESS_DRAWABLE);
-            }
-        }
 
         YonaApplication.getEventChangeManager().registerListener(this);
 
@@ -107,6 +98,22 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode2 = getLayout(view, R.id.passcode2);
         passcode3 = getLayout(view, R.id.passcode3);
         passcode4 = getLayout(view, R.id.passcode4);
+
+        if (getArguments() != null) {
+            screen_type = getArguments().getString(AppConstant.SCREEN_TYPE);
+            if (getArguments().get(AppConstant.COLOR_CODE) != null) {
+                view.setBackgroundColor(getArguments().getInt(AppConstant.COLOR_CODE));
+            }
+            if (getArguments().get(AppConstant.PROGRESS_DRAWABLE) != null) {
+                progressDrawable = getArguments().getInt(AppConstant.PROGRESS_DRAWABLE);
+            }
+            if (getArguments().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
+                passcode1.setBackground(ContextCompat.getDrawable(getActivity(), getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
+                passcode2.setBackground(ContextCompat.getDrawable(getActivity(), getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
+                passcode3.setBackground(ContextCompat.getDrawable(getActivity(), getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
+                passcode4.setBackground(ContextCompat.getDrawable(getActivity(), getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
+            }
+        }
 
         passcode_reset.setOnClickListener(this);
 
@@ -294,9 +301,9 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     }
 
     private void setFocus(YonaFontEditTextView passcode1, YonaFontEditTextView passcode2) {
-        passcode1.setFocusableInTouchMode(false);
         passcode2.setFocusableInTouchMode(true);
         passcode2.requestFocus();
+        passcode1.setFocusableInTouchMode(false);
     }
 
     /**

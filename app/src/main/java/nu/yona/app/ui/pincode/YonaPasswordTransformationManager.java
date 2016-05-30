@@ -34,7 +34,7 @@ class YonaPasswordTransformationManager extends PasswordTransformationMethod {
         }
 
         public char charAt(int index) {
-            return '\u2022'; // This is the important part
+            return '*'; // This is the important part
         }
 
         public int length() {

@@ -33,8 +33,8 @@ import nu.yona.app.ui.message.MessageItemViewHolder;
  */
 public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
 
-    private List<YonaBuddy> listYonaMessage;
     private final OnFriendsItemClickListener mOnFriendsItemClickListener;
+    private List<YonaBuddy> listYonaMessage;
 
     /**
      * Instantiates a new Overview adapter.

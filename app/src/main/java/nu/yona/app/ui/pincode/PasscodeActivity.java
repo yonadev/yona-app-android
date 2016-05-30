@@ -66,6 +66,9 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
             if (getIntent().getExtras().get(AppConstant.PROGRESS_DRAWABLE) != null) {
                 progressDrawable = getIntent().getExtras().getInt(AppConstant.PROGRESS_DRAWABLE);
             }
+            if (getIntent().getExtras().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
+                findViewById(R.id.main_content).setBackground(ContextCompat.getDrawable(this, getIntent().getExtras().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
+            }
             isFromSettings = getIntent().getExtras().getBoolean(AppConstant.FROM_SETTINGS, false);
         } else {
             colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
@@ -107,6 +110,9 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     private Fragment getPasscodeFragment() {
         Bundle bPasscode = new Bundle();
+        if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
+            bPasscode.putAll(getIntent().getExtras());
+        }
         bPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
         bPasscode.putInt(AppConstant.PROGRESS_DRAWABLE, progressDrawable);
         if (isFromSettings) {
@@ -121,6 +127,9 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     private Fragment getPasscodeVerifyFragment() {
         Bundle bVerifyPasscode = new Bundle();
+        if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
+            bVerifyPasscode.putAll(getIntent().getExtras());
+        }
         bVerifyPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
         bVerifyPasscode.putInt(AppConstant.PROGRESS_DRAWABLE, progressDrawable);
         if (isFromSettings) {

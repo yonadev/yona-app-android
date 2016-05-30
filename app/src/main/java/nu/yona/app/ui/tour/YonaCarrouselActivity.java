@@ -56,6 +56,20 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
             R.drawable.slider_tijdsbesteding_clean
     };
 
+    /***
+     * Get the alpha value that should be applied to a position.
+     *
+     * @param position Position to find an alpha for.
+     * @return An alpha value.
+     */
+    private static final float getAlpha(final float position) {
+        return getSlowQuadraticAlpha(position);
+    }
+
+    private static final float getSlowQuadraticAlpha(final float position) {
+        return 1 - position * position;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -110,7 +124,6 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
         }
         displayFirstItem(0);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -210,21 +223,6 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
             view.setVisibility(View.GONE);
             view.setTranslationX(-pageWidth);
         }
-    }
-
-    /***
-     * Get the alpha value that should be applied to a position.
-     *
-     * @param position Position to find an alpha for.
-     * @return An alpha value.
-     */
-    private static final float getAlpha(final float position) {
-        return getSlowQuadraticAlpha(position);
-    }
-
-
-    private static final float getSlowQuadraticAlpha(final float position) {
-        return 1 - position * position;
     }
 
     /**

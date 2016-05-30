@@ -80,7 +80,7 @@ public class OverviewFragment extends BaseFragment {
                 YonaActivity.getActivity().showLoadingView(false, null);
                 if (result instanceof YonaBuddies) {
                     YonaBuddies buddies = (YonaBuddies) result;
-                    if(buddies != null && buddies.getEmbedded() != null && buddies.getEmbedded().getYonaBuddies() != null) {
+                    if (buddies != null && buddies.getEmbedded() != null && buddies.getEmbedded().getYonaBuddies() != null) {
                         mListBuddy.clear();
                         mListBuddy = buddies.getEmbedded().getYonaBuddies();
                         mOverViewAdapter.notifyDataSetChange(mListBuddy);

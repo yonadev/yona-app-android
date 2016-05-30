@@ -116,6 +116,11 @@ public interface AppConstant {
      * The constant PROGRESS_DRAWABLE.
      */
     String PROGRESS_DRAWABLE = "progress_drawable";
+
+    /**
+     * The constant PASSCODE_TEXT_BACKGROUND.
+     */
+    String PASSCODE_TEXT_BACKGROUND = "passcodeBackground";
     /**
      * The constant FROM_LOGIN.
      */
