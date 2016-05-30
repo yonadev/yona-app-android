@@ -32,7 +32,7 @@
     </style>
 
     <style name="FragmentStyle">
-        <item name="android:background">@color/white_three</item>
+        <item name="android:background">@color/bg_gradient_three</item>
     </style>
 
     <style name="NavigationTab" parent="Widget.Design.TabLayout">

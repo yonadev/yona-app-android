@@ -28,5 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/goal_sub_title_margin_top"
         android:ellipsize="end"
-        android:maxLines="2" />
+        android:maxLines="2"
+        android:textColor="@color/fourty_opacity" />
 </LinearLayout>
