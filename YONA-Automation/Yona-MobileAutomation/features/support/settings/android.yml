@@ -5,6 +5,6 @@
 #:android_activity: "YOUR APPLICATION'S MAIN ACTIVITY"
 #E.G.:
 :apk: 'Yona_Android-develop-1.0.0.28.apk'
-:apk_path: '/Users/jaisharma/Documents/AndiroidApps/Yona_Android-develop-1.0.0.28.apk'
+:apk_path: '/Users/jaisharma/Documents/AndiroidApps/Yona_Android-develop-1.0.0.36.apk'
 :android_package: 'nu.yona.app'
 :android_activity: 'nu.yona.app.ui.LaunchActivity'

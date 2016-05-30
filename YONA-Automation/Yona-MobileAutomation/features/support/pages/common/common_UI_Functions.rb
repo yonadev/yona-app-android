@@ -22,4 +22,11 @@ module COMMON_UI
     end
     key_present
   end
+
+  def COMMON_UI.appium_swipe(start_x, start_y, end_x, end_y, duration)
+    action = Appium::TouchAction.new.swipe(start_x: start_x, start_y: start_y, end_x: end_x, end_y: end_y, duration: duration * 1000)
+    action.perform
+  end
+
+
 end
