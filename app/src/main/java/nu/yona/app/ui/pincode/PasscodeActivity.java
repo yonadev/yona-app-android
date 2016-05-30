@@ -67,7 +67,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
                 progressDrawable = getIntent().getExtras().getInt(AppConstant.PROGRESS_DRAWABLE);
             }
             if (getIntent().getExtras().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
-                findViewById(R.id.main_content).setBackground(ContextCompat.getDrawable(this, getIntent().getExtras().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
+                findViewById(R.id.main_content).setBackgroundResource(getIntent().getExtras().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND));
             }
             isFromSettings = getIntent().getExtras().getBoolean(AppConstant.FROM_SETTINGS, false);
         } else {
@@ -110,7 +110,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     private Fragment getPasscodeFragment() {
         Bundle bPasscode = new Bundle();
-        if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
+        if (getIntent().getExtras() != null && getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
             bPasscode.putAll(getIntent().getExtras());
         }
         bPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
@@ -127,7 +127,7 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     private Fragment getPasscodeVerifyFragment() {
         Bundle bVerifyPasscode = new Bundle();
-        if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
+        if (getIntent().getExtras() != null && getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
             bVerifyPasscode.putAll(getIntent().getExtras());
         }
         bVerifyPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
@@ -165,6 +165,12 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
         } else {
             animTransaction.setCustomAnimations(R.anim.back_slide_in, R.anim.back_slide_out);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftInput();
     }
 
     @Override

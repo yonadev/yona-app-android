@@ -46,8 +46,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -911,18 +909,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      */
     public void setSkipVerification(boolean skipVerification) {
         this.skipVerification = skipVerification;
-    }
-
-    /**
-     * Show keyboard.
-     *
-     * @param editText the edit text
-     */
-    public void showKeyboard(EditText editText) {
-        if (editText != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
-        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)

@@ -44,6 +44,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
     private PasscodeFragment passcodeFragment;
     private Toolbar mToolBar;
     private String screenType;
+    private String screenTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,11 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
                 screenType = getIntent().getExtras().getString(AppConstant.SCREEN_TYPE);
             }
             if (getIntent().getExtras().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
-                findViewById(R.id.main_content).setBackground(ContextCompat.getDrawable(this, getIntent().getExtras().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
+                findViewById(R.id.main_content).setBackgroundResource(getIntent().getExtras().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND));
+            }
+
+            if (getIntent().getExtras().get(AppConstant.SCREEN_TITLE) != null) {
+                screenTitle = getIntent().getExtras().getString(AppConstant.SCREEN_TITLE);
             }
         } else {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
@@ -100,7 +105,9 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!TextUtils.isEmpty(screenType) && screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
+        if (!TextUtils.isEmpty(screenTitle)) {
+            updateTitle(screenTitle);
+        } else if (!TextUtils.isEmpty(screenType) && screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
             updateTitle(getString(R.string.pincode));
         } else {
             updateTitle(getString(R.string.login));
@@ -203,7 +210,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(this, R.color.mango));
         bundle.putInt(AppConstant.PROGRESS_DRAWABLE, R.drawable.pin_reset_progress_bar);
         intent.putExtras(bundle);
-        this.overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         startActivity(intent);
+        this.overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 }
