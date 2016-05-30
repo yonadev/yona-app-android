@@ -10,3 +10,13 @@ galaxy_s4_4.3:
 Android_emulator:
   name: Android Emulator
   version: '5.1'
+
+and_emulator:
+  name: Android Emulator
+  version: '5.1'
+
+and_emulator2:
+  name: Android GoogleAPI Emulator
+  version: '5.0'
+
+

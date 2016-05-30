@@ -1,15 +1,25 @@
 
 class ADDCHELLENGS<MobTest::Base
 
-
   android do
     $strGoalCat=nil
-    button(:addgoal, id: "#{$android_package}:id/img_add_goal")
+
+    buttons(:addgoal, id: "#{$android_package}:id/img_add_goal")
     labels(:glcategory, id: "#{$android_package}:id/goal_title")
-    button(:savegoal, id: "#{$android_package}:id/btnChallenges")
+    buttons(:savegoal, id: "#{$android_package}:id/btnChallenges")
     button(:gocount, id: "#{$android_package}:id/tab_item_count")
     button(:delgoal, id: "#{$android_package}:id/rightIcon")
     button(:acceptdelete, id: "android:id/button1")
+    button(:next, id: "#{$android_package}:id/next")
+    button(:cancel, id: "#{$android_package}:id/cancel")
+    button(:ok, id: "#{$android_package}:id/ok")
+    button(:previous, id: "#{$android_package}:id/previous")
+    buttons(:menutab, id: "#{$android_package}:id/tab_image")
+    labels(:catgoal, id: "#{$android_package}:id/tab_text")
+    buttons(:crdtimepkbtn, id: "#{$android_package}:id/goal_item_layout")
+    button(:swpdeltime, id: "#{$android_package}:id/swipe_delete_goal")
+    button(:edtimedur, id: "#{$android_package}:id/txtGoalStartTime")
+    # buttons(:addgoal, id: "#{$android_package}:id/img_add_goal")
 
 
     def selectCtg(strgl)
@@ -41,7 +51,6 @@ class ADDCHELLENGS<MobTest::Base
       bool=false
       begin
         weGlcnt = gocount_element.attribute('text')
-        # puts "Goal Count=#{weGlcnt}"
         i=0
         if(weGlcnt!=nil && weGlcnt.to_i>1)
           bool=true
@@ -54,21 +63,37 @@ class ADDCHELLENGS<MobTest::Base
     end
 
     def deletegoal
+      selectgoal
+      sleep 1
+      delgoal_element.click
+      sleep 1
+      acceptdelete_element.click
+      sleep 2
+    end
 
-        lsweGls = glcategory_elements
-        if(lsweGls!=nil && lsweGls.length>0)
-          lsweGls[1].click
-          sleep 2
-          delgoal_element.click
-          sleep 2
-          acceptdelete_element.click
-        end
+    def editgoal
+      selectgoal
+      sleep 1
+      edtimedur_element.click
+      taponbutton(1,1,0.5,543,1190)
+      sleep 1
+      next_element.click
+      sleep 1
+      taponbutton(1,1,0.5,336,976)
+      sleep 1
+      ok_element.click
+      sleep 1
+      COMMON_UI.appium_swipe(946,1245,297,1245,1)
+      sleep 1
+      swpdeltime_element.click
+      sleep 1
+      acceptdelete_element.click
     end
 
     def isgoaldeleted?
       bool=false
       begin
-        if(addgoal_element.displayed? && gocount_element.attribute('text').to_i==1)
+        if(gocount_element.attribute('text').to_i==1)
           bool=true
         end
       rescue Exception=>e
@@ -78,9 +103,66 @@ class ADDCHELLENGS<MobTest::Base
     bool
     end
 
+    def taponbutton(tapcount, touchcount, duration, startX, startY)
+      action = Appium::TouchAction.new.tap(tapcount: tapcount, touchcount: touchcount, duration: duration, x: startX, y:startY)
+      action.perform
+    end
+
+
+    def selmenutab(lsmenu)
+      lswbCat = menutab_elements
+      # puts "Length=#{lswbCat.length}"
+      if(lswbCat !=nil && lswbCat.length>=4)
+        case lsmenu
+          when 'prf'
+            lswbCat[lswbCat.length-4].click
+          when 'buddy'
+            lswbCat[lswbCat.length-3].click
+          when 'chl'
+            lswbCat[lswbCat.length-2].click
+          when 'sett'
+            lswbCat[lswbCat.length-1].click
+        end
+     end
+    end
+    def selectgoalcat(strcat)
+      lswbCat = catgoal_elements
+      if(lswbCat!=nil && lswbCat.length==3)
+        case strcat
+          when 'Credit'
+            lswbCat[0].click
+          when 'Timezone'
+            lswbCat[1].click
+          when 'NOGO'
+            lswbCat[2].click
+        end
+      end
+    end
+    def durationinminutes(tapcount, touchcount, duration, startX, startY)
+      lswl = crdtimepkbtn_elements
+      if(lswl!=nil && lswl.length>1)
+        lswl[1].click
+      else
+        lswl[0].click
+      end
+      taponbutton(tapcount, touchcount, duration, startX, startY)
+      ok_element.click
+      sleep 3
+    end
+
+    def selectgoal
+      lsweGls = glcategory_elements
+      if(lsweGls!=nil && lsweGls.length>0)
+        if(lsweGls.length==2)
+          lsweGls[1].click
+        else if(lsweGls.length==1)
+               lsweGls[0].click
+             end
+        end
+      end
+    end
 
   end
-
 
 
 end
