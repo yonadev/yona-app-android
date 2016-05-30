@@ -46,6 +46,7 @@ class Signup < MobTest::Base
     text_field(:passcode, id: "#{$android_package}:id/passcode1")
     button(:nextwlk, xpath: '//android.widget.ImageButton[1]')
     element(:chlgs_title, xpath: '//android.widget.TextView[@text="CHALLENGES"]')
+
     def checkWelcomeScreen
       displayed=false
       begin
@@ -111,10 +112,7 @@ class Signup < MobTest::Base
       bool
     end
 
-    def appium_swipe(start_x, start_y, end_x, end_y, duration)
-      action = Appium::TouchAction.new.swipe(start_x: start_x, start_y: start_y, end_x: end_x, end_y: end_y, duration: duration * 1000)
-      action.perform
-    end
+
 
     # Check for Android Native Keybaord and dissmiss it if present
     def checkKeyBoard
