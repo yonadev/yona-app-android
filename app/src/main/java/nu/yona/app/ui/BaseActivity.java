@@ -13,7 +13,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
@@ -43,9 +45,9 @@ public class BaseActivity extends AppCompatActivity {
             dialogText = message;
         }
 
-        if (inputMethodManager == null) {
+       /* if (inputMethodManager == null) {
             inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        }
+        }*/
         if (loading && progressDialog == null) {
             progressDialog = new CustomProgressDialog(this, dialogText, false);
             progressDialog.show();
@@ -100,4 +102,31 @@ public class BaseActivity extends AppCompatActivity {
 //        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
+
+    /**
+     * Show keyboard.
+     *
+     * @param editText the edit text
+     */
+    public void showKeyboard(EditText editText) {
+        if (editText != null) {
+            inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
+    }
+
+    /**
+     * Hide the Keyboard
+     */
+    public void hideSoftInput() {
+        View currentFocus = getCurrentFocus();
+        if (inputMethodManager == null) {
+            inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        }
+        if (currentFocus != null) {
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
+    }
+
+
 }

@@ -136,6 +136,9 @@ public interface AppConstant {
      */
     String PIN_RESET_VERIFICATION = "pinResetVerfication";
 
+    /**
+     * The first time app open
+     */
     String FIRST_TIME_APP_OPEN = "firstTimeAppOpen";
     /**
      * The constant PIN_RESET_FIRST_STEP.
@@ -200,4 +203,9 @@ public interface AppConstant {
      * The constant environemntPath.
      */
     CharSequence[] environemntPath = new CharSequence[]{"http://85.222.227.142", "http://85.222.227.84"};
+
+    /**
+     * The Screen Title
+     */
+    String SCREEN_TITLE = "screenTitle";
 }

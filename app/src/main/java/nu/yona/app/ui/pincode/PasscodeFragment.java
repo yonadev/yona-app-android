@@ -28,6 +28,7 @@ import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.utils.AppConstant;
@@ -71,6 +72,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private String screen_type;
     private YonaPasswordTransformationManager yonaPasswordTransformationManager;
     private FieldTextWatcher watcher;
+    private int backgroundDrawable = R.drawable.passcode_edit_bg_grape;
 
     @Nullable
     @Override
@@ -108,10 +110,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
                 progressDrawable = getArguments().getInt(AppConstant.PROGRESS_DRAWABLE);
             }
             if (getArguments().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
-                passcode1.setBackground(ContextCompat.getDrawable(getActivity(), getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
-                passcode2.setBackground(ContextCompat.getDrawable(getActivity(), getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
-                passcode3.setBackground(ContextCompat.getDrawable(getActivity(), getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
-                passcode4.setBackground(ContextCompat.getDrawable(getActivity(), getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
+                backgroundDrawable = getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND);
             }
         }
 
@@ -122,6 +121,22 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
 
         return view;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        passcode1.setBackgroundResource(backgroundDrawable);
+        passcode2.setBackgroundResource(backgroundDrawable);
+        passcode3.setBackgroundResource(backgroundDrawable);
+        passcode4.setBackgroundResource(backgroundDrawable);
+        ((BaseActivity) getActivity()).showKeyboard(passcode1);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((BaseActivity) getActivity()).hideSoftInput();
     }
 
     private YonaFontEditTextView getLayout(View view, int id) {

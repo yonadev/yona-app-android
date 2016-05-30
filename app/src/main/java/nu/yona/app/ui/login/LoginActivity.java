@@ -22,7 +22,6 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,7 +33,6 @@ import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.listener.DataLoadListener;
-import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
@@ -45,7 +43,7 @@ import nu.yona.app.utils.PreferenceConstant;
  * Created by kinnarvasa on 13/04/16.
  * This Activity is used only when user is trying to add another device.
  */
-public class LoginActivity extends BaseActivity implements EventChangeListener {
+public class LoginActivity extends BaseActivity {
 
     private final InputFilter filter = new InputFilter() {
         @Override
@@ -130,18 +128,11 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
         mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), this, mobileNumberLayout));
 
-        YonaApplication.getEventChangeManager().registerListener(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        YonaApplication.getEventChangeManager().unRegisterListener(this);
-    }
-
-    @Override
-    public void onStateChange(int eventType, Object object) {
-
     }
 
     @Override
@@ -197,11 +188,6 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
                 Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void showKeyboard(EditText editText) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(editText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void showPasscodeScreen() {
