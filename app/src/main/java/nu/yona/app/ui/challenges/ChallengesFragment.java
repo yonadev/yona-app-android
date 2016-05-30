@@ -151,13 +151,13 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         APIManager.getInstance().getChallengesManager().getListOfCategories();
         if (APIManager.getInstance().getChallengesManager().getListOfBudgetGoals() != null) {
             int budgetGoalCounter = APIManager.getInstance().getChallengesManager().getListOfBudgetGoals().size();
-            View budgetTab = getTabView(R.drawable.icn_challenge_timezone, R.string.challengescredit, budgetGoalCounter);
+            View budgetTab = getTabView(R.drawable.icn_challenge_timebucket, R.string.challengescredit, budgetGoalCounter);
             tabLayout.getTabAt(TAB_INDEX_ONE).setCustomView(budgetTab);
         }
 
         if (APIManager.getInstance().getChallengesManager().getListOfTimeZoneGoals() != null) {
             int timeZoneGoalCounter = APIManager.getInstance().getChallengesManager().getListOfTimeZoneGoals().size();
-            View timeZoneTab = getTabView(R.drawable.icn_challenge_timebucket, R.string.challengeszone, timeZoneGoalCounter);
+            View timeZoneTab = getTabView(R.drawable.icn_challenge_timezone, R.string.challengeszone, timeZoneGoalCounter);
             tabLayout.getTabAt(TAB_INDEX_TWO).setCustomView(timeZoneTab);
         }
 

@@ -10,7 +10,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_gradient_two"
+    android:background="@color/white_two"
     android:orientation="vertical">
 
     <include layout="@layout/header_challenges_creation" />

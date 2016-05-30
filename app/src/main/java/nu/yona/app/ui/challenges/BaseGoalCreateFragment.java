@@ -99,7 +99,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
     protected void updateCategoryView() {
         if (isAdded()) {
             if (APIManager.getInstance().getChallengesManager().getListOfCategories().size() == 0) {
-                btnGoalAdd.setVisibility(View.GONE);
+                btnGoalAdd.setVisibility(View.INVISIBLE);
                 mGoalCreationListView.setVisibility(View.GONE);
                 mGoalListView.setVisibility(View.VISIBLE);
             } else {
@@ -107,7 +107,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
                     categoryGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfCategories());
                 }
                 if (mGoalCreationListView.getVisibility() == View.VISIBLE) {
-                    btnGoalAdd.setVisibility(View.GONE);
+                    btnGoalAdd.setVisibility(View.INVISIBLE);
                     mGoalListView.setVisibility(View.GONE);
                 } else {
                     btnGoalAdd.setVisibility(View.VISIBLE);
@@ -135,7 +135,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
      * @param tab the tab
      */
     synchronized void showNewListOfGoalView(int tab) {
-        btnGoalAdd.setVisibility(View.GONE);
+        btnGoalAdd.setVisibility(View.INVISIBLE);
         mGoalListView.setVisibility(View.GONE);
         mGoalCreationListView.setVisibility(View.VISIBLE);
         CURRENT_TAB = tab;

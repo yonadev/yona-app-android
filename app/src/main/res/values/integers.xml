@@ -24,4 +24,5 @@
     <integer name="margin_pager_zero">0</integer>
     <integer name="anim_duration_medium">5000</integer>
     <integer name="act_transition_duration">1000</integer>
+    <integer name="tab_item_margin_left_right">58</integer>
 </resources>

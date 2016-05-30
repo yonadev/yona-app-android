@@ -73,6 +73,7 @@
     <dimen name="challenges_margin_top">23dp</dimen>
     <dimen name="challenges_desc_margin_top">14dp</dimen>
     <dimen name="challenges_margin_bottom">30dp</dimen>
+    <dimen name="challenges_footer_text_bottom_padding">10dp</dimen>
 
     <dimen name="footer_challenges_detail">170dp</dimen>
     <dimen name="challenge_opslaan_margin">22dp</dimen>
@@ -130,5 +131,9 @@
     <dimen name="carrousel_layout_button_next_width">180dp</dimen>
     <dimen name="carrousel_button_next_size">24dp</dimen>
     <dimen name="carrousel_button_margin">24dp</dimen>
+
+    <!-- bottom tablayout -->
+    <dimen name="tablayout_padding_top_bottom">9dp</dimen>
+    <dimen name="tablayout_padding_right_left">32dp</dimen>
 
 </resources>

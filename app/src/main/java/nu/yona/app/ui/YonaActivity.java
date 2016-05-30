@@ -42,11 +42,14 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.transition.Fade;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -473,6 +476,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             default:
                 break;
         }
+        final int LEFT_RIGHT_MARGIN = getResources().getInteger(R.integer.tab_item_margin_left_right);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.setMargins(LEFT_RIGHT_MARGIN, 0, LEFT_RIGHT_MARGIN, 0);
+        params.gravity = Gravity.CENTER_HORIZONTAL;
+        v.setLayoutParams(params);
         return v;
     }
 

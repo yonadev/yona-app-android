@@ -40,7 +40,8 @@
         android:layout_marginTop="@dimen/goal_item_desc_margin_top"
         android:layout_toLeftOf="@id/goal_minutes_num"
         android:layout_toStartOf="@id/goal_minutes_num"
-        android:text="@string/budgetgoaldesc" />
+        android:text="@string/budgetgoaldesc"
+        android:textColor="@color/fourty_opacity" />
 
 
 </RelativeLayout>
