@@ -494,7 +494,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                         showError(new ErrorMessage(getString(R.string.add_goal_error, getString(R.string.challengescredit))));
                         return;
                     }
-                   createUpdateBudgetGoal();
+                    createUpdateBudgetGoal();
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
                     if (listOfTimes == null || listOfTimes.size() == 0) {
                         showError(new ErrorMessage(getString(R.string.add_goal_error, getString(R.string.challengeszone))));

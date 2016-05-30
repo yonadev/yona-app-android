@@ -66,6 +66,9 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
             if (!TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.SCREEN_TYPE))) {
                 screenType = getIntent().getExtras().getString(AppConstant.SCREEN_TYPE);
             }
+            if (getIntent().getExtras().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
+                findViewById(R.id.main_content).setBackground(ContextCompat.getDrawable(this, getIntent().getExtras().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND)));
+            }
         } else {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
         }
@@ -191,6 +194,9 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
     private void updatePin() {
         Intent intent = new Intent(this, PasscodeActivity.class);
         Bundle bundle = new Bundle();
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            bundle.putAll(getIntent().getExtras());
+        }
         bundle.putBoolean(AppConstant.FROM_SETTINGS, true);
         bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_FIRST_STEP);
         bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_mango);
