@@ -55,18 +55,18 @@ module Platform
     def sauce_android_capabilities
       cap = android_settings
       # app = cap[:apk_path].split('/').select{|element| element.include?'.apk'}.first
-      sauce_user = 'sharma_jai'
-      sauce_key = 'aa43b0c6-3ead-4051-9a3b-db95d73a5ce5'
+      sauce_user = 'jsharma'
+      sauce_key = 'af0ee538-b04c-4b8b-9c4c-c5e661df32e8'
       {
           caps: {
               platformName: 'Android',
               # app: cap[:apk_path],
               appPackage: cap[:android_package],
               appActivity: cap[:android_activity],
-              :'appium-version' => '1.5.1',
+              :'appium-version' => '1.5.0',
               platformVersion: ENV['VERSION'],
               deviceName: ENV['DEVICE'],
-              app: 'sauce-storage:Yona_Android-develop-1.0.0.15.apk',
+              app: 'sauce-storage:Yona_Android-develop-1.0.0.36.apk',
               # name: app,
               :'access-key' => sauce_key
           },
@@ -78,6 +78,7 @@ module Platform
           }
       }
     end
+
 
     def ios_capabilities
       caps = ios_settings
