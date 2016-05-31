@@ -12,5 +12,9 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/main_toolbar"
+        layout="@layout/toolbar" />
+
     <include layout="@layout/yona_listview" />
 </LinearLayout>

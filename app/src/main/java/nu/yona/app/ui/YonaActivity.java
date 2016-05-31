@@ -9,7 +9,6 @@
 package nu.yona.app.ui;
 
 import android.Manifest;
-import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -39,11 +38,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.transition.Fade;
+import android.transition.ChangeBounds;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,11 +64,9 @@ import nu.yona.app.api.model.User;
 import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
-import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
-import nu.yona.app.ui.anim.DetailsTransition;
 import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
@@ -102,18 +98,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private boolean isStateActive = false;
     private boolean mStateSaved;
     private boolean isBackPressed = false;
-    private Toolbar mToolBar;
     private TabLayout mTabLayout;
-    private YonaFontTextView toolbarTitle;
-    private ImageView leftIcon;
-    private ImageView rightIcon;
     private boolean isToDisplayLogin = true;
     private boolean skipVerification = false;
     private boolean launchedPinActiivty = false;
     private int READ_EXTERNAL_STORAGE_REQUEST = 1;
     private int CAMERA_REQUEST = 2;
-    private Animator mCurrentAnimator;
-    private int mShortAnimationDuration = 200;
     private Fragment oldFragment;
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
@@ -141,16 +131,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean(AppConstant.FROM_LOGIN)) {
             isToDisplayLogin = false;
         }
-        mToolBar = (Toolbar) findViewById(R.id.main_toolbar);
-        toolbarTitle = (YonaFontTextView) mToolBar.findViewById(R.id.toolbar_title);
-        leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
-        rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
-
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
-        ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setDisplayShowTitleEnabled(false);
 
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         setupTabs();
@@ -555,7 +535,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                             return;
                         }
                         mContent = new ProfileFragment();
-                        mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
                         mContent.setArguments(intent.getExtras());
                         clearFragmentStack = false;
                         addToBackstack = true;
@@ -620,24 +599,19 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     private void profileIcon() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mContent.setSharedElementEnterTransition(new DetailsTransition());
-            mContent.setEnterTransition(new Fade());
-            getWindow().setExitTransition(new Fade());
-            mContent.setSharedElementReturnTransition(new DetailsTransition());
+            Slide slideTransition = new Slide(Gravity.RIGHT);
+            slideTransition.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
+
+            ChangeBounds changeBoundsTransition = new ChangeBounds();
+            changeBoundsTransition.setDuration(getResources().getInteger(R.integer.anim_duration_medium));
+
+            mContent.setEnterTransition(slideTransition);
+            mContent.setAllowEnterTransitionOverlap(true);
+            mContent.setAllowReturnTransitionOverlap(true);
+            mContent.setSharedElementEnterTransition(changeBoundsTransition);
         }
     }
 
-    private void updateToolBarBackground() {
-        if (mContent instanceof ChallengesFragment || mContent instanceof ChallengesGoalDetailFragment) {
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_green);
-        } else if (mContent instanceof DashboardFragment || mContent instanceof NotificationFragment) {
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
-        } else if (mContent instanceof SettingsFragment) {
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_mango);
-        } else if (mContent instanceof FriendsFragment || mContent instanceof FriendsRequestFragment) {
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
-        }
-    }
 
     /**
      * @param clearFragmentStack : yes if require to clear fragment stack.
@@ -645,7 +619,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * @param oldFragment        pass oldfragment which need to add in back stack.
      */
     private void loadFragment(boolean clearFragmentStack, boolean addToBackstack, Fragment oldFragment) {
-        hideToolbarIcon();
         if (mContent != null && !mContent.isAdded()) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             if (clearFragmentStack) {
@@ -667,7 +640,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 getSupportFragmentManager().addOnBackStackChangedListener(this);
                 ft.replace(R.id.container, mContent);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mContent instanceof ProfileFragment) {
-                    ft.addSharedElement(getLeftIcon(), getString(R.string.profile_transition));
+                    ImageView ivProfile = (ImageView) oldFragment.getActivity().findViewById(R.id.leftIcon);
+                    ft.addSharedElement(ivProfile, getString(R.string.profile_transition));
                 }
                 ft.commitAllowingStateLoss();
                 getFragmentManager().executePendingTransactions();
@@ -681,7 +655,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 oldFragment.onPause();
                 oldFragment.onStop();
             }
-            updateToolBarBackground();
         }
     }
 
@@ -713,38 +686,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 }
                 mContent.onStart();
                 mContent.onResume();
-                updateToolBarBackground();
-                hideToolbarIcon();
             }
         }
-    }
-
-    /**
-     * Update title.
-     *
-     * @param titleId the title id
-     */
-    public void updateTitle(int titleId) {
-        updateTitle(getString(titleId));
-    }
-
-    /**
-     * Udpate title.
-     *
-     * @param title the title
-     */
-    public void updateTitle(String title) {
-        if (toolbarTitle != null) {
-            toolbarTitle.setText(title);
-        }
-    }
-
-    /**
-     * Hide toolbar icon.
-     */
-    public void hideToolbarIcon() {
-        rightIcon.setVisibility(View.GONE);
-        leftIcon.setVisibility(View.GONE);
     }
 
     private boolean isStackEmpty() {
@@ -788,19 +731,18 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      *
      * @return the right icon
      */
-    public ImageView getRightIcon() {
-        return rightIcon;
-    }
+//    public ImageView getRightIcon() {
+//        return rightIcon;
+//    }
 
     /**
      * Gets left icon.
      *
      * @return the left icon
      */
-    public ImageView getLeftIcon() {
-        return leftIcon;
-    }
-
+//    public ImageView getLeftIcon() {
+//        return leftIcon;
+//    }
     @Override
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {

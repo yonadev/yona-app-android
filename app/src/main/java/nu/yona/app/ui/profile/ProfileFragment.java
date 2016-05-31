@@ -58,6 +58,8 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.profile_fragment, null);
 
+        setupToolbar(view);
+
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
 
@@ -160,9 +162,9 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void setTitleAndIcon() {
-        YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-        YonaActivity.getActivity().updateTitle(getString(R.string.blank));
-        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+        leftIcon.setVisibility(View.GONE);
+        toolbarTitle.setText(getString(R.string.blank));
+        rightIcon.setVisibility(View.GONE);
         viewPager.setCurrentItem(0);
         showOptionsInSelectedTab(viewPager.getCurrentItem());
     }
@@ -180,7 +182,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void showBadgeOptions() {
-        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+        rightIcon.setVisibility(View.GONE);
     }
 
     private void showProfileOptions() {
@@ -188,10 +190,10 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             @Override
             public void run() {
                 if (user != null && yonaMessage == null) {
-                    YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
-                    YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.profile));
-                    YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_edit));
-                    YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
+                    rightIcon.setVisibility(View.VISIBLE);
+                    rightIcon.setTag(getString(R.string.profile));
+                    rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_edit));
+                    rightIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent friendIntent = new Intent(IntentEnum.ACTION_EDIT_PROFILE.getActionString());

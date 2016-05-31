@@ -5,57 +5,93 @@
   ~ License, v. 2.0. If a copy of the MPL was not distributed with this
   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
-
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/FragmentStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:orientation="vertical">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/id_toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp">
 
-    <RelativeLayout
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/pin_toolbar" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/headerView"
-            layout="@layout/header_challenges"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/goalTypeView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/headerView"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <include layout="@layout/budget_goal_item" />
-
-            <LinearLayout
-                android:id="@+id/timezoneView"
+            <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:background="@color/pea"
+                app:layout_scrollFlags="scroll|enterAlways">
 
-                <include layout="@layout/header_challenges_creation" />
+                <include
+                    android:id="@+id/headerView"
+                    layout="@layout/header_challenges"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-                <include layout="@layout/yona_listview" />
-            </LinearLayout>
-        </LinearLayout>
+            </android.support.design.widget.CollapsingToolbarLayout>
 
+        </android.support.design.widget.AppBarLayout>
 
-        <include
-            android:id="@+id/footView"
-            layout="@layout/footer_challenges_layout"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@id/goalTypeView" />
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/goalTypeView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</android.support.v4.widget.NestedScrollView>
+                <include layout="@layout/budget_goal_item" />
+
+                <LinearLayout
+                    android:id="@+id/timezoneView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <include layout="@layout/header_challenges_creation" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/listView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                </LinearLayout>
+
+
+                <include
+                    android:id="@+id/footView"
+                    layout="@layout/footer_challenges_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>

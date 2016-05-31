@@ -43,7 +43,6 @@ public class OverviewFragment extends BaseFragment {
     private OverViewAdapter mOverViewAdapter;
     private RecyclerView mFriendsRecyclerView;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,13 +55,6 @@ public class OverviewFragment extends BaseFragment {
         mOverViewAdapter = new OverViewAdapter(mListBuddy, null);
         mFriendsRecyclerView.setAdapter(mOverViewAdapter);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(mOverViewAdapter));
-
-        YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addFriend();
-            }
-        });
 
         getBuddies();
         return view;
@@ -116,10 +108,5 @@ public class OverviewFragment extends BaseFragment {
                     public void onHeaderClick(View header, int position, long headerId) {
                     }
                 });
-    }
-
-    private void addFriend() {
-        Intent friendIntent = new Intent(IntentEnum.ACTION_ADD_FRIEND.getActionString());
-        YonaActivity.getActivity().replaceFragment(friendIntent);
     }
 }

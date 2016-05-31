@@ -126,9 +126,9 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-                YonaActivity.getActivity().updateTitle(getString(R.string.empty_description));
-                YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+                leftIcon.setVisibility(View.GONE);
+                toolbarTitle.setText(getString(R.string.empty_description));
+                rightIcon.setVisibility(View.GONE);
             }
         }, AppConstant.TIMER_DELAY);
 

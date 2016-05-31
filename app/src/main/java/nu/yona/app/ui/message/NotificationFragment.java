@@ -139,6 +139,9 @@ public class NotificationFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.notification_layout, null);
+
+        setupToolbar(view);
+
         listYonaMsgs = new ArrayList<>();
         mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
@@ -162,9 +165,9 @@ public class NotificationFragment extends BaseFragment {
      * update toolbar's Item
      */
     private void setTitleAndIcon() {
-        YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-        YonaActivity.getActivity().updateTitle(R.string.message);
-        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+        leftIcon.setVisibility(View.GONE);
+        toolbarTitle.setText(getString(R.string.message));
+        rightIcon.setVisibility(View.GONE);
     }
 
     /**

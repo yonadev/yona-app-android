@@ -8,36 +8,72 @@
   ~
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/id_toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp">
+
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/pin_toolbar" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
-        <RelativeLayout
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/edit_profile_detail_top_layout_height"
-            android:background="@color/grape">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="@dimen/profile_image_size"
-                android:layout_height="@dimen/profile_image_size"
-                android:layout_centerInParent="true" />
+            <android.support.design.widget.CollapsingToolbarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways">
 
-            <ImageView
-                android:id="@+id/updateProfileImage"
-                android:layout_width="@dimen/capture_image_size"
-                android:layout_height="@dimen/capture_image_size"
-                android:layout_centerInParent="true"
-                android:scaleType="centerInside"
-                android:src="@drawable/icn_add_picture" />
-        </RelativeLayout>
 
-        <include layout="@layout/profile_details_view" />
-    </LinearLayout>
-</ScrollView>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_profile_detail_top_layout_height"
+                    android:background="@color/grape">
+
+                    <ImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="@dimen/profile_image_size"
+                        android:layout_height="@dimen/profile_image_size"
+                        android:layout_centerInParent="true" />
+
+                    <ImageView
+                        android:id="@+id/updateProfileImage"
+                        android:layout_width="@dimen/capture_image_size"
+                        android:layout_height="@dimen/capture_image_size"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/icn_add_picture" />
+                </RelativeLayout>
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <include layout="@layout/profile_details_view" />
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>

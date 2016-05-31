@@ -66,6 +66,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_profile_detail_fragment, null);
 
+        setupToolbar(view);
 
         listener = new View.OnClickListener() {
             @Override
@@ -199,12 +200,12 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-                YonaActivity.getActivity().updateTitle(R.string.edit_profile);
-                YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
-                YonaActivity.getActivity().getRightIcon().setImageDrawable(YonaActivity.getActivity().getDrawable(R.drawable.icn_create));
+                leftIcon.setVisibility(View.GONE);
+                toolbarTitle.setText(getString(R.string.edit_profile));
+                rightIcon.setVisibility(View.VISIBLE);
+                rightIcon.setImageDrawable(YonaActivity.getActivity().getDrawable(R.drawable.icn_create));
 
-                YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
+                rightIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         goToNext();

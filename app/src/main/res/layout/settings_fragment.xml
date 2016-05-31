@@ -6,9 +6,14 @@
   ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <include
+        android:id="@+id/main_toolbar"
+        layout="@layout/toolbar" />
 
     <ListView
         android:id="@+id/list_view"

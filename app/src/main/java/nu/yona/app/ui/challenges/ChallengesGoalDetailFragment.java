@@ -148,7 +148,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             mYonaGoal = getArguments().getSerializable(AppConstant.GOAL_OBJECT);
             currentTab = getArguments().getString(AppConstant.NEW_GOAL_TYPE);
         }
-        updateTitle();
     }
 
     @Nullable
@@ -156,13 +155,17 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.goal_detail_layout, null);
 
+        setupToolbar(view);
+
+        updateTitle();
+
         mHGoalTypeImg = (ImageView) view.findViewById(R.id.img_bucket);
         YonaFontTextView mHTxtGoalTitle = (YonaFontTextView) view.findViewById(R.id.goal_challenge_type_title);
         YonaFontTextView mHTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.goal_challenge_type_subscribeTxt);
         YonaFontTextView mFTxtGoalSubscribe = (YonaFontTextView) view.findViewById(R.id.challenges_goal_footer_subscribeTxt);
         timezoneGoalView = view.findViewById(R.id.timezoneView);
         budgetGoalView = view.findViewById(R.id.goal_item_layout);
-        YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
+        rightIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(YonaActivity.getActivity() != null) {
@@ -216,10 +219,10 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 YonaGoal yonaGoal = (YonaGoal) mYonaGoal;
 
                 if (yonaGoal.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaGoal.getLinks().getEdit().getHref())) {
-                    YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
-                    YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_trash));
+                    rightIcon.setVisibility(View.VISIBLE);
+                    rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_trash));
                 } else {
-                    YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+                    rightIcon.setVisibility(View.GONE);
                 }
                 mHTxtGoalTitle.setText(yonaGoal.getActivityCategoryName());
                 if (APIManager.getInstance().getChallengesManager().typeOfGoal(yonaGoal).equals(GoalsEnum.BUDGET_GOAL)) {
@@ -277,7 +280,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             title = getString(R.string.challengesnogo);
         }
         if (!TextUtils.isEmpty(title)) {
-            YonaActivity.getActivity().updateTitle(getString(R.string.challengesdetail, title));
+            toolbarTitle.setText(getString(R.string.challengesdetail, title));
         }
     }
 
