@@ -229,6 +229,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             startActivity(intent);
             launchedPinActiivty = true;
             getUser();
+        } else {
+            hideSoftInput();
         }
     }
 

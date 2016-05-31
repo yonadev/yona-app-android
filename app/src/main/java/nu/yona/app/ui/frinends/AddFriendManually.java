@@ -177,27 +177,27 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
     private boolean validateFields() {
         if (!APIManager.getInstance().getBuddyManager().validateText(firstName.getText().toString())) {
-            firstNameLayout.setErrorEnabled(true);
-            firstNameLayout.setError(getString(R.string.enterfirstnamevalidation));
-            YonaActivity.getActivity().showKeyboard(firstName);
+            updateErrorView(firstNameLayout, getString(R.string.enterfirstnamevalidation), firstName);
             return false;
         } else if (!APIManager.getInstance().getBuddyManager().validateText(lastName.getText().toString())) {
-            lastNameLayout.setErrorEnabled(true);
-            lastNameLayout.setError(getString(R.string.enterlastnamevalidation));
-            YonaActivity.getActivity().showKeyboard(lastName);
+            updateErrorView(lastNameLayout, getString(R.string.enterlastnamevalidation), lastName);
             return false;
         } else if (!APIManager.getInstance().getBuddyManager().validateEmail(email.getText().toString())) {
-            emailLayout.setErrorEnabled(true);
-            emailLayout.setError(getString(R.string.enteremailvalidation));
-            YonaActivity.getActivity().showKeyboard(email);
+            updateErrorView(emailLayout, getString(R.string.enteremailvalidation), email);
             return false;
         } else if (!APIManager.getInstance().getBuddyManager().validateMobileNumber(mobileNumber.getText().toString())) {
-            mobileNumberLayout.setErrorEnabled(true);
-            mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
-            YonaActivity.getActivity().showKeyboard(mobileNumber);
+            updateErrorView(mobileNumberLayout, getString(R.string.enternumbervalidation), mobileNumber);
             return false;
         }
         return true;
+    }
+
+    private void updateErrorView(final TextInputLayout mInputLayout, final String mErrorMsg, final YonaFontEditTextView mEditText) {
+        mInputLayout.setErrorEnabled(true);
+        mInputLayout.setError(mErrorMsg);
+        mInputLayout.setFocusable(true);
+        YonaActivity.getActivity().showKeyboard(mEditText);
+        mEditText.requestFocus();
     }
 
     private void addFriend() {
