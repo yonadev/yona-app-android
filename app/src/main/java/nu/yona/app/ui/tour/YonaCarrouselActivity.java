@@ -16,7 +16,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -41,7 +40,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
      * The View.
      */
     protected View view;
-    private ImageButton btnNext;
+    private View btnNext;
     private CarrouselViewPager intro_images;
     private LinearLayout pager_indicator;
     private int dotsCount;
@@ -87,7 +86,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
     public void initializeView() {
 
         intro_images = (CarrouselViewPager) findViewById(R.id.pager_introduction);
-        btnNext = (ImageButton) findViewById(R.id.btn_next);
+        btnNext = (View) findViewById(R.id.layout_btn);
 
         pager_indicator = (LinearLayout) findViewById(R.id.viewPagerCountDots);
         btnNext.setOnClickListener(this);
@@ -128,7 +127,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_next:
+            case R.id.layout_btn:
                 moveToLaunchActivity();
                 break;
 
