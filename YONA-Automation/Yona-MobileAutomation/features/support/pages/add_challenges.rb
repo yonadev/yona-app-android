@@ -19,8 +19,13 @@ class ADDCHELLENGS<MobTest::Base
     buttons(:crdtimepkbtn, id: "#{$android_package}:id/goal_item_layout")
     button(:swpdeltime, id: "#{$android_package}:id/swipe_delete_goal")
     button(:edtimedur, id: "#{$android_package}:id/txtGoalStartTime")
-    # buttons(:addgoal, id: "#{$android_package}:id/img_add_goal")
+    button(:timedurend, id: "#{$android_package}:id/txtGoalEndTime")
+    button(:timepickerdl, id: "#{$android_package}:id/time_picker_dialog")
+    button(:timepicker, id: "#{$android_package}:id/time_picker")
+    button(:chllyt, id: "#{$android_package}:id/challengesLayout")
 
+
+    # Android Methods
 
     def selectCtg(strgl)
       lsWelemnt = glcategory_elements
@@ -73,17 +78,14 @@ class ADDCHELLENGS<MobTest::Base
 
     def editgoal
       selectgoal
-      sleep 1
+      sleep 2
       edtimedur_element.click
-      taponbutton(1,1,0.5,543,1190)
-      sleep 1
-      next_element.click
-      sleep 1
-      taponbutton(1,1,0.5,336,976)
-      sleep 1
-      ok_element.click
-      sleep 1
-      COMMON_UI.appium_swipe(946,1245,297,1245,1)
+      timduration('3to9')
+      endtime=timedurend_element
+      swploc=endtime.location
+      swpsize=endtime.size
+      puts "Swipeto=#{swploc[:x]},#{swploc[:y]},#{(swploc[:x]-swpsize[:width])},#{swploc[:y]}"
+      COMMON_UI.appium_swipe(swploc[:x],swploc[:y],(swploc[:x]-swpsize[:width]),swploc[:y],1)
       sleep 1
       swpdeltime_element.click
       sleep 1
@@ -138,14 +140,14 @@ class ADDCHELLENGS<MobTest::Base
         end
       end
     end
-    def durationinminutes(tapcount, touchcount, duration, startX, startY)
+    def durationinminutes(strMins)
       lswl = crdtimepkbtn_elements
       if(lswl!=nil && lswl.length>1)
         lswl[1].click
       else
         lswl[0].click
       end
-      taponbutton(tapcount, touchcount, duration, startX, startY)
+      timduration(strMins)
       ok_element.click
       sleep 3
     end
@@ -162,7 +164,75 @@ class ADDCHELLENGS<MobTest::Base
       end
     end
 
+    def timduration(strdur)
+      timesz=timepickerdl_element.size
+      timelc=timepickerdl_element.location
+      clhnd=timepicker_element.size
+
+      varcenterX=timesz[:width]/2+timelc[:x]
+      varcenterY=(timesz[:height]/2)+ timelc[:y]
+      case strdur
+        when '3to6'
+          # puts "Tapco=#{tapX} #{tapY}"
+          tapX=varcenterX+(clhnd[:height]/4)
+          tapY=varcenterY
+          taponbutton(1,1,0.5,tapX,tapY)
+          sleep 1
+          next_element.click
+          sleep 1
+          tapY=varcenterY + (clhnd[:height]/4)
+          # puts "Tapco=#{varcenterX} #{tapY}"
+          taponbutton(1,1,0.5,varcenterX,tapY)
+          sleep 1
+          ok_element.click
+          sleep 2
+
+        when '3to9'
+          tapX=varcenterX+(clhnd[:height]/4)
+          tapY=varcenterY
+          taponbutton(1,1,0.5,tapX,tapY)
+          sleep 1
+          next_element.click
+          sleep 1
+          tapX=varcenterX-(clhnd[:height]/4)
+          tapY=varcenterY
+          taponbutton(1,1,0.5,tapX,tapY)
+          sleep 1
+          ok_element.click
+        when 'min180'
+          tapX=varcenterX+(clhnd[:height]/4)
+          tapY=varcenterY
+          taponbutton(1,1,0.5,tapX,tapY)
+        when 'min540'
+          tapX=varcenterX-(clhnd[:height]/4)
+          tapY=varcenterY
+          taponbutton(1,1,0.5,tapX,tapY)
+      end
+    end
+
+    def savegl
+      wlcllyt = chllyt_element
+      chlsize=wlcllyt.size
+      chlloc=wlcllyt.location
+      btmscreen=chlsize[:height]+chlloc[:y]
+      sleep 2
+      lswl=savegoal_elements
+      # puts lswl
+      # puts lswl.length
+      if (lswl==nil || lswl.length==0)
+        COMMON_UI.appium_swipe((chlsize[:width]/2),btmscreen-50,(chlsize[:width]/2),chlsize[:height],1)
+        lswl=savegoal_elements
+        puts lswl
+        puts lswl.length
+      end
+      if(lswl!=nil && lswl.length>1)
+         wlsv=lswl[1]
+      else
+        wlsv=lswl[0]
+      end
+      # puts "element=#{wlsv}"
+        wlsv.click
+    end
+
   end
-
-
 end

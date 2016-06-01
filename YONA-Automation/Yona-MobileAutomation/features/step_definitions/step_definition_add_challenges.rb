@@ -1,8 +1,13 @@
 # Add NOGO Goal
 Given(/^User is logged in to Yona app and on Challenges tab$/)do
-   # on(Signup).enterPin
+  # on(Signup).enterPin
   on(ADDCHELLENGS).selmenutab 'chl'
 end
+
+Given(/^User is already on challenges tab$/)do
+  puts "Do Nothing"
+end
+
 
 And(/^Click on NOGO goal$/)do
   sleep 2
@@ -27,12 +32,7 @@ And(/^select the category on next page.$/)do
 end
 
 Then(/^Click on Save goal button$/)do
-  lswl=on(ADDCHELLENGS).savegoal_elements
-  if(lswl!=nil && lswl.length>1)
-    lswl[1].click
-  else
-    lswl[0].click
-  end
+  on(ADDCHELLENGS).savegl
   sleep 2
 end
 
@@ -66,15 +66,9 @@ end
 
 
 And(/^Specify the time duration and click on OK button$/)do
-  sleep 2
-  on(ADDCHELLENGS).taponbutton(1,1,0.5,750,986)
   sleep 1
-  on(ADDCHELLENGS).next_element.click
-  sleep 1
-  on(ADDCHELLENGS).taponbutton(1,1,0.5,543,1190)
-  sleep 1
-  on(ADDCHELLENGS).ok_element.click
-  sleep 1
+  on(ADDCHELLENGS).timduration('3to6')
+
 end
 
 And(/^Edit the goal and delete time duration$/)do
@@ -94,14 +88,14 @@ end
 
 And(/^Specify the time duration in minutes$/)do
    sleep 1
-  on(ADDCHELLENGS).durationinminutes(1,1,0.5,750,986)
+  on(ADDCHELLENGS).durationinminutes('min180')
 
 end
 
 And(/^Edit the goal and change the duration$/)do
   sleep 1
   on(ADDCHELLENGS).selectgoal
-  on(ADDCHELLENGS).durationinminutes(1,1,0.5,254,977)
+  on(ADDCHELLENGS).durationinminutes('min540')
 
 end
 

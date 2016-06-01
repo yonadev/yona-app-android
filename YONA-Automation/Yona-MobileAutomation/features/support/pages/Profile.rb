@@ -9,6 +9,7 @@ class Profile<MobTest::Base
     button(:pteditic, id: "#{$android_package}:id/rightIcon")
     button(:ptprofimg, id: "#{$android_package}:id/profileImage")
     buttons(:menutab, id: "#{$android_package}:id/tab_image")
+    button(:profpgr, id: "#{$android_package}:id/viewPager")
 
     def isflddisplayed(wbele)
       begin
@@ -24,9 +25,13 @@ class Profile<MobTest::Base
     end
 
 
-    def swipe_to_bottom
-      middle = self.ptlname_element
-      @driver.execute_script('mobile: scrollTo', element: middle.ref)
+    def swipe_to
+      wlprvwr = profpgr_element
+      prfsize=wlprvwr.size
+     prfloc=wlprvwr.location
+      btmscreen=prfsize[:height]+prfloc[:y]
+      COMMON_UI.appium_swipe((prfsize[:width]/2),btmscreen-50,(prfsize[:width]/2),pteditic_element.location[:y],1)
+
     end
 
   end

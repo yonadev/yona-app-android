@@ -31,7 +31,8 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
 
   @addTimeFrClng
   Scenario: User wants to Add TimeFrm Challenge
-    Given User is logged in to Yona app and on Challenges tab
+   Given User is logged in to Yona app and on Challenges tab
+#    Given User is already on challenges tab
     Then Click on Timzone goal
     And Click on add goal button
     Then select the category of Timezone goal on next page
@@ -49,6 +50,7 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
   @addCrdClng
   Scenario: User wants to Add Credit Challenge
     Given User is logged in to Yona app and on Challenges tab
+#    Given User is already on challenges tab
     Then Click on Credit goals
     And Click on add goal button
     Then select the category on next page.
@@ -59,7 +61,7 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
     Then Select the goal and delete it
     And Goal is deleted and user is navigated back to Challenges home screen
 
-   @viewProfile
+  @viewProfile
   Scenario: User can view his profile
     Given User is logged in to Yona app and on Profile page
     Then click on Profile icon on top left corner
