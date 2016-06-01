@@ -10,6 +10,7 @@
     <dimen name="three">3dp</dimen>
     <dimen name="four">4dp</dimen>
     <dimen name="five">5dp</dimen>
+    <dimen name="nine">9dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="twelve">12dp</dimen>
     <dimen name="thirteen">13dp</dimen>

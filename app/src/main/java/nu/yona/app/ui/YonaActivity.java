@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -43,6 +44,7 @@ import android.text.TextUtils;
 import android.transition.ChangeBounds;
 import android.transition.Slide;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -134,7 +136,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         setupTabs();
-        mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
 
         YonaApplication.getEventChangeManager().registerListener(this);
         homeFragment = new DashboardFragment();
@@ -442,6 +443,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      */
     private View getTabView(int position) {
         View v = LayoutInflater.from(this).inflate(R.layout.bottom_tab_item, null);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width/TOTAL_TABS, LinearLayout.LayoutParams.MATCH_PARENT);
+        v.setLayoutParams(lp);
         ImageView img = (ImageView) v.findViewById(R.id.tab_image);
         switch (position) {
             case 0:
