@@ -11,6 +11,9 @@ package nu.yona.app.ui;
 import android.Manifest;
 import android.animation.Animator;
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -52,6 +55,7 @@ import android.widget.LinearLayout;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -111,7 +115,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private Animator mCurrentAnimator;
     private int mShortAnimationDuration = 200;
     private Fragment oldFragment;
-
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
      */
@@ -230,6 +233,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             launchedPinActiivty = true;
             getUser();
         } else {
+            if (AppUtils.isSubmitPressed()) {
+                AppUtils.setSubmitPressed(false);
+                onBackPressed();
+            }
             hideSoftInput();
         }
     }
@@ -662,7 +669,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mContent instanceof ProfileFragment) {
                     ft.addSharedElement(getLeftIcon(), getString(R.string.profile_transition));
                 }
-                ft.commit();
+                ft.commitAllowingStateLoss();
                 getFragmentManager().executePendingTransactions();
             } else {
                 oldFragment.setUserVisibleHint(false);
@@ -746,20 +753,24 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     @Override
     public void onBackPressed() {
-
-        if (mContent instanceof ChallengesFragment && ((ChallengesFragment) mContent).isChildViewVisible()) {
-            ((ChallengesFragment) mContent).updateView();
-        } else {
-            isBackPressed = true;
-            if (isStackEmpty() && !(mContent instanceof DashboardFragment)) {
-                Fragment oldFragment = mContent;
-                //todo - check which content of instace is that and according update the view
-                mContent = homeFragment;
-                mTabLayout.getTabAt(0).select();
-                loadFragment(true, false, oldFragment);
-                return;
+        if(Foreground.get().isForeground()) {
+            AppUtils.setSubmitPressed(false);
+            if (mContent instanceof ChallengesFragment && ((ChallengesFragment) mContent).isChildViewVisible()) {
+                ((ChallengesFragment) mContent).updateView();
+            } else {
+                isBackPressed = true;
+                if (isStackEmpty() && !(mContent instanceof DashboardFragment)) {
+                    Fragment oldFragment = mContent;
+                    //todo - check which content of instace is that and according update the view
+                    mContent = homeFragment;
+                    mTabLayout.getTabAt(0).select();
+                    loadFragment(true, false, oldFragment);
+                    return;
+                }
+                super.onBackPressed();
             }
-            super.onBackPressed();
+        } else {
+            AppUtils.setSubmitPressed(true);
         }
     }
 

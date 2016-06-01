@@ -47,6 +47,7 @@ import nu.yona.timepicker.time.Timepoint;
  */
 public class AppUtils {
     private static InputFilter filter;
+    private static boolean submitPressed;
 
     /**
      * Gets circle bitmap.
@@ -290,5 +291,13 @@ public class AppUtils {
             timeDigit = "0" + timeDigit;
         }
         return timeDigit;
+    }
+
+    public static boolean isSubmitPressed() {
+        return AppUtils.submitPressed;
+    }
+
+    public static void setSubmitPressed(boolean submitPressed) {
+        AppUtils.submitPressed = submitPressed;
     }
 }
