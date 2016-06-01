@@ -18,6 +18,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.YonaCustomCrashManagerListener;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.ui.Foreground;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
@@ -162,7 +163,7 @@ public class YonaApplication extends Application {
         super.onCreate();
         mContext = this;
         eventChangeManager = new EventChangeManager();
-
+        Foreground.init(this);
     }
 
 }

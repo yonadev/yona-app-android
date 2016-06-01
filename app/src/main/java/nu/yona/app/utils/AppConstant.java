@@ -40,6 +40,11 @@ public interface AppConstant {
      */
     int TIMER_DELAY = 500;
     /**
+     * The constant TIMER_DELAY 2 sec.
+     */
+    int TIMER_DELAY_TWO_SEC = 2000;
+
+    /**
      * The constant MOBILE_NUMBER_LENGTH.
      */
     int MOBILE_NUMBER_LENGTH = 12;
@@ -208,4 +213,6 @@ public interface AppConstant {
      * The Screen Title
      */
     String SCREEN_TITLE = "screenTitle";
+
+    String SUBMIT_PRESSED = "submitPressed";
 }
