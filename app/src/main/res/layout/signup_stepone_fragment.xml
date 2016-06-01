@@ -110,7 +110,6 @@
                 <nu.yona.app.customview.YonaFontTextView
                     android:id="@+id/privacyPolicy"
                     style="@style/Explanation"
-                    android:textColor="@color/fifty_black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ten"

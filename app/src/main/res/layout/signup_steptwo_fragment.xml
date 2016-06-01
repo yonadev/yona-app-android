@@ -39,13 +39,15 @@
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/signup_add_avatar_height"
                 android:background="@color/grape"
                 app:layout_scrollFlags="scroll|enterAlways">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/signup_add_avatar_height"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/sixty_four"
+                    android:layout_marginTop="@dimen/forty_two"
                     android:scaleType="centerInside"
                     android:src="@drawable/add_avatar" />
             </android.support.design.widget.CollapsingToolbarLayout>
