@@ -77,7 +77,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.pincode_layout, container, false);
+        View view = inflater.inflate(R.layout.passcode_layout, container, false);
 
         progressDrawable = R.drawable.progress_bar;
 

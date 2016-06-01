@@ -16,6 +16,7 @@
     <dimen name="thirteen">13dp</dimen>
     <dimen name="fifteen">15dp</dimen>
     <dimen name="sixteen">16dp</dimen>
+    <dimen name="ninteen">19dp</dimen>
     <dimen name="twenty">20dp</dimen>
     <dimen name="twenty_three">23dp</dimen>
     <dimen name="twenty_five">25dp</dimen>
@@ -27,6 +28,7 @@
     <dimen name="sixty_one">61dp</dimen>
     <dimen name="sixty_four">64dp</dimen>
     <dimen name="fifty">50dp</dimen>
+    <dimen name="fifty_four">54dp</dimen>
     <dimen name="seventy">70dp</dimen>
     <dimen name="eighty">80dp</dimen>
     <dimen name="tabIndicatorHeight">4dp</dimen>
@@ -40,12 +42,12 @@
     <dimen name="progress_bar_height">2dp</dimen>
     <dimen name="passcode_margin_left">13dp</dimen>
     <dimen name="layout_margin">32dp</dimen>
-    <dimen name="passcode_layout_padding_top">37dp</dimen>
-    <dimen name="passcode_font_title">13dp</dimen>
+    <dimen name="passcode_layout_padding_top">19dp</dimen>
+    <dimen name="passcode_font_title">15dp</dimen>
     <dimen name="progressbar_height">2dp</dimen>
     <dimen name="progressbar_margin_top">17dp</dimen>
     <dimen name="passcode_font_desc_margin_top">14dp</dimen>
-    <dimen name="passcode_editfield_margin_top">28dp</dimen>
+    <dimen name="passcode_editfield_margin_top">24dp</dimen>
     <dimen name="passcode_reset_margin_top">30dp</dimen>
     <integer name="fragment_animation_duration">200</integer>
     <dimen name="tab_icon_height">48dp</dimen>

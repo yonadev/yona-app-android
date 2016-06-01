@@ -109,6 +109,7 @@
 
     <style name="SubscribeTxt">
         <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
         <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/white</item>
     </style>

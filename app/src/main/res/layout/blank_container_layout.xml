@@ -81,7 +81,7 @@
                         android:id="@+id/passcode_description"
                         style="@style/SubscribeTxt"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/fifty_four"
                         android:layout_marginTop="@dimen/passcode_font_desc_margin_top"
                         android:ellipsize="end"
                         android:gravity="center"
