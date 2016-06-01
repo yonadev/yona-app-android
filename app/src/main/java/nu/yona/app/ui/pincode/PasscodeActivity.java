@@ -160,11 +160,12 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     }
 
     private void fragmentAnimation(FragmentTransaction animTransaction, boolean isEntryAnim) {
-        if (isEntryAnim) {
-            animTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
-        } else {
-            animTransaction.setCustomAnimations(R.anim.back_slide_in, R.anim.back_slide_out);
-        }
+        //Todo - removed unused parameter and update flow once if they approve this animation
+        //if (isEntryAnim) {
+            animTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        //} else {
+          //  animTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        //}
     }
 
     @Override
