@@ -9,56 +9,108 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/signup_profile_left_right_padding">
+    android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/first_name_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <nu.yona.app.customview.YonaFontEditTextView
-            android:id="@+id/first_name"
-            style="@style/InputLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/icn_name"
-            android:ellipsize="end"
-            android:hint="@string/firstname"
-            android:imeOptions="actionNext"
-            android:inputType="textVisiblePassword|textCapWords"
-            android:maxLength="@integer/char_limit"
-            android:maxLines="1"
-            android:textColorHint="@color/black" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/last_name_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <nu.yona.app.customview.YonaFontEditTextView
-            android:id="@+id/last_name"
-            style="@style/InputLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/icn_name"
-            android:ellipsize="end"
-            android:hint="@string/lastname"
-            android:imeOptions="actionDone"
-            android:inputType="textVisiblePassword|textCapWords"
-            android:maxLength="@integer/char_limit"
-            android:maxLines="1"
-            android:textColorHint="@color/black" />
-    </android.support.design.widget.TextInputLayout>
-
-    <nu.yona.app.customview.YonaFontTextView
-        android:id="@+id/privacyPolicy"
-        style="@style/Explanation"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/id_toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/ten"
-        android:text="@string/privacypolicy" />
+        android:fitsSystemWindows="true"
+        app:elevation="0dp">
+
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/pin_toolbar" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grape"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/signup_add_avatar_height"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/add_avatar" />
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/signup_profile_left_right_padding">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/first_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <nu.yona.app.customview.YonaFontEditTextView
+                        android:id="@+id/first_name"
+                        style="@style/InputLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/icn_name"
+                        android:ellipsize="end"
+                        android:hint="@string/firstname"
+                        android:imeOptions="actionNext"
+                        android:inputType="textVisiblePassword|textCapWords"
+                        android:maxLength="@integer/char_limit"
+                        android:maxLines="1"
+                        android:textColorHint="@color/black" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/last_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <nu.yona.app.customview.YonaFontEditTextView
+                        android:id="@+id/last_name"
+                        style="@style/InputLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/icn_name"
+                        android:ellipsize="end"
+                        android:hint="@string/lastname"
+                        android:imeOptions="actionDone"
+                        android:inputType="textVisiblePassword|textCapWords"
+                        android:maxLength="@integer/char_limit"
+                        android:maxLines="1"
+                        android:textColorHint="@color/black" />
+                </android.support.design.widget.TextInputLayout>
+
+                <nu.yona.app.customview.YonaFontTextView
+                    android:id="@+id/privacyPolicy"
+                    style="@style/Explanation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ten"
+                    android:text="@string/privacypolicy" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

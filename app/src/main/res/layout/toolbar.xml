@@ -15,44 +15,6 @@
     app:layout_scrollFlags="scroll|enterAlways"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/sixty_four"
-        android:layout_marginRight="@dimen/challenges_margin_left"
-        android:orientation="horizontal">
+    <include layout="@layout/toolbar_layout" />
 
-        <ImageView
-            android:id="@+id/leftIcon"
-            android:layout_width="@dimen/dashboard_profile_icon"
-            android:layout_height="@dimen/dashboard_profile_icon"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="@dimen/twenty_five"
-            android:background="@drawable/icn_avatar"
-            android:scaleType="fitXY"
-            android:transitionName="@string/profile_transition"
-            android:visibility="gone" />
-
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/toolbar_title"
-            style="@style/NavTitle"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/thirty_two"
-            android:layout_marginLeft="@dimen/layout_margin"
-            android:layout_marginTop="@dimen/thirty_two"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@color/white" />
-
-        <ImageView
-            android:id="@+id/rightIcon"
-            android:layout_width="@dimen/toolbar_icon_size"
-            android:layout_height="@dimen/toolbar_icon_size"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/four"
-            android:layout_marginTop="@dimen/twenty_five"
-            android:scaleType="fitXY"
-            android:visibility="gone" />
-
-    </LinearLayout>
 </android.support.v7.widget.Toolbar>

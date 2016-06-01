@@ -70,6 +70,8 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
         activity = (SignupActivity) getActivity();
 
+        ((YonaFontTextView) view.findViewById(R.id.toolbar_title)).setText(R.string.join);
+
         firstNameLayout = (TextInputLayout) view.findViewById(R.id.first_name_layout);
         lastNameLayout = (TextInputLayout) view.findViewById(R.id.last_name_layout);
 

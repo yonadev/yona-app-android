@@ -60,8 +60,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
         loadSteopOne();
 
-        ((YonaFontTextView) findViewById(R.id.toolbar_title)).setText(R.string.join);
-
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
