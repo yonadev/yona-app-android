@@ -47,4 +47,11 @@
         <item name="android:backgroundTint">@color/mid_blue</item>
     </style>
 
+    <style name="BtnTxtSmall">
+        <item name="android:textSize">12sp</item>
+        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
 </resources>
