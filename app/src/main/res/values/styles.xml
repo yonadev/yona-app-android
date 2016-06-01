@@ -188,7 +188,7 @@
 
     <style name="hintText" parent="@android:style/TextAppearance">
         <item name="android:textSize">11sp</item>
-        <item name="android:textColor">@color/mid_blue</item>
+        <item name="android:textColor">@color/mid_blue_fifty</item>
     </style>
 
     <style name="passcode_editText">

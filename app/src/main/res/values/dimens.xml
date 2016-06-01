@@ -22,6 +22,7 @@
     <dimen name="thirty">30dp</dimen>
     <dimen name="thirty_two">32dp</dimen>
     <dimen name="thirty_six">36dp</dimen>
+    <dimen name="forty_two">42dp</dimen>
     <dimen name="forty_seven">47dp</dimen>
     <dimen name="sixty_one">61dp</dimen>
     <dimen name="sixty_four">64dp</dimen>
