@@ -6,21 +6,112 @@
   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_content"
-    android:background="@color/grape"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
-
-    <android.support.v4.widget.NestedScrollView
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/id_toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <FrameLayout
-            android:id="@+id/blank_container"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp">
+
+        <include layout="@layout/toolbar" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grape"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <LinearLayout
+                    android:id="@+id/pincode_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="120dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/layout_margin"
+                    android:paddingRight="@dimen/layout_margin"
+                    android:paddingTop="@dimen/passcode_layout_padding_top">
+
+                    <ImageView
+                        android:id="@+id/img_account_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icn_account_created" />
+
+                    <nu.yona.app.customview.YonaFontTextView
+                        android:id="@+id/passcode_title"
+                        style="@style/SplashTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/passcode_font_title"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLines="1" />
+
+
+                    <ProgressBar
+                        android:id="@+id/profile_progress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/progressbar_height"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/progressbar_margin_top"
+                        android:indeterminate="false"
+                        android:progressDrawable="@drawable/progress_bar"
+                        android:visibility="gone" />
+
+                    <nu.yona.app.customview.YonaFontTextView
+                        android:id="@+id/passcode_description"
+                        style="@style/SubscribeTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/passcode_font_desc_margin_top"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLines="3"
+                        android:visibility="gone" />
+
+                    <nu.yona.app.customview.YonaFontTextView
+                        android:id="@+id/passcode_error"
+                        style="@style/SubscribeTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/passcode_font_desc_margin_top"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLines="3" />
+                </LinearLayout>
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/sixty_four"/>
-    </android.support.v4.widget.NestedScrollView>
-</android.support.design.widget.CoordinatorLayout>
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <FrameLayout
+                android:id="@+id/blank_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
