@@ -168,7 +168,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         rightIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(YonaActivity.getActivity() != null) {
+                if (YonaActivity.getActivity() != null) {
                     CustomAlertDialog.show(YonaActivity.getActivity(), "", getString(R.string.challengedeletemsg), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

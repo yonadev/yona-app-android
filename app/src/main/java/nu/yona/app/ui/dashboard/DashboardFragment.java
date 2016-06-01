@@ -15,19 +15,15 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
@@ -73,8 +69,8 @@ public class DashboardFragment extends BaseFragment {
     private void setTabs() {
         ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
         mParams.height = getResources().getDimensionPixelSize(R.dimen.sixty_four);
-        tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.fifteen), 0,0);
-        tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.dashboard_deselected_tab), ContextCompat.getColor(getActivity(),R.color.dashboard_selected_tab));
+        tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.fifteen), 0, 0);
+        tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.dashboard_deselected_tab), ContextCompat.getColor(getActivity(), R.color.dashboard_selected_tab));
         tabLayout.setLayoutParams(mParams);
         tabLayout.setBackgroundResource(R.color.grape);
     }

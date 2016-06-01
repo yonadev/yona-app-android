@@ -66,11 +66,12 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/first_name_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/hintText">
 
                     <nu.yona.app.customview.YonaFontEditTextView
                         android:id="@+id/first_name"
-                        style="@style/InputLabel"
+                        style="@style/InputTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/icn_name"
@@ -86,11 +87,12 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/last_name_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/hintText">
 
                     <nu.yona.app.customview.YonaFontEditTextView
                         android:id="@+id/last_name"
-                        style="@style/InputLabel"
+                        style="@style/InputTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/icn_name"

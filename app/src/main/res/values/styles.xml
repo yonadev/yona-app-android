@@ -13,7 +13,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="colorPrimary">@android:color/transparent</item>
-
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
@@ -186,6 +185,11 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+
+    <style name="hintText" parent="@android:style/TextAppearance">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/mid_blue</item>
+    </style>
 
     <style name="passcode_editText">
         <item name="android:layout_width">@dimen/passcode_editText_width</item>

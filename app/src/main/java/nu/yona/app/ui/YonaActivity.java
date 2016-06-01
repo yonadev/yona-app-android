@@ -10,9 +10,6 @@ package nu.yona.app.ui;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.ActivityManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -55,7 +52,6 @@ import android.widget.LinearLayout;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -107,6 +103,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private int READ_EXTERNAL_STORAGE_REQUEST = 1;
     private int CAMERA_REQUEST = 2;
     private Fragment oldFragment;
+
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
      */
@@ -447,7 +444,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width/TOTAL_TABS, LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width / TOTAL_TABS, LinearLayout.LayoutParams.MATCH_PARENT);
         v.setLayoutParams(lp);
         ImageView img = (ImageView) v.findViewById(R.id.tab_image);
         switch (position) {
@@ -703,7 +700,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     @Override
     public void onBackPressed() {
-        if(Foreground.get().isForeground()) {
+        if (Foreground.get().isForeground()) {
             AppUtils.setSubmitPressed(false);
             if (mContent instanceof ChallengesFragment && ((ChallengesFragment) mContent).isChildViewVisible()) {
                 ((ChallengesFragment) mContent).updateView();

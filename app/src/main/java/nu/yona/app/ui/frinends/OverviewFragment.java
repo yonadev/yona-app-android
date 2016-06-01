@@ -8,7 +8,6 @@
 
 package nu.yona.app.ui.frinends;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +27,6 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
-import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.ui.BaseFragment;

@@ -9,10 +9,11 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/bg_gradient_two">
+    android:background="@color/bg_gradient_two"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,11 +29,12 @@
             android:paddingBottom="@dimen/ten"
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
-            android:paddingTop="@dimen/twenty">
+            android:paddingTop="@dimen/twenty"
+            app:hintTextAppearance="@style/hintText">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/first_name"
-                style="@style/InputLabel"
+                style="@style/InputTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -55,11 +57,12 @@
             android:paddingBottom="@dimen/ten"
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
-            android:paddingTop="@dimen/twenty">
+            android:paddingTop="@dimen/twenty"
+            app:hintTextAppearance="@style/hintText">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/last_name"
-                style="@style/InputLabel"
+                style="@style/InputTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -82,11 +85,12 @@
             android:paddingBottom="@dimen/ten"
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
-            android:paddingTop="@dimen/twenty">
+            android:paddingTop="@dimen/twenty"
+            app:hintTextAppearance="@style/hintText">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/nick_name"
-                style="@style/InputLabel"
+                style="@style/InputTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -109,11 +113,12 @@
             android:paddingBottom="@dimen/ten"
             android:paddingLeft="@dimen/signup_profile_left_right_padding"
             android:paddingRight="@dimen/signup_profile_left_right_padding"
-            android:paddingTop="@dimen/twenty">
+            android:paddingTop="@dimen/twenty"
+            app:hintTextAppearance="@style/hintText">
 
             <nu.yona.app.customview.YonaFontEditTextView
                 android:id="@+id/mobile_number"
-                style="@style/InputLabel"
+                style="@style/InputTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"

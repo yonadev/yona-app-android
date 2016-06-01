@@ -25,7 +25,6 @@ import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
-import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
