@@ -30,7 +30,7 @@
         style="@style/NavTitle"
         android:layout_width="0dp"
         android:layout_height="@dimen/thirty_two"
-        android:layout_marginLeft="@dimen/layout_margin"
+        android:layout_marginLeft="@dimen/fifteen"
         android:layout_marginTop="@dimen/thirty_two"
         android:layout_weight="1"
         android:gravity="center_vertical"

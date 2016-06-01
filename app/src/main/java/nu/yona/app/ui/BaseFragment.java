@@ -39,6 +39,9 @@ public class BaseFragment extends Fragment {
         toolbarTitle = (YonaFontTextView) mToolBar.findViewById(R.id.toolbar_title);
         leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
         rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
+        if (!(this instanceof DashboardFragment)) {
+            mToolBar.removeView(leftIcon);
+        }
         updateToolBarBackground();
         YonaActivity.getActivity().setSupportActionBar(mToolBar);
     }
