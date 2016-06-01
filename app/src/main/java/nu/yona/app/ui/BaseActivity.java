@@ -111,7 +111,7 @@ public class BaseActivity extends AppCompatActivity {
     public void showKeyboard(EditText editText) {
         if (editText != null) {
             inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
         }
     }
 

@@ -18,7 +18,7 @@ import android.widget.Scroller;
 public class CarrouselScroller extends Scroller {
 
     private double mScrollFactor = 1;
-    private int mDuration = 5000;
+    private int mDuration = 2500;
 
     /**
      * Instantiates a new Carrousel scroller.
