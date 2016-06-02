@@ -17,7 +17,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="SplashScreen" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="SplashScreen" parent="AppTheme">
         <item name="android:windowBackground">@drawable/welkom_screen</item>
     </style>
 
