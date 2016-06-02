@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -92,6 +91,11 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                 tabDeSelectedColor = getArguments().getInt(AppConstant.TAB_DESELECTED_COLOR);
             } else {
                 tabDeSelectedColor = R.color.dashboard_deselected_tab;
+            }
+            if (getArguments().get(AppConstant.TITLE_BACKGROUND_RESOURCE) != null) {
+                mToolBar.setBackgroundResource(getArguments().getInt(AppConstant.TITLE_BACKGROUND_RESOURCE));
+            } else {
+                mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
             }
         } else {
             backgroundColor = R.color.grape; // default color will be grape;
