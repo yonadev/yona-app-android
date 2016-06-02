@@ -24,6 +24,7 @@
     <dimen name="thirty">30dp</dimen>
     <dimen name="thirty_two">32dp</dimen>
     <dimen name="thirty_six">36dp</dimen>
+    <dimen name="forty">40dp</dimen>
     <dimen name="forty_two">42dp</dimen>
     <dimen name="forty_seven">47dp</dimen>
     <dimen name="sixty_one">61dp</dimen>
@@ -118,7 +119,7 @@
     <dimen name="message_item_height">88dp</dimen>
     <dimen name="user_avatar_padding">16dp</dimen>
     <dimen name="img_badges_padding_top_bottom">24dp</dimen>
-    <dimen name="message_header">53dp</dimen>
+    <dimen name="message_header">55dp</dimen>
 
 
     <!-- Friend Request -->

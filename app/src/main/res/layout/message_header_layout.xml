@@ -8,7 +8,7 @@
 
 
 <nu.yona.app.customview.YonaFontTextView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Date"
+    style="@style/DateSixtyOpacity"
     android:layout_width="match_parent"
     android:layout_height="@dimen/message_header"
     android:background="@color/white_three"

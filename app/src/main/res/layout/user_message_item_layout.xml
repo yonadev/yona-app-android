@@ -9,7 +9,7 @@
     xmlns:swipe="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipe_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/message_item_height"
     swipe:leftEdgeSwipeOffset="0dp"
     swipe:rightEdgeSwipeOffset="0dp">
 
@@ -26,7 +26,7 @@
     <RelativeLayout
         android:id="@+id/messageContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/message_item_height"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <ImageView
@@ -39,8 +39,8 @@
 
         <ImageView
             android:id="@+id/img_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/forty"
+            android:layout_height="@dimen/forty"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/img_badges_padding_top_bottom"
@@ -62,7 +62,7 @@
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/txt_footer"
-            style="@style/FooterTxt"
+            style="@style/FooterTxtFortyOpactiy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/img_status"
