@@ -66,7 +66,7 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
                 username.append(yonaObject.getEmbedded().getYonaUser().getFirstName());
             }
             if (!TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getLastName())) {
-                username.append(yonaObject.getEmbedded().getYonaUser().getLastName());
+                username.append(" " + yonaObject.getEmbedded().getYonaUser().getLastName());
             }
             holder.txtTitleMsg.setText(username.toString());
 

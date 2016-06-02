@@ -59,6 +59,12 @@ public class OverviewFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getBuddies();
+    }
+
     /**
      * Get Buddies
      */
