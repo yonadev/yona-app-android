@@ -34,6 +34,7 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/pincode_layout_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/grape"
@@ -63,7 +64,7 @@
                         android:layout_marginTop="@dimen/passcode_font_title"
                         android:ellipsize="end"
                         android:gravity="center"
-                        android:maxLines="1" />
+                        android:lines="1" />
 
 
                     <ProgressBar
@@ -75,28 +76,28 @@
                         android:layout_marginTop="@dimen/progressbar_margin_top"
                         android:indeterminate="false"
                         android:progressDrawable="@drawable/progress_bar"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <nu.yona.app.customview.YonaFontTextView
                         android:id="@+id/passcode_description"
-                        style="@style/SubscribeTxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/fifty_four"
-                        android:layout_marginTop="@dimen/passcode_font_desc_margin_top"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:maxLines="3"
-                        android:visibility="gone" />
-
-                    <nu.yona.app.customview.YonaFontTextView
-                        android:id="@+id/passcode_error"
                         style="@style/SubscribeTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/passcode_font_desc_margin_top"
                         android:ellipsize="end"
                         android:gravity="center"
-                        android:maxLines="3" />
+                        android:lines="3"
+                        android:visibility="visible" />
+
+                    <nu.yona.app.customview.YonaFontTextView
+                        android:id="@+id/passcode_error"
+                        style="@style/SubscribeTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:lines="3"
+                        android:layout_marginBottom="@dimen/passcode_layout_padding_top" />
                 </LinearLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>

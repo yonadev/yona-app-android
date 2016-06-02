@@ -45,7 +45,6 @@ import nu.yona.app.utils.AppUtils;
  */
 public class SettingsFragment extends BaseFragment {
     private DeviceManagerImpl deviceManager;
-    private boolean isPinResetRequested;
 
     @Nullable
     @Override
@@ -89,8 +88,8 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void showChangePin() {
-        isPinResetRequested = true;
         YonaActivity.getActivity().setSkipVerification(true);
+        APIManager.getInstance().getPasscodeManager().resetWrongCounter();
         Intent intent = new Intent(getActivity(), PinActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_VERIFICATION);

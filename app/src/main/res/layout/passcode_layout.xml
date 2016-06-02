@@ -14,8 +14,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingLeft="@dimen/twenty"
-    android:paddingRight="@dimen/layout_margin"
-    android:paddingTop="@dimen/passcode_layout_padding_top">
+    android:paddingRight="@dimen/layout_margin">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,9 +51,9 @@
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/passcode_reset"
         style="@style/TabTitleLg"
-        android:layout_marginLeft="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
         android:gravity="center"
         android:text="@string/passcodereset"
         android:visibility="gone" />
