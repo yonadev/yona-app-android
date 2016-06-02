@@ -48,13 +48,13 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
+            android:background="@color/white_two"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_gradient_two">
+                android:background="@drawable/item_gradient">
 
 
                 <nu.yona.app.customview.YonaFontTextView
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/content_desc"
                     android:layout_margin="@dimen/marginTop_for_button"
-                    android:background="@color/bg_gradient_two"
+                    android:background="@android:color/transparent"
                     android:orientation="horizontal">
 
                     <nu.yona.app.customview.YonaFontButton

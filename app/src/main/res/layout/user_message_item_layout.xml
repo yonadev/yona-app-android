@@ -9,6 +9,7 @@
     xmlns:swipe="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipe_layout"
     android:layout_width="match_parent"
+    android:background="@drawable/item_gradient"
     android:layout_height="@dimen/message_item_height"
     swipe:leftEdgeSwipeOffset="0dp"
     swipe:rightEdgeSwipeOffset="0dp">
