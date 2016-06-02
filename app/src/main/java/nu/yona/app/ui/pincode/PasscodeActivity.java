@@ -225,7 +225,13 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
         Intent intent = new Intent(PasscodeActivity.this, YonaActivity.class);
         intent.putExtra(AppConstant.FROM_LOGIN, true);
         ActivityCompat.startActivity(this, intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
-        finish();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, AppConstant.TIMER_DELAY);
+
     }
 }
 
