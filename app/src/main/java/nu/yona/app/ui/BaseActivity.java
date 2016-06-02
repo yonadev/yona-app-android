@@ -59,9 +59,9 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
+//        if (progressDialog != null && progressDialog.isShowing()) {
+//            progressDialog.dismiss();
+//        }
         super.onPause();
     }
 
