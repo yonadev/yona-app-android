@@ -7,6 +7,7 @@ module Platform
 
     include Utils
 
+
     def setup_ios
       if ENV['TARGET'] == 'sauce'
         capabilities = sauce_ios_capabilities
@@ -33,13 +34,13 @@ module Platform
 
     def android_capabilities
       caps = android_settings
-
+      puts "PATH=#{$apkPath[0]}"
       capabilities =
           {
               platformName: 'Android',
               # fullReset: true,
               noReset: true,
-              app: caps[:apk_path],
+              app: $apkPath[0],
               appPackage: caps[:android_package],
               appActivity: caps[:android_activity]
           }
@@ -66,7 +67,7 @@ module Platform
               :'appium-version' => '1.5.0',
               platformVersion: ENV['VERSION'],
               deviceName: ENV['DEVICE'],
-              app: 'sauce-storage:Yona_Android-develop-1.0.0.36.apk',
+              app: 'sauce-storage:Yona_android.apk',
               # name: app,
               :'access-key' => sauce_key
           },
