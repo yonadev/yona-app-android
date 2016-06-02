@@ -32,6 +32,10 @@
         <!--<item name="android:fragmentSharedElementReturnTransition">@transition/shared_element_transition</item>-->
     </style>
 
+    <style name="SplashScreen" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/welkom_screen</item>
+    </style>
+
     <style name="NavigationTab" parent="Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/NavigationTabTextAppeareance</item>
     </style>
