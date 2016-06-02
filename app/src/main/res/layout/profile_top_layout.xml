@@ -34,7 +34,7 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@id/nick_name"
-        style="@style/NavTitle"
+        style="@style/NavTitleFiftyOpacity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/three"

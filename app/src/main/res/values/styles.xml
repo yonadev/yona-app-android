@@ -77,10 +77,17 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="NavTitle">
+    <style name="parentNavTitle">
         <item name="android:textSize">14sp</item>
         <item name="textStyle">@integer/roboto_bold</item>
+    </style>
+
+    <style name="NavTitle" parent="@style/parentNavTitle">
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="NavTitleFiftyOpacity" parent="@style/parentNavTitle">
+        <item name="android:textColor">@color/white_fifty_opacity</item>
     </style>
 
     <style name="BtnTxtLg">
@@ -120,14 +127,17 @@
         <item name="android:textColor">@color/mid_blue</item>
     </style>
 
-    <style name="FooterTxt">
+    <style name="parentFooterTxt">
         <item name="android:textSize">14sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
+    </style>
+
+    <style name="FooterTxt" parent="parentFooterTxt">
         <item name="android:textColor">@color/black_sixty_opacity</item>
         <item name="android:lineSpacingExtra">4sp</item>
     </style>
 
-    <style name="FooterTxtFortyOpactiy">
+    <style name="FooterTxtFortyOpactiy" parent="parentFooterTxt">
         <item name="android:textSize">14sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/black_forty_opacity</item>
@@ -137,7 +147,7 @@
     <style name="TabTitleLg">
         <item name="android:textSize">13sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
-        <item name="android:textColor">@color/white_fifty</item>
+        <item name="android:textColor">@color/white_fifty_opacity</item>
     </style>
 
     <style name="BdgTxt">
