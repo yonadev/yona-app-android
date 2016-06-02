@@ -24,9 +24,23 @@ module COMMON_UI
   end
 
   def COMMON_UI.appium_swipe(start_x, start_y, end_x, end_y, duration)
+    # puts "coordinates=#{start_x} #{start_y} #{end_x} #{end_y}"
     action = Appium::TouchAction.new.swipe(start_x: start_x, start_y: start_y, end_x: end_x, end_y: end_y, duration: duration * 1000)
     action.perform
   end
 
+  def COMMON_UI.eledisplayed?(wbEle)
+    bool = false
+    sleep 3
+    begin
+      puts "Displayed=#{wbEle.displayed?}"
+      bool=wbEle.displayed?
+      # bool=false
+    rescue Exception => e
+      puts "Message=#{e.message}"
+      return false
+    end
+    bool
+  end
 
 end

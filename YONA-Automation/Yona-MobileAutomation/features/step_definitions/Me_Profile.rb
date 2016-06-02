@@ -15,9 +15,9 @@ Then(/^Able to view details like first name,last name, nick name,mobile number a
   expect(on(Profile).isflddisplayed(on(Profile).ptfname_element)).to be_truthy
   expect(on(Profile).isflddisplayed(on(Profile).ptlname_element)).to be_truthy
   sleep 1
-  expect(on(Profile).isflddisplayed(on(Profile).ptnickname_element)).to be_truthy
-  COMMON_UI.appium_swipe(533,1550,513,999,1)
+  on(Profile).swipe_to
   sleep 1
+  expect(on(Profile).isflddisplayed(on(Profile).ptnickname_element)).to be_truthy
   expect(on(Profile).isflddisplayed(on(Profile).ptmobilen_element)).to be_truthy
   expect(on(Profile).isflddisplayed(on(Profile).pteditic_element)).to be_truthy
 

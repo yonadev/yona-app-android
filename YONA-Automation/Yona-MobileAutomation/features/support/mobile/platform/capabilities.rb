@@ -55,8 +55,8 @@ module Platform
     def sauce_android_capabilities
       cap = android_settings
       # app = cap[:apk_path].split('/').select{|element| element.include?'.apk'}.first
-      sauce_user = 'jsharma'
-      sauce_key = 'af0ee538-b04c-4b8b-9c4c-c5e661df32e8'
+      sauce_user = 'cbhanushali'
+      sauce_key = '3c41efb2-f88e-406f-ba68-f9096b78a413'
       {
           caps: {
               platformName: 'Android',
