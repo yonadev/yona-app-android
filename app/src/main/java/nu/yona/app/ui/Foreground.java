@@ -15,15 +15,13 @@ import android.app.Application;
 import android.os.Bundle;
 import android.os.Handler;
 
-import nu.yona.app.YonaApplication;
-import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 01/06/16.
  */
 
-public class Foreground  implements Application.ActivityLifecycleCallbacks {
+public class Foreground implements Application.ActivityLifecycleCallbacks {
 
     private static Foreground instance;
 
@@ -35,24 +33,25 @@ public class Foreground  implements Application.ActivityLifecycleCallbacks {
     private int paused = 0;
     private boolean inForeground = true;
 
-    public static void init(Application app){
-        if (instance == null){
+    private Foreground() {
+    }
+
+    public static void init(Application app) {
+        if (instance == null) {
             instance = new Foreground();
             app.registerActivityLifecycleCallbacks(instance);
         }
     }
 
-    public static Foreground get(){
+    public static Foreground get() {
         return instance;
     }
-
-    private Foreground(){}
 
     public boolean isForeground() {
         return foreground;
     }
 
-    public boolean isBackground(){
+    public boolean isBackground() {
         return !foreground;
     }
 
@@ -83,8 +82,8 @@ public class Foreground  implements Application.ActivityLifecycleCallbacks {
     @Override
     public void onActivityPaused(Activity activity) {
         ++paused;
-        if (activity instanceof YonaActivity ){
-            if(isHomeActivityFirstTime()){
+        if (activity instanceof YonaActivity) {
+            if (isHomeActivityFirstTime()) {
                 homeActivityFirstTime = false;
             }
         }
@@ -106,8 +105,7 @@ public class Foreground  implements Application.ActivityLifecycleCallbacks {
 
     }
 
-    public void foregroundOrBackground()
-    {
+    public void foregroundOrBackground() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {

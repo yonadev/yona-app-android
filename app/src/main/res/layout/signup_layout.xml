@@ -7,67 +7,45 @@
   ~
   ~
   -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ScrollView
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grape"
-            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/signup_add_avatar_height"
-                android:layout_marginTop="@dimen/sixty_four"
-                android:background="@color/grape"
-                android:scaleType="centerInside"
-                android:src="@drawable/add_avatar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bottomBarColor"
+        android:orientation="horizontal">
 
-            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/white" />
+        <nu.yona.app.customview.YonaFontButton
+            android:id="@+id/previous"
+            style="@style/BtnTxtSmall"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/signup_profile_btn_height"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:background="@color/darkish_pink"
+            android:text="@string/previous"
+            android:textColor="@android:color/white" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/bottomBarColor"
-                android:orientation="horizontal">
-
-                <nu.yona.app.customview.YonaFontButton
-                    android:id="@+id/previous"
-                    style="@style/BtnTxtSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/signup_profile_btn_height"
-                    android:layout_marginRight="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/darkish_pink"
-                    android:text="@string/previous"
-                    android:textColor="@android:color/white" />
-
-                <nu.yona.app.customview.YonaFontButton
-                    android:id="@+id/next"
-                    style="@style/BtnTxtSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/signup_profile_btn_height"
-                    android:layout_weight="1"
-                    android:background="@color/darkish_pink"
-                    android:text="@string/next"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-        </LinearLayout>
-
-    </ScrollView>
-
-    <include layout="@layout/toolbar" />
-</FrameLayout>
+        <nu.yona.app.customview.YonaFontButton
+            android:id="@+id/next"
+            style="@style/BtnTxtSmall"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/signup_profile_btn_height"
+            android:layout_weight="1"
+            android:background="@color/darkish_pink"
+            android:text="@string/next"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>

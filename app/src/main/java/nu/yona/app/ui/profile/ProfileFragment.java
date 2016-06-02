@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -21,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -46,7 +46,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     private ImageView profileImageView;
     private YonaFontTextView name, nickName;
     private ViewPager viewPager;
-    private LinearLayout profileTopLayout;
+    private CollapsingToolbarLayout profileTopLayout;
     private TabLayout tabLayout;
     private int backgroundColor, profileBgColor, tabDeSelectedColor;
     private User user;
@@ -58,11 +58,13 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.profile_fragment, null);
 
+        setupToolbar(view);
+
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
 
         profileImageView = (ImageView) view.findViewById(R.id.profileImage);
-        profileTopLayout = (LinearLayout) view.findViewById(R.id.profile_top_layout);
+        profileTopLayout = (CollapsingToolbarLayout) view.findViewById(R.id.profile_top_layout);
         name = (YonaFontTextView) view.findViewById(R.id.name);
         nickName = (YonaFontTextView) view.findViewById(R.id.nick_name);
         if (getArguments() != null) {
@@ -89,6 +91,11 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                 tabDeSelectedColor = getArguments().getInt(AppConstant.TAB_DESELECTED_COLOR);
             } else {
                 tabDeSelectedColor = R.color.dashboard_deselected_tab;
+            }
+            if (getArguments().get(AppConstant.TITLE_BACKGROUND_RESOURCE) != null) {
+                mToolBar.setBackgroundResource(getArguments().getInt(AppConstant.TITLE_BACKGROUND_RESOURCE));
+            } else {
+                mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
             }
         } else {
             backgroundColor = R.color.grape; // default color will be grape;
@@ -160,9 +167,9 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void setTitleAndIcon() {
-        YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-        YonaActivity.getActivity().updateTitle(getString(R.string.blank));
-        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+        leftIcon.setVisibility(View.GONE);
+        toolbarTitle.setText(getString(R.string.blank));
+        rightIcon.setVisibility(View.GONE);
         viewPager.setCurrentItem(0);
         showOptionsInSelectedTab(viewPager.getCurrentItem());
     }
@@ -180,7 +187,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void showBadgeOptions() {
-        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+        rightIcon.setVisibility(View.GONE);
     }
 
     private void showProfileOptions() {
@@ -188,10 +195,10 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             @Override
             public void run() {
                 if (user != null && yonaMessage == null) {
-                    YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
-                    YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.profile));
-                    YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_edit));
-                    YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
+                    rightIcon.setVisibility(View.VISIBLE);
+                    rightIcon.setTag(getString(R.string.profile));
+                    rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_edit));
+                    rightIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent friendIntent = new Intent(IntentEnum.ACTION_EDIT_PROFILE.getActionString());

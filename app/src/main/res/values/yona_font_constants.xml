@@ -12,6 +12,6 @@
     <integer name="roboto_light">10</integer>
     <integer name="roboto_medium">11</integer>
     <integer name="roboto_bold">12</integer>
-    <integer name="roboto_normal">13</integer>
+    <integer name="roboto_regular">13</integer>
     <integer name="oswald_light">14</integer>
 </resources>

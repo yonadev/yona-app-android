@@ -13,7 +13,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="colorPrimary">@android:color/transparent</item>
-        <item name="android:windowContentTransitions">true</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
@@ -72,21 +71,37 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="SeTitle">
+    <style name="ParentSeTitle">
         <item name="android:textSize">15sp</item>
         <item name="textStyle">@integer/roboto_bold</item>
+    </style>
+
+    <style name="SeTitle" parent="ParentSeTitle">
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="NavTitle">
+    <style name="parentNavTitle">
         <item name="android:textSize">14sp</item>
         <item name="textStyle">@integer/roboto_bold</item>
+    </style>
+
+    <style name="NavTitle" parent="@style/parentNavTitle">
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="BtnTxtLg">
+    <style name="NavTitleFiftyOpacity" parent="@style/parentNavTitle">
+        <item name="android:textColor">@color/white_fifty_opacity</item>
+    </style>
+
+    <style name="parentBtnTxtLg">
         <item name="android:textSize">14sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
+    </style>
+    <style name="BtnTxtLg">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="BtnTxtLgSpacing" parent="parentBtnTxtLg">
         <item name="android:textColor">@color/white</item>
     </style>
 
@@ -96,40 +111,54 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="ChallengeTxt">
+    <style name="parentChallengeTxt">
         <item name="android:textSize">14sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ChallengeTxt" parent="@style/parentChallengeTxt">
+        <item name="android:lineSpacingExtra">1sp</item>
     </style>
 
     <style name="InputTxt">
         <item name="android:textSize">14sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="SubscribeTxt">
         <item name="android:textSize">14sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="BtnTxtBlue">
         <item name="android:textSize">14sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/mid_blue</item>
     </style>
 
-    <style name="FooterTxt">
+    <style name="parentFooterTxt">
         <item name="android:textSize">14sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="textStyle">@integer/roboto_regular</item>
+    </style>
+
+    <style name="FooterTxt" parent="parentFooterTxt">
+        <item name="android:textColor">@color/black_sixty_opacity</item>
+    </style>
+
+
+    <style name="FooterTxtFortyOpactiy" parent="parentFooterTxt">
+        <item name="android:textColor">@color/black_forty_opacity</item>
     </style>
 
     <style name="TabTitleLg">
         <item name="android:textSize">13sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="textStyle">@integer/roboto_regular</item>
+        <item name="android:textColor">@color/white_fifty_opacity</item>
     </style>
 
     <style name="BdgTxt">
@@ -140,26 +169,33 @@
 
     <style name="BtnTxtSmall">
         <item name="android:textSize">12sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="FooterTitle">
         <item name="android:textSize">12sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Explanation">
         <item name="android:textSize">12sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
+        <item name="android:textColor">@color/black_eighty_opacity</item>
+    </style>
+
+    <style name="parentDate">
+        <item name="android:textSize">11sp</item>
+        <item name="textStyle">@integer/roboto_bold</item>
+    </style>
+
+    <style name="Date" parent="parentDate">
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="Date">
-        <item name="android:textSize">11sp</item>
-        <item name="textStyle">@integer/roboto_bold</item>
-        <item name="android:textColor">@color/black</item>
+    <style name="DateSixtyOpacity" parent="parentDate">
+        <item name="android:textColor">@color/black_sixty_opacity</item>
     </style>
 
     <style name="TabTitle">
@@ -170,22 +206,27 @@
 
     <style name="GraphLabel">
         <item name="android:textSize">11sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="InputLabel">
         <item name="android:textSize">11sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="DateWeek">
         <item name="android:textSize">11sp</item>
-        <item name="textStyle">@integer/roboto_normal</item>
+        <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
+
+    <style name="hintText" parent="@android:style/TextAppearance">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/mid_blue_fifty_opacity</item>
+    </style>
 
     <style name="passcode_editText">
         <item name="android:layout_width">@dimen/passcode_editText_width</item>

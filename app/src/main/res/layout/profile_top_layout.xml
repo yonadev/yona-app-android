@@ -7,10 +7,11 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/profile_top_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/profile_layout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layout_scrollFlags="scroll|enterAlways">
 
     <ImageView
         android:id="@+id/profileImage"
@@ -20,7 +21,7 @@
         android:layout_marginTop="@dimen/twenty_three"
         android:background="@drawable/profile_selector"
         android:gravity="center_horizontal"
-        android:transitionName="@string/profile_transition"/>
+        android:transitionName="@string/profile_transition" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/name"
@@ -32,7 +33,7 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@id/nick_name"
-        style="@style/NavTitle"
+        style="@style/NavTitleFiftyOpacity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/three"

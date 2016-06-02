@@ -8,6 +8,7 @@
 
 package nu.yona.app.ui.profile;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -43,7 +44,9 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.profile_details_fragment, null);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            YonaActivity.getActivity().postponeEnterTransition();
+        }
         firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);

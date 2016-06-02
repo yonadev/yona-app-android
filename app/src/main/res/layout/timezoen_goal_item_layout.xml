@@ -58,7 +58,7 @@
 
                 <nu.yona.app.customview.YonaFontTextView
                     android:id="@+id/textVan"
-                    style="@style/FooterTxt"
+                    style="@style/FooterTxtFortyOpactiy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -93,7 +93,7 @@
 
                 <nu.yona.app.customview.YonaFontTextView
                     android:id="@+id/txtTot"
-                    style="@style/FooterTxt"
+                    style="@style/FooterTxtFortyOpactiy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

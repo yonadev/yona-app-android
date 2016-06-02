@@ -26,6 +26,7 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -47,6 +48,8 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         View view = inflater.inflate(R.layout.signup_steptwo_fragment, null);
 
         activity = (SignupActivity) getActivity();
+
+        ((YonaFontTextView) view.findViewById(R.id.toolbar_title)).setText(R.string.join);
 
         mobileNumber = (YonaFontEditTextView) view.findViewById(R.id.mobile_number);
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);

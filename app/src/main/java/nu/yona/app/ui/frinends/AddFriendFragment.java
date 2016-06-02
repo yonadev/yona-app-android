@@ -11,19 +11,19 @@
 package nu.yona.app.ui.frinends;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import nu.yona.app.R;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
-import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 27/04/16.
@@ -32,13 +32,17 @@ public class AddFriendFragment extends BaseFragment {
 
     private final int ADD_FRIEND_MANUALLY = 0, ADD_FRIENT_CONTACT = 1;
     private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.add_friend_fragment, null);
+        View view = inflater.inflate(R.layout.viewpager_fragment, null);
+
+        setupToolbar(view);
+
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         return view;
@@ -75,14 +79,20 @@ public class AddFriendFragment extends BaseFragment {
     }
 
     private void setTitleAndIcon() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-                YonaActivity.getActivity().updateTitle(getString(R.string.friends));
-                YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
-            }
-        }, AppConstant.TIMER_DELAY_HUNDRED);
+        setTabs();
+        leftIcon.setVisibility(View.GONE);
+        toolbarTitle.setText(getString(R.string.friends));
+        rightIcon.setVisibility(View.GONE);
 
+    }
+
+    private void setTabs() {
+        tabLayout.setVisibility(View.VISIBLE);
+        ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
+        mParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.ten), 0, 0);
+        tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.friends_deselected_tab), ContextCompat.getColor(getActivity(), R.color.friends_selected_tab));
+        tabLayout.setLayoutParams(mParams);
+        tabLayout.setBackgroundResource(R.color.mid_blue_two);
     }
 }

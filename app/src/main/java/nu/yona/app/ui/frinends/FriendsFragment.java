@@ -8,6 +8,7 @@
 
 package nu.yona.app.ui.frinends;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -17,8 +18,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import nu.yona.app.R;
+import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
@@ -30,15 +33,25 @@ import nu.yona.app.utils.AppConstant;
 public class FriendsFragment extends BaseFragment {
     private final int TIMELINE = 0, OVERVIEW = 1;
     private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frineds_layout, null);
+        View view = inflater.inflate(R.layout.viewpager_fragment, null);
+
+        setupToolbar(view);
+
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        rightIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addFriend();
+            }
+        });
         return view;
     }
 
@@ -75,13 +88,23 @@ public class FriendsFragment extends BaseFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-                YonaActivity.getActivity().updateTitle(R.string.friends);
-                YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+                setTabs();
+                leftIcon.setVisibility(View.GONE);
+                toolbarTitle.setText(R.string.friends);
+                rightIcon.setVisibility(View.GONE);
                 showOptionsInSelectedTab(viewPager.getCurrentItem());
             }
-        }, AppConstant.TIMER_DELAY_THREE_HUNDRED);
+        }, AppConstant.TIMER_DELAY_HUNDRED);
 
+    }
+
+    private void setTabs() {
+        ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
+        mParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.ten), 0, 0);
+        tabLayout.setLayoutParams(mParams);
+        tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.friends_deselected_tab), ContextCompat.getColor(getActivity(), R.color.friends_selected_tab));
+        tabLayout.setBackgroundResource(R.color.mid_blue_two);
     }
 
     private void showOptionsInSelectedTab(int position) {
@@ -97,12 +120,17 @@ public class FriendsFragment extends BaseFragment {
     }
 
     private void showTimeLineFragmentOptions() {
-        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+        rightIcon.setVisibility(View.GONE);
     }
 
     private void showOverviewFragmentOptions() {
-        YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
-        YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.overiview));
-        YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_add));
+        rightIcon.setVisibility(View.VISIBLE);
+        rightIcon.setTag(getString(R.string.overiview));
+        rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_add));
+    }
+
+    private void addFriend() {
+        Intent friendIntent = new Intent(IntentEnum.ACTION_ADD_FRIEND.getActionString());
+        YonaActivity.getActivity().replaceFragment(friendIntent);
     }
 }

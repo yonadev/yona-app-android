@@ -52,9 +52,10 @@ public class SettingsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.settings_fragment, null);
 
+        setupToolbar(view);
+
         ListView listView = (ListView) view.findViewById(R.id.list_view);
         deviceManager = new DeviceManagerImpl(getActivity());
-
         listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.settings_list_item, new String[]{getString(R.string.changepin), getString(R.string.privacy), getString(R.string.adddevice), getString(R.string.deleteuser)}));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -149,7 +150,7 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void setTitleAndIcon() {
-        YonaActivity.getActivity().updateTitle(R.string.settings);
+        toolbarTitle.setText(R.string.settings);
     }
 
     private void addDevice(final String pin) {

@@ -25,7 +25,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/sixty_one"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -33,10 +33,11 @@
             android:id="@+id/join"
             style="@style/BtnTxtSmall"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginRight="1dp"
             android:layout_weight="1"
             android:background="@color/darkish_pink"
+            android:gravity="center"
             android:text="@string/join"
             android:textColor="@android:color/white" />
 
@@ -44,9 +45,10 @@
             android:id="@+id/login"
             style="@style/BtnTxtSmall"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/darkish_pink"
+            android:gravity="center"
             android:text="@string/login"
             android:textColor="@android:color/white" />
     </LinearLayout>

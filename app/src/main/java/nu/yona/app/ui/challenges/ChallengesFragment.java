@@ -51,12 +51,16 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.challenges_layout, null);
+        View view = inflater.inflate(R.layout.viewpager_fragment, null);
+
+        setupToolbar(view);
+
         creditFragment = new CreditFragment();
         zoneFragment = new ZoneFragment();
         noGoFragment = new NoGoFragment();
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+
         YonaApplication.getEventChangeManager().registerListener(this);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
@@ -134,7 +138,15 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     }
 
     private void setTitleAndIcon() {
-        YonaActivity.getActivity().updateTitle(R.string.challenges);
+        setTabs();
+        toolbarTitle.setText(R.string.challenges);
+    }
+
+    private void setTabs() {
+        ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
+        mParams.height = getResources().getDimensionPixelSize(R.dimen.challenges_tab_layout_height);
+        tabLayout.setLayoutParams(mParams);
+        tabLayout.setBackgroundResource(R.color.pea);
     }
 
     private void setupViewPager(ViewPager viewPager) {

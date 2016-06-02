@@ -28,7 +28,7 @@ class YonaFontUtils {
     private static final int ROBOTO_LIGHT = 10;
     private static final int ROBOTO_MEDIUM = 11;
     private static final int ROBOTO_BOLD = 12;
-    private static final int ROBOTO_NORMAL = 13;
+    private static final int ROBOTO_REGULAR = 13;
     private static final int OSWALD_LIGHT = 14;
     private static final LruCache<String, Typeface> fontCache = new LruCache<>(R.integer.total_font_count);
 
@@ -70,7 +70,7 @@ class YonaFontUtils {
             case OSWALD_LIGHT:
                 return getTypeface("oswald-light.ttf", context);
 
-            case ROBOTO_NORMAL: // regular
+            case ROBOTO_REGULAR: // regular
             default:
                 return getTypeface("roboto-regular.ttf", context);
         }

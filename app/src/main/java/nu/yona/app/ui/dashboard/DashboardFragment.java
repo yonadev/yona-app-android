@@ -35,12 +35,17 @@ import nu.yona.app.utils.AppConstant;
  */
 public class DashboardFragment extends BaseFragment {
 
+    private TabLayout tabLayout;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dashboard_fragment, null);
+        View view = inflater.inflate(R.layout.viewpager_fragment, null);
+
+        setupToolbar(view);
+
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -54,10 +59,20 @@ public class DashboardFragment extends BaseFragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
+        setTabs();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new PerDayFragment(), getString(R.string.perday));
         adapter.addFragment(new PerWeekFragment(), getString(R.string.perweek));
         viewPager.setAdapter(adapter);
+    }
+
+    private void setTabs() {
+        ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
+        mParams.height = getResources().getDimensionPixelSize(R.dimen.sixty_four);
+        tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.fifteen), 0, 0);
+        tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.dashboard_deselected_tab), ContextCompat.getColor(getActivity(), R.color.dashboard_selected_tab));
+        tabLayout.setLayoutParams(mParams);
+        tabLayout.setBackgroundResource(R.color.grape);
     }
 
     private void setTitleAndIcon() {
@@ -65,18 +80,18 @@ public class DashboardFragment extends BaseFragment {
             @Override
             public void run() {
                 if (YonaApplication.getUser() != null && !TextUtils.isEmpty(YonaApplication.getUser().getFirstName())) {
-                    YonaActivity.getActivity().getLeftIcon().setVisibility(View.VISIBLE);
-                    YonaActivity.getActivity().getLeftIcon().setImageDrawable(TextDrawable.builder()
+                    leftIcon.setVisibility(View.VISIBLE);
+                    leftIcon.setImageDrawable(TextDrawable.builder()
                             .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
                             .buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase(),
                                     ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
                 }
-                YonaActivity.getActivity().updateTitle(R.string.dashboard);
-                YonaActivity.getActivity().getRightIcon().setTag(getString(R.string.dashboard));
-                YonaActivity.getActivity().getRightIcon().setVisibility(View.VISIBLE);
-                YonaActivity.getActivity().getRightIcon().setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
+                toolbarTitle.setText(R.string.dashboard);
+                rightIcon.setTag(getString(R.string.dashboard));
+                rightIcon.setVisibility(View.VISIBLE);
+                rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
 
-                YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
+                rightIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
@@ -84,7 +99,7 @@ public class DashboardFragment extends BaseFragment {
                     }
                 });
 
-                YonaActivity.getActivity().getLeftIcon().setOnClickListener(new View.OnClickListener() {
+                leftIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
@@ -94,6 +109,7 @@ public class DashboardFragment extends BaseFragment {
                         YonaActivity.getActivity().replaceFragment(intent);
                     }
                 });
+                tabLayout.setVisibility(View.VISIBLE);
             }
         }, AppConstant.TIMER_DELAY_HUNDRED);
 

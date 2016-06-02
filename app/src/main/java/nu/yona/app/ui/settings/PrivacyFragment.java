@@ -36,6 +36,9 @@ public class PrivacyFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.privacy_fragment, null);
+
+        setupToolbar(view);
+
         webView = (WebView) view.findViewById(R.id.webView);
         webView.loadUrl(ApiList.PRIVACY_PAGE);
         WebSettings webSettings = webView.getSettings();
@@ -63,8 +66,8 @@ public class PrivacyFragment extends BaseFragment {
     }
 
     private void setTitleAndIcon() {
-        YonaActivity.getActivity().getLeftIcon().setVisibility(View.GONE);
-        YonaActivity.getActivity().updateTitle(getString(R.string.privacy));
-        YonaActivity.getActivity().getRightIcon().setVisibility(View.GONE);
+        leftIcon.setVisibility(View.GONE);
+        toolbarTitle.setText(getString(R.string.privacy));
+        rightIcon.setVisibility(View.GONE);
     }
 }

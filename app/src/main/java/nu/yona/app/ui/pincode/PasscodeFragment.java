@@ -77,20 +77,20 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.pincode_layout, container, false);
+        View view = inflater.inflate(R.layout.passcode_layout, container, false);
 
         progressDrawable = R.drawable.progress_bar;
 
         YonaApplication.getEventChangeManager().registerListener(this);
 
-        passcode_title = (YonaFontTextView) view.findViewById(R.id.passcode_title);
-        passcode_description = (YonaFontTextView) view.findViewById(R.id.passcode_description);
-        passcode_error = (YonaFontTextView) view.findViewById(R.id.passcode_error);
+        passcode_title = (YonaFontTextView) getActivity().findViewById(R.id.passcode_title);
+        passcode_description = (YonaFontTextView) getActivity().findViewById(R.id.passcode_description);
+        passcode_error = (YonaFontTextView) getActivity().findViewById(R.id.passcode_error);
         passcode_reset = (YonaFontTextView) view.findViewById(R.id.passcode_reset);
-        accont_image = (ImageView) view.findViewById(R.id.img_account_check);
+        accont_image = (ImageView) getActivity().findViewById(R.id.img_account_check);
         passcode_reset = (YonaFontTextView) view.findViewById(R.id.passcode_reset);
 
-        profile_progress = (ProgressBar) view.findViewById(R.id.profile_progress);
+        profile_progress = (ProgressBar) getActivity().findViewById(R.id.profile_progress);
 
         passcodeManagerImpl = new PasscodeManagerImpl();
         yonaPasswordTransformationManager = new YonaPasswordTransformationManager();

@@ -13,7 +13,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/layout_margin"
     android:paddingRight="@dimen/layout_margin"
-    android:paddingTop="@dimen/layout_margin">
+    android:paddingTop="@dimen/twenty_four">
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goal_title"

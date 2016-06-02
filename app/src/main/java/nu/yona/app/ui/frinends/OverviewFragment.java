@@ -8,7 +8,6 @@
 
 package nu.yona.app.ui.frinends;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +27,6 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
-import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.ui.BaseFragment;
@@ -43,7 +41,6 @@ public class OverviewFragment extends BaseFragment {
     private OverViewAdapter mOverViewAdapter;
     private RecyclerView mFriendsRecyclerView;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,16 +54,15 @@ public class OverviewFragment extends BaseFragment {
         mFriendsRecyclerView.setAdapter(mOverViewAdapter);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(mOverViewAdapter));
 
-        YonaActivity.getActivity().getRightIcon().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addFriend();
-            }
-        });
-
         getBuddies();
         return view;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getBuddies();
     }
 
     /**
@@ -116,10 +112,5 @@ public class OverviewFragment extends BaseFragment {
                     public void onHeaderClick(View header, int position, long headerId) {
                     }
                 });
-    }
-
-    private void addFriend() {
-        Intent friendIntent = new Intent(IntentEnum.ACTION_ADD_FRIEND.getActionString());
-        YonaActivity.getActivity().replaceFragment(friendIntent);
     }
 }

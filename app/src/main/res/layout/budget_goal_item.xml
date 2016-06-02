@@ -5,7 +5,6 @@
   ~ License, v. 2.0. If a copy of the MPL was not distributed with this
   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/goal_item_layout"
     android:layout_width="match_parent"
@@ -32,6 +31,7 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goal_item_subtext"
+        style="@style/FooterTxtFortyOpactiy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -40,8 +40,7 @@
         android:layout_marginTop="@dimen/goal_item_desc_margin_top"
         android:layout_toLeftOf="@id/goal_minutes_num"
         android:layout_toStartOf="@id/goal_minutes_num"
-        android:text="@string/budgetgoaldesc"
-        android:textColor="@color/fourty_opacity" />
+        android:text="@string/budgetgoaldesc" />
 
 
 </RelativeLayout>

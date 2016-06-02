@@ -10,22 +10,32 @@
     <dimen name="three">3dp</dimen>
     <dimen name="four">4dp</dimen>
     <dimen name="five">5dp</dimen>
+    <dimen name="nine">9dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="twelve">12dp</dimen>
     <dimen name="thirteen">13dp</dimen>
     <dimen name="fifteen">15dp</dimen>
+    <dimen name="sixteen">16dp</dimen>
+    <dimen name="ninteen">19dp</dimen>
     <dimen name="twenty">20dp</dimen>
     <dimen name="twenty_three">23dp</dimen>
+    <dimen name="twenty_four">24dp</dimen>
     <dimen name="twenty_five">25dp</dimen>
+    <dimen name="twenty_nine">29dp</dimen>
     <dimen name="thirty">30dp</dimen>
     <dimen name="thirty_two">32dp</dimen>
     <dimen name="thirty_six">36dp</dimen>
+    <dimen name="forty">40dp</dimen>
+    <dimen name="forty_two">42dp</dimen>
+    <dimen name="forty_seven">47dp</dimen>
+    <dimen name="sixty_one">61dp</dimen>
     <dimen name="sixty_four">64dp</dimen>
     <dimen name="fifty">50dp</dimen>
+    <dimen name="fifty_four">54dp</dimen>
     <dimen name="seventy">70dp</dimen>
     <dimen name="eighty">80dp</dimen>
     <dimen name="tabIndicatorHeight">4dp</dimen>
-    <dimen name="profile_layout">200dp</dimen>
+    <dimen name="profile_layout">235dp</dimen>
     <dimen name="signup_profile_btn_height">60dp</dimen>
     <dimen name="signup_profile_left_right_padding">32dp</dimen>
     <dimen name="signup_add_avatar_height">170dp</dimen>
@@ -35,12 +45,12 @@
     <dimen name="progress_bar_height">2dp</dimen>
     <dimen name="passcode_margin_left">13dp</dimen>
     <dimen name="layout_margin">32dp</dimen>
-    <dimen name="passcode_layout_padding_top">37dp</dimen>
-    <dimen name="passcode_font_title">13dp</dimen>
+    <dimen name="passcode_layout_padding_top">24dp</dimen>
+    <dimen name="passcode_font_title">15dp</dimen>
     <dimen name="progressbar_height">2dp</dimen>
     <dimen name="progressbar_margin_top">17dp</dimen>
     <dimen name="passcode_font_desc_margin_top">14dp</dimen>
-    <dimen name="passcode_editfield_margin_top">28dp</dimen>
+    <dimen name="passcode_editfield_margin_top">24dp</dimen>
     <dimen name="passcode_reset_margin_top">30dp</dimen>
     <integer name="fragment_animation_duration">200</integer>
     <dimen name="tab_icon_height">48dp</dimen>
@@ -71,9 +81,10 @@
     <dimen name="image_margin_top">26dp</dimen>
     <dimen name="challenges_padding_imge">24dp</dimen>
     <dimen name="challenges_margin_top">23dp</dimen>
-    <dimen name="challenges_desc_margin_top">14dp</dimen>
+    <dimen name="challenges_desc_margin_top">13dp</dimen>
     <dimen name="challenges_margin_bottom">30dp</dimen>
     <dimen name="challenges_footer_text_bottom_padding">10dp</dimen>
+    <dimen name="challenges_header_margin_bottom">31dp</dimen>
 
     <dimen name="footer_challenges_detail">170dp</dimen>
     <dimen name="challenge_opslaan_margin">22dp</dimen>
@@ -88,7 +99,7 @@
     <dimen name="time_zone_goal_van_margin_left">20dp</dimen>
     <dimen name="time_zone_goal_van_margin_right">12dp</dimen>
     <dimen name="tour_desc_margin">37dp</dimen>
-    <dimen name="button_challenges_radius">20dp</dimen>
+    <dimen name="button_challenges_radius">30dp</dimen>
     <dimen name="button_challenges_stroke_width">1.5dp</dimen>
     <dimen name="circle_goal_challenges_radius">48dp</dimen>
     <dimen name="circle_goal_challenges_padding">1dp</dimen>
@@ -110,7 +121,7 @@
     <dimen name="message_item_height">88dp</dimen>
     <dimen name="user_avatar_padding">16dp</dimen>
     <dimen name="img_badges_padding_top_bottom">24dp</dimen>
-    <dimen name="message_header">53dp</dimen>
+    <dimen name="message_header">55dp</dimen>
 
 
     <!-- Friend Request -->

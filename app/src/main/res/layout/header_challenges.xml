@@ -9,13 +9,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentLeft="@dimen/margin_bucket_screen"
-    android:background="@color/pea"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:paddingBottom="@dimen/challenges_header_margin_bottom"
     android:paddingLeft="@dimen/margin_bucket_screen"
     android:paddingRight="@dimen/margin_bucket_screen">
-
 
     <ImageView
         android:id="@+id/img_bucket"

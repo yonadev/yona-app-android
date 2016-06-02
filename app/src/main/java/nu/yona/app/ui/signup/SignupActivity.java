@@ -25,7 +25,6 @@ import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
-import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -59,8 +58,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         prevButton = (YonaFontButton) findViewById(R.id.previous);
 
         loadSteopOne();
-
-        ((YonaFontTextView) findViewById(R.id.toolbar_title)).setText(R.string.join);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
