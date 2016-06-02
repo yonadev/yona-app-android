@@ -33,11 +33,12 @@
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/index_time_zone_goal"
             style="@style/SeTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/seventy"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/layout_margin"
-            android:layout_marginRight="@dimen/time_zone_goal_index_margin_right" />
+            android:gravity="center"
+            android:paddingLeft="@dimen/time_zone_goal_index_margin_right"
+            android:paddingRight="@dimen/time_zone_goal_index_margin_right" />
 
         <View
             android:id="@+id/view3"
