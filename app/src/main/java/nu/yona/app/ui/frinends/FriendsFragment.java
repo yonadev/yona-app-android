@@ -10,7 +10,6 @@ package nu.yona.app.ui.frinends;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +24,6 @@ import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
-import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -85,17 +83,11 @@ public class FriendsFragment extends BaseFragment {
     }
 
     private void setTitleAndIcon() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setTabs();
-                leftIcon.setVisibility(View.GONE);
-                toolbarTitle.setText(R.string.friends);
-                rightIcon.setVisibility(View.GONE);
-                showOptionsInSelectedTab(viewPager.getCurrentItem());
-            }
-        }, AppConstant.TIMER_DELAY_HUNDRED);
-
+        setTabs();
+        leftIcon.setVisibility(View.GONE);
+        toolbarTitle.setText(R.string.friends);
+        rightIcon.setVisibility(View.GONE);
+        showOptionsInSelectedTab(viewPager.getCurrentItem());
     }
 
     private void setTabs() {
