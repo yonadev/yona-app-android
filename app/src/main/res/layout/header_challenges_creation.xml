@@ -36,6 +36,5 @@
         android:layout_toLeftOf="@+id/img_add_goal"
         android:layout_toStartOf="@+id/img_add_goal"
         android:maxLines="2"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/sixty_opacity" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>

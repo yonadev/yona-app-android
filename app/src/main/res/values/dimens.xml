@@ -19,6 +19,7 @@
     <dimen name="ninteen">19dp</dimen>
     <dimen name="twenty">20dp</dimen>
     <dimen name="twenty_three">23dp</dimen>
+    <dimen name="twenty_four">24dp</dimen>
     <dimen name="twenty_five">25dp</dimen>
     <dimen name="thirty">30dp</dimen>
     <dimen name="thirty_two">32dp</dimen>

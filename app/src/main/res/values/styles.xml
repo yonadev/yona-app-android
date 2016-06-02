@@ -109,7 +109,7 @@
 
     <style name="SubscribeTxt">
         <item name="android:textSize">14sp</item>
-        <item name="android:lineSpacingExtra">4dp</item>
+        <item name="android:lineSpacingExtra">2sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/white</item>
     </style>
@@ -123,7 +123,15 @@
     <style name="FooterTxt">
         <item name="android:textSize">14sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/black_sixty_opacity</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+    </style>
+
+    <style name="FooterTxtFortyOpactiy">
+        <item name="android:textSize">14sp</item>
+        <item name="textStyle">@integer/roboto_regular</item>
+        <item name="android:textColor">@color/black_forty_opacity</item>
+        <item name="android:lineSpacingExtra">4sp</item>
     </style>
 
     <style name="TabTitleLg">
@@ -153,7 +161,7 @@
     <style name="Explanation">
         <item name="android:textSize">12sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
-        <item name="android:textColor">@color/black_eighty</item>
+        <item name="android:textColor">@color/black_eighty_opacity</item>
     </style>
 
     <style name="Date">
@@ -189,7 +197,7 @@
 
     <style name="hintText" parent="@android:style/TextAppearance">
         <item name="android:textSize">11sp</item>
-        <item name="android:textColor">@color/mid_blue_fifty</item>
+        <item name="android:textColor">@color/mid_blue_fifty_opacity</item>
     </style>
 
     <style name="passcode_editText">
