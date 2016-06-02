@@ -137,7 +137,10 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onError(Object errorMessage) {
                 YonaActivity.getActivity().showLoadingView(false, null);
-                Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT);
+                TextView textView = ((TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text));
+                textView.setMaxLines(5);
+                snackbar.show();
             }
         });
     }
