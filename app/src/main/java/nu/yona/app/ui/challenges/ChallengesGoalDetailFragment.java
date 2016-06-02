@@ -236,7 +236,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     setTimezoneGoalViewVisibility();
                     mHTxtGoalSubscribe.setText(getString(R.string.timezonegoalheadersubtext, !TextUtils.isEmpty(yonaActivityCategories.getName()) ? yonaActivityCategories.getName() : ""));
                     listOfTimes.addAll(yonaGoal.getZones());
-                    ((YonaFontTextView) view.findViewById(R.id.txt_header_text)).setText(getString(R.string.timezone));
+                    ((YonaFontTextView) view.findViewById(R.id.txt_timezone)).setText(getString(R.string.timezone));
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 } else {
                     btnChallenges.setVisibility(View.GONE);
@@ -255,7 +255,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString())) {
                     setTimezoneGoalViewVisibility();
                     mHTxtGoalSubscribe.setText(getString(R.string.timezonegoalheadersubtext, yonaActivityCategories.getName()));
-                    ((YonaFontTextView) view.findViewById(R.id.txt_header_text)).setText(getString(R.string.timezone));
+                    ((YonaFontTextView) view.findViewById(R.id.txt_timezone)).setText(getString(R.string.timezone));
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
                     mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, yonaActivityCategories.getName()));
