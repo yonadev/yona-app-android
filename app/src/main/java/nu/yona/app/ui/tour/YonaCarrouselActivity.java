@@ -89,6 +89,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
         btnNext = (View) findViewById(R.id.layout_btn);
 
         pager_indicator = (LinearLayout) findViewById(R.id.viewPagerCountDots);
+        findViewById(R.id.btn_next).setOnClickListener(this);
         btnNext.setOnClickListener(this);
 
         mAdapter = new YonaCarrouselAdapter(this, mImageResources);
@@ -128,6 +129,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_btn:
+            case R.id.btn_next:
                 moveToLaunchActivity();
                 break;
 
