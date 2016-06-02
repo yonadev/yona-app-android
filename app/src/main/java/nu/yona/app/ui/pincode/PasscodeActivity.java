@@ -46,9 +46,6 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blank_container_layout);
-
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
         mToolBar = (Toolbar) findViewById(R.id.toolbar_layout);
 
         progressDrawable = R.drawable.progress_bar;
