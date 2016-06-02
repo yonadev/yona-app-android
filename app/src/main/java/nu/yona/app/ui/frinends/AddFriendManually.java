@@ -207,6 +207,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
             public void onDataLoad(Object result) {
                 YonaActivity.getActivity().showLoadingView(false, null);
                 YonaActivity.getActivity().onBackPressed();
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_FRIEND_OVERVIEW, null);
             }
 
             @Override

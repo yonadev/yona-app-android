@@ -23,19 +23,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class OverviewFragment extends BaseFragment {
+public class OverviewFragment extends BaseFragment implements EventChangeListener{
 
     private List<YonaBuddy> mListBuddy;
     private OverViewAdapter mOverViewAdapter;
@@ -53,16 +56,20 @@ public class OverviewFragment extends BaseFragment {
         mOverViewAdapter = new OverViewAdapter(mListBuddy, null);
         mFriendsRecyclerView.setAdapter(mOverViewAdapter);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(mOverViewAdapter));
-
-        getBuddies();
+        YonaApplication.getEventChangeManager().registerListener(this);
         return view;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         getBuddies();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
     /**
@@ -112,5 +119,17 @@ public class OverviewFragment extends BaseFragment {
                     public void onHeaderClick(View header, int position, long headerId) {
                     }
                 });
+    }
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_UPDATE_FRIEND_OVERVIEW:
+                getBuddies();
+                break;
+            default:
+                break;
+
+        }
     }
 }
