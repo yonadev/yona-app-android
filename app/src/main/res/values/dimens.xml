@@ -21,6 +21,7 @@
     <dimen name="twenty_three">23dp</dimen>
     <dimen name="twenty_four">24dp</dimen>
     <dimen name="twenty_five">25dp</dimen>
+    <dimen name="twenty_nine">29dp</dimen>
     <dimen name="thirty">30dp</dimen>
     <dimen name="thirty_two">32dp</dimen>
     <dimen name="thirty_six">36dp</dimen>
@@ -97,7 +98,7 @@
     <dimen name="time_zone_goal_van_margin_left">20dp</dimen>
     <dimen name="time_zone_goal_van_margin_right">12dp</dimen>
     <dimen name="tour_desc_margin">37dp</dimen>
-    <dimen name="button_challenges_radius">20dp</dimen>
+    <dimen name="button_challenges_radius">30dp</dimen>
     <dimen name="button_challenges_stroke_width">1.5dp</dimen>
     <dimen name="circle_goal_challenges_radius">48dp</dimen>
     <dimen name="circle_goal_challenges_padding">1dp</dimen>

@@ -9,8 +9,8 @@
 package nu.yona.app.ui.frinends;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -70,7 +70,7 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
     /**
      * Profile top layout for updatig background color
      */
-    private LinearLayout profileTopLayout;
+    private CollapsingToolbarLayout profileTopLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,10 +84,13 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.friend_request_layout, null);
+
+        setupToolbar(view);
+
         profileName = (YonaFontTextView) view.findViewById(R.id.name);
         profileNickName = (YonaFontTextView) view.findViewById(R.id.nick_name);
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
-        profileTopLayout = (LinearLayout) view.findViewById(R.id.profile_top_layout);
+        profileTopLayout = (CollapsingToolbarLayout) view.findViewById(R.id.profile_top_layout);
         btnAccept = (YonaFontButton) view.findViewById(R.id.btnAccepter);
         btnAccept.setOnClickListener(this);
         btnReject = (YonaFontButton) view.findViewById(R.id.btnReject);
@@ -123,15 +126,9 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
      * update toolbar
      */
     private void setTitleAndIcon() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                leftIcon.setVisibility(View.GONE);
-                toolbarTitle.setText(getString(R.string.empty_description));
-                rightIcon.setVisibility(View.GONE);
-            }
-        }, AppConstant.TIMER_DELAY);
-
+        leftIcon.setVisibility(View.GONE);
+        toolbarTitle.setText(getString(R.string.empty_description));
+        rightIcon.setVisibility(View.GONE);
     }
 
     /**

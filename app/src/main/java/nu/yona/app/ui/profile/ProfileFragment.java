@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -46,7 +47,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     private ImageView profileImageView;
     private YonaFontTextView name, nickName;
     private ViewPager viewPager;
-    private LinearLayout profileTopLayout;
+    private CollapsingToolbarLayout profileTopLayout;
     private TabLayout tabLayout;
     private int backgroundColor, profileBgColor, tabDeSelectedColor;
     private User user;
@@ -64,7 +65,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
 
         profileImageView = (ImageView) view.findViewById(R.id.profileImage);
-        profileTopLayout = (LinearLayout) view.findViewById(R.id.profile_top_layout);
+        profileTopLayout = (CollapsingToolbarLayout) view.findViewById(R.id.profile_top_layout);
         name = (YonaFontTextView) view.findViewById(R.id.name);
         nickName = (YonaFontTextView) view.findViewById(R.id.nick_name);
         if (getArguments() != null) {

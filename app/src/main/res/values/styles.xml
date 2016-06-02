@@ -93,9 +93,15 @@
         <item name="android:textColor">@color/white_fifty_opacity</item>
     </style>
 
-    <style name="BtnTxtLg">
+    <style name="parentBtnTxtLg">
         <item name="android:textSize">14sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
+    </style>
+    <style name="BtnTxtLg">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="BtnTxtLgSpacing" parent="parentBtnTxtLg">
         <item name="android:textColor">@color/white</item>
     </style>
 

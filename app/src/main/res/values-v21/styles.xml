@@ -69,6 +69,11 @@
         <item name="android:letterSpacing">0.02</item>
     </style>
 
+    <style name="BtnTxtLgSpacing" parent="parentBtnTxtLg">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:letterSpacing">0.3</item>
+    </style>
+
     <style name="SeScorePos">
         <item name="android:textSize">32sp</item>
         <item name="textStyle">@integer/oswald_light</item>
