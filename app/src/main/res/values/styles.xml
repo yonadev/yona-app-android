@@ -111,10 +111,14 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="ChallengeTxt">
+    <style name="parentChallengeTxt">
         <item name="android:textSize">14sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ChallengeTxt" parent="@style/parentChallengeTxt">
+        <item name="android:lineSpacingExtra">1sp</item>
     </style>
 
     <style name="InputTxt">

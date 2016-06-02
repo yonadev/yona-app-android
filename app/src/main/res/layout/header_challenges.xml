@@ -11,6 +11,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:paddingBottom="@dimen/challenges_header_margin_bottom"
     android:paddingLeft="@dimen/margin_bucket_screen"
     android:paddingRight="@dimen/margin_bucket_screen">
 

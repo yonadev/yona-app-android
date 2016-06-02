@@ -81,9 +81,10 @@
     <dimen name="image_margin_top">26dp</dimen>
     <dimen name="challenges_padding_imge">24dp</dimen>
     <dimen name="challenges_margin_top">23dp</dimen>
-    <dimen name="challenges_desc_margin_top">14dp</dimen>
+    <dimen name="challenges_desc_margin_top">13dp</dimen>
     <dimen name="challenges_margin_bottom">30dp</dimen>
     <dimen name="challenges_footer_text_bottom_padding">10dp</dimen>
+    <dimen name="challenges_header_margin_bottom">31dp</dimen>
 
     <dimen name="footer_challenges_detail">170dp</dimen>
     <dimen name="challenge_opslaan_margin">22dp</dimen>
