@@ -96,8 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/passcode_layout_padding_top"
                         android:ellipsize="end"
-                        android:gravity="center|bottom"
-                        android:lines="3" />
+                        android:gravity="center|bottom"/>
                 </LinearLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
