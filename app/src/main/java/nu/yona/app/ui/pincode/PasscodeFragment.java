@@ -199,7 +199,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         ((PinActivity) getActivity()).updateTitle(getString(R.string.changepin));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_thirty));
         profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
-        passcode_reset.setVisibility(View.GONE);
+        passcode_reset.setVisibility(View.INVISIBLE);
     }
 
     private void populatePinResetFirstStep() {
@@ -209,7 +209,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.changepin));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_sixty));
         profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
-        passcode_reset.setVisibility(View.GONE);
+        passcode_reset.setVisibility(View.INVISIBLE);
     }
 
     private void populatePinResetSecondStep() {
@@ -219,7 +219,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.changepin));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_complete));
         profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
-        passcode_reset.setVisibility(View.GONE);
+        passcode_reset.setVisibility(View.INVISIBLE);
     }
 
     private void visibleView() {
@@ -230,8 +230,8 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
 
     private void visibleLoginView() {
         passcode_title.setVisibility(View.VISIBLE);
-        passcode_description.setVisibility(View.GONE);
-        profile_progress.setVisibility(View.GONE);
+        passcode_description.setVisibility(View.INVISIBLE);
+        profile_progress.setVisibility(View.INVISIBLE);
         passcode_reset.setVisibility(View.VISIBLE);
     }
 

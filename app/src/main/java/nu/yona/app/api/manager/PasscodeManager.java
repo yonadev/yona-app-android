@@ -45,4 +45,9 @@ public interface PasscodeManager {
      */
     boolean isWrongCounterReached();
 
+    /**
+     * reset counter
+     */
+    void resetWrongCounter();
+
 }

@@ -62,6 +62,11 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
             } else {
                 mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
             }
+
+            if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
+                findViewById(R.id.pincode_layout_header).setBackgroundColor(getIntent().getExtras().getInt(AppConstant.COLOR_CODE));
+            }
+
             if (!TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.SCREEN_TYPE))) {
                 screenType = getIntent().getExtras().getString(AppConstant.SCREEN_TYPE);
             }
@@ -131,6 +136,7 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
                 } else if (APIManager.getInstance().getPasscodeManager().isWrongCounterReached()) {
                     YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
                     updateBlockMsg();
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
                 } else {
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcodetryagain));
                 }

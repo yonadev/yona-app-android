@@ -30,6 +30,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
     public boolean validatePasscode(String passCode) {
         if (passCode.equalsIgnoreCase(getStoredPassCode())) {
             updateWrongPasscodeCounter(0);
+            counter = 0;
             return true;
         } else {
             updateWrongPasscodeCounter(counter++);
@@ -84,6 +85,13 @@ public class PasscodeManagerImpl implements PasscodeManager {
         return YonaApplication.getUserPreferences().getInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, 0);
     }
 
+    /**
+     * Reset the Passocde wrong counter once user has successfull log in
+     */
+    public void resetWrongCounter() {
+        updateWrongPasscodeCounter(0);
+        counter = 0;
+    }
 
     /**
      * Update the passcode counter into preference storage
@@ -91,7 +99,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @param counter
      */
     private void updateWrongPasscodeCounter(int counter) {
-        YonaApplication.getUserPreferences().edit().putInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, counter).commit();
+        YonaApplication.getUserPreferences().edit().putInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, counter).apply();
     }
 
 
