@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/passcode_font_desc_margin_top"
                         android:ellipsize="end"
-                        android:gravity="center"
+                        android:gravity="center|top"
                         android:lines="3"
                         android:visibility="visible" />
 
@@ -94,10 +94,10 @@
                         style="@style/SubscribeTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/passcode_layout_padding_top"
                         android:ellipsize="end"
-                        android:gravity="center"
-                        android:lines="3"
-                        android:layout_marginBottom="@dimen/passcode_layout_padding_top" />
+                        android:gravity="center|bottom"
+                        android:lines="3" />
                 </LinearLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
