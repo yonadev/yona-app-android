@@ -31,7 +31,6 @@ import android.util.Log;
 import net.hockeyapp.android.ExceptionHandler;
 
 import org.joda.time.Period;
-import org.joda.time.PeriodType;
 
 import java.util.Random;
 
@@ -175,20 +174,16 @@ public class AppUtils {
      */
     public static String getTimeForOTP(String time) {
         try {
-            int MINUTE = 60; // 60 seconds
-            int HOUR = 3600; // 3600 seconds
             StringBuffer buffer = new StringBuffer();
-            int seconds = new Period(time, PeriodType.seconds()).getSeconds();
-            if (seconds / HOUR > 0) {
-                buffer.append(seconds / HOUR + " hour(s) ");
-                seconds = seconds % HOUR;
+            Period period = new Period(time);
+            if (period.getHours() > 0) {
+                buffer.append(YonaApplication.getAppContext().getString(R.string.hours, period.getHours() + ""));
             }
-            if (seconds / MINUTE > 0) {
-                buffer.append(seconds / MINUTE + " minute(s) ");
-                seconds = seconds % MINUTE;
+            if (period.getMinutes() > 0) {
+                buffer.append(YonaApplication.getAppContext().getString(R.string.minute, period.getMinutes() + ""));
             }
-            if (seconds > 0) {
-                buffer.append(seconds + " second(s) ");
+            if (period.getSeconds() > 0) {
+                buffer.append(YonaApplication.getAppContext().getString(R.string.seconds, period.getSeconds() + ""));
             }
             return buffer.toString();
         } catch (Exception e) {

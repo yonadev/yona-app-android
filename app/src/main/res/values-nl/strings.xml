@@ -143,4 +143,7 @@
     <string name="accept">ACCEPTEER</string>
 
     <string name="category_added">You already Added this category.</string>
+    <string name="hours">%1$s hour(s)</string>
+    <string name="minute">%1$s minute(s)</string>
+    <string name="seconds">%1$s second(s)</string>
 </resources>
