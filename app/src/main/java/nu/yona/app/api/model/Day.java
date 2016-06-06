@@ -16,7 +16,6 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-
 public class Day {
     @SerializedName("_links")
     @Expose
@@ -32,6 +31,8 @@ public class Day {
     private Integer totalMinutesBeyondGoal;
 
     /**
+     * Gets links.
+     *
      * @return The links
      */
     public Links getLinks() {
@@ -39,6 +40,8 @@ public class Day {
     }
 
     /**
+     * Sets links.
+     *
      * @param links The _links
      */
     public void setLinks(Links links) {
@@ -46,6 +49,8 @@ public class Day {
     }
 
     /**
+     * Gets total activity duration minutes.
+     *
      * @return The totalActivityDurationMinutes
      */
     public Integer getTotalActivityDurationMinutes() {
@@ -53,6 +58,8 @@ public class Day {
     }
 
     /**
+     * Sets total activity duration minutes.
+     *
      * @param totalActivityDurationMinutes The totalActivityDurationMinutes
      */
     public void setTotalActivityDurationMinutes(Integer totalActivityDurationMinutes) {
@@ -60,6 +67,8 @@ public class Day {
     }
 
     /**
+     * Gets goal accomplished.
+     *
      * @return The goalAccomplished
      */
     public Boolean getGoalAccomplished() {
@@ -67,6 +76,8 @@ public class Day {
     }
 
     /**
+     * Sets goal accomplished.
+     *
      * @param goalAccomplished The goalAccomplished
      */
     public void setGoalAccomplished(Boolean goalAccomplished) {
@@ -74,6 +85,8 @@ public class Day {
     }
 
     /**
+     * Gets total minutes beyond goal.
+     *
      * @return The totalMinutesBeyondGoal
      */
     public Integer getTotalMinutesBeyondGoal() {
@@ -81,6 +94,8 @@ public class Day {
     }
 
     /**
+     * Sets total minutes beyond goal.
+     *
      * @param totalMinutesBeyondGoal The totalMinutesBeyondGoal
      */
     public void setTotalMinutesBeyondGoal(Integer totalMinutesBeyondGoal) {

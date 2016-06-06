@@ -30,10 +30,27 @@ import nu.yona.app.ui.settings.SettingsFragment;
  * Created by kinnarvasa on 21/03/16.
  */
 public class BaseFragment extends Fragment {
+    /**
+     * The M tool bar.
+     */
     protected Toolbar mToolBar;
+    /**
+     * The Toolbar title.
+     */
     protected YonaFontTextView toolbarTitle;
-    protected ImageView leftIcon, rightIcon;
+    /**
+     * The Left icon.
+     */
+    protected ImageView leftIcon, /**
+     * The Right icon.
+     */
+    rightIcon;
 
+    /**
+     * Sets toolbar.
+     *
+     * @param view the view
+     */
     protected void setupToolbar(View view) {
         mToolBar = (Toolbar) view.findViewById(R.id.main_toolbar);
         toolbarTitle = (YonaFontTextView) mToolBar.findViewById(R.id.toolbar_title);

@@ -214,5 +214,8 @@ public interface AppConstant {
      */
     String SCREEN_TITLE = "screenTitle";
 
+    /**
+     * The constant SUBMIT_PRESSED.
+     */
     String SUBMIT_PRESSED = "submitPressed";
 }

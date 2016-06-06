@@ -16,7 +16,6 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-
 public class DayActivities {
     @SerializedName("SUNDAY")
     @Expose
@@ -41,6 +40,8 @@ public class DayActivities {
     private Day sATURDAY;
 
     /**
+     * Gets sunday.
+     *
      * @return The sUNDAY
      */
     public Day getSUNDAY() {
@@ -48,6 +49,8 @@ public class DayActivities {
     }
 
     /**
+     * Sets sunday.
+     *
      * @param sUNDAY The SUNDAY
      */
     public void setSUNDAY(Day sUNDAY) {
@@ -55,6 +58,8 @@ public class DayActivities {
     }
 
     /**
+     * Gets monday.
+     *
      * @return The mONDAY
      */
     public Day getMONDAY() {
@@ -62,6 +67,8 @@ public class DayActivities {
     }
 
     /**
+     * Sets monday.
+     *
      * @param mONDAY The MONDAY
      */
     public void setMONDAY(Day mONDAY) {
@@ -69,6 +76,8 @@ public class DayActivities {
     }
 
     /**
+     * Gets tuesday.
+     *
      * @return The tUESDAY
      */
     public Day getTUESDAY() {
@@ -76,6 +85,8 @@ public class DayActivities {
     }
 
     /**
+     * Sets tuesday.
+     *
      * @param tUESDAY The TUESDAY
      */
     public void setTUESDAY(Day tUESDAY) {
@@ -83,6 +94,8 @@ public class DayActivities {
     }
 
     /**
+     * Gets wednesday.
+     *
      * @return The wEDNESDAY
      */
     public Day getWEDNESDAY() {
@@ -90,6 +103,8 @@ public class DayActivities {
     }
 
     /**
+     * Sets wednesday.
+     *
      * @param wEDNESDAY The WEDNESDAY
      */
     public void setWEDNESDAY(Day wEDNESDAY) {
@@ -97,6 +112,8 @@ public class DayActivities {
     }
 
     /**
+     * Gets thursday.
+     *
      * @return The tHURSDAY
      */
     public Day getTHURSDAY() {
@@ -104,6 +121,8 @@ public class DayActivities {
     }
 
     /**
+     * Sets thursday.
+     *
      * @param tHURSDAY The THURSDAY
      */
     public void setTHURSDAY(Day tHURSDAY) {
@@ -111,6 +130,8 @@ public class DayActivities {
     }
 
     /**
+     * Gets friday.
+     *
      * @return The fRIDAY
      */
     public Day getFRIDAY() {
@@ -118,6 +139,8 @@ public class DayActivities {
     }
 
     /**
+     * Sets friday.
+     *
      * @param fRIDAY The FRIDAY
      */
     public void setFRIDAY(Day fRIDAY) {
@@ -125,6 +148,8 @@ public class DayActivities {
     }
 
     /**
+     * Gets saturday.
+     *
      * @return The sATURDAY
      */
     public Day getSATURDAY() {
@@ -132,6 +157,8 @@ public class DayActivities {
     }
 
     /**
+     * Sets saturday.
+     *
      * @param sATURDAY The SATURDAY
      */
     public void setSATURDAY(Day sATURDAY) {

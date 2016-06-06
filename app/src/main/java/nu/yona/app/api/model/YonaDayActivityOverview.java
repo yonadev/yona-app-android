@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-
 public class YonaDayActivityOverview {
     @SerializedName("date")
     @Expose
@@ -35,72 +34,72 @@ public class YonaDayActivityOverview {
     private Links links;
 
     /**
+     * Gets date.
      *
-     * @return
-     * The date
+     * @return The date
      */
     public String getDate() {
         return date;
     }
 
     /**
+     * Sets date.
      *
-     * @param date
-     * The date
+     * @param date The date
      */
     public void setDate(String date) {
         this.date = date;
     }
 
     /**
+     * Gets time zone id.
      *
-     * @return
-     * The timeZoneId
+     * @return The timeZoneId
      */
     public String getTimeZoneId() {
         return timeZoneId;
     }
 
     /**
+     * Sets time zone id.
      *
-     * @param timeZoneId
-     * The timeZoneId
+     * @param timeZoneId The timeZoneId
      */
     public void setTimeZoneId(String timeZoneId) {
         this.timeZoneId = timeZoneId;
     }
 
     /**
+     * Gets day activities.
      *
-     * @return
-     * The dayActivities
+     * @return The dayActivities
      */
     public List<DayActivity> getDayActivities() {
         return dayActivities;
     }
 
     /**
+     * Sets day activities.
      *
-     * @param dayActivities
-     * The dayActivities
+     * @param dayActivities The dayActivities
      */
     public void setDayActivities(List<DayActivity> dayActivities) {
         this.dayActivities = dayActivities;
     }
 
     /**
+     * Gets links.
      *
-     * @return
-     * The links
+     * @return The links
      */
     public Links getLinks() {
         return links;
     }
 
     /**
+     * Sets links.
      *
-     * @param links
-     * The _links
+     * @param links The _links
      */
     public void setLinks(Links links) {
         this.links = links;

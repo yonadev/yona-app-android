@@ -16,7 +16,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.WindowManager;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;

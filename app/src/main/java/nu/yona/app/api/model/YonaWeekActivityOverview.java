@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-
 public class YonaWeekActivityOverview {
     @SerializedName("date")
     @Expose
@@ -35,6 +34,8 @@ public class YonaWeekActivityOverview {
     private Links links;
 
     /**
+     * Gets date.
+     *
      * @return The date
      */
     public String getDate() {
@@ -42,6 +43,8 @@ public class YonaWeekActivityOverview {
     }
 
     /**
+     * Sets date.
+     *
      * @param date The date
      */
     public void setDate(String date) {
@@ -49,6 +52,8 @@ public class YonaWeekActivityOverview {
     }
 
     /**
+     * Gets time zone id.
+     *
      * @return The timeZoneId
      */
     public String getTimeZoneId() {
@@ -56,6 +61,8 @@ public class YonaWeekActivityOverview {
     }
 
     /**
+     * Sets time zone id.
+     *
      * @param timeZoneId The timeZoneId
      */
     public void setTimeZoneId(String timeZoneId) {
@@ -63,6 +70,8 @@ public class YonaWeekActivityOverview {
     }
 
     /**
+     * Gets week activities.
+     *
      * @return The weekActivities
      */
     public List<WeekActivity> getWeekActivities() {
@@ -70,6 +79,8 @@ public class YonaWeekActivityOverview {
     }
 
     /**
+     * Sets week activities.
+     *
      * @param weekActivities The weekActivities
      */
     public void setWeekActivities(List<WeekActivity> weekActivities) {
@@ -77,6 +88,8 @@ public class YonaWeekActivityOverview {
     }
 
     /**
+     * Gets links.
+     *
      * @return The links
      */
     public Links getLinks() {
@@ -84,6 +97,8 @@ public class YonaWeekActivityOverview {
     }
 
     /**
+     * Sets links.
+     *
      * @param links The _links
      */
     public void setLinks(Links links) {

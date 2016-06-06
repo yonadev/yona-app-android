@@ -34,6 +34,7 @@ public class APIManager {
     private PasscodeManager passcodeManager;
     private ChallengesManager challengesManager;
     private NotificationManager notificationManager;
+    private ActivityManager activityManager;
 
     /**
      * Gets instance.
@@ -141,5 +142,23 @@ public class APIManager {
             notificationManager = new NotificationManagerImpl(YonaApplication.getAppContext());
         }
         return notificationManager;
+    }
+
+    /**
+     * Gets activity manager.
+     *
+     * @return the activity manager
+     */
+    public ActivityManager getActivityManager() {
+        return this.activityManager;
+    }
+
+    /**
+     * Sets activity manager.
+     *
+     * @param activityManager the activity manager
+     */
+    public void setActivityManager(ActivityManager activityManager) {
+        this.activityManager = activityManager;
     }
 }
