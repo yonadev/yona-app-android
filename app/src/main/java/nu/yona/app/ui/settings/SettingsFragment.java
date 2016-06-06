@@ -92,6 +92,7 @@ public class SettingsFragment extends BaseFragment {
         APIManager.getInstance().getPasscodeManager().resetWrongCounter();
         Intent intent = new Intent(getActivity(), PinActivity.class);
         Bundle bundle = new Bundle();
+        bundle.putBoolean(AppConstant.FROM_SETTINGS, true);
         bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_VERIFICATION);
         bundle.putInt(AppConstant.PROGRESS_DRAWABLE, R.drawable.pin_reset_progress_bar);
         bundle.putString(AppConstant.SCREEN_TITLE, getString(R.string.changepin));

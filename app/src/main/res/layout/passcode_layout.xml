@@ -9,7 +9,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pincode_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/grape"
     android:gravity="center_horizontal"
     android:orientation="vertical"
@@ -48,13 +48,4 @@
             android:imeOptions="actionDone" />
     </LinearLayout>
 
-    <nu.yona.app.customview.YonaFontTextView
-        android:id="@+id/passcode_reset"
-        style="@style/TabTitleLg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:gravity="center"
-        android:text="@string/passcodereset"
-        android:visibility="gone" />
 </LinearLayout>

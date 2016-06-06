@@ -195,6 +195,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             Intent intent = new Intent(YonaActivity.this, PinActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.LOGGED_IN);
+            bundle.putString(AppConstant.SCREEN_TITLE, getString(R.string.login));
             bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(this, R.color.grape));
             bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_grape);
             intent.putExtras(bundle);
