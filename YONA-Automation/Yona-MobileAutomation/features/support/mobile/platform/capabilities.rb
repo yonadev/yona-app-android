@@ -34,13 +34,12 @@ module Platform
 
     def android_capabilities
       caps = android_settings
-      puts "PATH=#{$apkPath[0]}"
       capabilities =
           {
               platformName: 'Android',
               # fullReset: true,
               noReset: true,
-              app: $apkPath[0],
+              app: caps[:apk_path],
               appPackage: caps[:android_package],
               appActivity: caps[:android_activity]
           }

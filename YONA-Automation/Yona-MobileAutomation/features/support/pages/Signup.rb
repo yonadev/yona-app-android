@@ -35,7 +35,8 @@ class Signup < MobTest::Base
 
   # Android elements and methods
   android do
-    label(:welcome, xpath: '//android.widget.TextView[contains(@text,"Transparantie")]')
+    # label(:welcome, xpath: '//android.widget.TextView[contains(@text,"Transparantie")]')
+    label(:welcome, id: "#{$android_package}:id/viewPagerCountDots")
     button(:join, id: "#{$android_package}:id/join")
     text_field(:fname, id: "#{$android_package}:id/first_name")
     text_field(:lname, id: "#{$android_package}:id/last_name")
@@ -44,7 +45,8 @@ class Signup < MobTest::Base
     text_field(:mnumber, id: "#{$android_package}:id/mobile_number")
     text_field(:nickname, id: "#{$android_package}:id/nick_name")
     text_field(:passcode, id: "#{$android_package}:id/passcode1")
-    button(:nextwlk, xpath: '//android.widget.ImageButton[1]')
+    # button(:nextwlk, xpath: '//android.widget.ImageButton[1]')
+    button(:nextwlk, id: "#{$android_package}:id/btn_next")
     element(:chlgs_title, xpath: '//android.widget.TextView[@text="CHALLENGES"]')
 
     def checkWelcomeScreen

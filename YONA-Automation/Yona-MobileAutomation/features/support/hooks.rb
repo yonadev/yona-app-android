@@ -24,7 +24,7 @@ end
 
 at_exit do
   if ENV['TARGET'] != 'sauce' && ENV['TARGET'] != 'web'
-    # system "adb shell pm uninstall -k #{android_settings[:android_package]}" if ENV['PLATFORM'] == 'android'
+    system "adb shell pm uninstall -k #{android_settings[:android_package]}" if ENV['PLATFORM'] == 'android'
     terminate_simulator if ENV['PLATFORM'] == 'ios'
     puts 'Terminated appium server session'
     system 'pkill node'
