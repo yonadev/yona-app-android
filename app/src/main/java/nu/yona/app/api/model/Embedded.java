@@ -15,6 +15,7 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +44,15 @@ public class Embedded extends BaseEntity {
     @SerializedName("_links")
     @Expose
     private Links Links;
-
+    @SerializedName("page")
+    @Expose
+    private Page page;
+    @SerializedName("yona:dayActivityOverviews")
+    @Expose
+    private List<YonaDayActivityOverview> yonaDayActivityOverviews = new ArrayList<YonaDayActivityOverview>();
+    @SerializedName("yona:weekActivityOverviews")
+    @Expose
+    private List<YonaWeekActivityOverview> yonaWeekActivityOverviews = new ArrayList<YonaWeekActivityOverview>();
     /**
      * Gets yona goals.
      *
@@ -175,4 +184,43 @@ public class Embedded extends BaseEntity {
         this.yonaMessages = yonaMessages;
     }
 
+    /**
+     * @return The yonaDayActivityOverviews
+     */
+    public List<YonaDayActivityOverview> getYonaDayActivityOverviews() {
+        return yonaDayActivityOverviews;
+    }
+
+    /**
+     * @param yonaDayActivityOverviews The yona:dayActivityOverviews
+     */
+    public void setYonaDayActivityOverviews(List<YonaDayActivityOverview> yonaDayActivityOverviews) {
+        this.yonaDayActivityOverviews = yonaDayActivityOverviews;
+    }
+
+    /**
+     *
+     * @return
+     * The yonaWeekActivityOverviews
+     */
+    public List<YonaWeekActivityOverview> getYonaWeekActivityOverviews() {
+        return yonaWeekActivityOverviews;
+    }
+
+    /**
+     *
+     * @param yonaWeekActivityOverviews
+     * The yona:weekActivityOverviews
+     */
+    public void setYonaWeekActivityOverviews(List<YonaWeekActivityOverview> yonaWeekActivityOverviews) {
+        this.yonaWeekActivityOverviews = yonaWeekActivityOverviews;
+    }
+
+    public Page getPage() {
+        return this.page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 }
