@@ -288,10 +288,20 @@ public class AppUtils {
         return timeDigit;
     }
 
+    /**
+     * Is submit pressed boolean.
+     *
+     * @return the boolean
+     */
     public static boolean isSubmitPressed() {
         return AppUtils.submitPressed;
     }
 
+    /**
+     * Sets submit pressed.
+     *
+     * @param submitPressed the submit pressed
+     */
     public static void setSubmitPressed(boolean submitPressed) {
         AppUtils.submitPressed = submitPressed;
     }

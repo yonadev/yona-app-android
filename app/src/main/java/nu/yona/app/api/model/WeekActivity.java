@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-
 public class WeekActivity {
     @SerializedName("date")
     @Expose
@@ -41,6 +40,8 @@ public class WeekActivity {
     private Links links;
 
     /**
+     * Gets date.
+     *
      * @return The date
      */
     public String getDate() {
@@ -48,6 +49,8 @@ public class WeekActivity {
     }
 
     /**
+     * Sets date.
+     *
      * @param date The date
      */
     public void setDate(String date) {
@@ -55,6 +58,8 @@ public class WeekActivity {
     }
 
     /**
+     * Gets time zone id.
+     *
      * @return The timeZoneId
      */
     public String getTimeZoneId() {
@@ -62,6 +67,8 @@ public class WeekActivity {
     }
 
     /**
+     * Sets time zone id.
+     *
      * @param timeZoneId The timeZoneId
      */
     public void setTimeZoneId(String timeZoneId) {
@@ -69,6 +76,8 @@ public class WeekActivity {
     }
 
     /**
+     * Gets spread.
+     *
      * @return The spread
      */
     public List<Integer> getSpread() {
@@ -76,6 +85,8 @@ public class WeekActivity {
     }
 
     /**
+     * Sets spread.
+     *
      * @param spread The spread
      */
     public void setSpread(List<Integer> spread) {
@@ -83,6 +94,8 @@ public class WeekActivity {
     }
 
     /**
+     * Gets total activity duration minutes.
+     *
      * @return The totalActivityDurationMinutes
      */
     public Integer getTotalActivityDurationMinutes() {
@@ -90,6 +103,8 @@ public class WeekActivity {
     }
 
     /**
+     * Sets total activity duration minutes.
+     *
      * @param totalActivityDurationMinutes The totalActivityDurationMinutes
      */
     public void setTotalActivityDurationMinutes(Integer totalActivityDurationMinutes) {
@@ -97,6 +112,8 @@ public class WeekActivity {
     }
 
     /**
+     * Gets day activities.
+     *
      * @return The dayActivities
      */
     public DayActivities getDayActivities() {
@@ -104,6 +121,8 @@ public class WeekActivity {
     }
 
     /**
+     * Sets day activities.
+     *
      * @param dayActivities The dayActivities
      */
     public void setDayActivities(DayActivities dayActivities) {
@@ -111,6 +130,8 @@ public class WeekActivity {
     }
 
     /**
+     * Gets links.
+     *
      * @return The links
      */
     public Links getLinks() {
@@ -118,6 +139,8 @@ public class WeekActivity {
     }
 
     /**
+     * Sets links.
+     *
      * @param links The _links
      */
     public void setLinks(Links links) {

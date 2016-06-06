@@ -29,20 +29,44 @@ public enum StatusEnum {
      */
     REJECTED("REJECTED"),
 
+    /**
+     * Deleted status enum.
+     */
     DELETED("GOAL_DELETED"),
 
+    /**
+     * Added status enum.
+     */
     ADDED("GOAL_ADDED"),
 
+    /**
+     * Changed status enum.
+     */
     CHANGED("GOAL_CHANGED"),
 
+    /**
+     * User account deleted status enum.
+     */
     USER_ACCOUNT_DELETED("USER_ACCOUNT_DELETED"),
 
+    /**
+     * User removed buddy status enum.
+     */
     USER_REMOVED_BUDDY("USER_REMOVED_BUDDY"),
 
+    /**
+     * Disclosure requested status enum.
+     */
     DISCLOSURE_REQUESTED("DISCLOSURE_REQUESTED"),
 
+    /**
+     * Disclosure accepted status enum.
+     */
     DISCLOSURE_ACCEPTED("DISCLOSURE_ACCEPTED"),
 
+    /**
+     * Disclosure rejected status enum.
+     */
     DISCLOSURE_REJECTED("DISCLOSURE_REJECTED"),
 
     /**

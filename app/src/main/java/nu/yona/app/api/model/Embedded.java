@@ -53,6 +53,7 @@ public class Embedded extends BaseEntity {
     @SerializedName("yona:weekActivityOverviews")
     @Expose
     private List<YonaWeekActivityOverview> yonaWeekActivityOverviews = new ArrayList<YonaWeekActivityOverview>();
+
     /**
      * Gets yona goals.
      *
@@ -185,6 +186,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Gets yona day activity overviews.
+     *
      * @return The yonaDayActivityOverviews
      */
     public List<YonaDayActivityOverview> getYonaDayActivityOverviews() {
@@ -192,6 +195,8 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Sets yona day activity overviews.
+     *
      * @param yonaDayActivityOverviews The yona:dayActivityOverviews
      */
     public void setYonaDayActivityOverviews(List<YonaDayActivityOverview> yonaDayActivityOverviews) {
@@ -199,27 +204,37 @@ public class Embedded extends BaseEntity {
     }
 
     /**
+     * Gets yona week activity overviews.
      *
-     * @return
-     * The yonaWeekActivityOverviews
+     * @return The yonaWeekActivityOverviews
      */
     public List<YonaWeekActivityOverview> getYonaWeekActivityOverviews() {
         return yonaWeekActivityOverviews;
     }
 
     /**
+     * Sets yona week activity overviews.
      *
-     * @param yonaWeekActivityOverviews
-     * The yona:weekActivityOverviews
+     * @param yonaWeekActivityOverviews The yona:weekActivityOverviews
      */
     public void setYonaWeekActivityOverviews(List<YonaWeekActivityOverview> yonaWeekActivityOverviews) {
         this.yonaWeekActivityOverviews = yonaWeekActivityOverviews;
     }
 
+    /**
+     * Gets page.
+     *
+     * @return the page
+     */
     public Page getPage() {
         return this.page;
     }
 
+    /**
+     * Sets page.
+     *
+     * @param page the page
+     */
     public void setPage(Page page) {
         this.page = page;
     }

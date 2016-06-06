@@ -89,10 +89,21 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Start new activity.
+     *
+     * @param mClass the m class
+     */
     public void startNewActivity(Class mClass) {
         startNewActivity(null, mClass);
     }
 
+    /**
+     * Start new activity.
+     *
+     * @param bundle the bundle
+     * @param mClass the m class
+     */
     public void startNewActivity(Bundle bundle, Class mClass) {
         Intent intent = new Intent(this, mClass);
         if (bundle != null) {

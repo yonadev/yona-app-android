@@ -20,7 +20,6 @@ import nu.yona.app.utils.AppConstant;
 /**
  * Created by kinnarvasa on 01/06/16.
  */
-
 public class Foreground implements Application.ActivityLifecycleCallbacks {
 
     private static Foreground instance;
@@ -36,6 +35,11 @@ public class Foreground implements Application.ActivityLifecycleCallbacks {
     private Foreground() {
     }
 
+    /**
+     * Init.
+     *
+     * @param app the app
+     */
     public static void init(Application app) {
         if (instance == null) {
             instance = new Foreground();
@@ -43,22 +47,47 @@ public class Foreground implements Application.ActivityLifecycleCallbacks {
         }
     }
 
+    /**
+     * Get foreground.
+     *
+     * @return the foreground
+     */
     public static Foreground get() {
         return instance;
     }
 
+    /**
+     * Is foreground boolean.
+     *
+     * @return the boolean
+     */
     public boolean isForeground() {
         return foreground;
     }
 
+    /**
+     * Is background boolean.
+     *
+     * @return the boolean
+     */
     public boolean isBackground() {
         return !foreground;
     }
 
+    /**
+     * Is home activity first time boolean.
+     *
+     * @return the boolean
+     */
     public boolean isHomeActivityFirstTime() {
         return homeActivityFirstTime;
     }
 
+    /**
+     * Sets home activity first time.
+     *
+     * @param homeActivityFirstTime the home activity first time
+     */
     public void setHomeActivityFirstTime(boolean homeActivityFirstTime) {
         this.homeActivityFirstTime = homeActivityFirstTime;
     }
@@ -105,6 +134,9 @@ public class Foreground implements Application.ActivityLifecycleCallbacks {
 
     }
 
+    /**
+     * Foreground or background.
+     */
     public void foregroundOrBackground() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

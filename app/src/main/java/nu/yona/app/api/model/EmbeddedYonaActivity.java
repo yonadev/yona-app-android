@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-
 public class EmbeddedYonaActivity {
     @SerializedName("_embedded")
     @Expose
@@ -19,6 +18,8 @@ public class EmbeddedYonaActivity {
     private Page page;
 
     /**
+     * Gets embedded.
+     *
      * @return The embedded
      */
     public Embedded getEmbedded() {
@@ -26,6 +27,8 @@ public class EmbeddedYonaActivity {
     }
 
     /**
+     * Sets embedded.
+     *
      * @param embedded The _embedded
      */
     public void setEmbedded(Embedded embedded) {
@@ -33,6 +36,8 @@ public class EmbeddedYonaActivity {
     }
 
     /**
+     * Gets links.
+     *
      * @return The links
      */
     public Links getLinks() {
@@ -40,6 +45,8 @@ public class EmbeddedYonaActivity {
     }
 
     /**
+     * Sets links.
+     *
      * @param links The _links
      */
     public void setLinks(Links links) {
@@ -47,6 +54,8 @@ public class EmbeddedYonaActivity {
     }
 
     /**
+     * Gets page.
+     *
      * @return The page
      */
     public Page getPage() {
@@ -54,6 +63,8 @@ public class EmbeddedYonaActivity {
     }
 
     /**
+     * Sets page.
+     *
      * @param page The page
      */
     public void setPage(Page page) {

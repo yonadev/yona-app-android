@@ -12,6 +12,8 @@ package nu.yona.app.api.manager.network;
 
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.AddBuddy;
+import nu.yona.app.api.model.DayActivity;
+import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.MessageBody;
 import nu.yona.app.api.model.NewDevice;
@@ -22,6 +24,7 @@ import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaMessages;
@@ -343,4 +346,37 @@ public interface RestApi {
     @POST
     Call<Void> postMessage(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body MessageBody body);
     /******** NOTIFICATION MANAGER ************/
+
+    /********
+     * ACTIVITY  @param url the url
+     *
+     * @param url      the url
+     * @param password the password
+     * @param size     the size
+     * @param page     the page
+     * @return the daily activity
+     */
+    @GET
+    Call<EmbeddedYonaActivity> getActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("size") int size, @Query("page") int page);
+
+    /**
+     * Gets day detail activity.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the day detail activity
+     */
+    @GET
+    Call<DayActivity> getDayDetailActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+
+    /**
+     * Gets week detail activity.
+     *
+     * @param url      the url
+     * @param password the password
+     * @return the week detail activity
+     */
+    @GET
+    Call<WeekActivity> getWeekDetailActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
+    /******** ACTIVITY ************/
 }

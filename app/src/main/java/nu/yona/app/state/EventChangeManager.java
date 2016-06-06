@@ -93,6 +93,9 @@ public class EventChangeManager {
      */
     public static final int EVENT_USER_NOT_EXIST = 16;
 
+    /**
+     * The constant EVENT_UPDATE_FRIEND_OVERVIEW.
+     */
     public static final int EVENT_UPDATE_FRIEND_OVERVIEW = 17;
 
     private final Set<EventChangeListener> listeners = new HashSet<>();

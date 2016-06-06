@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-
 public class DayActivity {
     @SerializedName("date")
     @Expose
@@ -45,126 +44,126 @@ public class DayActivity {
 
 
     /**
+     * Gets date.
      *
-     * @return
-     * The date
+     * @return The date
      */
     public String getDate() {
         return date;
     }
 
     /**
+     * Sets date.
      *
-     * @param date
-     * The date
+     * @param date The date
      */
     public void setDate(String date) {
         this.date = date;
     }
 
     /**
+     * Gets time zone id.
      *
-     * @return
-     * The timeZoneId
+     * @return The timeZoneId
      */
     public String getTimeZoneId() {
         return timeZoneId;
     }
 
     /**
+     * Sets time zone id.
      *
-     * @param timeZoneId
-     * The timeZoneId
+     * @param timeZoneId The timeZoneId
      */
     public void setTimeZoneId(String timeZoneId) {
         this.timeZoneId = timeZoneId;
     }
 
     /**
+     * Gets spread.
      *
-     * @return
-     * The spread
+     * @return The spread
      */
     public List<Integer> getSpread() {
         return spread;
     }
 
     /**
+     * Sets spread.
      *
-     * @param spread
-     * The spread
+     * @param spread The spread
      */
     public void setSpread(List<Integer> spread) {
         this.spread = spread;
     }
 
     /**
+     * Gets links.
      *
-     * @return
-     * The links
+     * @return The links
      */
     public Links getLinks() {
         return links;
     }
 
     /**
+     * Sets links.
      *
-     * @param links
-     * The _links
+     * @param links The _links
      */
     public void setLinks(Links links) {
         this.links = links;
     }
 
     /**
+     * Gets total activity duration minutes.
      *
-     * @return
-     * The totalActivityDurationMinutes
+     * @return The totalActivityDurationMinutes
      */
     public Integer getTotalActivityDurationMinutes() {
         return totalActivityDurationMinutes;
     }
 
     /**
+     * Sets total activity duration minutes.
      *
-     * @param totalActivityDurationMinutes
-     * The totalActivityDurationMinutes
+     * @param totalActivityDurationMinutes The totalActivityDurationMinutes
      */
     public void setTotalActivityDurationMinutes(Integer totalActivityDurationMinutes) {
         this.totalActivityDurationMinutes = totalActivityDurationMinutes;
     }
 
     /**
+     * Gets goal accomplished.
      *
-     * @return
-     * The goalAccomplished
+     * @return The goalAccomplished
      */
     public Boolean getGoalAccomplished() {
         return goalAccomplished;
     }
 
     /**
+     * Sets goal accomplished.
      *
-     * @param goalAccomplished
-     * The goalAccomplished
+     * @param goalAccomplished The goalAccomplished
      */
     public void setGoalAccomplished(Boolean goalAccomplished) {
         this.goalAccomplished = goalAccomplished;
     }
 
     /**
+     * Gets total minutes beyond goal.
      *
-     * @return
-     * The totalMinutesBeyondGoal
+     * @return The totalMinutesBeyondGoal
      */
     public Integer getTotalMinutesBeyondGoal() {
         return totalMinutesBeyondGoal;
     }
 
     /**
+     * Sets total minutes beyond goal.
      *
-     * @param totalMinutesBeyondGoal
-     * The totalMinutesBeyondGoal
+     * @param totalMinutesBeyondGoal The totalMinutesBeyondGoal
      */
     public void setTotalMinutesBeyondGoal(Integer totalMinutesBeyondGoal) {
         this.totalMinutesBeyondGoal = totalMinutesBeyondGoal;

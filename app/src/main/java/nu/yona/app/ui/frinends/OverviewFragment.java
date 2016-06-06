@@ -38,7 +38,7 @@ import nu.yona.app.ui.YonaActivity;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class OverviewFragment extends BaseFragment implements EventChangeListener{
+public class OverviewFragment extends BaseFragment implements EventChangeListener {
 
     private List<YonaBuddy> mListBuddy;
     private OverViewAdapter mOverViewAdapter;

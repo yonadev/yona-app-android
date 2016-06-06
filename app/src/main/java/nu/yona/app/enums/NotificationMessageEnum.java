@@ -45,30 +45,69 @@ public enum NotificationMessageEnum {
      */
     BUDDY_CONNECT_RESPONSE_MESSAGE_ACCEPTED(NotificationEnum.BUDDYCONNECTRESPONSEMESSAGE, StatusEnum.ACCEPTED, getString(R.string.buddyresponseaccepted), R.drawable.icn_ok),
 
+    /**
+     * The Buddy disconnect message user removed buddy.
+     */
     BUDDY_DISCONNECT_MESSAGE_USER_REMOVED_BUDDY(NotificationEnum.BUDDYDISCONNECTMESSAGE, StatusEnum.USER_REMOVED_BUDDY, "User removed buddy", 0),
 
+    /**
+     * Disclosurerequestmessage enum disclosure requested notification message enum.
+     */
     DISCLOSUREREQUESTMESSAGE_ENUM_DISCLOSURE_REQUESTED(NotificationEnum.DISCLOSUREREQUESTMESSAGE, StatusEnum.DISCLOSURE_REQUESTED, "DISCLOSURE_REQUESTED", 0),
 
+    /**
+     * Disclosurerequestmessage enum disclosure accepted notification message enum.
+     */
     DISCLOSUREREQUESTMESSAGE_ENUM_DISCLOSURE_ACCEPTED(NotificationEnum.DISCLOSUREREQUESTMESSAGE, StatusEnum.DISCLOSURE_ACCEPTED, "DISCLOSURE_ACCEPTED", 0),
 
+    /**
+     * Disclosurerequestmessage enum disclosure rejected notification message enum.
+     */
     DISCLOSUREREQUESTMESSAGE_ENUM_DISCLOSURE_REJECTED(NotificationEnum.DISCLOSURERESPONSEMESSAGE, StatusEnum.DISCLOSURE_REJECTED, "DISCLOSURE_REJECTED", 0),
 
+    /**
+     * Disclosureresponsemessage enum disclosure accepted notification message enum.
+     */
     DISCLOSURERESPONSEMESSAGE_ENUM_DISCLOSURE_ACCEPTED(NotificationEnum.DISCLOSURERESPONSEMESSAGE, StatusEnum.DISCLOSURE_ACCEPTED, "DISCLOSURE_ACCEPTED", 0),
 
+    /**
+     * Disclosureresponsemessage enum disclosure rejected notification message enum.
+     */
     DISCLOSURERESPONSEMESSAGE_ENUM_DISCLOSURE_REJECTED(NotificationEnum.DISCLOSURERESPONSEMESSAGE, StatusEnum.DISCLOSURE_REJECTED, "DISCLOSURE_REJECTED", 0),
 
+    /**
+     * The Buddy disconnect message user account deleted.
+     */
     BUDDY_DISCONNECT_MESSAGE_USER_ACCOUNT_DELETED(NotificationEnum.BUDDYDISCONNECTMESSAGE, StatusEnum.USER_ACCOUNT_DELETED, "User Account Deleted", 0),
 
+    /**
+     * The Goalchangemessage added.
+     */
     GOALCHANGEMESSAGE_ADDED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.ADDED, "Goal Added", 0),
 
+    /**
+     * The Goalchangemessage deleted.
+     */
     GOALCHANGEMESSAGE_DELETED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.DELETED, "Goal Deleted", 0),
 
+    /**
+     * The Goalchangemessage changed.
+     */
     GOALCHANGEMESSAGE_CHANGED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.CHANGED, "Goal Changed", 0),
 
+    /**
+     * Goalconflictmessage disclosure requested notification message enum.
+     */
     GOALCONFLICTMESSAGE_DISCLOSURE_REQUESTED(NotificationEnum.GOALCONFLICTMESSAGE, StatusEnum.DISCLOSURE_REQUESTED, "DISCLOSURE_REQUESTED", 0),
 
+    /**
+     * Goalconflictmessage disclosure accepted notification message enum.
+     */
     GOALCONFLICTMESSAGE_DISCLOSURE_ACCEPTED(NotificationEnum.GOALCONFLICTMESSAGE, StatusEnum.DISCLOSURE_ACCEPTED, "DISCLOSURE_ACCEPTED", 0),
 
+    /**
+     * Goalconflictmessage disclosure rejected notification message enum.
+     */
     GOALCONFLICTMESSAGE_DISCLOSURE_REJECTED(NotificationEnum.GOALCONFLICTMESSAGE, StatusEnum.DISCLOSURE_REJECTED, "DISCLOSURE_REJECTED", 0),
 
     /**

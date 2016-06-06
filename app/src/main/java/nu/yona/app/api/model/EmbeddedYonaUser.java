@@ -53,7 +53,7 @@ public class EmbeddedYonaUser extends BaseEntity {
     /**
      * Get yona Goals
      *
-     * @return
+     * @return yona goals
      */
     public YonaGoals getYonaGoals() {
         return yonaGoals;
@@ -62,7 +62,7 @@ public class EmbeddedYonaUser extends BaseEntity {
     /**
      * Set yona Goals
      *
-     * @param yonaGoals
+     * @param yonaGoals the yona goals
      */
     public void setYonaGoals(YonaGoals yonaGoals) {
         this.yonaGoals = yonaGoals;

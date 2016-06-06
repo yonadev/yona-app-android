@@ -429,109 +429,129 @@ public class Links extends BaseEntity {
         this.yonaPreocess = yonaPreocess;
     }
 
+    /**
+     * Gets yona goal.
+     *
+     * @return the yona goal
+     */
     public Href getYonaGoal() {
         return this.yonaGoal;
     }
 
+    /**
+     * Sets yona goal.
+     *
+     * @param yonaGoal the yona goal
+     */
     public void setYonaGoal(Href yonaGoal) {
         this.yonaGoal = yonaGoal;
     }
 
 
     /**
+     * Gets yona day details.
      *
-     * @return
-     * The yonaDayDetails
+     * @return The yonaDayDetails
      */
     public Href getYonaDayDetails() {
         return yonaDayDetails;
     }
 
     /**
+     * Sets yona day details.
      *
-     * @param yonaDayDetails
-     * The yona:dayDetails
+     * @param yonaDayDetails The yona:dayDetails
      */
     public void setYonaDayDetails(Href yonaDayDetails) {
         this.yonaDayDetails = yonaDayDetails;
     }
 
     /**
+     * Gets next.
      *
-     * @return
-     * The next
+     * @return The next
      */
     public Href getNext() {
         return next;
     }
 
     /**
+     * Sets next.
      *
-     * @param next
-     * The next
+     * @param next The next
      */
     public void setNext(Href next) {
         this.next = next;
     }
 
     /**
+     * Gets prev.
      *
-     * @return
-     * The prev
+     * @return The prev
      */
     public Href getPrev() {
         return prev;
     }
 
     /**
+     * Sets prev.
      *
-     * @param prev
-     * The prev
+     * @param prev The prev
      */
     public void setPrev(Href prev) {
         this.prev = prev;
     }
 
     /**
+     * Gets first.
      *
-     * @return
-     * The first
+     * @return The first
      */
     public Href getFirst() {
         return first;
     }
 
     /**
+     * Sets first.
      *
-     * @param first
-     * The first
+     * @param first The first
      */
     public void setFirst(Href first) {
         this.first = first;
     }
 
     /**
+     * Gets last.
      *
-     * @return
-     * The last
+     * @return The last
      */
     public Href getLast() {
         return last;
     }
 
     /**
+     * Sets last.
      *
-     * @param last
-     * The last
+     * @param last The last
      */
     public void setLast(Href last) {
         this.last = last;
     }
 
+    /**
+     * Gets resend pin reset confirmation code.
+     *
+     * @return the resend pin reset confirmation code
+     */
     public Href getResendPinResetConfirmationCode() {
         return this.resendPinResetConfirmationCode;
     }
 
+    /**
+     * Sets resend pin reset confirmation code.
+     *
+     * @param resendPinResetConfirmationCode the resend pin reset confirmation code
+     */
     public void setResendPinResetConfirmationCode(Href resendPinResetConfirmationCode) {
         this.resendPinResetConfirmationCode = resendPinResetConfirmationCode;
     }

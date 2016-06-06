@@ -22,15 +22,20 @@ import android.util.AttributeSet;
 /**
  * Created by kinnarvasa on 31/05/16.
  */
-
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class DetailsTransition extends TransitionSet {
+    /**
+     * Instantiates a new Details transition.
+     */
     public DetailsTransition() {
         init();
     }
 
     /**
      * This constructor allows us to use this transition in XML
+     *
+     * @param context the context
+     * @param attrs   the attrs
      */
     public DetailsTransition(Context context, AttributeSet attrs) {
         super(context, attrs);
