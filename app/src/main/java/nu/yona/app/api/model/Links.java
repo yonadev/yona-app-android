@@ -62,6 +62,9 @@ public class Links extends BaseEntity {
     @SerializedName("yona:requestPinReset")
     @Expose
     private Href requestPinReset;
+    @SerializedName("yona:resendPinResetConfirmationCode")
+    @Expose
+    private Href resendPinResetConfirmationCode;
     @SerializedName("yona:clearPinReset")
     @Expose
     private Href clearPinReset;
@@ -77,6 +80,24 @@ public class Links extends BaseEntity {
     @SerializedName("yona:accept")
     @Expose
     private Href yonaAccept;
+    @SerializedName("yona:goal")
+    @Expose
+    private Href yonaGoal;
+    @SerializedName("yona:dayDetails")
+    @Expose
+    private Href yonaDayDetails;
+    @SerializedName("next")
+    @Expose
+    private Href next;
+    @SerializedName("prev")
+    @Expose
+    private Href prev;
+    @SerializedName("first")
+    @Expose
+    private Href first;
+    @SerializedName("last")
+    @Expose
+    private Href last;
 
     /**
      * Gets self.
@@ -407,4 +428,112 @@ public class Links extends BaseEntity {
     public void setYonaPreocess(Href yonaPreocess) {
         this.yonaPreocess = yonaPreocess;
     }
+
+    public Href getYonaGoal() {
+        return this.yonaGoal;
+    }
+
+    public void setYonaGoal(Href yonaGoal) {
+        this.yonaGoal = yonaGoal;
+    }
+
+
+    /**
+     *
+     * @return
+     * The yonaDayDetails
+     */
+    public Href getYonaDayDetails() {
+        return yonaDayDetails;
+    }
+
+    /**
+     *
+     * @param yonaDayDetails
+     * The yona:dayDetails
+     */
+    public void setYonaDayDetails(Href yonaDayDetails) {
+        this.yonaDayDetails = yonaDayDetails;
+    }
+
+    /**
+     *
+     * @return
+     * The next
+     */
+    public Href getNext() {
+        return next;
+    }
+
+    /**
+     *
+     * @param next
+     * The next
+     */
+    public void setNext(Href next) {
+        this.next = next;
+    }
+
+    /**
+     *
+     * @return
+     * The prev
+     */
+    public Href getPrev() {
+        return prev;
+    }
+
+    /**
+     *
+     * @param prev
+     * The prev
+     */
+    public void setPrev(Href prev) {
+        this.prev = prev;
+    }
+
+    /**
+     *
+     * @return
+     * The first
+     */
+    public Href getFirst() {
+        return first;
+    }
+
+    /**
+     *
+     * @param first
+     * The first
+     */
+    public void setFirst(Href first) {
+        this.first = first;
+    }
+
+    /**
+     *
+     * @return
+     * The last
+     */
+    public Href getLast() {
+        return last;
+    }
+
+    /**
+     *
+     * @param last
+     * The last
+     */
+    public void setLast(Href last) {
+        this.last = last;
+    }
+
+    public Href getResendPinResetConfirmationCode() {
+        return this.resendPinResetConfirmationCode;
+    }
+
+    public void setResendPinResetConfirmationCode(Href resendPinResetConfirmationCode) {
+        this.resendPinResetConfirmationCode = resendPinResetConfirmationCode;
+    }
+
 }
