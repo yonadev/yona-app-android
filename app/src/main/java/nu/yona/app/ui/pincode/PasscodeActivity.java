@@ -15,79 +15,47 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.View;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
-import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by bhargavsuthar on 4/3/16.
  */
-public class PasscodeActivity extends BaseActivity implements EventChangeListener {
+public class PasscodeActivity extends BasePasscodeActivity implements EventChangeListener {
 
     private int PASSCODE_STEP = 0;
     private String first_passcode;
-    private YonaFontTextView txtTitle;
-    private int colorCode, progressDrawable;
-    private Toolbar mToolBar;
-    private boolean isFromSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.blank_container_layout);
-        mToolBar = (Toolbar) findViewById(R.id.toolbar_layout);
-
-        progressDrawable = R.drawable.progress_bar;
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
-                colorCode = getIntent().getExtras().getInt(AppConstant.COLOR_CODE);
-            } else {
-                colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
-            }
-            if (getIntent().getExtras().get(AppConstant.TITLE_BACKGROUND_RESOURCE) != null) {
-                mToolBar.setBackgroundResource(getIntent().getExtras().getInt(AppConstant.TITLE_BACKGROUND_RESOURCE));
-            } else {
-                mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
-            }
-
-            if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
-                findViewById(R.id.pincode_layout_header).setBackgroundColor(getIntent().getExtras().getInt(AppConstant.COLOR_CODE));
-            }
-
-            if (getIntent().getExtras().get(AppConstant.PROGRESS_DRAWABLE) != null) {
-                progressDrawable = getIntent().getExtras().getInt(AppConstant.PROGRESS_DRAWABLE);
-            }
-            if (getIntent().getExtras().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
-                findViewById(R.id.main_content).setBackgroundResource(getIntent().getExtras().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND));
-            }
-            isFromSettings = getIntent().getExtras().getBoolean(AppConstant.FROM_SETTINGS, false);
-        } else {
-            colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
-        }
-        txtTitle = (YonaFontTextView) findViewById(R.id.toolbar_title);
         YonaApplication.getEventChangeManager().registerListener(this);
         loadPasscodeView(true);
+        initializeAnimation();
     }
 
-    /**
-     * Update title.
-     *
-     * @param title the title
-     */
-    public void updateTitle(String title) {
-        txtTitle.setText(title);
+    private void updateScreen() {
+        visibleView();
+        if (!isFromSettings) {
+            if (PASSCODE_STEP == 0) {
+                populatePasscodeView();
+            } else {
+                populateVerifyPasscodeView();
+            }
+        } else {
+            if (PASSCODE_STEP == 0) {
+                populatePinResetFirstStep();
+            } else {
+                populatePinResetSecondStep();
+            }
+        }
     }
 
     @Override
@@ -116,12 +84,6 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
             bPasscode.putAll(getIntent().getExtras());
         }
         bPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
-        bPasscode.putInt(AppConstant.PROGRESS_DRAWABLE, progressDrawable);
-        if (isFromSettings) {
-            bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_FIRST_STEP);
-        } else {
-            bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PASSCODE);
-        }
         PasscodeFragment passcodeFragment = new PasscodeFragment();
         passcodeFragment.setArguments(bPasscode);
         return passcodeFragment;
@@ -133,12 +95,6 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
             bVerifyPasscode.putAll(getIntent().getExtras());
         }
         bVerifyPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
-        bVerifyPasscode.putInt(AppConstant.PROGRESS_DRAWABLE, progressDrawable);
-        if (isFromSettings) {
-            bVerifyPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PIN_RESET_SECOND_STEP);
-        } else {
-            bVerifyPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.PASSCODE_VERIFY);
-        }
         PasscodeFragment verifyPasscodeFragment = new PasscodeFragment();
         verifyPasscodeFragment.setArguments(bVerifyPasscode);
         return verifyPasscodeFragment;
@@ -147,27 +103,18 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
 
     private void loadPasscodeView(boolean isEntryAnim) {
         PASSCODE_STEP = 0;
+        updateScreen();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentAnimation(fragmentTransaction, isEntryAnim);
         fragmentTransaction.replace(R.id.blank_container, getPasscodeFragment());
         fragmentTransaction.commit();
     }
 
     private void loadVerifyPasscodeView() {
         PASSCODE_STEP = 1;
+        updateScreen();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentAnimation(fragmentTransaction, true);
         fragmentTransaction.replace(R.id.blank_container, getPasscodeVerifyFragment());
         fragmentTransaction.commit();
-    }
-
-    private void fragmentAnimation(FragmentTransaction animTransaction, boolean isEntryAnim) {
-        //Todo - removed unused parameter and update flow once if they approve this animation
-        //if (isEntryAnim) {
-        animTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        //} else {
-        //  animTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        //}
     }
 
     @Override
@@ -189,6 +136,9 @@ public class PasscodeActivity extends BaseActivity implements EventChangeListene
                 } else {
                     validatePasscode((String) object);
                 }
+                break;
+            case EventChangeManager.EVENT_PASSCODE_ERROR:
+                passcode_error.setText((String) object);
                 break;
             default:
                 break;

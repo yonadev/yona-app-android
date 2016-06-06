@@ -16,18 +16,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.WindowManager;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
-import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
-import nu.yona.app.ui.BaseActivity;
+import nu.yona.app.ui.pincode.BasePasscodeActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.ui.pincode.PasscodeFragment;
 import nu.yona.app.utils.AppConstant;
@@ -35,23 +33,22 @@ import nu.yona.app.utils.AppConstant;
 /**
  * Created by kinnarvasa on 04/04/16.
  */
-public class OTPActivity extends BaseActivity implements EventChangeListener {
+public class OTPActivity extends BasePasscodeActivity implements EventChangeListener {
 
     private PasscodeFragment otpFragment;
-    private YonaFontTextView txtTitle;
     private RegisterUser user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.blank_container_layout);
-        txtTitle = (YonaFontTextView) findViewById(R.id.toolbar_title);
         YonaApplication.getEventChangeManager().registerListener(this);
         loadOTPFragment();
-
+        screenTitle = getString(R.string.join);
+        screen_type = AppConstant.OTP;
         if (getIntent() != null && getIntent().getExtras() != null) {
             user = (RegisterUser) getIntent().getExtras().getSerializable(AppConstant.USER);
         }
+        updateScreenUI();
     }
 
     private void loadOTPFragment() {
@@ -157,12 +154,4 @@ public class OTPActivity extends BaseActivity implements EventChangeListener {
         finish();
     }
 
-    /**
-     * Update title.
-     *
-     * @param title Update title in Toolbar.
-     */
-    public void updateTitle(String title) {
-        txtTitle.setText(title);
-    }
 }

@@ -10,35 +10,28 @@ package nu.yona.app.ui.pincode;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
 import nu.yona.app.customview.YonaFontEditTextView;
-import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.BaseFragment;
-import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by bhargavsuthar on 4/3/16.
  */
-public class PasscodeFragment extends BaseFragment implements EventChangeListener, View.OnClickListener {
+public class PasscodeFragment extends BaseFragment implements EventChangeListener {
 
-    private YonaFontTextView passcode_title, passcode_description, passcode_error, passcode_reset;
     private YonaFontEditTextView passcode1, passcode2, passcode3, passcode4;
     private final View.OnKeyListener keyListener = new View.OnKeyListener() {
         @Override
@@ -65,11 +58,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             return false;
         }
     };
-    private int progressDrawable;
-    private ProgressBar profile_progress;
     private PasscodeManagerImpl passcodeManagerImpl;
-    private ImageView accont_image;
-    private String screen_type;
     private YonaPasswordTransformationManager yonaPasswordTransformationManager;
     private FieldTextWatcher watcher;
     private int backgroundDrawable = R.drawable.passcode_edit_bg_grape;
@@ -79,18 +68,8 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.passcode_layout, container, false);
 
-        progressDrawable = R.drawable.progress_bar;
 
         YonaApplication.getEventChangeManager().registerListener(this);
-
-        passcode_title = (YonaFontTextView) getActivity().findViewById(R.id.passcode_title);
-        passcode_description = (YonaFontTextView) getActivity().findViewById(R.id.passcode_description);
-        passcode_error = (YonaFontTextView) getActivity().findViewById(R.id.passcode_error);
-        passcode_reset = (YonaFontTextView) view.findViewById(R.id.passcode_reset);
-        accont_image = (ImageView) getActivity().findViewById(R.id.img_account_check);
-        passcode_reset = (YonaFontTextView) view.findViewById(R.id.passcode_reset);
-
-        profile_progress = (ProgressBar) getActivity().findViewById(R.id.profile_progress);
 
         passcodeManagerImpl = new PasscodeManagerImpl();
         yonaPasswordTransformationManager = new YonaPasswordTransformationManager();
@@ -102,21 +81,13 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode4 = getLayout(view, R.id.passcode4);
 
         if (getArguments() != null) {
-            screen_type = getArguments().getString(AppConstant.SCREEN_TYPE);
             if (getArguments().get(AppConstant.COLOR_CODE) != null) {
                 view.setBackgroundColor(getArguments().getInt(AppConstant.COLOR_CODE));
-            }
-            if (getArguments().get(AppConstant.PROGRESS_DRAWABLE) != null) {
-                progressDrawable = getArguments().getInt(AppConstant.PROGRESS_DRAWABLE);
             }
             if (getArguments().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
                 backgroundDrawable = getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND);
             }
         }
-
-        passcode_reset.setOnClickListener(this);
-
-        updateScreenUI();
         resetDigit();
 
         return view;
@@ -132,12 +103,12 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode4.setBackgroundResource(backgroundDrawable);
         ((BaseActivity) getActivity()).showKeyboard(passcode1);
     }
-
+    /*
     @Override
     public void onPause() {
         super.onPause();
         ((BaseActivity) getActivity()).hideSoftInput();
-    }
+    }*/
 
     private YonaFontEditTextView getLayout(View view, int id) {
         YonaFontEditTextView textView = (YonaFontEditTextView) view.findViewById(id);
@@ -147,119 +118,10 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         return textView;
     }
 
-    private void updateScreenUI() {
-        if (!TextUtils.isEmpty(screen_type)) {
-            if (screen_type.equalsIgnoreCase(AppConstant.PASSCODE)) {
-                populatePasscodeView();
-                visibleView();
-            } else if (screen_type.equalsIgnoreCase(AppConstant.PASSCODE_VERIFY)) {
-                populateVerifyPasscodeView();
-                visibleView();
-            } else if (screen_type.equalsIgnoreCase(AppConstant.LOGGED_IN)) {
-                visibleLoginView();
-                populateLoginView();
-            } else if (screen_type.equalsIgnoreCase(AppConstant.OTP)) {
-                populateOTPView();
-                visibleView();
-            } else if (screen_type.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
-                populatePinResetVerificationView();
-                visibleLoginView();
-                visibleView();
-            } else if (screen_type.equalsIgnoreCase(AppConstant.PIN_RESET_FIRST_STEP)) {
-                populatePinResetFirstStep();
-                visibleView();
-            } else if (screen_type.equalsIgnoreCase(AppConstant.PIN_RESET_SECOND_STEP)) {
-                populatePinResetSecondStep();
-                visibleView();
-            }
-        }
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
         YonaApplication.getEventChangeManager().unRegisterListener(this);
-    }
-
-    private void populateOTPView() {
-        accont_image.setImageResource(R.drawable.add_avatar);
-        passcode_title.setText(getString(R.string.accountlogin));
-        passcode_description.setText(getString(R.string.accountloginsecuritymessage));
-        ((OTPActivity) getActivity()).updateTitle(getString(R.string.join));
-        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_sixty));
-        profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
-        passcode_reset.setText(getString(R.string.sendotpagain));
-        passcode_reset.setVisibility(View.VISIBLE);
-    }
-
-    private void populatePinResetVerificationView() {
-        accont_image.setImageResource(R.drawable.icn_secure);
-        passcode_title.setText(getString(R.string.settings_current_pin));
-        passcode_description.setText(getString(R.string.settings_current_pin_message));
-        ((PinActivity) getActivity()).updateTitle(getString(R.string.changepin));
-        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_thirty));
-        profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
-        passcode_reset.setVisibility(View.GONE);
-    }
-
-    private void populatePinResetFirstStep() {
-        accont_image.setImageResource(R.drawable.icn_account_created);
-        passcode_title.setText(getString(R.string.settings_new_pincode));
-        passcode_description.setText(getString(R.string.settings_new_pin_message));
-        ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.changepin));
-        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_sixty));
-        profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
-        passcode_reset.setVisibility(View.GONE);
-    }
-
-    private void populatePinResetSecondStep() {
-        accont_image.setImageResource(R.drawable.icn_account_created);
-        passcode_title.setText(getString(R.string.settings_confirm_new_pin));
-        passcode_description.setText(getString(R.string.settings_confirm_new_pin_message));
-        ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.changepin));
-        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_complete));
-        profile_progress.setProgressDrawable(ContextCompat.getDrawable(getActivity(), progressDrawable));
-        passcode_reset.setVisibility(View.GONE);
-    }
-
-    private void visibleView() {
-        passcode_title.setVisibility(View.VISIBLE);
-        passcode_description.setVisibility(View.VISIBLE);
-        profile_progress.setVisibility(View.VISIBLE);
-    }
-
-    private void visibleLoginView() {
-        passcode_title.setVisibility(View.VISIBLE);
-        passcode_description.setVisibility(View.GONE);
-        profile_progress.setVisibility(View.GONE);
-        passcode_reset.setVisibility(View.VISIBLE);
-    }
-
-    private void populateLoginView() {
-        accont_image.setImageResource(R.drawable.icn_y);
-        passcode_title.setText(getString(R.string.passcodetitle));
-    }
-
-    /**
-     * update screen's text as per account pincode's verification
-     */
-    private void populateVerifyPasscodeView() {
-        accont_image.setImageResource(R.drawable.icn_secure);
-        passcode_title.setText(getString(R.string.passcodestep2title));
-        passcode_description.setText(getString(R.string.passcodestep2desc));
-        ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.pincode));
-        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_verify_progerss));
-    }
-
-    /**
-     * update screen's text as per Account pincode creation
-     */
-    private void populatePasscodeView() {
-        accont_image.setImageResource(R.drawable.icn_account_created);
-        passcode_title.setText(getString(R.string.passcodestep1title));
-        passcode_description.setText(getString(R.string.passcodestep1desc));
-        profile_progress.setProgress(getResources().getInteger(R.integer.passcode_create_progress));
-        ((PasscodeActivity) getActivity()).updateTitle(getString(R.string.pincode));
     }
 
     /**
@@ -274,6 +136,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode3.setFocusableInTouchMode(false);
         passcode4.getText().clear();
         passcode4.setFocusableInTouchMode(false);
+        passcode1.setFocusable(true);
         passcode1.requestFocus();
 
     }
@@ -282,33 +145,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_PASSCODE_ERROR:
-                passcode_error.setText((String) object);
                 resetDigit();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.passcode_reset:
-                doPasscodeReset();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void doPasscodeReset() {
-        switch (screen_type) {
-            case AppConstant.OTP:
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_OTP_RESEND, null);
-                break;
-            case AppConstant.PIN_RESET_VERIFICATION:
-            case AppConstant.LOGGED_IN:
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_RESET, null);
                 break;
             default:
                 break;
