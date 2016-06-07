@@ -16,6 +16,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.yona.app.enums.ChartTypeEnum;
+
 /**
  * Created by kinnarvasa on 06/06/16.
  */
@@ -41,7 +43,15 @@ public class DayActivity {
     @SerializedName("totalMinutesBeyondGoal")
     @Expose
     private Integer totalMinutesBeyondGoal;
-
+    @SerializedName("yonaGoal")
+    @Expose
+    private YonaGoal yonaGoal;
+    @SerializedName("chartTypeEnum")
+    @Expose
+    private ChartTypeEnum chartTypeEnum;
+    @SerializedName("@stickyTitle")
+    @Expose
+    private String stickyTitle;
 
     /**
      * Gets date.
@@ -169,4 +179,38 @@ public class DayActivity {
         this.totalMinutesBeyondGoal = totalMinutesBeyondGoal;
     }
 
+    public YonaGoal getYonaGoal() {
+        return this.yonaGoal;
+    }
+
+    public void setYonaGoal(YonaGoal yonaGoal) {
+        this.yonaGoal = yonaGoal;
+    }
+
+    public ChartTypeEnum getChartTypeEnum() {
+        return this.chartTypeEnum;
+    }
+
+    public void setChartTypeEnum(ChartTypeEnum chartTypeEnum) {
+        this.chartTypeEnum = chartTypeEnum;
+    }
+
+
+    /**
+     * Get Sticky Title
+     *
+     * @return sticky title
+     */
+    public String getStickyTitle() {
+        return stickyTitle;
+    }
+
+    /**
+     * Set Sticky Title
+     *
+     * @param stickyTitle the sticky title
+     */
+    public void setStickyTitle(String stickyTitle) {
+        this.stickyTitle = stickyTitle;
+    }
 }
