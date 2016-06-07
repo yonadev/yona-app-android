@@ -1,5 +1,7 @@
 require 'selenium-webdriver'
 require 'appium_lib'
+require_relative '../../vendor/gems/appium_lib-8.0.2/lib/appium_lib/driver'
+
 
 driver = start_selenium_driver
 
@@ -20,6 +22,11 @@ After do |scenario|
   end
 
   # @driver.reset unless ENV['TARGET'] == 'web'
+  if ENV['TARGET'] != 'web'
+    driver.quit
+    driver = start_selenium_driver
+  end
+
 end
 
 at_exit do

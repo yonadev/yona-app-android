@@ -227,10 +227,8 @@ class ADDCHELLENGS<MobTest::Base
       sleep 3
       lswl=savegoal_elements
       if(lswl!=nil && lswl.length>1)
-        puts "more than one"
-         wlsv=lswl[1]
+        wlsv=lswl[1]
       else
-        puts "single"
         wlsv=lswl[0]
       end
       wlsv.click

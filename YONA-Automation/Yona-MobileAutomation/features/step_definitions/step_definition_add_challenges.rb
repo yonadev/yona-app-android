@@ -1,6 +1,6 @@
 # Add NOGO Goal
 Given(/^User is logged in to Yona app and on Challenges tab$/)do
-  # on(Signup).enterPin
+  on(Signup).enterPin
   on(ADDCHELLENGS).selmenutab 'chl'
 end
 
