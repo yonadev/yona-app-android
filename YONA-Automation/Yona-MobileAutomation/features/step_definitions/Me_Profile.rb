@@ -1,7 +1,7 @@
 # Add NOGO Goal
 
 Given(/^User is logged in to Yona app and on Profile page$/)do
-  # on(Signup).enterPin
+  on(Signup).enterPin
   sleep 2
   on(ADDCHELLENGS).selmenutab 'prf'
 end
