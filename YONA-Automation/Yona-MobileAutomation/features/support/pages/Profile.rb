@@ -26,12 +26,11 @@ class Profile<MobTest::Base
 
 
     def swipe_to
-      wlprvwr = profpgr_element
-      prfsize=wlprvwr.size
+     wlprvwr = profpgr_element
+     prfsize=wlprvwr.size
      prfloc=wlprvwr.location
-      btmscreen=prfsize[:height]+prfloc[:y]
-      COMMON_UI.appium_swipe((prfsize[:width]/2),btmscreen-50,(prfsize[:width]/2),pteditic_element.location[:y],1)
-
+     btmscreen=prfsize[:height]+prfloc[:y]
+     COMMON_UI.appium_swipe((prfsize[:width]/2),ptfname_element.location[:y],(prfsize[:width]/2),pteditic_element.location[:y],1)
     end
 
   end

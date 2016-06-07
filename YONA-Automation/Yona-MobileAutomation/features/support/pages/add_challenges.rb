@@ -22,7 +22,10 @@ class ADDCHELLENGS<MobTest::Base
     button(:timedurend, id: "#{$android_package}:id/txtGoalEndTime")
     button(:timepickerdl, id: "#{$android_package}:id/time_picker_dialog")
     button(:timepicker, id: "#{$android_package}:id/time_picker")
-    button(:chllyt, id: "#{$android_package}:id/challengesLayout")
+    # button(:chllyt, id: "#{$android_package}:id/challengesLayout")
+    button(:chllyt, id: "#{$android_package}:id/viewPager")
+    button(:chllmcnt, id: "#{$android_package}:id/main_content")
+
 
 
     # Android Methods
@@ -68,6 +71,7 @@ class ADDCHELLENGS<MobTest::Base
     end
 
     def deletegoal
+      sleep 1
       selectgoal
       sleep 1
       delgoal_element.click
@@ -84,7 +88,7 @@ class ADDCHELLENGS<MobTest::Base
       endtime=timedurend_element
       swploc=endtime.location
       swpsize=endtime.size
-      puts "Swipeto=#{swploc[:x]},#{swploc[:y]},#{(swploc[:x]-swpsize[:width])},#{swploc[:y]}"
+      # puts "Swipeto=#{swploc[:x]},#{swploc[:y]},#{(swploc[:x]-swpsize[:width])},#{swploc[:y]}"
       COMMON_UI.appium_swipe(swploc[:x],swploc[:y],(swploc[:x]-swpsize[:width]),swploc[:y],1)
       sleep 1
       swpdeltime_element.click
@@ -215,23 +219,22 @@ class ADDCHELLENGS<MobTest::Base
       chlsize=wlcllyt.size
       chlloc=wlcllyt.location
       btmscreen=chlsize[:height]+chlloc[:y]
+      cntsize = chllmcnt_element.size
       sleep 2
+      adele=addgoal_elements
+      strloc=(@driver.manage().window().size[:height])/2
+      COMMON_UI.appium_swipe((chlsize[:width]/2),strloc,(chlsize[:width]/2),100,1)
+      sleep 3
       lswl=savegoal_elements
-      # puts lswl
-      # puts lswl.length
-      if (lswl==nil || lswl.length==0)
-        COMMON_UI.appium_swipe((chlsize[:width]/2),btmscreen-50,(chlsize[:width]/2),chlsize[:height],1)
-        lswl=savegoal_elements
-        puts lswl
-        puts lswl.length
-      end
       if(lswl!=nil && lswl.length>1)
+        puts "more than one"
          wlsv=lswl[1]
       else
+        puts "single"
         wlsv=lswl[0]
       end
-      # puts "element=#{wlsv}"
-        wlsv.click
+      wlsv.click
+      sleep 2
     end
 
   end

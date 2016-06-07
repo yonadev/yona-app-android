@@ -32,7 +32,7 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
   @addTimeFrClng
   Scenario: User wants to Add TimeFrm Challenge
    Given User is logged in to Yona app and on Challenges tab
-#    Given User is already on challenges tab
+#   Given User is already on challenges tab
     Then Click on Timzone goal
     And Click on add goal button
     Then select the category of Timezone goal on next page

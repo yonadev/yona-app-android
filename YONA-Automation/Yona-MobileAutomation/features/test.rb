@@ -11,4 +11,3 @@
 # puts "Mobile Number=#{$strMobliNumb}, Yona Password=#{$yona_pwd} and NewDevicepassword=#{$newDevicePwd}"
 # # # #
 # # # #
-
