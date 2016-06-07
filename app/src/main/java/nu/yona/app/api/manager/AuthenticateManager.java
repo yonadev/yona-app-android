@@ -112,4 +112,6 @@ public interface AuthenticateManager {
      * @param listener the listener
      */
     void deleteUser(final DataLoadListener listener);
+
+    void getUserFromServer();
 }

@@ -33,7 +33,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      * @param pageNo       the page no
      * @param listener     the listener
      */
-    public void getBuddyDaysActivity(String url, String yonaPassword, int itemsPerPage, int pageNo, DataLoadListener listener) {
+    public void getDaysActivity(String url, String yonaPassword, int itemsPerPage, int pageNo, DataLoadListener listener) {
         try {
             getRestApi().getActivity(url, yonaPassword, itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {

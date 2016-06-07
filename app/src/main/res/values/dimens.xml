@@ -147,4 +147,17 @@
     <dimen name="tablayout_padding_top_bottom">9dp</dimen>
     <dimen name="tablayout_padding_right_left">32dp</dimen>
 
+    <!--CHART-->
+    <dimen name="chart_item_height">131dp</dimen>
+    <dimen name="chart_item_spreading_height">161dp</dimen>
+    <dimen name="chart_item_top_margin">11dp</dimen>
+    <dimen name="chart_item_left_margin">32dp</dimen>
+    <dimen name="chart_item_right_margin">32dp</dimen>
+    <dimen name="chart_item_chart_top_margin">15dp</dimen>
+    <dimen name="chart_item_text_height">47dp</dimen>
+    <dimen name="chart_item_text_top_margin">29dp</dimen>
+    <dimen name="chart_item_text_number_width">54dp</dimen>
+    <dimen name="chart_item_chart_height">73dp</dimen>
+    <dimen name="chart_item_chart_spreading_height">103dp</dimen>
+    <dimen name="chart_item_chart_bottom_margin">16dp</dimen>
 </resources>

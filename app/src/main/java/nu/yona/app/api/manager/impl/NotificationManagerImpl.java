@@ -88,10 +88,10 @@ public class NotificationManagerImpl implements NotificationManager {
                                     Embedded embedded = yonaMessages.getEmbedded();
                                     List<YonaMessage> listMessages = embedded.getYonaMessages();
                                     boolean isAnyProcessed = false;
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
                                     for (YonaMessage message : listMessages) {
                                         //update enum
                                         message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));
-                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
                                         String uploadDate = "";
 
                                         String createdTime = message.getCreationTime();

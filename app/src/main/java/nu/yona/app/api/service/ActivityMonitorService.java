@@ -46,7 +46,7 @@ public class ActivityMonitorService extends Service {
     private static String printForegroundTask(Context context) {
         String currentApp = "NULL";
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
+            UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
             long time = System.currentTimeMillis();
             List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 1000, time);
             if (appList != null && appList.size() > 0) {
@@ -99,7 +99,7 @@ public class ActivityMonitorService extends Service {
     }
 
     private void checkRunningApps() {
-        if (!powerManager.isInteractive()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH && !powerManager.isInteractive()) {
             stopWatch.stop();
             return;
         }

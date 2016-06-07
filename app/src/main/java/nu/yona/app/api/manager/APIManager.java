@@ -12,6 +12,7 @@ package nu.yona.app.api.manager;
 
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.impl.ActivityCategoryManagerImpl;
+import nu.yona.app.api.manager.impl.ActivityManagerImpl;
 import nu.yona.app.api.manager.impl.AuthenticateManagerImpl;
 import nu.yona.app.api.manager.impl.BuddyManagerImpl;
 import nu.yona.app.api.manager.impl.ChallengesManagerImpl;
@@ -150,6 +151,9 @@ public class APIManager {
      * @return the activity manager
      */
     public ActivityManager getActivityManager() {
+        if(activityManager == null) {
+            activityManager = new ActivityManagerImpl(YonaApplication.getAppContext());
+        }
         return this.activityManager;
     }
 

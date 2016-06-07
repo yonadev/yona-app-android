@@ -466,6 +466,8 @@ public class ChallengesManagerImpl implements ChallengesManager {
     }
 
     public void getUserGoal(final DataLoadListener listener) {
+        //Require to update user as well
+        APIManager.getInstance().getAuthenticateManager().getUserFromServer();
         APIManager.getInstance().getGoalManager().getUserGoal(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {

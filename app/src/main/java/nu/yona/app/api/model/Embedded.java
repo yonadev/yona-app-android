@@ -49,10 +49,10 @@ public class Embedded extends BaseEntity {
     private Page page;
     @SerializedName("yona:dayActivityOverviews")
     @Expose
-    private List<YonaDayActivityOverview> yonaDayActivityOverviews = new ArrayList<YonaDayActivityOverview>();
+    private List<YonaDayActivityOverview> yonaDayActivityOverviews;
     @SerializedName("yona:weekActivityOverviews")
     @Expose
-    private List<YonaWeekActivityOverview> yonaWeekActivityOverviews = new ArrayList<YonaWeekActivityOverview>();
+    private List<YonaWeekActivityOverview> yonaWeekActivityOverviews;
 
     /**
      * Gets yona goals.
