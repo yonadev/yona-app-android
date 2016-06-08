@@ -20,11 +20,17 @@ import nu.yona.app.enums.ChartTypeEnum;
 /**
  * Created by kinnarvasa on 07/06/16.
  */
-
 public class ChartItemHolder extends RecyclerView.ViewHolder {
 
     private YonaFontTextView goalType, goalScore, goalDesc;
 
+    /**
+     * Instantiates a new Chart item holder.
+     *
+     * @param itemView      the item view
+     * @param listener      the listener
+     * @param chartTypeEnum the chart type enum
+     */
     public ChartItemHolder(View itemView, View.OnClickListener listener, ChartTypeEnum chartTypeEnum) {
         super(itemView);
         switch (chartTypeEnum) {
@@ -61,14 +67,29 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     }
 
 
+    /**
+     * Gets goal type.
+     *
+     * @return the goal type
+     */
     public YonaFontTextView getGoalType() {
         return this.goalType;
     }
 
+    /**
+     * Gets goal desc.
+     *
+     * @return the goal desc
+     */
     public YonaFontTextView getGoalDesc() {
         return this.goalDesc;
     }
 
+    /**
+     * Gets goal score.
+     *
+     * @return the goal score
+     */
     public YonaFontTextView getGoalScore() {
         return this.goalScore;
     }

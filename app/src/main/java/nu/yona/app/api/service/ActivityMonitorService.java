@@ -42,13 +42,51 @@ public class ActivityMonitorService extends Service {
     private ActivityMonitorService self;
     private String previousAppName;
     private PowerManager powerManager;
+    private ScheduledExecutorService scheduler;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        powerManager = ((PowerManager) YonaApplication.getAppContext().getSystemService(Context.POWER_SERVICE));
+        self = this;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        scheduleMethod();
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        scheduler.shutdownNow();
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    private void scheduleMethod() {
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(new Runnable() {
+
+            @Override
+            public void run() {
+                // This method will check for the Running apps after every 5000ms
+                checkRunningApps();
+            }
+        }, 0, AppConstant.FIVE_SECONDS, TimeUnit.MILLISECONDS);
+    }
 
     private static String printForegroundTask(Context context) {
         String currentApp = "NULL";
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
             long time = System.currentTimeMillis();
-            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 1000, time);
+            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - AppConstant.ONE_SECOND * AppConstant.ONE_SECOND, time);
             if (appList != null && appList.size() > 0) {
                 SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
                 for (UsageStats usageStats : appList) {
@@ -64,38 +102,6 @@ public class ActivityMonitorService extends Service {
             currentApp = tasks.get(0).processName;
         }
         return currentApp;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        powerManager = ((PowerManager) YonaApplication.getAppContext().getSystemService(Context.POWER_SERVICE));
-        self = this;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        scheduleMethod();
-        return START_NOT_STICKY;
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    private void scheduleMethod() {
-        // TODO Auto-generated method stub
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new Runnable() {
-
-            @Override
-            public void run() {
-                // This method will check for the Running apps after every 1000ms
-                checkRunningApps();
-            }
-        }, 0, AppConstant.ONE_SECOND, TimeUnit.MILLISECONDS);
     }
 
     private void checkRunningApps() {
@@ -120,7 +126,7 @@ public class ActivityMonitorService extends Service {
     }
 
     private void updateSpentTime(String pkgname) {
-        Log.e("Spending Time", "Spending Time of " + pkgname + ": " + stopWatch.getElapsedTimeMin() + ":" + stopWatch.getElapsedTimeSecs());
+        Log.e("Spending Time", "Spending Time of " + pkgname + ": " + stopWatch.getElapsedTimeMin() + ":" + stopWatch.getElapsedTimeSecs() + "Thread id :" + Thread.currentThread().getId());
     }
 
     @Override
@@ -128,13 +134,6 @@ public class ActivityMonitorService extends Service {
         Log.e("Service", "On Task Removed");
         restartService();
         super.onTaskRemoved(rootIntent);
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.e("Service", "On Destroy");
-        super.onDestroy();
-        restartService();
     }
 
     private void restartService() {

@@ -64,6 +64,11 @@ public interface AppConstant {
      * The constant ONE_SECOND.
      */
     int ONE_SECOND = 1000;
+
+    /**
+     * The constant FIVE_SECONDS.
+     */
+    int FIVE_SECONDS = 5000;
     /**
      * The constant TIME_INTERVAL_ONE.
      */
@@ -87,6 +92,9 @@ public interface AppConstant {
      */
     int PROFILE_ICON_BORDER_SIZE = 5;
 
+    /**
+     * The constant PAGE_SIZE.
+     */
     int PAGE_SIZE = 3;
     /**
      * The constant READ_CONTACTS_PERMISSIONS_REQUEST.
@@ -220,6 +228,9 @@ public interface AppConstant {
      */
     String SUBMIT_PRESSED = "submitPressed";
 
+    /**
+     * The constant YONA_DATE_FORMAT.
+     */
     String YONA_DATE_FORMAT = "yyyy-MM-dd";
 
 }

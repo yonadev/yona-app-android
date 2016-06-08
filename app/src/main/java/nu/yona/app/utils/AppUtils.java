@@ -12,6 +12,8 @@ import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -37,6 +39,8 @@ import java.util.Random;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.receiver.YonaReceiver;
+import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.timepicker.time.Timepoint;
 
@@ -47,6 +51,7 @@ import nu.yona.timepicker.time.Timepoint;
 public class AppUtils {
     private static InputFilter filter;
     private static boolean submitPressed;
+    private static Intent activityMonitorIntent;
 
     /**
      * Gets circle bitmap.
@@ -109,31 +114,43 @@ public class AppUtils {
     }
 
     /**
-     * Is yona service running boolean.
-     *
-     * @param context      the context
-     * @param serviceClass Name of class to check whether running or not.
-     * @return true if service already running else return false
-     */
-    public static boolean isYonaServiceRunning(Context context, Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Start service once user grant permission for application permission (for 5.1+ version)
      *
      * @param context the context
      */
-    public static void startService(Context context) {
-//        if (!AppUtils.isYonaServiceRunning(context, ActivityMonitorService.class)) {
-//            context.startService(new Intent(context, ActivityMonitorService.class));
-//        }
+    private static void startService(Context context) {
+        try {
+            activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
+            context.startService(activityMonitorIntent);
+        } catch (Exception e) {
+            throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
+    }
+
+    /**
+     * Stop service.
+     *
+     * @param context the context
+     */
+    public static void stopService(Context context) {
+        try {
+            if (activityMonitorIntent != null) {
+                context.stopService(activityMonitorIntent);
+                activityMonitorIntent = null;
+            }
+        } catch (Exception e) {
+            throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
+    }
+
+    /**
+     * Restart service.
+     *
+     * @param context the context
+     */
+    public static void restartService(Context context) {
+        stopService(context);
+        startService(context);
     }
 
     /**
@@ -151,6 +168,20 @@ public class AppUtils {
             sb.append(c);
         }
         return sb.toString();
+    }
+
+    /**
+     * This will register receiver for different events like screen on-off, boot, connectivity etc.
+     *
+     * @param context the context
+     */
+    public static void registerReceiver(Context context) {
+        YonaReceiver receiver = new YonaReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+        context.registerReceiver(receiver, filter);
     }
 
     /**

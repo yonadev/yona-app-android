@@ -40,7 +40,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.transition.ChangeBounds;
 import android.transition.Slide;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -104,12 +103,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private int CAMERA_REQUEST = 2;
     private Fragment oldFragment;
 
-    /**
-     * This will register receiver for different events like screen on-off, boot, connectivity etc.
-     */
-    private static void registerReceiver() {
-        YonaApplication.getAppContext().registerReceiver(new YonaReceiver(), new IntentFilter());
-    }
 
     /**
      * Gets activity.
@@ -187,9 +180,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 }
             }, AppConstant.ONE_SECOND);
         } else {
-            AppUtils.startService(this);
+            AppUtils.restartService(this);
         }
-        registerReceiver();
+        AppUtils.registerReceiver(YonaApplication.getAppContext());
     }
 
     @Override
@@ -280,12 +273,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * This will check whether user has given permission or not, if already given, it will start service, if not given, it will ask for permission.
      */
     private void checkPermission() {
-        //As this feature is not yet implemented, commenting, so user don't see any alert during testing.
-//        if (!AppUtils.hasPermission(this)) {
-//            showPermissionAlert();
-//        } else {
-//            AppUtils.startService(this);
-//        }
+//        As this feature is not yet implemented, commenting, so user don't see any alert during testing.
+        if (!AppUtils.hasPermission(this)) {
+            showPermissionAlert();
+        } else {
+            AppUtils.restartService(this);
+        }
     }
 
     @Override
@@ -293,8 +286,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS:
                 if (AppUtils.hasPermission(this)) {
-                    Log.e("Permission", "permission granted.");
-                    AppUtils.startService(this);
+                    AppUtils.restartService(this);
                 } else {
                     checkPermission();
                 }
