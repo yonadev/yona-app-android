@@ -98,6 +98,7 @@
     <string name="screendesc3">Grenzen afspreken en daar anderen in betrekken</string>
     <string name="screendesc4">Controle houden over de tijd die je online bent</string>
     <string name="urlnotfound">Url Not found.</string>
+    <string name="dataparseerror">Data Parsing error.</string>
     <string name="challengesnogosubText">Vermijd %1$s gerelateerde content</string>
     <string name="challengestimzoesubtext">Timeslot %1$s</string>
     <string name="challengesbudgetsubtext">Je kunt per dag %1$s minuten %2$s</string>

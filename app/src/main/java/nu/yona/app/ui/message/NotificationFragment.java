@@ -44,7 +44,6 @@ import nu.yona.app.utils.AppConstant;
 public class NotificationFragment extends BaseFragment {
 
     private static final int PAGE_SIZE = 20;
-    private List<YonaMessage> listYonaMsgs;
     private RecyclerView mMessageRecyclerView;
     private MessageStickyRecyclerAdapter mMessageStickyRecyclerAdapter;
     private YonaMessages mYonaMessages;
@@ -142,11 +141,10 @@ public class NotificationFragment extends BaseFragment {
 
         setupToolbar(view);
 
-        listYonaMsgs = new ArrayList<>();
         mMessageRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
         mMessageRecyclerView.setLayoutManager(mLayoutManager);
-        mMessageStickyRecyclerAdapter = new MessageStickyRecyclerAdapter(listYonaMsgs, YonaActivity.getActivity(), onFriendsItemClickListener);
+        mMessageStickyRecyclerAdapter = new MessageStickyRecyclerAdapter(new ArrayList<YonaMessage>(), YonaActivity.getActivity(), onFriendsItemClickListener);
         //mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(YonaActivity.getActivity()));
         mMessageRecyclerView.setAdapter(mMessageStickyRecyclerAdapter);
         mMessageRecyclerView.addOnScrollListener(mRecyclerViewOnScrollListener);
