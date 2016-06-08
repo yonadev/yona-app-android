@@ -113,5 +113,8 @@ public interface AuthenticateManager {
      */
     void deleteUser(final DataLoadListener listener);
 
+    /**
+     * Gets user from server.
+     */
     void getUserFromServer();
 }

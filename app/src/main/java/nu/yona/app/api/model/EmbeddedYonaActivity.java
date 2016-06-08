@@ -77,10 +77,20 @@ public class EmbeddedYonaActivity {
         this.page = page;
     }
 
+    /**
+     * Gets day activity list.
+     *
+     * @return the day activity list
+     */
     public List<DayActivity> getDayActivityList() {
         return this.dayActivityList;
     }
 
+    /**
+     * Sets day activity list.
+     *
+     * @param dayActivityList the day activity list
+     */
     public void setDayActivityList(List<DayActivity> dayActivityList) {
         this.dayActivityList = dayActivityList;
     }

@@ -179,18 +179,38 @@ public class DayActivity {
         this.totalMinutesBeyondGoal = totalMinutesBeyondGoal;
     }
 
+    /**
+     * Gets yona goal.
+     *
+     * @return the yona goal
+     */
     public YonaGoal getYonaGoal() {
         return this.yonaGoal;
     }
 
+    /**
+     * Sets yona goal.
+     *
+     * @param yonaGoal the yona goal
+     */
     public void setYonaGoal(YonaGoal yonaGoal) {
         this.yonaGoal = yonaGoal;
     }
 
+    /**
+     * Gets chart type enum.
+     *
+     * @return the chart type enum
+     */
     public ChartTypeEnum getChartTypeEnum() {
         return this.chartTypeEnum;
     }
 
+    /**
+     * Sets chart type enum.
+     *
+     * @param chartTypeEnum the chart type enum
+     */
     public void setChartTypeEnum(ChartTypeEnum chartTypeEnum) {
         this.chartTypeEnum = chartTypeEnum;
     }

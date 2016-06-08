@@ -19,11 +19,9 @@ public class YonaReceiver extends BroadcastReceiver {
         switch (intent.getAction()) {
             case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_SCREEN_ON:
-                Log.e("REStart Service", "ReStart service");
                 restartService(context);
                 break;
             case Intent.ACTION_SCREEN_OFF:
-                Log.e("Stop Service", "Stop service");
                 AppUtils.stopService(context);
                 break;
         }

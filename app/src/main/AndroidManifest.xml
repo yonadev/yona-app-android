@@ -99,14 +99,8 @@
         <receiver android:name=".api.receiver.YonaReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.SCREEN_ON" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF" />
             </intent-filter>
         </receiver>

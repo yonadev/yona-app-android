@@ -127,6 +127,11 @@ public class AppUtils {
         }
     }
 
+    /**
+     * Stop service.
+     *
+     * @param context the context
+     */
     public static void stopService(Context context) {
         try {
             if (activityMonitorIntent != null) {
@@ -138,6 +143,11 @@ public class AppUtils {
         }
     }
 
+    /**
+     * Restart service.
+     *
+     * @param context the context
+     */
     public static void restartService(Context context) {
         stopService(context);
         startService(context);
@@ -162,6 +172,8 @@ public class AppUtils {
 
     /**
      * This will register receiver for different events like screen on-off, boot, connectivity etc.
+     *
+     * @param context the context
      */
     public static void registerReceiver(Context context) {
         YonaReceiver receiver = new YonaReceiver();

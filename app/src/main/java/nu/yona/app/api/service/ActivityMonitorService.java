@@ -75,7 +75,7 @@ public class ActivityMonitorService extends Service {
 
             @Override
             public void run() {
-                // This method will check for the Running apps after every 10000ms
+                // This method will check for the Running apps after every 5000ms
                 checkRunningApps();
             }
         }, 0, AppConstant.FIVE_SECONDS, TimeUnit.MILLISECONDS);

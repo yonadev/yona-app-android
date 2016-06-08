@@ -18,12 +18,17 @@ import nu.yona.app.ui.ChartItemHolder;
 /**
  * Created by kinnarvasa on 07/06/16.
  */
-
 public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
 
     private List<DayActivity> dayActivityList;
     private View.OnClickListener listener;
 
+    /**
+     * Instantiates a new Per day sticky adapter.
+     *
+     * @param chartItem the chart item
+     * @param listener  the listener
+     */
     public PerDayStickyAdapter(List<DayActivity> chartItem, View.OnClickListener listener) {
         this.dayActivityList = chartItem;
         this.listener = listener;
@@ -64,6 +69,12 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
         return dayActivityList.get(position).getChartTypeEnum().getId();
     }
 
+    /**
+     * Gets item.
+     *
+     * @param position the position
+     * @return the item
+     */
     public Object getItem(int position) {
         return dayActivityList.get(position);
     }
