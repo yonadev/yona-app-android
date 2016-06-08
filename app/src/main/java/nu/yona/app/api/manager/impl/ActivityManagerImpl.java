@@ -12,14 +12,34 @@ package nu.yona.app.api.manager.impl;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.ActivityManager;
 import nu.yona.app.api.manager.network.ActivityNetworkImpl;
+import nu.yona.app.api.model.ActivityCategories;
+import nu.yona.app.api.model.DayActivity;
+import nu.yona.app.api.model.Embedded;
+import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.YonaActivityCategories;
+import nu.yona.app.api.model.YonaDayActivityOverview;
+import nu.yona.app.api.model.YonaGoal;
+import nu.yona.app.enums.ChartTypeEnum;
+import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.DateUtility;
 
 /**
  * Created by kinnarvasa on 06/06/16.
@@ -154,16 +174,21 @@ public class ActivityManagerImpl implements ActivityManager {
 
     private void getDailyActivity(String url, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
-            activityNetwork.getBuddyDaysActivity(url, YonaApplication.getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
+            activityNetwork.getDaysActivity(url, YonaApplication.getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    listener.onDataLoad(result);
+                    if (result instanceof EmbeddedYonaActivity) {
+                        filterAndUpdateDailyData((EmbeddedYonaActivity) result, listener);
+                    } else {
+                        listener.onError(new ErrorMessage(mContext.getString(R.string.dataparseerror)));
+                    }
                 }
 
                 @Override
                 public void onError(Object errorMessage) {
                     if (errorMessage instanceof ErrorMessage) {
                         listener.onError(errorMessage);
+
                     } else {
                         listener.onError(new ErrorMessage(errorMessage.toString()));
                     }
@@ -172,5 +197,67 @@ public class ActivityManagerImpl implements ActivityManager {
         } catch (Exception e) {
             AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
+    }
+
+    private void filterAndUpdateDailyData(EmbeddedYonaActivity embeddedYonaActivity, DataLoadListener listener) {
+        List<DayActivity> dayActivities = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_DATE_FORMAT, Locale.getDefault());
+        if (embeddedYonaActivity != null && embeddedYonaActivity.getEmbedded() != null) {
+            Embedded embedded = embeddedYonaActivity.getEmbedded();
+            List<YonaDayActivityOverview> yonaDayActivityOverviews = embedded.getYonaDayActivityOverviews();
+            for (YonaDayActivityOverview overview : yonaDayActivityOverviews) {
+                List<DayActivity> overviewDayActivities = overview.getDayActivities();
+                for (DayActivity activity : overviewDayActivities) {
+                    activity.setYonaGoal(findYonaGoal(activity.getLinks().getYonaGoal()));
+                    if (activity.getYonaGoal() != null) {
+                        if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.BUDGET_GOAL) {
+                            activity.setChartTypeEnum(ChartTypeEnum.TIME_BUCKET_CONTROL);
+                        } else if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.TIME_ZONE_GOAL) {
+                            activity.setChartTypeEnum(ChartTypeEnum.TIME_FRAME_CONTROL);
+                        }
+                    }
+                    String createdTime = overview.getDate();
+                    try {
+                        Calendar futureCalendar = Calendar.getInstance();
+                        futureCalendar.setTime(sdf.parse(createdTime));
+                        activity.setStickyTitle(DateUtility.getRelativeDate(futureCalendar));
+                    } catch (Exception e) {
+                        Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+                    }
+                    dayActivities.add(activity);
+                }
+            }
+            embeddedYonaActivity.setDayActivityList(dayActivities);
+            listener.onDataLoad(embeddedYonaActivity);
+        }
+    }
+
+    private YonaGoal findYonaGoal(Href goalHref) {
+        if (YonaApplication.getUser() != null && YonaApplication.getUser().getEmbedded() != null
+                && YonaApplication.getUser().getEmbedded().getYonaGoals() != null
+                && YonaApplication.getUser().getEmbedded().getYonaGoals().getEmbedded() != null
+                && YonaApplication.getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null) {
+            List<YonaGoal> yonaGoals = YonaApplication.getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
+            for (YonaGoal goal : yonaGoals) {
+                if (goal.getLinks().getSelf().getHref().equals(goalHref.getHref())) {
+                    goal.setActivityCategoryName(getActivityCategory(goal));
+                    return goal;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String getActivityCategory(YonaGoal goal) {
+        ActivityCategories categories = APIManager.getInstance().getActivityCategoryManager().getListOfActivityCategories();
+        if (categories != null) {
+            List<YonaActivityCategories> categoriesList = categories.getEmbeddedActivityCategories().getYonaActivityCategories();
+            for (YonaActivityCategories yonaActivityCategories : categoriesList) {
+                if (yonaActivityCategories.get_links().getSelf().getHref().equals(goal.getLinks().getYonaActivityCategory().getHref())) {
+                    return yonaActivityCategories.getName();
+                }
+            }
+        }
+        return null;
     }
 }

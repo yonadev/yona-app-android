@@ -87,6 +87,7 @@ public interface AppConstant {
      */
     int PROFILE_ICON_BORDER_SIZE = 5;
 
+    int PAGE_SIZE = 3;
     /**
      * The constant READ_CONTACTS_PERMISSIONS_REQUEST.
      */
@@ -218,4 +219,7 @@ public interface AppConstant {
      * The constant SUBMIT_PRESSED.
      */
     String SUBMIT_PRESSED = "submitPressed";
+
+    String YONA_DATE_FORMAT = "yyyy-MM-dd";
+
 }
