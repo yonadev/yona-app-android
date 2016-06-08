@@ -64,6 +64,8 @@ public interface AppConstant {
      * The constant ONE_SECOND.
      */
     int ONE_SECOND = 1000;
+
+    int FIVE_SECONDS = 5000;
     /**
      * The constant TIME_INTERVAL_ONE.
      */
