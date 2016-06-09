@@ -237,10 +237,20 @@ public class DayActivity {
         this.stickyTitle = stickyTitle;
     }
 
+    /**
+     * Gets time zone spread.
+     *
+     * @return the time zone spread
+     */
     public List<TimeZoneSpread> getTimeZoneSpread() {
         return this.timeZoneSpread;
     }
 
+    /**
+     * Sets time zone spread.
+     *
+     * @param timeZoneSpread the time zone spread
+     */
     public void setTimeZoneSpread(List<TimeZoneSpread> timeZoneSpread) {
         this.timeZoneSpread = timeZoneSpread;
     }

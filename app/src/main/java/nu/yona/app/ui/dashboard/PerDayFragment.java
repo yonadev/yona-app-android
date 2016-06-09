@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,16 +56,20 @@ public class PerDayFragment extends BaseFragment {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            if (dy > 0) {
-                int visibleItemCount = mLayoutManager.getChildCount();
-                int totalItemCount = mLayoutManager.getItemCount();
-                int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+            try {
+                if (dy > 0) {
+                    int visibleItemCount = mLayoutManager.getChildCount();
+                    int totalItemCount = mLayoutManager.getItemCount();
+                    int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
 
-                if (!mIsLoading && currentPage < embeddedYonaActivity.getEmbedded().getPage().getTotalPages()) {
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
-                        loadMoreItems();
+                    if (!mIsLoading && currentPage < embeddedYonaActivity.getEmbedded().getPage().getTotalPages()) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
+                            loadMoreItems();
+                        }
                     }
                 }
+            } catch (Exception e) {
+                Log.e(PerDayFragment.class.getSimpleName(), e.getMessage());
             }
         }
     };

@@ -57,6 +57,13 @@ public class DateUtility {
         return relativeDate.toUpperCase();
     }
 
+    /**
+     * Gets retrive week.
+     *
+     * @param week the week
+     * @return the retrive week
+     * @throws ParseException the parse exception
+     */
     public static String getRetriveWeek(String week) throws ParseException {
         String retriveWeek = "";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-'W'ww");

@@ -98,10 +98,20 @@ public class EmbeddedYonaActivity {
         this.dayActivityList = dayActivityList;
     }
 
+    /**
+     * Gets week activity list.
+     *
+     * @return the week activity list
+     */
     public List<WeekActivity> getWeekActivityList() {
         return this.weekActivityList;
     }
 
+    /**
+     * Sets week activity list.
+     *
+     * @param weekActivityList the week activity list
+     */
     public void setWeekActivityList(List<WeekActivity> weekActivityList) {
         this.weekActivityList = weekActivityList;
     }

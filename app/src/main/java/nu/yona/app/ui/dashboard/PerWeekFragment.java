@@ -154,9 +154,9 @@ public class PerWeekFragment extends BaseFragment {
             @Override
             public void onDataLoad(Object result) {
                 YonaActivity.getActivity().showLoadingView(false, null);
-                if (isAdded() && result != null && result instanceof EmbeddedYonaActivity) {
+                if (isAdded() && result instanceof EmbeddedYonaActivity) {
                     embeddedYonaActivity = (EmbeddedYonaActivity) result;
-                    if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getWeekActivityList() != null) {
+                    if (embeddedYonaActivity.getWeekActivityList() != null) {
                         if (mIsLoading) {
                             perWeekStickyAdapter.updateData(embeddedYonaActivity.getWeekActivityList());
                         } else {
