@@ -52,6 +52,9 @@ public class DayActivity {
     @SerializedName("@stickyTitle")
     @Expose
     private String stickyTitle;
+    @SerializedName("@TimeZoneSpread")
+    @Expose
+    private List<TimeZoneSpread> timeZoneSpread;
 
     /**
      * Gets date.
@@ -232,5 +235,13 @@ public class DayActivity {
      */
     public void setStickyTitle(String stickyTitle) {
         this.stickyTitle = stickyTitle;
+    }
+
+    public List<TimeZoneSpread> getTimeZoneSpread() {
+        return this.timeZoneSpread;
+    }
+
+    public void setTimeZoneSpread(List<TimeZoneSpread> timeZoneSpread) {
+        this.timeZoneSpread = timeZoneSpread;
     }
 }
