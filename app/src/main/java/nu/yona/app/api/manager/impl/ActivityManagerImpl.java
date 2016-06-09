@@ -36,9 +36,11 @@ import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.TimeZoneSpread;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaDayActivityOverview;
 import nu.yona.app.api.model.YonaGoal;
+import nu.yona.app.customview.graph.GraphUtils;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
@@ -54,6 +56,7 @@ public class ActivityManagerImpl implements ActivityManager {
     private final ActivityNetworkImpl activityNetwork;
     private final ActivityTrackerDAO activityTrackerDAO;
     private final Context mContext;
+    private final int maxSpreadTime = 15;
 
     /**
      * Instantiates a new Activity manager.
@@ -279,7 +282,7 @@ public class ActivityManagerImpl implements ActivityManager {
                     } catch (Exception e) {
                         Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
                     }
-                    dayActivities.add(activity);
+                    dayActivities.add(generateTimeZoneSpread(activity));
                 }
             }
             embeddedYonaActivity.setDayActivityList(dayActivities);
@@ -314,5 +317,53 @@ public class ActivityManagerImpl implements ActivityManager {
             }
         }
         return null;
+    }
+
+    private DayActivity generateTimeZoneSpread(DayActivity activity) {
+
+        if (activity.getSpread() != null && activity.getYonaGoal() != null && activity.getYonaGoal().getSpreadCells() != null) {
+            List<Integer> spreadsList = activity.getSpread();
+            List<Integer> spreadCellsList = activity.getYonaGoal().getSpreadCells();
+            List<TimeZoneSpread> timeZoneSpreadList = new ArrayList<>();
+            for (int i = 0; i < spreadsList.size(); i++) {
+                setTimeZoneSpread(i, spreadsList.get(i), timeZoneSpreadList, spreadCellsList.contains(i));
+            }
+            activity.setTimeZoneSpread(timeZoneSpreadList);
+        }
+        return activity;
+    }
+
+    private void setTimeZoneSpread(int index, int spreadListValue, List<TimeZoneSpread> timeZoneSpreadList, boolean allowed) {
+        TimeZoneSpread timeZoneSpread = new TimeZoneSpread();
+        timeZoneSpread.setIndex(index);
+        timeZoneSpread.setAllowed(allowed);
+        if (spreadListValue > 0) {
+            if (allowed) {
+                timeZoneSpread.setColor(GraphUtils.COLOR_BLUE);
+            } else {
+                timeZoneSpread.setColor(GraphUtils.COLOR_PINK);
+            }
+            timeZoneSpread.setUsedValue(spreadListValue); // ex. set 10 min as blue used during allowed time.
+            timeZoneSpreadList.add(timeZoneSpread);
+            //Now create remaining time's other object:
+            if (spreadListValue < maxSpreadTime) {
+                TimeZoneSpread secondSpread = new TimeZoneSpread();
+                secondSpread.setIndex(index);
+                secondSpread.setAllowed(allowed);
+                timeZoneSpreadList.add(addToArray(allowed, secondSpread, maxSpreadTime - spreadListValue));
+            }
+        } else {
+            timeZoneSpreadList.add(addToArray(allowed, timeZoneSpread, maxSpreadTime - spreadListValue));
+        }
+    }
+
+    private TimeZoneSpread addToArray(boolean allowed, TimeZoneSpread timeZoneSpread, int usage) {
+        if (allowed) {
+            timeZoneSpread.setColor(GraphUtils.COLOR_GREEN);
+        } else {
+            timeZoneSpread.setColor(GraphUtils.COLOR_WHITE_THREE);
+        }
+        timeZoneSpread.setUsedValue(usage); // out of 15 mins, if 10 min used, so here we need to show 5 min as green
+        return timeZoneSpread;
     }
 }

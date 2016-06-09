@@ -38,6 +38,9 @@ public class YonaGoal extends BaseEntity {
     @SerializedName("zones")
     @Expose
     private List<String> zones = new ArrayList<>();
+    @SerializedName("spreadCells")
+    @Expose
+    private List<Integer> spreadCells = new ArrayList<Integer>();
 
     /**
      * Gets links.
@@ -132,5 +135,13 @@ public class YonaGoal extends BaseEntity {
     @Override
     public ContentValues getDbContentValues() {
         return null;
+    }
+
+    public List<Integer> getSpreadCells() {
+        return this.spreadCells;
+    }
+
+    public void setSpreadCells(List<Integer> spreadCells) {
+        this.spreadCells = spreadCells;
     }
 }
