@@ -10,6 +10,7 @@ package nu.yona.app.utils;
 
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,7 +54,30 @@ public class DateUtility {
             }
         }
 
-        return relativeDate;
+        return relativeDate.toUpperCase();
+    }
+
+    public static String getRetriveWeek(String week) throws ParseException {
+        String retriveWeek = "";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-'W'ww");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
+        if (format.format(new Date()).equals(week)) {
+            retriveWeek = YonaApplication.getAppContext().getString(R.string.this_week);
+        } else if (format.format(calendar.getTime()).equals(week)) {
+            retriveWeek = YonaApplication.getAppContext().getString(R.string.last_week);
+        } else {
+            calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+            Date date = format.parse(week);
+            calendar.setTime(date);
+            Date startDate = calendar.getTime();
+            calendar.add(Calendar.DAY_OF_MONTH, 6);
+            Date endDate = calendar.getTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM");
+            retriveWeek = sdf.format(startDate) + " - " + sdf.format(endDate);
+        }
+        return retriveWeek.toUpperCase();
     }
 
     /**

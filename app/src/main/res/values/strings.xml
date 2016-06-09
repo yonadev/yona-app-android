@@ -133,6 +133,8 @@
     <string name="delete">Verwijder</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="this_week">This Week</string>
+    <string name="last_week">Last Week</string>
     <string name="buddyconnectrequested">Vriendenverzoek</string>
     <string name="buddyresponserejected">Vriendenverzoek geweigerd</string>
     <string name="buddyresponseaccepted">Vriendenverzoek geaccepteerd</string>

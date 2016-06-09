@@ -16,6 +16,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.yona.app.enums.ChartTypeEnum;
+
 /**
  * Created by kinnarvasa on 06/06/16.
  */
@@ -38,6 +40,15 @@ public class WeekActivity {
     @SerializedName("_links")
     @Expose
     private Links links;
+    @SerializedName("yonaGoal")
+    @Expose
+    private YonaGoal yonaGoal;
+    @SerializedName("chartTypeEnum")
+    @Expose
+    private ChartTypeEnum chartTypeEnum;
+    @SerializedName("@stickyTitle")
+    @Expose
+    private String stickyTitle;
 
     /**
      * Gets date.
@@ -145,6 +156,61 @@ public class WeekActivity {
      */
     public void setLinks(Links links) {
         this.links = links;
+    }
+
+    /**
+     * Gets yona goal.
+     *
+     * @return the yona goal
+     */
+    public YonaGoal getYonaGoal() {
+        return this.yonaGoal;
+    }
+
+    /**
+     * Sets yona goal.
+     *
+     * @param yonaGoal the yona goal
+     */
+    public void setYonaGoal(YonaGoal yonaGoal) {
+        this.yonaGoal = yonaGoal;
+    }
+
+    /**
+     * Gets chart type enum.
+     *
+     * @return the chart type enum
+     */
+    public ChartTypeEnum getChartTypeEnum() {
+        return this.chartTypeEnum;
+    }
+
+    /**
+     * Sets chart type enum.
+     *
+     * @param chartTypeEnum the chart type enum
+     */
+    public void setChartTypeEnum(ChartTypeEnum chartTypeEnum) {
+        this.chartTypeEnum = chartTypeEnum;
+    }
+
+
+    /**
+     * Get Sticky Title
+     *
+     * @return sticky title
+     */
+    public String getStickyTitle() {
+        return stickyTitle;
+    }
+
+    /**
+     * Set Sticky Title
+     *
+     * @param stickyTitle the sticky title
+     */
+    public void setStickyTitle(String stickyTitle) {
+        this.stickyTitle = stickyTitle;
     }
 
 }
