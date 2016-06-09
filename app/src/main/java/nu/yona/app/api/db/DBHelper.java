@@ -23,6 +23,15 @@ class DBHelper {
     private final String FIELD_REAL_WITHOUT_COMMA = " REAL";
     private final String FIELD_TEXT = " TEXT,";
     private final String FIELD_TEXT_WITHOUT_COMMA = " TEXT";
+    /**
+     * The Table activity tracker.
+     */
+    public final String TABLE_ACTIVITY_TRACKER = CREATE_TABLE_IF_NOT_EXISTS + DBConstant.TBL_ACTIVITY_TRACKER
+            + "("
+            + DBConstant.APPLICATION_NAME + FIELD_TEXT
+            + DBConstant.APPLICATION_START_TIME + FIELD_TEXT
+            + DBConstant.APPLICATION_END_TIME + FIELD_TEXT_WITHOUT_COMMA
+            + ")";
     private final String FIELD_BLOB = " BLOB,";
     private final String FIELD_BOOLEAN = " BOOLEAN,";
     private final String FIELD_BOOLEAN_WITHOUT_COMMA = " BOOLEAN";

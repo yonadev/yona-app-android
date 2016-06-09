@@ -61,6 +61,21 @@ public enum ChartTypeEnum {
     }
 
     /**
+     * Gets chart type enum.
+     *
+     * @param id the id
+     * @return the chart type enum
+     */
+    public static ChartTypeEnum getChartTypeEnum(int id) {
+        for (ChartTypeEnum v : values()) {
+            if (v.getId() == id) {
+                return v;
+            }
+        }
+        return NONE_NONE;
+    }
+
+    /**
      * Gets id.
      *
      * @return the id
@@ -76,20 +91,5 @@ public enum ChartTypeEnum {
      */
     public String getChartType() {
         return this.chartType;
-    }
-
-    /**
-     * Gets chart type enum.
-     *
-     * @param id the id
-     * @return the chart type enum
-     */
-    public static ChartTypeEnum getChartTypeEnum(int id) {
-        for (ChartTypeEnum v : values()) {
-            if (v.getId() == id) {
-                return v;
-            }
-        }
-        return NONE_NONE;
     }
 }

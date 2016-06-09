@@ -10,6 +10,7 @@
 
 package nu.yona.app.api.manager.network;
 
+import nu.yona.app.api.model.AppActivity;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.WeekActivity;
@@ -83,6 +84,22 @@ public class ActivityNetworkImpl extends BaseImpl {
     public void getWeeksDetailActivity(String url, String yonaPassword, DataLoadListener listener) {
         try {
             getRestApi().getWeekDetailActivity(url, yonaPassword).enqueue(getweekDetailActivity(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    /**
+     * Post app activity.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @param appActivity  the app activity
+     * @param listener     the listener
+     */
+    public void postAppActivity(String url, String yonaPassword, AppActivity appActivity, DataLoadListener listener) {
+        try {
+            getRestApi().postAppActivity(url, yonaPassword, appActivity).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

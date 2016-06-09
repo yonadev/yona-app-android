@@ -9,7 +9,6 @@
 package nu.yona.app.utils;
 
 import android.annotation.TargetApi;
-import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;

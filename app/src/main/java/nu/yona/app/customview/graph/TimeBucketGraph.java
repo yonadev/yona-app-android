@@ -41,24 +41,50 @@ public class TimeBucketGraph extends View {
     private float scaleFactor;
 
 
+    /**
+     * Instantiates a new Time bucket graph.
+     *
+     * @param context the context
+     */
     public TimeBucketGraph(Context context) {
         super(context);
         this.mContext = context;
         initialize();
     }
 
+    /**
+     * Instantiates a new Time bucket graph.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public TimeBucketGraph(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
         initialize();
     }
 
+    /**
+     * Instantiates a new Time bucket graph.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     */
     public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initialize();
     }
 
+    /**
+     * Instantiates a new Time bucket graph.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     * @param defStyleRes  the def style res
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -67,6 +93,9 @@ public class TimeBucketGraph extends View {
     }
 
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -79,9 +108,11 @@ public class TimeBucketGraph extends View {
     }
 
     /**
-     * @param totalActivityBeyondGoal
-     * @param totalMinTarget
-     * @param totalActivityDurationMinutes
+     * Graph arguments.
+     *
+     * @param totalActivityBeyondGoal      the total activity beyond goal
+     * @param totalMinTarget               the total min target
+     * @param totalActivityDurationMinutes the total activity duration minutes
      */
     public void graphArguments(int totalActivityBeyondGoal, int totalMinTarget, int totalActivityDurationMinutes) {
         mTotalActivityBeyondGoal = totalActivityBeyondGoal;

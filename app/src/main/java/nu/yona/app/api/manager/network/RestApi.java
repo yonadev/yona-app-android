@@ -12,6 +12,7 @@ package nu.yona.app.api.manager.network;
 
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.AddBuddy;
+import nu.yona.app.api.model.AppActivity;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.Goals;
@@ -379,4 +380,18 @@ public interface RestApi {
     @GET
     Call<WeekActivity> getWeekDetailActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
     /******** ACTIVITY ************/
+
+    /********
+     * APP ACTIVITY
+     *
+     * @param url      the url
+     * @param password the password
+     * @param activity the activity
+     * @return the call
+     */
+    @POST
+    Call<Void> postAppActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body AppActivity activity);
+    /******** APP ACTIVITY ************/
+
+
 }

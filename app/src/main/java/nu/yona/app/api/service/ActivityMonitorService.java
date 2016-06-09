@@ -21,8 +21,8 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
+import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -31,6 +31,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.utils.AppConstant;
 
 /**
@@ -38,11 +39,36 @@ import nu.yona.app.utils.AppConstant;
  */
 public class ActivityMonitorService extends Service {
 
+    private static String currentApp;
     private final Stopwatch stopWatch = new Stopwatch();
     private ActivityMonitorService self;
     private String previousAppName;
     private PowerManager powerManager;
     private ScheduledExecutorService scheduler;
+    private Date startTime, endTime;
+
+    private static String printForegroundTask(Context context) {
+        currentApp = "NULL";
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+            long time = System.currentTimeMillis();
+            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - AppConstant.ONE_SECOND * AppConstant.ONE_SECOND, time);
+            if (appList != null && appList.size() > 0) {
+                SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
+                for (UsageStats usageStats : appList) {
+                    mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
+                }
+                if (!mySortedMap.isEmpty()) {
+                    currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+                }
+            }
+        } else {
+            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> tasks = am.getRunningAppProcesses();
+            currentApp = tasks.get(0).processName;
+        }
+        return currentApp;
+    }
 
     @Override
     public void onCreate() {
@@ -59,6 +85,8 @@ public class ActivityMonitorService extends Service {
 
     @Override
     public void onDestroy() {
+        endTime = new Date();
+        updateOnServer(previousAppName);
         super.onDestroy();
         scheduler.shutdownNow();
     }
@@ -81,57 +109,37 @@ public class ActivityMonitorService extends Service {
         }, 0, AppConstant.FIVE_SECONDS, TimeUnit.MILLISECONDS);
     }
 
-    private static String printForegroundTask(Context context) {
-        String currentApp = "NULL";
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-            long time = System.currentTimeMillis();
-            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - AppConstant.ONE_SECOND * AppConstant.ONE_SECOND, time);
-            if (appList != null && appList.size() > 0) {
-                SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
-                for (UsageStats usageStats : appList) {
-                    mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
-                }
-                if (!mySortedMap.isEmpty()) {
-                    currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
-                }
-            }
-        } else {
-            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningAppProcessInfo> tasks = am.getRunningAppProcesses();
-            currentApp = tasks.get(0).processName;
-        }
-        return currentApp;
-    }
-
     private void checkRunningApps() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH && !powerManager.isInteractive()) {
+            endTime = new Date();
             stopWatch.stop();
+            updateOnServer(previousAppName);
             return;
         }
-        String apppackagename = printForegroundTask(self);
+        final String apppackagename = printForegroundTask(self);
         if (stopWatch.isStarted()) {
-            if (previousAppName.equalsIgnoreCase(apppackagename)) {
-                updateSpentTime(apppackagename);
-            } else {
+            if (!previousAppName.equalsIgnoreCase(apppackagename)) {
+                endTime = new Date();
+                updateOnServer(previousAppName);
+                //once updated on server, start new tracking again.
                 previousAppName = apppackagename;
                 stopWatch.stop();
+                startTime = new Date();
                 stopWatch.start();
-                updateSpentTime(apppackagename);
-            }
+            }//else if both are same package, we don't need to track.
         } else {
+            startTime = new Date();
             stopWatch.start();
             previousAppName = apppackagename;
         }
     }
 
-    private void updateSpentTime(String pkgname) {
-        Log.e("Spending Time", "Spending Time of " + pkgname + ": " + stopWatch.getElapsedTimeMin() + ":" + stopWatch.getElapsedTimeSecs() + "Thread id :" + Thread.currentThread().getId());
+    private void updateOnServer(String pkgname) {
+        APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Log.e("Service", "On Task Removed");
         restartService();
         super.onTaskRemoved(rootIntent);
     }

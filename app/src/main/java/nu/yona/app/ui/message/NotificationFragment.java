@@ -22,7 +22,6 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.api.manager.APIManager;
