@@ -17,15 +17,20 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.ActivityManager;
+import nu.yona.app.api.manager.dao.ActivityTrackerDAO;
 import nu.yona.app.api.manager.network.ActivityNetworkImpl;
+import nu.yona.app.api.model.Activity;
 import nu.yona.app.api.model.ActivityCategories;
+import nu.yona.app.api.model.AppActivity;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -47,6 +52,7 @@ import nu.yona.app.utils.DateUtility;
 public class ActivityManagerImpl implements ActivityManager {
 
     private final ActivityNetworkImpl activityNetwork;
+    private final ActivityTrackerDAO activityTrackerDAO;
     private final Context mContext;
 
     /**
@@ -56,6 +62,7 @@ public class ActivityManagerImpl implements ActivityManager {
      */
     public ActivityManagerImpl(Context context) {
         activityNetwork = new ActivityNetworkImpl();
+        activityTrackerDAO = new ActivityTrackerDAO(DatabaseHelper.getInstance(context));
         mContext = context;
     }
 
@@ -144,6 +151,54 @@ public class ActivityManagerImpl implements ActivityManager {
                 }
             }
         });
+    }
+
+    public void postActivityToDB(String applicationName, Date startDate, Date endDate) {
+        try {
+            activityTrackerDAO.saveActivities(getAppActivity(applicationName, startDate, endDate));
+        } catch (Exception e) {
+            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
+    }
+
+    private void postActivityOnServer(final AppActivity activity, final boolean fromDB) {
+        activityNetwork.postAppActivity(YonaApplication.getUser().getLinks().getYonaAppActivity().getHref(),
+                YonaApplication.getYonaPassword(), activity, new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        //on success nothing to do, as it is posted on server.
+                        if (fromDB) {
+                            activityTrackerDAO.clearActivities();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+                        //on failure, we need to store data in database to resend next time.
+                        if (!fromDB) {
+                            activityTrackerDAO.saveActivities(activity.getActivities());
+                        }
+                    }
+                });
+    }
+
+    public void postAllDBActivities() {
+        List<Activity> activityList = activityTrackerDAO.getActivities();
+        if (activityList != null) {
+            AppActivity appActivity = new AppActivity();
+            appActivity.setDeviceDateTime(DateUtility.getLongFormatDate(new Date()));
+            appActivity.setActivities(activityList);
+            postActivityOnServer(appActivity, true);
+        }
+
+    }
+
+    private Activity getAppActivity(String applicationName, Date startDate, Date endDate) {
+        Activity activity = new Activity();
+        activity.setApplication(applicationName);
+        activity.setStartTime(DateUtility.getLongFormatDate(startDate));
+        activity.setEndTime(DateUtility.getLongFormatDate(endDate));
+        return activity;
     }
 
     private void getWeeksActivity(String url, int itemsPerPage, int pageNo, final DataLoadListener listener) {

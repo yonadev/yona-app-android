@@ -18,7 +18,6 @@ import java.util.List;
 import nu.yona.app.api.db.DbSerializer;
 import nu.yona.app.api.db.JsonSerializer;
 import nu.yona.app.api.model.BaseEntity;
-import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoader;
 import nu.yona.app.utils.AppUtils;
 
@@ -101,28 +100,25 @@ class BaseDAO {
      *
      * @param tableName the table name
      * @param items     the items
-     * @param listener  the listener
      */
-    protected void bulkInsert(final String tableName, final List<? extends BaseEntity> items, final DataLoadListener listener) {
+    protected void bulkInsert(final String tableName, final List<? extends BaseEntity> items) {
         try {
-
             new DataLoader() {
                 @Override
                 public Object doDBCall() {
                     SQLiteDatabase db = mOpenHelper.getWritableDatabase();
                     db.beginTransaction();
-                    db.delete(tableName, null, null);
                     for (BaseEntity q : items) {
                         db.insert(tableName, null, q.getDbContentValues());
                     }
                     db.setTransactionSuccessful();
                     db.endTransaction();
-                    listener.onDataLoad(null);
+                    db.close();
                     return null;
                 }
             }.executeAsync();
         } catch (Exception e) {
-            AppUtils.throwException(BaseDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.throwException(BaseDAO.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 }

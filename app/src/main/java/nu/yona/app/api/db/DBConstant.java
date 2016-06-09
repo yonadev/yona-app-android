@@ -38,6 +38,11 @@ public interface DBConstant {
      * The constant TBL_GOAL.
      */
     String TBL_GOAL = "goal";
+
+    /**
+     * The constant TBL_ACTIVITY_TRACKER.
+     */
+    String TBL_ACTIVITY_TRACKER = "activityTracker";
     /** DB TABLES **/
 
     /**
@@ -48,5 +53,19 @@ public interface DBConstant {
      * The constant SOURCE_OBJECT.
      */
     String SOURCE_OBJECT = "sourceObject";
-    /** DB Fields **/
+    /**
+     * DB Fields
+     */
+
+    String APPLICATION_NAME = "applicationName";
+
+    /**
+     * The constant APPLICATION_START_TIME.
+     */
+    String APPLICATION_START_TIME = "applicationStartTime";
+
+    /**
+     * The constant APPLICATION_END_TIME.
+     */
+    String APPLICATION_END_TIME = "applicationEndTime";
 }

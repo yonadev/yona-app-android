@@ -229,8 +229,12 @@ public interface AppConstant {
     String SUBMIT_PRESSED = "submitPressed";
 
     /**
-     * The constant YONA_DATE_FORMAT.
+     * The constant YONA_DATE_FORMAT as yyyy-MM-dd
      */
     String YONA_DATE_FORMAT = "yyyy-MM-dd";
 
+    /**
+     * The constant YONA_LONG_DATE_FORMAT.
+     */
+    String YONA_LONG_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 }

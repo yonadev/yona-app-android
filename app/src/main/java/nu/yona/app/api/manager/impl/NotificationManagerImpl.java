@@ -33,6 +33,7 @@ import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
 
@@ -88,7 +89,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                     Embedded embedded = yonaMessages.getEmbedded();
                                     List<YonaMessage> listMessages = embedded.getYonaMessages();
                                     boolean isAnyProcessed = false;
-                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+                                    SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
                                     for (YonaMessage message : listMessages) {
                                         //update enum
                                         message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));

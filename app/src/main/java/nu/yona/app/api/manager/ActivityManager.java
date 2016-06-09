@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.manager;
 
+import java.util.Date;
+
 import nu.yona.app.listener.DataLoadListener;
 
 /**
@@ -69,4 +71,18 @@ public interface ActivityManager {
      * @param listener the listener
      */
     void getWeeksDetailActivity(String url, DataLoadListener listener);
+
+    /**
+     * Post activity to db.
+     *
+     * @param applicationName the application name
+     * @param startDate       the start date
+     * @param endDate         the end date
+     */
+    void postActivityToDB(String applicationName, Date startDate, Date endDate);
+
+    /**
+     * Post all db activities.
+     */
+    void postAllDBActivities();
 }

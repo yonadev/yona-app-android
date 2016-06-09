@@ -151,7 +151,7 @@ public class APIManager {
      * @return the activity manager
      */
     public ActivityManager getActivityManager() {
-        if(activityManager == null) {
+        if (activityManager == null) {
             activityManager = new ActivityManagerImpl(YonaApplication.getAppContext());
         }
         return this.activityManager;

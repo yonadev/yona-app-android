@@ -13,6 +13,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.R;
@@ -66,6 +67,17 @@ public class DateUtility {
     public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime() - date1.getTime();
         return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Gets long format date.
+     *
+     * @param date the date
+     * @return the long format date
+     */
+    public static String getLongFormatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
+        return sdf.format(date);
     }
 
 }

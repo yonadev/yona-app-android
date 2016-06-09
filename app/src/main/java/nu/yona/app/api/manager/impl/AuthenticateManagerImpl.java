@@ -465,7 +465,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     }
 
     public void getUserFromServer() {
-        if(YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
+        if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
                 && YonaApplication.getUser().getLinks().getSelf() != null) {
             getUser(YonaApplication.getUser().getLinks().getSelf(), new DataLoadListener() {
                 @Override

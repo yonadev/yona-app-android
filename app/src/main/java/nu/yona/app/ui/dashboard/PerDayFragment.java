@@ -20,7 +20,6 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.api.manager.APIManager;
@@ -44,6 +43,31 @@ public class PerDayFragment extends BaseFragment {
     private EmbeddedYonaActivity embeddedYonaActivity;
     private int currentPage = 0;
     private boolean mIsLoading = false;
+    /**
+     * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
+     */
+    private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (dy > 0) {
+                int visibleItemCount = mLayoutManager.getChildCount();
+                int totalItemCount = mLayoutManager.getItemCount();
+                int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+
+                if (!mIsLoading && currentPage < embeddedYonaActivity.getEmbedded().getPage().getTotalPages()) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
+                        loadMoreItems();
+                    }
+                }
+            }
+        }
+    };
 
     @Nullable
     @Override
@@ -89,33 +113,6 @@ public class PerDayFragment extends BaseFragment {
                     }
                 });
     }
-
-
-    /**
-     * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
-     */
-    private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            if (dy > 0) {
-                int visibleItemCount = mLayoutManager.getChildCount();
-                int totalItemCount = mLayoutManager.getItemCount();
-                int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-
-                if (!mIsLoading && currentPage < embeddedYonaActivity.getEmbedded().getPage().getTotalPages()) {
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
-                        loadMoreItems();
-                    }
-                }
-            }
-        }
-    };
 
     @Override
     public void onResume() {
