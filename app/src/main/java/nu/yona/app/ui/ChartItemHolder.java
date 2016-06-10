@@ -43,6 +43,9 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
             case SPREAD_CONTROL:
                 showSpreadControl(itemView, listener);
                 break;
+            case WEEK_SCORE_CONTROL:
+                showWeekControl(itemView, listener);
+                break;
             default:
                 break;
         }
@@ -59,6 +62,11 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     private void showSpreadControl(View view, View.OnClickListener listener) {
         inflateCommonView(view);
     }
+
+    private void showWeekControl(View view, View.OnClickListener listener) {
+        inflateCommonView(view);
+    }
+
 
     private void inflateCommonView(View view) {
         goalType = (YonaFontTextView) view.findViewById(R.id.goalType);

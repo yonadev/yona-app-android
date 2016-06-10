@@ -37,9 +37,11 @@ import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.TimeZoneSpread;
+import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaDayActivityOverview;
 import nu.yona.app.api.model.YonaGoal;
+import nu.yona.app.api.model.YonaWeekActivityOverview;
 import nu.yona.app.customview.graph.GraphUtils;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.enums.GoalsEnum;
@@ -210,7 +212,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 activityNetwork.getWeeksActivity(url, YonaApplication.getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        filterAndUpdateWeekData((EmbeddedYonaActivity) result, listener);
                     }
 
                     @Override
@@ -254,6 +256,32 @@ public class ActivityManagerImpl implements ActivityManager {
             });
         } catch (Exception e) {
             AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    private void filterAndUpdateWeekData(EmbeddedYonaActivity embeddedYonaActivity, DataLoadListener listener) {
+        List<WeekActivity> weekActivities = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_DATE_FORMAT, Locale.getDefault());
+        if (embeddedYonaActivity != null && embeddedYonaActivity.getEmbedded() != null) {
+            Embedded embedded = embeddedYonaActivity.getEmbedded();
+            List<YonaWeekActivityOverview> yonaDayActivityOverviews = embedded.getYonaWeekActivityOverviews();
+            for (YonaWeekActivityOverview overview : yonaDayActivityOverviews) {
+                List<WeekActivity> overviewWeekActivities = overview.getWeekActivities();
+                for (WeekActivity activity : overviewWeekActivities) {
+                    activity.setYonaGoal(findYonaGoal(activity.getLinks().getYonaGoal()));
+                    if (activity.getYonaGoal() != null) {
+                        activity.setChartTypeEnum(ChartTypeEnum.WEEK_SCORE_CONTROL);
+                    }
+                    try {
+                        activity.setStickyTitle(DateUtility.getRetriveWeek(overview.getDate()));
+                    } catch (Exception e) {
+                        Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+                    }
+                    weekActivities.add(activity);
+                }
+            }
+            embeddedYonaActivity.setWeekActivityList(weekActivities);
+            listener.onDataLoad(embeddedYonaActivity);
         }
     }
 

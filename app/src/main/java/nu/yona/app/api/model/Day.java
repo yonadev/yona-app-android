@@ -101,5 +101,4 @@ public class Day {
     public void setTotalMinutesBeyondGoal(Integer totalMinutesBeyondGoal) {
         this.totalMinutesBeyondGoal = totalMinutesBeyondGoal;
     }
-
 }

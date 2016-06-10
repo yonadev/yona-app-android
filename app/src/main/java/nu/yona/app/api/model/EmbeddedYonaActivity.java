@@ -19,9 +19,12 @@ public class EmbeddedYonaActivity {
     @SerializedName("page")
     @Expose
     private Page page;
-    @SerializedName("dayActivityList")
+    @SerializedName("@dayActivityList")
     @Expose
     private List<DayActivity> dayActivityList = new ArrayList<>();
+    @SerializedName("@weekActivity")
+    @Expose
+    private List<WeekActivity> weekActivityList = new ArrayList<>();
 
     /**
      * Gets embedded.
@@ -93,6 +96,24 @@ public class EmbeddedYonaActivity {
      */
     public void setDayActivityList(List<DayActivity> dayActivityList) {
         this.dayActivityList = dayActivityList;
+    }
+
+    /**
+     * Gets week activity list.
+     *
+     * @return the week activity list
+     */
+    public List<WeekActivity> getWeekActivityList() {
+        return this.weekActivityList;
+    }
+
+    /**
+     * Sets week activity list.
+     *
+     * @param weekActivityList the week activity list
+     */
+    public void setWeekActivityList(List<WeekActivity> weekActivityList) {
+        this.weekActivityList = weekActivityList;
     }
 
 }

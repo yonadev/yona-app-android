@@ -137,10 +137,20 @@ public class YonaGoal extends BaseEntity {
         return null;
     }
 
+    /**
+     * Gets spread cells.
+     *
+     * @return the spread cells
+     */
     public List<Integer> getSpreadCells() {
         return this.spreadCells;
     }
 
+    /**
+     * Sets spread cells.
+     *
+     * @param spreadCells the spread cells
+     */
     public void setSpreadCells(List<Integer> spreadCells) {
         this.spreadCells = spreadCells;
     }
