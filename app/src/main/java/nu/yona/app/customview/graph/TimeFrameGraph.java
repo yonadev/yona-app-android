@@ -21,15 +21,10 @@ import nu.yona.app.api.model.TimeZoneSpread;
  */
 public class TimeFrameGraph extends BaseView {
 
-    private static int MINUTES_PER_DAY = 1440;
-
-    private float noOfSection;
-
     private List<TimeZoneSpread> mListZoneSpread;
     private Canvas mCanvas;
 
     private float mStartPoint;
-    private float mEndPoint;
     private float mMiddlePoint;
 
     private float x_top = 0;
@@ -60,29 +55,7 @@ public class TimeFrameGraph extends BaseView {
     }
 
     public void chartValuePre(List<TimeZoneSpread> mListZoneSpread) {
-
-        /*updateGraphPoint();*/
-    }
-
-    private void updateGraphPoint() {
-
-       /* for (int i = 0; i <= mListOfEndTimes.size() - 1; i++) {
-            int endTime = mListOfEndTimes.get(i);
-            float cStartPoint = mListOfStartTimes.get();
-            float cEndPoint = mListOfEndTimes.get(i);
-        }
-
-        for (int i = 0; i <= mListOfStartTimes.size() - 1; i++) {
-            float cStartPoint = mListOfStartTimes.get(i) * noOfSection - (20 * scaleFactor);
-            float cEndPoint = mListOfEndTimes.get(i) * noOfSection - (25 * scaleFactor);
-            Paint cPaint = new Paint();
-            cPaint.setStrokeWidth(1);
-
-            //Todo - check the color and assigned that color
-            RectF cRect = new RectF(cStartPoint, 0, cEndPoint, 100); //left, top , right, bottom
-            mCanvas.drawRect(cRect, cPaint); //rectF, paint
-        }*/
-
+        this.mListZoneSpread = mListZoneSpread;
     }
 
     protected void onDraw(Canvas canvas) {
@@ -90,9 +63,6 @@ public class TimeFrameGraph extends BaseView {
         this.mCanvas = canvas;
         float fullWidth = canvas.getWidth();
         float height = scaleFactor * 25;
-
-        //no of section should be 96 , thats why 1440/15 = 96, we will get that array
-        noOfSection = MINUTES_PER_DAY / 15;
 
         //first bar
         float left = 0, top = 0; // basically (X1, Y1)
@@ -102,38 +72,57 @@ public class TimeFrameGraph extends BaseView {
 
         mStartPoint = 0;
         mMiddlePoint = (fullWidth / 2);
-        mEndPoint = right;
-
 
         RectF myRectum = new RectF(left, top, right, bottom);
         mCanvas.drawRect(myRectum, linePaint);
 
+        //todraw text from height
+        float heightDraw = bottom + (20 * scaleFactor);
 
         //draw graphics of sun and moon
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), mStartPoint, top + height, null);
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint, top + height, null);
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), mEndPoint - height, top + height, null);
+        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), mStartPoint, bottom, null);
+        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint, bottom, null);
+
 
         Paint mTextPaint = new Paint();
-        mTextPaint.setColor(GraphUtils.COLOR_WHITE_THREE);
-        mTextPaint.setTextSize(scaleFactor * 12);
-        mTextPaint.setStrokeWidth(3);
+        mTextPaint.setColor(GraphUtils.COLOR_BULLET_DOT);
+        mTextPaint.setTextSize(scaleFactor * 14);
+        mTextPaint.setStrokeWidth(8);
 
-        //todraw text from height
-        float heightDraw = bottom + (15 * scaleFactor);
+        float spreadtime = fullWidth;
 
-        //dividing into 7 section from 96
-        float textPoint = noOfSection;
+        float mPartSize = spreadtime / 96;
 
-        textPoint = textPoint + textPoint;
-        mCanvas.drawText("04:00", textPoint, heightDraw, mTextPaint);
-        textPoint = textPoint + textPoint;
-        mCanvas.drawText("08:00", textPoint, heightDraw, mTextPaint);
-        textPoint = textPoint + textPoint;
-        mCanvas.drawText("16:00", textPoint, heightDraw, mTextPaint);
-        textPoint = textPoint + (noOfSection * 2);
-        mCanvas.drawText("20:00", textPoint, heightDraw, mTextPaint);
-        updateGraphPoint();
+        float minValue = mPartSize / 15;
+
+        float textPoint = (mMiddlePoint / 2) / 2;
+        mCanvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw, mTextPaint);
+        float textPoint2 = textPoint * 2 + ((textPoint / 2));
+        mCanvas.drawText(mContext.getString(R.string.eight_hours), textPoint2, heightDraw, mTextPaint);
+        float textPoint3 = textPoint * 5;
+        mCanvas.drawText(mContext.getString(R.string.sixteen_hours), textPoint3, heightDraw, mTextPaint);
+        float textPoint4 = textPoint * 6 + ((textPoint / 2));
+        mCanvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4, heightDraw, mTextPaint);
+        float textPoint5 = textPoint * 7 + ((textPoint / 2));
+        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5, bottom, null);
+
+        if (mListZoneSpread != null && mListZoneSpread.size() > 0) {
+            float currentIndex = 0;
+            float currentStartPos;
+            float currentEndPos;
+            for (TimeZoneSpread timeZoneSpread : mListZoneSpread) {
+                currentEndPos = 0;
+                Paint mZonePaint = new Paint();
+                mZonePaint.setStrokeWidth(1);
+                currentStartPos = currentIndex * mPartSize;
+                currentEndPos = (minValue * timeZoneSpread.getUsedValue()) + currentStartPos;
+                mZonePaint.setColor(timeZoneSpread.getColor());
+                mCanvas.drawRect(currentStartPos, top, currentEndPos, bottom, mZonePaint);
+                currentIndex++;
+            }
+        }
+
+
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
