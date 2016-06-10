@@ -21,8 +21,10 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -31,7 +33,6 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
-import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -41,8 +42,7 @@ public class PerDayFragment extends BaseFragment {
     private RecyclerView listView;
     private PerDayStickyAdapter perDayStickyAdapter;
     private LinearLayoutManager mLayoutManager;
-    private EmbeddedYonaActivity embeddedYonaActivity;
-    private int currentPage = 0;
+    //    private EmbeddedYonaActivity embeddedYonaActivity;
     private boolean mIsLoading = false;
     /**
      * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
@@ -61,11 +61,12 @@ public class PerDayFragment extends BaseFragment {
                     int visibleItemCount = mLayoutManager.getChildCount();
                     int totalItemCount = mLayoutManager.getItemCount();
                     int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-
-                    if (!mIsLoading && embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getPage() != null && currentPage < embeddedYonaActivity.getEmbedded().getPage().getTotalPages()) {
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
-                            loadMoreItems();
-                        }
+                    EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+                    if (!mIsLoading &&
+                            embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
+                            && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
+                            && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
+                        loadMoreItems();
                     }
                 }
             } catch (Exception e) {
@@ -136,8 +137,7 @@ public class PerDayFragment extends BaseFragment {
      */
     private void refreshAdapter() {
         perDayStickyAdapter.clear();
-        currentPage = 0;
-        getDayActivity();
+        getDayActivity(false);
     }
 
     /**
@@ -145,38 +145,50 @@ public class PerDayFragment extends BaseFragment {
      */
     private void loadMoreItems() {
         mIsLoading = true;
-        currentPage += 1;
-        getDayActivity();
+        getDayActivity(true);
     }
 
     /**
      * to get the list of user's messages
      */
-    private void getDayActivity() {
-        YonaActivity.getActivity().showLoadingView(true, null);
-        APIManager.getInstance().getActivityManager().getDaysActivity(AppConstant.PAGE_SIZE, currentPage, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-                if (isAdded() && result != null && result instanceof EmbeddedYonaActivity) {
-                    embeddedYonaActivity = (EmbeddedYonaActivity) result;
-                    if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getDayActivityList() != null) {
-                        if (mIsLoading) {
-                            perDayStickyAdapter.updateData(embeddedYonaActivity.getDayActivityList());
+    private void getDayActivity(boolean loadMore) {
+        final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+        if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
+                || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
+            YonaActivity.getActivity().showLoadingView(true, null);
+            APIManager.getInstance().getActivityManager().getDaysActivity(loadMore, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                    if (isAdded() && result instanceof EmbeddedYonaActivity) {
+                        EmbeddedYonaActivity yonaActivity = (EmbeddedYonaActivity) result;
+                        if (yonaActivity.getEmbedded() != null && yonaActivity.getDayActivityList() != null) {
+                            showData(yonaActivity.getDayActivityList());
                         } else {
-                            perDayStickyAdapter.notifyDataSetChange(embeddedYonaActivity.getDayActivityList());
+                            YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
                         }
+                    } else if (result instanceof List<?>) {
+                        showData((List<DayActivity>) result);
                     }
+                    mIsLoading = false;
                 }
-                mIsLoading = false;
-            }
 
-            @Override
-            public void onError(Object errorMessage) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-                YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
-            }
-        });
+                @Override
+                public void onError(Object errorMessage) {
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                }
+            });
+        } else {
+            YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
+        }
     }
 
+    private void showData(List<DayActivity> dayActivityList) {
+        if (mIsLoading) {
+            perDayStickyAdapter.updateData(dayActivityList);
+        } else {
+            perDayStickyAdapter.notifyDataSetChange(dayActivityList);
+        }
+    }
 }

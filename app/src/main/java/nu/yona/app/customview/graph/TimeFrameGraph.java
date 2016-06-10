@@ -22,42 +22,80 @@ import nu.yona.app.api.model.TimeZoneSpread;
  */
 public class TimeFrameGraph extends BaseView {
 
-    private List<TimeZoneSpread> mListZoneSpread;
-    private Canvas mCanvas;
-
-    private float mStartPoint;
-    private float mMiddlePoint;
-
     private final int mNoParts = 96;
     private final int mMinPerParts = 15;
-
+    private List<TimeZoneSpread> mListZoneSpread;
+    private Canvas mCanvas;
+    private float mStartPoint;
+    private float mMiddlePoint;
     private float x_top = 0;
     private float x_bottom = x_top + 100;
 
+    /**
+     * Instantiates a new Time frame graph.
+     *
+     * @param context the context
+     */
     public TimeFrameGraph(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * Instantiates a new Time frame graph.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public TimeFrameGraph(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * Instantiates a new Time frame graph.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     */
     public TimeFrameGraph(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
+    /**
+     * Instantiates a new Time frame graph.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     * @param defStyleRes  the def style res
+     */
     public TimeFrameGraph(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
+    }
+
+    /**
+     * Drawable to bitmap bitmap.
+     *
+     * @param drawable the drawable
+     * @return the bitmap
+     */
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        return ((BitmapDrawable) drawable).getBitmap();
     }
 
     private void init() {
         mListZoneSpread = new ArrayList<TimeZoneSpread>();
     }
 
+    /**
+     * Chart value pre.
+     *
+     * @param mListZoneSpread the m list zone spread
+     */
     public void chartValuePre(List<TimeZoneSpread> mListZoneSpread) {
         this.mListZoneSpread = mListZoneSpread;
     }
@@ -128,9 +166,5 @@ public class TimeFrameGraph extends BaseView {
             }
         }
 
-    }
-
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-        return ((BitmapDrawable) drawable).getBitmap();
     }
 }

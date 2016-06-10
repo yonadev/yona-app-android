@@ -41,6 +41,9 @@ public class YonaGoal extends BaseEntity {
     @SerializedName("spreadCells")
     @Expose
     private List<Integer> spreadCells = new ArrayList<Integer>();
+    @SerializedName("historyItem")
+    @Expose
+    private boolean historyItem;
 
     /**
      * Gets links.
@@ -153,5 +156,23 @@ public class YonaGoal extends BaseEntity {
      */
     public void setSpreadCells(List<Integer> spreadCells) {
         this.spreadCells = spreadCells;
+    }
+
+    /**
+     * Is history item boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isHistoryItem() {
+        return this.historyItem;
+    }
+
+    /**
+     * Sets history item.
+     *
+     * @param historyItem the history item
+     */
+    public void setHistoryItem(boolean historyItem) {
+        this.historyItem = historyItem;
     }
 }

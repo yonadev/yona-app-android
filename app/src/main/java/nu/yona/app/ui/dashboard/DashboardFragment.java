@@ -79,11 +79,11 @@ public class DashboardFragment extends BaseFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (YonaApplication.getUser() != null && !TextUtils.isEmpty(YonaApplication.getUser().getFirstName())) {
+                if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName())) {
                     leftIcon.setVisibility(View.VISIBLE);
                     leftIcon.setImageDrawable(TextDrawable.builder()
                             .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                            .buildRound(YonaApplication.getUser().getFirstName().substring(0, 1).toUpperCase(),
+                            .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
                                     ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
                 }
                 toolbarTitle.setText(R.string.dashboard);
@@ -105,7 +105,7 @@ public class DashboardFragment extends BaseFragment {
                         Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
                         intent.putExtra(AppConstant.COLOR_CODE, R.color.grape);
                         intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.mid_blue);
-                        intent.putExtra(AppConstant.USER, YonaApplication.getUser());
+                        intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
                         YonaActivity.getActivity().replaceFragment(intent);
                     }
                 });

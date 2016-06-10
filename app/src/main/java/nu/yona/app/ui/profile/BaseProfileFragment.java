@@ -69,7 +69,7 @@ public class BaseProfileFragment extends BaseFragment {
 
     private String getName(String firstName, String lastName) {
         StringBuffer displayName = new StringBuffer();
-        if (YonaApplication.getUser() != null) {
+        if (YonaApplication.getEventChangeManager().getDataState().getUser() != null) {
             displayName.append(TextUtils.isEmpty(firstName) ? getString(R.string.blank) : firstName.substring(0, 1).toUpperCase());
             displayName.append(TextUtils.isEmpty(lastName) ? getString(R.string.blank) : lastName.substring(0, 1).toUpperCase());
         }

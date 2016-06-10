@@ -54,8 +54,8 @@ public class GoalManagerImpl implements GoalManager {
     @Override
     public void getUserGoal(final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
-                goalNetwork.getUserGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener() {
+            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
+                goalNetwork.getUserGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);
@@ -81,8 +81,8 @@ public class GoalManagerImpl implements GoalManager {
     @Override
     public void postBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
-                goalNetwork.putUserBudgetGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
+                goalNetwork.putUserBudgetGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);
@@ -108,8 +108,8 @@ public class GoalManagerImpl implements GoalManager {
     @Override
     public void postTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
-                goalNetwork.putUserTimeZoneGoals(YonaApplication.getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
+                goalNetwork.putUserTimeZoneGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);

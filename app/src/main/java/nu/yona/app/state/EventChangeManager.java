@@ -100,6 +100,9 @@ public class EventChangeManager {
 
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
+    private DataState dataState;
+
+
     /**
      * Register listener.
      *
@@ -141,5 +144,18 @@ public class EventChangeManager {
                 listener.onStateChange(eventType, object);
             }
         }
+    }
+
+
+    /**
+     * Gets data state.
+     *
+     * @return the data state
+     */
+    public DataState getDataState() {
+        if (dataState == null) {
+            dataState = new DataState();
+        }
+        return dataState;
     }
 }

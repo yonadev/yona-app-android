@@ -17,6 +17,8 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +39,7 @@ import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.TimeZoneSpread;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaDayActivityOverview;
@@ -72,13 +75,22 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     @Override
-    public void getDaysActivity(int itemsPerPage, int pageNo, DataLoadListener listener) {
-        if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
-                && YonaApplication.getUser().getLinks().getYonaDailyActivityReports() != null
-                && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getYonaDailyActivityReports().getHref())) {
-            getDailyActivity(YonaApplication.getUser().getLinks().getYonaDailyActivityReports().getHref(), itemsPerPage, pageNo, listener);
+    public void getDaysActivity(boolean loadMore, DataLoadListener listener) {
+        EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+        if (loadMore || embeddedYonaActivity == null
+                || embeddedYonaActivity.getDayActivityList() == null
+                || embeddedYonaActivity.getDayActivityList().size() == 0) {
+            int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null) ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
+            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            if (user != null && user.getLinks() != null
+                    && user.getLinks().getYonaDailyActivityReports() != null
+                    && !TextUtils.isEmpty(user.getLinks().getYonaDailyActivityReports().getHref())) {
+                getDailyActivity(user.getLinks().getYonaDailyActivityReports().getHref(), AppConstant.PAGE_SIZE, pageNo, listener);
+            } else {
+                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+            }
         } else {
-            listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+            listener.onDataLoad(YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList());
         }
     }
 
@@ -124,13 +136,22 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     @Override
-    public void getWeeksActivity(int itemsPerPage, int pageNo, DataLoadListener listener) {
-        if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
-                && YonaApplication.getUser().getLinks().getYonaWeeklyActivityReports() != null
-                && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getYonaWeeklyActivityReports().getHref())) {
-            getWeeksActivity(YonaApplication.getUser().getLinks().getYonaWeeklyActivityReports().getHref(), itemsPerPage, pageNo, listener);
+    public void getWeeksActivity(boolean loadMore, DataLoadListener listener) {
+        EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+        if (loadMore || embeddedYonaActivity == null
+                || embeddedYonaActivity.getWeekActivityList() == null
+                || embeddedYonaActivity.getWeekActivityList().size() == 0) {
+            int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null) ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
+            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            if (user != null && user.getLinks() != null
+                    && user.getLinks().getYonaWeeklyActivityReports() != null
+                    && !TextUtils.isEmpty(user.getLinks().getYonaWeeklyActivityReports().getHref())) {
+                getWeeksActivity(user.getLinks().getYonaWeeklyActivityReports().getHref(), AppConstant.PAGE_SIZE, pageNo, listener);
+            } else {
+                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+            }
         } else {
-            listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+            listener.onDataLoad(YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList());
         }
     }
 
@@ -167,7 +188,7 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     private void postActivityOnServer(final AppActivity activity, final boolean fromDB) {
-        activityNetwork.postAppActivity(YonaApplication.getUser().getLinks().getYonaAppActivity().getHref(),
+        activityNetwork.postAppActivity(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaAppActivity().getHref(),
                 YonaApplication.getYonaPassword(), activity, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
@@ -281,6 +302,12 @@ public class ActivityManagerImpl implements ActivityManager {
                 }
             }
             embeddedYonaActivity.setWeekActivityList(weekActivities);
+            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() == null) {
+                YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(embeddedYonaActivity);
+            } else {
+                YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList().addAll(weekActivities);
+                YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().setPage(embeddedYonaActivity.getPage());
+            }
             listener.onDataLoad(embeddedYonaActivity);
         }
     }
@@ -293,6 +320,7 @@ public class ActivityManagerImpl implements ActivityManager {
             List<YonaDayActivityOverview> yonaDayActivityOverviews = embedded.getYonaDayActivityOverviews();
             for (YonaDayActivityOverview overview : yonaDayActivityOverviews) {
                 List<DayActivity> overviewDayActivities = overview.getDayActivities();
+                List<DayActivity> updatedOverviewDayActivities = new ArrayList<>();
                 for (DayActivity activity : overviewDayActivities) {
                     activity.setYonaGoal(findYonaGoal(activity.getLinks().getYonaGoal()));
                     if (activity.getYonaGoal() != null) {
@@ -314,20 +342,44 @@ public class ActivityManagerImpl implements ActivityManager {
                     } catch (Exception e) {
                         Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
                     }
-                    dayActivities.add(generateTimeZoneSpread(activity));
+                    if (activity.getYonaGoal() != null && activity.getYonaGoal() != null && !activity.getYonaGoal().isHistoryItem()) {
+                        updatedOverviewDayActivities.add(generateTimeZoneSpread(activity));
+                    }
                 }
+                dayActivities.addAll(sortDayActivity(updatedOverviewDayActivities));
             }
             embeddedYonaActivity.setDayActivityList(dayActivities);
+
+            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() == null) {
+                YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(embeddedYonaActivity);
+            } else {
+                YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().addAll(dayActivities);
+                YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().setPage(embeddedYonaActivity.getPage());
+            }
             listener.onDataLoad(embeddedYonaActivity);
+        } else {
+            listener.onError(new ErrorMessage(mContext.getString(R.string.no_data_found)));
         }
     }
 
+    private List<DayActivity> sortDayActivity(List<DayActivity> overviewDayActiivties) {
+        Collections.sort(overviewDayActiivties, new Comparator<DayActivity>() {
+            public int compare(DayActivity o1, DayActivity o2) {
+                if (!TextUtils.isEmpty(o1.getYonaGoal().getActivityCategoryName()) && !TextUtils.isEmpty(o2.getYonaGoal().getActivityCategoryName())) {
+                    return o1.getYonaGoal().getActivityCategoryName().compareTo(o2.getYonaGoal().getActivityCategoryName());
+                }
+                return 0;
+            }
+        });
+        return overviewDayActiivties;
+    }
+
     private YonaGoal findYonaGoal(Href goalHref) {
-        if (YonaApplication.getUser() != null && YonaApplication.getUser().getEmbedded() != null
-                && YonaApplication.getUser().getEmbedded().getYonaGoals() != null
-                && YonaApplication.getUser().getEmbedded().getYonaGoals().getEmbedded() != null
-                && YonaApplication.getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null) {
-            List<YonaGoal> yonaGoals = YonaApplication.getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
+        if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded() != null
+                && YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals() != null
+                && YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded() != null
+                && YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null) {
+            List<YonaGoal> yonaGoals = YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
             for (YonaGoal goal : yonaGoals) {
                 if (goal.getLinks().getSelf().getHref().equals(goalHref.getHref())) {
                     goal.setActivityCategoryName(getActivityCategory(goal));

@@ -94,8 +94,8 @@ public class DeviceManagerImpl implements DeviceManager {
 
     private void addDeviceAgain(String devicePassword, final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref())) {
-                deviceNetwork.addDevice(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref(),
+            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref())) {
+                deviceNetwork.addDevice(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref(),
                         new NewDeviceRequest(devicePassword), YonaApplication.getYonaPassword(),
                         new DataLoadListener() {
 
@@ -128,8 +128,8 @@ public class DeviceManagerImpl implements DeviceManager {
     @Override
     public void deleteDevice(final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref())) {
-                deviceNetwork.deleteDevice(YonaApplication.getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref())) {
+                deviceNetwork.deleteDevice(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, false).commit();
@@ -194,7 +194,7 @@ public class DeviceManagerImpl implements DeviceManager {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);
-                        YonaApplication.updateUser();
+                        YonaApplication.getEventChangeManager().getDataState().updateUser();
                     }
 
                     @Override
