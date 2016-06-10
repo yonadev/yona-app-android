@@ -24,6 +24,8 @@ public class BaseView extends View {
     protected Context mContext;
     protected Paint linePaint;
     protected float scaleFactor;
+    protected float mWidth;
+    protected float mHeight;
 
     public BaseView(Context context) {
         super(context);
@@ -61,6 +63,8 @@ public class BaseView extends View {
          */
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         scaleFactor = metrics.density;
+        mWidth = getWidth();
+        mHeight = getHeight();
 
         linePaint = new Paint();
         linePaint.setStrokeWidth(1);

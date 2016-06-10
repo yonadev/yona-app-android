@@ -29,14 +29,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="@dimen/chart_item_top_margin"/>
+            android:paddingTop="@dimen/chart_item_top_margin" />
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/goalScore"
             style="@style/SeScorePos"
             android:layout_width="54dp"
             android:layout_height="match_parent"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/goalDesc"
@@ -45,18 +45,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="right"
-            android:paddingTop="@dimen/chart_item_top_margin"/>
+            android:paddingTop="@dimen/chart_item_top_margin" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/timeBucketControl"
+    <FrameLayout
+        android:id="@+id/graphView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/chart_item_chart_height"
-        android:paddingBottom="@dimen/chart_item_chart_bottom_margin">
-        <TextView
-            android:text="Time Bucket Control"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+        android:layout_height="73dp" />
+
 </LinearLayout>

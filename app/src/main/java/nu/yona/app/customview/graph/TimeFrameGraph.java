@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,9 @@ public class TimeFrameGraph extends BaseView {
 
     private float mStartPoint;
     private float mMiddlePoint;
+
+    private final int mNoParts = 96;
+    private final int mMinPerParts = 15;
 
     private float x_top = 0;
     private float x_bottom = x_top + 100;
@@ -84,16 +88,18 @@ public class TimeFrameGraph extends BaseView {
         mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint, bottom, null);
 
 
+        Typeface timeFrameTypeFace = Typeface.createFromAsset(mContext.getAssets(), "fonts/" + "roboto-regular.ttf");
         Paint mTextPaint = new Paint();
         mTextPaint.setColor(GraphUtils.COLOR_BULLET_DOT);
         mTextPaint.setTextSize(scaleFactor * 14);
         mTextPaint.setStrokeWidth(8);
+        mTextPaint.setTypeface(timeFrameTypeFace);
 
         float spreadtime = fullWidth;
 
-        float mPartSize = spreadtime / 96;
+        float mPartSize = spreadtime / mNoParts;
 
-        float minValue = mPartSize / 15;
+        float minValue = mPartSize / mMinPerParts;
 
         float textPoint = (mMiddlePoint / 2) / 2;
         mCanvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw, mTextPaint);
@@ -121,7 +127,6 @@ public class TimeFrameGraph extends BaseView {
                 currentIndex++;
             }
         }
-
 
     }
 
