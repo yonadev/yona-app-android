@@ -23,7 +23,7 @@ import nu.yona.app.enums.ChartTypeEnum;
 public class ChartItemHolder extends RecyclerView.ViewHolder {
 
     private YonaFontTextView goalType, goalScore, goalDesc;
-
+    private View view;
     /**
      * Instantiates a new Chart item holder.
      *
@@ -43,7 +43,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
                 showTimeBucketControl(itemView, listener);
                 break;
             case SPREAD_CONTROL:
-                showSpreadControl(itemView, listener);
+                showSpreadControl(itemView);
                 break;
             case WEEK_SCORE_CONTROL:
                 showWeekControl(itemView, listener);
@@ -54,23 +54,27 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     }
 
     private void showTimeFrameControl(View view, View.OnClickListener listener) {
+        view.setOnClickListener(listener);
         inflateCommonView(view);
     }
 
     private void showTimeBucketControl(View view, View.OnClickListener listener) {
+        view.setOnClickListener(listener);
         inflateCommonView(view);
     }
 
-    private void showSpreadControl(View view, View.OnClickListener listener) {
+    private void showSpreadControl(View view) {
         inflateCommonView(view);
     }
 
     private void showWeekControl(View view, View.OnClickListener listener) {
+        view.setOnClickListener(listener);
         inflateCommonView(view);
     }
 
 
     private void inflateCommonView(View view) {
+        this.view = view;
         goalType = (YonaFontTextView) view.findViewById(R.id.goalType);
         goalScore = (YonaFontTextView) view.findViewById(R.id.goalScore);
         goalDesc = (YonaFontTextView) view.findViewById(R.id.goalDesc);
@@ -102,6 +106,10 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
      */
     public YonaFontTextView getGoalScore() {
         return this.goalScore;
+    }
+
+    public View getView() {
+        return this.view;
     }
 
 }

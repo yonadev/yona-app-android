@@ -85,7 +85,9 @@ public class PerDayFragment extends BaseFragment {
         perDayStickyAdapter = new PerDayStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO on click of list item, listener will return here.
+                if (v.getTag() instanceof DayActivity) {
+                    openDetailPage((DayActivity) v.getTag());
+                }
             }
         });
 
@@ -95,6 +97,10 @@ public class PerDayFragment extends BaseFragment {
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(perDayStickyAdapter));
         return view;
 
+    }
+
+    private void openDetailPage(DayActivity activity) {
+        //TODO open detail page.
     }
 
     /**
