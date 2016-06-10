@@ -37,6 +37,8 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
             case TIME_FRAME_CONTROL:
                 showTimeFrameControl(itemView, listener);
                 break;
+            case NOGO_CONTROL:
+                //TODO set view of nogo
             case TIME_BUCKET_CONTROL:
                 showTimeBucketControl(itemView, listener);
                 break;

@@ -38,6 +38,8 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
     public ChartItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View layoutView;
         switch (ChartTypeEnum.getChartTypeEnum(viewType)) {
+            case NOGO_CONTROL:
+                //TODO set layout of nogo
             case TIME_BUCKET_CONTROL:
                 layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.timebucket_chart_item, parent, false);
                 return new ChartItemHolder(layoutView, listener, ChartTypeEnum.TIME_BUCKET_CONTROL);

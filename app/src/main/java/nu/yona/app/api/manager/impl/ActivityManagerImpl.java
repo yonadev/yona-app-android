@@ -297,7 +297,11 @@ public class ActivityManagerImpl implements ActivityManager {
                     activity.setYonaGoal(findYonaGoal(activity.getLinks().getYonaGoal()));
                     if (activity.getYonaGoal() != null) {
                         if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.BUDGET_GOAL) {
-                            activity.setChartTypeEnum(ChartTypeEnum.TIME_BUCKET_CONTROL);
+                            if (activity.getYonaGoal().getMaxDurationMinutes() == 0) {
+                                activity.setChartTypeEnum(ChartTypeEnum.NOGO_CONTROL);
+                            } else {
+                                activity.setChartTypeEnum(ChartTypeEnum.TIME_BUCKET_CONTROL);
+                            }
                         } else if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.TIME_ZONE_GOAL) {
                             activity.setChartTypeEnum(ChartTypeEnum.TIME_FRAME_CONTROL);
                         }
