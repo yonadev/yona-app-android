@@ -60,6 +60,7 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
         DayActivity dayActivity = (DayActivity) getItem(position);
 
         if (dayActivity != null) {
+            holder.getView().setTag(dayActivity);
             holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName());
             holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
             //TODO fill all other values for item chart here
