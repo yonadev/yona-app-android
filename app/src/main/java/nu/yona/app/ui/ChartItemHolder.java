@@ -72,7 +72,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get GraphView
      *
-     * @return
+     * @return goal graph view
      */
     public View getGoalGraphView() {
         return goalGraphView;
@@ -81,7 +81,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get layout view
      *
-     * @return
+     * @return view view
      */
     public View getView() {
         return view;

@@ -21,30 +21,71 @@ import android.view.View;
  */
 public class BaseView extends View {
 
+    /**
+     * The M context.
+     */
     protected Context mContext;
+    /**
+     * The Line paint.
+     */
     protected Paint linePaint;
+    /**
+     * The Scale factor.
+     */
     protected float scaleFactor;
+    /**
+     * The M width.
+     */
     protected float mWidth;
+    /**
+     * The M height.
+     */
     protected float mHeight;
 
+    /**
+     * Instantiates a new Base view.
+     *
+     * @param context the context
+     */
     public BaseView(Context context) {
         super(context);
         mContext = context;
         initialize();
     }
 
+    /**
+     * Instantiates a new Base view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public BaseView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         initialize();
     }
 
+    /**
+     * Instantiates a new Base view.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     */
     public BaseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         initialize();
     }
 
+    /**
+     * Instantiates a new Base view.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     * @param defStyleRes  the def style res
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public BaseView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -53,6 +94,9 @@ public class BaseView extends View {
     }
 
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
 
         /**

@@ -18,14 +18,14 @@ import nu.yona.app.listener.DataLoadListener;
  * Created by kinnarvasa on 06/06/16.
  */
 public interface ActivityManager {
+
     /**
-     * Gets days activity for logged in user
+     * Gets days activity.
      *
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
-     * @param listener     the listener
+     * @param loadMore the load more
+     * @param listener the listener
      */
-    void getDaysActivity(int itemsPerPage, int pageNo, DataLoadListener listener);
+    void getDaysActivity(boolean loadMore, DataLoadListener listener);
 
     /**
      * Gets buddy days activity for friends/buddies activity
@@ -46,13 +46,12 @@ public interface ActivityManager {
     void getDayDetailActivity(String url, DataLoadListener listener);
 
     /**
-     * Gets weeks activity for logged in user
+     * Gets weeks activity.
      *
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
-     * @param listener     the listener
+     * @param loadMore the load more
+     * @param listener the listener
      */
-    void getWeeksActivity(int itemsPerPage, int pageNo, DataLoadListener listener);
+    void getWeeksActivity(boolean loadMore, DataLoadListener listener);
 
     /**
      * Gets buddy's weeks activity

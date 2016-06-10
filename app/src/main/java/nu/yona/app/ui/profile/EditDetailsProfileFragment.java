@@ -217,14 +217,14 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     }
 
     private void profileViewMode() {
-        profileImage.setBackground(getImage(null, true, R.color.mid_blue, YonaApplication.getUser().getFirstName(), YonaApplication.getUser().getLastName()));
+        profileImage.setBackground(getImage(null, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
 
-        firstName.setText(TextUtils.isEmpty(YonaApplication.getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getUser().getFirstName());
-        lastName.setText(TextUtils.isEmpty(YonaApplication.getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getUser().getLastName());
-        nickName.setText(TextUtils.isEmpty(YonaApplication.getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getUser().getNickname());
+        firstName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName());
+        lastName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getLastName());
+        nickName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getNickname());
         int NUMBER_LENGTH = 9;
 
-        String number = YonaApplication.getUser().getMobileNumber();
+        String number = YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber();
         if (!TextUtils.isEmpty(number) && number.length() > NUMBER_LENGTH) {
             oldUserNumber = number;
             number = number.substring(number.length() - NUMBER_LENGTH);
@@ -297,9 +297,9 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     }
 
     private void redirectToNextPage() {
-        if (YonaApplication.getUser() != null && oldUserNumber.equalsIgnoreCase(YonaApplication.getUser().getMobileNumber())) {
+        if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && oldUserNumber.equalsIgnoreCase(YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber())) {
             YonaActivity.getActivity().onBackPressed();
-            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, YonaApplication.getUser());
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, YonaApplication.getEventChangeManager().getDataState().getUser());
         } else {
             showMobileVerificationScreen(null);
         }
@@ -312,7 +312,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        profileImage.setBackground(getImage((Bitmap) object, true, R.color.mid_blue, YonaApplication.getUser().getFirstName(), YonaApplication.getUser().getLastName()));
+                        profileImage.setBackground(getImage((Bitmap) object, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
                     }
                 }, AppConstant.TIMER_DELAY_HUNDRED);
                 break;

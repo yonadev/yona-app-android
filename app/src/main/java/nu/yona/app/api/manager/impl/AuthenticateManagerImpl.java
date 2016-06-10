@@ -77,7 +77,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         try {
             String url = null;
             if (isEditMode) {
-                url = YonaApplication.getUser().getLinks().getEdit().getHref();
+                url = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getEdit().getHref();
             }
             authNetwork.registerUser(url, YonaApplication.getYonaPassword(), registerUser, isEditMode, new DataLoadListener() {
                 @Override
@@ -106,7 +106,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         authenticateDao.updateDataForRegisterUser(result, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                YonaApplication.updateUser();
+                YonaApplication.getEventChangeManager().getDataState().updateUser();
                 if (listener != null) {
                     listener.onDataLoad(result);
                 }
@@ -159,9 +159,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
     public void verifyOTP(final String otp, final DataLoadListener listener) {
         try {
-            if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
-                    && YonaApplication.getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getSelf().getHref())) {
-                getUser(YonaApplication.getUser().getLinks().getSelf().getHref(), new DataLoadListener() {
+            if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
+                    && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref())) {
+                getUser(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         verifyOTPAfterUser(otp, listener);
@@ -219,7 +219,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                         listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
                     }
                 } else {
-                    if (!TextUtils.isEmpty(YonaApplication.getUser().getLinks().getVerifyPinReset().getHref())) {
+                    if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getVerifyPinReset().getHref())) {
                         authNetwork.doVerifyPin(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref(), otp, new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {
@@ -378,9 +378,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     @Override
     public void resendOTP(final DataLoadListener listener) {
         try {
-            if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
-                    && YonaApplication.getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getSelf().getHref())) {
-                getUser(YonaApplication.getUser().getLinks().getSelf().getHref(), new DataLoadListener() {
+            if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
+                    && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref())) {
+                getUser(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         resendOTPAfterUser(listener);
@@ -437,10 +437,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
             authNetwork.requestUserOverride(mobileNumber, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
-                            && YonaApplication.getUser().getLinks().getSelf() != null
-                            && !TextUtils.isEmpty(YonaApplication.getUser().getLinks().getSelf().getHref())) {
-                        getUser(YonaApplication.getUser().getLinks().getSelf().getHref(), listener);
+                    if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
+                            && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null
+                            && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref())) {
+                        getUser(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref(), listener);
                     } else {
                         listener.onDataLoad(result);
                     }
@@ -465,9 +465,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     }
 
     public void getUserFromServer() {
-        if (YonaApplication.getUser() != null && YonaApplication.getUser().getLinks() != null
-                && YonaApplication.getUser().getLinks().getSelf() != null) {
-            getUser(YonaApplication.getUser().getLinks().getSelf(), new DataLoadListener() {
+        if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
+                && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null) {
+            getUser(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
 

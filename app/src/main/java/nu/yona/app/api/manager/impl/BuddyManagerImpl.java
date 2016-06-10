@@ -86,8 +86,8 @@ public class BuddyManagerImpl implements BuddyManager {
     @Override
     public void getBuddies(final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref())) {
-                buddyNetwork.getBuddies(YonaApplication.getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
+            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref())) {
+                buddyNetwork.getBuddies(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
                         new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {
@@ -121,8 +121,8 @@ public class BuddyManagerImpl implements BuddyManager {
     @Override
     public void addBuddy(String firstName, String lastName, String email, String mobileNumber, final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(YonaApplication.getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref())) {
-                buddyNetwork.addBuddy(YonaApplication.getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
+            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref())) {
+                buddyNetwork.addBuddy(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
                         getBuddy(firstName, lastName, email, mobileNumber), new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {

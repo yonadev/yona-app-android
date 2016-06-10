@@ -14,8 +14,6 @@ import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.text.TextUtils;
 
-import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.api.model.User;
 import nu.yona.app.listener.YonaCustomCrashManagerListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
@@ -31,10 +29,7 @@ public class YonaApplication extends Application {
     private static YonaApplication mContext;
     private static SharedPreferences userPreferences;
     private static EventChangeManager eventChangeManager;
-    private static User user;
     private static YonaCustomCrashManagerListener yonaCustomCrashManagerListener;
-    private static String serverUrl;
-
 
     /**
      * Gets app context.
@@ -90,28 +85,6 @@ public class YonaApplication extends Application {
     }
 
     /**
-     * Gets user.
-     *
-     * @return the user
-     */
-    public static User getUser() {
-        if (user == null) {
-            user = APIManager.getInstance().getAuthenticateManager().getUser();
-        }
-        return user;
-    }
-
-    /**
-     * Update user user.
-     *
-     * @return the user
-     */
-    public static User updateUser() {
-        user = APIManager.getInstance().getAuthenticateManager().getUser();
-        return user;
-    }
-
-    /**
      * Gets yona custom crash manager listener.
      *
      * @return the yona custom crash manager listener
@@ -142,7 +115,6 @@ public class YonaApplication extends Application {
      */
     public static void setServerUrl(String serverUrl) {
         getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
-        YonaApplication.serverUrl = serverUrl;
     }
 
     @Override

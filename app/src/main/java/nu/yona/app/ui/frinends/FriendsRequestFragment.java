@@ -141,7 +141,7 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
             }
             profileNickName.setText(!TextUtils.isEmpty(mYonaMessage.getNickname()) ? mYonaMessage.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
         }
-        profileImage.setImageDrawable(getImage(null, false, R.color.grape_two, YonaApplication.getUser().getFirstName(), YonaApplication.getUser().getLastName()));
+        profileImage.setImageDrawable(getImage(null, false, R.color.grape_two, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
         profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue_two));
     }
 
