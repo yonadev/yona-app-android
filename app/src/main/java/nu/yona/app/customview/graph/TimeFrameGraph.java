@@ -122,7 +122,6 @@ public class TimeFrameGraph extends BaseView {
             }
         }
 
-
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {

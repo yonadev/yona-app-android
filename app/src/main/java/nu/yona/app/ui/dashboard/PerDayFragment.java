@@ -62,7 +62,7 @@ public class PerDayFragment extends BaseFragment {
                     int totalItemCount = mLayoutManager.getItemCount();
                     int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
 
-                    if (!mIsLoading && currentPage < embeddedYonaActivity.getEmbedded().getPage().getTotalPages()) {
+                    if (!mIsLoading && embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getPage() != null && currentPage < embeddedYonaActivity.getEmbedded().getPage().getTotalPages()) {
                         if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
                             loadMoreItems();
                         }

@@ -15,7 +15,6 @@ import android.view.View;
 
 import nu.yona.app.R;
 import nu.yona.app.customview.YonaFontTextView;
-import nu.yona.app.enums.ChartTypeEnum;
 
 /**
  * Created by kinnarvasa on 07/06/16.
@@ -24,60 +23,22 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
 
     private YonaFontTextView goalType, goalScore, goalDesc;
     private View view;
+    private View goalGraphView;
+
     /**
      * Instantiates a new Chart item holder.
      *
-     * @param itemView      the item view
-     * @param listener      the listener
-     * @param chartTypeEnum the chart type enum
+     * @param itemView the item view
+     * @param listener the listener
      */
-    public ChartItemHolder(View itemView, View.OnClickListener listener, ChartTypeEnum chartTypeEnum) {
+    public ChartItemHolder(View itemView, View.OnClickListener listener) {
         super(itemView);
-        switch (chartTypeEnum) {
-            case TIME_FRAME_CONTROL:
-                showTimeFrameControl(itemView, listener);
-                break;
-            case NOGO_CONTROL:
-                //TODO set view of nogo
-            case TIME_BUCKET_CONTROL:
-                showTimeBucketControl(itemView, listener);
-                break;
-            case SPREAD_CONTROL:
-                showSpreadControl(itemView);
-                break;
-            case WEEK_SCORE_CONTROL:
-                showWeekControl(itemView, listener);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void showTimeFrameControl(View view, View.OnClickListener listener) {
-        view.setOnClickListener(listener);
-        inflateCommonView(view);
-    }
-
-    private void showTimeBucketControl(View view, View.OnClickListener listener) {
-        view.setOnClickListener(listener);
-        inflateCommonView(view);
-    }
-
-    private void showSpreadControl(View view) {
-        inflateCommonView(view);
-    }
-
-    private void showWeekControl(View view, View.OnClickListener listener) {
-        view.setOnClickListener(listener);
-        inflateCommonView(view);
-    }
-
-
-    private void inflateCommonView(View view) {
-        this.view = view;
-        goalType = (YonaFontTextView) view.findViewById(R.id.goalType);
-        goalScore = (YonaFontTextView) view.findViewById(R.id.goalScore);
-        goalDesc = (YonaFontTextView) view.findViewById(R.id.goalDesc);
+        this.view = itemView;
+        itemView.setOnClickListener(listener);
+        goalType = (YonaFontTextView) itemView.findViewById(R.id.goalType);
+        goalScore = (YonaFontTextView) itemView.findViewById(R.id.goalScore);
+        goalDesc = (YonaFontTextView) itemView.findViewById(R.id.goalDesc);
+        goalGraphView = itemView.findViewById(R.id.graphView);
     }
 
 
@@ -108,8 +69,21 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
         return this.goalScore;
     }
 
-    public View getView() {
-        return this.view;
+    /**
+     * Get GraphView
+     *
+     * @return
+     */
+    public View getGoalGraphView() {
+        return goalGraphView;
     }
 
+    /**
+     * Get layout view
+     *
+     * @return
+     */
+    public View getView() {
+        return view;
+    }
 }

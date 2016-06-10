@@ -1,6 +1,8 @@
 package nu.yona.app.ui.dashboard;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,8 @@ import java.util.List;
 import nu.yona.app.R;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.customview.YonaFontTextView;
-import nu.yona.app.enums.ChartTypeEnum;
+import nu.yona.app.customview.graph.TimeBucketGraph;
+import nu.yona.app.customview.graph.TimeFrameGraph;
 import nu.yona.app.ui.ChartItemHolder;
 
 /**
@@ -22,6 +25,7 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 
     private List<DayActivity> dayActivityList;
     private View.OnClickListener listener;
+    private Context mContext;
 
     /**
      * Instantiates a new Per day sticky adapter.
@@ -36,23 +40,10 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 
     @Override
     public ChartItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         View layoutView;
-        switch (ChartTypeEnum.getChartTypeEnum(viewType)) {
-            case NOGO_CONTROL:
-                //TODO set layout of nogo
-            case TIME_BUCKET_CONTROL:
-                layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.timebucket_chart_item, parent, false);
-                return new ChartItemHolder(layoutView, listener, ChartTypeEnum.TIME_BUCKET_CONTROL);
-            case TIME_FRAME_CONTROL:
-                layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeframe_chart_item, parent, false);
-                return new ChartItemHolder(layoutView, listener, ChartTypeEnum.TIME_BUCKET_CONTROL);
-            case SPREAD_CONTROL:
-                layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.spreading_chart_item, parent, false);
-                return new ChartItemHolder(layoutView, listener, ChartTypeEnum.TIME_BUCKET_CONTROL);
-            default:
-                break;
-        }
-        return null;
+        layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.goal_chart_item, parent, false);
+        return new ChartItemHolder(layoutView, listener);
     }
 
     @Override
@@ -61,9 +52,33 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 
         if (dayActivity != null) {
             holder.getView().setTag(dayActivity);
-            holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName());
+            if (dayActivity.getYonaGoal() != null && !TextUtils.isEmpty(dayActivity.getYonaGoal().getActivityCategoryName())) {
+                holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName() + "");
+            }
             holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
             //TODO fill all other values for item chart here
+            ViewGroup viewGroup = (ViewGroup) holder.getGoalGraphView();
+            switch (dayActivity.getChartTypeEnum()) {
+                case TIME_FRAME_CONTROL:
+                    TimeFrameGraph timeFrameGraph = new TimeFrameGraph(mContext);
+                    if (dayActivity.getTimeZoneSpread() != null) {
+                        timeFrameGraph.chartValuePre(dayActivity.getTimeZoneSpread());
+                        viewGroup.addView(timeFrameGraph);
+                    }
+                    break;
+                case TIME_BUCKET_CONTROL:
+                    TimeBucketGraph timeBucketGraph = new TimeBucketGraph(mContext);
+                    int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
+                    if (maxDurationAllow > 0) {
+                        timeBucketGraph.graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
+                        viewGroup.addView(timeBucketGraph);
+                    }
+                    break;
+                case SPREAD_CONTROL:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

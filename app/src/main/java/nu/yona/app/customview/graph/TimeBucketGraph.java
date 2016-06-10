@@ -148,7 +148,10 @@ public class TimeBucketGraph extends View {
         float height = scaleFactor * 25;
 
         //goint to divide into equal part of width
-        mVolume = fullWidth / mTotalMinTarget;
+        if (mTotalMinTarget > 0) {
+            mVolume = fullWidth / mTotalMinTarget;
+        }
+
 
         float left = 0, top = 0;
 
@@ -185,6 +188,7 @@ public class TimeBucketGraph extends View {
             fillStartPoint = left;
             fillendPoint = mDifference * mVolume;
         }
+
         RectF rectFill = new RectF(fillStartPoint, top, fillendPoint, bottom);
         canvas.drawRect(rectFill, mDrawRange);
 
