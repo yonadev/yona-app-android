@@ -16,7 +16,7 @@
     <FrameLayout
         android:id="@+id/graphView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/seventy_three"
+        android:layout_height="@dimen/chart_item_height"
         android:background="@drawable/item_gradient" />
 
     <LinearLayout
