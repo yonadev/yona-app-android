@@ -210,7 +210,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
     public void postAllDBActivities() {
         List<Activity> activityList = activityTrackerDAO.getActivities();
-        if (activityList != null) {
+        if (activityList != null && activityList.size() > 0) {
             AppActivity appActivity = new AppActivity();
             appActivity.setDeviceDateTime(DateUtility.getLongFormatDate(new Date()));
             appActivity.setActivities(activityList);
