@@ -30,6 +30,7 @@ import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -237,7 +238,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().postBudgetGoals(getPostYonaGoalForBudget(time, goal), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                YonaApplication.getEventChangeManager().getDataState().clearActivityList();
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
                 getUserGoal(listener);
             }
 
@@ -252,7 +253,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().postBudgetGoals(getPostYonaGoalForBudget(time, category), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                YonaApplication.getEventChangeManager().getDataState().clearActivityList();
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
                 getUserGoal(listener);
             }
 

@@ -90,7 +90,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static final int PICK_IMAGE = 3;
     private static final int PICK_CAMERA = 4;
     private static YonaActivity activity;
-    private Fragment mContent, homeFragment;
+    private BaseFragment mContent, homeFragment;
     private boolean isStateActive = false;
     private boolean mStateSaved;
     private boolean isBackPressed = false;
@@ -680,7 +680,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     public void onBackStackChanged() {
         if (isBackPressed) {
             isBackPressed = false;
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+            BaseFragment fragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.container);
             if (fragment != null && !fragment.equals(mContent)) {
                 mContent = fragment;
                 mContent.setUserVisibleHint(true);
@@ -756,6 +756,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (object != null && object instanceof ErrorMessage) {
                     showError((ErrorMessage) object);
                 }
+                break;
+            case EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST:
+                YonaApplication.getEventChangeManager().getDataState().clearActivityList(mContent);
                 break;
             default:
                 break;
@@ -918,6 +921,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         skipVerification = true;
     }
 
+    public boolean isToDisplayLogin() {
+        return this.isToDisplayLogin;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
@@ -940,5 +947,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         } else if (requestCode == AppConstant.READ_CONTACTS_PERMISSIONS_REQUEST) {
             openContactBook();
         }
+
+
     }
 }

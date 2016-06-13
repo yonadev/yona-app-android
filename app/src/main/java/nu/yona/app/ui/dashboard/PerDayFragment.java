@@ -33,7 +33,9 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.ui.Foreground;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
@@ -158,6 +160,9 @@ public class PerDayFragment extends BaseFragment {
      * to get the list of user's messages
      */
     private void getDayActivity(boolean loadMore) {
+        if(YonaActivity.getActivity().isToDisplayLogin()) {
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
+        }
         final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
                 || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {

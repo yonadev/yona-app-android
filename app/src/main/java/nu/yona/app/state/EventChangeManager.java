@@ -98,7 +98,7 @@ public class EventChangeManager {
      */
     public static final int EVENT_UPDATE_FRIEND_OVERVIEW = 17;
 
-    public static final int EVENT_DETAIL_ACTIVITY_FRAGMENT = 18;
+    public static final int EVENT_CLEAR_ACTIVITY_LIST = 18;
 
     private final Set<EventChangeListener> listeners = new HashSet<>();
 

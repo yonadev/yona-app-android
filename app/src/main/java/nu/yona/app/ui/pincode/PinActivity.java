@@ -219,7 +219,6 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
     }
 
     private void updateData() {
-        YonaApplication.getEventChangeManager().getDataState().clearActivityList();
         AppUtils.sendLogToServer();
     }
 }

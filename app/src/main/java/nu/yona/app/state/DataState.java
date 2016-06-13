@@ -13,6 +13,8 @@ package nu.yona.app.state;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.User;
+import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
 
 /**
  * Created by kinnarvasa on 10/06/16.
@@ -91,8 +93,10 @@ public class DataState {
         this.embeddedWeekActivity = embeddedWeekActivity;
     }
 
-    public void clearActivityList() {
-        embeddedDayActivity = null;
-        embeddedWeekActivity = null;
+    public void clearActivityList(BaseFragment fragment) {
+        if (!(fragment instanceof DayActivityDetailFragment)) {
+            embeddedDayActivity = null;
+            embeddedWeekActivity = null;
+        }
     }
 }
