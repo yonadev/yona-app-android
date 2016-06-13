@@ -88,7 +88,7 @@ public class DayActivityDetailFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                dateTitle.setText(dayActivityList.get(position).getStickyTitle());
+                updateFlow(position);
             }
 
             @Override
@@ -117,6 +117,7 @@ public class DayActivityDetailFragment extends BaseFragment {
         }
         customPageAdapter.notifyDataSetChanged(dayActivityList);
         viewPager.setCurrentItem(dayActivityList.indexOf(activity));
+        updateFlow(dayActivityList.indexOf(activity));
         setTitleAndIcon();
     }
 
@@ -126,5 +127,19 @@ public class DayActivityDetailFragment extends BaseFragment {
         }
         leftIcon.setVisibility(View.GONE);
         rightIcon.setVisibility(View.GONE);
+    }
+
+    private void updateFlow(int position) {
+        dateTitle.setText(dayActivityList.get(position).getStickyTitle());
+        if (position == 0) {
+            previousItem.setVisibility(View.INVISIBLE);
+        } else {
+            previousItem.setVisibility(View.VISIBLE);
+        }
+        if (position == dayActivityList.size() - 1) {
+            nextItem.setVisibility(View.INVISIBLE);
+        } else {
+            nextItem.setVisibility(View.VISIBLE);
+        }
     }
 }

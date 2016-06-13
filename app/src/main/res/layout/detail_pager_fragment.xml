@@ -47,8 +47,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/thirty_two"
-                    android:layout_marginRight="@dimen/ten"
+                    android:paddingLeft="@dimen/thirty_two"
+                    android:paddingRight="@dimen/ten"
                     android:src="@drawable/icn_date_back" />
 
                 <nu.yona.app.customview.YonaFontTextView
@@ -64,8 +64,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/ten"
-                    android:layout_marginRight="@dimen/thirty_two"
+                    android:paddingLeft="@dimen/ten"
+                    android:paddingRight="@dimen/thirty_two"
                     android:src="@drawable/icn_date_forward" />
             </LinearLayout>
 
