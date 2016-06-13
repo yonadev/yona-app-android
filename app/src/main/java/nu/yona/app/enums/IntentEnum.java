@@ -65,7 +65,9 @@ public enum IntentEnum {
     /**
      * Action Friend Request intent enum.
      */
-    ACTION_FRIEND_REQUEST("nu.yona.app.action.FRIEND_REQUEST");
+    ACTION_FRIEND_REQUEST("nu.yona.app.action.FRIEND_REQUEST"),
+
+    ACTION_ACTIVITY_DETAIL_VIEW("nul.yona.app.action.ACTIVITY_DETAIL");
 
     private static final Map<String, IntentEnum> nameToEnumMapping = new HashMap<>();
 

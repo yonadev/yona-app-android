@@ -55,23 +55,6 @@ public interface ChallengesManager {
      * @return the yona goal by category type
      */
     YonaGoal getYonaGoalByCategoryType(YonaActivityCategories activityCategories);
-
-    /**
-     * Delete goal.
-     *
-     * @param goalId   the goal id
-     * @param listener the listener
-     */
-    void deleteGoal(String goalId, DataLoadListener listener);
-
-    /**
-     * Create new goal.
-     *
-     * @param yonaGoal the yona goal
-     * @param listener the listener
-     */
-    void createNewGoal(YonaGoal yonaGoal, DataLoadListener listener);
-
     /**
      * Post budget goals.
      *

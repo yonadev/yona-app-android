@@ -4,11 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -22,21 +19,13 @@ public class YonaReceiver extends BroadcastReceiver {
             case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_SCREEN_ON:
                 restartService(context);
+                AppUtils.sendLogToServer();
                 break;
             case Intent.ACTION_SCREEN_OFF:
                 AppUtils.stopService(context);
-                sendLogToServer();
+                AppUtils.sendLogToServer();
                 break;
         }
-    }
-
-    private void sendLogToServer() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                APIManager.getInstance().getActivityManager().postAllDBActivities();
-            }
-        }, AppConstant.FIVE_SECONDS);
     }
 
     private void restartService(Context context) {

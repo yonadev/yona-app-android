@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,7 +23,7 @@ import nu.yona.app.enums.ChartTypeEnum;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-public class DayActivity {
+public class DayActivity extends BaseEntity {
     @SerializedName("date")
     @Expose
     private String date;
@@ -253,5 +255,10 @@ public class DayActivity {
      */
     public void setTimeZoneSpread(List<TimeZoneSpread> timeZoneSpread) {
         this.timeZoneSpread = timeZoneSpread;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

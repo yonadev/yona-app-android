@@ -63,17 +63,17 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
             ViewGroup viewGroup = (ViewGroup) holder.getGoalGraphView();
             switch (dayActivity.getChartTypeEnum()) {
                 case TIME_FRAME_CONTROL:
-                    TimeFrameGraph timeFrameGraph = new TimeFrameGraph(mContext);
                     if (dayActivity.getTimeZoneSpread() != null) {
+                        TimeFrameGraph timeFrameGraph = new TimeFrameGraph(mContext);
                         timeFrameGraph.chartValuePre(dayActivity.getTimeZoneSpread());
                         viewGroup.addView(timeFrameGraph);
                     }
                     updatedetail(dayActivity, holder);
                     break;
                 case TIME_BUCKET_CONTROL:
-                    TimeBucketGraph timeBucketGraph = new TimeBucketGraph(mContext);
                     int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
                     if (maxDurationAllow > 0) {
+                        TimeBucketGraph timeBucketGraph = new TimeBucketGraph(mContext);
                         timeBucketGraph.graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
                         viewGroup.addView(timeBucketGraph);
                     }
