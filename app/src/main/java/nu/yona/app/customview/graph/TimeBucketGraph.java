@@ -15,13 +15,11 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.view.View;
 
 /**
  * Created by bhargavsuthar on 07/06/16.
  */
-public class TimeBucketGraph extends View {
+public class TimeBucketGraph extends BaseView {
 
     private Context mContext;
     private int mTotalActivityBeyondGoal;
@@ -34,12 +32,7 @@ public class TimeBucketGraph extends View {
     private Canvas mCanvas;
     private float mDifference;
     //equal parts
-    private int mVolume;
-
-
-    private Paint linePaint;
-    private float scaleFactor;
-
+    private float mVolume;
 
     /**
      * Instantiates a new Time bucket graph.
@@ -48,8 +41,6 @@ public class TimeBucketGraph extends View {
      */
     public TimeBucketGraph(Context context) {
         super(context);
-        this.mContext = context;
-        initialize();
     }
 
     /**
@@ -60,8 +51,6 @@ public class TimeBucketGraph extends View {
      */
     public TimeBucketGraph(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.mContext = context;
-        initialize();
     }
 
     /**
@@ -73,8 +62,6 @@ public class TimeBucketGraph extends View {
      */
     public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.mContext = context;
-        initialize();
     }
 
     /**
@@ -88,23 +75,6 @@ public class TimeBucketGraph extends View {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        this.mContext = context;
-        initialize();
-    }
-
-
-    /**
-     * Initialize.
-     */
-    public void initialize() {
-
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        scaleFactor = metrics.density;
-
-
-        linePaint = new Paint();
-        linePaint.setStrokeWidth(1);
-        linePaint.setColor(GraphUtils.COLOR_WHITE_THREE);
     }
 
     /**
@@ -118,6 +88,14 @@ public class TimeBucketGraph extends View {
         mTotalActivityBeyondGoal = totalActivityBeyondGoal;
         mTotalActivityDurationMin = totalActivityDurationMinutes;
         mTotalMinTarget = totalMinTarget;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        this.mCanvas = canvas;
+        int fullWidth = getWidth();
+        float height = scaleFactor * 25;
 
         //using mDifference to check wheather its beyond time or not
         mDifference = mTotalMinTarget - mTotalActivityDurationMin;
@@ -136,20 +114,13 @@ public class TimeBucketGraph extends View {
         if (mFillStartRange < 0) {
             mFillEndRange = 0;
         } else {
-            mFillEndRange = mDifference;
+            mFillEndRange = mVolume * mTotalActivityBeyondGoal;
         }
-    }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        this.mCanvas = canvas;
-        int fullWidth = getWidth();
-        float height = scaleFactor * 25;
 
         //goint to divide into equal part of width
         if (mTotalMinTarget > 0) {
-            mVolume = fullWidth / mTotalMinTarget;
+            mVolume = (float) fullWidth / mTotalMinTarget;
         }
 
 
@@ -169,11 +140,7 @@ public class TimeBucketGraph extends View {
         paint.setTextSize(scaleFactor * GraphUtils.TEXT_SIZE);
         canvas.drawText(String.valueOf((int) mStartPoint), left, bottom + height, paint);
 
-        //if startpoint is less than zero then we need to display negative, zero and positive point
-        if (mStartPoint < 0) {
-            canvas.drawText(String.valueOf(0), mVolume * mTotalActivityBeyondGoal, bottom + height, paint);
-        }
-        canvas.drawText(String.valueOf((int) mEndPoint), right - 50, bottom + height, paint);
+        canvas.drawText(String.valueOf((int) mEndPoint), right - (20 * scaleFactor), bottom + height, paint);
 
         //Filling usage of time
         Paint mDrawRange = new Paint();
@@ -183,6 +150,7 @@ public class TimeBucketGraph extends View {
             mDrawRange.setColor(GraphUtils.COLOR_PINK);
             fillStartPoint = left;
             fillendPoint = mVolume * mTotalActivityBeyondGoal;
+            canvas.drawText(String.valueOf(0), fillendPoint, bottom + height, paint);
         } else {
             mDrawRange.setColor(GraphUtils.COLOR_GREEN);
             fillStartPoint = left;

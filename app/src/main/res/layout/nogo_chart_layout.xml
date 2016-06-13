@@ -37,8 +37,7 @@
         android:layout_toStartOf="@+id/imgNogo"
         android:ellipsize="end"
         android:gravity="left"
-        android:maxLines="1"
-        android:text="Adult" />
+        android:maxLines="1" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/txtNogoTime"
@@ -51,6 +50,5 @@
         android:ellipsize="end"
         android:gravity="right"
         android:lines="1"
-        android:maxLines="1"
-        android:text="Small Text" />
+        android:maxLines="1" />
 </RelativeLayout>
