@@ -82,7 +82,6 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
                 case SPREAD_CONTROL:
                     break;
                 case NOGO_CONTROL:
-                    holder.getGoalDesc().setText("geen hits, hou vol!");
                     if (dayActivity.getGoalAccomplished()) {
                         holder.getNogoStatus().setImageResource(R.drawable.adult_happy);
                     } else {
