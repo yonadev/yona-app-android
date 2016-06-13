@@ -22,6 +22,7 @@ import java.util.List;
 import nu.yona.app.R;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.ui.ChartItemHolder;
 
 /**
@@ -46,7 +47,7 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
     @Override
     public ChartItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.week_chart_item, parent, false);
-        return new ChartItemHolder(layoutView, listener);
+        return new ChartItemHolder(layoutView, listener, ChartTypeEnum.WEEK_SCORE_CONTROL);
     }
 
     @Override

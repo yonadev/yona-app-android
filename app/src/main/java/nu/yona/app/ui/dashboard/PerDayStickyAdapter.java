@@ -16,6 +16,7 @@ import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.graph.TimeBucketGraph;
 import nu.yona.app.customview.graph.TimeFrameGraph;
+import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.ui.ChartItemHolder;
 
 /**
@@ -42,8 +43,14 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
     public ChartItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         View layoutView;
-        layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.goal_chart_item, parent, false);
-        return new ChartItemHolder(layoutView, listener);
+        switch (ChartTypeEnum.getChartTypeEnum(viewType)) {
+            case NOGO_CONTROL:
+                layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.nogo_chart_layout, parent, false);
+                return new ChartItemHolder(layoutView, listener, ChartTypeEnum.NOGO_CONTROL);
+            default:
+                layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.goal_chart_item, parent, false);
+                return new ChartItemHolder(layoutView, listener, ChartTypeEnum.getChartTypeEnum(viewType));
+        }
     }
 
     @Override
@@ -52,10 +59,6 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 
         if (dayActivity != null) {
             holder.getView().setTag(dayActivity);
-            if (dayActivity.getYonaGoal() != null && !TextUtils.isEmpty(dayActivity.getYonaGoal().getActivityCategoryName())) {
-                holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName() + "");
-            }
-            holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
             //TODO fill all other values for item chart here
             ViewGroup viewGroup = (ViewGroup) holder.getGoalGraphView();
             switch (dayActivity.getChartTypeEnum()) {
@@ -65,6 +68,7 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
                         timeFrameGraph.chartValuePre(dayActivity.getTimeZoneSpread());
                         viewGroup.addView(timeFrameGraph);
                     }
+                    updatedetail(dayActivity, holder);
                     break;
                 case TIME_BUCKET_CONTROL:
                     TimeBucketGraph timeBucketGraph = new TimeBucketGraph(mContext);
@@ -73,13 +77,33 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
                         timeBucketGraph.graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
                         viewGroup.addView(timeBucketGraph);
                     }
+                    updatedetail(dayActivity, holder);
                     break;
                 case SPREAD_CONTROL:
+                    break;
+                case NOGO_CONTROL:
+                    holder.getGoalDesc().setText("geen hits, hou vol!");
+                    if (dayActivity.getGoalAccomplished()) {
+                        holder.getNogoStatus().setImageResource(R.drawable.adult_happy);
+                    } else {
+                        holder.getNogoStatus().setImageResource(R.drawable.adult_sad);
+                    }
+                    if (dayActivity.getYonaGoal() != null && !TextUtils.isEmpty(dayActivity.getYonaGoal().getType())) {
+                        holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName());
+                    }
                     break;
                 default:
                     break;
             }
         }
+    }
+
+
+    private void updatedetail(final DayActivity dayActivity, ChartItemHolder holder) {
+        if (dayActivity.getYonaGoal() != null && !TextUtils.isEmpty(dayActivity.getYonaGoal().getActivityCategoryName())) {
+            holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName() + "");
+        }
+        holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
     }
 
     @Override

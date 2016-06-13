@@ -12,9 +12,11 @@ package nu.yona.app.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
 import nu.yona.app.R;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.enums.ChartTypeEnum;
 
 /**
  * Created by kinnarvasa on 07/06/16.
@@ -24,6 +26,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     private YonaFontTextView goalType, goalScore, goalDesc;
     private View view;
     private View goalGraphView;
+    private ImageView nogoStatus;
 
     /**
      * Instantiates a new Chart item holder.
@@ -31,16 +34,40 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
      * @param itemView the item view
      * @param listener the listener
      */
-    public ChartItemHolder(View itemView, View.OnClickListener listener) {
+    public ChartItemHolder(View itemView, View.OnClickListener listener, ChartTypeEnum chartTypeEnum) {
         super(itemView);
         this.view = itemView;
         itemView.setOnClickListener(listener);
-        goalType = (YonaFontTextView) itemView.findViewById(R.id.goalType);
-        goalScore = (YonaFontTextView) itemView.findViewById(R.id.goalScore);
-        goalDesc = (YonaFontTextView) itemView.findViewById(R.id.goalDesc);
-        goalGraphView = itemView.findViewById(R.id.graphView);
+        switch (chartTypeEnum) {
+            case NOGO_CONTROL:
+                initNoGOControlView();
+                break;
+            default:
+                initGraphControlView();
+                break;
+        }
+
     }
 
+    /**
+     * Initialize Nogo Controls
+     */
+    private void initNoGOControlView() {
+        goalType = (YonaFontTextView) view.findViewById(R.id.txtNoGoText);
+        goalDesc = (YonaFontTextView) view.findViewById(R.id.txtNogoTime);
+        nogoStatus = (ImageView) view.findViewById(R.id.imgNogo);
+    }
+
+    /**
+     * Initialize default Graph Controls, ex: TimeBucket, TimeFrame, Spread Control
+     */
+
+    private void initGraphControlView() {
+        goalType = (YonaFontTextView) view.findViewById(R.id.goalType);
+        goalScore = (YonaFontTextView) view.findViewById(R.id.goalScore);
+        goalDesc = (YonaFontTextView) view.findViewById(R.id.goalDesc);
+        goalGraphView = view.findViewById(R.id.graphView);
+    }
 
     /**
      * Gets goal type.
@@ -85,5 +112,14 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
      */
     public View getView() {
         return view;
+    }
+
+    /**
+     * Get Image of nogo status
+     *
+     * @return
+     */
+    public ImageView getNogoStatus() {
+        return nogoStatus;
     }
 }

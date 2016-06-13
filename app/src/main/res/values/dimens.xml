@@ -160,4 +160,8 @@
     <dimen name="chart_item_chart_height">73dp</dimen>
     <dimen name="chart_item_chart_spreading_height">103dp</dimen>
     <dimen name="chart_item_chart_bottom_margin">16dp</dimen>
+    <dimen name="nogo_chart_item_height">86dp</dimen>
+    <dimen name="nogo_left_right_padding">32dp</dimen>
+    <dimen name="nogo_top_bottom_padding">15dp</dimen>
+    <dimen name="nogo_image_height_width">56dp</dimen>
 </resources>
