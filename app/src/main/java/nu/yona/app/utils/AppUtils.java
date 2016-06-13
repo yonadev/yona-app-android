@@ -24,6 +24,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import java.util.Random;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.service.ActivityMonitorService;
@@ -334,5 +336,14 @@ public class AppUtils {
      */
     public static void setSubmitPressed(boolean submitPressed) {
         AppUtils.submitPressed = submitPressed;
+    }
+
+    public static void sendLogToServer() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                APIManager.getInstance().getActivityManager().postAllDBActivities();
+            }
+        }, AppConstant.FIVE_SECONDS);
     }
 }

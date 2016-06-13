@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~  This Source Code Form is subject to the terms of the Mozilla Public
+  ~  License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/graphView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/seventy_three"
+        android:background="@drawable/item_gradient" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/chart_item_spreading_height"
+        android:background="@drawable/item_gradient"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Spreiding Control" />
+    </LinearLayout>
+</LinearLayout>

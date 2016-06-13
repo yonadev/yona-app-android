@@ -91,4 +91,8 @@ public class DataState {
         this.embeddedWeekActivity = embeddedWeekActivity;
     }
 
+    public void clearActivityList() {
+        embeddedDayActivity = null;
+        embeddedWeekActivity = null;
+    }
 }

@@ -51,6 +51,6 @@
     <FrameLayout
         android:id="@+id/graphView"
         android:layout_width="match_parent"
-        android:layout_height="73dp" />
+        android:layout_height="@dimen/seventy_three" />
 
 </LinearLayout>

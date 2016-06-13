@@ -24,6 +24,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.PinResetDelay;
+import nu.yona.app.api.model.User;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
@@ -215,5 +216,10 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         intent.putExtras(bundle);
         startActivity(intent);
         this.overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+    }
+
+    private void updateData() {
+        YonaApplication.getEventChangeManager().getDataState().clearActivityList();
+        AppUtils.sendLogToServer();
     }
 }

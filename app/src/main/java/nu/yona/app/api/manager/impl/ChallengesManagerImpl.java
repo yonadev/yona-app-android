@@ -229,28 +229,6 @@ public class ChallengesManagerImpl implements ChallengesManager {
     }
 
     /**
-     * Delete Goal by User's Goal id(url)
-     *
-     * @param goalId
-     * @param listener
-     */
-    @Override
-    public void deleteGoal(String goalId, DataLoadListener listener) {
-
-    }
-
-    /**
-     * Create a new Goal
-     *
-     * @param yonaGoal
-     * @param listener
-     */
-    @Override
-    public void createNewGoal(YonaGoal yonaGoal, DataLoadListener listener) {
-
-    }
-
-    /**
      * @param time     milliseconds
      * @param goal     YonaGoal selected object
      * @param listener
@@ -259,6 +237,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().postBudgetGoals(getPostYonaGoalForBudget(time, goal), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaApplication.getEventChangeManager().getDataState().clearActivityList();
                 getUserGoal(listener);
             }
 
@@ -273,6 +252,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().postBudgetGoals(getPostYonaGoalForBudget(time, category), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaApplication.getEventChangeManager().getDataState().clearActivityList();
                 getUserGoal(listener);
             }
 
