@@ -28,6 +28,7 @@ import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
 /**
@@ -104,7 +105,7 @@ public class DayActivityDetailFragment extends BaseFragment {
         super.onResume();
         dayActivityList = new ArrayList<>();
         EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
-        if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null) {
+        if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) {
             for (DayActivity dayActivity : embeddedYonaActivity.getDayActivityList()) {
                 try {
                     if (dayActivity.getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref())) {
@@ -114,10 +115,13 @@ public class DayActivityDetailFragment extends BaseFragment {
                     Log.e(DayActivityDetailFragment.class.getSimpleName(), e.getMessage());
                 }
             }
+            customPageAdapter.notifyDataSetChanged(dayActivityList);
+            viewPager.setCurrentItem(dayActivityList.indexOf(activity));
+            updateFlow(dayActivityList.indexOf(activity));
+        } else {
+            YonaActivity.getActivity().onBackPressed();
         }
-        customPageAdapter.notifyDataSetChanged(dayActivityList);
-        viewPager.setCurrentItem(dayActivityList.indexOf(activity));
-        updateFlow(dayActivityList.indexOf(activity));
+
         setTitleAndIcon();
     }
 

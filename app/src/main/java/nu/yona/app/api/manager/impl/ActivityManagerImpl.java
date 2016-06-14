@@ -315,45 +315,50 @@ public class ActivityManagerImpl implements ActivityManager {
     private void filterAndUpdateDailyData(EmbeddedYonaActivity embeddedYonaActivity, DataLoadListener listener) {
         List<DayActivity> dayActivities = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_DATE_FORMAT, Locale.getDefault());
-        if (embeddedYonaActivity != null && embeddedYonaActivity.getEmbedded() != null) {
-            Embedded embedded = embeddedYonaActivity.getEmbedded();
-            List<YonaDayActivityOverview> yonaDayActivityOverviews = embedded.getYonaDayActivityOverviews();
-            for (YonaDayActivityOverview overview : yonaDayActivityOverviews) {
-                List<DayActivity> overviewDayActivities = overview.getDayActivities();
-                List<DayActivity> updatedOverviewDayActivities = new ArrayList<>();
-                for (DayActivity activity : overviewDayActivities) {
-                    activity.setYonaGoal(findYonaGoal(activity.getLinks().getYonaGoal()));
-                    if (activity.getYonaGoal() != null) {
-                        if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.BUDGET_GOAL) {
-                            if (activity.getYonaGoal().getMaxDurationMinutes() == 0) {
-                                activity.setChartTypeEnum(ChartTypeEnum.NOGO_CONTROL);
-                            } else {
-                                activity.setChartTypeEnum(ChartTypeEnum.TIME_BUCKET_CONTROL);
+        if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() == null) {
+            YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(embeddedYonaActivity);
+        }
+        if (embeddedYonaActivity != null) {
+            if (embeddedYonaActivity.getEmbedded() != null) {
+                Embedded embedded = embeddedYonaActivity.getEmbedded();
+                List<YonaDayActivityOverview> yonaDayActivityOverviews = embedded.getYonaDayActivityOverviews();
+                for (YonaDayActivityOverview overview : yonaDayActivityOverviews) {
+                    List<DayActivity> overviewDayActivities = overview.getDayActivities();
+                    List<DayActivity> updatedOverviewDayActivities = new ArrayList<>();
+                    for (DayActivity activity : overviewDayActivities) {
+                        activity.setYonaGoal(findYonaGoal(activity.getLinks().getYonaGoal()));
+                        if (activity.getYonaGoal() != null) {
+                            if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.BUDGET_GOAL) {
+                                if (activity.getYonaGoal().getMaxDurationMinutes() == 0) {
+                                    activity.setChartTypeEnum(ChartTypeEnum.NOGO_CONTROL);
+                                } else {
+                                    activity.setChartTypeEnum(ChartTypeEnum.TIME_BUCKET_CONTROL);
+                                }
+                            } else if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.TIME_ZONE_GOAL) {
+                                activity.setChartTypeEnum(ChartTypeEnum.TIME_FRAME_CONTROL);
                             }
-                        } else if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.TIME_ZONE_GOAL) {
-                            activity.setChartTypeEnum(ChartTypeEnum.TIME_FRAME_CONTROL);
+                        }
+                        String createdTime = overview.getDate();
+                        try {
+                            Calendar futureCalendar = Calendar.getInstance();
+                            futureCalendar.setTime(sdf.parse(createdTime));
+                            activity.setStickyTitle(DateUtility.getRelativeDate(futureCalendar));
+                        } catch (Exception e) {
+                            Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+                        }
+                        if (activity.getYonaGoal() != null && activity.getYonaGoal() != null && !activity.getYonaGoal().isHistoryItem()) {
+                            updatedOverviewDayActivities.add(generateTimeZoneSpread(activity));
                         }
                     }
-                    String createdTime = overview.getDate();
-                    try {
-                        Calendar futureCalendar = Calendar.getInstance();
-                        futureCalendar.setTime(sdf.parse(createdTime));
-                        activity.setStickyTitle(DateUtility.getRelativeDate(futureCalendar));
-                    } catch (Exception e) {
-                        Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
-                    }
-                    if (activity.getYonaGoal() != null && activity.getYonaGoal() != null && !activity.getYonaGoal().isHistoryItem()) {
-                        updatedOverviewDayActivities.add(generateTimeZoneSpread(activity));
-                    }
+                    dayActivities.addAll(sortDayActivity(updatedOverviewDayActivities));
                 }
-                dayActivities.addAll(sortDayActivity(updatedOverviewDayActivities));
+                if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() == null) {
+                    YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().setDayActivityList(dayActivities);
+                } else {
+                    YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().addAll(dayActivities);
+                }
             }
-            embeddedYonaActivity.setDayActivityList(dayActivities);
-
-            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() == null) {
-                YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(embeddedYonaActivity);
-            } else {
-                YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().addAll(dayActivities);
+            if (embeddedYonaActivity.getPage() != null) {
                 YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().setPage(embeddedYonaActivity.getPage());
             }
             listener.onDataLoad(embeddedYonaActivity);

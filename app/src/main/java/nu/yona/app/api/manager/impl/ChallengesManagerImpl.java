@@ -97,12 +97,14 @@ public class ChallengesManagerImpl implements ChallengesManager {
                             break;
                         }
                     }
-                    if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && (mYonaGoal.getMaxDurationMinutes() > 0)) {
-                        budgetCategoriesGoalList.add(mYonaGoal);
-                    } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString()) && (mYonaGoal.getZones() != null)) {
-                        timeZoneCategoriesGoalList.add(mYonaGoal);
-                    } else {
-                        noGoCategoriesGoalList.add(mYonaGoal);
+                    if (!mYonaGoal.isHistoryItem()) {
+                        if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && (mYonaGoal.getMaxDurationMinutes() > 0)) {
+                            budgetCategoriesGoalList.add(mYonaGoal);
+                        } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString()) && (mYonaGoal.getZones() != null)) {
+                            timeZoneCategoriesGoalList.add(mYonaGoal);
+                        } else {
+                            noGoCategoriesGoalList.add(mYonaGoal);
+                        }
                     }
                 }
             }
