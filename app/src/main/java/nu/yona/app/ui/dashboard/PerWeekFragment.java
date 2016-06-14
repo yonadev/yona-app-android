@@ -96,6 +96,7 @@ public class PerWeekFragment extends BaseFragment {
         listView.setAdapter(perWeekStickyAdapter);
         listView.addOnScrollListener(mRecyclerViewOnScrollListener);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(perWeekStickyAdapter));
+        refreshAdapter();
         return view;
 
     }
@@ -120,12 +121,6 @@ public class PerWeekFragment extends BaseFragment {
                     public void onHeaderClick(View header, int position, long headerId) {
                     }
                 });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        refreshAdapter();
     }
 
     /**

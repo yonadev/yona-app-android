@@ -80,7 +80,8 @@ public class ActivityManagerImpl implements ActivityManager {
         if (loadMore || embeddedYonaActivity == null
                 || embeddedYonaActivity.getDayActivityList() == null
                 || embeddedYonaActivity.getDayActivityList().size() == 0) {
-            int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null) ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
+            int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
+                    && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
             User user = YonaApplication.getEventChangeManager().getDataState().getUser();
             if (user != null && user.getLinks() != null
                     && user.getLinks().getYonaDailyActivityReports() != null
@@ -141,7 +142,9 @@ public class ActivityManagerImpl implements ActivityManager {
         if (loadMore || embeddedYonaActivity == null
                 || embeddedYonaActivity.getWeekActivityList() == null
                 || embeddedYonaActivity.getWeekActivityList().size() == 0) {
-            int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null) ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
+            int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
+                    && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0)
+                    ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
             User user = YonaApplication.getEventChangeManager().getDataState().getUser();
             if (user != null && user.getLinks() != null
                     && user.getLinks().getYonaWeeklyActivityReports() != null
@@ -282,30 +285,39 @@ public class ActivityManagerImpl implements ActivityManager {
 
     private void filterAndUpdateWeekData(EmbeddedYonaActivity embeddedYonaActivity, DataLoadListener listener) {
         List<WeekActivity> weekActivities = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_DATE_FORMAT, Locale.getDefault());
-        if (embeddedYonaActivity != null && embeddedYonaActivity.getEmbedded() != null) {
-            Embedded embedded = embeddedYonaActivity.getEmbedded();
-            List<YonaWeekActivityOverview> yonaDayActivityOverviews = embedded.getYonaWeekActivityOverviews();
-            for (YonaWeekActivityOverview overview : yonaDayActivityOverviews) {
-                List<WeekActivity> overviewWeekActivities = overview.getWeekActivities();
-                for (WeekActivity activity : overviewWeekActivities) {
-                    activity.setYonaGoal(findYonaGoal(activity.getLinks().getYonaGoal()));
-                    if (activity.getYonaGoal() != null) {
-                        activity.setChartTypeEnum(ChartTypeEnum.WEEK_SCORE_CONTROL);
+        if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() == null) {
+            YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(embeddedYonaActivity);
+        }
+        if (embeddedYonaActivity != null) {
+            if (embeddedYonaActivity.getEmbedded() != null) {
+                Embedded embedded = embeddedYonaActivity.getEmbedded();
+                List<YonaWeekActivityOverview> yonaDayActivityOverviews = embedded.getYonaWeekActivityOverviews();
+                for (YonaWeekActivityOverview overview : yonaDayActivityOverviews) {
+                    List<WeekActivity> overviewWeekActivities = overview.getWeekActivities();
+                    for (WeekActivity activity : overviewWeekActivities) {
+                        YonaGoal goal = findYonaGoal(activity.getLinks().getYonaGoal());
+                        if (goal != null) {
+                            activity.setYonaGoal(goal);
+                            if (activity.getYonaGoal() != null) {
+                                activity.setChartTypeEnum(ChartTypeEnum.WEEK_SCORE_CONTROL);
+                            }
+                            try {
+                                activity.setStickyTitle(DateUtility.getRetriveWeek(overview.getDate()));
+                            } catch (Exception e) {
+                                Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+                            }
+                            weekActivities.add(activity);
+                        }
+
                     }
-                    try {
-                        activity.setStickyTitle(DateUtility.getRetriveWeek(overview.getDate()));
-                    } catch (Exception e) {
-                        Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
-                    }
-                    weekActivities.add(activity);
+                }
+                if (embeddedYonaActivity.getWeekActivityList() == null) {
+                    embeddedYonaActivity.setWeekActivityList(weekActivities);
+                } else {
+                    YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList().addAll(weekActivities);
                 }
             }
-            embeddedYonaActivity.setWeekActivityList(weekActivities);
-            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() == null) {
-                YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(embeddedYonaActivity);
-            } else {
-                YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList().addAll(weekActivities);
+            if (embeddedYonaActivity.getPage() != null) {
                 YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().setPage(embeddedYonaActivity.getPage());
             }
             listener.onDataLoad(embeddedYonaActivity);

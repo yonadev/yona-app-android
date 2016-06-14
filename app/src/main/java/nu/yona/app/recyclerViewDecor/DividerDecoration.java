@@ -24,10 +24,6 @@ import android.view.View;
 public class DividerDecoration extends RecyclerView.ItemDecoration {
 
     /**
-     * The constant HORIZONTAL_LIST.
-     */
-    public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
-    /**
      * The constant VERTICAL_LIST.
      */
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
@@ -61,12 +57,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);
-
-        if (getOrientation(parent) == VERTICAL_LIST) {
-            drawVertical(c, parent);
-        } else {
-            drawHorizontal(c, parent);
-        }
+        drawVertical(c, parent);
     }
 
     /**
@@ -87,29 +78,6 @@ public class DividerDecoration extends RecyclerView.ItemDecoration {
                     .getLayoutParams();
             final int top = Math.max(recyclerViewTop, child.getBottom() + params.bottomMargin);
             final int bottom = Math.min(recyclerViewBottom, top + mDivider.getIntrinsicHeight());
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
-        }
-    }
-
-    /**
-     * Draw horizontal.
-     *
-     * @param c      the c
-     * @param parent the parent
-     */
-    public void drawHorizontal(Canvas c, RecyclerView parent) {
-        final int top = parent.getPaddingTop();
-        final int bottom = parent.getHeight() - parent.getPaddingBottom();
-        final int recyclerViewLeft = parent.getPaddingLeft();
-        final int recyclerViewRight = parent.getWidth() - parent.getPaddingRight();
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                    .getLayoutParams();
-            final int left = Math.max(recyclerViewLeft, child.getRight() + params.rightMargin);
-            final int right = Math.min(recyclerViewRight, left + mDivider.getIntrinsicHeight());
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
