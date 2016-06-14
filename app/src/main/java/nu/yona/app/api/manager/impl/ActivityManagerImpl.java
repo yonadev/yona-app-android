@@ -352,8 +352,8 @@ public class ActivityManagerImpl implements ActivityManager {
                     }
                     dayActivities.addAll(sortDayActivity(updatedOverviewDayActivities));
                 }
-                if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() == null) {
-                    YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().setDayActivityList(dayActivities);
+                if (embeddedYonaActivity.getDayActivityList() == null) {
+                    embeddedYonaActivity.setDayActivityList(dayActivities);
                 } else {
                     YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().addAll(dayActivities);
                 }
