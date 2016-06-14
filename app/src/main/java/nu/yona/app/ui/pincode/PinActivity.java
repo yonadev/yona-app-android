@@ -14,10 +14,8 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -29,7 +27,6 @@ import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
-import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
@@ -38,48 +35,16 @@ import nu.yona.app.utils.PreferenceConstant;
 /**
  * Created by bhargavsuthar on 3/30/16.
  */
-public class PinActivity extends BaseActivity implements EventChangeListener {
+public class PinActivity extends BasePasscodeActivity implements EventChangeListener {
 
-    private TextView txtTitle;
     private PasscodeFragment passcodeFragment;
-    private Toolbar mToolBar;
-    private String screenType;
-    private String screenTitle;
+    private boolean isUserBlocked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.blank_container_layout);
 
         YonaApplication.getEventChangeManager().registerListener(this);
-
-        mToolBar = (Toolbar) findViewById(R.id.toolbar_layout);
-        txtTitle = (TextView) findViewById(R.id.toolbar_title);
-
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            if (getIntent().getExtras().get(AppConstant.TITLE_BACKGROUND_RESOURCE) != null) {
-                mToolBar.setBackgroundResource(getIntent().getExtras().getInt(AppConstant.TITLE_BACKGROUND_RESOURCE));
-            } else {
-                mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
-            }
-
-            if (getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
-                findViewById(R.id.pincode_layout_header).setBackgroundColor(getIntent().getExtras().getInt(AppConstant.COLOR_CODE));
-            }
-
-            if (!TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.SCREEN_TYPE))) {
-                screenType = getIntent().getExtras().getString(AppConstant.SCREEN_TYPE);
-            }
-            if (getIntent().getExtras().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
-                findViewById(R.id.main_content).setBackgroundResource(getIntent().getExtras().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND));
-            }
-
-            if (getIntent().getExtras().get(AppConstant.SCREEN_TITLE) != null) {
-                screenTitle = getIntent().getExtras().getString(AppConstant.SCREEN_TITLE);
-            }
-        } else {
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
-        }
 
         passcodeFragment = new PasscodeFragment();
         passcodeFragment.setArguments(getIntent().getExtras());
@@ -87,17 +52,15 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
         fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
         fragmentTransaction.replace(R.id.blank_container, passcodeFragment);
         fragmentTransaction.commit();
-    }
 
-    /**
-     * Update title.
-     *
-     * @param title the title
-     */
-    public void updateTitle(String title) {
-        txtTitle.setText(title);
+        isUserBlocked = YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false);
+        if (TextUtils.isEmpty(screen_type)) {
+            screen_type = AppConstant.LOGGED_IN;
+        }
+        if (!isUserBlocked) {
+            updateScreenUI();
+        }
     }
-
 
     @Override
     public void onDestroy() {
@@ -108,22 +71,15 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!TextUtils.isEmpty(screenTitle)) {
-            updateTitle(screenTitle);
-        } else if (!TextUtils.isEmpty(screenType) && screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
-            updateTitle(getString(R.string.pincode));
-        } else {
-            updateTitle(getString(R.string.login));
-        }
         if (YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null) {
             updateBlockMsg();
         }
     }
 
     private void updateBlockMsg() {
-        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.msgblockuser));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         passcodeFragment.disableEditable();
+        blockUser();
     }
 
     @Override
@@ -143,6 +99,8 @@ public class PinActivity extends BaseActivity implements EventChangeListener {
                 break;
             case EventChangeManager.EVENT_PASSCODE_RESET:
                 doPinReset();
+            case EventChangeManager.EVENT_PASSCODE_ERROR:
+                passcode_error.setText((String) object);
                 break;
             default:
                 break;
