@@ -10,10 +10,12 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 /**
  * Created by kinnarvasa on 09/06/16.
  */
-public class TimeZoneSpread {
+public class TimeZoneSpread extends BaseEntity{
     /**
      * Sample:
      * index        :  0, 1, 2, 3, 4, 5
@@ -113,6 +115,7 @@ public class TimeZoneSpread {
 
     /**
      * Sets index.
+     * Sets index.
      *
      * @param index the index
      */
@@ -120,4 +123,8 @@ public class TimeZoneSpread {
         this.index = index;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

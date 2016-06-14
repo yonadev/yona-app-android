@@ -35,7 +35,6 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
-import nu.yona.app.ui.Foreground;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
@@ -117,7 +116,7 @@ public class PerDayFragment extends BaseFragment {
      *
      * @param headerDecor
      */
-    private void setRecyclerHeaderAdapterUpdate(StickyRecyclerHeadersDecoration headerDecor) {
+    private void setRecyclerHeaderAdapterUpdate(final StickyRecyclerHeadersDecoration headerDecor) {
         listView.addItemDecoration(headerDecor);
 
         // Add decoration for dividers between list items
@@ -132,6 +131,12 @@ public class PerDayFragment extends BaseFragment {
                     public void onHeaderClick(View header, int position, long headerId) {
                     }
                 });
+        perDayStickyAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                headerDecor.invalidateHeaders();
+            }
+        });
     }
 
     @Override
@@ -160,8 +165,11 @@ public class PerDayFragment extends BaseFragment {
      * to get the list of user's messages
      */
     private void getDayActivity(boolean loadMore) {
-        if(YonaActivity.getActivity().isToDisplayLogin()) {
+        if (YonaActivity.getActivity().isToDisplayLogin()) {
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
+            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
+                return;
+            }
         }
         final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
@@ -171,16 +179,7 @@ public class PerDayFragment extends BaseFragment {
                 @Override
                 public void onDataLoad(Object result) {
                     YonaActivity.getActivity().showLoadingView(false, null);
-                    if (isAdded() && result instanceof EmbeddedYonaActivity) {
-                        EmbeddedYonaActivity yonaActivity = (EmbeddedYonaActivity) result;
-                        if (yonaActivity.getEmbedded() != null && yonaActivity.getDayActivityList() != null) {
-                            showData(yonaActivity.getDayActivityList());
-                        } else {
-                            YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
-                        }
-                    } else if (result instanceof List<?>) {
-                        showData((List<DayActivity>) result);
-                    }
+                    showData();
                     mIsLoading = false;
                 }
 
@@ -191,15 +190,34 @@ public class PerDayFragment extends BaseFragment {
                 }
             });
         } else {
+            showData();
+        }
+    }
+
+    private void showData() {
+        if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null
+                && YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList() != null
+                && YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().size() > 0) {
+            perDayStickyAdapter.notifyDataSetChange(setHeaderListView());
+        } else {
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
         }
     }
 
-    private void showData(List<DayActivity> dayActivityList) {
-        if (mIsLoading) {
-            perDayStickyAdapter.updateData(dayActivityList);
-        } else {
-            perDayStickyAdapter.notifyDataSetChange(dayActivityList);
+    private List<DayActivity> setHeaderListView() {
+        List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
+        int index = 0;
+        for (int i = 0; i < dayActivityList.size(); i++) {
+            if (i == 0) {
+                dayActivityList.get(i).setStickyHeaderId(index++);
+            } else {
+                if (dayActivityList.get(i).getStickyTitle().equals(dayActivityList.get(i - 1).getStickyTitle())) {
+                    dayActivityList.get(i).setStickyHeaderId(dayActivityList.get(i - 1).getStickyHeaderId());
+                } else {
+                    dayActivityList.get(i).setStickyHeaderId(index++);
+                }
+            }
         }
+        return dayActivityList;
     }
 }

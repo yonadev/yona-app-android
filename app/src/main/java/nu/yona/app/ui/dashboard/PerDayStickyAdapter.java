@@ -59,7 +59,6 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 
         if (dayActivity != null) {
             holder.getView().setTag(dayActivity);
-            //TODO fill all other values for item chart here
             ViewGroup viewGroup = (ViewGroup) holder.getGoalGraphView();
             switch (dayActivity.getChartTypeEnum()) {
                 case TIME_FRAME_CONTROL:
@@ -131,8 +130,7 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 
     @Override
     public long getHeaderId(int position) {
-        Object mObject = getItem(position);
-        return ((DayActivity) mObject).getStickyTitle().charAt(0);
+        return dayActivityList.get(position).getStickyHeaderId();
     }
 
     @Override
@@ -150,16 +148,6 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
     }
 
     /**
-     * Update data.
-     *
-     * @param dayActivities the yona messages
-     */
-    public void updateData(final List<DayActivity> dayActivities) {
-        dayActivityList.addAll(dayActivities);
-        notifyDataSetChanged();
-    }
-
-    /**
      * Notify data set change.
      *
      * @param dayActivities the yona messages
@@ -168,7 +156,6 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
         this.dayActivityList = dayActivities;
         notifyDataSetChanged();
     }
-
 
     /**
      * Clear.

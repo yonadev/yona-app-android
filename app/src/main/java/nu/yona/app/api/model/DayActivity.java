@@ -54,6 +54,9 @@ public class DayActivity extends BaseEntity {
     @SerializedName("@stickyTitle")
     @Expose
     private String stickyTitle;
+    @SerializedName("@stickyHeaderId")
+    @Expose
+    private int stickyHeaderId;
     @SerializedName("@TimeZoneSpread")
     @Expose
     private List<TimeZoneSpread> timeZoneSpread;
@@ -255,6 +258,14 @@ public class DayActivity extends BaseEntity {
      */
     public void setTimeZoneSpread(List<TimeZoneSpread> timeZoneSpread) {
         this.timeZoneSpread = timeZoneSpread;
+    }
+
+    public int getStickyHeaderId() {
+        return this.stickyHeaderId;
+    }
+
+    public void setStickyHeaderId(int stickyHeaderId) {
+        this.stickyHeaderId = stickyHeaderId;
     }
 
     @Override
