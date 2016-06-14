@@ -52,8 +52,6 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.blank_container_layout);
 
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
         mToolBar = (Toolbar) findViewById(R.id.toolbar_layout);
 
         progressDrawable = R.drawable.progress_bar;
@@ -103,14 +101,9 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
 
     protected void initializeAnimation() {
         final Animation in = new AlphaAnimation(0.0f, 1.0f);
-        in.setDuration(400);
-
-       /* final Animation out = new AlphaAnimation(1.0f, 0.0f);
-        out.setDuration(3000);*/
-
+        in.setDuration(AppConstant.ANIMATION_DURATION);
         animationView = new AnimationSet(true);
-        //animationView.addAnimation(out);
-        in.setStartOffset(500);
+        in.setStartOffset(AppConstant.TIMER_DELAY);
         animationView.addAnimation(in);
     }
 
