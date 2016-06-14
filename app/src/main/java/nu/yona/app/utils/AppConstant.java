@@ -243,7 +243,13 @@ public interface AppConstant {
      */
     String YONA_LONG_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
+    /**
+     * The constant OBJECT.
+     */
     String OBJECT = "object";
 
+    /**
+     * The constant BOOLEAN.
+     */
     String BOOLEAN = "boolean";
 }

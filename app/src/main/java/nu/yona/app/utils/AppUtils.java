@@ -338,6 +338,9 @@ public class AppUtils {
         AppUtils.submitPressed = submitPressed;
     }
 
+    /**
+     * Send log to server.
+     */
     public static void sendLogToServer() {
         new Handler().postDelayed(new Runnable() {
             @Override

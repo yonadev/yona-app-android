@@ -922,6 +922,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         skipVerification = true;
     }
 
+    /**
+     * Is to display login boolean.
+     *
+     * @return the boolean
+     */
     public boolean isToDisplayLogin() {
         return this.isToDisplayLogin;
     }

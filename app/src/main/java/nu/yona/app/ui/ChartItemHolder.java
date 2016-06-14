@@ -31,8 +31,9 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Instantiates a new Chart item holder.
      *
-     * @param itemView the item view
-     * @param listener the listener
+     * @param itemView      the item view
+     * @param listener      the listener
+     * @param chartTypeEnum the chart type enum
      */
     public ChartItemHolder(View itemView, View.OnClickListener listener, ChartTypeEnum chartTypeEnum) {
         super(itemView);
@@ -117,7 +118,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get Image of nogo status
      *
-     * @return
+     * @return nogo status
      */
     public ImageView getNogoStatus() {
         return nogoStatus;

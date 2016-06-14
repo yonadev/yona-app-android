@@ -55,6 +55,7 @@ public interface ChallengesManager {
      * @return the yona goal by category type
      */
     YonaGoal getYonaGoalByCategoryType(YonaActivityCategories activityCategories);
+
     /**
      * Post budget goals.
      *
