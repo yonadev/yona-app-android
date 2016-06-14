@@ -315,6 +315,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, goal), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
                 getUserGoal(listener);
             }
 
@@ -330,6 +331,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, categories), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
                 getUserGoal(listener);
             }
 
@@ -345,6 +347,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().updateTimeZoneGoals(getUpdateYonaGoalForTimeZone(timeGoal, goal), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
                 getUserGoal(listener);
             }
 
@@ -360,6 +363,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().updateBudgetGoals(getUpdateYonaGoalForBudget(time, goal), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
                 getUserGoal(listener);
             }
 
@@ -417,6 +421,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         APIManager.getInstance().getGoalManager().deleteGoal(yonaGoal, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
                 getUserGoal(listener);
             }
 
