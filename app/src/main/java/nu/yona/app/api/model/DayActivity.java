@@ -260,10 +260,20 @@ public class DayActivity extends BaseEntity {
         this.timeZoneSpread = timeZoneSpread;
     }
 
+    /**
+     * Gets sticky header id.
+     *
+     * @return the sticky header id
+     */
     public int getStickyHeaderId() {
         return this.stickyHeaderId;
     }
 
+    /**
+     * Sets sticky header id.
+     *
+     * @param stickyHeaderId the sticky header id
+     */
     public void setStickyHeaderId(int stickyHeaderId) {
         this.stickyHeaderId = stickyHeaderId;
     }

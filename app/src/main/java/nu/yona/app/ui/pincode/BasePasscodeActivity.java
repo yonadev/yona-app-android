@@ -33,17 +33,65 @@ import nu.yona.app.utils.AppConstant;
 public class BasePasscodeActivity extends BaseActivity implements View.OnClickListener {
 
 
+    /**
+     * The Txt title.
+     */
     protected YonaFontTextView txtTitle;
-    protected int colorCode, progressDrawable;
+    /**
+     * The Color code.
+     */
+    protected int colorCode, /**
+     * The Progress drawable.
+     */
+    progressDrawable;
+    /**
+     * The M tool bar.
+     */
     protected Toolbar mToolBar;
+    /**
+     * The Is from settings.
+     */
     protected boolean isFromSettings;
+    /**
+     * The Profile progress.
+     */
     protected ProgressBar profile_progress;
+    /**
+     * The Accont image.
+     */
     protected ImageView accont_image;
+    /**
+     * The Screen type.
+     */
     protected String screen_type;
-    protected YonaFontTextView passcode_title, passcode_description, passcode_error, passcode_reset;
+    /**
+     * The Passcode title.
+     */
+    protected YonaFontTextView passcode_title, /**
+     * The Passcode description.
+     */
+    passcode_description, /**
+     * The Passcode error.
+     */
+    passcode_error, /**
+     * The Passcode reset.
+     */
+    passcode_reset;
+    /**
+     * The Passcode reset btn.
+     */
     protected YonaFontButton passcodeResetBtn;
+    /**
+     * The Screen title.
+     */
     protected String screenTitle;
+    /**
+     * The Screen type.
+     */
     protected String screenType;
+    /**
+     * The Passcode view.
+     */
     protected View passcodeView;
     private AnimationSet animationView;
 
@@ -99,6 +147,9 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+    /**
+     * Initialize animation.
+     */
     protected void initializeAnimation() {
         final Animation in = new AlphaAnimation(0.0f, 1.0f);
         in.setDuration(AppConstant.ANIMATION_DURATION);
@@ -152,6 +203,9 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         txtTitle.setText(title);
     }
 
+    /**
+     * Update screen ui.
+     */
     protected void updateScreenUI() {
         unblockUserUpdateUI();
         if (!TextUtils.isEmpty(screen_type)) {
@@ -201,6 +255,9 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         passcode_reset.setVisibility(View.GONE);
     }
 
+    /**
+     * Populate pin reset first step.
+     */
     protected void populatePinResetFirstStep() {
         accont_image.setImageResource(R.drawable.icn_account_created);
         passcode_title.setText(getString(R.string.settings_new_pincode));
@@ -212,6 +269,9 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         showAnimation();
     }
 
+    /**
+     * Populate pin reset second step.
+     */
     protected void populatePinResetSecondStep() {
         accont_image.setImageResource(R.drawable.icn_account_created);
         passcode_title.setText(getString(R.string.settings_confirm_new_pin));
@@ -223,6 +283,9 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         showAnimation();
     }
 
+    /**
+     * Visible view.
+     */
     protected void visibleView() {
         passcode_title.setVisibility(View.VISIBLE);
         passcode_description.setVisibility(View.VISIBLE);
@@ -275,6 +338,9 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         passcode_error.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Block user.
+     */
     protected void blockUser() {
 
         passcode_reset.setVisibility(View.INVISIBLE);

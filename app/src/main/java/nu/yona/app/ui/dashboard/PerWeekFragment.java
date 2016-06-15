@@ -143,7 +143,7 @@ public class PerWeekFragment extends BaseFragment {
      * to get the list of user's messages
      */
     private void getWeekActivity(boolean loadMore) {
-        if(YonaActivity.getActivity().isToDisplayLogin()) {
+        if (YonaActivity.getActivity().isToDisplayLogin()) {
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
         }
         final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();

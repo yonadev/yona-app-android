@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -28,12 +27,10 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.graph.TimeBucketGraph;
 import nu.yona.app.customview.graph.TimeFrameGraph;
 import nu.yona.app.ui.ChartItemHolder;
-import nu.yona.app.ui.YonaActivity;
 
 /**
  * Created by kinnarvasa on 13/06/16.
  */
-
 public class CustomPageAdapter extends PagerAdapter {
 
     private Context mContext;
@@ -41,6 +38,12 @@ public class CustomPageAdapter extends PagerAdapter {
     private List<WeekActivity> weekActivities;
     private YonaFontTextView dateTitle;
 
+    /**
+     * Instantiates a new Custom page adapter.
+     *
+     * @param context   the context
+     * @param dateTitle the date title
+     */
     public CustomPageAdapter(Context context, YonaFontTextView dateTitle) {
         mContext = context;
         this.dateTitle = dateTitle;
@@ -148,6 +151,11 @@ public class CustomPageAdapter extends PagerAdapter {
         }
     }
 
+    /**
+     * Notify data set changed.
+     *
+     * @param activityList the activity list
+     */
     public void notifyDataSetChanged(List<?> activityList) {
         if (activityList != null && activityList.get(0) instanceof DayActivity) {
             dayActivities = (List<DayActivity>) activityList;

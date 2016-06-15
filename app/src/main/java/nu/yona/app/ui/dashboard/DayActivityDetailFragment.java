@@ -34,7 +34,6 @@ import nu.yona.app.utils.AppConstant;
 /**
  * Created by kinnarvasa on 13/06/16.
  */
-
 public class DayActivityDetailFragment extends BaseFragment {
 
     private CustomPageAdapter customPageAdapter;
@@ -106,10 +105,11 @@ public class DayActivityDetailFragment extends BaseFragment {
         dayActivityList = new ArrayList<>();
         EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
         if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) {
-            for (DayActivity dayActivity : embeddedYonaActivity.getDayActivityList()) {
+
+            for (int i = embeddedYonaActivity.getDayActivityList().size() - 1; i >= 0; i--) {
                 try {
-                    if (dayActivity.getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref())) {
-                        dayActivityList.add(dayActivity);
+                    if (embeddedYonaActivity.getDayActivityList().get(i).getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref())) {
+                        dayActivityList.add(embeddedYonaActivity.getDayActivityList().get(i));
                     }
                 } catch (Exception e) {
                     Log.e(DayActivityDetailFragment.class.getSimpleName(), e.getMessage());

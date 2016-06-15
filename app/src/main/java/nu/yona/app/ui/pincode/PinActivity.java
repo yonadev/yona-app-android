@@ -22,7 +22,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.PinResetDelay;
-import nu.yona.app.api.model.User;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
@@ -60,6 +59,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
         if (!isUserBlocked) {
             updateScreenUI();
         }
+        updateData();
     }
 
     @Override
@@ -178,5 +178,6 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 
     private void updateData() {
         AppUtils.sendLogToServer();
+        APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(null);
     }
 }

@@ -93,6 +93,11 @@ public class DataState {
         this.embeddedWeekActivity = embeddedWeekActivity;
     }
 
+    /**
+     * Clear activity list.
+     *
+     * @param fragment the fragment
+     */
     public void clearActivityList(BaseFragment fragment) {
         if (!(fragment instanceof DayActivityDetailFragment)) {
             embeddedDayActivity = null;

@@ -15,7 +15,7 @@ import android.content.ContentValues;
 /**
  * Created by kinnarvasa on 09/06/16.
  */
-public class TimeZoneSpread extends BaseEntity{
+public class TimeZoneSpread extends BaseEntity {
     /**
      * Sample:
      * index        :  0, 1, 2, 3, 4, 5
