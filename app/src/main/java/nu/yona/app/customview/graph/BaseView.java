@@ -115,4 +115,9 @@ public class BaseView extends View {
         linePaint.setColor(GraphUtils.COLOR_WHITE_THREE);
 
     }
+
+    public int convertSizeToDeviceDependent(int value) {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        return ((dm.densityDpi * value) / 160);
+    }
 }
