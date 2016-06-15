@@ -10,7 +10,7 @@
     android:id="@+id/topPanel"
     android:layout_width="match_parent"
     android:layout_height="@dimen/chart_item_text_height"
-    android:layout_marginTop="11dp"
+    android:layout_marginTop="@dimen/graph_top_info_margin_top"
     android:orientation="horizontal">
 
     <nu.yona.app.customview.YonaFontTextView
@@ -24,7 +24,7 @@
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goalScore"
         style="@style/SeScorePos"
-        android:layout_width="54dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center" />
 
@@ -34,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="right"
-        android:paddingTop="@dimen/chart_item_top_margin" />
+        android:paddingTop="@dimen/chart_item_top_margin"
+        android:text="minuten of totalae" />
 
 </LinearLayout>
