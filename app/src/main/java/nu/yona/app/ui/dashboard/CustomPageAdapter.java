@@ -117,7 +117,6 @@ public class CustomPageAdapter extends PagerAdapter {
                 } else {
                     holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
                 }
-                showSpreadGraph(dayActivity);
                 break;
             case TIME_BUCKET_CONTROL:
                 int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
@@ -136,7 +135,6 @@ public class CustomPageAdapter extends PagerAdapter {
                     holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
                 }
                 holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
-                showSpreadGraph(dayActivity);
                 break;
             case NOGO_CONTROL:
                 if (dayActivity.getGoalAccomplished()) {
@@ -144,13 +142,14 @@ public class CustomPageAdapter extends PagerAdapter {
                     holder.getGoalDesc().setText(mContext.getString(R.string.nogogoalachieved));
                 } else {
                     holder.getNogoStatus().setImageResource(R.drawable.adult_sad);
-                    holder.getGoalDesc().setText(mContext.getString(R.string.nogogoalbeyond));
+                    holder.getGoalDesc().setText(mContext.getString(R.string.nogogoalbeyond, dayActivity.getTotalMinutesBeyondGoal() + ""));
                 }
                 holder.getGoalType().setText(mContext.getString(R.string.score));
                 break;
             default:
                 break;
         }
+        showSpreadGraph(dayActivity);
     }
 
     @Override
