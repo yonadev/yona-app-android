@@ -12,6 +12,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -25,14 +26,12 @@ public class TimeBucketGraph extends BaseView {
     private int mTotalActivityBeyondGoal;
     private int mTotalMinTarget;
     private int mTotalActivityDurationMin;
-    private float mFillStartRange;
     private float mFillEndRange;
-    private float mStartPoint;
-    private float mEndPoint;
-    private Canvas mCanvas;
+    private float txtStartValue;
+    private float txtEndValue;
     private float mDifference;
     //equal parts
-    private float mVolume;
+    private float mVolume = 0;
 
     /**
      * Instantiates a new Time bucket graph.
@@ -93,7 +92,6 @@ public class TimeBucketGraph extends BaseView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        this.mCanvas = canvas;
         int fullWidth = getWidth();
         float height = scaleFactor * 25;
 
@@ -102,63 +100,65 @@ public class TimeBucketGraph extends BaseView {
 
         //if beyond time then its start value should be difference value else its zero(0)
         if (mDifference < 0) {
-            mFillStartRange = mDifference;
+            txtStartValue = mDifference;
         } else {
-            mFillStartRange = 0;
+            txtStartValue = 0;
         }
 
-        mStartPoint = mFillStartRange;
         //end point should be total minutes of goal
-        mEndPoint = mTotalMinTarget;
-
-        if (mFillStartRange < 0) {
-            mFillEndRange = 0;
-        } else {
-            mFillEndRange = mVolume * mTotalActivityBeyondGoal;
-        }
-
+        txtEndValue = mTotalMinTarget;
 
         //goint to divide into equal part of width
-        if (mTotalMinTarget > 0) {
+        if (mTotalMinTarget > 0 && !(mDifference < 0)) {
             mVolume = (float) fullWidth / mTotalMinTarget;
+        } else {
+            mVolume = (float) fullWidth / mTotalActivityDurationMin;
+        }
+
+        if (mDifference < 0) {
+            mFillEndRange = mVolume * mTotalActivityBeyondGoal;
+        } else {
+            mFillEndRange = mDifference * mVolume;
         }
 
 
-        float left = 0, top = 0;
+        float xStartPoint = 0, yStartPoint = 0;
 
-        float right = fullWidth;
-        float bottom = top + height;
+        float xEndPoint = fullWidth;
+        float yEndPoint = yStartPoint + height;
 
         //Drawing main Rectangle of Grey
-        RectF myRectum = new RectF(left, top, right, bottom);
-        mCanvas.drawRect(myRectum, linePaint);
+        RectF myRectum = new RectF(xStartPoint, yStartPoint, xEndPoint, yEndPoint);
+        canvas.drawRect(myRectum, linePaint);
 
+        float txtHeight = yEndPoint + height;
 
-        //Draw bottom text of start and end point
-        Paint paint = new Paint();
-        paint.setColor(GraphUtils.COLOR_TEXT);
-        paint.setTextSize(scaleFactor * GraphUtils.TEXT_SIZE);
-        canvas.drawText(String.valueOf((int) mStartPoint), left, bottom + height, paint);
+        Paint txtEndPaint = new Paint();
+        txtEndPaint.setTextSize(scaleFactor * GraphUtils.TEXT_SIZE);
+        txtEndPaint.setColor(GraphUtils.COLOR_TEXT);
 
-        canvas.drawText(String.valueOf((int) mEndPoint), right - (20 * scaleFactor), bottom + height, paint);
+        canvas.drawText(String.valueOf((int) txtStartValue), xStartPoint, txtHeight, txtEndPaint);
+
+        canvas.drawText(String.valueOf((int) txtEndValue), xEndPoint - (getWidthOfText(String.valueOf(txtEndValue), txtEndPaint) + (scaleFactor * 3)), txtHeight, txtEndPaint);
 
         //Filling usage of time
         Paint mDrawRange = new Paint();
         float fillStartPoint;
-        float fillendPoint;
         if (mDifference < 0) {
             mDrawRange.setColor(GraphUtils.COLOR_PINK);
-            fillStartPoint = left;
-            fillendPoint = mVolume * mTotalActivityBeyondGoal;
-            canvas.drawText(String.valueOf(0), fillendPoint, bottom + height, paint);
+            canvas.drawText(String.valueOf(0), mFillEndRange - getWidthOfText("0", txtEndPaint), txtHeight, txtEndPaint);
         } else {
             mDrawRange.setColor(GraphUtils.COLOR_GREEN);
-            fillStartPoint = left;
-            fillendPoint = mDifference * mVolume;
         }
 
-        RectF rectFill = new RectF(fillStartPoint, top, fillendPoint, bottom);
+        RectF rectFill = new RectF(xStartPoint, yStartPoint, mFillEndRange, yEndPoint);
         canvas.drawRect(rectFill, mDrawRange);
 
+    }
+
+    private float getWidthOfText(String text, Paint paint) {
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        return bounds.width();
     }
 }
