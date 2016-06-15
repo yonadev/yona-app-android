@@ -16,6 +16,8 @@ import android.widget.ImageView;
 
 import nu.yona.app.R;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.customview.graph.TimeBucketGraph;
+import nu.yona.app.customview.graph.TimeFrameGraph;
 import nu.yona.app.enums.ChartTypeEnum;
 
 /**
@@ -27,6 +29,8 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     private View view;
     private View goalGraphView;
     private ImageView nogoStatus;
+    private TimeFrameGraph timeFrameGraph;
+    private TimeBucketGraph timeBucketGraph;
 
     /**
      * Instantiates a new Chart item holder.
@@ -42,6 +46,12 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
         switch (chartTypeEnum) {
             case NOGO_CONTROL:
                 initNoGOControlView();
+                break;
+            case TIME_BUCKET_CONTROL:
+                initTimeBucketControlView();
+                break;
+            case TIME_FRAME_CONTROL:
+                initTimeFrameControlView();
                 break;
             default:
                 initGraphControlView();
@@ -64,10 +74,24 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
      */
 
     private void initGraphControlView() {
+        initCommonView();
+        goalGraphView = view.findViewById(R.id.graphView);
+    }
+
+    private void initTimeBucketControlView() {
+        initCommonView();
+        timeBucketGraph = (TimeBucketGraph) view.findViewById(R.id.timeBucketGraph);
+    }
+
+    private void initTimeFrameControlView() {
+        initCommonView();
+        timeFrameGraph = (TimeFrameGraph) view.findViewById(R.id.timeFrameControl);
+    }
+
+    private void initCommonView() {
         goalType = (YonaFontTextView) view.findViewById(R.id.goalType);
         goalScore = (YonaFontTextView) view.findViewById(R.id.goalScore);
         goalDesc = (YonaFontTextView) view.findViewById(R.id.goalDesc);
-        goalGraphView = view.findViewById(R.id.graphView);
     }
 
     /**
@@ -122,5 +146,13 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
      */
     public ImageView getNogoStatus() {
         return nogoStatus;
+    }
+
+    public TimeBucketGraph getTimeBucketGraph() {
+        return this.timeBucketGraph;
+    }
+
+    public TimeFrameGraph getTimeFrameGraph() {
+        return this.timeFrameGraph;
     }
 }

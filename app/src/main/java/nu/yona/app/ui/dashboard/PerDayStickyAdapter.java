@@ -14,8 +14,6 @@ import java.util.List;
 import nu.yona.app.R;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.customview.YonaFontTextView;
-import nu.yona.app.customview.graph.TimeBucketGraph;
-import nu.yona.app.customview.graph.TimeFrameGraph;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.ui.ChartItemHolder;
 
@@ -46,11 +44,18 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
         switch (ChartTypeEnum.getChartTypeEnum(viewType)) {
             case NOGO_CONTROL:
                 layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.nogo_chart_layout, parent, false);
-                return new ChartItemHolder(layoutView, listener, ChartTypeEnum.NOGO_CONTROL);
+                break;
+            case TIME_BUCKET_CONTROL:
+                layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.time_budget_item, parent, false);
+                break;
+            case TIME_FRAME_CONTROL:
+                layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.time_frame_item, parent, false);
+                break;
             default:
                 layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.goal_chart_item, parent, false);
-                return new ChartItemHolder(layoutView, listener, ChartTypeEnum.getChartTypeEnum(viewType));
+                break;
         }
+        return new ChartItemHolder(layoutView, listener, ChartTypeEnum.getChartTypeEnum(viewType));
     }
 
     @Override
@@ -59,22 +64,17 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 
         if (dayActivity != null) {
             holder.getView().setTag(dayActivity);
-            ViewGroup viewGroup = (ViewGroup) holder.getGoalGraphView();
             switch (dayActivity.getChartTypeEnum()) {
                 case TIME_FRAME_CONTROL:
                     if (dayActivity.getTimeZoneSpread() != null) {
-                        TimeFrameGraph timeFrameGraph = new TimeFrameGraph(mContext);
-                        timeFrameGraph.chartValuePre(dayActivity.getTimeZoneSpread());
-                        viewGroup.addView(timeFrameGraph);
+                        holder.getTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
                     }
                     updatedetail(dayActivity, holder);
                     break;
                 case TIME_BUCKET_CONTROL:
                     int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
                     if (maxDurationAllow > 0) {
-                        TimeBucketGraph timeBucketGraph = new TimeBucketGraph(mContext);
-                        timeBucketGraph.graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
-                        viewGroup.addView(timeBucketGraph);
+                        holder.getTimeBucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
                     }
                     updatedetail(dayActivity, holder);
                     break;
