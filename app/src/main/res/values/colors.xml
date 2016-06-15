@@ -32,6 +32,7 @@
     <color name="black">#2f2f2f</color>
     <color name="black_forty_opacity">#662f2f2f</color>
     <color name="black_sixty_opacity">#992f2f2f</color>
+    <color name="black_fifty_opacity">#802f2f2f</color>
     <color name="black_eighty_opacity">#CC2f2f2f</color>
     <color name="grape_two">#58254d</color>
     <color name="bg_gradient_two">#f7f7f7</color>

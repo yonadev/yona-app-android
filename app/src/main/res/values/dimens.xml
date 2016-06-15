@@ -165,4 +165,6 @@
     <dimen name="nogo_left_right_padding">32dp</dimen>
     <dimen name="nogo_top_bottom_padding">15dp</dimen>
     <dimen name="nogo_image_height_width">56dp</dimen>
+    <dimen name="spread_graph_height">105dp</dimen>
+    <dimen name="graph_top_info_margin_top">11dp</dimen>
 </resources>

@@ -23,11 +23,15 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/chart_item_spreading_height"
         android:background="@drawable/item_gradient"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/chart_item_left_margin"
+        android:paddingRight="@dimen/chart_item_right_margin">
 
-        <TextView
+        <include layout="@layout/graph_top_info_layout" />
+
+        <nu.yona.app.customview.graph.SpreadGraph
+            android:id="@+id/spreadGraph"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Spreiding Control" />
+            android:layout_height="@dimen/spread_graph_height" />
     </LinearLayout>
 </LinearLayout>
