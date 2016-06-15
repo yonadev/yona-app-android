@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -66,6 +67,9 @@ public class ActivityMonitorService extends Service {
             ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             List<ActivityManager.RunningAppProcessInfo> tasks = am.getRunningAppProcesses();
             currentApp = tasks.get(0).processName;
+        }
+        if (currentApp == "NULL") {
+            AppUtils.restartService(context);
         }
         return currentApp;
     }

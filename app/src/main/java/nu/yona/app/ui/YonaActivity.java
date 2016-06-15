@@ -171,7 +171,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             mTabLayout.getTabAt(0).select();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -273,7 +273,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * This will check whether user has given permission or not, if already given, it will start service, if not given, it will ask for permission.
      */
     private void checkPermission() {
-//        As this feature is not yet implemented, commenting, so user don't see any alert during testing.
         if (!AppUtils.hasPermission(this)) {
             showPermissionAlert();
         } else {

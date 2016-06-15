@@ -341,12 +341,12 @@ public class AppUtils {
     /**
      * Send log to server.
      */
-    public static void sendLogToServer() {
+    public static void sendLogToServer(long delayMilliseconds) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 APIManager.getInstance().getActivityManager().postAllDBActivities();
             }
-        }, AppConstant.FIVE_SECONDS);
+        }, delayMilliseconds);
     }
 }

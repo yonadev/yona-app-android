@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import nu.yona.app.YonaApplication;
+import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -19,11 +20,11 @@ public class YonaReceiver extends BroadcastReceiver {
             case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_SCREEN_ON:
                 restartService(context);
-                AppUtils.sendLogToServer();
+                AppUtils.sendLogToServer(AppConstant.FIVE_SECONDS);
                 break;
             case Intent.ACTION_SCREEN_OFF:
                 AppUtils.stopService(context);
-                AppUtils.sendLogToServer();
+                AppUtils.sendLogToServer(0);
                 break;
         }
     }
