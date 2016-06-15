@@ -42,6 +42,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     private CreditFragment creditFragment;
     private ZoneFragment zoneFragment;
     private NoGoFragment noGoFragment;
+    private int currentTab = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_ONE), TAB_ALPHA_UNSELECTED);
         updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_TWO), TAB_ALPHA_UNSELECTED);
         updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_THREE), TAB_ALPHA_SELECTED);
-
+        updateTab();
         return view;
     }
 
@@ -129,6 +130,17 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
                 YonaActivity.getActivity().showLoadingView(false, null);
             }
         });
+    }
+
+    /**
+     * This is require to update all tabs count.
+     */
+    private void updateTab() {
+        currentTab = tabLayout.getSelectedTabPosition();
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).select();
+        }
+        tabLayout.getTabAt(currentTab).select();
     }
 
     @Override

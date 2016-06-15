@@ -239,14 +239,13 @@
     <style name="passcode_editText">
         <item name="android:layout_width">@dimen/passcode_editText_width</item>
         <item name="android:layout_height">@dimen/passcode_editText_height</item>
-        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_gravity">center</item>
         <item name="android:paddingTop">@dimen/five</item>
-        <item name="android:background">@drawable/passcode_edit_bg_grape</item>
+        <item name="android:background">@color/white</item>
         <item name="android:layout_marginLeft">@dimen/passcode_margin_left</item>
         <item name="android:cursorVisible">false</item>
         <item name="android:layout_weight">1</item>
         <item name="android:ems">1</item>
-        <item name="android:paddingBottom">5dp</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:inputType">numberPassword</item>
         <item name="android:maxLength">1</item>

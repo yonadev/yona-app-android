@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,17 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
         mFriendsRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
         mFriendsRecyclerView.setLayoutManager(mLayoutManager);
-        mOverViewAdapter = new OverViewAdapter(mListBuddy, null);
+        mOverViewAdapter = new OverViewAdapter(mListBuddy, new OnFriendsItemClickListener() {
+            @Override
+            public void onFriendsItemClick(View v) {
+                Log.e("Item click", "Item click");
+            }
+
+            @Override
+            public void onFriendsItemDeleteClick(View v) {
+
+            }
+        });
         mFriendsRecyclerView.setAdapter(mOverViewAdapter);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(mOverViewAdapter));
         YonaApplication.getEventChangeManager().registerListener(this);
