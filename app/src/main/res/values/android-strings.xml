@@ -9,8 +9,6 @@
 <resources>
     <string name="empty_description"></string>
     <string name="service_name">Yona Service</string>
-    <string name="app_usage_permission_title">Permission</string>
-    <string name="app_usage_permission_message">Permission require for 5.1+ Android devies</string>
     <string name="country_code_with_zero">"+31 (0) "</string>
     <string name="country_code">"+31"</string>
     <string name="error_message">Error retruns null.</string>

@@ -95,6 +95,42 @@ public class ActivityManagerImpl implements ActivityManager {
         }
     }
 
+    private void getDetailOfEachSpread() {
+        List<DayActivity> dayActivities = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
+        for (final DayActivity dayActivity : dayActivities) {
+            if (dayActivity.getTimeZoneSpread() == null || (dayActivity.getTimeZoneSpread() != null && dayActivity.getTimeZoneSpread().size() == 0)) {
+                APIManager.getInstance().getActivityManager().getDayDetailActivity(dayActivity.getLinks().getYonaDayDetails().getHref(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        if (result instanceof DayActivity) {
+                            try {
+                                DayActivity resultActivity = generateTimeZoneSpread((DayActivity) result);
+                                List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
+                                for (int i = 0; i < dayActivityList.size(); i++) {
+                                    try {
+                                        if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
+                                            dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                                            break;
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e(ActivityManager.class.getSimpleName(), e.getMessage());
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e(ActivityManager.class.getSimpleName(), e.getMessage());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+
+                    }
+                });
+            }
+        }
+    }
+
     @Override
     public void getBuddyDaysActivity(String url, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
@@ -373,6 +409,7 @@ public class ActivityManagerImpl implements ActivityManager {
             if (embeddedYonaActivity.getPage() != null) {
                 YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().setPage(embeddedYonaActivity.getPage());
             }
+            getDetailOfEachSpread();
             listener.onDataLoad(embeddedYonaActivity);
         } else {
             listener.onError(new ErrorMessage(mContext.getString(R.string.no_data_found)));
@@ -422,9 +459,14 @@ public class ActivityManagerImpl implements ActivityManager {
 
     private DayActivity generateTimeZoneSpread(DayActivity activity) {
 
-        if (activity.getSpread() != null && activity.getYonaGoal() != null && activity.getYonaGoal().getSpreadCells() != null) {
+        if (activity.getSpread() != null) {
             List<Integer> spreadsList = activity.getSpread();
-            List<Integer> spreadCellsList = activity.getYonaGoal().getSpreadCells();
+            List<Integer> spreadCellsList;
+            if (activity.getYonaGoal() != null && activity.getYonaGoal().getSpreadCells() != null) {
+                spreadCellsList = activity.getYonaGoal().getSpreadCells();
+            } else {
+                spreadCellsList = new ArrayList<>();
+            }
             List<TimeZoneSpread> timeZoneSpreadList = new ArrayList<>();
             for (int i = 0; i < spreadsList.size(); i++) {
                 setTimeZoneSpread(i, spreadsList.get(i), timeZoneSpreadList, spreadCellsList.contains(i));

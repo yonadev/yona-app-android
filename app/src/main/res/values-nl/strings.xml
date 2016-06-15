@@ -160,4 +160,6 @@
     <string name="nogogoalbeyond">%1$s minuten</string>
     <string name="budgetgoalbeyond">minuten over je limiet</string>
     <string name="budgetgoaltime">minuten tegoed</string>
+    <string name="app_usage_permission_title">Permission</string>
+    <string name="app_usage_permission_message">For accurate result, please ON app usage access for Yona</string>
 </resources>
