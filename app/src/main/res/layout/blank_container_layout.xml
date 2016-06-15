@@ -112,6 +112,7 @@
                     android:id="@+id/btnPasscodeReset"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/twenty_four"
                     android:background="@drawable/button_pinreset"
                     android:text="@string/passcodereset"
                     android:visibility="invisible" />

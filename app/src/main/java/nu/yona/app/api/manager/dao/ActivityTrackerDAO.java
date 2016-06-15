@@ -64,7 +64,10 @@ public class ActivityTrackerDAO extends BaseDAO {
             if (c != null && c.getCount() > 0) {
                 c.moveToFirst();
                 do {
-                    activityList.add(new Activity(c));
+                    Activity activity = new Activity(c);
+                    if (!activity.getApplication().equals("NULL")) {
+                        activityList.add(activity);
+                    }
                 } while (c.moveToNext());
             }
         } catch (Exception e) {

@@ -294,8 +294,8 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
 
     private void visibleLoginView() {
         passcode_title.setVisibility(View.VISIBLE);
-        passcode_description.setVisibility(View.INVISIBLE);
-        profile_progress.setVisibility(View.INVISIBLE);
+        passcode_description.setVisibility(View.GONE);
+        profile_progress.setVisibility(View.GONE);
         passcode_reset.setVisibility(View.VISIBLE);
     }
 
@@ -343,12 +343,12 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      */
     protected void blockUser() {
 
-        passcode_reset.setVisibility(View.INVISIBLE);
+        passcode_reset.setVisibility(View.GONE);
         passcodeResetBtn.setVisibility(View.VISIBLE);
         passcodeView.setVisibility(View.GONE);
-        profile_progress.setVisibility(View.INVISIBLE);
+        profile_progress.setVisibility(View.GONE);
         passcode_description.setText(getString(R.string.msgblockuser));
-        passcode_error.setVisibility(View.INVISIBLE);
+        passcode_error.setVisibility(View.GONE);
         accont_image.setImageResource(R.drawable.icn_secure);
         passcode_title.setText(getString(R.string.msgblocktitle));
     }

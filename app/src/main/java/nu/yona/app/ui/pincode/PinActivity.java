@@ -102,6 +102,9 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
             case EventChangeManager.EVENT_PASSCODE_ERROR:
                 passcode_error.setText((String) object);
                 break;
+            case EventChangeManager.EVENT_USER_NOT_EXIST:
+                finish();
+                break;
             default:
                 break;
         }
