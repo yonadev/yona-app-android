@@ -77,8 +77,8 @@
         <item name="android:letterSpacing">0.02</item>
     </style>
 
-    <style name="FooterTitleSpacing" parent="FooterTitle">
-        <item name="android:letterSpacing">2</item>
+    <style name="FooterTitleSpacing" parent="FooterTitleFiftyOpacity">
+        <item name="android:letterSpacing">0.02</item>
     </style>
 
     <style name="BtnTxtLgSpacing" parent="parentBtnTxtLg">

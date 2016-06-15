@@ -177,7 +177,14 @@
     <style name="FooterTitle">
         <item name="android:textSize">12sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
+    </style>
+
+    <style name="FooterTitleNoOpacity" parent="FooterTitle">
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="FooterTitleFiftyOpacity" parent="FooterTitle">
+        <item name="android:textColor">@color/black_fifty_opacity</item>
     </style>
 
     <style name="Explanation">

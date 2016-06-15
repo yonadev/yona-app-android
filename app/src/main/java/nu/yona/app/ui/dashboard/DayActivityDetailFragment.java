@@ -126,7 +126,7 @@ public class DayActivityDetailFragment extends BaseFragment {
     }
 
     private void setTitleAndIcon() {
-        if (activity != null) {
+        if (activity != null && activity.getYonaGoal() != null && !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName())) {
             toolbarTitle.setText(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
         }
         leftIcon.setVisibility(View.GONE);

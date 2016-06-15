@@ -11,8 +11,8 @@
 package nu.yona.app.ui.dashboard;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,7 @@ import nu.yona.app.R;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.customview.graph.SpreadGraph;
 import nu.yona.app.customview.graph.TimeBucketGraph;
 import nu.yona.app.customview.graph.TimeFrameGraph;
 import nu.yona.app.ui.ChartItemHolder;
@@ -37,6 +38,10 @@ public class CustomPageAdapter extends PagerAdapter {
     private List<DayActivity> dayActivities;
     private List<WeekActivity> weekActivities;
     private YonaFontTextView dateTitle;
+    private YonaFontTextView goalScore;
+    private YonaFontTextView goalDesc;
+    private YonaFontTextView goalType;
+    private SpreadGraph mSpreadGraph;
 
     /**
      * Instantiates a new Custom page adapter.
@@ -63,6 +68,10 @@ public class CustomPageAdapter extends PagerAdapter {
     private ViewGroup initiateDayActivityReport(ViewGroup collection, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.detail_activity_fragment, collection, false);
+        goalDesc = (YonaFontTextView) layout.findViewById(R.id.goalDesc);
+        goalType = (YonaFontTextView) layout.findViewById(R.id.goalType);
+        goalScore = (YonaFontTextView) layout.findViewById(R.id.goalScore);
+        mSpreadGraph = (SpreadGraph) layout.findViewById(R.id.spreadGraph);
         DayActivity dayActivity = dayActivities.get(position);
         ((FrameLayout) layout.findViewById(R.id.graphView)).addView(inflateDayActivityView(inflater, dayActivity, layout));
         collection.addView(layout);
@@ -99,7 +108,14 @@ public class CustomPageAdapter extends PagerAdapter {
                     timeFrameGraph.chartValuePre(dayActivity.getTimeZoneSpread());
                     viewGroup.addView(timeFrameGraph);
                 }
-                updatedetail(dayActivity, holder);
+                holder.getGoalType().setText(mContext.getString(R.string.score));
+                holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
+                if (dayActivity.getTotalMinutesBeyondGoal() > 0) {
+                    holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+                } else {
+                    holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                }
+                showSpreadGraph(dayActivity);
                 break;
             case TIME_BUCKET_CONTROL:
                 int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
@@ -108,36 +124,48 @@ public class CustomPageAdapter extends PagerAdapter {
                     timeBucketGraph.graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
                     viewGroup.addView(timeBucketGraph);
                 }
-                updatedetail(dayActivity, holder);
-                break;
-            case SPREAD_CONTROL:
+                holder.getGoalType().setText(mContext.getString(R.string.score));
+                if (dayActivity.getTotalMinutesBeyondGoal() > 0) {
+                    holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
+                } else {
+                    holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
+                }
+                if (dayActivity.getTotalMinutesBeyondGoal() > 0) {
+                    holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+                } else {
+                    holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                }
+                holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
+                showSpreadGraph(dayActivity);
                 break;
             case NOGO_CONTROL:
-                holder.getGoalDesc().setText("geen hits, hou vol!");
                 if (dayActivity.getGoalAccomplished()) {
                     holder.getNogoStatus().setImageResource(R.drawable.adult_happy);
+                    holder.getGoalDesc().setText(mContext.getString(R.string.nogogoalachieved));
                 } else {
                     holder.getNogoStatus().setImageResource(R.drawable.adult_sad);
+                    holder.getGoalDesc().setText(mContext.getString(R.string.nogogoalbeyond));
                 }
-                if (dayActivity.getYonaGoal() != null && !TextUtils.isEmpty(dayActivity.getYonaGoal().getType())) {
-                    holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName());
-                }
+                holder.getGoalType().setText(mContext.getString(R.string.score));
                 break;
             default:
                 break;
         }
     }
 
-    private void updatedetail(final DayActivity dayActivity, final ChartItemHolder holder) {
-        if (dayActivity.getYonaGoal() != null && !TextUtils.isEmpty(dayActivity.getYonaGoal().getActivityCategoryName())) {
-            holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName() + "");
-        }
-        holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
-    }
-
     @Override
     public void destroyItem(ViewGroup collection, int position, Object view) {
         collection.removeView((View) view);
+    }
+
+    private void showSpreadGraph(final DayActivity dayActivity) {
+        if (dayActivity.getTimeZoneSpread() != null) {
+            mSpreadGraph.chartValuePre(dayActivity.getTimeZoneSpread());
+        }
+        goalType.setText(mContext.getString(R.string.spreiding));
+        goalScore.setText(dayActivity.getTotalActivityDurationMinutes() + "");
+        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+        goalDesc.setText(mContext.getString(R.string.goaltotalminute));
     }
 
     @Override
