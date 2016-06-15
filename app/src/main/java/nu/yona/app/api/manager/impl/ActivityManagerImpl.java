@@ -116,7 +116,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 activityNetwork.getDayDetailActivity(url, YonaApplication.getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
+                        listener.onDataLoad(generateTimeZoneSpread((DayActivity) result));
                     }
 
                     @Override
@@ -422,9 +422,14 @@ public class ActivityManagerImpl implements ActivityManager {
 
     private DayActivity generateTimeZoneSpread(DayActivity activity) {
 
-        if (activity.getSpread() != null && activity.getYonaGoal() != null && activity.getYonaGoal().getSpreadCells() != null) {
+        if (activity.getSpread() != null) {
             List<Integer> spreadsList = activity.getSpread();
-            List<Integer> spreadCellsList = activity.getYonaGoal().getSpreadCells();
+            List<Integer> spreadCellsList;
+            if (activity.getYonaGoal() != null && activity.getYonaGoal().getSpreadCells() != null) {
+                spreadCellsList = activity.getYonaGoal().getSpreadCells();
+            } else {
+                spreadCellsList = new ArrayList<>();
+            }
             List<TimeZoneSpread> timeZoneSpreadList = new ArrayList<>();
             for (int i = 0; i < spreadsList.size(); i++) {
                 setTimeZoneSpread(i, spreadsList.get(i), timeZoneSpreadList, spreadCellsList.contains(i));

@@ -13,6 +13,7 @@ package nu.yona.app.ui.dashboard;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +25,12 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -62,6 +66,7 @@ public class DayActivityDetailFragment extends BaseFragment {
         if (getArguments() != null) {
             if (getArguments().get(AppConstant.OBJECT) != null) {
                 activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
+                getMoreDetails();
             }
         }
         previousItem.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +103,52 @@ public class DayActivityDetailFragment extends BaseFragment {
             }
         });
         return view;
+    }
+
+    private void getMoreDetails() {
+        if (activity != null
+                && activity.getSpread() == null || (activity.getSpread() != null && activity.getSpread().size() == 0)
+                && activity.getLinks() != null
+                && activity.getLinks().getYonaDayDetails() != null
+                && !TextUtils.isEmpty(activity.getLinks().getYonaDayDetails().getHref())) {
+            YonaActivity.getActivity().showLoadingView(true, null);
+            APIManager.getInstance().getActivityManager().getDayDetailActivity(activity.getLinks().getYonaDayDetails().getHref(), new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    if (result instanceof DayActivity) {
+                        activity = (DayActivity) result;
+                        updateSpreadInList();
+                        loadSpreadGraph();
+                        YonaActivity.getActivity().showLoadingView(false, null);
+                    }
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                }
+            });
+        } else {
+            loadSpreadGraph();
+        }
+    }
+
+    private void updateSpreadInList() {
+        try {
+            List<DayActivity> dayActivities = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
+            dayActivities.set(dayActivities.indexOf(activity), activity);
+        } catch (Exception e) {
+            Log.e(DayActivityDetailFragment.class.getSimpleName(), e.getMessage());
+        }
+
+    }
+
+    private void loadSpreadGraph() {
+        //TODO load spread graph here
+        for (int i = 0; i < activity.getTimeZoneSpread().size(); i++) {
+            Log.e(DayActivity.class.getSimpleName(), "loadSpreadGraph: " + i + "-" + activity.getTimeZoneSpread().get(i).getIndex() + ", " + activity.getTimeZoneSpread().get(i).getUsedValue());
+        }
     }
 
     @Override
