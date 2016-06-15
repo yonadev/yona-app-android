@@ -25,8 +25,6 @@ import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.graph.SpreadGraph;
-import nu.yona.app.customview.graph.TimeBucketGraph;
-import nu.yona.app.customview.graph.TimeFrameGraph;
 import nu.yona.app.ui.ChartItemHolder;
 
 /**
@@ -84,6 +82,12 @@ public class CustomPageAdapter extends PagerAdapter {
             case NOGO_CONTROL:
                 layoutView = inflater.inflate(R.layout.nogo_chart_layout, collection, false);
                 break;
+            case TIME_BUCKET_CONTROL:
+                layoutView = inflater.inflate(R.layout.time_budget_item, collection, false);
+                break;
+            case TIME_FRAME_CONTROL:
+                layoutView = inflater.inflate(R.layout.time_frame_item, collection, false);
+                break;
             default:
                 layoutView = inflater.inflate(R.layout.goal_chart_item, collection, false);
                 break;
@@ -104,9 +108,7 @@ public class CustomPageAdapter extends PagerAdapter {
         switch (dayActivity.getChartTypeEnum()) {
             case TIME_FRAME_CONTROL:
                 if (dayActivity.getTimeZoneSpread() != null) {
-                    TimeFrameGraph timeFrameGraph = new TimeFrameGraph(mContext);
-                    timeFrameGraph.chartValuePre(dayActivity.getTimeZoneSpread());
-                    viewGroup.addView(timeFrameGraph);
+                    holder.getTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
                 }
                 holder.getGoalType().setText(mContext.getString(R.string.score));
                 holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
@@ -120,9 +122,7 @@ public class CustomPageAdapter extends PagerAdapter {
             case TIME_BUCKET_CONTROL:
                 int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
                 if (maxDurationAllow > 0) {
-                    TimeBucketGraph timeBucketGraph = new TimeBucketGraph(mContext);
-                    timeBucketGraph.graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
-                    viewGroup.addView(timeBucketGraph);
+                    holder.getTimeBucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
                 }
                 holder.getGoalType().setText(mContext.getString(R.string.score));
                 if (dayActivity.getTotalMinutesBeyondGoal() > 0) {
