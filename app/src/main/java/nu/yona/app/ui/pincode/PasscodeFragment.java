@@ -61,6 +61,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private PasscodeManagerImpl passcodeManagerImpl;
     private YonaPasswordTransformationManager yonaPasswordTransformationManager;
     private FieldTextWatcher watcher;
+    private int backgroundDrawable = R.drawable.passcode_edit_bg_grape;
 
     @Nullable
     @Override
@@ -83,6 +84,9 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             if (getArguments().get(AppConstant.COLOR_CODE) != null) {
                 view.setBackgroundColor(getArguments().getInt(AppConstant.COLOR_CODE));
             }
+            if (getArguments().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
+                backgroundDrawable = getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND);
+            }
         }
         resetDigit();
 
@@ -93,6 +97,10 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     @Override
     public void onResume() {
         super.onResume();
+        passcode1.setBackgroundResource(backgroundDrawable);
+        passcode2.setBackgroundResource(backgroundDrawable);
+        passcode3.setBackgroundResource(backgroundDrawable);
+        passcode4.setBackgroundResource(backgroundDrawable);
         ((BaseActivity) getActivity()).showKeyboard(passcode1);
     }
 
