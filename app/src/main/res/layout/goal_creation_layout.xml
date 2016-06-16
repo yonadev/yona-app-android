@@ -15,7 +15,7 @@
 
     <include layout="@layout/header_challenges_creation" />
 
-    <ListView
+    <nu.yona.app.customview.NestedListView
         android:id="@+id/goal_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,7 +23,7 @@
         android:drawSelectorOnTop="true"
         android:gravity="center" />
 
-    <ListView
+    <nu.yona.app.customview.NestedListView
         android:id="@+id/new_goal_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
