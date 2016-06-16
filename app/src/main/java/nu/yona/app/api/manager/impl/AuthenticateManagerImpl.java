@@ -405,24 +405,45 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
 
     private void resendOTPAfterUser(final DataLoadListener listener) {
         try {
-            if (authenticateDao.getUser() != null && authenticateDao.getUser().getLinks() != null
-                    && authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode() != null
-                    && !TextUtils.isEmpty(authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode().getHref())) {
-                authNetwork.resendOTP(authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
-                    }
-
-                    @Override
-                    public void onError(Object errorMessage) {
-                        if (errorMessage instanceof ErrorMessage) {
-                            listener.onError(errorMessage);
-                        } else {
-                            listener.onError(new ErrorMessage(errorMessage.toString()));
+            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            if (user != null && user.getLinks() != null) {
+                if (user.getLinks().getResendMobileNumberConfirmationCode() != null
+                        && !TextUtils.isEmpty(user.getLinks().getResendMobileNumberConfirmationCode().getHref())) {
+                    authNetwork.resendOTP(authenticateDao.getUser().getLinks().getResendMobileNumberConfirmationCode().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+                        @Override
+                        public void onDataLoad(Object result) {
+                            listener.onDataLoad(result);
                         }
-                    }
-                });
+
+                        @Override
+                        public void onError(Object errorMessage) {
+                            if (errorMessage instanceof ErrorMessage) {
+                                listener.onError(errorMessage);
+                            } else {
+                                listener.onError(new ErrorMessage(errorMessage.toString()));
+                            }
+                        }
+                    });
+                } else if (user.getLinks().getResendPinResetConfirmationCode() != null
+                        && !TextUtils.isEmpty(user.getLinks().getResendPinResetConfirmationCode().getHref())) {
+                    authNetwork.doPasscodeReset(user.getLinks().getResendPinResetConfirmationCode().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+                        @Override
+                        public void onDataLoad(Object result) {
+                            listener.onDataLoad(result);
+                        }
+
+                        @Override
+                        public void onError(Object errorMessage) {
+                            if (errorMessage instanceof ErrorMessage) {
+                                listener.onError(errorMessage);
+                            } else {
+                                listener.onError(new ErrorMessage(errorMessage.toString()));
+                            }
+                        }
+                    });
+                } else {
+                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+                }
             } else {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
