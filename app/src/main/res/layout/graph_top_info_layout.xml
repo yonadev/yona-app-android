@@ -16,10 +16,10 @@
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goalType"
         style="@style/SeTitle"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingTop="@dimen/chart_item_top_margin" />
+        android:gravity="center|left" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goalScore"
@@ -31,11 +31,10 @@
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goalDesc"
         style="@style/FooterTxtFortyOpactiy"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="right"
-        android:paddingTop="@dimen/chart_item_top_margin"
+        android:gravity="right|center"
         android:text="minuten of totalae" />
 
 </LinearLayout>

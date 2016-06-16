@@ -10,7 +10,10 @@ package nu.yona.app.customview.graph;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -97,7 +100,7 @@ public class BaseView extends View {
     /**
      * Initialize.
      */
-    public void initialize() {
+    private void initialize() {
 
         /**
          * to take account of different display densities. All of our drawing is done in pixels,
@@ -116,8 +119,19 @@ public class BaseView extends View {
 
     }
 
-    public int convertSizeToDeviceDependent(int value) {
+    protected int convertSizeToDeviceDependent(int value) {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         return ((dm.densityDpi * value) / 160);
     }
+
+    /**
+     * Drawable to bitmap bitmap.
+     *
+     * @param drawable the drawable
+     * @return the bitmap
+     */
+    protected static Bitmap drawableToBitmap(Drawable drawable) {
+        return ((BitmapDrawable) drawable).getBitmap();
+    }
+
 }

@@ -203,7 +203,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
                 leftIcon.setVisibility(View.GONE);
                 toolbarTitle.setText(getString(R.string.edit_profile));
                 rightIcon.setVisibility(View.VISIBLE);
-                rightIcon.setImageDrawable(YonaActivity.getActivity().getDrawable(R.drawable.icn_create));
+                rightIcon.setImageResource(R.drawable.icn_create);
 
                 rightIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -217,7 +217,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     }
 
     private void profileViewMode() {
-        profileImage.setBackground(getImage(null, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
+        profileImage.setImageDrawable(getImage(null, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
 
         firstName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName());
         lastName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getLastName());
@@ -312,7 +312,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        profileImage.setBackground(getImage((Bitmap) object, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
+                        profileImage.setImageDrawable(getImage((Bitmap) object, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
                     }
                 }, AppConstant.TIMER_DELAY_HUNDRED);
                 break;
