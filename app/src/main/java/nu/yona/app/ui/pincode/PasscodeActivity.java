@@ -37,7 +37,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         YonaApplication.getEventChangeManager().registerListener(this);
-        loadPasscodeView();
+        loadPasscodeView(true);
         initializeAnimation();
     }
 
@@ -72,7 +72,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
     private void doBack() {
         if (PASSCODE_STEP == 1) {
             first_passcode = null;
-            loadPasscodeView();
+            loadPasscodeView(false);
         } else {
             finish();
         }
@@ -101,7 +101,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
     }
 
 
-    private void loadPasscodeView() {
+    private void loadPasscodeView(boolean isEntryAnim) {
         PASSCODE_STEP = 0;
         updateScreen();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -127,7 +127,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_PASSCODE_STEP_ONE:
-                loadPasscodeView();
+                loadPasscodeView(false);
                 break;
             case EventChangeManager.EVENT_PASSCODE_STEP_TWO:
                 loadVerifyPasscodeView();
