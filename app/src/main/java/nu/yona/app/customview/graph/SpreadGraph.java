@@ -11,7 +11,6 @@ package nu.yona.app.customview.graph;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Typeface;
@@ -39,8 +38,6 @@ public class SpreadGraph extends BaseView {
     private Canvas mCanvas;
     private float mStartPoint;
     private float mMiddlePoint;
-    private float x_top = 0;
-    private float x_bottom = x_top + 100;
 
     /**
      * Instantiates a new Spread Graph graph.
@@ -131,16 +128,6 @@ public class SpreadGraph extends BaseView {
 
         float mPartSize = spreadtime / mNoParts;
 
-        float minValue = mPartSize / mMinPerParts;
-
-        //RectF myRectum = new RectF(left, top, right, bottom);
-        linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setPathEffect(new DashPathEffect(new float[]{4, 2}, 15));
-        linePaint.setColor(GraphUtils.COLOR_PINK);
-        Path path = new Path();
-        path.moveTo(mXStart, mYStart);
-        path.lineTo(right, bottom);
-
         //todraw text from height
         float heightDraw = bottom + (20 * scaleFactor);
 
@@ -168,29 +155,29 @@ public class SpreadGraph extends BaseView {
         mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5, bottom, null);
 
         if (mListZoneSpread != null && mListZoneSpread.size() > 0) {
-            float currentIndex = 0;
             float currentStartPos;
-            float currentEndPos;
+            float currentEndPos = startEndPoint;
             Paint barGraphPaint = new Paint();
             barGraphPaint.setStyle(Paint.Style.STROKE);
             barGraphPaint.setStrokeWidth(5);
             for (TimeZoneSpread timeZoneSpread : mListZoneSpread) {
                 currentEndPos = startEndPoint;
-                currentStartPos = currentIndex * mPartSize;
+                currentStartPos = (float) timeZoneSpread.getIndex() * mPartSize;
                 Path barPath = new Path();
                 if (timeZoneSpread.getColor() == GraphUtils.COLOR_PINK || timeZoneSpread.getColor() == GraphUtils.COLOR_BLUE) {
                     currentEndPos = timeZoneSpread.getUsedValue();
                     barGraphPaint.setColor(timeZoneSpread.getColor());
                 } else if (timeZoneSpread.getColor() == GraphUtils.COLOR_GREEN) {
+                    currentEndPos = startEndPoint;
                     barGraphPaint.setColor(GraphUtils.COLOR_BULLET_DOT);
                 } else {
-                    barGraphPaint.setColor(GraphUtils.COLOR_WHITE_THREE);
+                    barGraphPaint.setColor(timeZoneSpread.getColor());
                 }
                 float newXPos = mXStart + currentStartPos;
                 barPath.moveTo(newXPos, mYStart);
-                barPath.lineTo(currentStartPos, mYStart - (currentEndPos * 15));
+                float noPartsHeight = heightOfbar / 15;
+                barPath.lineTo(currentStartPos, mYStart - (currentEndPos * noPartsHeight));
                 canvas.drawPath(barPath, barGraphPaint);
-                currentIndex++;
             }
 
         }
