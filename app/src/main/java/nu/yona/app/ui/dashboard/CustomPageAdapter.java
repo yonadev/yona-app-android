@@ -112,7 +112,7 @@ public class CustomPageAdapter extends PagerAdapter {
                     holder.getTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
                 }
                 holder.getGoalType().setText(mContext.getString(R.string.score));
-                holder.getGoalScore().setText(timeFrameGoalMinutes + "");
+                holder.getGoalScore().setText(Math.abs(timeFrameGoalMinutes) + "");
                 if (timeFrameGoalMinutes < 0) {
                     holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
                 } else {
@@ -136,7 +136,7 @@ public class CustomPageAdapter extends PagerAdapter {
                 } else {
                     holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
                 }
-                holder.getGoalScore().setText(goalMinutes + "");
+                holder.getGoalScore().setText(Math.abs(goalMinutes)+ "");
                 break;
             case NOGO_CONTROL:
                 if (dayActivity.getGoalAccomplished()) {
