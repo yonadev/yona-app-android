@@ -97,7 +97,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
             loadSteopOne();
         } else {
             startActivity(new Intent(SignupActivity.this, LaunchActivity.class));
-            overridePendingTransition(R.anim.back_slide_in, R.anim.back_slide_out);
             finish();
         }
     }
@@ -115,7 +114,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         SIGNUP_STEP = 1;
         prevButton.setVisibility(View.VISIBLE);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.back_slide_in, R.anim.back_slide_out);
         fragmentTransaction.replace(R.id.fragment_container, stepTwo);
         fragmentTransaction.commit();
     }
@@ -212,7 +210,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
             intent.putExtras(bundle);
         }
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
 

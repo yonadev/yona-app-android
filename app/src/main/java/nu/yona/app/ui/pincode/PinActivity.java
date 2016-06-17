@@ -48,7 +48,6 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
         passcodeFragment = new PasscodeFragment();
         passcodeFragment.setArguments(getIntent().getExtras());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out);
         fragmentTransaction.replace(R.id.blank_container, passcodeFragment);
         fragmentTransaction.commit();
 
@@ -112,7 +111,6 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
     }
 
     private void showChallengesScreen() {
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         if (!TextUtils.isEmpty(screenType) && screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
             updatePin();
         }
@@ -176,7 +174,6 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
         bundle.putInt(AppConstant.PROGRESS_DRAWABLE, R.drawable.pin_reset_progress_bar);
         intent.putExtras(bundle);
         startActivity(intent);
-        this.overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     private void updateData() {
