@@ -53,7 +53,6 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 
     private void loadOTPFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.back_slide_in, R.anim.back_slide_out);
         fragmentTransaction.replace(R.id.blank_container, getOTPFragment());
         fragmentTransaction.commit();
     }
@@ -150,7 +149,6 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 
     private void showPasscodeScreen() {
         startActivity(new Intent(OTPActivity.this, PasscodeActivity.class));
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
 

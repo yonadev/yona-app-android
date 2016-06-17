@@ -100,7 +100,6 @@ public class SettingsFragment extends BaseFragment {
         bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_mango);
         bundle.putInt(AppConstant.PASSCODE_TEXT_BACKGROUND, R.drawable.passcode_edit_bg_mango);
         intent.putExtras(bundle);
-        YonaActivity.getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         startActivity(intent);
     }
 

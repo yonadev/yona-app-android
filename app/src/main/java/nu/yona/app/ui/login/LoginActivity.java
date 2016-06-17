@@ -140,7 +140,6 @@ public class LoginActivity extends BaseActivity {
 
     private void doBack() {
         startActivity(new Intent(LoginActivity.this, LaunchActivity.class));
-        overridePendingTransition(R.anim.back_slide_in, R.anim.back_slide_out);
         finish();
     }
 
@@ -196,7 +195,6 @@ public class LoginActivity extends BaseActivity {
         editor.putBoolean(PreferenceConstant.STEP_PASSCODE, true);
         editor.commit();
         startActivity(new Intent(LoginActivity.this, PasscodeActivity.class));
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         finish();
     }
 

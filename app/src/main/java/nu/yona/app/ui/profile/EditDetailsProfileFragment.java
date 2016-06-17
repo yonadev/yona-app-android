@@ -372,7 +372,6 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
             intent.putExtras(bundle);
         }
         startActivity(intent);
-        YonaActivity.getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         YonaActivity.getActivity().finish();
     }
 
