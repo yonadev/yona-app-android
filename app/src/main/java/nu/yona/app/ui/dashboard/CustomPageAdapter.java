@@ -107,34 +107,36 @@ public class CustomPageAdapter extends PagerAdapter {
         ViewGroup viewGroup = (ViewGroup) holder.getGoalGraphView();
         switch (dayActivity.getChartTypeEnum()) {
             case TIME_FRAME_CONTROL:
+                int timeFrameGoalMinutes = (dayActivity.getYonaGoal().getSpreadCells().size() * 15) - dayActivity.getTotalActivityDurationMinutes();
                 if (dayActivity.getTimeZoneSpread() != null) {
                     holder.getTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
                 }
                 holder.getGoalType().setText(mContext.getString(R.string.score));
-                holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
-                if (dayActivity.getTotalMinutesBeyondGoal() > 0) {
+                holder.getGoalScore().setText(timeFrameGoalMinutes + "");
+                if (timeFrameGoalMinutes < 0) {
                     holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
                 } else {
                     holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
                 }
                 break;
             case TIME_BUCKET_CONTROL:
+                int goalMinutes = ((int) dayActivity.getYonaGoal().getMaxDurationMinutes()) - dayActivity.getTotalActivityDurationMinutes();
                 int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
                 if (maxDurationAllow > 0) {
                     holder.getTimeBucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
                 }
                 holder.getGoalType().setText(mContext.getString(R.string.score));
-                if (dayActivity.getTotalMinutesBeyondGoal() > 0) {
+                if (goalMinutes < 0) {
                     holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
                 } else {
                     holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
                 }
-                if (dayActivity.getTotalMinutesBeyondGoal() > 0) {
+                if (goalMinutes < 0) {
                     holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
                 } else {
                     holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
                 }
-                holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
+                holder.getGoalScore().setText(goalMinutes + "");
                 break;
             case NOGO_CONTROL:
                 if (dayActivity.getGoalAccomplished()) {

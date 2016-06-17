@@ -26,7 +26,7 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/txtNoGoText"
-        style="@style/SeTitleSpacing"
+        style="@style/SeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -41,7 +41,7 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/txtNogoTime"
-        style="@style/FooterTitleSpacing"
+        style="@style/FooterTitleFiftyOpacity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
