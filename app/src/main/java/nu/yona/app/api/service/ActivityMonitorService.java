@@ -21,13 +21,13 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.YonaApplication;
@@ -45,8 +45,8 @@ public class ActivityMonitorService extends Service {
     private ActivityMonitorService self;
     private String previousAppName;
     private PowerManager powerManager;
-    private ScheduledExecutorService scheduler;
     private Date startTime, endTime;
+    private ScheduledFuture scheduledFuture;
 
     private static String printForegroundTask(Context context) {
         currentApp = "NULL";
@@ -65,11 +65,7 @@ public class ActivityMonitorService extends Service {
             }
         } else {
             ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningAppProcessInfo> tasks = am.getRunningAppProcesses();
-            currentApp = tasks.get(0).processName;
-        }
-        if (currentApp == "NULL") {
-            AppUtils.restartService(context);
+            currentApp = am.getRunningAppProcesses().get(0).processName;
         }
         return currentApp;
     }
@@ -77,8 +73,16 @@ public class ActivityMonitorService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        restartReceiver();
         powerManager = ((PowerManager) YonaApplication.getAppContext().getSystemService(Context.POWER_SERVICE));
         self = this;
+    }
+
+    private void restartReceiver() {
+        if (YonaApplication.getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false)) {
+            YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
+            AppUtils.registerReceiver(YonaApplication.getAppContext());
+        }
     }
 
     @Override
@@ -89,10 +93,10 @@ public class ActivityMonitorService extends Service {
 
     @Override
     public void onDestroy() {
+        shutdownScheduler();
         endTime = new Date();
         updateOnServer(previousAppName);
         super.onDestroy();
-        scheduler.shutdownNow();
     }
 
     @Nullable
@@ -102,11 +106,15 @@ public class ActivityMonitorService extends Service {
     }
 
     private void scheduleMethod() {
-        scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new Runnable() {
+
+        scheduledFuture = AppUtils.getInitializeScheduler().scheduleAtFixedRate(new Runnable() {
 
             @Override
             public void run() {
+                if (AppUtils.getScheduler() == null) {
+                    scheduledFuture.cancel(true);
+                    return;
+                }
                 // This method will check for the Running apps after every 5000ms
                 checkRunningApps();
             }
@@ -139,13 +147,32 @@ public class ActivityMonitorService extends Service {
     }
 
     private void updateOnServer(String pkgname) {
-        APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
+        if (previousAppName != null && !pkgname.equals("NULL") && startTime != null && endTime != null) {
+            APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
+        }
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
+        YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
+        shutdownScheduler();
         restartService();
         super.onTaskRemoved(rootIntent);
+    }
+
+    private void shutdownScheduler() {
+        try {
+            if (AppUtils.getScheduler() != null) {
+                AppUtils.getScheduler().shutdownNow();
+                AppUtils.setNullScheduler();
+            }
+            if (scheduledFuture != null) {
+                scheduledFuture.cancel(true);
+                scheduledFuture = null;
+            }
+        } catch (Exception e) {
+            Log.e(ActivityMonitorService.class.getSimpleName(), e.getMessage());
+        }
     }
 
     private void restartService() {

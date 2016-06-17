@@ -37,13 +37,13 @@ public class NestedListView extends ListView implements NestedScrollingChild {
     }
 
     @Override
-    public void setNestedScrollingEnabled(boolean enabled) {
-        mScrollingChildHelper.setNestedScrollingEnabled(enabled);
+    public boolean isNestedScrollingEnabled() {
+        return mScrollingChildHelper.isNestedScrollingEnabled();
     }
 
     @Override
-    public boolean isNestedScrollingEnabled() {
-        return mScrollingChildHelper.isNestedScrollingEnabled();
+    public void setNestedScrollingEnabled(boolean enabled) {
+        mScrollingChildHelper.setNestedScrollingEnabled(enabled);
     }
 
     @Override

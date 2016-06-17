@@ -35,6 +35,8 @@ import net.hockeyapp.android.ExceptionHandler;
 import org.joda.time.Period;
 
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -53,6 +55,8 @@ public class AppUtils {
     private static InputFilter filter;
     private static boolean submitPressed;
     private static Intent activityMonitorIntent;
+    private static ScheduledExecutorService scheduler;
+    private static YonaReceiver receiver;
 
     /**
      * Gets circle bitmap.
@@ -119,7 +123,7 @@ public class AppUtils {
      *
      * @param context the context
      */
-    private static void startService(Context context) {
+    public static void startService(Context context) {
         try {
             activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
             context.startService(activityMonitorIntent);
@@ -145,16 +149,6 @@ public class AppUtils {
     }
 
     /**
-     * Restart service.
-     *
-     * @param context the context
-     */
-    public static void restartService(Context context) {
-        stopService(context);
-        startService(context);
-    }
-
-    /**
      * Generate Random String length of 20
      *
      * @param charLimit the char limit
@@ -177,7 +171,7 @@ public class AppUtils {
      * @param context the context
      */
     public static void registerReceiver(Context context) {
-        YonaReceiver receiver = new YonaReceiver();
+        receiver = new YonaReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -348,5 +342,23 @@ public class AppUtils {
                 APIManager.getInstance().getActivityManager().postAllDBActivities();
             }
         }, delayMilliseconds);
+    }
+
+    public static ScheduledExecutorService getInitializeScheduler() {
+        if (scheduler == null) {
+            scheduler = Executors.newSingleThreadScheduledExecutor();
+        }
+        return scheduler;
+    }
+
+    public static ScheduledExecutorService getScheduler() {
+        return AppUtils.scheduler;
+    }
+
+    public static void setNullScheduler() {
+        if (scheduler != null) {
+            scheduler.shutdown();
+        }
+        scheduler = null;
     }
 }
