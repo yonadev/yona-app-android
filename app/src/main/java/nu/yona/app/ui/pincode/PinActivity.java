@@ -59,7 +59,6 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
         if (!isUserBlocked) {
             updateScreenUI();
         }
-        updateData();
     }
 
     @Override
@@ -74,6 +73,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
         if (YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null) {
             updateBlockMsg();
         }
+        updateData();
     }
 
     private void updateBlockMsg() {
