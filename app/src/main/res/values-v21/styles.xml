@@ -68,16 +68,13 @@
         <item name="android:letterSpacing">0.07</item>
     </style>
 
-    <style name="SeTitle" parent="ParentSeTitle">
+    <style name="SeTitle" parent="@style/ParentSeTitle">
         <item name="android:textColor">@color/black</item>
         <item name="android:letterSpacing">0.02</item>
     </style>
 
-    <style name="SeTitleSpacing" parent="SeTitle">
-        <item name="android:letterSpacing">0.02</item>
-    </style>
-
-    <style name="FooterTitleSpacing" parent="FooterTitleFiftyOpacity">
+    <style name="FooterTitleFiftyOpacity" parent="parentFooterTxt">
+        <item name="android:textColor">@color/black_fifty_opacity</item>
         <item name="android:letterSpacing">0.02</item>
     </style>
 

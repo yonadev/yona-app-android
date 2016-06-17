@@ -156,6 +156,10 @@
         <item name="android:textColor">@color/black_forty_opacity</item>
     </style>
 
+    <style name="FooterTitleFiftyOpacity" parent="parentFooterTxt">
+        <item name="android:textColor">@color/black_fifty_opacity</item>
+    </style>
+
     <style name="TabTitleLg">
         <item name="android:textSize">13sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
@@ -181,10 +185,6 @@
 
     <style name="FooterTitleNoOpacity" parent="FooterTitle">
         <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="FooterTitleFiftyOpacity" parent="FooterTitle">
-        <item name="android:textColor">@color/black_fifty_opacity</item>
     </style>
 
     <style name="Explanation">
