@@ -37,6 +37,7 @@ import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -175,6 +176,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
+                updateData();
                 showPasscodeScreen();
             }
 
@@ -205,5 +207,20 @@ public class LoginActivity extends BaseActivity {
                 && validatePasscode(passcode.getText().toString())) {
             doLogin();
         }
+    }
+
+    private void updateData() {
+        APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(null);
+        APIManager.getInstance().getGoalManager().getUserGoal(new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                // We don't need to handle this.
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                // We don't need to handle this.
+            }
+        });
     }
 }
