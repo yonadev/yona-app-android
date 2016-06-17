@@ -179,7 +179,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 }
             }, AppConstant.ONE_SECOND);
         } else {
-            AppUtils.restartService(this);
+            AppUtils.startService(this);
         }
         AppUtils.registerReceiver(YonaApplication.getAppContext());
     }
@@ -276,7 +276,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         if (!AppUtils.hasPermission(this)) {
             showPermissionAlert();
         } else {
-            AppUtils.restartService(this);
+            AppUtils.startService(this);
         }
     }
 
@@ -285,7 +285,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS:
                 if (AppUtils.hasPermission(this)) {
-                    AppUtils.restartService(this);
+                    AppUtils.startService(this);
                 } else {
                     checkPermission();
                 }

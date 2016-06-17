@@ -19,20 +19,20 @@ public class YonaReceiver extends BroadcastReceiver {
         switch (intent.getAction()) {
             case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_SCREEN_ON:
-                restartService(context);
-                AppUtils.sendLogToServer(AppConstant.FIVE_SECONDS);
+                startService(context);
                 break;
             case Intent.ACTION_SCREEN_OFF:
+                AppUtils.setNullScheduler();
+                AppUtils.sendLogToServer(AppConstant.ONE_SECOND);
                 AppUtils.stopService(context);
-                AppUtils.sendLogToServer(0);
                 break;
         }
     }
 
-    private void restartService(Context context) {
+    private void startService(Context context) {
         if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1 && AppUtils.hasPermission(YonaApplication.getAppContext()))
                 || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
-            AppUtils.restartService(context);
+            AppUtils.startService(context);
         }
     }
 }

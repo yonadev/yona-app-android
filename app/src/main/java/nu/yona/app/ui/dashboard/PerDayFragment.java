@@ -100,7 +100,6 @@ public class PerDayFragment extends BaseFragment {
         listView.setAdapter(perDayStickyAdapter);
         listView.addOnScrollListener(mRecyclerViewOnScrollListener);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(perDayStickyAdapter));
-        refreshAdapter();
         return view;
 
     }
@@ -138,6 +137,12 @@ public class PerDayFragment extends BaseFragment {
                 headerDecor.invalidateHeaders();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshAdapter();
     }
 
     /**
