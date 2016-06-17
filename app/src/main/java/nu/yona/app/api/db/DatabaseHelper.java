@@ -22,6 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper mInstance = null;
     private DBHelper dbHelper;
+    private SQLiteDatabase db;
 
     private DatabaseHelper(Context context) {
         super(context, DBConstant.DATABASE_NAME, null, DBConstant.DATABASE_VERSION);
@@ -46,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        this.db = db;
         createTables(db);
     }
 
@@ -59,6 +61,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(getDBHelper().TABLE_ACTIVITY_CATEGORY);
         db.execSQL(getDBHelper().TABLE_GOAL);
         db.execSQL(getDBHelper().TABLE_ACTIVITY_TRACKER);
+    }
+
+    public void deleteAllData() {
+        try {
+            Log.e(DatabaseHelper.class.getSimpleName(), "Delete all data");
+            db.execSQL("delete from " + getDBHelper().TABLE_USER_REGISTER);
+            db.execSQL("delete from " + getDBHelper().TABLE_ACTIVITY_CATEGORY);
+            db.execSQL("delete from " + getDBHelper().TABLE_GOAL);
+            db.execSQL("delete from " + getDBHelper().TABLE_ACTIVITY_TRACKER);
+        } catch (Exception e) {
+            Log.e(DatabaseHelper.class.getSimpleName(), e.getMessage());
+        }
     }
 
     private DBHelper getDBHelper() {

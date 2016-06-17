@@ -53,6 +53,7 @@ import java.io.FileOutputStream;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
@@ -753,6 +754,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 finish();
                 break;
             case EventChangeManager.EVENT_USER_NOT_EXIST:
+                DatabaseHelper.getInstance(this).deleteAllData();
+                YonaApplication.getUserPreferences().edit().clear();
                 if (object != null && object instanceof ErrorMessage) {
                     showError((ErrorMessage) object);
                 }
