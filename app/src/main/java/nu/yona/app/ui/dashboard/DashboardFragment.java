@@ -94,8 +94,9 @@ public class DashboardFragment extends BaseFragment {
                 rightIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
-                        YonaActivity.getActivity().replaceFragment(friendIntent);
+                        openVpn();
+//                        Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
+//                        YonaActivity.getActivity().replaceFragment(friendIntent);
                     }
                 });
 
@@ -113,5 +114,14 @@ public class DashboardFragment extends BaseFragment {
             }
         }, AppConstant.TIMER_DELAY_HUNDRED);
 
+    }
+
+    private void openVpn() {
+        final String EXTRA_NAME = "de.blinkt.openvpn.shortcutProfileName";
+
+        Intent shortcutIntent = new Intent(Intent.ACTION_MAIN);
+        shortcutIntent.setClassName("de.blinkt.openvpn", "de.blinkt.openvpn.LaunchVPN");
+        shortcutIntent.putExtra(EXTRA_NAME,"upb ssl");
+        startActivity(shortcutIntent);
     }
 }
