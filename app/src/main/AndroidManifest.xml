@@ -112,13 +112,14 @@
             android:launchMode="singleTask" />
         <activity android:name="de.blinkt.openvpn.activities.FileSelect" />
         <activity android:name="de.blinkt.openvpn.activities.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--For testing vpn stand alone, enable this, it will create another instance of appplication-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LEANBACK_LAUNCHER" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <service

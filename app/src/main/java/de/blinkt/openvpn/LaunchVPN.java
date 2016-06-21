@@ -33,6 +33,7 @@ import de.blinkt.openvpn.core.VPNLaunchHelper;
 import de.blinkt.openvpn.core.VpnStatus;
 import de.blinkt.openvpn.core.VpnStatus.ConnectionStatus;
 import nu.yona.app.R;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * This Activity actually handles two stages of a launcher shortcut's life cycle.
@@ -65,7 +66,6 @@ public class LaunchVPN extends Activity {
     public static final String EXTRA_NAME = "de.blinkt.openvpn.shortcutProfileName";
     public static final String EXTRA_HIDELOG = "de.blinkt.openvpn.showNoLogWindow";
     public static final String CLEARLOG = "clearlogconnect";
-
 
     private static final int START_VPN_PROFILE = 70;
 
@@ -218,9 +218,9 @@ public class LaunchVPN extends Activity {
 
     void showLogWindow() {
 
-        Intent startLW = new Intent(getBaseContext(), LogWindow.class);
-        startLW.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(startLW);
+//        Intent startLW = new Intent(getBaseContext(), LogWindow.class);
+//        startLW.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//        startActivity(startLW);
 
     }
 
@@ -287,7 +287,7 @@ public class LaunchVPN extends Activity {
                 // Shame on you Sony! At least one user reported that
                 // an official Sony Xperia Arc S image triggers this exception
                 VpnStatus.logError(R.string.no_vpn_support_image);
-                showLogWindow();
+//                showLogWindow();
             }
         } else {
             onActivityResult(START_VPN_PROFILE, Activity.RESULT_OK, null);

@@ -254,4 +254,6 @@ public interface AppConstant {
     String BOOLEAN = "boolean";
 
     String TERMINATED_APP = "isTerminated";
+
+    String PROFILE_UUID = "profileUUID";
 }

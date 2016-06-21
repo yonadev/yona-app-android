@@ -8,7 +8,7 @@
 
 <resources>
 
-    <string name="appname">yona</string>
+    <string name="appname">Yona</string>
     <string name="dashboard">DASHBOARD</string>
     <string name="friends">FRIENDS</string>
     <string name="challenges">CHALLENGES</string>

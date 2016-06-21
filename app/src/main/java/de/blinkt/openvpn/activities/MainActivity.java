@@ -107,10 +107,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.show_log) {
-            Intent showLog = new Intent(this, LogWindow.class);
-            startActivity(showLog);
-        }
+//        if (item.getItemId() == R.id.show_log) {
+//            Intent showLog = new Intent(this, LogWindow.class);
+//            startActivity(showLog);
+//        }
         return super.onOptionsItemSelected(item);
     }
 

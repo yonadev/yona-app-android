@@ -11,12 +11,15 @@
 package nu.yona.app.ui.signup;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
+import de.blinkt.openvpn.VpnProfile;
+import de.blinkt.openvpn.activities.ConfigConverter;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
@@ -37,6 +40,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 
     private PasscodeFragment otpFragment;
     private RegisterUser user;
+    private static final int IMPORT_PROFILE = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,8 +101,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
             @Override
             public void onDataLoad(Object result) {
                 getActivityCategories();
-                showLoadingView(false, null);
-                showPasscodeScreen();
+                startServiceAndVPNConnection();
             }
 
             @Override
@@ -152,4 +155,26 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
         finish();
     }
 
+    private void startServiceAndVPNConnection() {
+        Intent startImport = new Intent(this, ConfigConverter.class);
+        startImport.setAction(ConfigConverter.IMPORT_PROFILE);
+        startImport.setData(Uri.parse("file:///storage/emulated/0/Download/yona_gw1_mobile_20160330.ovpn"));
+        startActivityForResult(startImport, IMPORT_PROFILE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case IMPORT_PROFILE:
+                if (resultCode == RESULT_OK) {
+                    YonaApplication.getUserPreferences().edit().putString(AppConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
+                }
+                showLoadingView(false, null);
+                showPasscodeScreen();
+                break;
+            default:
+                break;
+        }
+    }
 }

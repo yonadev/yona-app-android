@@ -38,6 +38,11 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import de.blinkt.openvpn.LaunchVPN;
+import de.blinkt.openvpn.VpnProfile;
+import de.blinkt.openvpn.activities.DisconnectVPN;
+import de.blinkt.openvpn.core.ProfileManager;
+import de.blinkt.openvpn.core.VpnStatus;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
@@ -360,5 +365,34 @@ public class AppUtils {
             scheduler.shutdown();
         }
         scheduler = null;
+    }
+
+    public static void stopVPN(Context context) {
+        String profileUUID = YonaApplication.getUserPreferences().getString(AppConstant.PROFILE_UUID, "");
+        VpnProfile profile = ProfileManager.get(context, profileUUID);
+        if (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile) {
+            Intent disconnectVPN = new Intent(context, DisconnectVPN.class);
+            disconnectVPN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(disconnectVPN);
+        }
+    }
+
+    public static void startVPN(Context context) {
+        String profileUUID = YonaApplication.getUserPreferences().getString(AppConstant.PROFILE_UUID, "");
+        VpnProfile profile = ProfileManager.get(context, profileUUID);
+        if (!VpnStatus.isVPNActive()) {
+            startVPN(profile, context);
+        }
+    }
+
+    private static void startVPN(VpnProfile profile, Context context) {
+        ProfileManager.getInstance(context).saveProfile(context, profile);
+        Intent intent = new Intent(context, LaunchVPN.class);
+        profile.mUsername = "bsmith";
+        profile.mPassword = "yonaios";
+        intent.putExtra(LaunchVPN.EXTRA_KEY, profile.getUUID().toString());
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

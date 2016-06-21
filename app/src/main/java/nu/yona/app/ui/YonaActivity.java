@@ -90,6 +90,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static final int PICK_CONTACT = 2;
     private static final int PICK_IMAGE = 3;
     private static final int PICK_CAMERA = 4;
+    private static final int IMPORT_PROFILE = 5;
     private static YonaActivity activity;
     private BaseFragment mContent, homeFragment;
     private boolean isStateActive = false;
@@ -210,6 +211,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
             hideSoftInput();
         }
+        AppUtils.startVPN(this);
     }
 
     @Override
@@ -955,7 +957,5 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         } else if (requestCode == AppConstant.READ_CONTACTS_PERMISSIONS_REQUEST) {
             openContactBook();
         }
-
-
     }
 }

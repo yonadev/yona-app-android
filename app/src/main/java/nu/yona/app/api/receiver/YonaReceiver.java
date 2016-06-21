@@ -20,6 +20,7 @@ public class YonaReceiver extends BroadcastReceiver {
             case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_SCREEN_ON:
                 startService(context);
+                AppUtils.startVPN(context);
                 break;
             case Intent.ACTION_SCREEN_OFF:
                 AppUtils.setNullScheduler();

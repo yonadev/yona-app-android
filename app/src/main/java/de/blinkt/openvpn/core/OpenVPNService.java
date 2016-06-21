@@ -153,7 +153,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         android.app.Notification.Builder nbuilder = new Notification.Builder(this);
 
         if (mProfile != null)
-            nbuilder.setContentTitle(getString(R.string.notifcation_title, mProfile.mName));
+            nbuilder.setContentTitle(getString(R.string.notifcation_title));
         else
             nbuilder.setContentTitle(getString(R.string.notifcation_title_notconnect));
 
@@ -214,25 +214,26 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     }
 
     private int getIconByConnectionStatus(ConnectionStatus level) {
-        switch (level) {
-            case LEVEL_CONNECTED:
-                return R.drawable.ic_stat_vpn;
-            case LEVEL_AUTH_FAILED:
-            case LEVEL_NONETWORK:
-            case LEVEL_NOTCONNECTED:
-                return R.drawable.ic_stat_vpn_offline;
-            case LEVEL_CONNECTING_NO_SERVER_REPLY_YET:
-            case LEVEL_WAITING_FOR_USER_INPUT:
-                return R.drawable.ic_stat_vpn_outline;
-            case LEVEL_CONNECTING_SERVER_REPLIED:
-                return R.drawable.ic_stat_vpn_empty_halo;
-            case LEVEL_VPNPAUSED:
-                return android.R.drawable.ic_media_pause;
-            case UNKNOWN_LEVEL:
-            default:
-                return R.drawable.ic_stat_vpn;
-
-        }
+//        switch (level) {
+//            case LEVEL_CONNECTED:
+//                return R.drawable.ic_stat_vpn;
+//            case LEVEL_AUTH_FAILED:
+//            case LEVEL_NONETWORK:
+//            case LEVEL_NOTCONNECTED:
+//                return R.drawable.ic_stat_vpn_offline;
+//            case LEVEL_CONNECTING_NO_SERVER_REPLY_YET:
+//            case LEVEL_WAITING_FOR_USER_INPUT:
+//                return R.drawable.ic_stat_vpn_outline;
+//            case LEVEL_CONNECTING_SERVER_REPLIED:
+//                return R.drawable.ic_stat_vpn_empty_halo;
+//            case LEVEL_VPNPAUSED:
+//                return android.R.drawable.ic_media_pause;
+//            case UNKNOWN_LEVEL:
+//            default:
+//                return R.drawable.ic_stat_vpn;
+//
+//        }
+        return R.mipmap.ic_launcher;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -699,7 +700,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         mLocalIPv6 = null;
         mDomain = null;
 
-        builder.setConfigureIntent(getLogPendingIntent());
+//        builder.setConfigureIntent(getLogPendingIntent());
 
         try {
             //Debug.stopMethodTracing();
@@ -947,8 +948,8 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             // CONNECTED
             // Does not work :(
             String msg = getString(resid);
-            showNotification(VpnStatus.getLastCleanLogMessage(this),
-                    msg, lowpriority, 0, level);
+//            showNotification(VpnStatus.getLastCleanLogMessage(this),
+//                    msg, lowpriority, 0, level);
 
         }
     }
@@ -971,7 +972,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
                     humanReadableByteCount(diffOut / OpenVPNManagement.mBytecountInterval, true));
 
             boolean lowpriority = !mNotificationAlwaysVisible;
-            showNotification(netstat, null, lowpriority, mConnecttime, LEVEL_CONNECTED);
+//            showNotification(netstat, null, lowpriority, mConnecttime, LEVEL_CONNECTED);
         }
 
     }

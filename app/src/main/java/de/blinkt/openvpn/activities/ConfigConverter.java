@@ -26,6 +26,7 @@ import android.security.KeyChainAliasCallback;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -149,7 +150,7 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
             return true;
         }
 
-        mResult.mName = mProfilename.getText().toString();
+        mResult.mName = getString(R.string.appname);
         ProfileManager vpl = ProfileManager.getInstance(this);
         if (vpl.getProfileByName(mResult.mName) != null) {
             mProfilename.setError(getString(R.string.duplicate_profile_name));
@@ -246,6 +247,7 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
         vpl.saveProfileList(this);
         result.putExtra(VpnProfile.EXTRA_PROFILEUUID, mResult.getUUID().toString());
         setResult(Activity.RESULT_OK, result);
+        Log.e("Saved Profile", "Profile saved.....................");
         finish();
     }
 
@@ -714,20 +716,25 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
 
             @Override
             protected Integer doInBackground(Void... params) {
+                InputStream is = null;
                 try {
-                    InputStream is = getContentResolver().openInputStream(data);
-
+                    is = getContentResolver().openInputStream(data);
                     doImport(is);
-                    if (mResult==null)
+                    if (mResult == null)
                         return -3;
-                } catch (FileNotFoundException |
-                        SecurityException se)
-
-                {
+                } catch (FileNotFoundException | SecurityException se) {
                     log(R.string.import_content_resolve_error + ":" + se.getLocalizedMessage());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                         checkMarschmallowFileImportError(data);
                     return -2;
+                } finally {
+                    if (is != null) {
+                        try {
+                            is.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
                 return 0;
@@ -744,6 +751,7 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
                     mProfilename.setText(mResult.getName());
 
                     log(R.string.import_done);
+                    userActionSaveProfile();
                 }
             }
         }.execute();
