@@ -24,6 +24,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -34,6 +35,13 @@ import net.hockeyapp.android.ExceptionHandler;
 
 import org.joda.time.Period;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -386,13 +394,70 @@ public class AppUtils {
     }
 
     private static void startVPN(VpnProfile profile, Context context) {
-        ProfileManager.getInstance(context).saveProfile(context, profile);
-        Intent intent = new Intent(context, LaunchVPN.class);
-        profile.mUsername = "bsmith";
-        profile.mPassword = "yonaios";
-        intent.putExtra(LaunchVPN.EXTRA_KEY, profile.getUUID().toString());
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        if (profile != null) {
+            ProfileManager.getInstance(context).saveProfile(context, profile);
+            Intent intent = new Intent(context, LaunchVPN.class);
+            profile.mUsername = "bsmith";
+            profile.mPassword = "yonaios";
+            intent.putExtra(LaunchVPN.EXTRA_KEY, profile.getUUID().toString());
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
     }
+
+    public static void writeToFile(Context context, DataLoadListener listener) {
+        try {
+            String folderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + AppConstant.YONA_FOLDER;
+            if (!new File(folderPath).exists()) {
+                new File(folderPath).mkdir();
+            }
+            InputStream ims = context.getAssets().open("vpn_profile/profile.ovpn");
+
+            byte[] buffer = new byte[1024];
+            StringBuffer fileContent = new StringBuffer("");
+            int n;
+            while ((n = ims.read(buffer)) != -1) {
+                fileContent.append(new String(buffer, 0, n));
+            }
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(folderPath, "profile.ovpn"));
+            OutputStreamWriter osw = new OutputStreamWriter(fileOutputStream);
+            osw.write(fileContent.toString());
+            osw.flush();
+            osw.close();
+            listener.onDataLoad("");
+        } catch (Exception e) {
+            listener.onError("");
+        }
+    }
+
+    private static String getStringFromInputStream(InputStream is) {
+
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+
+        String line;
+        try {
+
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return sb.toString();
+
+    }
+
 }

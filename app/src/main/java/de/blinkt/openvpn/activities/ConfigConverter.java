@@ -14,13 +14,11 @@ import android.app.AlertDialog.Builder;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.OpenableColumns;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.support.annotation.NonNull;
@@ -673,31 +671,31 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
 
         mPathsegments = data.getPathSegments();
 
-        Cursor cursor = getContentResolver().query(data, null, null, null, null);
-
-        try {
-
-            if (cursor != null && cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-
-                if (columnIndex != -1) {
-                    String displayName = cursor.getString(columnIndex);
-                    if (displayName != null)
-                        possibleName = displayName;
-                }
-                columnIndex = cursor.getColumnIndex("mime_type");
-                if (columnIndex != -1) {
-                    log("Mime type: " + cursor.getString(columnIndex));
-                }
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        if (possibleName != null) {
-            possibleName = possibleName.replace(".ovpn", "");
-            possibleName = possibleName.replace(".conf", "");
-        }
+//        Cursor cursor = getContentResolver().query(data, null, null, null, null);
+//
+//        try {
+//
+//            if (cursor != null && cursor.moveToFirst()) {
+//                int columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+//
+//                if (columnIndex != -1) {
+//                    String displayName = cursor.getString(columnIndex);
+//                    if (displayName != null)
+//                        possibleName = displayName;
+//                }
+//                columnIndex = cursor.getColumnIndex("mime_type");
+//                if (columnIndex != -1) {
+//                    log("Mime type: " + cursor.getString(columnIndex));
+//                }
+//            }
+//        } finally {
+//            if (cursor != null)
+//                cursor.close();
+//        }
+//        if (possibleName != null) {
+//            possibleName = possibleName.replace(".ovpn", "");
+//            possibleName = possibleName.replace(".conf", "");
+//        }
 
         startImportTask(data, possibleName);
 
@@ -716,9 +714,10 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
 
             @Override
             protected Integer doInBackground(Void... params) {
-                InputStream is = null;
+                FileInputStream is = null;
                 try {
-                    is = getContentResolver().openInputStream(data);
+                    File file = new File(data.getPath());
+                    is = new FileInputStream(file);
                     doImport(is);
                     if (mResult == null)
                         return -3;
@@ -794,7 +793,7 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
         mLogLayout.addView(view, mLogLayout.getChildCount() - 1);
     }
 
-    private void doImport(InputStream is) {
+    private void doImport(FileInputStream is) {
         ConfigParser cp = new ConfigParser();
         try {
             InputStreamReader isr = new InputStreamReader(is);

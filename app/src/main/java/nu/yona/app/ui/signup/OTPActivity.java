@@ -13,10 +13,14 @@ package nu.yona.app.ui.signup;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
+
+import java.io.File;
 
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.activities.ConfigConverter;
@@ -32,6 +36,7 @@ import nu.yona.app.ui.pincode.BasePasscodeActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.ui.pincode.PasscodeFragment;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 04/04/16.
@@ -156,9 +161,26 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
     }
 
     private void startServiceAndVPNConnection() {
+        AppUtils.writeToFile(this, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                importVPNProfile();
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                showLoadingView(false, null);
+                showPasscodeScreen();
+            }
+        });
+
+    }
+
+    private void importVPNProfile() {
         Intent startImport = new Intent(this, ConfigConverter.class);
         startImport.setAction(ConfigConverter.IMPORT_PROFILE);
-        startImport.setData(Uri.parse("file:///storage/emulated/0/Download/yona_gw1_mobile_20160330.ovpn"));
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + AppConstant.YONA_FOLDER + "/profile.ovpn");
+        startImport.setData(uri);
         startActivityForResult(startImport, IMPORT_PROFILE);
     }
 

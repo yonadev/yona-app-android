@@ -256,4 +256,6 @@ public interface AppConstant {
     String TERMINATED_APP = "isTerminated";
 
     String PROFILE_UUID = "profileUUID";
+
+    String YONA_FOLDER = "yonaFolder";
 }
