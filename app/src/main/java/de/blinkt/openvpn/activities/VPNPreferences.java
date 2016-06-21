@@ -230,8 +230,8 @@ public class VPNPreferences extends BaseActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void disableToolbarElevation() {
-        ActionBar toolbar = getActionBar();
-        toolbar.setElevation(0);
+//        ActionBar toolbar = getActionBar();
+//        toolbar.setElevation(0);
     }
 
 }

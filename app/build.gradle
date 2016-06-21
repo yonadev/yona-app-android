@@ -16,6 +16,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+            jniDebuggable true
+        }
     }
 
     testOptions {
@@ -24,7 +28,11 @@ android {
     }
 
     sourceSets {
-        instrumentTest.setRoot('src/test')
+        app {
+            assets.srcDirs = ['src/main/assets', 'src/ovpnlibs/assets']
+            jniLibs.srcDirs = ['src/ovpnlibs/jniLibs']
+            jni.srcDirs = []
+        }
     }
 
     compileOptions {
@@ -130,9 +138,20 @@ def getBranch() {
     return branch
 }
 
+if (project.hasProperty('keystoreFile') &&
+        project.hasProperty('keystorePassword') &&
+        project.hasProperty('keystoreAliasPassword')) {
+    android.signingConfigs.release.storeFile = file(keystoreFile)
+    android.signingConfigs.release.storePassword = keystorePassword
+    android.signingConfigs.release.keyPassword = keystoreAliasPassword
+    android.signingConfigs.release.keyAlias = keystoreAlias
+} else {
+    android.buildTypes.release.signingConfig = null
+}
+
 dependencies {
     compile project(':libTimepicker')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:design:23+'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'

@@ -11,9 +11,12 @@ package nu.yona.app;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import android.util.Log;
 
+import de.blinkt.openvpn.core.NativeUtils;
 import nu.yona.app.listener.YonaCustomCrashManagerListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
@@ -136,6 +139,6 @@ public class YonaApplication extends Application {
         mContext = this;
         eventChangeManager = new EventChangeManager();
         Foreground.init(this);
-    }
 
+    }
 }
