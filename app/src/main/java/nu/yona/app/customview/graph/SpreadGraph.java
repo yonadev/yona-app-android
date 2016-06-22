@@ -102,7 +102,7 @@ public class SpreadGraph extends BaseView {
         float fullWidth = canvas.getWidth();
         float height = scaleFactor * 2;
 
-        float heightOfbar = convertSizeToDeviceDependent(graphHeight);
+        float heightOfbar = GraphUtils.convertSizeToDeviceDependent(mContext, graphHeight);
         //first bar
         float mXStart = 0, mYStart = heightOfbar; // basically (X1, Y1)
 

@@ -16,47 +16,7 @@
     android:paddingLeft="@dimen/chart_item_left_margin"
     android:paddingRight="@dimen/chart_item_right_margin">
 
-    <LinearLayout
-        android:id="@+id/topPanel"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/chart_item_text_height"
-        android:layout_marginTop="11dp"
-        android:orientation="horizontal">
+    <include layout="@layout/graph_top_info_layout" />
 
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/goalType"
-            style="@style/SeTitle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingTop="@dimen/chart_item_top_margin"/>
-
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/goalScore"
-            style="@style/SeScorePos"
-            android:layout_width="54dp"
-            android:layout_height="match_parent"
-            android:gravity="center"/>
-
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/goalDesc"
-            style="@style/FooterTxtFortyOpactiy"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:paddingTop="@dimen/chart_item_top_margin"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/timeFrameControl"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/chart_item_chart_spreading_height"
-        android:paddingBottom="@dimen/chart_item_chart_bottom_margin">
-        <TextView
-            android:text="Week Control"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+    <include layout="@layout/week_score_control_layout" />
 </LinearLayout>

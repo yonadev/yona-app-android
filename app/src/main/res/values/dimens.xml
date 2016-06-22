@@ -167,4 +167,12 @@
     <dimen name="nogo_image_height_width">56dp</dimen>
     <dimen name="spread_graph_height">105dp</dimen>
     <dimen name="graph_top_info_margin_top">11dp</dimen>
+    <dimen name="week_score_width">35dp</dimen>
+    <dimen name="week_score_height">35dp</dimen>
+    <dimen name="week_score_margin_left">6dp</dimen>
+    <dimen name="week_score_margin_top">13dp</dimen>
+    <dimen name="week_score_day_margin_top">4dp</dimen>
+    <dimen name="week_score_radius">22.5dp</dimen>
+    <dimen name="week_score_stroke">2dp</dimen>
+    <dimen name="week_score_margin_text_top">-4dp</dimen>
 </resources>

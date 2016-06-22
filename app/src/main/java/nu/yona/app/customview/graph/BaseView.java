@@ -119,10 +119,6 @@ public class BaseView extends View {
 
     }
 
-    protected int convertSizeToDeviceDependent(int value) {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        return ((dm.densityDpi * value) / 160);
-    }
 
     /**
      * Drawable to bitmap bitmap.

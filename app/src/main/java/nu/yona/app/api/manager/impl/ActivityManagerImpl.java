@@ -342,6 +342,7 @@ public class ActivityManagerImpl implements ActivityManager {
                             } catch (Exception e) {
                                 Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
                             }
+                            activity.setDate(overview.getDate());
                             weekActivities.add(activity);
                         }
 
