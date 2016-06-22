@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import nu.yona.app.R;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.graph.CircleGraphView;
-import nu.yona.app.customview.graph.GraphUtils;
 import nu.yona.app.customview.graph.TimeBucketGraph;
 import nu.yona.app.customview.graph.TimeFrameGraph;
 import nu.yona.app.enums.ChartTypeEnum;
@@ -123,19 +122,11 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
      * @param day
      * @param date
      */
-    public synchronized void updateTextOfCircle(View view, String day, String date, boolean isAccomplised, boolean isFuturday) {
+    public synchronized void updateTextOfCircle(View view, String day, String date, int color) {
         ((YonaFontTextView) view.findViewById(R.id.txtWeekOfDay)).setText(day);
         ((YonaFontTextView) view.findViewById(R.id.txtDateOfWeek)).setText(date);
         CircleGraphView mWeekCircle = (CircleGraphView) view.findViewById(R.id.circle_view);
-        if (!isFuturday) {
-            if (isAccomplised) {
-                //fill green color
-                mWeekCircle.setFillColor(GraphUtils.COLOR_GREEN);
-            } else {
-                //fill pink color
-                mWeekCircle.setFillColor(GraphUtils.COLOR_PINK);
-            }
-        }
+        mWeekCircle.setFillColor(color);
         mWeekCircle.invalidate();
     }
 
