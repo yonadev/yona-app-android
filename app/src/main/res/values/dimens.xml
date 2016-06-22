@@ -174,5 +174,6 @@
     <dimen name="week_score_day_margin_top">4dp</dimen>
     <dimen name="week_score_radius">22.5dp</dimen>
     <dimen name="week_score_stroke">2dp</dimen>
+    <dimen name="week_score_margin_header_text_top">6dp</dimen>
     <dimen name="week_score_margin_text_top">-4dp</dimen>
 </resources>
