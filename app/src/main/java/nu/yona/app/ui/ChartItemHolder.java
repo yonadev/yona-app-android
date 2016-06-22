@@ -16,6 +16,8 @@ import android.widget.ImageView;
 
 import nu.yona.app.R;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.customview.graph.CircleGraphView;
+import nu.yona.app.customview.graph.GraphUtils;
 import nu.yona.app.customview.graph.TimeBucketGraph;
 import nu.yona.app.customview.graph.TimeFrameGraph;
 import nu.yona.app.enums.ChartTypeEnum;
@@ -31,6 +33,13 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     private ImageView nogoStatus;
     private TimeFrameGraph timeFrameGraph;
     private TimeBucketGraph timeBucketGraph;
+    private View mWeekDayFirst;
+    private View mWeekDaySecond;
+    private View mWeekDayThird;
+    private View mWeekDayFourth;
+    private View mWeekDayFifth;
+    private View mWeekDaySixth;
+    private View mWeekDaySeventh;
 
     /**
      * Instantiates a new Chart item holder.
@@ -53,6 +62,8 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
             case TIME_FRAME_CONTROL:
                 initTimeFrameControlView();
                 break;
+            case WEEK_SCORE_CONTROL:
+                initWeekScoreControlView();
             default:
                 initGraphControlView();
                 break;
@@ -88,10 +99,44 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
         timeFrameGraph = (TimeFrameGraph) view.findViewById(R.id.timeFrameControl);
     }
 
+    private void initWeekScoreControlView() {
+        initCommonView();
+        mWeekDayFirst = view.findViewById(R.id.weekday_first);
+        mWeekDaySecond = view.findViewById(R.id.weekday_second);
+        mWeekDayThird = view.findViewById(R.id.weekday_third);
+        mWeekDayFourth = view.findViewById(R.id.weekday_fourth);
+        mWeekDayFifth = view.findViewById(R.id.weekday_fifth);
+        mWeekDaySixth = view.findViewById(R.id.weekday_sixth);
+        mWeekDaySeventh = view.findViewById(R.id.weekday_seventh);
+    }
+
     private void initCommonView() {
         goalType = (YonaFontTextView) view.findViewById(R.id.goalType);
         goalScore = (YonaFontTextView) view.findViewById(R.id.goalScore);
         goalDesc = (YonaFontTextView) view.findViewById(R.id.goalDesc);
+    }
+
+    /**
+     * update text info circle of that date
+     *
+     * @param view
+     * @param day
+     * @param date
+     */
+    public synchronized void updateTextOfCircle(View view, String day, String date, boolean isAccomplised, boolean isFuturday) {
+        ((YonaFontTextView) view.findViewById(R.id.txtWeekOfDay)).setText(day);
+        ((YonaFontTextView) view.findViewById(R.id.txtDateOfWeek)).setText(date);
+        CircleGraphView mWeekCircle = (CircleGraphView) view.findViewById(R.id.circle_view);
+        if (!isFuturday) {
+            if (isAccomplised) {
+                //fill green color
+                mWeekCircle.setFillColor(GraphUtils.COLOR_GREEN);
+            } else {
+                //fill pink color
+                mWeekCircle.setFillColor(GraphUtils.COLOR_PINK);
+            }
+        }
+        mWeekCircle.invalidate();
     }
 
     /**
@@ -148,11 +193,84 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
         return nogoStatus;
     }
 
+    /**
+     * Get Time Bucket Graph
+     *
+     * @return
+     */
     public TimeBucketGraph getTimeBucketGraph() {
         return this.timeBucketGraph;
     }
 
+    /**
+     * Get Time Frame Graph
+     *
+     * @return
+     */
     public TimeFrameGraph getTimeFrameGraph() {
         return this.timeFrameGraph;
+    }
+
+    /**
+     * Get First Day of Week which is Sunday
+     *
+     * @return
+     */
+    public View getmWeekDayFirst() {
+        return mWeekDayFirst;
+    }
+
+    /**
+     * Get Second Day of Week which is Monday
+     *
+     * @return
+     */
+    public View getmWeekDaySecond() {
+        return mWeekDaySecond;
+    }
+
+    /**
+     * Get third Day of Week which is Tuesday
+     *
+     * @return
+     */
+    public View getmWeekDayThird() {
+        return mWeekDayThird;
+    }
+
+    /**
+     * Get fourth Day of Week which is Wednesday
+     *
+     * @return
+     */
+    public View getmWeekDayFourth() {
+        return mWeekDayFourth;
+    }
+
+    /**
+     * Get fifth Day of Week which is Thusday
+     *
+     * @return
+     */
+    public View getmWeekDayFifth() {
+        return mWeekDayFifth;
+    }
+
+    /**
+     * Get sixth Day of Week which is Friday
+     *
+     * @return
+     */
+    public View getmWeekDaySixth() {
+        return mWeekDaySixth;
+    }
+
+    /**
+     * Get seventh Day of Week which is saturday
+     *
+     * @return
+     */
+    public View getmWeekDaySeventh() {
+        return mWeekDaySeventh;
     }
 }

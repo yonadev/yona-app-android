@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/week_score_margin_top"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:weightSum="7">
+
+    <include
+        android:id="@+id/weekday_first"
+        layout="@layout/week_score_info" />
+
+    <include
+        android:id="@+id/weekday_second"
+        style="@style/weekControl"
+        layout="@layout/week_score_info" />
+
+    <include
+        android:id="@+id/weekday_third"
+        style="@style/weekControl"
+        layout="@layout/week_score_info" />
+
+    <include
+        android:id="@+id/weekday_fourth"
+        style="@style/weekControl"
+        layout="@layout/week_score_info" />
+
+    <include
+        android:id="@+id/weekday_fifth"
+        style="@style/weekControl"
+        layout="@layout/week_score_info" />
+
+    <include
+        android:id="@+id/weekday_sixth"
+        style="@style/weekControl"
+        layout="@layout/week_score_info" />
+
+    <include
+        android:id="@+id/weekday_seventh"
+        style="@style/weekControl"
+        layout="@layout/week_score_info" />
+
+</LinearLayout>

@@ -11,19 +11,33 @@
 package nu.yona.app.ui.dashboard;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import nu.yona.app.R;
+import nu.yona.app.api.model.DayActivities;
+import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.ui.ChartItemHolder;
+import nu.yona.app.utils.DateUtility;
 
 /**
  * Created by kinnarvasa on 09/06/16.
@@ -55,8 +69,63 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
         WeekActivity weekActivity = (WeekActivity) getItem(position);
 
         if (weekActivity != null) {
-            holder.getGoalType().setText(weekActivity.getYonaGoal().getActivityCategoryName());
-            //TODO fill all other values for item chart here
+            if (weekActivity.getYonaGoal() != null && !TextUtils.isEmpty(weekActivity.getYonaGoal().getActivityCategoryName())) {
+                holder.getGoalType().setText(weekActivity.getYonaGoal().getActivityCategoryName());
+            }
+            holder.getGoalDesc().setText(R.string.week_score);
+            Iterator calDates = DateUtility.getWeekDay(weekActivity.getDate()).entrySet().iterator();
+            int i = 0;
+            boolean isCurrentDateReached = false;
+            int mAccomplishedGoalCount = 0;
+            while (calDates.hasNext()) {
+                Map.Entry pair = (Map.Entry) calDates.next();
+                System.out.println(pair.getKey() + " = " + pair.getValue());
+                Calendar calendar = Calendar.getInstance();
+                View view = null;
+                DayActivities dayActivity = weekActivity.getDayActivities();
+                boolean isAccomplised = false;
+                switch (i) {
+                    case 0:
+                        view = holder.getmWeekDayFirst();
+                        isAccomplised = (dayActivity != null && dayActivity.getSUNDAY() != null) ? dayActivity.getSUNDAY().getGoalAccomplished() : false;
+                        break;
+                    case 1:
+                        view = holder.getmWeekDaySecond();
+                        isAccomplised = (dayActivity != null && dayActivity.getMONDAY() != null) ? dayActivity.getMONDAY().getGoalAccomplished() : false;
+                        break;
+                    case 2:
+                        view = holder.getmWeekDayThird();
+                        isAccomplised = (dayActivity != null && dayActivity.getTUESDAY() != null) ? dayActivity.getTUESDAY().getGoalAccomplished() : false;
+                        break;
+                    case 3:
+                        view = holder.getmWeekDayFourth();
+                        isAccomplised = (dayActivity != null && dayActivity.getWEDNESDAY() != null) ? dayActivity.getWEDNESDAY().getGoalAccomplished() : false;
+                        break;
+                    case 4:
+                        view = holder.getmWeekDayFifth();
+                        isAccomplised = (dayActivity != null && dayActivity.getTHURSDAY() != null) ? dayActivity.getTHURSDAY().getGoalAccomplished() : false;
+                        break;
+                    case 5:
+                        view = holder.getmWeekDaySixth();
+                        isAccomplised = (dayActivity != null && dayActivity.getFRIDAY() != null) ? dayActivity.getFRIDAY().getGoalAccomplished() : false;
+                        break;
+                    case 6:
+                        view = holder.getmWeekDaySeventh();
+                        isAccomplised = (dayActivity != null && dayActivity.getSATURDAY() != null) ? dayActivity.getSATURDAY().getGoalAccomplished() : false;
+                        break;
+                    default:
+                        break;
+                }
+                holder.updateTextOfCircle(view, pair.getKey().toString(), pair.getValue().toString(), isAccomplised, isCurrentDateReached);
+                if (!isCurrentDateReached) {
+                    isCurrentDateReached = DateUtility.DAY_NO_FORMAT.format(calendar.getTime()).equals(pair.getValue().toString());
+                }
+                if (isAccomplised) {
+                    mAccomplishedGoalCount++;
+                }
+                i++;
+            }
+            holder.getGoalScore().setText(mAccomplishedGoalCount + "");
         }
     }
 
@@ -96,6 +165,7 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
         Object yonaObject = getItem(position);
         if (yonaObject != null) {
             textView.setText(((WeekActivity) yonaObject).getStickyTitle());
+
         }
     }
 

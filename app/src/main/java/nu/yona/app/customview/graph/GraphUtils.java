@@ -8,6 +8,9 @@
 
 package nu.yona.app.customview.graph;
 
+import android.content.Context;
+import android.util.DisplayMetrics;
+
 /**
  * Created by bhargavsuthar on 07/06/16.
  */
@@ -53,4 +56,15 @@ public class GraphUtils {
      */
     public static int TEXT_SIZE = 12;
 
+    /**
+     * Get the size of pixels depend on device
+     *
+     * @param context
+     * @param value
+     * @return
+     */
+    public static int convertSizeToDeviceDependent(Context context, int value) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return ((dm.densityDpi * value) / 160);
+    }
 }

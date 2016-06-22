@@ -14,7 +14,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.R;
@@ -24,6 +27,11 @@ import nu.yona.app.YonaApplication;
  * Created by bhargavsuthar on 10/05/16.
  */
 public class DateUtility {
+
+    public static SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("EEE");
+    public static SimpleDateFormat DAY_NO_FORMAT = new SimpleDateFormat("d");
+    public static SimpleDateFormat WEEK_FORMAT = new SimpleDateFormat("yyyy-'W'ww");
+    private static final int mNoOfDayPerWeek = 7;
 
 
     /**
@@ -66,17 +74,16 @@ public class DateUtility {
      */
     public static String getRetriveWeek(String week) throws ParseException {
         String retriveWeek = "";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-'W'ww");
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
-        if (format.format(new Date()).equals(week)) {
+        if (WEEK_FORMAT.format(new Date()).equals(week)) {
             retriveWeek = YonaApplication.getAppContext().getString(R.string.this_week);
-        } else if (format.format(calendar.getTime()).equals(week)) {
+        } else if (WEEK_FORMAT.format(calendar.getTime()).equals(week)) {
             retriveWeek = YonaApplication.getAppContext().getString(R.string.last_week);
         } else {
             calendar = Calendar.getInstance();
             calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
-            Date date = format.parse(week);
+            Date date = WEEK_FORMAT.parse(week);
             calendar.setTime(date);
             Date startDate = calendar.getTime();
             calendar.add(Calendar.DAY_OF_MONTH, 6);
@@ -109,6 +116,32 @@ public class DateUtility {
     public static String getLongFormatDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
         return sdf.format(date);
+    }
+
+    /**
+     * Get Current weeks Days List. example:  Sun 21, Mon 22, Tue 23 , Wed 24 ,Thu 25, Fri 26
+     *
+     * @return
+     */
+    public static Map<String, String> getWeekDay(String currentYearWeek) {
+        LinkedHashMap<String, String> listOfdates = new LinkedHashMap<>();
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.clear();
+            calendar.setTime(WEEK_FORMAT.parse(currentYearWeek));// all done
+            int delta = -calendar.get(GregorianCalendar.DAY_OF_WEEK) + 1;
+            calendar.add(Calendar.DAY_OF_MONTH, delta);
+            for (int i = 0; i < mNoOfDayPerWeek; i++) {
+                listOfdates.put(DAY_FORMAT.format(calendar.getTime()), DAY_NO_FORMAT.format(calendar.getTime()));
+                Log.i("Adding", DAY_NO_FORMAT.format(calendar.getTime()));
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+            }
+        } catch (Exception e) {
+            Log.e(DateUtility.class.getName(), "Date Format exception: " + e);
+        }
+
+        return listOfdates;
+
     }
 
 }

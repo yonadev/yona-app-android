@@ -249,4 +249,9 @@
         <item name="android:textSize">36sp</item>
     </style>
 
+    <style name="weekControl">
+        <item name="android:layout_width">@dimen/week_score_width</item>
+        <item name="android:layout_height">@dimen/week_score_height</item>
+        <item name="android:layout_marginLeft">6dp</item>
+    </style>
 </resources>
