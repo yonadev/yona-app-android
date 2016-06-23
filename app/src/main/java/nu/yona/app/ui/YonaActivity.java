@@ -58,6 +58,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.enums.IntentEnum;
@@ -129,7 +130,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         YonaApplication.getEventChangeManager().registerListener(this);
         homeFragment = new DashboardFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, AppUtils.getYonaHeaderObject(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
         homeFragment.setArguments(bundle);
         mContent = homeFragment;
 
@@ -493,7 +494,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         clearFragmentStack = true;
                         addToBackstack = false;
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, AppUtils.getYonaHeaderObject(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+                        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
                         mContent = new DashboardFragment();
                         mContent.setArguments(bundle);
                         break;
