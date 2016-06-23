@@ -254,4 +254,9 @@ public interface AppConstant {
     String BOOLEAN = "boolean";
 
     String TERMINATED_APP = "isTerminated";
+
+    /**
+     * Yona theme object
+     */
+    String YONA_THEME_OBJ = "yonaThemeObj";
 }

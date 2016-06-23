@@ -128,6 +128,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
         YonaApplication.getEventChangeManager().registerListener(this);
         homeFragment = new DashboardFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, AppUtils.getYonaHeaderObject(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+        homeFragment.setArguments(bundle);
         mContent = homeFragment;
 
         getSupportFragmentManager().beginTransaction().add(R.id.container, mContent).commit();
@@ -489,7 +492,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         }
                         clearFragmentStack = true;
                         addToBackstack = false;
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, AppUtils.getYonaHeaderObject(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
                         mContent = new DashboardFragment();
+                        mContent.setArguments(bundle);
                         break;
                     case ACTION_FRIENDS:
                         if (mContent instanceof FriendsFragment) {

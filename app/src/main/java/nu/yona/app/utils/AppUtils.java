@@ -42,6 +42,7 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.listener.DataLoadListener;
@@ -360,5 +361,17 @@ public class AppUtils {
             scheduler.shutdown();
         }
         scheduler = null;
+    }
+
+    public static YonaHeaderTheme getYonaHeaderObject(boolean isBuddyFlow, String dayActivityUrl, String weekActivityUrl, int leftIcon, int rightIcon, String title, int headerColor) {
+        YonaHeaderTheme headerTheme = new YonaHeaderTheme();
+        headerTheme.setBuddyFlow(isBuddyFlow);
+        headerTheme.setDayActivityUrl(dayActivityUrl);
+        headerTheme.setWeekActivityUrl(weekActivityUrl);
+        headerTheme.setHeader_leftIcon(leftIcon);
+        headerTheme.setHeader_rightIcon(rightIcon);
+        headerTheme.setHeader_title(title);
+        headerTheme.setHeadercolor(headerColor);
+        return headerTheme;
     }
 }

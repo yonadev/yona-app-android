@@ -24,6 +24,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
@@ -36,6 +37,15 @@ import nu.yona.app.utils.AppConstant;
 public class DashboardFragment extends BaseFragment {
 
     private TabLayout tabLayout;
+    private YonaHeaderTheme mYonaHeaderTheme;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+        }
+    }
 
     @Nullable
     @Override
@@ -70,9 +80,15 @@ public class DashboardFragment extends BaseFragment {
         ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
         mParams.height = getResources().getDimensionPixelSize(R.dimen.sixty_four);
         tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.fifteen), 0, 0);
-        tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.dashboard_deselected_tab), ContextCompat.getColor(getActivity(), R.color.dashboard_selected_tab));
+        if (mYonaHeaderTheme != null) {
+            tabLayout.setBackgroundResource(mYonaHeaderTheme.getHeadercolor());
+            if (mYonaHeaderTheme.isBuddyFlow()) {
+                tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.friends_deselected_tab), ContextCompat.getColor(getActivity(), R.color.friends_selected_tab));
+            } else {
+                tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.dashboard_deselected_tab), ContextCompat.getColor(getActivity(), R.color.dashboard_selected_tab));
+            }
+        }
         tabLayout.setLayoutParams(mParams);
-        tabLayout.setBackgroundResource(R.color.grape);
     }
 
     private void setTitleAndIcon() {
@@ -80,38 +96,67 @@ public class DashboardFragment extends BaseFragment {
             @Override
             public void run() {
                 if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName())) {
-                    leftIcon.setVisibility(View.VISIBLE);
-                    leftIcon.setImageDrawable(TextDrawable.builder()
-                            .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                            .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
-                                    ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+                    if (mYonaHeaderTheme != null) {
+                        if (mYonaHeaderTheme.isBuddyFlow()) {
+                            leftIcon.setVisibility(View.GONE);
+                            rightIcon.setVisibility(View.VISIBLE);
+                            rightIcon.setImageDrawable(TextDrawable.builder()
+                                    .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
+                                    .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
+                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+                            profileClickEvent(rightIcon);
+                        } else {
+                            leftIcon.setVisibility(View.VISIBLE);
+                            leftIcon.setImageDrawable(TextDrawable.builder()
+                                    .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
+                                    .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
+                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+                            rightIcon.setTag(mYonaHeaderTheme.getHeader_title());
+                            rightIcon.setVisibility(View.VISIBLE);
+                            rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
+
+                            rightIconClickEvent(rightIcon);
+                            profileClickEvent(leftIcon);
+                        }
+                    }
                 }
-                toolbarTitle.setText(R.string.dashboard);
-                rightIcon.setTag(getString(R.string.dashboard));
-                rightIcon.setVisibility(View.VISIBLE);
-                rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
-
-                rightIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
-                        YonaActivity.getActivity().replaceFragment(friendIntent);
-                    }
-                });
-
-                leftIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
-                        intent.putExtra(AppConstant.COLOR_CODE, R.color.grape);
-                        intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.mid_blue);
-                        intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
-                        YonaActivity.getActivity().replaceFragment(intent);
-                    }
-                });
+                toolbarTitle.setText(mYonaHeaderTheme.getHeader_title());
                 tabLayout.setVisibility(View.VISIBLE);
             }
         }, AppConstant.TIMER_DELAY_HUNDRED);
 
+    }
+
+    /**
+     * Pass the view of profile icon for Me and buddies Profile
+     *
+     * @param profileView
+     */
+    private void profileClickEvent(View profileView) {
+        profileView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
+                intent.putExtra(AppConstant.COLOR_CODE, R.color.grape);
+                intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.mid_blue);
+                intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
+                YonaActivity.getActivity().replaceFragment(intent);
+            }
+        });
+    }
+
+    /**
+     * To Show the Message Notification list and redirect to that view by click on notification icon
+     *
+     * @param rightIconView
+     */
+    private void rightIconClickEvent(View rightIconView) {
+        rightIconView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
+                YonaActivity.getActivity().replaceFragment(friendIntent);
+            }
+        });
     }
 }
