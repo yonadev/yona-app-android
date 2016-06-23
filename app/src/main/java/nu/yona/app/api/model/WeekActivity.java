@@ -52,6 +52,10 @@ public class WeekActivity {
     @SerializedName("@stickyHeaderId")
     @Expose
     private int stickyHeaderId;
+    @SerializedName("@TimeZoneSpread")
+    @Expose
+    private List<TimeZoneSpread> timeZoneSpread;
+
     /**
      * Gets date.
      *
@@ -232,4 +236,23 @@ public class WeekActivity {
     public void setStickyHeaderId(int stickyHeaderId) {
         this.stickyHeaderId = stickyHeaderId;
     }
+
+    /**
+     * Gets time zone spread.
+     *
+     * @return the time zone spread
+     */
+    public List<TimeZoneSpread> getTimeZoneSpread() {
+        return this.timeZoneSpread;
+    }
+
+    /**
+     * Sets time zone spread.
+     *
+     * @param timeZoneSpread the time zone spread
+     */
+    public void setTimeZoneSpread(List<TimeZoneSpread> timeZoneSpread) {
+        this.timeZoneSpread = timeZoneSpread;
+    }
+
 }
