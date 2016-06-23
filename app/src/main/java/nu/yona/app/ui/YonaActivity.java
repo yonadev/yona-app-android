@@ -58,6 +58,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.enums.IntentEnum;
@@ -102,6 +103,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private int READ_EXTERNAL_STORAGE_REQUEST = 1;
     private int CAMERA_REQUEST = 2;
     private Fragment oldFragment;
+    private User user;
 
 
     /**
@@ -128,6 +130,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
         YonaApplication.getEventChangeManager().registerListener(this);
         homeFragment = new DashboardFragment();
+        Bundle bundle = new Bundle();
+        user = YonaApplication.getEventChangeManager().getDataState().getUser();
+
+        if (user != null && user.getLinks() != null) {
+            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+        } else {
+            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+        }
+        homeFragment.setArguments(bundle);
         mContent = homeFragment;
 
         getSupportFragmentManager().beginTransaction().add(R.id.container, mContent).commit();
@@ -489,7 +500,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         }
                         clearFragmentStack = true;
                         addToBackstack = false;
+                        Bundle bundle = new Bundle();
+
+                        if (user != null && user.getLinks() != null) {
+                            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+                        } else {
+                            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+                        }
                         mContent = new DashboardFragment();
+                        mContent.setArguments(bundle);
                         break;
                     case ACTION_FRIENDS:
                         if (mContent instanceof FriendsFragment) {
