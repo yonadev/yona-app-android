@@ -130,7 +130,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         YonaApplication.getEventChangeManager().registerListener(this);
         homeFragment = new DashboardFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+        try {
+            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaDailyActivityReports().getHref(), YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaWeeklyActivityReports().getHref(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+        } catch (Exception e) {
+            AppUtils.throwException(YonaApplication.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
         homeFragment.setArguments(bundle);
         mContent = homeFragment;
 
@@ -494,7 +498,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         clearFragmentStack = true;
                         addToBackstack = false;
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+                        try {
+                            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaDailyActivityReports().getHref(), YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaWeeklyActivityReports().getHref(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+                        } catch (Exception e) {
+                            AppUtils.throwException(YonaApplication.class.getSimpleName(), e, Thread.currentThread(), null);
+                        }
                         mContent = new DashboardFragment();
                         mContent.setArguments(bundle);
                         break;
