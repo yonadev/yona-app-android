@@ -23,9 +23,9 @@ public class YonaHeaderTheme extends BaseEntity {
 
     private int headercolor;
 
-    private String dayActivityUrl;
+    private Href dayActivityUrl;
 
-    private String weekActivityUrl;
+    private Href weekActivityUrl;
 
     private boolean isBuddyFlow;
 
@@ -40,7 +40,7 @@ public class YonaHeaderTheme extends BaseEntity {
      * @param title           the title
      * @param headerColor     the header color
      */
-    public YonaHeaderTheme(boolean isBuddyFlow, String dayActivityUrl, String weekActivityUrl, int leftIcon, int rightIcon, String title, int headerColor) {
+    public YonaHeaderTheme(boolean isBuddyFlow, Href dayActivityUrl, Href weekActivityUrl, int leftIcon, int rightIcon, String title, int headerColor) {
         this.header_rightIcon = rightIcon;
         this.header_leftIcon = leftIcon;
         this.header_title = title;
@@ -73,7 +73,7 @@ public class YonaHeaderTheme extends BaseEntity {
      *
      * @return the day activity url
      */
-    public String getDayActivityUrl() {
+    public Href getDayActivityUrl() {
         return dayActivityUrl;
     }
 
@@ -82,7 +82,7 @@ public class YonaHeaderTheme extends BaseEntity {
      *
      * @param dayActivityUrl the day activity url
      */
-    public void setDayActivityUrl(String dayActivityUrl) {
+    public void setDayActivityUrl(Href dayActivityUrl) {
         this.dayActivityUrl = dayActivityUrl;
     }
 
@@ -91,7 +91,7 @@ public class YonaHeaderTheme extends BaseEntity {
      *
      * @return the week activity url
      */
-    public String getWeekActivityUrl() {
+    public Href getWeekActivityUrl() {
         return weekActivityUrl;
     }
 
@@ -100,7 +100,7 @@ public class YonaHeaderTheme extends BaseEntity {
      *
      * @param weekActivityUrl the week activity url
      */
-    public void setWeekActivityUrl(String weekActivityUrl) {
+    public void setWeekActivityUrl(Href weekActivityUrl) {
         this.weekActivityUrl = weekActivityUrl;
     }
 
