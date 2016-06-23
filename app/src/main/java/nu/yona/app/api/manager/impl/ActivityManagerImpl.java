@@ -131,6 +131,42 @@ public class ActivityManagerImpl implements ActivityManager {
         }
     }
 
+    private void getDetailOfEachWeekSpread() {
+        List<WeekActivity> weekActivities = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
+        for (final WeekActivity weekActivity : weekActivities) {
+            if (weekActivity.getTimeZoneSpread() == null || (weekActivity.getTimeZoneSpread() != null && weekActivity.getTimeZoneSpread().size() == 0)) {
+                APIManager.getInstance().getActivityManager().getWeeksDetailActivity(weekActivity.getLinks().getWeekDetails().getHref(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        if (result instanceof WeekActivity) {
+                            try {
+                                WeekActivity resultActivity = generateTimeZoneSpread((WeekActivity) result);
+                                List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
+                                for (int i = 0; i < weekActivityList.size(); i++) {
+                                    try {
+                                        if (weekActivityList.get(i).getLinks().getWeekDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
+                                            weekActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                                            break;
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e(ActivityManager.class.getSimpleName(), e.getMessage());
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e(ActivityManager.class.getSimpleName(), e.getMessage());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+                        //if error, we don't worry for now.
+                    }
+                });
+            }
+        }
+    }
+
     @Override
     public void getBuddyDaysActivity(String url, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
@@ -331,7 +367,6 @@ public class ActivityManagerImpl implements ActivityManager {
                 List<WeekActivity> thisWeekActivities = new ArrayList<>();
                 for (YonaWeekActivityOverview overview : yonaDayActivityOverviews) {
                     List<WeekActivity> overviewWeekActivities = overview.getWeekActivities();
-
                     for (WeekActivity activity : overviewWeekActivities) {
                         YonaGoal goal = findYonaGoal(activity.getLinks().getYonaGoal());
                         if (goal != null) {
@@ -360,6 +395,7 @@ public class ActivityManagerImpl implements ActivityManager {
             if (embeddedYonaActivity.getPage() != null) {
                 YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().setPage(embeddedYonaActivity.getPage());
             }
+            getDetailOfEachWeekSpread();
             listener.onDataLoad(embeddedYonaActivity);
         }
     }
@@ -524,5 +560,24 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         timeZoneSpread.setUsedValue(usage); // out of 15 mins, if 10 min used, so here we need to show 5 min as green
         return timeZoneSpread;
+    }
+
+    private WeekActivity generateTimeZoneSpread(WeekActivity activity) {
+
+        if (activity.getSpread() != null) {
+            List<Integer> spreadsList = activity.getSpread();
+            List<Integer> spreadCellsList;
+            if (activity.getYonaGoal() != null && activity.getYonaGoal().getSpreadCells() != null) {
+                spreadCellsList = activity.getYonaGoal().getSpreadCells();
+            } else {
+                spreadCellsList = new ArrayList<>();
+            }
+            List<TimeZoneSpread> timeZoneSpreadList = new ArrayList<>();
+            for (int i = 0; i < spreadsList.size(); i++) {
+                setTimeZoneSpread(i, spreadsList.get(i), timeZoneSpreadList, spreadCellsList.contains(i));
+            }
+            activity.setTimeZoneSpread(timeZoneSpreadList);
+        }
+        return activity;
     }
 }
