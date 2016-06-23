@@ -77,36 +77,42 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
                 Calendar calendar = Calendar.getInstance();
                 View view = null;
                 DayActivities dayActivity = weekActivity.getDayActivities();
-                boolean isAccomplised = false;
                 int color = GraphUtils.COLOR_WHITE_THREE;
                 switch (i) {
                     case 0:
                         view = holder.getmWeekDayFirst();
                         color = getColor(dayActivity.getSUNDAY());
+                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getSUNDAY());
                         break;
                     case 1:
                         view = holder.getmWeekDaySecond();
                         color = getColor(dayActivity.getMONDAY());
+                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getMONDAY());
                         break;
                     case 2:
                         view = holder.getmWeekDayThird();
                         color = getColor(dayActivity.getTUESDAY());
+                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getTUESDAY());
                         break;
                     case 3:
                         view = holder.getmWeekDayFourth();
                         color = getColor(dayActivity.getWEDNESDAY());
+                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getWEDNESDAY());
                         break;
                     case 4:
                         view = holder.getmWeekDayFifth();
                         color = getColor(dayActivity.getTHURSDAY());
+                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getTHURSDAY());
                         break;
                     case 5:
                         view = holder.getmWeekDaySixth();
                         color = getColor(dayActivity.getFRIDAY());
+                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getFRIDAY());
                         break;
                     case 6:
                         view = holder.getmWeekDaySeventh();
                         color = getColor(dayActivity.getSATURDAY());
+                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getSATURDAY());
                         break;
                     default:
                         break;
@@ -115,15 +121,31 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
                 if (!isCurrentDateReached) {
                     isCurrentDateReached = DateUtility.DAY_NO_FORMAT.format(calendar.getTime()).equals(pair.getValue().toString());
                 }
-                if (isAccomplised) {
-                    mAccomplishedGoalCount++;
-                }
                 i++;
             }
             holder.getGoalScore().setText(mAccomplishedGoalCount + "");
         }
     }
 
+    /**
+     * Get the Accomplished number on base on day he has achieved or not
+     *
+     * @param day
+     * @return
+     */
+    private int getGoalAccomplished(Day day) {
+        return (day != null && day.getGoalAccomplished()) ? 1 : 0;
+    }
+
+    /**
+     * Get the color of week Circle ,
+     * if goal has achieved then its Green,
+     * if goal not achieved then its Pink,
+     * else if its future date or not added that goal before date of created then its Grey
+     *
+     * @param day
+     * @return
+     */
     private int getColor(Day day) {
         if (day != null) {
             if (day.getGoalAccomplished()) {
