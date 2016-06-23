@@ -183,8 +183,7 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
 
     @Override
     public long getHeaderId(int position) {
-        Object mObject = getItem(position);
-        return ((WeekActivity) mObject).getStickyTitle().charAt(0);
+        return perWeekActivityList.get(position).getStickyHeaderId();
     }
 
     @Override
@@ -200,16 +199,6 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
     @Override
     public int getItemCount() {
         return perWeekActivityList.size();
-    }
-
-    /**
-     * Update data.
-     *
-     * @param weekActivityList the yona messages
-     */
-    public void updateData(final List<WeekActivity> weekActivityList) {
-        perWeekActivityList.addAll(weekActivityList);
-        notifyDataSetChanged();
     }
 
     /**

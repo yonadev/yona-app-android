@@ -328,8 +328,10 @@ public class ActivityManagerImpl implements ActivityManager {
             if (embeddedYonaActivity.getEmbedded() != null) {
                 Embedded embedded = embeddedYonaActivity.getEmbedded();
                 List<YonaWeekActivityOverview> yonaDayActivityOverviews = embedded.getYonaWeekActivityOverviews();
+                List<WeekActivity> thisWeekActivities = new ArrayList<>();
                 for (YonaWeekActivityOverview overview : yonaDayActivityOverviews) {
                     List<WeekActivity> overviewWeekActivities = overview.getWeekActivities();
+
                     for (WeekActivity activity : overviewWeekActivities) {
                         YonaGoal goal = findYonaGoal(activity.getLinks().getYonaGoal());
                         if (goal != null) {
@@ -343,10 +345,11 @@ public class ActivityManagerImpl implements ActivityManager {
                                 Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
                             }
                             activity.setDate(overview.getDate());
-                            weekActivities.add(activity);
+                            thisWeekActivities.add(activity);
                         }
 
                     }
+                    weekActivities.addAll(sortWeekActivity(thisWeekActivities));
                 }
                 if (embeddedYonaActivity.getWeekActivityList() == null) {
                     embeddedYonaActivity.setWeekActivityList(weekActivities);
@@ -420,6 +423,18 @@ public class ActivityManagerImpl implements ActivityManager {
     private List<DayActivity> sortDayActivity(List<DayActivity> overviewDayActiivties) {
         Collections.sort(overviewDayActiivties, new Comparator<DayActivity>() {
             public int compare(DayActivity o1, DayActivity o2) {
+                if (!TextUtils.isEmpty(o1.getYonaGoal().getActivityCategoryName()) && !TextUtils.isEmpty(o2.getYonaGoal().getActivityCategoryName())) {
+                    return o1.getYonaGoal().getActivityCategoryName().compareTo(o2.getYonaGoal().getActivityCategoryName());
+                }
+                return 0;
+            }
+        });
+        return overviewDayActiivties;
+    }
+
+    private List<WeekActivity> sortWeekActivity(List<WeekActivity> overviewDayActiivties) {
+        Collections.sort(overviewDayActiivties, new Comparator<WeekActivity>() {
+            public int compare(WeekActivity o1, WeekActivity o2) {
                 if (!TextUtils.isEmpty(o1.getYonaGoal().getActivityCategoryName()) && !TextUtils.isEmpty(o2.getYonaGoal().getActivityCategoryName())) {
                     return o1.getYonaGoal().getActivityCategoryName().compareTo(o2.getYonaGoal().getActivityCategoryName());
                 }
