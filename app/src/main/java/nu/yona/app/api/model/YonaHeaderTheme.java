@@ -25,7 +25,9 @@ public class YonaHeaderTheme extends BaseEntity {
 
     private int headercolor;
 
-    private String fetchUrl;
+    private String dayActivityUrl;
+
+    private String weekActivityUrl;
 
     private boolean isBuddyFlow;
 
@@ -37,12 +39,20 @@ public class YonaHeaderTheme extends BaseEntity {
         isBuddyFlow = buddyFlow;
     }
 
-    public String getFetchUrl() {
-        return fetchUrl;
+    public String getDayActivityUrl() {
+        return dayActivityUrl;
     }
 
-    public void setFetchUrl(String fetchUrl) {
-        this.fetchUrl = fetchUrl;
+    public void setDayActivityUrl(String dayActivityUrl) {
+        this.dayActivityUrl = dayActivityUrl;
+    }
+
+    public String getWeekActivityUrl() {
+        return weekActivityUrl;
+    }
+
+    public void setWeekActivityUrl(String weekActivityUrl) {
+        this.weekActivityUrl = weekActivityUrl;
     }
 
     public int getHeader_rightIcon() {
