@@ -150,6 +150,9 @@ public class PerWeekFragment extends BaseFragment {
     private void getWeekActivity(boolean loadMore) {
         if (YonaActivity.getActivity().isToDisplayLogin()) {
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
+            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
+                return;
+            }
         }
         final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
@@ -159,16 +162,7 @@ public class PerWeekFragment extends BaseFragment {
                 @Override
                 public void onDataLoad(Object result) {
                     YonaActivity.getActivity().showLoadingView(false, null);
-                    if (isAdded() && result instanceof EmbeddedYonaActivity) {
-                        EmbeddedYonaActivity yonaActivity = (EmbeddedYonaActivity) result;
-                        if (yonaActivity.getEmbedded() != null && yonaActivity.getDayActivityList() != null) {
-                            showData(yonaActivity.getWeekActivityList());
-                        } else {
-                            YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
-                        }
-                    } else if (result instanceof List<?>) {
-                        showData((List<WeekActivity>) result);
-                    }
+                    showData();
                     mIsLoading = false;
                 }
 
@@ -179,15 +173,34 @@ public class PerWeekFragment extends BaseFragment {
                 }
             });
         } else {
+            showData();
+        }
+    }
+
+    private void showData() {
+        if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() != null
+                && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList() != null
+                && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList().size() > 0) {
+            perWeekStickyAdapter.notifyDataSetChange(setHeaderListView());
+        } else {
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
         }
     }
 
-    private void showData(List<WeekActivity> weekActivityList) {
-        if (mIsLoading) {
-            perWeekStickyAdapter.updateData(weekActivityList);
-        } else {
-            perWeekStickyAdapter.notifyDataSetChange(weekActivityList);
+    private List<WeekActivity> setHeaderListView() {
+        List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
+        int index = 0;
+        for (int i = 0; i < weekActivityList.size(); i++) {
+            if (i == 0) {
+                weekActivityList.get(i).setStickyHeaderId(index++);
+            } else {
+                if (weekActivityList.get(i).getStickyTitle().equals(weekActivityList.get(i - 1).getStickyTitle())) {
+                    weekActivityList.get(i).setStickyHeaderId(weekActivityList.get(i - 1).getStickyHeaderId());
+                } else {
+                    weekActivityList.get(i).setStickyHeaderId(index++);
+                }
+            }
         }
+        return weekActivityList;
     }
 }

@@ -49,7 +49,9 @@ public class WeekActivity {
     @SerializedName("@stickyTitle")
     @Expose
     private String stickyTitle;
-
+    @SerializedName("@stickyHeaderId")
+    @Expose
+    private int stickyHeaderId;
     /**
      * Gets date.
      *
@@ -213,4 +215,21 @@ public class WeekActivity {
         this.stickyTitle = stickyTitle;
     }
 
+    /**
+     * Gets sticky header id.
+     *
+     * @return the sticky header id
+     */
+    public int getStickyHeaderId() {
+        return this.stickyHeaderId;
+    }
+
+    /**
+     * Sets sticky header id.
+     *
+     * @param stickyHeaderId the sticky header id
+     */
+    public void setStickyHeaderId(int stickyHeaderId) {
+        this.stickyHeaderId = stickyHeaderId;
+    }
 }
