@@ -75,6 +75,15 @@ public enum ChartTypeEnum {
         return NONE_NONE;
     }
 
+    public static ChartTypeEnum getChartTypeEnum(String type) {
+        for (ChartTypeEnum v : values()) {
+            if (v.getChartType() == type) {
+                return v;
+            }
+        }
+        return NONE_NONE;
+    }
+
     /**
      * Gets id.
      *

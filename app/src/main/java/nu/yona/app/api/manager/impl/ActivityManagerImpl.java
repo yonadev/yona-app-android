@@ -42,6 +42,7 @@ import nu.yona.app.api.model.TimeZoneSpread;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaActivityCategories;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaDayActivityOverview;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.api.model.YonaWeekActivityOverview;
@@ -146,6 +147,7 @@ public class ActivityManagerImpl implements ActivityManager {
                                     try {
                                         if (weekActivityList.get(i).getLinks().getWeekDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
                                             weekActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                                            weekActivityList.get(i).setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
                                             break;
                                         }
                                     } catch (Exception e) {
