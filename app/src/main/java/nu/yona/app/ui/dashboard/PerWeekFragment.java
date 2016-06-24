@@ -8,7 +8,6 @@
 
 package nu.yona.app.ui.dashboard;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,13 +29,11 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.WeekActivity;
-import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
-import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -91,9 +88,7 @@ public class PerWeekFragment extends BaseFragment {
         perWeekStickyAdapter = new PerWeekStickyAdapter(new ArrayList<WeekActivity>(), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v.getTag() instanceof WeekActivity) {
-                    openDetailPage((WeekActivity) v.getTag());
-                }
+                //TODO on click of list item, listener will return here.
             }
         });
 
@@ -155,7 +150,7 @@ public class PerWeekFragment extends BaseFragment {
     private void getWeekActivity(boolean loadMore) {
         if (YonaActivity.getActivity().isToDisplayLogin()) {
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
-            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() != null) {
+            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
                 return;
             }
         }
@@ -207,12 +202,5 @@ public class PerWeekFragment extends BaseFragment {
             }
         }
         return weekActivityList;
-    }
-
-    private void openDetailPage(WeekActivity activity) {
-        Intent intent = new Intent(IntentEnum.ACTION_WEEK_DETAIL_VIEW.getActionString());
-        intent.putExtra(AppConstant.OBJECT, activity);
-        intent.putExtra(AppConstant.BOOLEAN, true);
-        YonaActivity.getActivity().replaceFragment(intent);
     }
 }

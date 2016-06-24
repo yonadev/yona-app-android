@@ -57,7 +57,7 @@ public class DayActivityDetailFragment extends BaseFragment {
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        customPageAdapter = new CustomPageAdapter(getActivity());
+        customPageAdapter = new CustomPageAdapter(getActivity(), dateTitle);
         viewPager.setAdapter(customPageAdapter);
         if (getArguments() != null) {
             if (getArguments().get(AppConstant.OBJECT) != null) {
