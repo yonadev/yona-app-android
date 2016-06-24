@@ -364,8 +364,9 @@ public class ActivityManagerImpl implements ActivityManager {
             if (embeddedYonaActivity.getEmbedded() != null) {
                 Embedded embedded = embeddedYonaActivity.getEmbedded();
                 List<YonaWeekActivityOverview> yonaDayActivityOverviews = embedded.getYonaWeekActivityOverviews();
-                List<WeekActivity> thisWeekActivities = new ArrayList<>();
+                List<WeekActivity> thisWeekActivities;
                 for (YonaWeekActivityOverview overview : yonaDayActivityOverviews) {
+                    thisWeekActivities = new ArrayList<>();
                     List<WeekActivity> overviewWeekActivities = overview.getWeekActivities();
                     for (WeekActivity activity : overviewWeekActivities) {
                         YonaGoal goal = findYonaGoal(activity.getLinks().getYonaGoal());

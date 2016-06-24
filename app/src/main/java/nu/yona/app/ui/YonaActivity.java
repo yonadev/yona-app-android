@@ -68,6 +68,7 @@ import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
 import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
+import nu.yona.app.ui.dashboard.WeekActivityDetailFragment;
 import nu.yona.app.ui.frinends.AddFriendFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
 import nu.yona.app.ui.frinends.FriendsRequestFragment;
@@ -608,6 +609,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                             return;
                         }
                         mContent = new DayActivityDetailFragment();
+                        mContent.setArguments(intent.getExtras());
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
+                    case ACTION_WEEK_DETAIL_VIEW:
+                        if (mContent instanceof WeekActivityDetailFragment) {
+                            return;
+                        }
+                        mContent = new WeekActivityDetailFragment();
                         mContent.setArguments(intent.getExtras());
                         clearFragmentStack = false;
                         addToBackstack = true;

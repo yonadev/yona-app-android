@@ -13,6 +13,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/week_chart"
+        layout="@layout/week_chart_item"
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/graphView"
         android:layout_width="match_parent"

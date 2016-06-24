@@ -25,8 +25,8 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
+import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
@@ -35,15 +35,15 @@ import nu.yona.app.utils.AppConstant;
 /**
  * Created by kinnarvasa on 13/06/16.
  */
-public class DayActivityDetailFragment extends BaseFragment {
+public class WeekActivityDetailFragment extends BaseFragment {
 
     private CustomPageAdapter customPageAdapter;
     private ViewPager viewPager;
-    private DayActivity activity;
+    private WeekActivity activity;
     private View view;
     private ImageView previousItem, nextItem;
     private YonaFontTextView dateTitle;
-    private List<DayActivity> dayActivityList;
+    private List<WeekActivity> weekActivityList;
 
     @Nullable
     @Override
@@ -61,7 +61,7 @@ public class DayActivityDetailFragment extends BaseFragment {
         viewPager.setAdapter(customPageAdapter);
         if (getArguments() != null) {
             if (getArguments().get(AppConstant.OBJECT) != null) {
-                activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
+                activity = (WeekActivity) getArguments().get(AppConstant.OBJECT);
             }
         }
         previousItem.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +75,7 @@ public class DayActivityDetailFragment extends BaseFragment {
         nextItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewPager.getCurrentItem() != dayActivityList.size() - 1) {
+                if (viewPager.getCurrentItem() != weekActivityList.size() - 1) {
                     viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                 }
             }
@@ -103,22 +103,22 @@ public class DayActivityDetailFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        dayActivityList = new ArrayList<>();
-        EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
-        if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) {
+        weekActivityList = new ArrayList<>();
+        EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+        if (embeddedYonaActivity != null && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0) {
 
-            for (int i = embeddedYonaActivity.getDayActivityList().size() - 1; i >= 0; i--) {
+            for (int i = embeddedYonaActivity.getWeekActivityList().size() - 1; i >= 0; i--) {
                 try {
-                    if (embeddedYonaActivity.getDayActivityList().get(i).getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref())) {
-                        dayActivityList.add(embeddedYonaActivity.getDayActivityList().get(i));
+                    if (embeddedYonaActivity.getWeekActivityList().get(i).getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref())) {
+                        weekActivityList.add(embeddedYonaActivity.getWeekActivityList().get(i));
                     }
                 } catch (Exception e) {
-                    Log.e(DayActivityDetailFragment.class.getSimpleName(), e.getMessage());
+                    Log.e(WeekActivityDetailFragment.class.getSimpleName(), e.getMessage());
                 }
             }
-            customPageAdapter.notifyDataSetChanged(dayActivityList);
-            viewPager.setCurrentItem(dayActivityList.indexOf(activity));
-            updateFlow(dayActivityList.indexOf(activity));
+            customPageAdapter.notifyDataSetChanged(weekActivityList);
+            viewPager.setCurrentItem(weekActivityList.indexOf(activity));
+            updateFlow(weekActivityList.indexOf(activity));
         } else {
             YonaActivity.getActivity().onBackPressed();
         }
@@ -135,13 +135,13 @@ public class DayActivityDetailFragment extends BaseFragment {
     }
 
     private void updateFlow(int position) {
-        dateTitle.setText(dayActivityList.get(position).getStickyTitle());
+        dateTitle.setText(weekActivityList.get(position).getStickyTitle());
         if (position == 0) {
             previousItem.setVisibility(View.INVISIBLE);
         } else {
             previousItem.setVisibility(View.VISIBLE);
         }
-        if (position == dayActivityList.size() - 1) {
+        if (position == weekActivityList.size() - 1) {
             nextItem.setVisibility(View.INVISIBLE);
         } else {
             nextItem.setVisibility(View.VISIBLE);
