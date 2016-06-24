@@ -20,6 +20,7 @@ import nu.yona.app.customview.graph.CircleGraphView;
 import nu.yona.app.customview.graph.TimeBucketGraph;
 import nu.yona.app.customview.graph.TimeFrameGraph;
 import nu.yona.app.enums.ChartTypeEnum;
+import nu.yona.app.enums.GoalsEnum;
 
 /**
  * Created by kinnarvasa on 07/06/16.
@@ -70,6 +71,26 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
 
     }
 
+    public ChartItemHolder(View itemView, View.OnClickListener listener, GoalsEnum goalsEnum) {
+        super(itemView);
+        this.view = itemView;
+        itemView.setOnClickListener(listener);
+        switch (goalsEnum) {
+            case NOGO:
+                initNoGOControlView();
+                break;
+            case BUDGET_GOAL:
+                initTimeBucketControlView();
+                break;
+            case TIME_ZONE_GOAL:
+                initTimeFrameControlView();
+                break;
+            default:
+                initGraphControlView();
+                break;
+        }
+
+    }
     /**
      * Initialize Nogo Controls
      */
