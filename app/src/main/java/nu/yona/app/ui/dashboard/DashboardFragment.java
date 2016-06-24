@@ -24,6 +24,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.BaseFragment;
@@ -38,12 +39,14 @@ public class DashboardFragment extends BaseFragment {
 
     private TabLayout tabLayout;
     private YonaHeaderTheme mYonaHeaderTheme;
+    private YonaBuddy yonaBuddy;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+            yonaBuddy = (YonaBuddy) getArguments().getSerializable(AppConstant.YONA_BUDDY_OBJ);
         }
     }
 
@@ -54,6 +57,9 @@ public class DashboardFragment extends BaseFragment {
 
         setupToolbar(view);
 
+        if (mYonaHeaderTheme != null) {
+            mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
+        }
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
@@ -102,7 +108,7 @@ public class DashboardFragment extends BaseFragment {
                             rightIcon.setVisibility(View.VISIBLE);
                             rightIcon.setImageDrawable(TextDrawable.builder()
                                     .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                                    .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
+                                    .buildRound(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
                                             ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
                             profileClickEvent(rightIcon);
                         } else {
@@ -111,7 +117,6 @@ public class DashboardFragment extends BaseFragment {
                                     .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
                                     .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
                                             ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
-                            rightIcon.setTag(mYonaHeaderTheme.getHeader_title());
                             rightIcon.setVisibility(View.VISIBLE);
                             rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
 
@@ -139,7 +144,12 @@ public class DashboardFragment extends BaseFragment {
                 Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
                 intent.putExtra(AppConstant.COLOR_CODE, R.color.grape);
                 intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.mid_blue);
-                intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
+                intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
+                if (yonaBuddy != null) {
+                    intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
+                } else {
+                    intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
+                }
                 YonaActivity.getActivity().replaceFragment(intent);
             }
         });

@@ -8,11 +8,11 @@
 
 package nu.yona.app.ui.frinends;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +29,15 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
+import nu.yona.app.api.model.YonaHeaderTheme;
+import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -57,7 +60,17 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
         mOverViewAdapter = new OverViewAdapter(mListBuddy, new OnFriendsItemClickListener() {
             @Override
             public void onFriendsItemClick(View v) {
-                Log.e("Item click", "Item click");
+                Intent friendIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
+                Bundle bundle = new Bundle();
+                YonaBuddy yonaBuddy = (YonaBuddy) v.getTag();
+                if (yonaBuddy != null && yonaBuddy.getLinks() != null) {
+                    bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, yonaBuddy.getLinks().getYonaDailyActivityReports(), yonaBuddy.getLinks().getYonaWeeklyActivityReports(), 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+                } else {
+                    bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+                }
+                friendIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
+                friendIntent.putExtras(bundle);
+                YonaActivity.getActivity().replaceFragment(friendIntent);
             }
 
             @Override

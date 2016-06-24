@@ -262,4 +262,9 @@ public interface AppConstant {
      * Yona theme object
      */
     String YONA_THEME_OBJ = "yonaThemeObj";
+
+    /**
+     * Yona buddy object
+     */
+    String YONA_BUDDY_OBJ = "yonaBuddyObj";
 }

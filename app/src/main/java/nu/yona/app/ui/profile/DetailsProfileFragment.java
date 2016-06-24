@@ -21,6 +21,7 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
@@ -38,6 +39,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
     private YonaFontEditTextView firstName, lastName, nickName, mobileNumber;
     private YonaFontButton removeFriendButton;
     private User user;
+    private YonaBuddy buddyUser;
     private YonaMessage yonaMessage;
 
     @Nullable
@@ -66,6 +68,8 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
                 user = (User) getArguments().get(AppConstant.USER);
             } else if (getArguments().get(AppConstant.YONAMESSAGE_OBJ) != null) {
                 yonaMessage = (YonaMessage) getArguments().get(AppConstant.YONAMESSAGE_OBJ);
+            } else if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
+                buddyUser = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
             }
         }
         return view;
@@ -75,15 +79,6 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
     public void onDestroy() {
         super.onDestroy();
         YonaApplication.getEventChangeManager().unRegisterListener(this);
-    }
-
-    /**
-     * Update user.
-     *
-     * @param user the user
-     */
-    public void updateUser(User user) {
-        this.user = user;
     }
 
     @Override
@@ -119,6 +114,11 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
             lastName.setText(TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getLastName()) ? getString(R.string.blank) : yonaMessage.getEmbedded().getYonaUser().getLastName());
             nickName.setText(TextUtils.isEmpty(yonaMessage.getNickname()) ? getString(R.string.blank) : yonaMessage.getNickname());
             number = TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getMobileNumber()) ? getString(R.string.blank) : yonaMessage.getEmbedded().getYonaUser().getMobileNumber();
+        } else if (buddyUser != null && buddyUser.getEmbedded() != null && buddyUser.getEmbedded().getYonaUser() != null) {
+            firstName.setText(TextUtils.isEmpty(buddyUser.getEmbedded().getYonaUser().getFirstName()) ? getString(R.string.blank) : buddyUser.getEmbedded().getYonaUser().getFirstName());
+            lastName.setText(TextUtils.isEmpty(buddyUser.getEmbedded().getYonaUser().getLastName()) ? getString(R.string.blank) : buddyUser.getEmbedded().getYonaUser().getLastName());
+            nickName.setText(TextUtils.isEmpty(buddyUser.getNickname()) ? getString(R.string.blank) : buddyUser.getNickname());
+            number = TextUtils.isEmpty(buddyUser.getEmbedded().getYonaUser().getMobileNumber()) ? getString(R.string.blank) : buddyUser.getEmbedded().getYonaUser().getMobileNumber();
         } else {
             number = null;
         }

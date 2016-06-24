@@ -28,6 +28,8 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.YonaBuddy;
+import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
@@ -48,30 +50,20 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     private ViewPager viewPager;
     private CollapsingToolbarLayout profileTopLayout;
     private TabLayout tabLayout;
-    private int backgroundColor, profileBgColor, tabDeSelectedColor;
+    private int profileBgColor, tabDeSelectedColor;
     private User user;
     private YonaMessage yonaMessage;
+    private YonaBuddy yonaBuddy;
+    private YonaHeaderTheme yonaHeaderTheme;
     private DetailsProfileFragment detailsProfileFragment;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.profile_fragment, null);
-
-        setupToolbar(view);
-
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-
-        profileImageView = (ImageView) view.findViewById(R.id.profileImage);
-        profileTopLayout = (CollapsingToolbarLayout) view.findViewById(R.id.profile_top_layout);
-        name = (YonaFontTextView) view.findViewById(R.id.name);
-        nickName = (YonaFontTextView) view.findViewById(R.id.nick_name);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            if (getArguments().get(AppConstant.COLOR_CODE) != null) {
-                backgroundColor = getArguments().getInt(AppConstant.COLOR_CODE);
-            } else {
-                backgroundColor = R.color.grape; // default color will be grape;
+
+            if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null) {
+                yonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
             }
             if (getArguments().get(AppConstant.SECOND_COLOR_CODE) != null) {
                 profileBgColor = getArguments().getInt(AppConstant.SECOND_COLOR_CODE);
@@ -82,28 +74,48 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                 user = (User) getArguments().get(AppConstant.USER);
             } else if (getArguments().get(AppConstant.YONAMESSAGE_OBJ) != null) {
                 yonaMessage = (YonaMessage) getArguments().get(AppConstant.YONAMESSAGE_OBJ);
-                if (yonaMessage.getEmbedded() == null && yonaMessage.getLinks() != null
-                        && yonaMessage.getLinks().getYonaUser() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getYonaUser().getHref())) {
-                    loadFriendProfile(yonaMessage.getLinks().getYonaUser().getHref());
-                }
+            } else if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
+                yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
             }
             if (getArguments().get(AppConstant.TAB_DESELECTED_COLOR) != null) {
                 tabDeSelectedColor = getArguments().getInt(AppConstant.TAB_DESELECTED_COLOR);
             } else {
                 tabDeSelectedColor = R.color.dashboard_deselected_tab;
             }
-            if (getArguments().get(AppConstant.TITLE_BACKGROUND_RESOURCE) != null) {
-                mToolBar.setBackgroundResource(getArguments().getInt(AppConstant.TITLE_BACKGROUND_RESOURCE));
-            } else {
-                mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
-            }
+
         } else {
-            backgroundColor = R.color.grape; // default color will be grape;
             profileBgColor = R.color.mid_blue; // default bg color for profile picture.
             tabDeSelectedColor = R.color.dashboard_deselected_tab;
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.profile_fragment, null);
+
+        setupToolbar(view);
+        if (yonaHeaderTheme != null) {
+            mToolBar.setBackgroundResource(yonaHeaderTheme.getToolbar());
+        }
+
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+
+        profileImageView = (ImageView) view.findViewById(R.id.profileImage);
+        profileTopLayout = (CollapsingToolbarLayout) view.findViewById(R.id.profile_top_layout);
+        name = (YonaFontTextView) view.findViewById(R.id.name);
+        nickName = (YonaFontTextView) view.findViewById(R.id.nick_name);
+
         setupViewPager();
         tabLayout.setupWithViewPager(viewPager);
+        if (yonaMessage != null && yonaMessage.getEmbedded() == null && yonaMessage.getLinks() != null
+                && yonaMessage.getLinks().getYonaUser() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getYonaUser().getHref())) {
+            loadFriendProfile(yonaMessage.getLinks().getYonaUser().getHref());
+        } else if (yonaBuddy != null) {
+            updateProfileAndIcon();
+        }
+
         YonaApplication.getEventChangeManager().registerListener(this);
         return view;
     }
@@ -130,10 +142,8 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                 YonaActivity.getActivity().showLoadingView(false, null);
                 if (result instanceof User) {
                     user = (User) result;
-                    detailsProfileFragment.updateUser(user);
-                    detailsProfileFragment.onResume();
-                    setTitleAndIcon();
-                    updateProfile();
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, user);
+                    updateProfileAndIcon();
                 }
             }
 
@@ -144,6 +154,11 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                 Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void updateProfileAndIcon() {
+        setTitleAndIcon();
+        updateProfile();
     }
 
     private void updateProfile() {
@@ -159,10 +174,17 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                 profileImageView.setImageDrawable(getImage(null, false, profileBgColor, yonaMessage.getEmbedded().getYonaUser().getFirstName(), yonaMessage.getEmbedded().getYonaUser().getLastName()));
             }
             nickName.setText(!TextUtils.isEmpty(yonaMessage.getNickname()) ? yonaMessage.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
+        } else if (yonaBuddy != null) {
+            if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null) {
+                name.setText(getString(R.string.full_name, !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName()) ? yonaBuddy.getEmbedded().getYonaUser().getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
+                        !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getLastName()) ? yonaBuddy.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
+                profileImageView.setImageDrawable(getImage(null, false, profileBgColor, yonaBuddy.getEmbedded().getYonaUser().getFirstName(), yonaBuddy.getEmbedded().getYonaUser().getLastName()));
+            }
+            nickName.setText(!TextUtils.isEmpty(yonaBuddy.getNickname()) ? yonaBuddy.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
         }
         //TODO if server provide profile picture, pass bitmap of that else pass null
-        profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor));
-        tabLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor));
+        profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), yonaHeaderTheme.getHeadercolor()));
+        tabLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), yonaHeaderTheme.getHeadercolor()));
         tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), tabDeSelectedColor), ContextCompat.getColor(getActivity(), R.color.white));
     }
 

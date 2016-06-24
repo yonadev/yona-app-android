@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import nu.yona.app.R;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.enums.IntentEnum;
@@ -61,11 +62,11 @@ public class NotificationFragment extends BaseFragment {
                 Intent mMessageIntent = null;
                 if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null && yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.ACCEPTED) {
                     mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_PROFILE.getActionString());
+                    YonaHeaderTheme yonaHeaderTheme = new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue);
+                    mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, yonaHeaderTheme);
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
-                    mMessageIntent.putExtra(AppConstant.COLOR_CODE, R.color.mid_blue_two);
                     mMessageIntent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
                     mMessageIntent.putExtra(AppConstant.TAB_DESELECTED_COLOR, R.color.friends_deselected_tab);
-                    mMessageIntent.putExtra(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_blue);
                 } else if (yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.REQUESTED) {
                     mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_REQUEST.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
