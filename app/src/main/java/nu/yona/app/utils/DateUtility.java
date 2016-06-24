@@ -28,8 +28,17 @@ import nu.yona.app.YonaApplication;
  */
 public class DateUtility {
 
+    /**
+     * The constant DAY_FORMAT.
+     */
     public static SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("EEE");
+    /**
+     * The constant DAY_NO_FORMAT.
+     */
     public static SimpleDateFormat DAY_NO_FORMAT = new SimpleDateFormat("d");
+    /**
+     * The constant WEEK_FORMAT.
+     */
     public static SimpleDateFormat WEEK_FORMAT = new SimpleDateFormat("yyyy-'W'ww");
     private static final int mNoOfDayPerWeek = 7;
 
@@ -121,7 +130,8 @@ public class DateUtility {
     /**
      * Get Current weeks Days List. example:  Sun 21, Mon 22, Tue 23 , Wed 24 ,Thu 25, Fri 26
      *
-     * @return
+     * @param currentYearWeek the current year week
+     * @return week day
      */
     public static Map<String, String> getWeekDay(String currentYearWeek) {
         LinkedHashMap<String, String> listOfdates = new LinkedHashMap<>();

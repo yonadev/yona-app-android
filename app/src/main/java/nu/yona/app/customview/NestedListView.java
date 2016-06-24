@@ -19,17 +19,27 @@ import android.widget.ListView;
 /**
  * Created by kinnarvasa on 16/06/16.
  */
-
 public class NestedListView extends ListView implements NestedScrollingChild {
 
     private final NestedScrollingChildHelper mScrollingChildHelper;
 
+    /**
+     * Instantiates a new Nested list view.
+     *
+     * @param context the context
+     */
     public NestedListView(Context context) {
         super(context);
         mScrollingChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
     }
 
+    /**
+     * Instantiates a new Nested list view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public NestedListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mScrollingChildHelper = new NestedScrollingChildHelper(this);

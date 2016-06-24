@@ -59,9 +59,9 @@ public class GraphUtils {
     /**
      * Get the size of pixels depend on device
      *
-     * @param context
-     * @param value
-     * @return
+     * @param context the context
+     * @param value   the value
+     * @return int
      */
     public static int convertSizeToDeviceDependent(Context context, int value) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();

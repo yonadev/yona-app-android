@@ -253,6 +253,9 @@ public interface AppConstant {
      */
     String BOOLEAN = "boolean";
 
+    /**
+     * The constant TERMINATED_APP.
+     */
     String TERMINATED_APP = "isTerminated";
 
     /**

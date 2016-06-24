@@ -26,18 +26,36 @@ public class CircleGraphView
     private int fillColor = GraphUtils.COLOR_WHITE_THREE;
     private int circleGap = 5;
 
+    /**
+     * Instantiates a new Circle graph view.
+     *
+     * @param context the context
+     */
     public CircleGraphView(Context context) {
         super(context);
 
         init();
     }
 
+    /**
+     * Instantiates a new Circle graph view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public CircleGraphView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
 
         init();
     }
 
+    /**
+     * Instantiates a new Circle graph view.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     */
     public CircleGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
@@ -75,6 +93,11 @@ public class CircleGraphView
         return p;
     }
 
+    /**
+     * Sets fill color.
+     *
+     * @param fillColor the fill color
+     */
     public void setFillColor(int fillColor) {
         this.fillColor = fillColor;
     }

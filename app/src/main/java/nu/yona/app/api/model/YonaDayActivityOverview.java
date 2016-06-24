@@ -108,10 +108,20 @@ public class YonaDayActivityOverview {
         this.links = links;
     }
 
+    /**
+     * Gets day activities for users.
+     *
+     * @return the day activities for users
+     */
     public List<DayActivity> getDayActivitiesForUsers() {
         return this.dayActivitiesForUsers;
     }
 
+    /**
+     * Sets day activities for users.
+     *
+     * @param dayActivitiesForUsers the day activities for users
+     */
     public void setDayActivitiesForUsers(List<DayActivity> dayActivitiesForUsers) {
         this.dayActivitiesForUsers = dayActivitiesForUsers;
     }
