@@ -334,6 +334,8 @@ public class AppUtils {
 
     /**
      * Send log to server.
+     *
+     * @param delayMilliseconds the delay milliseconds
      */
     public static void sendLogToServer(long delayMilliseconds) {
         new Handler().postDelayed(new Runnable() {
@@ -344,6 +346,11 @@ public class AppUtils {
         }, delayMilliseconds);
     }
 
+    /**
+     * Gets initialize scheduler.
+     *
+     * @return the initialize scheduler
+     */
     public static ScheduledExecutorService getInitializeScheduler() {
         if (scheduler == null) {
             scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -351,10 +358,18 @@ public class AppUtils {
         return scheduler;
     }
 
+    /**
+     * Gets scheduler.
+     *
+     * @return the scheduler
+     */
     public static ScheduledExecutorService getScheduler() {
         return AppUtils.scheduler;
     }
 
+    /**
+     * Sets null scheduler.
+     */
     public static void setNullScheduler() {
         if (scheduler != null) {
             scheduler.shutdown();

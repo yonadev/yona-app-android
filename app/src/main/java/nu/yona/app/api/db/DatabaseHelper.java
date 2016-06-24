@@ -63,6 +63,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(getDBHelper().TABLE_ACTIVITY_TRACKER);
     }
 
+    /**
+     * Delete all data.
+     */
     public void deleteAllData() {
         try {
             Log.e(DatabaseHelper.class.getSimpleName(), "Delete all data");

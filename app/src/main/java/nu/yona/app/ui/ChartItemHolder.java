@@ -118,9 +118,10 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * update text info circle of that date
      *
-     * @param view
-     * @param day
-     * @param date
+     * @param view  the view
+     * @param day   the day
+     * @param date  the date
+     * @param color the color
      */
     public synchronized void updateTextOfCircle(View view, String day, String date, int color) {
         ((YonaFontTextView) view.findViewById(R.id.txtWeekOfDay)).setText(day);
@@ -187,7 +188,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get Time Bucket Graph
      *
-     * @return
+     * @return time bucket graph
      */
     public TimeBucketGraph getTimeBucketGraph() {
         return this.timeBucketGraph;
@@ -196,7 +197,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get Time Frame Graph
      *
-     * @return
+     * @return time frame graph
      */
     public TimeFrameGraph getTimeFrameGraph() {
         return this.timeFrameGraph;
@@ -205,7 +206,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get First Day of Week which is Sunday
      *
-     * @return
+     * @return week day first
      */
     public View getmWeekDayFirst() {
         return mWeekDayFirst;
@@ -214,7 +215,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get Second Day of Week which is Monday
      *
-     * @return
+     * @return week day second
      */
     public View getmWeekDaySecond() {
         return mWeekDaySecond;
@@ -223,7 +224,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get third Day of Week which is Tuesday
      *
-     * @return
+     * @return week day third
      */
     public View getmWeekDayThird() {
         return mWeekDayThird;
@@ -232,7 +233,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get fourth Day of Week which is Wednesday
      *
-     * @return
+     * @return week day fourth
      */
     public View getmWeekDayFourth() {
         return mWeekDayFourth;
@@ -241,7 +242,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get fifth Day of Week which is Thusday
      *
-     * @return
+     * @return week day fifth
      */
     public View getmWeekDayFifth() {
         return mWeekDayFifth;
@@ -250,7 +251,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get sixth Day of Week which is Friday
      *
-     * @return
+     * @return week day sixth
      */
     public View getmWeekDaySixth() {
         return mWeekDaySixth;
@@ -259,7 +260,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
     /**
      * Get seventh Day of Week which is saturday
      *
-     * @return
+     * @return week day seventh
      */
     public View getmWeekDaySeventh() {
         return mWeekDaySeventh;
