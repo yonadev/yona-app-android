@@ -12,6 +12,7 @@ package nu.yona.app.api.manager;
 
 import java.util.Date;
 
+import nu.yona.app.api.model.Href;
 import nu.yona.app.listener.DataLoadListener;
 
 /**
@@ -22,20 +23,12 @@ public interface ActivityManager {
     /**
      * Gets days activity.
      *
-     * @param loadMore the load more
-     * @param listener the listener
-     */
-    void getDaysActivity(boolean loadMore, DataLoadListener listener);
-
-    /**
-     * Gets buddy days activity for friends/buddies activity
-     *
+     * @param loadMore     the load more
+     * @param isBuddlyFlow the is buddly flow
      * @param url          the url
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
      * @param listener     the listener
      */
-    void getBuddyDaysActivity(String url, int itemsPerPage, int pageNo, DataLoadListener listener);
+    void getDaysActivity(boolean loadMore, boolean isBuddlyFlow, Href url, DataLoadListener listener);
 
     /**
      * Gets day detail activity details of logged in user /friends
@@ -48,20 +41,12 @@ public interface ActivityManager {
     /**
      * Gets weeks activity.
      *
-     * @param loadMore the load more
-     * @param listener the listener
-     */
-    void getWeeksActivity(boolean loadMore, DataLoadListener listener);
-
-    /**
-     * Gets buddy's weeks activity
-     *
-     * @param url          the url
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
+     * @param loadMore     the load more
+     * @param isBuddlyFlow the is buddly flow
+     * @param href         the href
      * @param listener     the listener
      */
-    void getBuddyWeeksActivity(String url, int itemsPerPage, int pageNo, DataLoadListener listener);
+    void getWeeksActivity(boolean loadMore,boolean isBuddlyFlow, Href href, DataLoadListener listener);
 
     /**
      * Gets weeks detail activity.

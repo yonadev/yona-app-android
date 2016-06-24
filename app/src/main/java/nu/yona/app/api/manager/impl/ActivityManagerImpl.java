@@ -76,18 +76,16 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     @Override
-    public void getDaysActivity(boolean loadMore, DataLoadListener listener) {
+    public void getDaysActivity(boolean loadMore, boolean isBuddyFlow, Href url, DataLoadListener listener) {
         EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
         if (loadMore || embeddedYonaActivity == null
                 || embeddedYonaActivity.getDayActivityList() == null
                 || embeddedYonaActivity.getDayActivityList().size() == 0) {
             int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
                     && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
-            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-            if (user != null && user.getLinks() != null
-                    && user.getLinks().getYonaDailyActivityReports() != null
-                    && !TextUtils.isEmpty(user.getLinks().getYonaDailyActivityReports().getHref())) {
-                getDailyActivity(user.getLinks().getYonaDailyActivityReports().getHref(), AppConstant.PAGE_SIZE, pageNo, listener);
+            //User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            if (url != null && !TextUtils.isEmpty(url.getHref())) {
+                getDailyActivity(url.getHref(), isBuddyFlow, AppConstant.PAGE_SIZE, pageNo, listener);
             } else {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
@@ -170,20 +168,6 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     @Override
-    public void getBuddyDaysActivity(String url, int itemsPerPage, int pageNo, final DataLoadListener listener) {
-        try {
-            if (!TextUtils.isEmpty(url)) {
-                getDailyActivity(url, itemsPerPage, pageNo, listener);
-            } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
-            }
-        } catch (Exception e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
-
-
-    @Override
     public void getDayDetailActivity(String url, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(url)) {
@@ -211,7 +195,7 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     @Override
-    public void getWeeksActivity(boolean loadMore, DataLoadListener listener) {
+    public void getWeeksActivity(boolean loadMore, boolean isBuddyflow, Href href, DataLoadListener listener) {
         EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
         if (loadMore || embeddedYonaActivity == null
                 || embeddedYonaActivity.getWeekActivityList() == null
@@ -219,22 +203,15 @@ public class ActivityManagerImpl implements ActivityManager {
             int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
                     && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0)
                     ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
-            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-            if (user != null && user.getLinks() != null
-                    && user.getLinks().getYonaWeeklyActivityReports() != null
-                    && !TextUtils.isEmpty(user.getLinks().getYonaWeeklyActivityReports().getHref())) {
-                getWeeksActivity(user.getLinks().getYonaWeeklyActivityReports().getHref(), AppConstant.PAGE_SIZE, pageNo, listener);
+            //User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            if (href != null && !TextUtils.isEmpty(href.getHref())) {
+                getWeeksActivity(href.getHref(), isBuddyflow, AppConstant.PAGE_SIZE, pageNo, listener);
             } else {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } else {
             listener.onDataLoad(YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList());
         }
-    }
-
-    @Override
-    public void getBuddyWeeksActivity(String url, int itemsPerPage, int pageNo, DataLoadListener listener) {
-        getWeeksActivity(url, itemsPerPage, pageNo, listener);
     }
 
     @Override
@@ -304,13 +281,13 @@ public class ActivityManagerImpl implements ActivityManager {
         return activity;
     }
 
-    private void getWeeksActivity(String url, int itemsPerPage, int pageNo, final DataLoadListener listener) {
+    private void getWeeksActivity(String url, final boolean isbuddyFlow, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(url)) {
                 activityNetwork.getWeeksActivity(url, YonaApplication.getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        filterAndUpdateWeekData((EmbeddedYonaActivity) result, listener);
+                        filterAndUpdateWeekData((EmbeddedYonaActivity) result, isbuddyFlow, listener);
                     }
 
                     @Override
@@ -330,13 +307,13 @@ public class ActivityManagerImpl implements ActivityManager {
         }
     }
 
-    private void getDailyActivity(String url, int itemsPerPage, int pageNo, final DataLoadListener listener) {
+    private void getDailyActivity(String url, final boolean isbuddyFlow, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
             activityNetwork.getDaysActivity(url, YonaApplication.getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     if (result instanceof EmbeddedYonaActivity) {
-                        filterAndUpdateDailyData((EmbeddedYonaActivity) result, listener);
+                        filterAndUpdateDailyData((EmbeddedYonaActivity) result, isbuddyFlow, listener);
                     } else {
                         listener.onError(new ErrorMessage(mContext.getString(R.string.dataparseerror)));
                     }
@@ -357,7 +334,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
     }
 
-    private void filterAndUpdateWeekData(EmbeddedYonaActivity embeddedYonaActivity, DataLoadListener listener) {
+    private void filterAndUpdateWeekData(EmbeddedYonaActivity embeddedYonaActivity, boolean isbuddyFlow, DataLoadListener listener) {
         List<WeekActivity> weekActivities = new ArrayList<>();
         if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() == null) {
             YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(embeddedYonaActivity);
@@ -371,7 +348,7 @@ public class ActivityManagerImpl implements ActivityManager {
                     thisWeekActivities = new ArrayList<>();
                     List<WeekActivity> overviewWeekActivities = overview.getWeekActivities();
                     for (WeekActivity activity : overviewWeekActivities) {
-                        YonaGoal goal = findYonaGoal(activity.getLinks().getYonaGoal());
+                        YonaGoal goal = getYonaGoal(isbuddyFlow, activity.getLinks().getYonaGoal());
                         if (goal != null) {
                             activity.setYonaGoal(goal);
                             if (activity.getYonaGoal() != null) {
@@ -403,7 +380,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
     }
 
-    private void filterAndUpdateDailyData(EmbeddedYonaActivity embeddedYonaActivity, DataLoadListener listener) {
+    private void filterAndUpdateDailyData(EmbeddedYonaActivity embeddedYonaActivity, boolean isBuddyFlow, DataLoadListener listener) {
         List<DayActivity> dayActivities = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_DATE_FORMAT, Locale.getDefault());
         if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() == null) {
@@ -417,7 +394,7 @@ public class ActivityManagerImpl implements ActivityManager {
                     List<DayActivity> overviewDayActivities = overview.getDayActivities();
                     List<DayActivity> updatedOverviewDayActivities = new ArrayList<>();
                     for (DayActivity activity : overviewDayActivities) {
-                        activity.setYonaGoal(findYonaGoal(activity.getLinks().getYonaGoal()));
+                        activity.setYonaGoal(getYonaGoal(isBuddyFlow, activity.getLinks().getYonaGoal()));
                         if (activity.getYonaGoal() != null) {
                             if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.BUDGET_GOAL) {
                                 if (activity.getYonaGoal().getMaxDurationMinutes() == 0) {
@@ -459,6 +436,7 @@ public class ActivityManagerImpl implements ActivityManager {
         }
     }
 
+
     private List<DayActivity> sortDayActivity(List<DayActivity> overviewDayActiivties) {
         Collections.sort(overviewDayActiivties, new Comparator<DayActivity>() {
             public int compare(DayActivity o1, DayActivity o2) {
@@ -483,6 +461,14 @@ public class ActivityManagerImpl implements ActivityManager {
         return overviewDayActiivties;
     }
 
+    private YonaGoal getYonaGoal(boolean isBuddyFlow, Href url) {
+        if (!isBuddyFlow) {
+            return findYonaGoal(url);
+        } else {
+            return findYonaBuddyGoal(url);
+        }
+    }
+
     private YonaGoal findYonaGoal(Href goalHref) {
         if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded() != null
                 && YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals() != null
@@ -493,6 +479,32 @@ public class ActivityManagerImpl implements ActivityManager {
                 if (goal.getLinks().getSelf().getHref().equals(goalHref.getHref())) {
                     goal.setActivityCategoryName(getActivityCategory(goal));
                     return goal;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    private YonaGoal findYonaBuddyGoal(Href goalHref) {
+        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+        if (user != null && user.getEmbedded() != null
+                && user.getEmbedded().getYonaBuddies() != null
+                && user.getEmbedded().getYonaBuddies().getEmbedded() != null
+                && user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null) {
+            List<YonaBuddy> yonaBuddies = user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
+            for (YonaBuddy buddy : yonaBuddies) {
+                if (buddy != null && buddy.getEmbedded() != null && buddy.getEmbedded().getYonaGoals() != null
+                        && buddy.getEmbedded().getYonaGoals().getEmbedded() != null
+                        && buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null) {
+                    List<YonaGoal> yonaGoals = buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
+                    for (YonaGoal goal : yonaGoals) {
+                        //Todo - change this logic once done by server
+                        if (goal.getLinks().getSelf().getHref().substring(goal.getLinks().getSelf().getHref().lastIndexOf("/") + 1).equals(goalHref.getHref().substring(goalHref.getHref().lastIndexOf("/") + 1))) {
+                            goal.setActivityCategoryName(getActivityCategory(goal));
+                            return goal;
+                        }
+                    }
                 }
             }
         }

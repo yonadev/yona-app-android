@@ -66,7 +66,6 @@ public class NotificationFragment extends BaseFragment {
                     mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, yonaHeaderTheme);
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
                     mMessageIntent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
-                    mMessageIntent.putExtra(AppConstant.TAB_DESELECTED_COLOR, R.color.friends_deselected_tab);
                 } else if (yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.REQUESTED) {
                     mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_REQUEST.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
