@@ -66,7 +66,7 @@ public class BaseFragment extends Fragment {
     private void updateToolBarBackground() {
         if (this instanceof ChallengesFragment || this instanceof ChallengesGoalDetailFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_green);
-        } else if (this instanceof DashboardFragment || this instanceof NotificationFragment) {
+        } else if (this instanceof NotificationFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
         } else if (this instanceof SettingsFragment || this instanceof PrivacyFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_mango);

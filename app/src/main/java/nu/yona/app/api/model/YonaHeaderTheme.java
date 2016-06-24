@@ -29,6 +29,8 @@ public class YonaHeaderTheme extends BaseEntity {
 
     private boolean isBuddyFlow;
 
+    private int toolbar;
+
     /**
      * Instantiates a new Yona header theme.
      *
@@ -39,8 +41,9 @@ public class YonaHeaderTheme extends BaseEntity {
      * @param rightIcon       the right icon
      * @param title           the title
      * @param headerColor     the header color
+     * @param toolbar         the toolbar
      */
-    public YonaHeaderTheme(boolean isBuddyFlow, Href dayActivityUrl, Href weekActivityUrl, int leftIcon, int rightIcon, String title, int headerColor) {
+    public YonaHeaderTheme(boolean isBuddyFlow, Href dayActivityUrl, Href weekActivityUrl, int leftIcon, int rightIcon, String title, int headerColor, int toolbar) {
         this.header_rightIcon = rightIcon;
         this.header_leftIcon = leftIcon;
         this.header_title = title;
@@ -48,6 +51,7 @@ public class YonaHeaderTheme extends BaseEntity {
         this.dayActivityUrl = dayActivityUrl;
         this.weekActivityUrl = weekActivityUrl;
         this.isBuddyFlow = isBuddyFlow;
+        this.toolbar = toolbar;
     }
 
     /**
@@ -179,5 +183,23 @@ public class YonaHeaderTheme extends BaseEntity {
     @Override
     public ContentValues getDbContentValues() {
         return null;
+    }
+
+    /**
+     * Gets toolbar.
+     *
+     * @return the toolbar
+     */
+    public int getToolbar() {
+        return toolbar;
+    }
+
+    /**
+     * Sets toolbar.
+     *
+     * @param toolbar the toolbar
+     */
+    public void setToolbar(int toolbar) {
+        this.toolbar = toolbar;
     }
 }

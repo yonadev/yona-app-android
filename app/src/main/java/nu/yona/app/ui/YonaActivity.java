@@ -135,9 +135,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         user = YonaApplication.getEventChangeManager().getDataState().getUser();
 
         if (user != null && user.getLinks() != null) {
-            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
         } else {
-            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
         }
         homeFragment.setArguments(bundle);
         mContent = homeFragment;
@@ -150,7 +150,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getCustomView().getTag().hashCode()) {
                     case R.string.dashboard:
-                        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_DASHBOARD.getActionString()));
+                        Bundle bundle = new Bundle();
+                        if (user != null && user.getLinks() != null) {
+                            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
+                        } else {
+                            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
+                        }
+                        Intent dashboardIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
+                        dashboardIntent.putExtras(bundle);
+                        replaceFragmentWithAction(dashboardIntent);
                         break;
                     case R.string.friends:
                         replaceFragmentWithAction(new Intent(IntentEnum.ACTION_FRIENDS.getActionString()));
@@ -496,20 +504,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
                 switch (intentEnum) {
                     case ACTION_DASHBOARD:
-                        if (mContent instanceof DashboardFragment) {
-                            return;
-                        }
-                        clearFragmentStack = true;
-                        addToBackstack = false;
-                        Bundle bundle = new Bundle();
-
-                        if (user != null && user.getLinks() != null) {
-                            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+                        if (intent.getExtras() != null && ((YonaHeaderTheme) (intent.getExtras().getSerializable(AppConstant.YONA_THEME_OBJ))).isBuddyFlow()) {
+                            addToBackstack = true;
+                            clearFragmentStack = false;
                         } else {
-                            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape));
+                            clearFragmentStack = true;
+                            addToBackstack = false;
                         }
                         mContent = new DashboardFragment();
-                        mContent.setArguments(bundle);
+                        mContent.setArguments(intent.getExtras());
                         break;
                     case ACTION_FRIENDS:
                         if (mContent instanceof FriendsFragment) {
