@@ -101,6 +101,9 @@ public class Links extends BaseEntity {
     @SerializedName("yona:weekDetails")
     @Expose
     private Href weekDetails;
+    @SerializedName("yona:buddy")
+    @Expose
+    private Href yonaBuddy;
 
     /**
      * Gets self.
@@ -565,5 +568,13 @@ public class Links extends BaseEntity {
 
     public void setWeekDetails(Href weekDetails) {
         this.weekDetails = weekDetails;
+    }
+
+    public Href getYonaBuddy() {
+        return this.yonaBuddy;
+    }
+
+    public void setYonaBuddy(Href yonaBuddy) {
+        this.yonaBuddy = yonaBuddy;
     }
 }

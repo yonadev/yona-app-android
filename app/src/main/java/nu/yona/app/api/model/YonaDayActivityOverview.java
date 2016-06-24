@@ -29,6 +29,9 @@ public class YonaDayActivityOverview {
     @SerializedName("dayActivities")
     @Expose
     private List<DayActivity> dayActivities = new ArrayList<DayActivity>();
+    @SerializedName("dayActivitiesForUsers")
+    @Expose
+    private List<DayActivity> dayActivitiesForUsers = new ArrayList<DayActivity>();
     @SerializedName("_links")
     @Expose
     private Links links;
@@ -105,4 +108,11 @@ public class YonaDayActivityOverview {
         this.links = links;
     }
 
+    public List<DayActivity> getDayActivitiesForUsers() {
+        return this.dayActivitiesForUsers;
+    }
+
+    public void setDayActivitiesForUsers(List<DayActivity> dayActivitiesForUsers) {
+        this.dayActivitiesForUsers = dayActivitiesForUsers;
+    }
 }
