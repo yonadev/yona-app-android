@@ -27,6 +27,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
@@ -54,7 +55,7 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.viewpager_fragment, null);
-
+        resetData();
         setupToolbar(view);
 
         if (mYonaHeaderTheme != null) {
@@ -74,11 +75,27 @@ public class DashboardFragment extends BaseFragment {
         setTitleAndIcon();
     }
 
+    private void resetData() {
+        if (mYonaHeaderTheme.isBuddyFlow()) {
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        resetData();
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         setTabs();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new PerDayFragment(), getString(R.string.perday));
-        adapter.addFragment(new PerWeekFragment(), getString(R.string.perweek));
+        PerDayFragment perDayFragment = new PerDayFragment();
+        perDayFragment.setArguments(getArguments());
+        PerWeekFragment perWeekFragment = new PerWeekFragment();
+        perWeekFragment.setArguments(getArguments());
+        adapter.addFragment(perDayFragment, getString(R.string.perday));
+        adapter.addFragment(perWeekFragment, getString(R.string.perweek));
         viewPager.setAdapter(adapter);
     }
 
@@ -142,12 +159,14 @@ public class DashboardFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
-                intent.putExtra(AppConstant.COLOR_CODE, R.color.grape);
-                intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.mid_blue);
                 intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
                 if (yonaBuddy != null) {
+                    intent.putExtra(AppConstant.COLOR_CODE, R.color.mid_blue_two);
+                    intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
                     intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
                 } else {
+                    intent.putExtra(AppConstant.COLOR_CODE, R.color.grape);
+                    intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.mid_blue);
                     intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
                 }
                 YonaActivity.getActivity().replaceFragment(intent);

@@ -30,6 +30,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
@@ -48,6 +49,7 @@ public class PerDayFragment extends BaseFragment {
     private LinearLayoutManager mLayoutManager;
     //    private EmbeddedYonaActivity embeddedYonaActivity;
     private boolean mIsLoading = false;
+    private YonaHeaderTheme mYonaHeaderTheme;
     /**
      * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
      */
@@ -86,6 +88,10 @@ public class PerDayFragment extends BaseFragment {
 
         listView = (RecyclerView) view.findViewById(R.id.listView);
         mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
+
+        if (getArguments() != null) {
+            mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+        }
 
         perDayStickyAdapter = new PerDayStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener() {
             @Override
@@ -175,7 +181,7 @@ public class PerDayFragment extends BaseFragment {
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
                 || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
             YonaActivity.getActivity().showLoadingView(true, null);
-            APIManager.getInstance().getActivityManager().getDaysActivity(loadMore, new DataLoadListener() {
+            APIManager.getInstance().getActivityManager().getDaysActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), mYonaHeaderTheme.getDayActivityUrl(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     YonaActivity.getActivity().showLoadingView(false, null);

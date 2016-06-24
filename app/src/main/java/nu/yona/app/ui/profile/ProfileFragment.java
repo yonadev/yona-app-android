@@ -77,12 +77,6 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             } else if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
                 yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
             }
-            if (getArguments().get(AppConstant.TAB_DESELECTED_COLOR) != null) {
-                tabDeSelectedColor = getArguments().getInt(AppConstant.TAB_DESELECTED_COLOR);
-            } else {
-                tabDeSelectedColor = R.color.dashboard_deselected_tab;
-            }
-
         } else {
             profileBgColor = R.color.mid_blue; // default bg color for profile picture.
             tabDeSelectedColor = R.color.dashboard_deselected_tab;
@@ -185,7 +179,11 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         //TODO if server provide profile picture, pass bitmap of that else pass null
         profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), yonaHeaderTheme.getHeadercolor()));
         tabLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), yonaHeaderTheme.getHeadercolor()));
-        tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), tabDeSelectedColor), ContextCompat.getColor(getActivity(), R.color.white));
+        if (yonaHeaderTheme != null && (yonaHeaderTheme.isBuddyFlow() || yonaMessage != null)) {
+            tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.friends_deselected_tab), ContextCompat.getColor(getActivity(), R.color.friends_selected_tab));
+        } else {
+            tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.dashboard_deselected_tab), ContextCompat.getColor(getActivity(), R.color.dashboard_selected_tab));
+        }
     }
 
     private void setTitleAndIcon() {
