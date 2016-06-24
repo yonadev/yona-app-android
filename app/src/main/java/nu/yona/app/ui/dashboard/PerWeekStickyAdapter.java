@@ -61,7 +61,7 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
     @Override
     public void onBindViewHolder(ChartItemHolder holder, int position) {
         WeekActivity weekActivity = (WeekActivity) getItem(position);
-
+        holder.getView().setTag(weekActivity);
         if (weekActivity != null) {
             if (weekActivity.getYonaGoal() != null && !TextUtils.isEmpty(weekActivity.getYonaGoal().getActivityCategoryName())) {
                 holder.getGoalType().setText(weekActivity.getYonaGoal().getActivityCategoryName());
