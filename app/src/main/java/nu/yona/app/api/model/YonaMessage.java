@@ -30,6 +30,12 @@ public class YonaMessage extends BaseEntity {
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("change")
+    @Expose
+    private String change;
+    @SerializedName("dropBuddyReason")
+    @Expose
+    private String dropBuddyReason;
     @SerializedName("status")
     @Expose
     private String status;
@@ -215,5 +221,21 @@ public class YonaMessage extends BaseEntity {
     @Override
     public ContentValues getDbContentValues() {
         return null;
+    }
+
+    public String getChange() {
+        return this.change;
+    }
+
+    public void setChange(String change) {
+        this.change = change;
+    }
+
+    public String getDropBuddyReason() {
+        return this.dropBuddyReason;
+    }
+
+    public void setDropBuddyReason(String dropBuddyReason) {
+        this.dropBuddyReason = dropBuddyReason;
     }
 }

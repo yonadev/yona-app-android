@@ -92,7 +92,13 @@ public class NotificationManagerImpl implements NotificationManager {
                                     SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
                                     for (YonaMessage message : listMessages) {
                                         //update enum
-                                        message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));
+                                        if (message.getStatus() != null) {
+                                            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));
+                                        } else if (message.getDropBuddyReason() != null) {
+                                            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getDropBuddyReason()));
+                                        } else {
+                                            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getChange()));
+                                        }
                                         String uploadDate = "";
 
                                         String createdTime = message.getCreationTime();
