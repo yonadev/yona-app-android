@@ -69,6 +69,7 @@ public enum StatusEnum {
      */
     DISCLOSURE_REJECTED("DISCLOSURE_REJECTED"),
 
+    ANNOUNCED("ANNOUNCED"),
     /**
      * None status enum.
      */

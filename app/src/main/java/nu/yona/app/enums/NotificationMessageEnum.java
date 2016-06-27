@@ -95,6 +95,7 @@ public enum NotificationMessageEnum {
      */
     GOALCHANGEMESSAGE_CHANGED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.CHANGED, "Goal Changed", 0),
 
+    GOALCONFLICTMESSAGE_ANNOUNCED(NotificationEnum.GOALCONFLICTMESSAGE, StatusEnum.ANNOUNCED, "NoGo alert", 0),
     /**
      * Goalconflictmessage disclosure requested notification message enum.
      */
