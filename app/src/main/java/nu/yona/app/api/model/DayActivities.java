@@ -19,33 +19,33 @@ import com.google.gson.annotations.SerializedName;
 public class DayActivities {
     @SerializedName("SUNDAY")
     @Expose
-    private Day sUNDAY;
+    private Day sunday;
     @SerializedName("MONDAY")
     @Expose
-    private Day mONDAY;
+    private Day monday;
     @SerializedName("TUESDAY")
     @Expose
-    private Day tUESDAY;
+    private Day tuesday;
     @SerializedName("WEDNESDAY")
     @Expose
-    private Day wEDNESDAY;
+    private Day wednesday;
     @SerializedName("THURSDAY")
     @Expose
-    private Day tHURSDAY;
+    private Day thursday;
     @SerializedName("FRIDAY")
     @Expose
-    private Day fRIDAY;
+    private Day friday;
     @SerializedName("SATURDAY")
     @Expose
-    private Day sATURDAY;
+    private Day saturday;
 
     /**
      * Gets sunday.
      *
-     * @return The sUNDAY
+     * @return The sunday
      */
     public Day getSUNDAY() {
-        return sUNDAY;
+        return sunday;
     }
 
     /**
@@ -54,16 +54,16 @@ public class DayActivities {
      * @param sUNDAY The SUNDAY
      */
     public void setSUNDAY(Day sUNDAY) {
-        this.sUNDAY = sUNDAY;
+        this.sunday = sUNDAY;
     }
 
     /**
      * Gets monday.
      *
-     * @return The mONDAY
+     * @return The monday
      */
     public Day getMONDAY() {
-        return mONDAY;
+        return monday;
     }
 
     /**
@@ -72,16 +72,16 @@ public class DayActivities {
      * @param mONDAY The MONDAY
      */
     public void setMONDAY(Day mONDAY) {
-        this.mONDAY = mONDAY;
+        this.monday = mONDAY;
     }
 
     /**
      * Gets tuesday.
      *
-     * @return The tUESDAY
+     * @return The tuesday
      */
     public Day getTUESDAY() {
-        return tUESDAY;
+        return tuesday;
     }
 
     /**
@@ -90,16 +90,16 @@ public class DayActivities {
      * @param tUESDAY The TUESDAY
      */
     public void setTUESDAY(Day tUESDAY) {
-        this.tUESDAY = tUESDAY;
+        this.tuesday = tUESDAY;
     }
 
     /**
      * Gets wednesday.
      *
-     * @return The wEDNESDAY
+     * @return The wednesday
      */
     public Day getWEDNESDAY() {
-        return wEDNESDAY;
+        return wednesday;
     }
 
     /**
@@ -108,16 +108,16 @@ public class DayActivities {
      * @param wEDNESDAY The WEDNESDAY
      */
     public void setWEDNESDAY(Day wEDNESDAY) {
-        this.wEDNESDAY = wEDNESDAY;
+        this.wednesday = wEDNESDAY;
     }
 
     /**
      * Gets thursday.
      *
-     * @return The tHURSDAY
+     * @return The thursday
      */
     public Day getTHURSDAY() {
-        return tHURSDAY;
+        return thursday;
     }
 
     /**
@@ -126,16 +126,16 @@ public class DayActivities {
      * @param tHURSDAY The THURSDAY
      */
     public void setTHURSDAY(Day tHURSDAY) {
-        this.tHURSDAY = tHURSDAY;
+        this.thursday = tHURSDAY;
     }
 
     /**
      * Gets friday.
      *
-     * @return The fRIDAY
+     * @return The friday
      */
     public Day getFRIDAY() {
-        return fRIDAY;
+        return friday;
     }
 
     /**
@@ -144,16 +144,16 @@ public class DayActivities {
      * @param fRIDAY The FRIDAY
      */
     public void setFRIDAY(Day fRIDAY) {
-        this.fRIDAY = fRIDAY;
+        this.friday = fRIDAY;
     }
 
     /**
      * Gets saturday.
      *
-     * @return The sATURDAY
+     * @return The saturday
      */
     public Day getSATURDAY() {
-        return sATURDAY;
+        return saturday;
     }
 
     /**
@@ -162,7 +162,7 @@ public class DayActivities {
      * @param sATURDAY The SATURDAY
      */
     public void setSATURDAY(Day sATURDAY) {
-        this.sATURDAY = sATURDAY;
+        this.saturday = sATURDAY;
     }
 
 }

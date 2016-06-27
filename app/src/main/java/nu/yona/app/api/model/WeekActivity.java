@@ -57,6 +57,10 @@ public class WeekActivity extends BaseEntity {
     @SerializedName("@TimeZoneSpread")
     @Expose
     private List<TimeZoneSpread> timeZoneSpread;
+    @Expose
+    private List<WeekDayActivity> weekDayActivity;
+    @Expose
+    private int totalAccomplishedGoal;
 
     /**
      * Gets date.
@@ -255,6 +259,23 @@ public class WeekActivity extends BaseEntity {
      */
     public void setTimeZoneSpread(List<TimeZoneSpread> timeZoneSpread) {
         this.timeZoneSpread = timeZoneSpread;
+    }
+
+    public List<WeekDayActivity> getWeekDayActivity() {
+        return weekDayActivity;
+    }
+
+    public void setWeekDayActivity(List<WeekDayActivity> weekDayActivity) {
+        this.weekDayActivity = weekDayActivity;
+
+    }
+
+    public int getTotalAccomplishedGoal() {
+        return totalAccomplishedGoal;
+    }
+
+    public void setTotalAccomplishedGoal(int totalAccomplishedGoal) {
+        this.totalAccomplishedGoal = totalAccomplishedGoal;
     }
 
     @Override
