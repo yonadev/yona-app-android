@@ -219,6 +219,7 @@ public class PerWeekFragment extends BaseFragment {
         Intent intent = new Intent(IntentEnum.ACTION_WEEK_DETAIL_VIEW.getActionString());
         intent.putExtra(AppConstant.OBJECT, activity);
         intent.putExtra(AppConstant.BOOLEAN, true);
+        intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
         YonaActivity.getActivity().replaceFragment(intent);
     }
 }
