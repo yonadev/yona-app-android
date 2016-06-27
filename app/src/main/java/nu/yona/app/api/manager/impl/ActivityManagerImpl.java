@@ -499,8 +499,7 @@ public class ActivityManagerImpl implements ActivityManager {
                         && buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null) {
                     List<YonaGoal> yonaGoals = buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
                     for (YonaGoal goal : yonaGoals) {
-                        //Todo - change this logic once done by server
-                        if (goal.getLinks().getSelf().getHref().substring(goal.getLinks().getSelf().getHref().lastIndexOf("/") + 1).equals(goalHref.getHref().substring(goalHref.getHref().lastIndexOf("/") + 1))) {
+                        if (goal.getLinks().getSelf().getHref().equals(goalHref.getHref())) {
                             goal.setActivityCategoryName(getActivityCategory(goal));
                             return goal;
                         }
