@@ -20,8 +20,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -33,6 +35,8 @@ import nu.yona.app.api.manager.network.ActivityNetworkImpl;
 import nu.yona.app.api.model.Activity;
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.AppActivity;
+import nu.yona.app.api.model.Day;
+import nu.yona.app.api.model.DayActivities;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -41,6 +45,7 @@ import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.TimeZoneSpread;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.WeekActivity;
+import nu.yona.app.api.model.WeekDayActivity;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaDayActivityOverview;
@@ -49,6 +54,7 @@ import nu.yona.app.api.model.YonaWeekActivityOverview;
 import nu.yona.app.customview.graph.GraphUtils;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.enums.GoalsEnum;
+import nu.yona.app.enums.WeekDayEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
@@ -203,7 +209,6 @@ public class ActivityManagerImpl implements ActivityManager {
             int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
                     && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0)
                     ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
-            //User user = YonaApplication.getEventChangeManager().getDataState().getUser();
             if (href != null && !TextUtils.isEmpty(href.getHref())) {
                 getWeeksActivity(href.getHref(), isBuddyflow, AppConstant.PAGE_SIZE, pageNo, listener);
             } else {
@@ -380,6 +385,7 @@ public class ActivityManagerImpl implements ActivityManager {
                                 Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
                             }
                             activity.setDate(overview.getDate());
+                            activity = getWeekDayActivity(activity);
                             thisWeekActivities.add(activity);
                         }
 
@@ -399,6 +405,109 @@ public class ActivityManagerImpl implements ActivityManager {
             listener.onDataLoad(embeddedYonaActivity);
         }
     }
+
+
+    private WeekActivity getWeekDayActivity(WeekActivity activity) {
+        List<WeekDayActivity> mWeekDayActivityList = new ArrayList<>();
+        Iterator calDates = DateUtility.getWeekDay(activity.getDate()).entrySet().iterator();
+        int i = 0;
+        boolean isCurrentDateReached = false;
+        int mAccomplishedGoalCount = 0;
+        WeekDayEnum weekDayEnum = null;
+        int color = GraphUtils.COLOR_WHITE_THREE;
+        while (calDates.hasNext()) {
+            Map.Entry pair = (Map.Entry) calDates.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+            Calendar calendar = Calendar.getInstance();
+            DayActivities dayActivity = activity.getDayActivities();
+
+            WeekDayActivity weekDayActivity = new WeekDayActivity();
+            switch (i) {
+                case 0:
+                    weekDayEnum = WeekDayEnum.SUNDAY;
+                    color = getColor(dayActivity.getSUNDAY());
+                    mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getSUNDAY());
+                    break;
+                case 1:
+                    weekDayEnum = WeekDayEnum.MONDAY;
+                    color = getColor(dayActivity.getMONDAY());
+                    mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getMONDAY());
+                    break;
+                case 2:
+                    weekDayEnum = WeekDayEnum.TUESDAY;
+                    color = getColor(dayActivity.getTUESDAY());
+                    mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getTUESDAY());
+                    break;
+                case 3:
+                    weekDayEnum = WeekDayEnum.WEDNESDAY;
+                    color = getColor(dayActivity.getWEDNESDAY());
+                    mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getWEDNESDAY());
+                    break;
+                case 4:
+                    weekDayEnum = WeekDayEnum.THURSDAY;
+                    color = getColor(dayActivity.getTHURSDAY());
+                    mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getTHURSDAY());
+                    break;
+                case 5:
+                    weekDayEnum = WeekDayEnum.FRIDAY;
+                    color = getColor(dayActivity.getFRIDAY());
+                    mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getFRIDAY());
+                    break;
+                case 6:
+                    weekDayEnum = WeekDayEnum.SATURDAY;
+                    color = getColor(dayActivity.getSATURDAY());
+                    mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getSATURDAY());
+                    break;
+                default:
+                    break;
+
+            }
+            weekDayActivity.setWeekDayEnum(weekDayEnum);
+            weekDayActivity.setColor(color);
+            weekDayActivity.setDay(pair.getKey().toString());
+            weekDayActivity.setDate(pair.getValue().toString());
+            if (!isCurrentDateReached) {
+                isCurrentDateReached = DateUtility.DAY_NO_FORMAT.format(calendar.getTime()).equals(pair.getValue().toString());
+            }
+            i++;
+            mWeekDayActivityList.add(weekDayActivity);
+        }
+        activity.setWeekDayActivity(mWeekDayActivityList);
+        activity.setTotalAccomplishedGoal(mAccomplishedGoalCount);
+        return activity;
+    }
+
+
+    /**
+     * Get the Accomplished number on base on day he has achieved or not
+     *
+     * @param day
+     * @return
+     */
+    private int getGoalAccomplished(Day day) {
+        return (day != null && day.getGoalAccomplished()) ? 1 : 0;
+    }
+
+    /**
+     * Get the color of week Circle ,
+     * if goal has achieved then its Green,
+     * if goal not achieved then its Pink,
+     * else if its future date or not added that goal before date of created then its Grey
+     *
+     * @param day
+     * @return
+     */
+    private int getColor(Day day) {
+        if (day != null) {
+            if (day.getGoalAccomplished()) {
+                return GraphUtils.COLOR_GREEN;
+            } else {
+                return GraphUtils.COLOR_PINK;
+            }
+        }
+        return GraphUtils.COLOR_WHITE_THREE;
+    }
+
 
     private void filterAndUpdateDailyData(EmbeddedYonaActivity embeddedYonaActivity, boolean isBuddyFlow, DataLoadListener listener) {
         List<DayActivity> dayActivities = new ArrayList<>();

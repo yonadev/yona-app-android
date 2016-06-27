@@ -18,20 +18,15 @@ import android.view.ViewGroup;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
-import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import nu.yona.app.R;
-import nu.yona.app.api.model.Day;
-import nu.yona.app.api.model.DayActivities;
 import nu.yona.app.api.model.WeekActivity;
+import nu.yona.app.api.model.WeekDayActivity;
 import nu.yona.app.customview.YonaFontTextView;
-import nu.yona.app.customview.graph.GraphUtils;
 import nu.yona.app.enums.ChartTypeEnum;
+import nu.yona.app.enums.WeekDayEnum;
 import nu.yona.app.ui.ChartItemHolder;
-import nu.yona.app.utils.DateUtility;
 
 /**
  * Created by kinnarvasa on 09/06/16.
@@ -67,95 +62,42 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
                 holder.getGoalType().setText(weekActivity.getYonaGoal().getActivityCategoryName());
             }
             holder.getGoalDesc().setText(R.string.week_score);
-            Iterator calDates = DateUtility.getWeekDay(weekActivity.getDate()).entrySet().iterator();
-            int i = 0;
-            boolean isCurrentDateReached = false;
-            int mAccomplishedGoalCount = 0;
-            while (calDates.hasNext()) {
-                Map.Entry pair = (Map.Entry) calDates.next();
-                System.out.println(pair.getKey() + " = " + pair.getValue());
-                Calendar calendar = Calendar.getInstance();
+
+            for (WeekDayActivity weekDayActivity : weekActivity.getWeekDayActivity()) {
+                WeekDayEnum weekDayEnum = weekDayActivity.getWeekDayEnum();
                 View view = null;
-                DayActivities dayActivity = weekActivity.getDayActivities();
-                int color = GraphUtils.COLOR_WHITE_THREE;
-                switch (i) {
-                    case 0:
+                switch (weekDayEnum) {
+                    case SUNDAY:
                         view = holder.getmWeekDayFirst();
-                        color = getColor(dayActivity.getSUNDAY());
-                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getSUNDAY());
                         break;
-                    case 1:
+                    case MONDAY:
                         view = holder.getmWeekDaySecond();
-                        color = getColor(dayActivity.getMONDAY());
-                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getMONDAY());
                         break;
-                    case 2:
+                    case TUESDAY:
                         view = holder.getmWeekDayThird();
-                        color = getColor(dayActivity.getTUESDAY());
-                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getTUESDAY());
                         break;
-                    case 3:
+                    case WEDNESDAY:
                         view = holder.getmWeekDayFourth();
-                        color = getColor(dayActivity.getWEDNESDAY());
-                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getWEDNESDAY());
                         break;
-                    case 4:
+                    case THURSDAY:
                         view = holder.getmWeekDayFifth();
-                        color = getColor(dayActivity.getTHURSDAY());
-                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getTHURSDAY());
                         break;
-                    case 5:
+                    case FRIDAY:
                         view = holder.getmWeekDaySixth();
-                        color = getColor(dayActivity.getFRIDAY());
-                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getFRIDAY());
                         break;
-                    case 6:
+                    case SATURDAY:
                         view = holder.getmWeekDaySeventh();
-                        color = getColor(dayActivity.getSATURDAY());
-                        mAccomplishedGoalCount = mAccomplishedGoalCount + getGoalAccomplished(dayActivity.getSATURDAY());
                         break;
                     default:
                         break;
                 }
-                holder.updateTextOfCircle(view, pair.getKey().toString(), pair.getValue().toString(), color);
-                if (!isCurrentDateReached) {
-                    isCurrentDateReached = DateUtility.DAY_NO_FORMAT.format(calendar.getTime()).equals(pair.getValue().toString());
-                }
-                i++;
+
+                holder.updateTextOfCircle(view, weekDayActivity.getDay(), weekDayActivity.getDate(), weekDayActivity.getColor());
             }
-            holder.getGoalScore().setText(mAccomplishedGoalCount + "");
+            holder.getGoalScore().setText(weekActivity.getTotalAccomplishedGoal() + "");
         }
     }
 
-    /**
-     * Get the Accomplished number on base on day he has achieved or not
-     *
-     * @param day
-     * @return
-     */
-    private int getGoalAccomplished(Day day) {
-        return (day != null && day.getGoalAccomplished()) ? 1 : 0;
-    }
-
-    /**
-     * Get the color of week Circle ,
-     * if goal has achieved then its Green,
-     * if goal not achieved then its Pink,
-     * else if its future date or not added that goal before date of created then its Grey
-     *
-     * @param day
-     * @return
-     */
-    private int getColor(Day day) {
-        if (day != null) {
-            if (day.getGoalAccomplished()) {
-                return GraphUtils.COLOR_GREEN;
-            } else {
-                return GraphUtils.COLOR_PINK;
-            }
-        }
-        return GraphUtils.COLOR_WHITE_THREE;
-    }
 
     @Override
     public int getItemViewType(int position) {
