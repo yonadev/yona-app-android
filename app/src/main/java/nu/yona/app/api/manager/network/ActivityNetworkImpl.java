@@ -21,12 +21,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by kinnarvasa on 06/06/16.
+ * The type Activity network.
  */
 public class ActivityNetworkImpl extends BaseImpl {
 
     /**
-     * Gets buddy days activity.
+     * Gets days activity.
      *
      * @param url          the url
      * @param yonaPassword the yona password
@@ -84,6 +84,23 @@ public class ActivityNetworkImpl extends BaseImpl {
     public void getWeeksDetailActivity(String url, String yonaPassword, DataLoadListener listener) {
         try {
             getRestApi().getWeekDetailActivity(url, yonaPassword).enqueue(getweekDetailActivity(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    /**
+     * Gets with buddy activity.
+     *
+     * @param url          the url
+     * @param yonaPassword the yona password
+     * @param itemPerPage  the item per page
+     * @param pageNo       the page no
+     * @param listener     the listener
+     */
+    public void getWithBuddyActivity(String url, String yonaPassword, int itemPerPage, int pageNo, DataLoadListener listener) {
+        try {
+            getRestApi().getWithBuddyActivity(url, yonaPassword, itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

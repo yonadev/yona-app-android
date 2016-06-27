@@ -132,8 +132,6 @@ public interface RestApi {
     @DELETE
     Call<Void> deleteUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
 
-    /******** USER ************/
-
     /********
      * RESET PIN
      *
@@ -164,8 +162,6 @@ public interface RestApi {
      */
     @POST
     Call<Void> clearPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
-
-    /******** RESET PIN ************/
 
     /********
      * DEVICE
@@ -199,8 +195,6 @@ public interface RestApi {
     @GET(ApiList.NEW_DEVICE_REQUEST)
     Call<NewDevice> checkDevice(@Path("mobileNumber") String mobileNumber, @Header(NetworkConstant.YONA_NEW_PASSWORD) String password);
 
-    /******** DEVICE ************/
-
     /********
      * ActivityCategory
      *
@@ -208,8 +202,6 @@ public interface RestApi {
      */
     @GET(ApiList.ACTIVITY_CATEGORIES)
     Call<ActivityCategories> getActivityCategories();
-
-    /******** ActivityCategory ************/
 
     /********
      * GOALS
@@ -277,8 +269,6 @@ public interface RestApi {
     @PUT
     Call<Goals> updateUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("message") String message, @Body PostTimeZoneYonaGoal postTimeZoneYonaGoal);
 
-    /******** GOALS ************/
-
     /********
      * FRIENDS / BUDDY
      *
@@ -309,8 +299,6 @@ public interface RestApi {
      */
     @DELETE
     Call<Void> deleteBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
-
-    /******** FRIENDS / BUDDY ************/
 
     /********
      * NOTIFICATION MANAGER
@@ -346,7 +334,6 @@ public interface RestApi {
      */
     @POST
     Call<Void> postMessage(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body MessageBody body);
-    /******** NOTIFICATION MANAGER ************/
 
     /********
      * ACTIVITY  @param url the url
@@ -379,7 +366,6 @@ public interface RestApi {
      */
     @GET
     Call<WeekActivity> getWeekDetailActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password);
-    /******** ACTIVITY ************/
 
     /********
      * APP ACTIVITY
@@ -391,7 +377,16 @@ public interface RestApi {
      */
     @POST
     Call<Void> postAppActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body AppActivity activity);
-    /******** APP ACTIVITY ************/
 
-
+    /**
+     * Gets with buddy activity.
+     *
+     * @param url      the url
+     * @param password the password
+     * @param size     the size
+     * @param page     the page
+     * @return the with buddy activity
+     */
+    @GET
+    Call<EmbeddedYonaActivity> getWithBuddyActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("size") int size, @Query("page") int page);
 }

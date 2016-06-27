@@ -71,6 +71,13 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
 
     }
 
+    /**
+     * Instantiates a new Chart item holder.
+     *
+     * @param itemView  the item view
+     * @param listener  the listener
+     * @param goalsEnum the goals enum
+     */
     public ChartItemHolder(View itemView, View.OnClickListener listener, GoalsEnum goalsEnum) {
         super(itemView);
         this.view = itemView;
@@ -91,6 +98,7 @@ public class ChartItemHolder extends RecyclerView.ViewHolder {
         }
 
     }
+
     /**
      * Initialize Nogo Controls
      */

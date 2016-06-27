@@ -28,6 +28,7 @@ import nu.yona.app.YonaApplication;
  */
 public class DateUtility {
 
+    private static final int mNoOfDayPerWeek = 7;
     /**
      * The constant DAY_FORMAT.
      */
@@ -40,8 +41,6 @@ public class DateUtility {
      * The constant WEEK_FORMAT.
      */
     public static SimpleDateFormat WEEK_FORMAT = new SimpleDateFormat("yyyy-'W'ww");
-    private static final int mNoOfDayPerWeek = 7;
-
 
     /**
      * Gets relative date.

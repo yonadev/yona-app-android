@@ -60,6 +60,9 @@ public class DayActivity extends BaseEntity {
     @SerializedName("@TimeZoneSpread")
     @Expose
     private List<TimeZoneSpread> timeZoneSpread;
+    @SerializedName("dayActivitiesForUsers")
+    @Expose
+    private List<DayActivity> dayActivitiesForUsers = new ArrayList<DayActivity>();
 
     /**
      * Gets date.
@@ -281,5 +284,23 @@ public class DayActivity extends BaseEntity {
     @Override
     public ContentValues getDbContentValues() {
         return null;
+    }
+
+    /**
+     * Gets day activities for users.
+     *
+     * @return the day activities for users
+     */
+    public List<DayActivity> getDayActivitiesForUsers() {
+        return this.dayActivitiesForUsers;
+    }
+
+    /**
+     * Sets day activities for users.
+     *
+     * @param dayActivitiesForUsers the day activities for users
+     */
+    public void setDayActivitiesForUsers(List<DayActivity> dayActivitiesForUsers) {
+        this.dayActivitiesForUsers = dayActivitiesForUsers;
     }
 }

@@ -96,6 +96,15 @@ public class BaseView extends View {
         initialize();
     }
 
+    /**
+     * Drawable to bitmap bitmap.
+     *
+     * @param drawable the drawable
+     * @return the bitmap
+     */
+    protected static Bitmap drawableToBitmap(Drawable drawable) {
+        return ((BitmapDrawable) drawable).getBitmap();
+    }
 
     /**
      * Initialize.
@@ -117,17 +126,6 @@ public class BaseView extends View {
         linePaint.setStrokeWidth(1);
         linePaint.setColor(GraphUtils.COLOR_WHITE_THREE);
 
-    }
-
-
-    /**
-     * Drawable to bitmap bitmap.
-     *
-     * @param drawable the drawable
-     * @return the bitmap
-     */
-    protected static Bitmap drawableToBitmap(Drawable drawable) {
-        return ((BitmapDrawable) drawable).getBitmap();
     }
 
 }
