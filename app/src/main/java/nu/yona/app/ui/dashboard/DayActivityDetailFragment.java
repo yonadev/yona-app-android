@@ -27,6 +27,7 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
+import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
@@ -44,6 +45,16 @@ public class DayActivityDetailFragment extends BaseFragment {
     private ImageView previousItem, nextItem;
     private YonaFontTextView dateTitle;
     private List<DayActivity> dayActivityList;
+    private YonaHeaderTheme mYonaHeaderTheme;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+        }
+    }
+
 
     @Nullable
     @Override
@@ -51,6 +62,9 @@ public class DayActivityDetailFragment extends BaseFragment {
         view = inflater.inflate(R.layout.detail_pager_fragment, null);
 
         setupToolbar(view);
+        if (mYonaHeaderTheme != null) {
+            mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
+        }
 
         previousItem = (ImageView) view.findViewById(R.id.previous);
         nextItem = (ImageView) view.findViewById(R.id.next);
