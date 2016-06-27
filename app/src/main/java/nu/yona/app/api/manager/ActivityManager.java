@@ -31,7 +31,7 @@ public interface ActivityManager {
     void getDaysActivity(boolean loadMore, boolean isBuddlyFlow, Href url, DataLoadListener listener);
 
     /**
-     * Gets day detail activity details of logged in user /friends
+     * Gets day detail activity.
      *
      * @param url      the url
      * @param listener the listener
@@ -46,7 +46,7 @@ public interface ActivityManager {
      * @param href         the href
      * @param listener     the listener
      */
-    void getWeeksActivity(boolean loadMore,boolean isBuddlyFlow, Href href, DataLoadListener listener);
+    void getWeeksActivity(boolean loadMore, boolean isBuddlyFlow, Href href, DataLoadListener listener);
 
     /**
      * Gets weeks detail activity.
@@ -69,4 +69,12 @@ public interface ActivityManager {
      * Post all db activities.
      */
     void postAllDBActivities();
+
+    /**
+     * Gets with buddy activity.
+     *
+     * @param loadMore the load more
+     * @param listener the listener
+     */
+    void getWithBuddyActivity(boolean loadMore, final DataLoadListener listener);
 }

@@ -75,6 +75,12 @@ public enum ChartTypeEnum {
         return NONE_NONE;
     }
 
+    /**
+     * Gets chart type enum.
+     *
+     * @param type the type
+     * @return the chart type enum
+     */
     public static ChartTypeEnum getChartTypeEnum(String type) {
         for (ChartTypeEnum v : values()) {
             if (v.getChartType() == type) {

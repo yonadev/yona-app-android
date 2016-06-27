@@ -44,11 +44,15 @@ public class YonaGoal extends BaseEntity {
     @SerializedName("historyItem")
     @Expose
     private boolean historyItem;
+    //Nickname of buddy require for friend's timeline
+    @SerializedName("@nickName")
+    @Expose
+    private String nickName;
 
     /**
      * Gets links.
      *
-     * @return The Links
+     * @return the links
      */
     public Links getLinks() {
         return Links;
@@ -57,7 +61,7 @@ public class YonaGoal extends BaseEntity {
     /**
      * Sets links.
      *
-     * @param Links The _links
+     * @param Links the links
      */
     public void setLinks(nu.yona.app.api.model.Links Links) {
         this.Links = Links;
@@ -66,7 +70,7 @@ public class YonaGoal extends BaseEntity {
     /**
      * Gets type.
      *
-     * @return The Type
+     * @return the type
      */
     public String getType() {
         return Type;
@@ -75,7 +79,7 @@ public class YonaGoal extends BaseEntity {
     /**
      * Sets type.
      *
-     * @param Type The @type
+     * @param Type the type
      */
     public void setType(String Type) {
         this.Type = Type;
@@ -84,7 +88,7 @@ public class YonaGoal extends BaseEntity {
     /**
      * Gets activity category name.
      *
-     * @return The activityCategoryName
+     * @return the activity category name
      */
     public String getActivityCategoryName() {
         return activityCategoryName;
@@ -93,7 +97,7 @@ public class YonaGoal extends BaseEntity {
     /**
      * Sets activity category name.
      *
-     * @param activityCategoryName The activityCategoryName
+     * @param activityCategoryName the activity category name
      */
     public void setActivityCategoryName(String activityCategoryName) {
         this.activityCategoryName = activityCategoryName;
@@ -174,5 +178,23 @@ public class YonaGoal extends BaseEntity {
      */
     public void setHistoryItem(boolean historyItem) {
         this.historyItem = historyItem;
+    }
+
+    /**
+     * Gets nick name.
+     *
+     * @return the nick name
+     */
+    public String getNickName() {
+        return this.nickName;
+    }
+
+    /**
+     * Sets nick name.
+     *
+     * @param nickName the nick name
+     */
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

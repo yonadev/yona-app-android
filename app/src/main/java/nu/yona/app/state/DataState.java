@@ -24,6 +24,7 @@ public class DataState {
     private User user;
     private EmbeddedYonaActivity embeddedDayActivity;
     private EmbeddedYonaActivity embeddedWeekActivity;
+    private EmbeddedYonaActivity embeddedWithBuddyActivity;
 
     /**
      * Gets user.
@@ -57,9 +58,9 @@ public class DataState {
     }
 
     /**
-     * Gets embedded yona activity.
+     * Gets embedded day activity.
      *
-     * @return the embedded yona activity
+     * @return the embedded day activity
      */
     public EmbeddedYonaActivity getEmbeddedDayActivity() {
         return this.embeddedDayActivity;
@@ -103,5 +104,23 @@ public class DataState {
             embeddedDayActivity = null;
             embeddedWeekActivity = null;
         }
+    }
+
+    /**
+     * Gets embedded with buddy activity.
+     *
+     * @return the embedded with buddy activity
+     */
+    public EmbeddedYonaActivity getEmbeddedWithBuddyActivity() {
+        return this.embeddedWithBuddyActivity;
+    }
+
+    /**
+     * Sets embedded with buddy activity.
+     *
+     * @param embeddedWithBuddyActivity the embedded with buddy activity
+     */
+    public void setEmbeddedWithBuddyActivity(EmbeddedYonaActivity embeddedWithBuddyActivity) {
+        this.embeddedWithBuddyActivity = embeddedWithBuddyActivity;
     }
 }

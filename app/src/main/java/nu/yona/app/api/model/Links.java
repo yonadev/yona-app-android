@@ -62,6 +62,9 @@ public class Links extends BaseEntity {
     @SerializedName("yona:requestPinReset")
     @Expose
     private Href requestPinReset;
+    @SerializedName("yona:dailyActivityReportsWithBuddies")
+    @Expose
+    private Href dailyActivityReportsWithBuddies;
     @SerializedName("yona:resendPinResetConfirmationCode")
     @Expose
     private Href resendPinResetConfirmationCode;
@@ -108,7 +111,7 @@ public class Links extends BaseEntity {
     /**
      * Gets self.
      *
-     * @return The self
+     * @return the self
      */
     public Href getSelf() {
         return self;
@@ -117,7 +120,7 @@ public class Links extends BaseEntity {
     /**
      * Sets self.
      *
-     * @param self The self
+     * @param self the self
      */
     public void setSelf(Href self) {
         this.self = self;
@@ -126,7 +129,7 @@ public class Links extends BaseEntity {
     /**
      * Gets edit.
      *
-     * @return The edit
+     * @return the edit
      */
     public Href getEdit() {
         return edit;
@@ -135,7 +138,7 @@ public class Links extends BaseEntity {
     /**
      * Sets edit.
      *
-     * @param edit The edit
+     * @param edit the edit
      */
     public void setEdit(Href edit) {
         this.edit = edit;
@@ -144,7 +147,7 @@ public class Links extends BaseEntity {
     /**
      * Gets yona messages.
      *
-     * @return The yonaMessages
+     * @return the yona messages
      */
     public Href getYonaMessages() {
         return yonaMessages;
@@ -153,7 +156,7 @@ public class Links extends BaseEntity {
     /**
      * Sets yona messages.
      *
-     * @param yonaMessages The yona:messages
+     * @param yonaMessages the yona messages
      */
     public void setYonaMessages(Href yonaMessages) {
         this.yonaMessages = yonaMessages;
@@ -162,7 +165,7 @@ public class Links extends BaseEntity {
     /**
      * Gets yona daily activity reports.
      *
-     * @return The yonaDailyActivityReports
+     * @return the yona daily activity reports
      */
     public Href getYonaDailyActivityReports() {
         return yonaDailyActivityReports;
@@ -171,7 +174,7 @@ public class Links extends BaseEntity {
     /**
      * Sets yona daily activity reports.
      *
-     * @param yonaDailyActivityReports The yona:dailyActivityReports
+     * @param yonaDailyActivityReports the yona daily activity reports
      */
     public void setYonaDailyActivityReports(Href yonaDailyActivityReports) {
         this.yonaDailyActivityReports = yonaDailyActivityReports;
@@ -180,7 +183,7 @@ public class Links extends BaseEntity {
     /**
      * Gets yona weekly activity reports.
      *
-     * @return The yonaWeeklyActivityReports
+     * @return the yona weekly activity reports
      */
     public Href getYonaWeeklyActivityReports() {
         return yonaWeeklyActivityReports;
@@ -189,7 +192,7 @@ public class Links extends BaseEntity {
     /**
      * Sets yona weekly activity reports.
      *
-     * @param yonaWeeklyActivityReports The yona:weeklyActivityReports
+     * @param yonaWeeklyActivityReports the yona weekly activity reports
      */
     public void setYonaWeeklyActivityReports(Href yonaWeeklyActivityReports) {
         this.yonaWeeklyActivityReports = yonaWeeklyActivityReports;
@@ -198,7 +201,7 @@ public class Links extends BaseEntity {
     /**
      * Gets yona new device request.
      *
-     * @return The yonaNewDeviceRequest
+     * @return the yona new device request
      */
     public Href getYonaNewDeviceRequest() {
         return yonaNewDeviceRequest;
@@ -207,7 +210,7 @@ public class Links extends BaseEntity {
     /**
      * Sets yona new device request.
      *
-     * @param yonaNewDeviceRequest The yona:newDeviceRequest
+     * @param yonaNewDeviceRequest the yona new device request
      */
     public void setYonaNewDeviceRequest(Href yonaNewDeviceRequest) {
         this.yonaNewDeviceRequest = yonaNewDeviceRequest;
@@ -216,7 +219,7 @@ public class Links extends BaseEntity {
     /**
      * Gets yona app activity.
      *
-     * @return The yonaAppActivity
+     * @return the yona app activity
      */
     public Href getYonaAppActivity() {
         return yonaAppActivity;
@@ -225,7 +228,7 @@ public class Links extends BaseEntity {
     /**
      * Sets yona app activity.
      *
-     * @param yonaAppActivity The yona:appActivity
+     * @param yonaAppActivity the yona app activity
      */
     public void setYonaAppActivity(Href yonaAppActivity) {
         this.yonaAppActivity = yonaAppActivity;
@@ -234,7 +237,7 @@ public class Links extends BaseEntity {
     /**
      * Gets curies.
      *
-     * @return The curies
+     * @return the curies
      */
     public List<Cury> getCuries() {
         return curies;
@@ -243,7 +246,7 @@ public class Links extends BaseEntity {
     /**
      * Sets curies.
      *
-     * @param curies The curies
+     * @param curies the curies
      */
     public void setCuries(List<Cury> curies) {
         this.curies = curies;
@@ -342,7 +345,7 @@ public class Links extends BaseEntity {
     /**
      * Gets yona user.
      *
-     * @return The yonaUser
+     * @return the yona user
      */
     public Href getYonaUser() {
         return yonaUser;
@@ -351,7 +354,7 @@ public class Links extends BaseEntity {
     /**
      * Sets yona user.
      *
-     * @param yonaUser The yona:user
+     * @param yonaUser the yona user
      */
     public void setYonaUser(Href yonaUser) {
         this.yonaUser = yonaUser;
@@ -383,7 +386,7 @@ public class Links extends BaseEntity {
     /**
      * Gets yona reject.
      *
-     * @return The yonaReject
+     * @return the yona reject
      */
     public Href getYonaReject() {
         return yonaReject;
@@ -392,7 +395,7 @@ public class Links extends BaseEntity {
     /**
      * Sets yona reject.
      *
-     * @param yonaReject The yona:reject
+     * @param yonaReject the yona reject
      */
     public void setYonaReject(Href yonaReject) {
         this.yonaReject = yonaReject;
@@ -401,7 +404,7 @@ public class Links extends BaseEntity {
     /**
      * Gets yona accept.
      *
-     * @return The yonaAccept
+     * @return the yona accept
      */
     public Href getYonaAccept() {
         return yonaAccept;
@@ -410,7 +413,7 @@ public class Links extends BaseEntity {
     /**
      * Sets yona accept.
      *
-     * @param yonaAccept The yona:accept
+     * @param yonaAccept the yona accept
      */
     public void setYonaAccept(Href yonaAccept) {
         this.yonaAccept = yonaAccept;
@@ -457,7 +460,7 @@ public class Links extends BaseEntity {
     /**
      * Gets yona day details.
      *
-     * @return The yonaDayDetails
+     * @return the yona day details
      */
     public Href getYonaDayDetails() {
         return yonaDayDetails;
@@ -466,7 +469,7 @@ public class Links extends BaseEntity {
     /**
      * Sets yona day details.
      *
-     * @param yonaDayDetails The yona:dayDetails
+     * @param yonaDayDetails the yona day details
      */
     public void setYonaDayDetails(Href yonaDayDetails) {
         this.yonaDayDetails = yonaDayDetails;
@@ -475,7 +478,7 @@ public class Links extends BaseEntity {
     /**
      * Gets next.
      *
-     * @return The next
+     * @return the next
      */
     public Href getNext() {
         return next;
@@ -484,7 +487,7 @@ public class Links extends BaseEntity {
     /**
      * Sets next.
      *
-     * @param next The next
+     * @param next the next
      */
     public void setNext(Href next) {
         this.next = next;
@@ -493,7 +496,7 @@ public class Links extends BaseEntity {
     /**
      * Gets prev.
      *
-     * @return The prev
+     * @return the prev
      */
     public Href getPrev() {
         return prev;
@@ -502,7 +505,7 @@ public class Links extends BaseEntity {
     /**
      * Sets prev.
      *
-     * @param prev The prev
+     * @param prev the prev
      */
     public void setPrev(Href prev) {
         this.prev = prev;
@@ -511,7 +514,7 @@ public class Links extends BaseEntity {
     /**
      * Gets first.
      *
-     * @return The first
+     * @return the first
      */
     public Href getFirst() {
         return first;
@@ -520,7 +523,7 @@ public class Links extends BaseEntity {
     /**
      * Sets first.
      *
-     * @param first The first
+     * @param first the first
      */
     public void setFirst(Href first) {
         this.first = first;
@@ -529,7 +532,7 @@ public class Links extends BaseEntity {
     /**
      * Gets last.
      *
-     * @return The last
+     * @return the last
      */
     public Href getLast() {
         return last;
@@ -538,7 +541,7 @@ public class Links extends BaseEntity {
     /**
      * Sets last.
      *
-     * @param last The last
+     * @param last the last
      */
     public void setLast(Href last) {
         this.last = last;
@@ -596,5 +599,23 @@ public class Links extends BaseEntity {
      */
     public void setYonaBuddy(Href yonaBuddy) {
         this.yonaBuddy = yonaBuddy;
+    }
+
+    /**
+     * Gets daily activity reports with buddies.
+     *
+     * @return the daily activity reports with buddies
+     */
+    public Href getDailyActivityReportsWithBuddies() {
+        return this.dailyActivityReportsWithBuddies;
+    }
+
+    /**
+     * Sets daily activity reports with buddies.
+     *
+     * @param dailyActivityReportsWithBuddies the daily activity reports with buddies
+     */
+    public void setDailyActivityReportsWithBuddies(Href dailyActivityReportsWithBuddies) {
+        this.dailyActivityReportsWithBuddies = dailyActivityReportsWithBuddies;
     }
 }

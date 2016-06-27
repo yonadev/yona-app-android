@@ -72,6 +72,9 @@ public enum IntentEnum {
      */
     ACTION_ACTIVITY_DETAIL_VIEW("nul.yona.app.action.ACTIVITY_DETAIL"),
 
+    /**
+     * Action week detail view intent enum.
+     */
     ACTION_WEEK_DETAIL_VIEW("nu.yona.app.action.WEEK_DETAIL");
 
     private static final Map<String, IntentEnum> nameToEnumMapping = new HashMap<>();

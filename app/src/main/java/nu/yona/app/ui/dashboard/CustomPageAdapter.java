@@ -274,7 +274,7 @@ public class CustomPageAdapter extends PagerAdapter {
      * @param activityList the activity list
      */
     public void notifyDataSetChanged(List<?> activityList) {
-        if (activityList != null && activityList.get(0) instanceof DayActivity) {
+        if (activityList != null && activityList.size() > 0 && activityList.get(0) instanceof DayActivity) {
             dayActivities = (List<DayActivity>) activityList;
         } else {
             weekActivities = (List<WeekActivity>) activityList;

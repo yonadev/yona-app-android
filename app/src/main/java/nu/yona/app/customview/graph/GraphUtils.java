@@ -61,7 +61,7 @@ public class GraphUtils {
      *
      * @param context the context
      * @param value   the value
-     * @return int
+     * @return int int
      */
     public static int convertSizeToDeviceDependent(Context context, int value) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
