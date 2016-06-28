@@ -186,6 +186,7 @@
     <dimen name="timeline_list_paddingLeft">16dp</dimen>
     <dimen name="timeline_list_paddingRight">32dp</dimen>
     <dimen name="timeline_list_marginTop">15dp</dimen>
+    <dimen name="timeline_header_maring_top">29dp</dimen>
 
     <!-- horizontal line -->
     <dimen name="horizontal_line_margin_bottom">12dp</dimen>
