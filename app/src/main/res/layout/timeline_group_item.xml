@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/timeline_group_margin_top"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/img_user_icon"
+        android:layout_width="@dimen/timeline_user_icon_width"
+        android:layout_height="@dimen/timeline_user_icon_height"
+        android:contentDescription="@string/empty_description" />
+
+    <!-- Every Graph going to add in thi container -->
+    <FrameLayout
+        android:id="@+id/graphContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/timeline_graph_container_margin_left"
+        android:layout_toRightOf="@id/img_user_icon" />
+</RelativeLayout>

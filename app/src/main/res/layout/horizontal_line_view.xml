@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/horizontal_line_margin_bottom"
+    android:layout_marginTop="@dimen/horizontal_line_margin_top"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/horizontal_line_padding_left">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/horizontal_line_height"
+        android:background="@color/white_two"
+        android:orientation="vertical">
+
+    </View>
+</LinearLayout>
