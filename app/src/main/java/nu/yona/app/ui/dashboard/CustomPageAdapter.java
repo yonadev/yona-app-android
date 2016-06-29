@@ -12,6 +12,7 @@ package nu.yona.app.ui.dashboard;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ public class CustomPageAdapter extends PagerAdapter {
     private SpreadGraph mSpreadGraph;
     private int SPREAD_CELL_MINUTE = 15;
     private int WEEK_DAYS = 7;
+    private FrameLayout graphView;
 
     /**
      * Instantiates a new Custom page adapter.
@@ -72,9 +74,9 @@ public class CustomPageAdapter extends PagerAdapter {
         goalScore = (YonaFontTextView) layout.findViewById(R.id.goalScore);
         mSpreadGraph = (SpreadGraph) layout.findViewById(R.id.spreadGraph);
         DayActivity dayActivity = dayActivities.get(position);
-        FrameLayout view = ((FrameLayout) layout.findViewById(R.id.graphView));
-        view.addView(inflateActivityView(inflater, dayActivity.getChartTypeEnum(), layout));
-        updateView(new ChartItemHolder(view, null, dayActivity.getChartTypeEnum()), null, dayActivity);
+        graphView = ((FrameLayout) layout.findViewById(R.id.graphView));
+        graphView.addView(inflateActivityView(inflater, dayActivity.getChartTypeEnum(), layout));
+        updateView(new ChartItemHolder(graphView, null, dayActivity.getChartTypeEnum()), null, dayActivity);
         collection.addView(layout);
         return layout;
     }
@@ -108,14 +110,14 @@ public class CustomPageAdapter extends PagerAdapter {
         goalType = (YonaFontTextView) layout.findViewById(R.id.goalType);
         goalScore = (YonaFontTextView) layout.findViewById(R.id.goalScore);
         layout.findViewById(R.id.week_chart).setVisibility(View.VISIBLE); // week control
-        FrameLayout view = ((FrameLayout) layout.findViewById(R.id.graphView));
+        graphView = ((FrameLayout) layout.findViewById(R.id.graphView));
         GoalsEnum goalsEnum;
         goalsEnum = GoalsEnum.fromName(weekActivity.getYonaGoal().getType());
         if (goalsEnum == GoalsEnum.BUDGET_GOAL && weekActivity.getYonaGoal().getMaxDurationMinutes() == 0) {
             goalsEnum = GoalsEnum.NOGO;
         }
-        view.addView(inflateActivityView(inflater, goalsEnum, layout));
-        updateView(new ChartItemHolder(view, null, goalsEnum), weekActivity, null);
+        graphView.addView(inflateActivityView(inflater, goalsEnum, layout));
+        updateView(new ChartItemHolder(graphView, null, goalsEnum), weekActivity, null);
         collection.addView(layout);
         return layout;
     }
@@ -186,17 +188,7 @@ public class CustomPageAdapter extends PagerAdapter {
     }
 
     private void loadTimeFrameControlForWeek(WeekActivity weekActivity, ChartItemHolder holder) {
-        int timeFrameGoalMinutes = (weekActivity.getYonaGoal().getSpreadCells().size() * 15) - weekActivity.getTotalActivityDurationMinutes();
-        if (weekActivity.getTimeZoneSpread() != null) {
-            holder.getTimeFrameGraph().chartValuePre(weekActivity.getTimeZoneSpread());
-        }
-        holder.getGoalType().setText(mContext.getString(R.string.score));
-        holder.getGoalScore().setText(Math.abs(timeFrameGoalMinutes) + "");
-        if (timeFrameGoalMinutes < 0) {
-            holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
-        } else {
-            holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
-        }
+        graphView.setVisibility(View.GONE);
     }
 
     private void loadTimeBucketControlForDay(DayActivity dayActivity, ChartItemHolder holder) {
@@ -220,7 +212,73 @@ public class CustomPageAdapter extends PagerAdapter {
     }
 
     private void loadTimeBucketControlForWeek(WeekActivity weekActivity, ChartItemHolder holder) {
-        //TODO under discussion with Bastiaan
+        Pair<Integer, Integer> avgUsage = getAverageUsageMinute(weekActivity);
+        int goalMinutes = ((int) weekActivity.getYonaGoal().getMaxDurationMinutes()) - avgUsage.first;
+
+        int maxDurationAllow = (int) weekActivity.getYonaGoal().getMaxDurationMinutes();
+        if (maxDurationAllow > 0) {
+            holder.getTimeBucketGraph().graphArguments(avgUsage.second, (int) weekActivity.getYonaGoal().getMaxDurationMinutes(), weekActivity.getTotalActivityDurationMinutes());
+        }
+        holder.getGoalType().setText(mContext.getString(R.string.score));
+        if (goalMinutes < 0) {
+            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
+        } else {
+            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
+        }
+        if (goalMinutes < 0) {
+            holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+        } else {
+            holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
+        }
+        holder.getGoalScore().setText(Math.abs(goalMinutes) + "");
+    }
+
+    private Pair<Integer, Integer> getAverageUsageMinute(WeekActivity weekActivity) {
+        int avgMinute = 0;
+        int totalDays = 0;
+        int beyondGoal = 0;
+        if (weekActivity != null && weekActivity.getDayActivities() != null) {
+            if (weekActivity.getDayActivities().getMONDAY() != null) {
+                totalDays++;
+                avgMinute += weekActivity.getDayActivities().getMONDAY().getTotalActivityDurationMinutes();
+                beyondGoal += weekActivity.getDayActivities().getMONDAY().getTotalMinutesBeyondGoal();
+            }
+            if (weekActivity.getDayActivities().getTUESDAY() != null) {
+                totalDays++;
+                avgMinute += weekActivity.getDayActivities().getTUESDAY().getTotalActivityDurationMinutes();
+                beyondGoal += weekActivity.getDayActivities().getTUESDAY().getTotalMinutesBeyondGoal();
+            }
+            if (weekActivity.getDayActivities().getWEDNESDAY() != null) {
+                totalDays++;
+                avgMinute += weekActivity.getDayActivities().getWEDNESDAY().getTotalActivityDurationMinutes();
+                beyondGoal += weekActivity.getDayActivities().getWEDNESDAY().getTotalMinutesBeyondGoal();
+            }
+            if (weekActivity.getDayActivities().getTHURSDAY() != null) {
+                totalDays++;
+                avgMinute += weekActivity.getDayActivities().getTHURSDAY().getTotalActivityDurationMinutes();
+                beyondGoal += weekActivity.getDayActivities().getTHURSDAY().getTotalMinutesBeyondGoal();
+            }
+            if (weekActivity.getDayActivities().getFRIDAY() != null) {
+                totalDays++;
+                avgMinute += weekActivity.getDayActivities().getFRIDAY().getTotalActivityDurationMinutes();
+                beyondGoal += weekActivity.getDayActivities().getFRIDAY().getTotalMinutesBeyondGoal();
+            }
+            if (weekActivity.getDayActivities().getSATURDAY() != null) {
+                totalDays++;
+                avgMinute += weekActivity.getDayActivities().getSATURDAY().getTotalActivityDurationMinutes();
+                beyondGoal += weekActivity.getDayActivities().getSATURDAY().getTotalMinutesBeyondGoal();
+            }
+            if (weekActivity.getDayActivities().getSUNDAY() != null) {
+                totalDays++;
+                avgMinute += weekActivity.getDayActivities().getSUNDAY().getTotalActivityDurationMinutes();
+                beyondGoal += weekActivity.getDayActivities().getSUNDAY().getTotalMinutesBeyondGoal();
+            }
+        }
+        if (totalDays > 0) {
+            avgMinute /= totalDays;
+            beyondGoal /= totalDays;
+        }
+        return new Pair<>(avgMinute, beyondGoal);
     }
 
     private void loadNoGoControlForDay(DayActivity dayActivity, ChartItemHolder holder) {
@@ -235,7 +293,7 @@ public class CustomPageAdapter extends PagerAdapter {
     }
 
     private void loadNoGoControlForWeek(WeekActivity weekActivity, ChartItemHolder holder) {
-        //TODO under discussion with Bastiaan
+        graphView.setVisibility(View.GONE);
     }
 
     @Override
