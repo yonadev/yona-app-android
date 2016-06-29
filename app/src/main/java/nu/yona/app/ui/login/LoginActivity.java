@@ -189,8 +189,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void showPasscodeScreen() {
-        YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
-        SharedPreferences.Editor editor = YonaApplication.getUserPreferences().edit();
+        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
+        SharedPreferences.Editor editor = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
         editor.putBoolean(PreferenceConstant.STEP_REGISTER, true);
         editor.putBoolean(PreferenceConstant.STEP_OTP, true);
         editor.putBoolean(PreferenceConstant.STEP_PASSCODE, true);

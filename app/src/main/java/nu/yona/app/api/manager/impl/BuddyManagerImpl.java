@@ -87,7 +87,7 @@ public class BuddyManagerImpl implements BuddyManager {
     public void getBuddies(final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref())) {
-                buddyNetwork.getBuddies(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
+                buddyNetwork.getBuddies(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
                         new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {
@@ -122,7 +122,7 @@ public class BuddyManagerImpl implements BuddyManager {
     public void addBuddy(String firstName, String lastName, String email, String mobileNumber, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref())) {
-                buddyNetwork.addBuddy(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(),
+                buddyNetwork.addBuddy(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
                         getBuddy(firstName, lastName, email, mobileNumber), new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {
@@ -173,7 +173,7 @@ public class BuddyManagerImpl implements BuddyManager {
     public void deleteBuddy(YonaMessage buddy, final DataLoadListener listener) {
         try {
             if (buddy != null && !TextUtils.isEmpty(buddy.getLinks().getEdit().getHref())) {
-                buddyNetwork.deleteBuddy(buddy.getLinks().getEdit().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+                buddyNetwork.deleteBuddy(buddy.getLinks().getEdit().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);

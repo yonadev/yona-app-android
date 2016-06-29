@@ -186,7 +186,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         });
 
         //Load default dashboard_selector fragment on start after login, if signup, start challenges.
-        if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
+        if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
             mTabLayout.getTabAt(2).select();
         } else {
             mTabLayout.getTabAt(0).select();
@@ -256,7 +256,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        SharedPreferences.Editor editor = YonaApplication.getUserPreferences().edit();
+                        SharedPreferences.Editor editor = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
                         editor.clear();
                         editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
                         editor.commit();
@@ -787,7 +787,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 break;
             case EventChangeManager.EVENT_USER_NOT_EXIST:
                 DatabaseHelper.getInstance(this).deleteAllData();
-                YonaApplication.getUserPreferences().edit().clear();
+                YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().clear();
                 if (object != null && object instanceof ErrorMessage) {
                     showError((ErrorMessage) object);
                 }

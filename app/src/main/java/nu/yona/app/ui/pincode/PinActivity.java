@@ -51,7 +51,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
         fragmentTransaction.replace(R.id.blank_container, passcodeFragment);
         fragmentTransaction.commit();
 
-        isUserBlocked = YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false);
+        isUserBlocked = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false);
         if (TextUtils.isEmpty(screen_type)) {
             screen_type = AppConstant.LOGGED_IN;
         }
@@ -69,7 +69,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
     @Override
     protected void onResume() {
         super.onResume();
-        if (YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null) {
+        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null) {
             updateBlockMsg();
         }
         updateData();
@@ -89,7 +89,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
                 if (APIManager.getInstance().getPasscodeManager().validatePasscode(passcode)) {
                     showChallengesScreen();
                 } else if (APIManager.getInstance().getPasscodeManager().isWrongCounterReached()) {
-                    YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
+                    YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
                     updateBlockMsg();
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
                 } else {

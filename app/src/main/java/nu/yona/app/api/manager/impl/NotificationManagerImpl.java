@@ -79,7 +79,7 @@ public class NotificationManagerImpl implements NotificationManager {
         try {
             if (YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages() != null
                     && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages().getHref())) {
-                notificationNetwork.getMessage(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages().getHref(), YonaApplication.getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
+                notificationNetwork.getMessage(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         if (listener != null) {
@@ -156,7 +156,7 @@ public class NotificationManagerImpl implements NotificationManager {
         try {
             if (message != null && message.getLinks() != null
                     && message.getLinks().getSelf() != null && !TextUtils.isEmpty(message.getLinks().getSelf().getHref())) {
-                notificationNetwork.deleteMessage(message.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+                notificationNetwork.deleteMessage(message.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         getMessage(itemsPerPage, pageNo, listener);
@@ -174,7 +174,7 @@ public class NotificationManagerImpl implements NotificationManager {
     }
 
     private void postMessageForProcess(String url, MessageBody body) {
-        notificationNetwork.postMessage(url, YonaApplication.getYonaPassword(), body, null);
+        notificationNetwork.postMessage(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), body, null);
     }
 
     /**
@@ -189,7 +189,7 @@ public class NotificationManagerImpl implements NotificationManager {
     public void postMessage(String url, MessageBody body, final int itemsPerPage, final int pageNo, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(url)) {
-                notificationNetwork.postMessage(url, YonaApplication.getYonaPassword(), body, new DataLoadListener() {
+                notificationNetwork.postMessage(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), body, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         getMessage(itemsPerPage, pageNo, listener);
@@ -208,7 +208,7 @@ public class NotificationManagerImpl implements NotificationManager {
 
     public void deleteMessage(@NonNull String url, final int itemsPerPage, final int pageNo, final DataLoadListener listener) {
         try {
-            notificationNetwork.deleteMessage(url, YonaApplication.getYonaPassword(), new DataLoadListener() {
+            notificationNetwork.deleteMessage(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     getMessage(itemsPerPage, pageNo, listener);

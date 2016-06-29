@@ -83,8 +83,8 @@ public class ActivityMonitorService extends Service {
     }
 
     private void restartReceiver() {
-        if (YonaApplication.getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false)) {
-            YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
+        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false)) {
+            YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
             AppUtils.registerReceiver(YonaApplication.getAppContext());
         }
     }
@@ -158,7 +158,7 @@ public class ActivityMonitorService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
+        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
         shutdownScheduler();
         restartService();
         super.onTaskRemoved(rootIntent);

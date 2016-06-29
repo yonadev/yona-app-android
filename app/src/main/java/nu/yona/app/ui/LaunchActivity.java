@@ -39,19 +39,19 @@ public class LaunchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_layout);
 
-        if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false)) {
+        if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false)) {
             startNewActivity(YonaCarrouselActivity.class);
-        } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
+        } else if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
             // We will skip here to load same activity
-        } else if (YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)
-                && !YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
+        } else if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)
+                && !YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
             startNewActivity(OTPActivity.class);
-        } else if (!YonaApplication.getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
+        } else if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
             Bundle bundle = new Bundle();
             bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_grape);
             bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(LaunchActivity.this, R.color.grape));
             startNewActivity(bundle, PasscodeActivity.class);
-        } else if (!TextUtils.isEmpty(YonaApplication.getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
+        } else if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
             startNewActivity(YonaActivity.class);
         }
 
@@ -87,7 +87,7 @@ public class LaunchActivity extends BaseActivity {
 
         int selectedEnvironment = 0;
         for (int i = 0; i < AppConstant.environmentList.length; i++) {
-            if (AppConstant.environemntPath[i].toString().equalsIgnoreCase(YonaApplication.getServerUrl())) {
+            if (AppConstant.environemntPath[i].toString().equalsIgnoreCase(YonaApplication.getEventChangeManager().getDataState().getServerUrl())) {
                 selectedEnvironment = i;
                 break;
             }
@@ -95,7 +95,7 @@ public class LaunchActivity extends BaseActivity {
         CustomAlertDialog.show(this, getString(R.string.choose_environment), AppConstant.environmentList, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                YonaApplication.setServerUrl(AppConstant.environemntPath[which].toString());
+                YonaApplication.getEventChangeManager().getDataState().setServerUrl(AppConstant.environemntPath[which].toString());
                 Toast.makeText(LaunchActivity.this, "You are now in :" + AppConstant.environmentList[which].toString(), Toast.LENGTH_LONG).show();
                 dialog.dismiss();
             }

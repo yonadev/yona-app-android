@@ -177,7 +177,7 @@ public class ActivityManagerImpl implements ActivityManager {
     public void getDayDetailActivity(String url, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(url)) {
-                activityNetwork.getDayDetailActivity(url, YonaApplication.getYonaPassword(), new DataLoadListener() {
+                activityNetwork.getDayDetailActivity(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);
@@ -221,7 +221,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
     @Override
     public void getWeeksDetailActivity(String url, final DataLoadListener listener) {
-        activityNetwork.getWeeksDetailActivity(url, YonaApplication.getYonaPassword(), new DataLoadListener() {
+        activityNetwork.getWeeksDetailActivity(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 listener.onDataLoad(result);
@@ -248,7 +248,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
     private void postActivityOnServer(final AppActivity activity, final boolean fromDB) {
         activityNetwork.postAppActivity(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaAppActivity().getHref(),
-                YonaApplication.getYonaPassword(), activity, new DataLoadListener() {
+                YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         //on success nothing to do, as it is posted on server.
@@ -309,7 +309,7 @@ public class ActivityManagerImpl implements ActivityManager {
     private void getWeeksActivity(String url, final boolean isbuddyFlow, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(url)) {
-                activityNetwork.getWeeksActivity(url, YonaApplication.getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
+                activityNetwork.getWeeksActivity(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         filterAndUpdateWeekData((EmbeddedYonaActivity) result, isbuddyFlow, listener);
@@ -334,7 +334,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
     private void getDailyActivity(String url, final boolean isbuddyFlow, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
-            activityNetwork.getDaysActivity(url, YonaApplication.getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
+            activityNetwork.getDaysActivity(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     if (result instanceof EmbeddedYonaActivity) {
@@ -728,7 +728,7 @@ public class ActivityManagerImpl implements ActivityManager {
 
     private void getWithBuddyActivity(String url, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
-            activityNetwork.getWithBuddyActivity(url, YonaApplication.getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
+            activityNetwork.getWithBuddyActivity(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     if (result instanceof EmbeddedYonaActivity) {

@@ -10,11 +10,16 @@
 
 package nu.yona.app.state;
 
+import android.text.TextUtils;
+
+import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.User;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 10/06/16.
@@ -122,5 +127,26 @@ public class DataState {
      */
     public void setEmbeddedWithBuddyActivity(EmbeddedYonaActivity embeddedWithBuddyActivity) {
         this.embeddedWithBuddyActivity = embeddedWithBuddyActivity;
+    }
+
+    /**
+     * Gets server url.
+     *
+     * @return the server url
+     */
+    public String getServerUrl() {
+        if (TextUtils.isEmpty(YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.blank)))) {
+            YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url)).commit();
+        }
+        return YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
+    }
+
+    /**
+     * Sets server url.
+     *
+     * @param serverUrl the server url
+     */
+    public void setServerUrl(String serverUrl) {
+        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
     }
 }

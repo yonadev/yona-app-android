@@ -75,7 +75,7 @@ public class DeviceManagerImpl implements DeviceManager {
      */
     @Override
     public void addDevice(final String devicePassword, final DataLoadListener listener) {
-        if (YonaApplication.getUserPreferences().getBoolean(AppConstant.NEW_DEVICE_REQUESTED, false)) {
+        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.NEW_DEVICE_REQUESTED, false)) {
             deleteDevice(new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
@@ -96,12 +96,12 @@ public class DeviceManagerImpl implements DeviceManager {
         try {
             if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref())) {
                 deviceNetwork.addDevice(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref(),
-                        new NewDeviceRequest(devicePassword), YonaApplication.getYonaPassword(),
+                        new NewDeviceRequest(devicePassword), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
                         new DataLoadListener() {
 
                             @Override
                             public void onDataLoad(Object result) {
-                                YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, true).commit();
+                                YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, true).commit();
                                 listener.onDataLoad(result);
                             }
 
@@ -129,10 +129,10 @@ public class DeviceManagerImpl implements DeviceManager {
     public void deleteDevice(final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref())) {
-                deviceNetwork.deleteDevice(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+                deviceNetwork.deleteDevice(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
-                        YonaApplication.getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, false).commit();
+                        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, false).commit();
                         listener.onDataLoad(result);
                     }
 
@@ -169,7 +169,7 @@ public class DeviceManagerImpl implements DeviceManager {
                         @Override
                         public void onDataLoad(Object result) {
                             NewDevice device = (NewDevice) result;
-                            YonaApplication.setYonaPassword(device.getYonaPassword());
+                            YonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword(device.getYonaPassword());
                             getUser(device, listener);
                         }
 

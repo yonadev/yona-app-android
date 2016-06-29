@@ -376,7 +376,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     }
 
     private void removeStoredPassCode() {
-        SharedPreferences.Editor yonaPref = YonaApplication.getUserPreferences().edit();
+        SharedPreferences.Editor yonaPref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
         yonaPref.putString(PreferenceConstant.YONA_PASSCODE, getString(R.string.blank)); // remove user's passcode from device.
         yonaPref.putBoolean(PreferenceConstant.STEP_PASSCODE, false);
         yonaPref.putBoolean(PreferenceConstant.STEP_OTP, false);

@@ -82,7 +82,7 @@ public class GoalManagerImpl implements GoalManager {
     public void postBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
-                goalNetwork.putUserBudgetGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+                goalNetwork.putUserBudgetGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);
@@ -109,7 +109,7 @@ public class GoalManagerImpl implements GoalManager {
     public void postTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
-                goalNetwork.putUserTimeZoneGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+                goalNetwork.putUserTimeZoneGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);
@@ -136,7 +136,7 @@ public class GoalManagerImpl implements GoalManager {
     public void deleteGoal(YonaGoal yonaGoal, final DataLoadListener listener) {
         try {
             if (yonaGoal != null && yonaGoal.getLinks() != null && yonaGoal.getLinks().getSelf() != null && !TextUtils.isEmpty(yonaGoal.getLinks().getSelf().getHref())) {
-                goalNetwork.deleteGoal(yonaGoal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), new DataLoadListener() {
+                goalNetwork.deleteGoal(yonaGoal.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);
@@ -159,7 +159,7 @@ public class GoalManagerImpl implements GoalManager {
     public void updateBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(goal.getLinks().getSelf().getHref())) {
-                goalNetwork.updateUserBudgetGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+                goalNetwork.updateUserBudgetGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);
@@ -182,7 +182,7 @@ public class GoalManagerImpl implements GoalManager {
     public void updateTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(goal.getLinks().getSelf().getHref())) {
-                goalNetwork.updateUserTimeZoneGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getYonaPassword(), goal, new DataLoadListener() {
+                goalNetwork.updateUserTimeZoneGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
                         listener.onDataLoad(result);

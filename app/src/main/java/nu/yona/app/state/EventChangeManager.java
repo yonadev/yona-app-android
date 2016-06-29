@@ -106,7 +106,7 @@ public class EventChangeManager {
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;
-
+    private SharedPreference sharedPreference;
 
     /**
      * Register listener.
@@ -162,5 +162,12 @@ public class EventChangeManager {
             dataState = new DataState();
         }
         return dataState;
+    }
+
+    public SharedPreference getSharedPreference() {
+        if (sharedPreference == null) {
+            sharedPreference = new SharedPreference();
+        }
+        return sharedPreference;
     }
 }

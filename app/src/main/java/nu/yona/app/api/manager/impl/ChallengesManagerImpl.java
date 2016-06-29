@@ -145,7 +145,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
         Goals userGoals = APIManager.getInstance().getGoalManager().getUserGoalFromDb();
         if (userGoals != null) {
             if (YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() < userGoals.getEmbedded().getYonaGoals().size()) {
-                YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
+                YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
                 return true;
             }
         }

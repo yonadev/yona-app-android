@@ -29,7 +29,7 @@ public class PasscodeManagerImplTest extends YonaTestCase {
 
     @Test
     public void checkValidatePasscode() {
-        YonaApplication.getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, "1111").commit();
+        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, "1111").commit();
         assertTrue(passcodeManager.validatePasscode("1111"));
     }
 
