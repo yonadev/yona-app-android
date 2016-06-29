@@ -79,7 +79,7 @@ public class SettingsFragment extends BaseFragment {
             AppUtils.throwException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         for (int i = 0; i < AppConstant.environmentList.length; i++) {
-            if (AppConstant.environemntPath[i].toString().equalsIgnoreCase(YonaApplication.getServerUrl())) {
+            if (AppConstant.environemntPath[i].toString().equalsIgnoreCase(YonaApplication.getEventChangeManager().getDataState().getServerUrl())) {
                 ((TextView) view.findViewById(R.id.label_server)).setText(getString(R.string.environemnt, AppConstant.environmentList[i]));
                 break;
             }

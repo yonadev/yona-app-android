@@ -31,7 +31,7 @@ public class GoalNetworkImpl extends BaseImpl {
      */
     public void getUserGoals(String url, DataLoadListener listener) {
         try {
-            getRestApi().getUserGoals(url, YonaApplication.getYonaPassword()).enqueue(getGoals(listener));
+            getRestApi().getUserGoals(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()).enqueue(getGoals(listener));
         } catch (Exception e) {
             AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }

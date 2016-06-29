@@ -69,7 +69,7 @@ class BaseImpl {
     Retrofit getRetrofit() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(YonaApplication.getServerUrl())
+                    .baseUrl(YonaApplication.getEventChangeManager().getDataState().getServerUrl())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(gethttpClient())
                     .build();

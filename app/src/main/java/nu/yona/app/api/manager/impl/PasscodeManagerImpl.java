@@ -82,7 +82,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @return int
      */
     private int getWrongPasscodeCounter() {
-        return YonaApplication.getUserPreferences().getInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, 0);
+        return YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, 0);
     }
 
     /**
@@ -99,7 +99,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @param counter
      */
     private void updateWrongPasscodeCounter(int counter) {
-        YonaApplication.getUserPreferences().edit().putInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, counter).apply();
+        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, counter).apply();
     }
 
 
@@ -109,7 +109,7 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @return int
      */
     private String getStoredPassCode() {
-        return YonaApplication.getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "");
+        return YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "");
     }
 
     /**
@@ -118,8 +118,8 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * @param code
      */
     private void storedPassCode(String code) {
-        YonaApplication.getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, code).commit();
-        YonaApplication.getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_PASSCODE, true).commit();
+        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, code).commit();
+        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_PASSCODE, true).commit();
     }
 
 }

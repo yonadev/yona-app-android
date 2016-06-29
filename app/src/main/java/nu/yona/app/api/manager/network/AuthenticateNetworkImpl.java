@@ -176,7 +176,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doVerifyPin(String url, String otp, final DataLoadListener listener) {
         try {
-            getRestApi().verifyPin(url, YonaApplication.getYonaPassword(), new OTPVerficationCode(otp)).enqueue(getCall(listener));
+            getRestApi().verifyPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new OTPVerficationCode(otp)).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -189,7 +189,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doClearPin(String url) {
         try {
-            getRestApi().clearPin(url, YonaApplication.getYonaPassword()).enqueue(getCall(new DataLoadListener() {
+            getRestApi().clearPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()).enqueue(getCall(new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     // Do nothing as we don't worry about this response.
