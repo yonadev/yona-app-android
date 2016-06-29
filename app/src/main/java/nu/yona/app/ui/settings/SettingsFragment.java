@@ -33,6 +33,7 @@ import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.ui.YonaActivity;
@@ -129,6 +130,8 @@ public class SettingsFragment extends BaseFragment {
         APIManager.getInstance().getAuthenticateManager().deleteUser(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, null);
                 YonaActivity.getActivity().showLoadingView(false, null);
                 startActivity(new Intent(YonaActivity.getActivity(), LaunchActivity.class));
             }

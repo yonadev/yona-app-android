@@ -15,6 +15,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import nu.yona.app.utils.AppUtils;
+
 /**
  * Created by kinnarvasa on 28/03/16.
  */
@@ -57,10 +59,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void createTables(SQLiteDatabase db) {
-        db.execSQL(getDBHelper().TABLE_USER_REGISTER);
-        db.execSQL(getDBHelper().TABLE_ACTIVITY_CATEGORY);
-        db.execSQL(getDBHelper().TABLE_GOAL);
-        db.execSQL(getDBHelper().TABLE_ACTIVITY_TRACKER);
+        try {
+            db.execSQL(getDBHelper().TABLE_USER_REGISTER);
+            db.execSQL(getDBHelper().TABLE_ACTIVITY_CATEGORY);
+            db.execSQL(getDBHelper().TABLE_GOAL);
+            db.execSQL(getDBHelper().TABLE_ACTIVITY_TRACKER);
+        } catch (Exception e) {
+            AppUtils.throwException(DatabaseHelper.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
     }
 
     /**
@@ -69,12 +75,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteAllData() {
         try {
             Log.e(DatabaseHelper.class.getSimpleName(), "Delete all data");
-            db.execSQL("delete from " + getDBHelper().TABLE_USER_REGISTER);
-            db.execSQL("delete from " + getDBHelper().TABLE_ACTIVITY_CATEGORY);
-            db.execSQL("delete from " + getDBHelper().TABLE_GOAL);
-            db.execSQL("delete from " + getDBHelper().TABLE_ACTIVITY_TRACKER);
+            db.execSQL("delete from " + DBConstant.TBL_USER_DATA);
+            db.execSQL("delete from " + DBConstant.TBL_ACTIVITY_CATEGORIES);
+            db.execSQL("delete from " + DBConstant.TBL_GOAL);
+            db.execSQL("delete from " + DBConstant.TBL_ACTIVITY_TRACKER);
+            createTables(db);
         } catch (Exception e) {
-            Log.e(DatabaseHelper.class.getSimpleName(), e.getMessage());
+            AppUtils.throwException(DatabaseHelper.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
