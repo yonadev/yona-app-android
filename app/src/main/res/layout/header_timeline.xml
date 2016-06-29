@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~  
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/header_timeline"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_gradient"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/timeline_header_paddingbottom"
+    android:paddingLeft="@dimen/header_timeline_paddingLeft"
+    android:paddingRight="@dimen/timeline_list_paddingRight"
+    android:paddingTop="@dimen/timeline_header_maring_top">
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/txtHeaderSection"
+        style="@style/SeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/txtHeaderMinuten"
+        style="@style/FooterTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text="@string/timelineminute" />
+
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_gradient_one"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/timeline_list_paddingLeft"
+    android:paddingRight="@dimen/timeline_list_paddingRight"
+    android:paddingTop="@dimen/timeline_list_marginTop">
+
+
+    <ImageView
+        android:id="@+id/img_user_icon"
+        android:layout_width="@dimen/timeline_user_icon_width"
+        android:layout_height="@dimen/timeline_user_icon_height"
+        android:contentDescription="@string/empty_description" />
+
+    <include
+        layout="@layout/timebucket_graph_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/seventy_three"
+        android:layout_marginLeft="@dimen/timeline_graph_container_margin_left"
+        android:layout_toRightOf="@id/img_user_icon" />
+
+</RelativeLayout>

@@ -18,9 +18,6 @@
 
     <include layout="@layout/graph_top_info_layout" />
 
-    <nu.yona.app.customview.graph.TimeBucketGraph
-        android:id="@+id/timeBucketGraph"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/seventy_three" />
+    <include layout="@layout/timebucket_graph_layout" />
 
 </LinearLayout>
