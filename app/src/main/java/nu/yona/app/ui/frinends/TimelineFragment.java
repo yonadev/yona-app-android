@@ -29,14 +29,14 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.api.model.YonaHeaderTheme;
+import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.listener.DataLoadListener;
-import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.dashboard.PerDayFragment;
-import nu.yona.app.ui.dashboard.PerDayStickyAdapter;
 import nu.yona.app.utils.AppConstant;
 
 /**
@@ -45,7 +45,7 @@ import nu.yona.app.utils.AppConstant;
 public class TimelineFragment extends BaseFragment {
 
     private RecyclerView listView;
-    private PerDayStickyAdapter perDayStickyAdapter;
+    private TimelineStickyAdapter mDayTimelineStickyAdapter;
     private LinearLayoutManager mLayoutManager;
     private boolean mIsLoading = false;
     private YonaHeaderTheme mYonaHeaderTheme;
@@ -88,7 +88,7 @@ public class TimelineFragment extends BaseFragment {
             mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
         }
 
-        perDayStickyAdapter = new PerDayStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener() {
+        mDayTimelineStickyAdapter = new TimelineStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v.getTag() instanceof DayActivity) {
@@ -98,9 +98,9 @@ public class TimelineFragment extends BaseFragment {
         });
 
         listView.setLayoutManager(mLayoutManager);
-        listView.setAdapter(perDayStickyAdapter);
+        listView.setAdapter(mDayTimelineStickyAdapter);
         listView.addOnScrollListener(mRecyclerViewOnScrollListener);
-        setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(perDayStickyAdapter));
+        setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(mDayTimelineStickyAdapter));
         return view;
     }
 
@@ -108,7 +108,7 @@ public class TimelineFragment extends BaseFragment {
         listView.addItemDecoration(headerDecor);
 
         // Add decoration for dividers between list items
-        listView.addItemDecoration(new DividerDecoration(getActivity()));
+        // listView.addItemDecoration(new DividerDecoration(getActivity()));
 
         // Add touch listeners
         StickyRecyclerHeadersTouchListener touchListener =
@@ -119,7 +119,7 @@ public class TimelineFragment extends BaseFragment {
                     public void onHeaderClick(View header, int position, long headerId) {
                     }
                 });
-        perDayStickyAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        mDayTimelineStickyAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 headerDecor.invalidateHeaders();
@@ -143,7 +143,7 @@ public class TimelineFragment extends BaseFragment {
     }
 
     private void refreshAdapter() {
-        perDayStickyAdapter.clear();
+        mDayTimelineStickyAdapter.clear();
         getDayActivity(false);
     }
 
@@ -162,9 +162,9 @@ public class TimelineFragment extends BaseFragment {
             APIManager.getInstance().getActivityManager().getWithBuddyActivity(loadMore, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    YonaActivity.getActivity().showLoadingView(false, null);
                     showData();
                     mIsLoading = false;
+                    YonaActivity.getActivity().showLoadingView(false, null);
                 }
 
                 @Override
@@ -182,7 +182,7 @@ public class TimelineFragment extends BaseFragment {
         if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() != null
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList() != null
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList().size() > 0) {
-            perDayStickyAdapter.notifyDataSetChange(setHeaderListView());
+            mDayTimelineStickyAdapter.notifyDataSetChange(setHeaderListView());
         } else {
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
         }
@@ -190,18 +190,47 @@ public class TimelineFragment extends BaseFragment {
 
     private List<DayActivity> setHeaderListView() {
         List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList();
+        List<DayActivity> newDayActivityList = new ArrayList<>();
         int index = 0;
+
         for (int i = 0; i < dayActivityList.size(); i++) {
+            DayActivity currentDayActivity = dayActivityList.get(i);
             if (i == 0) {
-                dayActivityList.get(i).setStickyHeaderId(index++);
+                newDayActivityList.add(getNewDayActivity(index, i, currentDayActivity, ChartTypeEnum.TITLE));
+                currentDayActivity.setStickyHeaderId(index++);
+                newDayActivityList.add(dayActivityList.get(i));
             } else {
-                if (dayActivityList.get(i).getStickyTitle().equals(dayActivityList.get(i - 1).getStickyTitle())) {
-                    dayActivityList.get(i).setStickyHeaderId(dayActivityList.get(i - 1).getStickyHeaderId());
+                DayActivity previousDayActivity = dayActivityList.get(i - 1);
+                if (currentDayActivity.getStickyTitle().equals(previousDayActivity.getStickyTitle())) {
+                    currentDayActivity.setStickyHeaderId(previousDayActivity.getStickyHeaderId());
+                    if (!currentDayActivity.getYonaGoal().getActivityCategoryName().equals(previousDayActivity.getYonaGoal().getActivityCategoryName())) {
+                        newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), i, currentDayActivity, ChartTypeEnum.TITLE));
+                    } else if (!currentDayActivity.getYonaGoal().getType().equals(previousDayActivity.getYonaGoal().getType())) {
+                        newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), i, currentDayActivity, ChartTypeEnum.LINE));
+                    }
+                    newDayActivityList.add(currentDayActivity);
                 } else {
-                    dayActivityList.get(i).setStickyHeaderId(index++);
+                    index++;
+                    newDayActivityList.add(getNewDayActivity(index, i, currentDayActivity, ChartTypeEnum.TITLE));
+                    currentDayActivity.setStickyHeaderId(index);
+                    newDayActivityList.add(currentDayActivity);
                 }
             }
         }
-        return dayActivityList;
+
+        return newDayActivityList;
     }
+
+
+    private DayActivity getNewDayActivity(int index, int currentPos, DayActivity dayActivity, ChartTypeEnum chartTypeEnum) {
+        DayActivity activity = new DayActivity();
+        activity.setStickyHeaderId(index);
+        activity.setStickyTitle(dayActivity.getStickyTitle());
+        activity.setChartTypeEnum(chartTypeEnum);
+        YonaGoal yonaGoal = new YonaGoal();
+        yonaGoal.setActivityCategoryName(dayActivity.getYonaGoal().getActivityCategoryName());
+        activity.setYonaGoal(yonaGoal);
+        return activity;
+    }
+
 }

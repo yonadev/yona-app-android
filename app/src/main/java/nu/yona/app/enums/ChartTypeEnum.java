@@ -50,7 +50,11 @@ public enum ChartTypeEnum {
     /**
      * None none chart type enum.
      */
-    NONE_NONE("NONE_NONE", 9);
+    NONE_NONE("NONE_NONE", 9),
+
+    LINE("LINE", 10),
+
+    TITLE("TITLE", 11);
 
     private String chartType;
     private int id;
