@@ -161,4 +161,5 @@
     <string name="app_usage_permission_title">Permission</string>
     <string name="app_usage_permission_message">For accurate result, please ON app usage access for Yona</string>
     <string name="week_score">x doel gehaald</string>
+    <string name="timelineminute">minuten</string>
 </resources>

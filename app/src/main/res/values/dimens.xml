@@ -187,12 +187,17 @@
     <dimen name="timeline_list_paddingRight">32dp</dimen>
     <dimen name="timeline_list_marginTop">15dp</dimen>
     <dimen name="timeline_header_maring_top">29dp</dimen>
+    <dimen name="timeline_nogo_height">67dp</dimen>
+    <dimen name="timeline_nogo_text_margin_left">16dp</dimen>
+    <dimen name="timeline_header_paddingbottom">16dp</dimen>
 
     <!-- horizontal line -->
     <dimen name="horizontal_line_margin_bottom">12dp</dimen>
     <dimen name="horizontal_line_margin_top">21dp</dimen>
     <dimen name="horizontal_line_padding_left">64dp</dimen>
-    <dimen name="horizontal_line_height">2dp</dimen>
+    <dimen name="horizontal_line_height">1dp</dimen>
+    <dimen name="horizontal_line_paddinBottom">27dp</dimen>
+    <dimen name="horizontal_line_paddinTop">20dp</dimen>
 
 
 </resources>

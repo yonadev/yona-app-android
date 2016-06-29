@@ -6,32 +6,39 @@
   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/timeline_group_margin_top"
-    android:orientation="vertical">
+    android:layout_height="@dimen/timeline_nogo_height"
+    android:background="@color/bg_gradient_one"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/timeline_list_paddingLeft"
+    android:paddingRight="@dimen/timeline_list_paddingRight"
+    android:paddingTop="@dimen/timeline_group_margin_top">
 
 
     <ImageView
-        android:id="@+id/img_user_icon"
+        android:id="@+id/img_nogo_user_icon"
         android:layout_width="@dimen/timeline_user_icon_width"
         android:layout_height="@dimen/timeline_user_icon_height"
-        android:contentDescription="@string/empty_description" />
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/empty_description"
+        android:src="@drawable/adult_happy" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/txtNoGoText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/timeline_graph_container_margin_left"
-        android:layout_toRightOf="@id/img_user_icon" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/timeline_nogo_text_margin_left"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/txtNogoTime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="right|center_vertical" />
 
-</RelativeLayout>
+</LinearLayout>
