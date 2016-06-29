@@ -11,9 +11,11 @@
 package nu.yona.app.ui.dashboard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +24,20 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import nu.yona.app.R;
+import nu.yona.app.api.model.Day;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.WeekActivity;
+import nu.yona.app.api.model.WeekDayActivity;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.customview.graph.CircleGraphView;
 import nu.yona.app.customview.graph.SpreadGraph;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.enums.GoalsEnum;
+import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.enums.WeekDayEnum;
 import nu.yona.app.ui.ChartItemHolder;
+import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 13/06/16.
@@ -109,7 +118,9 @@ public class CustomPageAdapter extends PagerAdapter {
         goalDesc = (YonaFontTextView) layout.findViewById(R.id.goalDesc);
         goalType = (YonaFontTextView) layout.findViewById(R.id.goalType);
         goalScore = (YonaFontTextView) layout.findViewById(R.id.goalScore);
-        layout.findViewById(R.id.week_chart).setVisibility(View.VISIBLE); // week control
+        ViewGroup weekChart = (ViewGroup) layout.findViewById(R.id.week_chart);
+        weekChart.setVisibility(View.VISIBLE); // week control
+        showWeekChartData(weekChart, weekActivity);
         graphView = ((FrameLayout) layout.findViewById(R.id.graphView));
         GoalsEnum goalsEnum;
         goalsEnum = GoalsEnum.fromName(weekActivity.getYonaGoal().getType());
@@ -120,6 +131,85 @@ public class CustomPageAdapter extends PagerAdapter {
         updateView(new ChartItemHolder(graphView, null, goalsEnum), weekActivity, null);
         collection.addView(layout);
         return layout;
+    }
+
+    private void showWeekChartData(ViewGroup layout, WeekActivity weekActivity) {
+        YonaFontTextView goalType = (YonaFontTextView) layout.findViewById(R.id.topPanel).findViewById(R.id.goalType);
+        YonaFontTextView goalScore = (YonaFontTextView) layout.findViewById(R.id.topPanel).findViewById(R.id.goalScore);
+        YonaFontTextView goalDesc = (YonaFontTextView) layout.findViewById(R.id.topPanel).findViewById(R.id.goalDesc);
+        if (weekActivity != null) {
+            if (weekActivity.getYonaGoal() != null && !TextUtils.isEmpty(weekActivity.getYonaGoal().getActivityCategoryName())) {
+                goalType.setText(weekActivity.getYonaGoal().getActivityCategoryName());
+            }
+            goalDesc.setText(R.string.week_score);
+
+            for (WeekDayActivity weekDayActivity : weekActivity.getWeekDayActivity()) {
+                WeekDayEnum weekDayEnum = weekDayActivity.getWeekDayEnum();
+                View view = null;
+                switch (weekDayEnum) {
+                    case SUNDAY:
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_seventh);
+                        view.setTag(weekActivity.getDayActivities().getSUNDAY());
+                        break;
+                    case MONDAY:
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_first);
+                        view.setTag(weekActivity.getDayActivities().getMONDAY());
+                        break;
+                    case TUESDAY:
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_second);
+                        view.setTag(weekActivity.getDayActivities().getTUESDAY());
+                        break;
+                    case WEDNESDAY:
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_third);
+                        view.setTag(weekActivity.getDayActivities().getWEDNESDAY());
+                        break;
+                    case THURSDAY:
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_fourth);
+                        view.setTag(weekActivity.getDayActivities().getTHURSDAY());
+                        break;
+                    case FRIDAY:
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_fifth);
+                        view.setTag(weekActivity.getDayActivities().getFRIDAY());
+                        break;
+                    case SATURDAY:
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_sixth);
+                        view.setTag(weekActivity.getDayActivities().getSATURDAY());
+                        break;
+                    default:
+                        break;
+                }
+
+                updateTextOfCircle(view, weekDayActivity.getDay(), weekDayActivity.getDate(), weekDayActivity.getColor(), weekActivity);
+            }
+            goalScore.setText(weekActivity.getTotalAccomplishedGoal() + "");
+        }
+    }
+
+    private synchronized void updateTextOfCircle(View view, String day, String date, int color, WeekActivity weekActivity) {
+        ((YonaFontTextView) view.findViewById(R.id.txtWeekOfDay)).setText(day);
+        ((YonaFontTextView) view.findViewById(R.id.txtDateOfWeek)).setText(date);
+        CircleGraphView mWeekCircle = (CircleGraphView) view.findViewById(R.id.circle_view);
+        mWeekCircle.setTag(R.integer.day_key, view.getTag());
+        mWeekCircle.setTag(R.integer.week_key, weekActivity);
+        mWeekCircle.setFillColor(color);
+        mWeekCircle.invalidate();
+        mWeekCircle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Day day = (Day) view.getTag(R.integer.day_key);
+                if (day != null) {
+                    openDetailPage(day, (WeekActivity) view.getTag(R.integer.week_key));
+                }
+            }
+        });
+    }
+
+    private void openDetailPage(Day activity, WeekActivity weekActivity) {
+        Intent intent = new Intent(IntentEnum.ACTION_ACTIVITY_DETAIL_VIEW.getActionString());
+        intent.putExtra(AppConstant.OBJECT, activity);
+        intent.putExtra(AppConstant.WEEK_OBJECT, weekActivity);
+        intent.putExtra(AppConstant.BOOLEAN, true);
+        YonaActivity.getActivity().replaceFragment(intent);
     }
 
     private View inflateActivityView(LayoutInflater inflater, GoalsEnum chartTypeEnum, ViewGroup collection) {
@@ -160,7 +250,11 @@ public class CustomPageAdapter extends PagerAdapter {
         } else {
             switch (GoalsEnum.fromName(weekActivity.getYonaGoal().getType())) {
                 case BUDGET_GOAL:
-                    loadTimeBucketControlForWeek(weekActivity, holder);
+                    if (weekActivity.getYonaGoal().getMaxDurationMinutes() == 0) {
+                        loadNoGoControlForWeek(weekActivity, holder);
+                    } else {
+                        loadTimeBucketControlForWeek(weekActivity, holder);
+                    }
                     break;
                 case TIME_ZONE_GOAL:
                     loadTimeFrameControlForWeek(weekActivity, holder);

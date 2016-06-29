@@ -248,6 +248,8 @@ public interface AppConstant {
      */
     String OBJECT = "object";
 
+    String WEEK_OBJECT = "weekObject";
+
     /**
      * The constant BOOLEAN.
      */

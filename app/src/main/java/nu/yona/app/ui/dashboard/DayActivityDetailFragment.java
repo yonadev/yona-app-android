@@ -25,10 +25,14 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.api.model.Day;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
+import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -41,6 +45,8 @@ public class DayActivityDetailFragment extends BaseFragment {
     private CustomPageAdapter customPageAdapter;
     private ViewPager viewPager;
     private DayActivity activity;
+    private Day day;
+    private WeekActivity weekActivity;
     private View view;
     private ImageView previousItem, nextItem;
     private YonaFontTextView dateTitle;
@@ -75,7 +81,14 @@ public class DayActivityDetailFragment extends BaseFragment {
         viewPager.setAdapter(customPageAdapter);
         if (getArguments() != null) {
             if (getArguments().get(AppConstant.OBJECT) != null) {
-                activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
+                if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity) {
+                    activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
+                } else {
+                    day = (Day) getArguments().get(AppConstant.OBJECT);
+                }
+            }
+            if (getArguments().get(AppConstant.WEEK_OBJECT) != null) {
+                weekActivity = (WeekActivity) getArguments().get(AppConstant.WEEK_OBJECT);
             }
         }
         previousItem.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +130,14 @@ public class DayActivityDetailFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (activity != null) {
+            setDayActivityDetails();
+        } else {
+            setWeekActivityDetails();
+        }
+    }
+
+    private void setDayActivityDetails() {
         dayActivityList = new ArrayList<>();
         EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
         if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) {
@@ -137,15 +158,49 @@ public class DayActivityDetailFragment extends BaseFragment {
             YonaActivity.getActivity().onBackPressed();
         }
 
-        setTitleAndIcon();
+        setDayDetailTitleAndIcon();
     }
 
-    private void setTitleAndIcon() {
+    private void setDayDetailTitleAndIcon() {
         if (activity != null && activity.getYonaGoal() != null && !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName())) {
             toolbarTitle.setText(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
         }
         leftIcon.setVisibility(View.GONE);
         rightIcon.setVisibility(View.GONE);
+    }
+
+    private void setWeekActivityDetails() {
+        if (day != null) {
+//            DayActivities dayActivities = weekActivity.getDayActivities();
+//            if (dayActivities.getSUNDAY() != null && dayActivities.getSATURDAY().getLinks() != null && dayActivities.getSUNDAY().getLinks().getYonaDayDetails() != null) {
+//                loadData(dayActivities.getSUNDAY().getLinks().getYonaDayDetails().getHref());
+//            }
+        }
+    }
+
+    private void loadData(String url) {
+        if (url == null) {
+            return;
+        }
+        APIManager.getInstance().getActivityManager().getDayDetailActivity(url, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+
+            }
+        });
+    }
+
+    private void setWeekDetailTitleAndIcon() {
+//        if (weekActivity != null && activity.getYonaGoal() != null && !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName())) {
+//            toolbarTitle.setText(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
+//        }
+//        leftIcon.setVisibility(View.GONE);
+//        rightIcon.setVisibility(View.GONE);
     }
 
     private void updateFlow(int position) {

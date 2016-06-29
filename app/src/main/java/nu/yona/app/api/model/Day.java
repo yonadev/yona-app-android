@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-public class Day {
+public class Day extends BaseEntity {
     @SerializedName("_links")
     @Expose
     private Links links;
@@ -100,5 +102,10 @@ public class Day {
      */
     public void setTotalMinutesBeyondGoal(Integer totalMinutesBeyondGoal) {
         this.totalMinutesBeyondGoal = totalMinutesBeyondGoal;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }
