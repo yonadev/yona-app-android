@@ -50,7 +50,7 @@ public class YonaApplication extends Application {
         new GenerateKeys().createNewKeys(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                eventChangeManager.getSharedPreference().setYonaPassword(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT));
+                eventChangeManager.getSharedPreference().setYonaPassword(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT), false);
             }
 
             @Override

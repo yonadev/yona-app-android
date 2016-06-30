@@ -51,7 +51,7 @@ public class SharedPreference {
         if (yonaPwd == null) {
             yonaPwd = getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, "");
             if (TextUtils.isEmpty(yonaPwd)) {
-                setYonaPassword(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT));
+                setYonaPassword(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT), false);
                 getYonaPassword();
             } else if (yonaPwd.length() > AppConstant.YONA_PASSWORD_CHAR_LIMIT) {
                 yonaPwd = new DecryptUser().decryptString(yonaPwd);
@@ -65,8 +65,8 @@ public class SharedPreference {
      *
      * @param password yona password
      */
-    public void setYonaPassword(String password) {
-        if (TextUtils.isEmpty(getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, ""))) {
+    public void setYonaPassword(String password, boolean override) {
+        if (TextUtils.isEmpty(getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, "")) || override) {
             try {
                 getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, new EncryptUser().encryptString(password)).commit();
             } catch (Exception e) {
