@@ -79,15 +79,16 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
         DayActivity dayActivity = (DayActivity) getItem(position);
 
         if (dayActivity != null) {
-            holder.getView().setTag(dayActivity);
             switch (dayActivity.getChartTypeEnum()) {
                 case TIME_FRAME_CONTROL:
+                    holder.getView().setTag(dayActivity);
                     if (dayActivity.getTimeZoneSpread() != null) {
                         holder.getmTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
                     }
                     updateProfileImage(holder, dayActivity);
                     break;
                 case TIME_BUCKET_CONTROL:
+                    holder.getView().setTag(dayActivity);
                     int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
                     if (maxDurationAllow > 0) {
                         holder.getmTimebucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
@@ -97,6 +98,7 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
                 case SPREAD_CONTROL:
                     break;
                 case NOGO_CONTROL:
+                    holder.getView().setTag(dayActivity);
                     if (dayActivity.getGoalAccomplished()) {
                         holder.getmNogoImage().setImageResource(R.drawable.adult_happy);
                     } else {
