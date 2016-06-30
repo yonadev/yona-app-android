@@ -57,12 +57,6 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
 
         removeFriendButton = (YonaFontButton) view.findViewById(R.id.removeFriendButton);
 
-        removeFriendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO remove friend api call
-            }
-        });
         YonaApplication.getEventChangeManager().registerListener(this);
         if (getArguments() != null) {
             if (getArguments().get(AppConstant.USER) != null) {
@@ -107,7 +101,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
             lastName.setText(TextUtils.isEmpty(user.getLastName()) ? getString(R.string.blank) : user.getLastName());
             nickName.setText(TextUtils.isEmpty(yonaMessage.getNickname()) ? getString(R.string.blank) : yonaMessage.getNickname());
             number = user.getMobileNumber();
-        } else if (user != null && mUrl != null){
+        } else if (user != null && mUrl != null) {
             firstName.setText(TextUtils.isEmpty(user.getEmbedded().getYonaUser().getFirstName()) ? getString(R.string.blank) : user.getEmbedded().getYonaUser().getFirstName());
             lastName.setText(TextUtils.isEmpty(user.getEmbedded().getYonaUser().getLastName()) ? getString(R.string.blank) : user.getEmbedded().getYonaUser().getLastName());
             nickName.setText(TextUtils.isEmpty(user.getNickname()) ? getString(R.string.blank) : user.getNickname());
@@ -130,7 +124,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         } else {
             number = null;
         }
-        if (isNull(yonaMessage)) {
+        if (!isNull(buddyUser)) {
             removeFriendButton.setVisibility(View.VISIBLE);
             removeFriendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -155,10 +149,11 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
 
     private void deleteBuddy() {
         YonaActivity.getActivity().showLoadingView(true, null);
-        APIManager.getInstance().getBuddyManager().deleteBuddy(yonaMessage, new DataLoadListener() {
+        APIManager.getInstance().getBuddyManager().deleteBuddy(buddyUser, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 YonaActivity.getActivity().showLoadingView(false, null);
+                YonaActivity.getActivity().onBackPressed();
                 YonaActivity.getActivity().onBackPressed();
             }
 
@@ -170,9 +165,9 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         });
     }
 
-    private boolean isNull(YonaMessage yonaMessage) {
-        return (yonaMessage != null && yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null
-                && !TextUtils.isEmpty(yonaMessage.getLinks().getEdit().getHref()));
+    private boolean isNull(YonaBuddy buddyUser) {
+        return (buddyUser == null || buddyUser.getLinks() == null || buddyUser.getLinks().getSelf() == null
+                || TextUtils.isEmpty(buddyUser.getLinks().getSelf().getHref()));
     }
 
     @Override

@@ -48,7 +48,7 @@ public enum NotificationMessageEnum {
     /**
      * The Buddy disconnect message user removed buddy.
      */
-    BUDDY_DISCONNECT_MESSAGE_USER_REMOVED_BUDDY(NotificationEnum.BUDDYDISCONNECTMESSAGE, StatusEnum.USER_REMOVED_BUDDY, "User removed buddy", 0),
+    BUDDY_DISCONNECT_MESSAGE_USER_REMOVED_BUDDY(NotificationEnum.BUDDYDISCONNECTMESSAGE, StatusEnum.USER_REMOVED_BUDDY, "Je bent verwijderd als vriend", 0),
 
     /**
      * Disclosurerequestmessage enum disclosure requested notification message enum.

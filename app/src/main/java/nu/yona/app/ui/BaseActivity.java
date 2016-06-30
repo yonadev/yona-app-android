@@ -23,6 +23,7 @@ import net.hockeyapp.android.UpdateManager;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.CustomProgressDialog;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 18/03/16.
@@ -39,21 +40,24 @@ public class BaseActivity extends AppCompatActivity {
      * @param message the message
      */
     public void showLoadingView(boolean loading, String message) {
-
-        String dialogText = getResources().getString(R.string.loading);
-        if (!TextUtils.isEmpty(message)) {
-            dialogText = message;
-        }
+        try {
+            String dialogText = getResources().getString(R.string.loading);
+            if (!TextUtils.isEmpty(message)) {
+                dialogText = message;
+            }
 
        /* if (inputMethodManager == null) {
             inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         }*/
-        if (loading && progressDialog == null) {
-            progressDialog = new CustomProgressDialog(this, dialogText, false);
-            progressDialog.show();
-        } else if (progressDialog != null && !loading) {
-            progressDialog.dismiss();
-            progressDialog = null;
+            if (loading && progressDialog == null) {
+                progressDialog = new CustomProgressDialog(this, dialogText, false);
+                progressDialog.show();
+            } else if (progressDialog != null && !loading) {
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+        } catch (Exception e) {
+            AppUtils.throwException(BaseActivity.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
