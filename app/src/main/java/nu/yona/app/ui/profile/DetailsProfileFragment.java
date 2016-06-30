@@ -41,6 +41,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
     private User user;
     private YonaBuddy buddyUser;
     private YonaMessage yonaMessage;
+    private String mUrl;
 
     @Nullable
     @Override
@@ -70,6 +71,8 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
                 yonaMessage = (YonaMessage) getArguments().get(AppConstant.YONAMESSAGE_OBJ);
             } else if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
                 buddyUser = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+            } else if (getArguments().getString(AppConstant.URL) != null) {
+                mUrl = getArguments().getString(AppConstant.URL);
             }
         }
         return view;
@@ -104,6 +107,11 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
             lastName.setText(TextUtils.isEmpty(user.getLastName()) ? getString(R.string.blank) : user.getLastName());
             nickName.setText(TextUtils.isEmpty(yonaMessage.getNickname()) ? getString(R.string.blank) : yonaMessage.getNickname());
             number = user.getMobileNumber();
+        } else if (user != null && mUrl != null){
+            firstName.setText(TextUtils.isEmpty(user.getEmbedded().getYonaUser().getFirstName()) ? getString(R.string.blank) : user.getEmbedded().getYonaUser().getFirstName());
+            lastName.setText(TextUtils.isEmpty(user.getEmbedded().getYonaUser().getLastName()) ? getString(R.string.blank) : user.getEmbedded().getYonaUser().getLastName());
+            nickName.setText(TextUtils.isEmpty(user.getNickname()) ? getString(R.string.blank) : user.getNickname());
+            number = TextUtils.isEmpty(user.getEmbedded().getYonaUser().getMobileNumber()) ? getString(R.string.blank) : user.getEmbedded().getYonaUser().getMobileNumber();
         } else if (user != null) {
             firstName.setText(TextUtils.isEmpty(user.getFirstName()) ? getString(R.string.blank) : user.getFirstName());
             lastName.setText(TextUtils.isEmpty(user.getLastName()) ? getString(R.string.blank) : user.getLastName());

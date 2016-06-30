@@ -122,12 +122,13 @@ public class DashboardFragment extends BaseFragment {
                     if (mYonaHeaderTheme != null) {
                         if (mYonaHeaderTheme.isBuddyFlow()) {
                             leftIcon.setVisibility(View.GONE);
-                            rightIcon.setVisibility(View.VISIBLE);
-                            rightIcon.setImageDrawable(TextDrawable.builder()
+                            rightIcon.setVisibility(View.GONE);
+                            rightIconProfile.setVisibility(View.VISIBLE);
+                            rightIconProfile.setImageDrawable(TextDrawable.builder()
                                     .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
                                     .buildRound(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
                                             ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
-                            profileClickEvent(rightIcon);
+                            profileClickEvent(rightIconProfile);
                         } else {
                             leftIcon.setVisibility(View.VISIBLE);
                             leftIcon.setImageDrawable(TextDrawable.builder()
@@ -135,6 +136,7 @@ public class DashboardFragment extends BaseFragment {
                                     .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
                                             ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
                             rightIcon.setVisibility(View.VISIBLE);
+                            rightIconProfile.setVisibility(View.GONE);
                             rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
 
                             rightIconClickEvent(rightIcon);

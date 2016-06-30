@@ -44,7 +44,9 @@ public class BaseFragment extends Fragment {
     protected ImageView leftIcon, /**
      * The Right icon.
      */
-    rightIcon;
+    rightIcon,
+
+    rightIconProfile;
 
     /**
      * Sets toolbar.
@@ -56,6 +58,7 @@ public class BaseFragment extends Fragment {
         toolbarTitle = (YonaFontTextView) mToolBar.findViewById(R.id.toolbar_title);
         leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
         rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
+        rightIconProfile = (ImageView) mToolBar.findViewById(R.id.rightIconProfile);
         if (!(this instanceof DashboardFragment)) {
             mToolBar.removeView(leftIcon);
         }
