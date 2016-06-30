@@ -33,7 +33,7 @@ public class YonaMessage extends BaseEntity {
     @SerializedName("change")
     @Expose
     private String change;
-    @SerializedName("dropBuddyReason")
+    @SerializedName("reason")
     @Expose
     private String dropBuddyReason;
     @SerializedName("status")

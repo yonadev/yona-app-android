@@ -15,8 +15,6 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import nu.yona.app.YonaApplication;
-import nu.yona.app.security.DecryptUser;
-import nu.yona.app.security.EncryptUser;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
@@ -52,10 +50,11 @@ public class SharedPreference {
             yonaPwd = getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, "");
             if (TextUtils.isEmpty(yonaPwd)) {
                 setYonaPassword(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT), false);
-                getYonaPassword();
-            } else if (yonaPwd.length() > AppConstant.YONA_PASSWORD_CHAR_LIMIT) {
-                yonaPwd = new DecryptUser().decryptString(yonaPwd);
+                yonaPwd = getYonaPassword();
             }
+//            else if (yonaPwd.length() > AppConstant.YONA_PASSWORD_CHAR_LIMIT) {
+//                yonaPwd = new DecryptUser().decryptString(yonaPwd);
+//            }
         }
         return yonaPwd;
     }
@@ -67,11 +66,11 @@ public class SharedPreference {
      */
     public void setYonaPassword(String password, boolean override) {
         if (TextUtils.isEmpty(getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, "")) || override) {
-            try {
-                getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, new EncryptUser().encryptString(password)).commit();
-            } catch (Exception e) {
-                getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, password).commit();
-            }
+//            try {
+//                getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, new EncryptUser().encryptString(password)).commit();
+//            } catch (Exception e) {
+            getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, password).commit();
+//            }
         }
     }
 

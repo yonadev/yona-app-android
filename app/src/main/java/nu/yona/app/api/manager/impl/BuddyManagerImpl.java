@@ -17,13 +17,14 @@ import java.util.regex.Pattern;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.BuddyManager;
 import nu.yona.app.api.manager.network.BuddyNetworkImpl;
 import nu.yona.app.api.model.AddBuddy;
 import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
-import nu.yona.app.api.model.YonaMessage;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
@@ -170,12 +171,13 @@ public class BuddyManagerImpl implements BuddyManager {
      * @param listener
      */
     @Override
-    public void deleteBuddy(YonaMessage buddy, final DataLoadListener listener) {
+    public void deleteBuddy(YonaBuddy buddy, final DataLoadListener listener) {
         try {
-            if (buddy != null && !TextUtils.isEmpty(buddy.getLinks().getEdit().getHref())) {
-                buddyNetwork.deleteBuddy(buddy.getLinks().getEdit().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
+            if (buddy != null && !TextUtils.isEmpty(buddy.getLinks().getSelf().getHref())) {
+                buddyNetwork.deleteBuddy(buddy.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
+                        APIManager.getInstance().getAuthenticateManager().getUserFromServer();
                         listener.onDataLoad(result);
                     }
 

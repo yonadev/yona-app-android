@@ -10,6 +10,7 @@
 
 package nu.yona.app.api.manager;
 
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.listener.DataLoadListener;
 
@@ -66,6 +67,6 @@ public interface BuddyManager {
      * @param buddy    the buddy
      * @param listener the listener
      */
-    void deleteBuddy(YonaMessage buddy, DataLoadListener listener);
+    void deleteBuddy(YonaBuddy buddy, DataLoadListener listener);
 
 }

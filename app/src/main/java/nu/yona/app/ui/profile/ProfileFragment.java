@@ -50,7 +50,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     private ViewPager viewPager;
     private CollapsingToolbarLayout profileTopLayout;
     private TabLayout tabLayout;
-    private int profileBgColor, tabDeSelectedColor;
+    private int profileBgColor;
     private User user;
     private YonaMessage yonaMessage;
     private YonaBuddy yonaBuddy;
@@ -82,7 +82,6 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             }
         } else {
             profileBgColor = R.color.mid_blue; // default bg color for profile picture.
-            tabDeSelectedColor = R.color.dashboard_deselected_tab;
         }
     }
 
