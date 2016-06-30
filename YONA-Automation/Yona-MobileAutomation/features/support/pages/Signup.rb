@@ -20,6 +20,7 @@ class Signup < MobTest::Base
     element(:create_PIN4, name: '4', class: 'UIAKey')
 
 
+
     def clickOK
       alertOK_element.click()
     end
@@ -48,6 +49,10 @@ class Signup < MobTest::Base
     # button(:nextwlk, xpath: '//android.widget.ImageButton[1]')
     button(:nextwlk, id: "#{$android_package}:id/btn_next")
     element(:chlgs_title, xpath: '//android.widget.TextView[@text="CHALLENGES"]')
+    button(:permOK,id:"android:id/button1")
+    button(:btnswitch,id:"android:id/switchWidget")
+
+
 
     def checkWelcomeScreen
       displayed=false
@@ -96,6 +101,7 @@ class Signup < MobTest::Base
     end
 
     def enterPin
+      # passcode_element.click
       passcode_element.send_keys '1234'
 
     end
@@ -125,6 +131,29 @@ class Signup < MobTest::Base
       end
     end
 
+    def singnuptoYona
+      checkWelcomeScreen
+      sleep 2
+      join_element.click()
+      sleep 1
+      enterName('fname','lname')
+      next_element.click();
+      begin
+        strMob=rand(1000000000).to_s
+      end while strMob.length!=9
+      enterMobile(strMob,'Nicky')
+      next_element.click();
+      sleep 2
+      enterPin
+      sleep 2
+      enterPin
+      sleep 2
+      enterPin
+      sleep 2
+      # checkPermissionPopup
+
+    end
+
 
   end
 
@@ -142,6 +171,19 @@ class Signup < MobTest::Base
   end
 
 
+  def checkPermissionPopup
+    if(COMMON_UI.eledisplayed?(permOK_element))
+      permOK_element.click
+      sleep 1
+      btnswitch_element.click
+      sleep 1
+      permOK_element.click
+      @driver.navigate.back
+      sleep 1
+      enterPin
+    end
+
+  end
 
 
 

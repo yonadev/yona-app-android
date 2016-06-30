@@ -29,6 +29,12 @@ module COMMON_UI
     action.perform
   end
 
+  def COMMON_UI.appium_tap(vtapcount, vtouchcount , vduration , startX, startY)
+    action = Appium::TouchAction.new.tap(tapcount: vtapcount, touchcount: vtouchcount, duration: vduration, x: startX, y: startY)
+    action.perform
+    sleep 2
+  end
+
   def COMMON_UI.eledisplayed?(wbEle)
     bool = false
     sleep 3

@@ -18,10 +18,12 @@ module COMMONAPIS
       req.body = pl_json
       # Makes the API request and stores response in variable
       res = https.request(req)
-
       if res.code == '201'
         puts "User created:Code: #{res.code} Message:#{res.message}:"
         json = JSON.parse(res.body)
+        strUsrurl=json["_links"]["self"]["href"].to_s
+        $userId=/(?<=users\/)[^}]*(?=\?)/.match(strUsrurl)
+        puts "Userid=#$userId"
         COMMONAPIS.validateMobileNumber(json["_links"]["yona:confirmMobileNumber"]["href"].to_s)
       else
         "Seems like an issue with API, user not created"
@@ -94,6 +96,36 @@ module COMMONAPIS
       puts "Message=#{e.message}"
       puts "Cause=#{e.cause}"
     end
+  end
+
+  def COMMONAPIS.unsubscribeAPI(usrUrl)
+    begin
+      # Parse the URl and create new instance of http request
+      usrUrl=usrUrl+ $userId.to_s
+      uri = URI.parse(usrUrl)
+      https = Net::HTTP.new(uri.host,uri.port)
+
+      # Creates a request instance and form the request by specifying
+      # content type, request parameters and request body in json format
+      req = Net::HTTP::Delete.new(uri.path)
+      req.set_content_type('application/json')
+      req['Yona-Password'] = $yona_pwd
+
+      # Makes the API request and stores response in variable
+      res = https.request(req)
+      puts "res.code#{res.code}"
+      puts "res.code#{res.body}"
+      if res.code == '201'
+
+      else
+        "Seems like an issue with API, user not created"
+      end
+    rescue => e
+      # puts "Response=#{e.response}"
+      puts "Message=#{e.message}"
+      puts "Cause=#{e.cause}"
+    end
+
   end
 
 end

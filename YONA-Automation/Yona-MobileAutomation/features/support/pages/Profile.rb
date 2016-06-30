@@ -33,6 +33,10 @@ class Profile<MobTest::Base
      COMMON_UI.appium_swipe((prfsize[:width]/2),ptfname_element.location[:y],(prfsize[:width]/2),pteditic_element.location[:y],1)
     end
 
+    def resetYona
+      @driver.reset
+    end
+
   end
 
 

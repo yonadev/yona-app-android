@@ -98,6 +98,7 @@ class ADDCHELLENGS<MobTest::Base
 
     def isgoaldeleted?
       bool=false
+      puts "Goal count=#{gocount_element.attribute('text').to_i}"
       begin
         if(gocount_element.attribute('text').to_i==1)
           bool=true
@@ -117,7 +118,7 @@ class ADDCHELLENGS<MobTest::Base
 
     def selmenutab(lsmenu)
       lswbCat = menutab_elements
-      # puts "Length=#{lswbCat.length}"
+       # puts "Length=#{lswbCat.length}"
       if(lswbCat !=nil && lswbCat.length>=4)
         case lsmenu
           when 'prf'
@@ -127,6 +128,7 @@ class ADDCHELLENGS<MobTest::Base
           when 'chl'
             lswbCat[lswbCat.length-2].click
           when 'sett'
+            puts "click on settings"
             lswbCat[lswbCat.length-1].click
         end
      end

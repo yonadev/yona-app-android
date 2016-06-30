@@ -84,5 +84,12 @@ puts "Mobile = #{$strMobliNumb}"
         bool
       end
 
+      def unsubscribeCall
+        url="http://85.222.227.142/users/"
+        COMMONAPIS.unsubscribeAPI(url)
+
+      end
+
+
   end
 

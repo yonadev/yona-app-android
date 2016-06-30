@@ -1,8 +1,19 @@
+Given(/^I am here$/)do
+  puts "Hey in here"
+end
+
+Then(/^I am there/)do
+  puts "Hey in there"
+  sleep 4
+end
+
+
 Given(/^User is on Home page and can see two options Login and Join$/) do
   sleep 2
   on(Signup).checkWelcomeScreen
-
+  # puts @driver.manage().window().size[:height]
 end
+
 
 When(/^User clicks on Join button$/) do
   sleep 2
@@ -47,10 +58,8 @@ Then(/^Clicks on OK button in alert$/) do
 end
 
 Then(/^Enters pincode fetched from alert$/) do
-  sleep 2
+  sleep 3
   on(Signup).enterPin
-
-
 end
 
 Then(/^Sets the pin for application login$/) do
@@ -62,9 +71,18 @@ end
 And(/^Confirms the pin for application login$/) do
   sleep 2
   on(Signup).enterPin
-  sleep 4
 end
 
 Then(/^User is landed on Challenges screen$/) do
   expect(on(Signup).landed_on_challenges?).to be_truthy
+end
+
+Then(/^Check for permission popup and click OK if found$/) do
+  sleep 2
+  on(Signup).checkPermissionPopup
+end
+
+Then (/^User has intalled Yona app and launched it$/)do
+  on(Profile).resetYona
+  sleep 3
 end

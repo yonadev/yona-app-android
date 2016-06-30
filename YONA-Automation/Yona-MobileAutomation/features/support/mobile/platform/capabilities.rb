@@ -41,7 +41,8 @@ module Platform
               noReset: true,
               app: caps[:apk_path],
               appPackage: caps[:android_package],
-              appActivity: caps[:android_activity]
+              appActivity: '.ui.LaunchActivity',
+              # appWaitActivity: '.ui.YonaActivity'
           }
       if ENV['ANDROID_PHONE'] == 'emulator'
         capabilities = capabilities.merge(deviceName: 'Android Emulator', avd: ENV['DEVICE'])
@@ -55,15 +56,15 @@ module Platform
     def sauce_android_capabilities
       cap = android_settings
       # app = cap[:apk_path].split('/').select{|element| element.include?'.apk'}.first
-      sauce_user = 'cbhanushali'
-      sauce_key = '3c41efb2-f88e-406f-ba68-f9096b78a413'
+      sauce_user = 'sandipdabhiit'
+      sauce_key = '1e9ff537-e2e8-4731-b845-a3310947f495'
       {
           caps: {
               platformName: 'Android',
               # app: cap[:apk_path],
               appPackage: cap[:android_package],
               appActivity: cap[:android_activity],
-              :'appium-version' => '1.5.0',
+              :'appium-version' => '1.5.1',
               platformVersion: ENV['VERSION'],
               deviceName: ENV['DEVICE'],
               app: 'sauce-storage:Yona_android.apk',
