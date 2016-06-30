@@ -10,6 +10,7 @@
 
 package nu.yona.app.security;
 
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
+import javax.crypto.spec.SecretKeySpec;
 
 import static android.content.ContentValues.TAG;
 
@@ -31,26 +33,34 @@ public class DecryptUser extends BaseSecurity {
 
     public String decryptString(String secureKey) {
         try {
-            Log.e(DecryptUser.class.getSimpleName(), "Secure Key:" + secureKey);
-            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(alias, null);
-            RSAPrivateKey privateKey = (RSAPrivateKey) privateKeyEntry.getPrivateKey();
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                Log.e(DecryptUser.class.getSimpleName(), "Secure Key:" + secureKey);
+                KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(alias, null);
+                RSAPrivateKey privateKey = (RSAPrivateKey) privateKeyEntry.getPrivateKey();
 
-            Cipher output = Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL");
-            output.init(Cipher.DECRYPT_MODE, privateKey);
+                Cipher output = Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL");
+                output.init(Cipher.DECRYPT_MODE, privateKey);
 
-            CipherInputStream cipherInputStream = new CipherInputStream(
-                    new ByteArrayInputStream(Base64.decode(secureKey, Base64.DEFAULT)), output);
-            ArrayList<Byte> values = new ArrayList<>();
-            int nextByte;
-            while ((nextByte = cipherInputStream.read()) != -1) {
-                values.add((byte) nextByte);
+                CipherInputStream cipherInputStream = new CipherInputStream(
+                        new ByteArrayInputStream(Base64.decode(secureKey, Base64.DEFAULT)), output);
+                ArrayList<Byte> values = new ArrayList<>();
+                int nextByte;
+                while ((nextByte = cipherInputStream.read()) != -1) {
+                    values.add((byte) nextByte);
+                }
+
+                byte[] bytes = new byte[values.size()];
+                for (int i = 0; i < bytes.length; i++) {
+                    bytes[i] = values.get(i).byteValue();
+                }
+                return new String(bytes, 0, bytes.length, "UTF-8");
+            } else {
+                SecretKeySpec ks = new SecretKeySpec(key, "AES");
+                Cipher c = Cipher.getInstance("AES");
+                c.init(Cipher.DECRYPT_MODE, ks);
+                byte[] clearText = c.doFinal(Base64.decode(secureKey, Base64.DEFAULT));
+                return new String(clearText, "UTF-8");
             }
-
-            byte[] bytes = new byte[values.size()];
-            for (int i = 0; i < bytes.length; i++) {
-                bytes[i] = values.get(i).byteValue();
-            }
-            return new String(bytes, 0, bytes.length, "UTF-8");
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }

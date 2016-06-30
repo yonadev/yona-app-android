@@ -16,6 +16,8 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+import javax.crypto.spec.SecretKeySpec;
+
 import nu.yona.app.YonaApplication;
 
 /**
@@ -25,8 +27,7 @@ import nu.yona.app.YonaApplication;
 public class BaseSecurity {
     protected KeyStore keyStore;
     protected String alias = YonaApplication.getAppContext().getPackageName();
-    protected  String filesDirectory = YonaApplication.getAppContext().getFilesDir().getAbsolutePath() + "/yona_secret";
-
+    protected byte[] key = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16};
     public BaseSecurity() {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore");

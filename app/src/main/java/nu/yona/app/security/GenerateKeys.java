@@ -14,7 +14,6 @@ import android.annotation.TargetApi;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.security.KeyPairGeneratorSpec;
-import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Log;
 
@@ -61,16 +60,8 @@ public class GenerateKeys extends BaseSecurity {
 
                             generator = KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
                             generator.initialize(spec);
-                        } else {
-                            generator = KeyPairGenerator.getInstance(
-                                    KeyProperties.KEY_ALGORITHM_RSA, "AndroidKeyStore");
-                            generator.initialize(new KeyGenParameterSpec.Builder(
-                                    alias, KeyProperties.PURPOSE_SIGN)
-                                    .setDigests(KeyProperties.DIGEST_SHA256)
-                                    .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PSS)
-                                    .build());
+                            generator.generateKeyPair();
                         }
-                        generator.generateKeyPair();
                         Log.e(YonaApplication.class.getSimpleName(), "KEY GEnerated");
                         return "Done";
                     } else {
