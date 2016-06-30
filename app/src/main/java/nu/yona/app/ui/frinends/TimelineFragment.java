@@ -8,6 +8,7 @@
 
 package nu.yona.app.ui.frinends;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.ChartTypeEnum;
+import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
@@ -92,7 +94,7 @@ public class TimelineFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (v.getTag() instanceof DayActivity) {
-                    openDetailPage();
+                    openDetailPage((DayActivity) v.getTag());
                 }
             }
         });
@@ -132,8 +134,12 @@ public class TimelineFragment extends BaseFragment {
         getDayActivity(true);
     }
 
-    private void openDetailPage() {
-        //TODO open detail page for user
+    private void openDetailPage(DayActivity activity) {
+        Intent intent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
+        intent.putExtra(AppConstant.OBJECT, activity);
+        intent.putExtra(AppConstant.BOOLEAN, true);
+        intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+        YonaActivity.getActivity().replaceFragment(intent);
     }
 
     @Override
@@ -196,7 +202,7 @@ public class TimelineFragment extends BaseFragment {
         for (int i = 0; i < dayActivityList.size(); i++) {
             DayActivity currentDayActivity = dayActivityList.get(i);
             if (i == 0) {
-                newDayActivityList.add(getNewDayActivity(index, i, currentDayActivity, ChartTypeEnum.TITLE));
+                newDayActivityList.add(getNewDayActivity(index, currentDayActivity, ChartTypeEnum.TITLE));
                 currentDayActivity.setStickyHeaderId(index++);
                 newDayActivityList.add(dayActivityList.get(i));
             } else {
@@ -204,14 +210,14 @@ public class TimelineFragment extends BaseFragment {
                 if (currentDayActivity.getStickyTitle().equals(previousDayActivity.getStickyTitle())) {
                     currentDayActivity.setStickyHeaderId(previousDayActivity.getStickyHeaderId());
                     if (!currentDayActivity.getYonaGoal().getActivityCategoryName().equals(previousDayActivity.getYonaGoal().getActivityCategoryName())) {
-                        newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), i, currentDayActivity, ChartTypeEnum.TITLE));
+                        newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), currentDayActivity, ChartTypeEnum.TITLE));
                     } else if (!currentDayActivity.getYonaGoal().getType().equals(previousDayActivity.getYonaGoal().getType())) {
-                        newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), i, currentDayActivity, ChartTypeEnum.LINE));
+                        newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), currentDayActivity, ChartTypeEnum.LINE));
                     }
                     newDayActivityList.add(currentDayActivity);
                 } else {
                     index++;
-                    newDayActivityList.add(getNewDayActivity(index, i, currentDayActivity, ChartTypeEnum.TITLE));
+                    newDayActivityList.add(getNewDayActivity(index, currentDayActivity, ChartTypeEnum.TITLE));
                     currentDayActivity.setStickyHeaderId(index);
                     newDayActivityList.add(currentDayActivity);
                 }
@@ -222,7 +228,7 @@ public class TimelineFragment extends BaseFragment {
     }
 
 
-    private DayActivity getNewDayActivity(int index, int currentPos, DayActivity dayActivity, ChartTypeEnum chartTypeEnum) {
+    private DayActivity getNewDayActivity(int index, DayActivity dayActivity, ChartTypeEnum chartTypeEnum) {
         DayActivity activity = new DayActivity();
         activity.setStickyHeaderId(index);
         activity.setStickyTitle(dayActivity.getStickyTitle());

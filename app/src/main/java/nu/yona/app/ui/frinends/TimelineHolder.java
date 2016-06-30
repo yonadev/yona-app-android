@@ -36,6 +36,7 @@ public class TimelineHolder extends RecyclerView.ViewHolder {
     public TimelineHolder(View itemView, View.OnClickListener listener, ChartTypeEnum chartTypeEnum) {
         super(itemView);
         this.view = itemView;
+        itemView.setOnClickListener(listener);
         initHeaderControl();
         switch (chartTypeEnum) {
             case NOGO_CONTROL:
