@@ -33,7 +33,6 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
-import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
@@ -125,9 +124,6 @@ public class PerDayFragment extends BaseFragment {
      */
     private void setRecyclerHeaderAdapterUpdate(final StickyRecyclerHeadersDecoration headerDecor) {
         listView.addItemDecoration(headerDecor);
-
-        // Add decoration for dividers between list items
-        listView.addItemDecoration(new DividerDecoration(getActivity()));
 
         // Add touch listeners
         StickyRecyclerHeadersTouchListener touchListener =

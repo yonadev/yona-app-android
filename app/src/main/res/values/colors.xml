@@ -42,6 +42,7 @@
     <color name="white_three">#e7e7e7</color>
     <color name="progressbar_background">#7f2a5c</color>
     <color name="bg_gradient_three">#d5d5d5</color>
+    <color name="bg_gradient_three_sixty_opacity">#90d5d5d5</color>
     <color name="color1">@color/darkish_pink</color>
     <color name="color2">@color/mid_blue</color>
     <color name="color3">@color/pea</color>

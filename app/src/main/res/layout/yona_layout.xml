@@ -18,6 +18,11 @@
         android:layout_weight="1"
         android:orientation="vertical" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/horizontal_line_height"
+        android:background="@color/bg_gradient_three_sixty_opacity" />
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         style="@style/YonaCustomTabLayout"
