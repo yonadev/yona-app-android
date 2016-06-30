@@ -56,6 +56,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     private YonaBuddy yonaBuddy;
     private YonaHeaderTheme yonaHeaderTheme;
     private DetailsProfileFragment detailsProfileFragment;
+    private String mUrl;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +77,8 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                 yonaMessage = (YonaMessage) getArguments().get(AppConstant.YONAMESSAGE_OBJ);
             } else if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
                 yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+            } else if (getArguments().getString(AppConstant.URL) != null) {
+                mUrl = getArguments().getString(AppConstant.URL);
             }
         } else {
             profileBgColor = R.color.mid_blue; // default bg color for profile picture.
@@ -108,6 +111,8 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             loadFriendProfile(yonaMessage.getLinks().getYonaUser().getHref());
         } else if (yonaBuddy != null) {
             updateProfileAndIcon();
+        } else if (!TextUtils.isEmpty(mUrl)) {
+            loadFriendProfile(mUrl);
         }
 
         YonaApplication.getEventChangeManager().registerListener(this);
@@ -156,7 +161,14 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void updateProfile() {
-        if (user != null) {
+        if (user != null && mUrl != null) {
+            if (user.getEmbedded() != null && user.getEmbedded().getYonaUser() != null) {
+                name.setText(getString(R.string.full_name, !TextUtils.isEmpty(user.getEmbedded().getYonaUser().getFirstName()) ? user.getEmbedded().getYonaUser().getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
+                        !TextUtils.isEmpty(user.getEmbedded().getYonaUser().getLastName()) ? user.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
+                profileImageView.setImageDrawable(getImage(null, false, profileBgColor, user.getEmbedded().getYonaUser().getFirstName(), user.getEmbedded().getYonaUser().getLastName()));
+            }
+            nickName.setText(!TextUtils.isEmpty(user.getNickname()) ? user.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
+        } else if (user != null) {
             name.setText(getString(R.string.full_name, !TextUtils.isEmpty(user.getFirstName()) ? user.getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
                     !TextUtils.isEmpty(user.getLastName()) ? user.getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
             nickName.setText(!TextUtils.isEmpty(user.getNickname()) ? user.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
@@ -214,7 +226,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (user != null && yonaMessage == null) {
+                if (isAdded() && user != null && yonaMessage == null) {
                     rightIcon.setVisibility(View.VISIBLE);
                     rightIcon.setTag(getString(R.string.profile));
                     rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_edit));

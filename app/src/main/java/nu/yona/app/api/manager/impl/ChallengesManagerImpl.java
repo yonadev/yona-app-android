@@ -31,6 +31,7 @@ import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -143,11 +144,15 @@ public class ChallengesManagerImpl implements ChallengesManager {
      */
     public boolean hasUserCreatedGoal() {
         Goals userGoals = APIManager.getInstance().getGoalManager().getUserGoalFromDb();
-        if (userGoals != null) {
-            if (YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() < userGoals.getEmbedded().getYonaGoals().size()) {
-                YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
-                return true;
+        try {
+            if (userGoals != null) {
+                if (YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() < userGoals.getEmbedded().getYonaGoals().size()) {
+                    YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         return false;
     }
