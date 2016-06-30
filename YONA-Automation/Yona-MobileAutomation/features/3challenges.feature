@@ -1,26 +1,23 @@
-@Logintest
-Feature: New user sign-up to Yona app As a new user I want to have the ability to sign-up to Yona app.
+@regression
+Feature: Add goals
+
+#  Background:
+#    Given User has intalled Yona app and launched it
+#    And User is on Home page and can see two options Login and Join
+#    When User clicks on Join button
+#    And Enters first name and last name
+#    Then Clicks on Next button
+#    And Then enters Mobile number and Nick Name on next screen
+#    Then Clicks on Next button on this screen
+#    And Clicks on OK button in alert
+#    Then Enters pincode fetched from alert
+#    Then Sets the pin for application login
+#    And Confirms the pin for application login
 
 
-  @demo_login
-  Scenario: User wants to Join the Yona
-    Given User is on Home page and can see two options Login and Join
-    When User clicks on Join button
-    And Enters first name and last name
-    Then Clicks on Next button
-    And Then enters Mobile number and Nick Name on next screen
-    Then Clicks on Next button on this screen
-#    And Fetch pincode from alert
-    And Clicks on OK button in alert
-    Then Enters pincode fetched from alert
-    Then Sets the pin for application login
-    And Confirms the pin for application login
-    Then User is landed on Challenges screen
-
-
-  @addNoGoClng
+  @addnogo
   Scenario: User wants to Add NOGO Challenge
-    Given User is logged in to Yona app and on Challenges tab
+    Given User enters pin and login to Yona app
     And Click on NOGO goal
     Then Click on add goal button
     And select the category on next page.
@@ -29,9 +26,9 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
     Then Select the goal and delete it
     And Goal is deleted and user is navigated back to Challenges home screen
 
-  @addTimeFrClng
+  @addtimezone
   Scenario: User wants to Add TimeFrm Challenge
-   Given User is logged in to Yona app and on Challenges tab
+    Given User enters pin and login to Yona app
 #   Given User is already on challenges tab
     Then Click on Timzone goal
     And Click on add goal button
@@ -47,9 +44,9 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
     Then Goal is deleted and user is navigated back to Challenges home screen
 
 
-  @addCrdClng
+  @addbudget
   Scenario: User wants to Add Credit Challenge
-    Given User is logged in to Yona app and on Challenges tab
+    Given User enters pin and login to Yona app
 #    Given User is already on challenges tab
     Then Click on Credit goals
     And Click on add goal button
@@ -60,9 +57,3 @@ Feature: New user sign-up to Yona app As a new user I want to have the ability t
     Then Click on Save goal button
     Then Select the goal and delete it
     And Goal is deleted and user is navigated back to Challenges home screen
-
-  @viewProfile
-  Scenario: User can view his profile
-    Given User is logged in to Yona app and on Profile page
-    Then click on Profile icon on top left corner
-    And Able to view details like first name,last name, nick name,mobile number and edit icon

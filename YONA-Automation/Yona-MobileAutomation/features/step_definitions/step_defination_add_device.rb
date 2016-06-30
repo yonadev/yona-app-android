@@ -1,6 +1,11 @@
+Given (/^User has installed Yona app in device B$/) do
+  on(Profile).resetYona
+  sleep 2
+end
+
 Then (/^User has navigated to Login screen from Welcome screen$/) do
   on(Signup).checkWelcomeScreen
-  sleep 3
+  sleep 2
 end
 
 Then(/^User has sign to Yona from first device$/) do
@@ -51,7 +56,7 @@ end
 Then(/User is landed on enter OTP screen$/) do
   sleep 2
   expect(on(AddDevice).landed_on_OTP?).to be_truthy
-  sleep 2
+
 end
 
 

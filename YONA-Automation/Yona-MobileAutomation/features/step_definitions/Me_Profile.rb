@@ -1,7 +1,7 @@
 # Add NOGO Goal
 
 Given(/^User is logged in to Yona app and on Profile page$/)do
-  on(Signup).enterPin
+  # on(Signup).enterPin
   sleep 2
   on(ADDCHELLENGS).selmenutab 'prf'
 end
@@ -21,5 +21,11 @@ Then(/^Able to view details like first name,last name, nick name,mobile number a
   expect(on(Profile).isflddisplayed(on(Profile).ptnickname_element)).to be_truthy
   expect(on(Profile).isflddisplayed(on(Profile).ptmobilen_element)).to be_truthy
   expect(on(Profile).isflddisplayed(on(Profile).pteditic_element)).to be_truthy
+
+end
+
+Then(/^Quit the Yona app$/)do
+  sleep 2
+  on(Profile).resetYona
 
 end

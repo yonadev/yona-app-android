@@ -4,7 +4,8 @@
 #:android_package: "YOUR APPLICATION'S PACKAGE"
 #:android_activity: "YOUR APPLICATION'S MAIN ACTIVITY"
 #E.G.:
-:apk: 'Yona42.apk'
-:apk_path: '/Users/jaisharma/Documents/AndiroidApps/Yona42.apk'
+:apk: 'Yona58.apk'
+:apk_path: '/Users/jaisharma/Documents/AndiroidApps/Yona58.apk'
 :android_package: 'nu.yona.app'
 :android_activity: 'nu.yona.app.ui.LaunchActivity'
+
