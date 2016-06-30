@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 23
     buildToolsVersion "24"
     defaultConfig {
         applicationId "nu.yona.app"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0.0"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "ad6d6ae9670e48b693b8fbf377fffb2f"]
@@ -133,7 +133,7 @@ def getBranch() {
 dependencies {
     compile project(':libTimepicker')
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:design:24.0.0'
+    compile 'com.android.support:design:23.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.google.code.gson:gson:2.4'
@@ -141,7 +141,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.0'
     compile 'net.hockeyapp.android:HockeySDK:4.1.0-beta.1'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0'
     compile 'joda-time:joda-time:2.9.3'
     //using for swipe layout on recyclerview
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
