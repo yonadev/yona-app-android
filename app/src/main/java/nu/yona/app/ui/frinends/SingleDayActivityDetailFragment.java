@@ -194,10 +194,10 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
             @Override
             public void onDataLoad(Object result) {
                 if (result instanceof DayActivity) {
-                    dayActivityList.add((DayActivity) result);
+                    /*dayActivityList.add((DayActivity) result);
                     customPageAdapter.notifyDataSetChanged(dayActivityList);
                     viewPager.setCurrentItem(dayActivityList.indexOf(activity));
-                    updateFlow(dayActivityList.indexOf(activity));
+                    updateFlow(dayActivityList.indexOf(activity));*/
                 }
 
             }
