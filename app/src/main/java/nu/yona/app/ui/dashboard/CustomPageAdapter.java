@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,9 +139,7 @@ public class CustomPageAdapter extends PagerAdapter {
         YonaFontTextView goalScore = (YonaFontTextView) layout.findViewById(R.id.topPanel).findViewById(R.id.goalScore);
         YonaFontTextView goalDesc = (YonaFontTextView) layout.findViewById(R.id.topPanel).findViewById(R.id.goalDesc);
         if (weekActivity != null) {
-            if (weekActivity.getYonaGoal() != null && !TextUtils.isEmpty(weekActivity.getYonaGoal().getActivityCategoryName())) {
-                goalType.setText(weekActivity.getYonaGoal().getActivityCategoryName());
-            }
+            goalType.setText(R.string.score);
             goalDesc.setText(R.string.week_score);
 
             for (WeekDayActivity weekDayActivity : weekActivity.getWeekDayActivity()) {
@@ -315,7 +312,7 @@ public class CustomPageAdapter extends PagerAdapter {
         if (maxDurationAllow > 0) {
             holder.getTimeBucketGraph().graphArguments(avgUsage.second, maxDurationAllow, weekActivity.getTotalActivityDurationMinutes());
         }
-        holder.getGoalType().setText(mContext.getString(R.string.score));
+        holder.getGoalType().setText(mContext.getString(R.string.average));
         if (goalMinutes < 0) {
             holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
         } else {
