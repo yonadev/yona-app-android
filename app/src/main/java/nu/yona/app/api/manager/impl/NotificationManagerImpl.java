@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.NotificationManager;
 import nu.yona.app.api.manager.network.NotificationNetworkImpl;
 import nu.yona.app.api.model.Embedded;
@@ -125,6 +126,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                     if (isAnyProcessed) {
                                         getMessage(itemsPerPage, pageNo, listener, true);
                                     }
+                                    APIManager.getInstance().getAuthenticateManager().getUserFromServer();
                                 }
                                 listener.onDataLoad(yonaMessages);
                             }

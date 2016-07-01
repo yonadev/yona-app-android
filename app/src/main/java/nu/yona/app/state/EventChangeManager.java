@@ -103,6 +103,8 @@ public class EventChangeManager {
      */
     public static final int EVENT_CLEAR_ACTIVITY_LIST = 18;
 
+    public static final int EVENT_UPDATE_FRIEND_TIMELINE = 19;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;

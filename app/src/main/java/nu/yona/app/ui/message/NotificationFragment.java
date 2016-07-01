@@ -24,6 +24,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 import java.util.ArrayList;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaHeaderTheme;
@@ -33,6 +34,7 @@ import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
@@ -174,6 +176,7 @@ public class NotificationFragment extends BaseFragment {
         mMessageStickyRecyclerAdapter.clear();
         currentPage = 0;
         getUserMessages();
+        YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
     }
 
     /**
