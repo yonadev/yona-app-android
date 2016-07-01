@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-public class DayActivities {
+public class DayActivities extends BaseEntity {
     @SerializedName("SUNDAY")
     @Expose
     private Day sunday;
@@ -165,4 +167,8 @@ public class DayActivities {
         this.saturday = sATURDAY;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

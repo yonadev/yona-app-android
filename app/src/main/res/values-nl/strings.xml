@@ -156,6 +156,7 @@
     <string name="goaltotalminute">minuten totaal</string>
     <string name="spreiding">Spreiding</string>
     <string name="score">Score</string>
+    <string name="average">Gemiddeld</string>
     <string name="nogogoalachieved">geen hits, hou vol!</string>
     <string name="nogogoalbeyond">%1$s minuten</string>
     <string name="budgetgoalbeyond">minuten over je limiet</string>
