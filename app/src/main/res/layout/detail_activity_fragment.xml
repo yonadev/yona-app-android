@@ -25,6 +25,7 @@
         android:background="@drawable/item_gradient" />
 
     <LinearLayout
+        android:id="@+id/spreadGraphView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/chart_item_spreading_height"
         android:background="@drawable/item_gradient"

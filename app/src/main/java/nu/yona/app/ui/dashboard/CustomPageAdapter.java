@@ -78,10 +78,11 @@ public class CustomPageAdapter extends PagerAdapter {
     private ViewGroup initiateDayActivityReport(ViewGroup collection, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.detail_activity_fragment, collection, false);
-        goalDesc = (YonaFontTextView) layout.findViewById(R.id.goalDesc);
-        goalType = (YonaFontTextView) layout.findViewById(R.id.goalType);
-        goalScore = (YonaFontTextView) layout.findViewById(R.id.goalScore);
-        mSpreadGraph = (SpreadGraph) layout.findViewById(R.id.spreadGraph);
+        View spreadView = layout.findViewById(R.id.spreadGraphView);
+        goalDesc = (YonaFontTextView) spreadView.findViewById(R.id.goalDesc);
+        goalType = (YonaFontTextView) spreadView.findViewById(R.id.goalType);
+        goalScore = (YonaFontTextView) spreadView.findViewById(R.id.goalScore);
+        mSpreadGraph = (SpreadGraph) spreadView.findViewById(R.id.spreadGraph);
         DayActivity dayActivity = dayActivities.get(position);
         graphView = ((FrameLayout) layout.findViewById(R.id.graphView));
         graphView.addView(inflateActivityView(inflater, dayActivity.getChartTypeEnum(), layout));
@@ -113,11 +114,12 @@ public class CustomPageAdapter extends PagerAdapter {
     private ViewGroup initiateWeekActivityReport(ViewGroup collection, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.detail_activity_fragment, collection, false);
-        mSpreadGraph = (SpreadGraph) layout.findViewById(R.id.spreadGraph);
         WeekActivity weekActivity = weekActivities.get(position);
-        goalDesc = (YonaFontTextView) layout.findViewById(R.id.goalDesc);
-        goalType = (YonaFontTextView) layout.findViewById(R.id.goalType);
-        goalScore = (YonaFontTextView) layout.findViewById(R.id.goalScore);
+        View spreadView = layout.findViewById(R.id.spreadGraphView);
+        goalDesc = (YonaFontTextView) spreadView.findViewById(R.id.goalDesc);
+        goalType = (YonaFontTextView) spreadView.findViewById(R.id.goalType);
+        goalScore = (YonaFontTextView) spreadView.findViewById(R.id.goalScore);
+        mSpreadGraph = (SpreadGraph) spreadView.findViewById(R.id.spreadGraph);
         ViewGroup weekChart = (ViewGroup) layout.findViewById(R.id.week_chart);
         weekChart.setVisibility(View.VISIBLE); // week control
         showWeekChartData(weekChart, weekActivity);
@@ -233,6 +235,7 @@ public class CustomPageAdapter extends PagerAdapter {
     }
 
     private void updateView(final ChartItemHolder holder, WeekActivity weekActivity, DayActivity dayActivity) {
+        showSpreadGraph(dayActivity, weekActivity);
         if (dayActivity != null) {
             switch (dayActivity.getChartTypeEnum()) {
                 case TIME_FRAME_CONTROL:
@@ -264,7 +267,6 @@ public class CustomPageAdapter extends PagerAdapter {
                     break;
             }
         }
-        showSpreadGraph(dayActivity, weekActivity);
     }
 
     private void loadTimeFrameControlForDay(DayActivity dayActivity, ChartItemHolder holder) {
@@ -311,7 +313,7 @@ public class CustomPageAdapter extends PagerAdapter {
 
         int maxDurationAllow = (int) weekActivity.getYonaGoal().getMaxDurationMinutes();
         if (maxDurationAllow > 0) {
-            holder.getTimeBucketGraph().graphArguments(avgUsage.second, (int) weekActivity.getYonaGoal().getMaxDurationMinutes(), weekActivity.getTotalActivityDurationMinutes());
+            holder.getTimeBucketGraph().graphArguments(avgUsage.second, maxDurationAllow, weekActivity.getTotalActivityDurationMinutes());
         }
         holder.getGoalType().setText(mContext.getString(R.string.score));
         if (goalMinutes < 0) {
@@ -402,11 +404,24 @@ public class CustomPageAdapter extends PagerAdapter {
             mSpreadGraph.chartValuePre(weekActivity.getTimeZoneSpread());
         }
         goalType.setText(mContext.getString(R.string.spreiding));
+        //Todo - spread time should be updated, change color according that
         if (dayActivity != null) {
-            goalScore.setText(dayActivity.getTotalActivityDurationMinutes() + "");
+            if (dayActivity.getGoalAccomplished()) {
+                goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                goalScore.setText(dayActivity.getTotalActivityDurationMinutes() + "");
+            } else {
+                goalScore.setText(dayActivity.getTotalMinutesBeyondGoal() + "");
+                goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+            }
+        } else if (weekActivity != null) {
+            goalScore.setText("");
         }
-        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
         goalDesc.setText(mContext.getString(R.string.goaltotalminute));
+    }
+
+
+    private void updateSpreadingScore(int totalMin, int usageMin) {
+
     }
 
     @Override
@@ -419,6 +434,7 @@ public class CustomPageAdapter extends PagerAdapter {
             return 0;
         }
     }
+
 
     /**
      * Notify data set changed.
