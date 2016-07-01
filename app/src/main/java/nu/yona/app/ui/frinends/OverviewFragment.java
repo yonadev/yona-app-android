@@ -31,6 +31,7 @@ import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
 import nu.yona.app.state.EventChangeListener;
@@ -63,14 +64,17 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
                 Intent friendIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
                 Bundle bundle = new Bundle();
                 YonaBuddy yonaBuddy = (YonaBuddy) v.getTag();
-                if (yonaBuddy != null && yonaBuddy.getLinks() != null) {
-                    bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, yonaBuddy.getLinks().getYonaDailyActivityReports(), yonaBuddy.getLinks().getYonaWeeklyActivityReports(), 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
-                } else {
-                    bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+                if (yonaBuddy != null && !yonaBuddy.getSendingStatus().equals(StatusEnum.REQUESTED.getStatus())) {
+                    if (yonaBuddy.getLinks() != null) {
+                        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, yonaBuddy.getLinks().getYonaDailyActivityReports(), yonaBuddy.getLinks().getYonaWeeklyActivityReports(), 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+                    } else {
+                        bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+                    }
+                    friendIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
+                    friendIntent.putExtras(bundle);
+                    YonaActivity.getActivity().replaceFragment(friendIntent);
                 }
-                friendIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
-                friendIntent.putExtras(bundle);
-                YonaActivity.getActivity().replaceFragment(friendIntent);
+
             }
 
             @Override
@@ -107,8 +111,8 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
                 YonaActivity.getActivity().showLoadingView(false, null);
                 if (result instanceof YonaBuddies) {
                     YonaBuddies buddies = (YonaBuddies) result;
+                    mListBuddy.clear();
                     if (buddies != null && buddies.getEmbedded() != null && buddies.getEmbedded().getYonaBuddies() != null) {
-                        mListBuddy.clear();
                         mListBuddy = buddies.getEmbedded().getYonaBuddies();
                         mOverViewAdapter.notifyDataSetChange(mListBuddy);
                     }

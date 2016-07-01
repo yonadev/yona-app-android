@@ -155,6 +155,14 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
                 YonaActivity.getActivity().showLoadingView(false, null);
                 YonaActivity.getActivity().onBackPressed();
                 YonaActivity.getActivity().onBackPressed();
+                YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_FRIEND_TIMELINE, null);
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_FRIEND_OVERVIEW, null);
+                    }
+                }, AppConstant.TIMER_DELAY);
             }
 
             @Override

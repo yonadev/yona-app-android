@@ -35,6 +35,7 @@ import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
@@ -44,7 +45,7 @@ import nu.yona.app.utils.AppConstant;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class TimelineFragment extends BaseFragment {
+public class TimelineFragment extends BaseFragment implements EventChangeListener {
 
     private RecyclerView listView;
     private TimelineStickyAdapter mDayTimelineStickyAdapter;
@@ -103,6 +104,7 @@ public class TimelineFragment extends BaseFragment {
         listView.setAdapter(mDayTimelineStickyAdapter);
         listView.addOnScrollListener(mRecyclerViewOnScrollListener);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(mDayTimelineStickyAdapter));
+        YonaApplication.getEventChangeManager().registerListener(this);
         return view;
     }
 
@@ -153,6 +155,11 @@ public class TimelineFragment extends BaseFragment {
         getDayActivity(false);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
+    }
 
     private void getDayActivity(boolean loadMore) {
         if (YonaActivity.getActivity().isToDisplayLogin()) {
@@ -239,4 +246,14 @@ public class TimelineFragment extends BaseFragment {
         return activity;
     }
 
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_UPDATE_FRIEND_TIMELINE:
+                refreshAdapter();
+                break;
+            default:
+                break;
+        }
+    }
 }
