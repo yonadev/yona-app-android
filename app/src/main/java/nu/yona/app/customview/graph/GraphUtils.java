@@ -15,6 +15,11 @@ import android.util.DisplayMetrics;
  * Created by bhargavsuthar on 07/06/16.
  */
 public class GraphUtils {
+
+    /**
+     * The constant HEIGHT_BAR.
+     */
+    public static int HEIGHT_BAR = 20;
     /**
      * The constant COLOR_PINK.
      */

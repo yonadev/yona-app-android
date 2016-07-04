@@ -93,7 +93,7 @@ public class TimeBucketGraph extends BaseView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int fullWidth = getWidth();
-        float height = scaleFactor * 25;
+        float height = scaleFactor * GraphUtils.HEIGHT_BAR;
 
         //using mDifference to check wheather its beyond time or not
         mDifference = mTotalMinTarget - mTotalActivityDurationMin;

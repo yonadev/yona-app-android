@@ -26,8 +26,6 @@ public class TimeFrameGraph extends BaseView {
     private Canvas mCanvas;
     private float mStartPoint;
     private float mMiddlePoint;
-    private float x_top = 0;
-    private float x_bottom = x_top + 100;
 
     /**
      * Instantiates a new Time frame graph.
@@ -92,7 +90,7 @@ public class TimeFrameGraph extends BaseView {
         super.onDraw(canvas);
         this.mCanvas = canvas;
         float fullWidth = canvas.getWidth();
-        float height = scaleFactor * 25;
+        float height = scaleFactor * GraphUtils.HEIGHT_BAR;
 
         //first bar
         float left = 0, top = 0; // basically (X1, Y1)
