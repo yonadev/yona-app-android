@@ -199,5 +199,10 @@
     <dimen name="horizontal_line_paddinBottom">27dp</dimen>
     <dimen name="horizontal_line_paddinTop">20dp</dimen>
 
+    <!-- loading -->
+    <dimen name="loading_width">38dp</dimen>
+    <dimen name="loading_height">38dp</dimen>
+    <dimen name="loading_thick_size">3dp</dimen>
+
 
 </resources>

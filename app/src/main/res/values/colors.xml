@@ -52,4 +52,5 @@
     <color name="fourty_opacity">#40000000</color>
     <color name="fifty_opacity">#50000000</color>
     <color name="thirty_opacity">#30000000</color>
+    <color name="progressbar_color">#389df3</color>
 </resources>
