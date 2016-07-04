@@ -165,4 +165,10 @@
     <string name="app_usage_permission_message">For accurate result, please ON app usage access for Yona</string>
     <string name="week_score">x doel gehaald</string>
     <string name="timelineminute">minuten</string>
+    <string name="removebuddy">Je bent verwijderd als vriend</string>
+    <string name="goaladded">Goal Added</string>
+    <string name="goaldeleted">Goal Deleted</string>
+    <string name="goalchanged">Goal Changed</string>
+    <string name="nogoalert">NoGo alert</string>
+    <string name="useraccountdeleted">User Account Deleted</string>
 </resources>

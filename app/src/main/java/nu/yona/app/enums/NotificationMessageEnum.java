@@ -48,7 +48,7 @@ public enum NotificationMessageEnum {
     /**
      * The Buddy disconnect message user removed buddy.
      */
-    BUDDY_DISCONNECT_MESSAGE_USER_REMOVED_BUDDY(NotificationEnum.BUDDYDISCONNECTMESSAGE, StatusEnum.USER_REMOVED_BUDDY, "Je bent verwijderd als vriend", 0),
+    BUDDY_DISCONNECT_MESSAGE_USER_REMOVED_BUDDY(NotificationEnum.BUDDYDISCONNECTMESSAGE, StatusEnum.USER_REMOVED_BUDDY, getString(R.string.removebuddy), 0),
 
     /**
      * Disclosurerequestmessage enum disclosure requested notification message enum.
@@ -78,24 +78,24 @@ public enum NotificationMessageEnum {
     /**
      * The Buddy disconnect message user account deleted.
      */
-    BUDDY_DISCONNECT_MESSAGE_USER_ACCOUNT_DELETED(NotificationEnum.BUDDYDISCONNECTMESSAGE, StatusEnum.USER_ACCOUNT_DELETED, "User Account Deleted", 0),
+    BUDDY_DISCONNECT_MESSAGE_USER_ACCOUNT_DELETED(NotificationEnum.BUDDYDISCONNECTMESSAGE, StatusEnum.USER_ACCOUNT_DELETED, getString(R.string.useraccountdeleted), 0),
 
     /**
      * The Goalchangemessage added.
      */
-    GOALCHANGEMESSAGE_ADDED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.ADDED, "Goal Added", 0),
+    GOALCHANGEMESSAGE_ADDED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.ADDED, getString(R.string.goaladded), 0),
 
     /**
      * The Goalchangemessage deleted.
      */
-    GOALCHANGEMESSAGE_DELETED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.DELETED, "Goal Deleted", 0),
+    GOALCHANGEMESSAGE_DELETED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.DELETED, getString(R.string.goaldeleted), 0),
 
     /**
      * The Goalchangemessage changed.
      */
-    GOALCHANGEMESSAGE_CHANGED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.CHANGED, "Goal Changed", 0),
+    GOALCHANGEMESSAGE_CHANGED(NotificationEnum.GOALCHANGEMESSAGE, StatusEnum.CHANGED, getString(R.string.goalchanged), 0),
 
-    GOALCONFLICTMESSAGE_ANNOUNCED(NotificationEnum.GOALCONFLICTMESSAGE, StatusEnum.ANNOUNCED, "NoGo alert", 0),
+    GOALCONFLICTMESSAGE_ANNOUNCED(NotificationEnum.GOALCONFLICTMESSAGE, StatusEnum.ANNOUNCED, getString(R.string.nogoalert), 0),
     /**
      * Goalconflictmessage disclosure requested notification message enum.
      */
