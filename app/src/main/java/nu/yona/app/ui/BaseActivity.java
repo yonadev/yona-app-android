@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
             inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         }*/
             if (loading && progressDialog == null) {
-                progressDialog = new CustomProgressDialog(this, dialogText, false);
+                progressDialog = new CustomProgressDialog(this, false);
                 progressDialog.show();
             } else if (progressDialog != null && !loading) {
                 progressDialog.dismiss();

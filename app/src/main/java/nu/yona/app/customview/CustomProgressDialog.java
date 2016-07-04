@@ -14,10 +14,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.text.TextUtils;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import nu.yona.app.R;
@@ -31,57 +32,34 @@ public class CustomProgressDialog extends Dialog {
     private Button okBtn;
     private TextView progressTxt;
 
-    private CustomProgressDialog(Context context) {
+    public CustomProgressDialog(Context context) {
         super(context);
-        init(false, true);
+        init(false);
     }
 
-    /**
-     * Instantiates a new Custom progress dialog.
-     *
-     * @param context        the context
-     * @param message        the message
-     * @param isErrorMessage the is error message
-     */
-    public CustomProgressDialog(Context context, String message, boolean isErrorMessage) {
+    public CustomProgressDialog(Context context, boolean hideProgressBar) {
         super(context);
-        init(false, false);
-
-        if (isErrorMessage) {
-            findViewById(R.id.progress_bar).setVisibility(View.GONE);
-        }
-
-        if (!TextUtils.isEmpty(message)) {
-            ((TextView) this.findViewById(R.id.message)).setText(message);
-        }
-    }
-
-    private CustomProgressDialog(Context context, boolean hideProgressBar, boolean hideDefaultMessage) {
-        super(context);
-        init(hideProgressBar, hideDefaultMessage);
+        init(hideProgressBar);
     }
 
     private CustomProgressDialog(Context context, int theme) {
         super(context, theme);
     }
 
-    private CustomProgressDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    public CustomProgressDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 
-    private void init(boolean hideProgressBar, boolean hideDefaultMessage) {
+    private void init(boolean hideProgressBar) {
         this.setCancelable(false);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setContentView(R.layout.progressbar_dialog_layout);
         this.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        progressTxt = (TextView) this.findViewById(R.id.message);
-        if (hideDefaultMessage) {
-            progressTxt.setVisibility(View.GONE);
-        }
         if (hideProgressBar) {
             this.findViewById(R.id.progress_bar).setVisibility(View.GONE);
+        } else {
+            ((ProgressBar) this.findViewById(R.id.progress_bar)).getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this.getContext(), R.color.progressbar_color), android.graphics.PorterDuff.Mode.MULTIPLY);
         }
-        okBtn = (Button) findViewById(R.id.okBtn);
     }
 
     @Override
