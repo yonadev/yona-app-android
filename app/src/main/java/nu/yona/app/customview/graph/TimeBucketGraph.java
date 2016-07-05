@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
 
@@ -22,7 +23,6 @@ import android.util.AttributeSet;
  */
 public class TimeBucketGraph extends BaseView {
 
-    private Context mContext;
     private int mTotalActivityBeyondGoal;
     private int mTotalMinTarget;
     private int mTotalActivityDurationMin;
@@ -93,7 +93,8 @@ public class TimeBucketGraph extends BaseView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int fullWidth = getWidth();
-        float height = scaleFactor * 25;
+        float height = scaleFactor * GraphUtils.HEIGHT_BAR;
+        float txtHeightMarginTop = scaleFactor * GraphUtils.MARGIN_TOP;
 
         //using mDifference to check wheather its beyond time or not
         mDifference = mTotalMinTarget - mTotalActivityDurationMin;
@@ -131,22 +132,31 @@ public class TimeBucketGraph extends BaseView {
         RectF myRectum = new RectF(xStartPoint, yStartPoint, xEndPoint, yEndPoint);
         canvas.drawRect(myRectum, linePaint);
 
-        float txtHeight = yEndPoint + height;
+        float txtHeight = yEndPoint + txtHeightMarginTop;
 
-        Paint txtEndPaint = new Paint();
-        txtEndPaint.setTextSize(scaleFactor * GraphUtils.TEXT_SIZE);
-        txtEndPaint.setColor(GraphUtils.COLOR_TEXT);
 
-        canvas.drawText(String.valueOf((int) txtStartValue), xStartPoint, txtHeight, txtEndPaint);
+        Typeface timeFrameTypeFace = Typeface.createFromAsset(mContext.getAssets(), "fonts/" + "roboto-regular.ttf");
+        Paint mTextPaint = new Paint();
+        mTextPaint.setColor(GraphUtils.COLOR_TEXT);
+        mTextPaint.setTextSize(scaleFactor * GraphUtils.TEXT_SIZE);
+        mTextPaint.setStrokeWidth(8);
+        mTextPaint.setTypeface(timeFrameTypeFace);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mTextPaint.setLetterSpacing(GraphUtils.LETTER_SPACING);
+        }
 
-        canvas.drawText(String.valueOf((int) txtEndValue), xEndPoint - (getWidthOfText(String.valueOf(txtEndValue), txtEndPaint) + (scaleFactor * 3)), txtHeight, txtEndPaint);
+        canvas.drawText(String.valueOf((int) txtStartValue), xStartPoint, txtHeight, mTextPaint);
+
+        String textlenth = String.valueOf(txtEndValue);
+        int useItemCount = textlenth.length();
+        canvas.drawText(String.valueOf((int) txtEndValue), xEndPoint - ((getWidthOfText(String.valueOf(txtEndValue), mTextPaint)) - ((useItemCount + 2) * scaleFactor)), txtHeight, mTextPaint);
 
         //Filling usage of time
         Paint mDrawRange = new Paint();
         float fillStartPoint;
         if (mDifference < 0) {
             mDrawRange.setColor(GraphUtils.COLOR_PINK);
-            canvas.drawText(String.valueOf(0), mFillEndRange - getWidthOfText("0", txtEndPaint), txtHeight, txtEndPaint);
+            canvas.drawText(String.valueOf(0), mFillEndRange - getWidthOfText("0", mTextPaint), txtHeight, mTextPaint);
         } else {
             mDrawRange.setColor(GraphUtils.COLOR_GREEN);
         }

@@ -12,8 +12,7 @@
     android:background="@color/bg_gradient_one"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/timeline_list_paddingLeft"
-    android:paddingRight="@dimen/timeline_list_paddingRight"
-    android:paddingTop="@dimen/timeline_group_margin_top">
+    android:paddingRight="@dimen/timeline_list_paddingRight">
 
 
     <ImageView
@@ -26,6 +25,7 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/txtNoGoText"
+        style="@style/FooterTitleFiftyOpacity"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
@@ -35,6 +35,7 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/txtNogoTime"
+        style="@style/GraphLabelFiftyOpacity"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"

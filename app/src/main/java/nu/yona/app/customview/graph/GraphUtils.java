@@ -15,6 +15,15 @@ import android.util.DisplayMetrics;
  * Created by bhargavsuthar on 07/06/16.
  */
 public class GraphUtils {
+
+    /**
+     * The constant HEIGHT_BAR.
+     */
+    public static int HEIGHT_BAR = 20;
+    /**
+     * The constant MARGIN_TOP.
+     */
+    public static int MARGIN_TOP = 15;
     /**
      * The constant COLOR_PINK.
      */
@@ -50,11 +59,15 @@ public class GraphUtils {
     /**
      * The constant COLOR_TEXT.
      */
-    public static int COLOR_TEXT = 0xff2f2f2f;
+    public static int COLOR_TEXT = 0x802f2f2f;
     /**
      * The constant TEXT_SIZE.
      */
     public static int TEXT_SIZE = 12;
+    /**
+     * The constant LETTER_SPACING.
+     */
+    public static float LETTER_SPACING = 0.01f;
 
     /**
      * Get the size of pixels depend on device

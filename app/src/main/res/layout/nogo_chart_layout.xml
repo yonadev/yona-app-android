@@ -10,6 +10,7 @@
     android:id="@+id/noGoControl"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nogo_chart_item_height"
+    android:background="@drawable/item_gradient"
     android:paddingBottom="@dimen/nogo_top_bottom_padding"
     android:paddingLeft="@dimen/nogo_left_right_padding"
     android:paddingRight="@dimen/nogo_left_right_padding"
@@ -22,8 +23,7 @@
         android:layout_height="@dimen/nogo_image_height_width"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:contentDescription="@string/empty_description"
-        android:src="@drawable/adult_sad" />
+        android:contentDescription="@string/empty_description" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/txtNoGoText"
