@@ -78,7 +78,7 @@
         <item name="android:letterSpacing">0.02</item>
     </style>
 
-    <style name="FooterTitleFiftyOpacity" parent="parentFooterTxt">
+    <style name="FooterTxtFiftyOpacity" parent="parentFooterTxt">
         <item name="android:textColor">@color/black_fifty_opacity</item>
         <item name="android:letterSpacing">0.02</item>
     </style>

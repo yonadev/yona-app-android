@@ -156,7 +156,7 @@
         <item name="android:textColor">@color/black_forty_opacity</item>
     </style>
 
-    <style name="FooterTitleFiftyOpacity" parent="parentFooterTxt">
+    <style name="FooterTitleFiftyOpacity" parent="FooterTitle">
         <item name="android:textColor">@color/black_fifty_opacity</item>
     </style>
 
@@ -212,10 +212,17 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="GraphLabel">
+    <style name="parentGraphLabel">
         <item name="android:textSize">11sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
+    </style>
+
+    <style name="GraphLabel" parent="parentGraphLabel">
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="GraphLabelFiftyOpacity" parent="parentGraphLabel">
+        <item name="android:textColor">@color/black_fifty_opacity</item>
     </style>
 
     <style name="InputLabel">
