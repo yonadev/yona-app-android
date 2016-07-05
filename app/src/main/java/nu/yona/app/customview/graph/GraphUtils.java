@@ -21,6 +21,10 @@ public class GraphUtils {
      */
     public static int HEIGHT_BAR = 20;
     /**
+     * The constant MARGIN_TOP.
+     */
+    public static int MARGIN_TOP = 15;
+    /**
      * The constant COLOR_PINK.
      */
     public static int COLOR_PINK = 0xffe8308a;
@@ -55,11 +59,15 @@ public class GraphUtils {
     /**
      * The constant COLOR_TEXT.
      */
-    public static int COLOR_TEXT = 0xff2f2f2f;
+    public static int COLOR_TEXT = 0x802f2f2f;
     /**
      * The constant TEXT_SIZE.
      */
     public static int TEXT_SIZE = 12;
+    /**
+     * The constant LETTER_SPACING.
+     */
+    public static float LETTER_SPACING = 0.01f;
 
     /**
      * Get the size of pixels depend on device

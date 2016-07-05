@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
@@ -105,7 +106,7 @@ public class TimeFrameGraph extends BaseView {
         mCanvas.drawRect(myRectum, linePaint);
 
         //todraw text from height
-        float heightDraw = bottom + (20 * scaleFactor);
+        float heightDraw = bottom + (GraphUtils.MARGIN_TOP * scaleFactor);
 
         Bitmap moonBitmap = drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon));
         float bitmapWidth = moonBitmap.getWidth() / 2;
@@ -116,10 +117,13 @@ public class TimeFrameGraph extends BaseView {
 
         Typeface timeFrameTypeFace = Typeface.createFromAsset(mContext.getAssets(), "fonts/" + "roboto-regular.ttf");
         Paint mTextPaint = new Paint();
-        mTextPaint.setColor(GraphUtils.COLOR_BULLET_DOT);
-        mTextPaint.setTextSize(scaleFactor * 14);
+        mTextPaint.setColor(GraphUtils.COLOR_TEXT);
+        mTextPaint.setTextSize(scaleFactor * GraphUtils.TEXT_SIZE);
         mTextPaint.setStrokeWidth(8);
         mTextPaint.setTypeface(timeFrameTypeFace);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mTextPaint.setLetterSpacing(GraphUtils.LETTER_SPACING);
+        }
 
         float spreadtime = fullWidth;
 
