@@ -10,8 +10,6 @@
 
 package nu.yona.app.security;
 
-import android.util.Log;
-
 import org.apache.commons.codec.binary.Base64;
 
 import java.nio.charset.Charset;
@@ -23,6 +21,8 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import nu.yona.app.utils.AppUtils;
 
 /*
 * This software is provided 'as-is', without any express or implied
@@ -52,7 +52,7 @@ public class MyCipher {
             byte[] bytesBase64 = Base64.encodeBase64(bytes);
             return encrypt(bytesBase64);
         } catch (Exception e) {
-            Log.e(MyCipher.class.getSimpleName(), e.getMessage());
+            AppUtils.throwException(MyCipher.class.getSimpleName(), e, Thread.currentThread(), null);
             return null;
         }
 
@@ -65,7 +65,7 @@ public class MyCipher {
             String restored_data = new String(decodedBytes, Charset.forName("UTF8"));
             return restored_data;
         } catch (Exception e) {
-            Log.e(MyCipher.class.getSimpleName(), e.getMessage());
+            AppUtils.throwException(MyCipher.class.getSimpleName(), e, Thread.currentThread(), null);
             return null;
         }
     }
@@ -97,14 +97,6 @@ public class MyCipher {
         KeyGenerator kgen = KeyGenerator.getInstance(ALGORITHM);
 
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
-//		if (android.os.Build.VERSION.SDK_INT >= 17) {
-//		    sr = SecureRandom.getInstance("SHA1PRNG", "Crypto");
-//		} else {
-//		    sr = SecureRandom.getInstance("SHA1PRNG");
-//		}
-
-
-        //SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         sr.setSeed(keyStart);
         kgen.init(128, sr); // 192 and 256 bits may not be available
         SecretKey skey = kgen.generateKey();

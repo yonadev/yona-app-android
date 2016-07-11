@@ -357,7 +357,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RECEIVED_PHOTO, (Bitmap) o);
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RECEIVED_PHOTO, o);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 

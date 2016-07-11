@@ -21,7 +21,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -69,7 +68,7 @@ public class ActivityMonitorService extends Service {
                 currentApp = am.getRunningAppProcesses().get(0).processName;
             }
         } catch (Exception e) {
-            Log.e(ActivityMonitorService.class.getSimpleName(), e.getMessage());
+            AppUtils.throwException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         return currentApp;
     }
@@ -175,7 +174,7 @@ public class ActivityMonitorService extends Service {
                 scheduledFuture = null;
             }
         } catch (Exception e) {
-            Log.e(ActivityMonitorService.class.getSimpleName(), e.getMessage());
+            AppUtils.throwException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 

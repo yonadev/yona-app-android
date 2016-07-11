@@ -13,7 +13,6 @@ package nu.yona.app.api.manager.impl;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -112,7 +111,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                             uploadDate = DateUtility.getRelativeDate(futureCalendar);
                                             message.setStickyTitle(uploadDate);
                                         } catch (Exception e) {
-                                            Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+                                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
                                         }
                                         yonaMessages.setEmbedded(embedded);
                                         if (!isProcessUpdate && message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null

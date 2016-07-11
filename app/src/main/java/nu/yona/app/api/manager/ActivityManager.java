@@ -23,12 +23,12 @@ public interface ActivityManager {
     /**
      * Gets days activity.
      *
-     * @param loadMore     the load more
-     * @param isBuddlyFlow the is buddly flow
-     * @param url          the url
-     * @param listener     the listener
+     * @param loadMore    the load more
+     * @param isBuddyFlow the is buddy flow
+     * @param url         the url
+     * @param listener    the listener
      */
-    void getDaysActivity(boolean loadMore, boolean isBuddlyFlow, Href url, DataLoadListener listener);
+    void getDaysActivity(boolean loadMore, boolean isBuddyFlow, Href url, DataLoadListener listener);
 
     /**
      * Gets day detail activity.
@@ -41,12 +41,12 @@ public interface ActivityManager {
     /**
      * Gets weeks activity.
      *
-     * @param loadMore     the load more
-     * @param isBuddlyFlow the is buddly flow
-     * @param href         the href
-     * @param listener     the listener
+     * @param loadMore    the load more
+     * @param isBuddyFlow the is buddy flow
+     * @param href        the href
+     * @param listener    the listener
      */
-    void getWeeksActivity(boolean loadMore, boolean isBuddlyFlow, Href href, DataLoadListener listener);
+    void getWeeksActivity(boolean loadMore, boolean isBuddyFlow, Href href, DataLoadListener listener);
 
     /**
      * Gets weeks detail activity.
