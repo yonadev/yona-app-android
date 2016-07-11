@@ -9,18 +9,11 @@
 package nu.yona.app;
 
 import android.app.Application;
-import android.os.Build;
 import android.os.StrictMode;
-import android.text.TextUtils;
 
 import nu.yona.app.listener.YonaCustomCrashManagerListener;
-import nu.yona.app.security.MyCipher;
-import nu.yona.app.security.MyCipherData;
-import nu.yona.app.security.PRNGFixes;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
-import nu.yona.app.utils.AppConstant;
-import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 16/03/16.
@@ -30,27 +23,6 @@ public class YonaApplication extends Application {
     private static YonaApplication mContext;
     private static EventChangeManager eventChangeManager;
     private static YonaCustomCrashManagerListener yonaCustomCrashManagerListener;
-
-    @Override
-    public void onCreate() {
-        if (getResources().getBoolean(R.bool.developerMode)) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .detectNetwork()   // or .detectAll() for all detectable problems
-                    .penaltyLog()
-                    .build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
-                    .detectLeakedClosableObjects()
-                    .penaltyLog()
-                    .build());
-        }
-        super.onCreate();
-        mContext = this;
-        eventChangeManager = new EventChangeManager();
-        Foreground.init(this);
-    }
 
     /**
      * Gets app context.
@@ -80,6 +52,27 @@ public class YonaApplication extends Application {
      */
     public static EventChangeManager getEventChangeManager() {
         return eventChangeManager;
+    }
+
+    @Override
+    public void onCreate() {
+        if (getResources().getBoolean(R.bool.developerMode)) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .build());
+        }
+        super.onCreate();
+        mContext = this;
+        eventChangeManager = new EventChangeManager();
+        Foreground.init(this);
     }
 
 }

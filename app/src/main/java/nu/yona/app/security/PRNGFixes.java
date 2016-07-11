@@ -41,7 +41,7 @@ import java.security.Security;
 
 /**
  * Fixes for the output of the default PRNG having low entropy.
- *
+ * <p>
  * The fixes need to be applied via {@link #apply()} before any use of Java
  * Cryptography Architecture primitives. A good place to invoke them is in the
  * application's {@code onCreate}.
@@ -52,8 +52,11 @@ public final class PRNGFixes {
     private static final int VERSION_CODE_JELLY_BEAN_MR2 = 18;
     private static final byte[] BUILD_FINGERPRINT_AND_DEVICE_SERIAL = getBuildFingerprintAndDeviceSerial();
 
-    /** Hidden constructor to prevent instantiation. */
-    private PRNGFixes() {}
+    /**
+     * Hidden constructor to prevent instantiation.
+     */
+    private PRNGFixes() {
+    }
 
     /**
      * Applies all fixes.
@@ -120,7 +123,7 @@ public final class PRNGFixes {
         if ((secureRandomProviders == null)
                 || (secureRandomProviders.length < 1)
                 || (!LinuxPRNGSecureRandomProvider.class.equals(
-                        secureRandomProviders[0].getClass()))) {
+                secureRandomProviders[0].getClass()))) {
             Security.insertProviderAt(new LinuxPRNGSecureRandomProvider(), 1);
         }
 
@@ -145,7 +148,60 @@ public final class PRNGFixes {
                 rng2.getProvider().getClass())) {
             throw new SecurityException(
                     "SecureRandom.getInstance(\"SHA1PRNG\") backed by wrong"
-                    + " Provider: " + rng2.getProvider().getClass());
+                            + " Provider: " + rng2.getProvider().getClass());
+        }
+    }
+
+    /**
+     * Generates a device- and invocation-specific seed to be mixed into the
+     * Linux PRNG.
+     */
+    private static byte[] generateSeed() {
+        try {
+            ByteArrayOutputStream seedBuffer = new ByteArrayOutputStream();
+            DataOutputStream seedBufferOut =
+                    new DataOutputStream(seedBuffer);
+            seedBufferOut.writeLong(System.currentTimeMillis());
+            seedBufferOut.writeLong(System.nanoTime());
+            seedBufferOut.writeInt(Process.myPid());
+            seedBufferOut.writeInt(Process.myUid());
+            seedBufferOut.write(BUILD_FINGERPRINT_AND_DEVICE_SERIAL);
+            seedBufferOut.close();
+            return seedBuffer.toByteArray();
+        } catch (IOException e) {
+            throw new SecurityException("Failed to generate seed", e);
+        }
+    }
+
+    /**
+     * Gets the hardware serial number of this device.
+     *
+     * @return serial number or {@code null} if not available.
+     */
+    private static String getDeviceSerialNumber() {
+        // We're using the Reflection API because Build.SERIAL is only available
+        // since API Level 9 (Gingerbread, Android 2.3).
+        try {
+            return (String) Build.class.getField("SERIAL").get(null);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    private static byte[] getBuildFingerprintAndDeviceSerial() {
+        StringBuilder result = new StringBuilder();
+        String fingerprint = Build.FINGERPRINT;
+        if (fingerprint != null) {
+            result.append(fingerprint);
+        }
+        String serial = getDeviceSerialNumber();
+        if (serial != null) {
+            result.append(serial);
+        }
+        try {
+            return result.toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("UTF-8 encoding not supported");
         }
     }
 
@@ -159,7 +215,7 @@ public final class PRNGFixes {
             super("LinuxPRNG",
                     1.0,
                     "A Linux-specific random number provider that uses"
-                        + " /dev/urandom");
+                            + " /dev/urandom");
             // Although /dev/urandom is not a SHA-1 PRNG, some apps
             // explicitly request a SHA1PRNG SecureRandom and we thus need to
             // prevent them from getting the default implementation whose output
@@ -287,59 +343,6 @@ public final class PRNGFixes {
                 }
                 return sUrandomOut;
             }
-        }
-    }
-
-    /**
-     * Generates a device- and invocation-specific seed to be mixed into the
-     * Linux PRNG.
-     */
-    private static byte[] generateSeed() {
-        try {
-            ByteArrayOutputStream seedBuffer = new ByteArrayOutputStream();
-            DataOutputStream seedBufferOut =
-                    new DataOutputStream(seedBuffer);
-            seedBufferOut.writeLong(System.currentTimeMillis());
-            seedBufferOut.writeLong(System.nanoTime());
-            seedBufferOut.writeInt(Process.myPid());
-            seedBufferOut.writeInt(Process.myUid());
-            seedBufferOut.write(BUILD_FINGERPRINT_AND_DEVICE_SERIAL);
-            seedBufferOut.close();
-            return seedBuffer.toByteArray();
-        } catch (IOException e) {
-            throw new SecurityException("Failed to generate seed", e);
-        }
-    }
-
-    /**
-     * Gets the hardware serial number of this device.
-     *
-     * @return serial number or {@code null} if not available.
-     */
-    private static String getDeviceSerialNumber() {
-        // We're using the Reflection API because Build.SERIAL is only available
-        // since API Level 9 (Gingerbread, Android 2.3).
-        try {
-            return (String) Build.class.getField("SERIAL").get(null);
-        } catch (Exception ignored) {
-            return null;
-        }
-    }
-
-    private static byte[] getBuildFingerprintAndDeviceSerial() {
-        StringBuilder result = new StringBuilder();
-        String fingerprint = Build.FINGERPRINT;
-        if (fingerprint != null) {
-            result.append(fingerprint);
-        }
-        String serial = getDeviceSerialNumber();
-        if (serial != null) {
-            result.append(serial);
-        }
-        try {
-            return result.toString().getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("UTF-8 encoding not supported");
         }
     }
 }
