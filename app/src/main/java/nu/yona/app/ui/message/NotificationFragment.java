@@ -34,7 +34,6 @@ import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.recyclerViewDecor.DividerDecoration;
-import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;

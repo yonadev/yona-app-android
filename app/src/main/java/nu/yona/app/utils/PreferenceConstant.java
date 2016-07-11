@@ -21,7 +21,9 @@ public interface PreferenceConstant {
     /**
      * The constant YONA_PASSWORD.
      */
-    String YONA_PASSWORD = "yonaPassword";
+    String YONA_DATA = "yonaPassword";
+
+    String YONA_IV = "yona_key";
     /**
      * The constant YONA_PASSCODE.
      */
