@@ -16,6 +16,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
+import nu.yona.app.utils.AppUtils;
+
 /**
  * Created by kinnarvasa on 04/04/16.
  */
@@ -38,7 +40,7 @@ public class JsonSerializer implements DbSerializer {
         try {
             return mapper.writeValueAsBytes(obj);
         } catch (IOException e) {
-            Log.e(TAG, "Failed to serialize object!", e);
+            AppUtils.throwException(JsonSerializer.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         return new byte[0];
     }

@@ -86,7 +86,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
     public void initializeView() {
 
         intro_images = (CarrouselViewPager) findViewById(R.id.pager_introduction);
-        btnNext = (View) findViewById(R.id.layout_btn);
+        btnNext = findViewById(R.id.layout_btn);
 
         pager_indicator = (LinearLayout) findViewById(R.id.viewPagerCountDots);
         findViewById(R.id.btn_next).setOnClickListener(this);

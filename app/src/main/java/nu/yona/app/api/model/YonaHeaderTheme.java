@@ -31,6 +31,10 @@ public class YonaHeaderTheme extends BaseEntity {
 
     private int toolbar;
 
+    public YonaHeaderTheme() {
+
+    }
+
     /**
      * Instantiates a new Yona header theme.
      *

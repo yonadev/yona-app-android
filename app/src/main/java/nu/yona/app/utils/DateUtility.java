@@ -8,8 +8,6 @@
 
 package nu.yona.app.utils;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -66,7 +64,7 @@ public class DateUtility {
                 relativeDate = new SimpleDateFormat("EEEE, d MMM").format(future.getTime());
 
             } catch (Exception e) {
-                Log.e(DateUtility.class.getName(), "Date Format exception: " + e);
+                AppUtils.throwException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
             }
         }
 
@@ -142,11 +140,10 @@ public class DateUtility {
             calendar.add(Calendar.DAY_OF_MONTH, delta);
             for (int i = 0; i < mNoOfDayPerWeek; i++) {
                 listOfdates.put(DAY_FORMAT.format(calendar.getTime()), DAY_NO_FORMAT.format(calendar.getTime()));
-                Log.i("Adding", DAY_NO_FORMAT.format(calendar.getTime()));
                 calendar.add(Calendar.DAY_OF_MONTH, 1);
             }
         } catch (Exception e) {
-            Log.e(DateUtility.class.getName(), "Date Format exception: " + e);
+            AppUtils.throwException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
         }
 
         return listOfdates;

@@ -56,6 +56,14 @@ public class YonaApplication extends Application {
 
     @Override
     public void onCreate() {
+        enableStickMode();
+        super.onCreate();
+        mContext = this;
+        eventChangeManager = new EventChangeManager();
+        Foreground.init(this);
+    }
+
+    private void enableStickMode() {
         if (getResources().getBoolean(R.bool.developerMode)) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectDiskReads()
@@ -69,10 +77,5 @@ public class YonaApplication extends Application {
                     .penaltyLog()
                     .build());
         }
-        super.onCreate();
-        mContext = this;
-        eventChangeManager = new EventChangeManager();
-        Foreground.init(this);
     }
-
 }

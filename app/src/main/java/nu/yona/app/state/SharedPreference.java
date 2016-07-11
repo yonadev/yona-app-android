@@ -77,7 +77,7 @@ public class SharedPreference {
                 userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
                 return cipherData;
             } catch (Exception e) {
-                e.printStackTrace();
+                AppUtils.throwException(SharedPreference.class.getSimpleName(), e, Thread.currentThread(), null);
             }
         }
         return null;

@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,7 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -76,7 +76,7 @@ public class PerWeekFragment extends BaseFragment {
                     }
                 }
             } catch (Exception e) {
-                Log.e(PerWeekFragment.class.getSimpleName(), e.getMessage());
+                AppUtils.throwException(PerWeekFragment.class.getSimpleName(), e, Thread.currentThread(), null);
             }
         }
     };
