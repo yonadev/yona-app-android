@@ -12,9 +12,17 @@ package nu.yona.app.state;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.text.TextUtils;
 
+import java.util.Arrays;
+
+import javax.crypto.spec.IvParameterSpec;
+
 import nu.yona.app.YonaApplication;
+import nu.yona.app.security.MyCipher;
+import nu.yona.app.security.MyCipherData;
+import nu.yona.app.security.PRNGFixes;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
@@ -47,16 +55,39 @@ public class SharedPreference {
      */
     public String getYonaPassword() {
         if (yonaPwd == null) {
-            yonaPwd = getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, "");
+            yonaPwd = getUserPreferences().getString(PreferenceConstant.YONA_DATA, "");
             if (TextUtils.isEmpty(yonaPwd)) {
-                setYonaPassword(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT), false);
-                yonaPwd = getYonaPassword();
+                MyCipherData myCipherData = generateKey(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT));
+                if (null != myCipherData) {
+                    yonaPwd = getDecryptedKey();
+                }
+            } else {
+                yonaPwd = getDecryptedKey();
             }
-//            else if (yonaPwd.length() > AppConstant.YONA_PASSWORD_CHAR_LIMIT) {
-//                yonaPwd = new DecryptUser().decryptString(yonaPwd);
-//            }
         }
         return yonaPwd;
+    }
+
+    private MyCipherData generateKey(String key) {
+        if (TextUtils.isEmpty(YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword())) {
+            //According to http://android-developers.blogspot.com.es/2013/08/some-securerandom-thoughts.html
+            try {
+                PRNGFixes.apply();
+                MyCipherData cipherData = new MyCipher(Build.SERIAL).encryptUTF8(key);
+                userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
+                return cipherData;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private String getDecryptedKey() {
+        byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
+        byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
+        IvParameterSpec iv = new IvParameterSpec(dataIV);
+        return new MyCipher(Build.SERIAL).decryptUTF8(encrypted_data, iv);
     }
 
     /**
@@ -65,13 +96,19 @@ public class SharedPreference {
      * @param password yona password
      */
     public void setYonaPassword(String password, boolean override) {
-        if (TextUtils.isEmpty(getUserPreferences().getString(PreferenceConstant.YONA_PASSWORD, "")) || override) {
-//            try {
-//                getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, new EncryptUser().encryptString(password)).commit();
-//            } catch (Exception e) {
-            getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSWORD, password).commit();
-//            }
+        MyCipherData myCipherData = generateKey(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT));
+        if (null != myCipherData) {
+            yonaPwd = getDecryptedKey();
         }
     }
 
+    private byte[] byteToString(String response) {
+        String[] byteValues = response.substring(1, response.length() - 1).split(",");
+        byte[] encrypted_data = new byte[byteValues.length];
+
+        for (int i = 0, len = encrypted_data.length; i < len; i++) {
+            encrypted_data[i] = Byte.parseByte(byteValues[i].trim());
+        }
+        return encrypted_data;
+    }
 }

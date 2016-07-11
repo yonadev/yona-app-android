@@ -9,11 +9,14 @@
 package nu.yona.app;
 
 import android.app.Application;
+import android.os.Build;
 import android.os.StrictMode;
+import android.text.TextUtils;
 
-import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.YonaCustomCrashManagerListener;
-import nu.yona.app.security.GenerateKeys;
+import nu.yona.app.security.MyCipher;
+import nu.yona.app.security.MyCipherData;
+import nu.yona.app.security.PRNGFixes;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
 import nu.yona.app.utils.AppConstant;
@@ -47,18 +50,6 @@ public class YonaApplication extends Application {
         mContext = this;
         eventChangeManager = new EventChangeManager();
         Foreground.init(this);
-        new GenerateKeys().createNewKeys(new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                eventChangeManager.getSharedPreference().setYonaPassword(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT), false);
-            }
-
-            @Override
-            public void onError(Object errorMessage) {
-                //IF encryption is not supported on device, we will keep as simple format
-            }
-        });
-
     }
 
     /**
