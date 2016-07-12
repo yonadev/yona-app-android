@@ -272,6 +272,7 @@ public interface AppConstant {
      */
     String YONA_BUDDY_OBJ = "yonaBuddyObj";
 
+    String YONA_DAY_DEATIL_URL = "dayDetailUrl";
     /**
      * URL to find buddy,user
      */
