@@ -225,6 +225,14 @@ public class NotificationManagerImpl implements NotificationManager {
         }
     }
 
+    public void getComments(String url, final int itemsPerPage, final int pageNo, DataLoadListener listener) {
+        try {
+
+        } catch (Exception e) {
+            AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
     private void throwError(DataLoadListener listener, Object errorMessage) {
         if (listener != null) {
             if (errorMessage instanceof ErrorMessage) {

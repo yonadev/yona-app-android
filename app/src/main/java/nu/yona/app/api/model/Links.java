@@ -107,6 +107,12 @@ public class Links extends BaseEntity {
     @SerializedName("yona:buddy")
     @Expose
     private Href yonaBuddy;
+    @SerializedName("yona:addComment")
+    @Expose
+    private Href addComment;
+    @SerializedName("yona:reply")
+    @Expose
+    private Href replyComment;
 
     /**
      * Gets self.
@@ -617,5 +623,41 @@ public class Links extends BaseEntity {
      */
     public void setDailyActivityReportsWithBuddies(Href dailyActivityReportsWithBuddies) {
         this.dailyActivityReportsWithBuddies = dailyActivityReportsWithBuddies;
+    }
+
+    /**
+     * Gets add comment.
+     *
+     * @return the add comment
+     */
+    public Href getAddComment() {
+        return this.addComment;
+    }
+
+    /**
+     * Sets add comment.
+     *
+     * @param addComment the add comment
+     */
+    public void setAddComment(Href addComment) {
+        this.addComment = addComment;
+    }
+
+    /**
+     * Gets reply comment.
+     *
+     * @return the reply comment
+     */
+    public Href getReplyComment() {
+        return this.replyComment;
+    }
+
+    /**
+     * Sets reply comment.
+     *
+     * @param replyComment the reply comment
+     */
+    public void setReplyComment(Href replyComment) {
+        this.replyComment = replyComment;
     }
 }

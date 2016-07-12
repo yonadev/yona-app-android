@@ -24,12 +24,15 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.Day;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -114,6 +117,7 @@ public class DayActivityDetailFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
+                fetchComments(position);
                 updateFlow(position);
             }
 
@@ -177,5 +181,26 @@ public class DayActivityDetailFragment extends BaseFragment {
         } else {
             nextItem.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void fetchComments(int position) {
+        APIManager.getInstance().getActivityManager().getComments(dayActivityList, position, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                if (result instanceof List<?>) {
+                    dayActivityList = (List<DayActivity>) result;
+                    customPageAdapter.notifyDataSetChanged(dayActivityList);
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                } else {
+                    YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
+                }
+            }
+        });
     }
 }

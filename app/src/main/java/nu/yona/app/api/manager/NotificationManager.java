@@ -53,4 +53,6 @@ public interface NotificationManager {
      * @param listener     the listener
      */
     void deleteMessage(String url, final int itemsPerPage, final int pageNo, DataLoadListener listener);
+
+    void getComments(String url, final int itemsPerPage, final int pageNo, DataLoadListener listener);
 }

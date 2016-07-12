@@ -11,7 +11,9 @@
 package nu.yona.app.api.manager;
 
 import java.util.Date;
+import java.util.List;
 
+import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.listener.DataLoadListener;
 
@@ -77,4 +79,6 @@ public interface ActivityManager {
      * @param listener the listener
      */
     void getWithBuddyActivity(boolean loadMore, final DataLoadListener listener);
+
+    void getComments(List<DayActivity> dayActivityList, int position, final DataLoadListener listener);
 }

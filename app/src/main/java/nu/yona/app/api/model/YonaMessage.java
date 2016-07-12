@@ -54,6 +54,9 @@ public class YonaMessage extends BaseEntity {
     @SerializedName("@stickyTitle")
     @Expose
     private String stickyTitle;
+    @SerializedName("@Buddy")
+    @Expose
+    private YonaBuddy yonaBuddy;
 
     /**
      * Gets creation time.
@@ -237,5 +240,13 @@ public class YonaMessage extends BaseEntity {
 
     public void setDropBuddyReason(String dropBuddyReason) {
         this.dropBuddyReason = dropBuddyReason;
+    }
+
+    public YonaBuddy getYonaBuddy() {
+        return this.yonaBuddy;
+    }
+
+    public void setYonaBuddy(YonaBuddy yonaBuddy) {
+        this.yonaBuddy = yonaBuddy;
     }
 }
