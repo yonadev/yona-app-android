@@ -325,8 +325,10 @@ public class ActivityManagerImpl implements ActivityManager {
             if (weekActivity.getComments() != null && weekActivity.getComments().getPage() != null) {
                 if (weekActivity.getComments().getPage().getNumber() + 1 == weekActivity.getComments().getPage().getTotalPages()) {
                     listener.onDataLoad(weekActivityList);
-                } else {
+                } else if(weekActivity.getComments().getEmbedded() != null){
                     pageNo = weekActivity.getComments().getPage().getNumber() + 1;
+                    getCommentsFromServerForWeek(weekActivityList, weekActivity, pageNo, listener);
+                } else {
                     getCommentsFromServerForWeek(weekActivityList, weekActivity, pageNo, listener);
                 }
             } else {
@@ -774,7 +776,7 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
 
-    private YonaBuddy findYonaBuddy(Href yonaBuddy) {
+    public YonaBuddy findYonaBuddy(Href yonaBuddy) {
         User user = YonaApplication.getEventChangeManager().getDataState().getUser();
         if (user != null && user.getEmbedded() != null
                 && user.getEmbedded().getYonaBuddies() != null

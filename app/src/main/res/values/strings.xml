@@ -168,5 +168,6 @@
     <string name="goaldeleted">Goal Deleted</string>
     <string name="goalchanged">Goal Changed</string>
     <string name="nogoalert">NoGo alert</string>
+    <string name="comment">Message</string>
     <string name="useraccountdeleted">User Account Deleted</string>
 </resources>
