@@ -150,31 +150,31 @@ public class CustomPageAdapter extends PagerAdapter {
                 View view = null;
                 switch (weekDayEnum) {
                     case SUNDAY:
-                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_seventh);
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_first);
                         view.setTag(weekActivity.getDayActivities().getSUNDAY());
                         break;
                     case MONDAY:
-                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_first);
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_second);
                         view.setTag(weekActivity.getDayActivities().getMONDAY());
                         break;
                     case TUESDAY:
-                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_second);
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_third);
                         view.setTag(weekActivity.getDayActivities().getTUESDAY());
                         break;
                     case WEDNESDAY:
-                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_third);
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_fourth);
                         view.setTag(weekActivity.getDayActivities().getWEDNESDAY());
                         break;
                     case THURSDAY:
-                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_fourth);
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_fifth);
                         view.setTag(weekActivity.getDayActivities().getTHURSDAY());
                         break;
                     case FRIDAY:
-                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_fifth);
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_sixth);
                         view.setTag(weekActivity.getDayActivities().getFRIDAY());
                         break;
                     case SATURDAY:
-                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_sixth);
+                        view = layout.findViewById(R.id.weekScoreControl).findViewById(R.id.weekday_seventh);
                         view.setTag(weekActivity.getDayActivities().getSATURDAY());
                         break;
                     default:
