@@ -177,6 +177,8 @@ public interface AppConstant {
      */
     String NEW_GOAL_TYPE = "newGoalType";
 
+    String DAY_OBJECT = "dayObject";
+
     /**
      * The constant COLOR_CODE.
      */
