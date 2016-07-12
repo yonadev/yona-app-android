@@ -53,6 +53,7 @@ public class CustomPageAdapter extends PagerAdapter {
     private int SPREAD_CELL_MINUTE = 15;
     private int WEEK_DAYS = 7;
     private FrameLayout graphView;
+    private boolean isWeekControlVisible = true;
 
     /**
      * Instantiates a new Custom page adapter.
@@ -119,9 +120,11 @@ public class CustomPageAdapter extends PagerAdapter {
         goalType = (YonaFontTextView) spreadView.findViewById(R.id.goalType);
         goalScore = (YonaFontTextView) spreadView.findViewById(R.id.goalScore);
         mSpreadGraph = (SpreadGraph) spreadView.findViewById(R.id.spreadGraph);
-        ViewGroup weekChart = (ViewGroup) layout.findViewById(R.id.week_chart);
-        weekChart.setVisibility(View.VISIBLE); // week control
-        showWeekChartData(weekChart, weekActivity);
+        if (isWeekControlVisible) {
+            ViewGroup weekChart = (ViewGroup) layout.findViewById(R.id.week_chart);
+            weekChart.setVisibility(View.VISIBLE); // week control
+            showWeekChartData(weekChart, weekActivity);
+        }
         graphView = ((FrameLayout) layout.findViewById(R.id.graphView));
         GoalsEnum goalsEnum;
         goalsEnum = GoalsEnum.fromName(weekActivity.getYonaGoal().getType());
@@ -204,11 +207,9 @@ public class CustomPageAdapter extends PagerAdapter {
     }
 
     private void openDetailPage(Day activity, WeekActivity weekActivity) {
-        Intent intent = new Intent(IntentEnum.ACTION_ACTIVITY_DETAIL_VIEW.getActionString());
-        intent.putExtra(AppConstant.OBJECT, activity);
-        intent.putExtra(AppConstant.WEEK_OBJECT, weekActivity);
-        intent.putExtra(AppConstant.BOOLEAN, true);
-        YonaActivity.getActivity().replaceFragment(intent);
+        Intent weekDayIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
+        weekDayIntent.putExtra(AppConstant.DAY_OBJECT, activity);
+        YonaActivity.getActivity().replaceFragment(weekDayIntent);
     }
 
     private View inflateActivityView(LayoutInflater inflater, GoalsEnum chartTypeEnum, ViewGroup collection) {
@@ -439,6 +440,20 @@ public class CustomPageAdapter extends PagerAdapter {
      * @param activityList the activity list
      */
     public void notifyDataSetChanged(List<?> activityList) {
+        notifyChanges(activityList);
+    }
+
+    /**
+     * Notify data set changed.
+     *
+     * @param activityList the activity list
+     */
+    public void notifyDataSetChanged(List<?> activityList, boolean isWeekControlVisible) {
+        this.isWeekControlVisible = isWeekControlVisible;
+        notifyChanges(activityList);
+    }
+
+    private void notifyChanges(List<?> activityList) {
         if (activityList != null && activityList.size() > 0 && activityList.get(0) instanceof DayActivity) {
             dayActivities = (List<DayActivity>) activityList;
         } else {

@@ -47,19 +47,29 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
     private CustomPageAdapter customPageAdapter;
     private ViewPager viewPager;
     private DayActivity activity;
-    private Day day;
     private WeekActivity weekActivity;
+    private Day mDay;
     private View view;
     private ImageView previousItem, nextItem;
     private YonaFontTextView dateTitle;
     private YonaHeaderTheme mYonaHeaderTheme;
     private List<DayActivity> dayActivityList;
+    private List<WeekActivity> weekDayActivityList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+
+            if (getArguments().get(AppConstant.OBJECT) != null) {
+                if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity) {
+                    activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
+                }
+            }
+            if (getArguments().get(AppConstant.DAY_OBJECT) instanceof Day) {
+                mDay = (Day) getArguments().get(AppConstant.DAY_OBJECT);
+            }
         }
     }
 
@@ -75,6 +85,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
         }
 
         dayActivityList = new ArrayList<>();
+        weekDayActivityList = new ArrayList<>();
         previousItem = (ImageView) view.findViewById(R.id.previous);
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
@@ -82,26 +93,16 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity());
         viewPager.setAdapter(customPageAdapter);
-        if (getArguments() != null) {
-            if (getArguments().get(AppConstant.OBJECT) != null) {
-                if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity) {
-                    activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
-                }
-            }
-            if (getArguments().get(AppConstant.WEEK_OBJECT) != null) {
-                weekActivity = (WeekActivity) getArguments().get(AppConstant.WEEK_OBJECT);
-            }
-        }
         previousItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo call previous url
+                previousDayActivity();
             }
         });
         nextItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo call next url
+                nextDayActivity();
             }
         });
 
@@ -121,22 +122,46 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
 
             }
         });
+
+        if (activity != null && activity.getLinks() != null && activity.getLinks().getYonaDayDetails() != null) {
+            setDayActivityDetails();
+        }
+        if (mDay != null && mDay.getLinks() != null && mDay.getLinks().getYonaDayDetails() != null) {
+            setWeekDayActivityDetail();
+        }
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void previousDayActivity() {
         if (activity != null) {
-            setDayActivityDetails();
-        } else {
-            setWeekActivityDetails();
+            loadDayActivity(activity.getLinks().getPrev().getHref());
+            setDayDetailTitleAndIcon();
+        }
+        if (weekActivity != null) {
+            loadWeekDayActivity(weekActivity.getLinks().getPrev().getHref());
+            setWeekDetailTitleAndIcon();
+        }
+    }
+
+    private void nextDayActivity() {
+        if (activity != null) {
+            loadDayActivity(activity.getLinks().getNext().getHref());
+            setDayDetailTitleAndIcon();
+        }
+        if (weekActivity != null) {
+            loadWeekDayActivity(weekActivity.getLinks().getNext().getHref());
+            setWeekDetailTitleAndIcon();
         }
     }
 
     private void setDayActivityDetails() {
-        loadData(activity.getLinks().getYonaDayDetails().getHref());
+        loadDayActivity(activity.getLinks().getYonaDayDetails().getHref());
         setDayDetailTitleAndIcon();
+    }
+
+    private void setWeekDayActivityDetail() {
+        loadWeekDayActivity(mDay.getLinks().getYonaDayDetails().getHref());
+        setWeekDetailTitleAndIcon();
     }
 
     private void setDayDetailTitleAndIcon() {
@@ -145,7 +170,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
         }
         leftIcon.setVisibility(View.GONE);
         rightIcon.setVisibility(View.GONE);
-        if (mYonaHeaderTheme.isBuddyFlow()) {
+        if (mYonaHeaderTheme != null && mYonaHeaderTheme.isBuddyFlow()) {
             rightIconProfile.setVisibility(View.VISIBLE);
             rightIconProfile.setImageDrawable(TextDrawable.builder()
                     .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
@@ -163,7 +188,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
                 intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
-                if (mYonaHeaderTheme.isBuddyFlow()) {
+                if (mYonaHeaderTheme != null && mYonaHeaderTheme.isBuddyFlow()) {
                     intent.putExtra(AppConstant.COLOR_CODE, R.color.mid_blue_two);
                     intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
                 }
@@ -177,57 +202,135 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
         });
     }
 
-    private void setWeekActivityDetails() {
-        if (day != null) {
-//            DayActivities dayActivities = weekActivity.getDayActivities();
-//            if (dayActivities.getSUNDAY() != null && dayActivities.getSATURDAY().getLinks() != null && dayActivities.getSUNDAY().getLinks().getYonaDayDetails() != null) {
-//                loadData(dayActivities.getSUNDAY().getLinks().getYonaDayDetails().getHref());
-//            }
-        }
-    }
-
-    private void loadData(String url) {
+    private void loadDayActivity(String url) {
         if (url == null) {
             return;
         }
-        APIManager.getInstance().getActivityManager().getDayDetailActivity(url, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                if (result instanceof DayActivity) {
-                    /*dayActivityList.add((DayActivity) result);
-                    customPageAdapter.notifyDataSetChanged(dayActivityList);
-                    viewPager.setCurrentItem(dayActivityList.indexOf(activity));
-                    updateFlow(dayActivityList.indexOf(activity));*/
+        YonaActivity.getActivity().showLoadingView(true, null);
+
+        if (getLocalDayActivity(url) != null) {
+            activity = getLocalDayActivity(url);
+            updateDayActivityData(activity);
+            YonaActivity.getActivity().showLoadingView(false, null);
+        } else {
+            APIManager.getInstance().getActivityManager().getDayDetailActivity(url, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    if (result instanceof DayActivity) {
+                        dayActivityList.add((DayActivity) result);
+                        activity = (DayActivity) result;
+                        updateDayActivityData(activity);
+                    }
                 }
 
-            }
+                @Override
+                public void onError(Object errorMessage) {
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                }
+            });
+        }
+    }
 
-            @Override
-            public void onError(Object errorMessage) {
-
+    private DayActivity getLocalDayActivity(String url) {
+        for (DayActivity dayActivity : dayActivityList) {
+            if (dayActivity != null && dayActivity.getLinks() != null && dayActivity.getLinks().getSelf() != null && !TextUtils.isEmpty(dayActivity.getLinks().getSelf().getHref()) && url.equalsIgnoreCase(dayActivity.getLinks().getSelf().getHref())) {
+                return dayActivity;
             }
-        });
+        }
+        return null;
+    }
+
+    private WeekActivity getLocalWeekActivity(String url) {
+        for (WeekActivity weekActivity : weekDayActivityList) {
+            if (weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getSelf() != null && !TextUtils.isEmpty(weekActivity.getLinks().getSelf().getHref()) && url.equalsIgnoreCase(weekActivity.getLinks().getSelf().getHref())) {
+                return weekActivity;
+            }
+        }
+        return null;
+    }
+
+    private void updateDayActivityData(DayActivity dayActivity) {
+        customPageAdapter.notifyDataSetChanged(dayActivityList);
+        viewPager.setCurrentItem(dayActivityList.indexOf(dayActivity));
+        updateFlow(dayActivityList.indexOf(dayActivity));
+        YonaActivity.getActivity().showLoadingView(false, null);
+    }
+
+    private void updateWeekDayActivityData(WeekActivity weekActivity) {
+        customPageAdapter.notifyDataSetChanged(weekDayActivityList, false);
+        viewPager.setCurrentItem(weekDayActivityList.indexOf(weekActivity));
+        updateFlow(weekDayActivityList.indexOf(weekActivity));
+        YonaActivity.getActivity().showLoadingView(false, null);
+    }
+
+    private void loadWeekDayActivity(String url) {
+        if (url == null) {
+            return;
+        }
+        YonaActivity.getActivity().showLoadingView(true, null);
+
+        if (getLocalWeekActivity(url) != null) {
+            weekActivity = getLocalWeekActivity(url);
+            updateWeekDayActivityData(weekActivity);
+        } else {
+            APIManager.getInstance().getActivityManager().getWeeksDetailActivity(url, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    if (result instanceof WeekActivity) {
+                        weekDayActivityList.add((WeekActivity) result);
+                        weekActivity = (WeekActivity) result;
+                        updateWeekDayActivityData(weekActivity);
+                    }
+                    YonaActivity.getActivity().showLoadingView(false, null);
+
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                }
+            });
+        }
     }
 
     private void setWeekDetailTitleAndIcon() {
-//        if (weekActivity != null && activity.getYonaGoal() != null && !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName())) {
-//            toolbarTitle.setText(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
-//        }
-//        leftIcon.setVisibility(View.GONE);
-//        rightIcon.setVisibility(View.GONE);
+        if (weekActivity != null && weekActivity.getYonaGoal() != null && !TextUtils.isEmpty(weekActivity.getYonaGoal().getActivityCategoryName())) {
+            toolbarTitle.setText(weekActivity.getYonaGoal().getActivityCategoryName().toUpperCase());
+        }
+        leftIcon.setVisibility(View.GONE);
+        rightIcon.setVisibility(View.GONE);
+
+        if (mYonaHeaderTheme != null && mYonaHeaderTheme.isBuddyFlow()) {
+            rightIconProfile.setVisibility(View.VISIBLE);
+            rightIconProfile.setImageDrawable(TextDrawable.builder()
+                    .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
+                    .buildRound(weekActivity.getYonaGoal().getNickName().substring(0, 1).toUpperCase(),
+                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+            profileClickEvent(rightIconProfile);
+        } else {
+            rightIconProfile.setVisibility(View.GONE);
+        }
     }
 
     private void updateFlow(int position) {
-        dateTitle.setText(dayActivityList.get(position).getStickyTitle());
-        if (position == 0) {
-            previousItem.setVisibility(View.INVISIBLE);
-        } else {
+        if (weekDayActivityList != null && weekDayActivityList.size() > 0) {
+            dateTitle.setText(weekDayActivityList.get(position).getStickyTitle());
+        } else if (dayActivityList != null && dayActivityList.size() > 0) {
+            dateTitle.setText(dayActivityList.get(position).getStickyTitle());
+        }
+
+        if ((activity != null && activity.getLinks() != null && activity.getLinks().getPrev() != null && !TextUtils.isEmpty(activity.getLinks().getPrev().getHref())) ||
+                (weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getPrev() != null && !TextUtils.isEmpty(weekActivity.getLinks().getPrev().getHref()))) {
             previousItem.setVisibility(View.VISIBLE);
-        }
-        if (position == dayActivityList.size() - 1) {
-            nextItem.setVisibility(View.INVISIBLE);
         } else {
-            nextItem.setVisibility(View.VISIBLE);
+            previousItem.setVisibility(View.INVISIBLE);
         }
+        if ((activity != null && activity.getLinks() != null && activity.getLinks().getNext() != null && !TextUtils.isEmpty(activity.getLinks().getNext().getHref())) ||
+                (weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getNext() != null && !TextUtils.isEmpty(weekActivity.getLinks().getNext().getHref()))) {
+            nextItem.setVisibility(View.VISIBLE);
+        } else {
+            nextItem.setVisibility(View.INVISIBLE);
+        }
+
     }
 }

@@ -19,6 +19,8 @@ public class WeekDayActivity extends BaseEntity {
 
     private WeekDayEnum weekDayEnum;
 
+    private String url;
+
     private String day;
 
     private String date;
@@ -56,6 +58,14 @@ public class WeekDayActivity extends BaseEntity {
 
     public void setWeekDayEnum(WeekDayEnum weekDayEnum) {
         this.weekDayEnum = weekDayEnum;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
