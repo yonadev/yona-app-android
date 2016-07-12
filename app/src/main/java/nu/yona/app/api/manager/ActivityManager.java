@@ -15,6 +15,7 @@ import java.util.List;
 
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.listener.DataLoadListener;
 
 /**
@@ -81,4 +82,6 @@ public interface ActivityManager {
     void getWithBuddyActivity(boolean loadMore, final DataLoadListener listener);
 
     void getComments(List<DayActivity> dayActivityList, int position, final DataLoadListener listener);
+
+    void getCommentsForWeek(List<WeekActivity> weekActivityList, int position, final DataLoadListener listener);
 }

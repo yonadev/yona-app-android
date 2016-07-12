@@ -29,6 +29,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.Day;
 import nu.yona.app.api.model.DayActivity;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.customview.YonaFontTextView;
@@ -114,6 +115,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
+
                 updateFlow(position);
             }
 
@@ -251,6 +253,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
 
     private void updateDayActivityData(DayActivity dayActivity) {
         customPageAdapter.notifyDataSetChanged(dayActivityList);
+        fetchComments(dayActivityList.indexOf(activity));
         viewPager.setCurrentItem(dayActivityList.indexOf(dayActivity));
         updateFlow(dayActivityList.indexOf(dayActivity));
         YonaActivity.getActivity().showLoadingView(false, null);
@@ -332,5 +335,26 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
             nextItem.setVisibility(View.INVISIBLE);
         }
 
+    }
+
+    private void fetchComments(int position) {
+        APIManager.getInstance().getActivityManager().getComments(dayActivityList, position, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                if (result instanceof List<?>) {
+                    dayActivityList = (List<DayActivity>) result;
+                    customPageAdapter.notifyDataSetChanged(dayActivityList);
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                } else {
+                    YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
+                }
+            }
+        });
     }
 }

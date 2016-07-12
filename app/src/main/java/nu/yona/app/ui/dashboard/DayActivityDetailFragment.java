@@ -152,6 +152,7 @@ public class DayActivityDetailFragment extends BaseFragment {
                 }
             }
             customPageAdapter.notifyDataSetChanged(dayActivityList);
+            fetchComments(dayActivityList.indexOf(activity));
             viewPager.setCurrentItem(dayActivityList.indexOf(activity));
             updateFlow(dayActivityList.indexOf(activity));
         } else {
