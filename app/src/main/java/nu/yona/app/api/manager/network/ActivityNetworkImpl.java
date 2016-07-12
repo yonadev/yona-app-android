@@ -122,6 +122,14 @@ public class ActivityNetworkImpl extends BaseImpl {
         }
     }
 
+    public void getComments(String url, String yonaPassword, int pageNo, int itemPerPage, final DataLoadListener listener) {
+        try {
+            getRestApi().getComments(url, yonaPassword, itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
     private Callback<EmbeddedYonaActivity> getEmbeddedYonaActivity(final DataLoadListener listener) {
         return new Callback<EmbeddedYonaActivity>() {
             @Override

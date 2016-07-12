@@ -116,6 +116,7 @@ public class ActivityManagerImpl implements ActivityManager {
                                     try {
                                         if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
                                             dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                                            dayActivityList.set(i, updateLinks(dayActivityList.get(i), resultActivity));
                                             break;
                                         }
                                     } catch (Exception e) {
@@ -296,6 +297,68 @@ public class ActivityManagerImpl implements ActivityManager {
             }
         } else {
             listener.onDataLoad(YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList());
+        }
+    }
+
+    public void getComments(List<DayActivity> dayActivityList, int position, final DataLoadListener listener) {
+        int pageNo = 0;
+        DayActivity dayActivity = dayActivityList.get(position);
+        if (dayActivity != null) {
+            if (dayActivity.getComments() != null && dayActivity.getComments().getPage() != null) {
+                if (dayActivity.getComments().getPage().getNumber() + 1 == dayActivity.getComments().getPage().getTotalPages()) {
+                    listener.onDataLoad(dayActivityList);
+                } else {
+                    pageNo = dayActivity.getComments().getPage().getNumber() + 1;
+                    getCommentsFromServer(dayActivityList, dayActivity, pageNo, listener);
+                }
+            } else {
+                getCommentsFromServer(dayActivityList, dayActivity, pageNo, listener);
+            }
+        }
+    }
+
+    private void getCommentsFromServer(final List<DayActivity> dayActivityList, final DayActivity dayActivity, int pageNo, final DataLoadListener listener) {
+        activityNetwork.getComments(dayActivity.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), pageNo, AppConstant.PAGE_SIZE, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                if (result instanceof EmbeddedYonaActivity) {
+                    EmbeddedYonaActivity embeddedYonaActivity = (EmbeddedYonaActivity) result;
+                    if (dayActivity.getComments() == null) {
+                        dayActivity.setComments(embeddedYonaActivity);
+                    } else {
+                        if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
+                            dayActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
+                            dayActivity.getComments().setPage(embeddedYonaActivity.getEmbedded().getPage());
+                        }
+                    }
+                    updateDayActivityList(dayActivityList, dayActivity, listener);
+                } else {
+                    listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    listener.onError(errorMessage);
+                } else {
+                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                }
+            }
+        });
+    }
+
+    private void updateDayActivityList(List<DayActivity> dayActivityList, DayActivity dayActivity, DataLoadListener listener) {
+        for (int i = 0; i < dayActivityList.size(); i++) {
+            try {
+                if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(dayActivity.getLinks().getYonaDayDetails().getHref())) {
+                    dayActivityList.set(i, dayActivity);
+                    listener.onDataLoad(dayActivityList);
+                    break;
+                }
+            } catch (Exception e) {
+                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            }
         }
     }
 
@@ -871,7 +934,7 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     private void getBuddyDetailOfEachSpread() {
-        List<DayActivity> dayActivities = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList();
+        final List<DayActivity> dayActivities = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList();
         for (final DayActivity dayActivity : dayActivities) {
             if (dayActivity.getTimeZoneSpread() == null || (dayActivity.getTimeZoneSpread() != null && dayActivity.getTimeZoneSpread().size() == 0)) {
                 APIManager.getInstance().getActivityManager().getDayDetailActivity(dayActivity.getLinks().getYonaDayDetails().getHref(), new DataLoadListener() {
@@ -885,6 +948,7 @@ public class ActivityManagerImpl implements ActivityManager {
                                     try {
                                         if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
                                             dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                                            dayActivityList.set(i, updateLinks(dayActivityList.get(i), resultActivity));
                                             break;
                                         }
                                     } catch (Exception e) {
@@ -905,4 +969,35 @@ public class ActivityManagerImpl implements ActivityManager {
             }
         }
     }
+
+    private DayActivity updateLinks(DayActivity actualActivity, DayActivity resultActivity) {
+        if (resultActivity.getLinks() != null) {
+            if (resultActivity.getLinks().getSelf() != null) {
+                actualActivity.getLinks().setSelf(resultActivity.getLinks().getSelf());
+            }
+            if (resultActivity.getLinks().getEdit() != null) {
+                actualActivity.getLinks().setEdit(resultActivity.getLinks().getEdit());
+            }
+            if (resultActivity.getLinks().getReplyComment() != null) {
+                actualActivity.getLinks().setEdit(resultActivity.getLinks().getReplyComment());
+            }
+            if (resultActivity.getLinks().getYonaMessages() != null) {
+                actualActivity.getLinks().setYonaMessages(resultActivity.getLinks().getYonaMessages());
+            }
+            if (resultActivity.getLinks().getYonaUser() != null) {
+                actualActivity.getLinks().setYonaUser(resultActivity.getLinks().getYonaUser());
+            }
+            if (resultActivity.getLinks().getYonaDayDetails() != null) {
+                actualActivity.getLinks().setYonaDayDetails(resultActivity.getLinks().getYonaDayDetails());
+            }
+            if (resultActivity.getLinks().getYonaBuddy() != null) {
+                actualActivity.getLinks().setYonaBuddy(resultActivity.getLinks().getYonaBuddy());
+            }
+            if (resultActivity.getLinks().getAddComment() != null) {
+                actualActivity.getLinks().setAddComment(resultActivity.getLinks().getAddComment());
+            }
+        }
+        return actualActivity;
+    }
 }
+

@@ -63,6 +63,9 @@ public class DayActivity extends BaseEntity {
     @SerializedName("dayActivitiesForUsers")
     @Expose
     private List<DayActivity> dayActivitiesForUsers = new ArrayList<DayActivity>();
+    @SerializedName("@@comments")
+    @Expose
+    private EmbeddedYonaActivity comments;
 
     /**
      * Gets date.
@@ -302,5 +305,23 @@ public class DayActivity extends BaseEntity {
      */
     public void setDayActivitiesForUsers(List<DayActivity> dayActivitiesForUsers) {
         this.dayActivitiesForUsers = dayActivitiesForUsers;
+    }
+
+    /**
+     * Gets comments.
+     *
+     * @return the comments
+     */
+    public EmbeddedYonaActivity getComments() {
+        return this.comments;
+    }
+
+    /**
+     * Sets comments.
+     *
+     * @param comments the comments
+     */
+    public void setComments(EmbeddedYonaActivity comments) {
+        this.comments = comments;
     }
 }

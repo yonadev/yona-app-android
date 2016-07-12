@@ -389,4 +389,7 @@ public interface RestApi {
      */
     @GET
     Call<EmbeddedYonaActivity> getWithBuddyActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("size") int size, @Query("page") int page);
+
+    @GET
+    Call<EmbeddedYonaActivity> getComments(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("size") int size, @Query("page") int page);
 }
