@@ -149,30 +149,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getCustomView().getTag().hashCode()) {
-                    case R.string.dashboard:
-                        Bundle bundle = new Bundle();
-                        if (user != null && user.getLinks() != null) {
-                            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
-                        } else {
-                            bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
-                        }
-                        Intent dashboardIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
-                        dashboardIntent.putExtras(bundle);
-                        replaceFragmentWithAction(dashboardIntent);
-                        break;
-                    case R.string.friends:
-                        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_FRIENDS.getActionString()));
-                        break;
-                    case R.string.challenges:
-                        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_CHALLENGES.getActionString()));
-                        break;
-                    case R.string.settings:
-                        replaceFragmentWithAction(new Intent(IntentEnum.ACTION_SETTINGS.getActionString()));
-                        break;
-                    default:
-                        break;
-                }
+                updateTab(tab);
             }
 
             @Override
@@ -182,7 +159,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                updateTab(tab);
             }
         });
 
@@ -204,6 +181,33 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             AppUtils.startService(this);
         }
         AppUtils.registerReceiver(YonaApplication.getAppContext());
+    }
+
+    private void updateTab(TabLayout.Tab tab) {
+        switch (tab.getCustomView().getTag().hashCode()) {
+            case R.string.dashboard:
+                Bundle bundle = new Bundle();
+                if (user != null && user.getLinks() != null) {
+                    bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
+                } else {
+                    bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
+                }
+                Intent dashboardIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
+                dashboardIntent.putExtras(bundle);
+                replaceFragmentWithAction(dashboardIntent);
+                break;
+            case R.string.friends:
+                replaceFragmentWithAction(new Intent(IntentEnum.ACTION_FRIENDS.getActionString()));
+                break;
+            case R.string.challenges:
+                replaceFragmentWithAction(new Intent(IntentEnum.ACTION_CHALLENGES.getActionString()));
+                break;
+            case R.string.settings:
+                replaceFragmentWithAction(new Intent(IntentEnum.ACTION_SETTINGS.getActionString()));
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
