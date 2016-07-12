@@ -774,6 +774,22 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
 
+    private YonaBuddy findYonaBuddy(Href yonaBuddy) {
+        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+        if (user != null && user.getEmbedded() != null
+                && user.getEmbedded().getYonaBuddies() != null
+                && user.getEmbedded().getYonaBuddies().getEmbedded() != null
+                && user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null) {
+            List<YonaBuddy> yonaBuddies = user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
+            for (YonaBuddy buddy : yonaBuddies) {
+                if (buddy != null && buddy.getLinks() != null && buddy.getLinks().getSelf() != null && buddy.getLinks().getSelf().getHref().equals(yonaBuddy.getHref())) {
+                    return buddy;
+                }
+            }
+        }
+        return null;
+    }
+
     private YonaGoal findYonaBuddyGoal(Href goalHref) {
         User user = YonaApplication.getEventChangeManager().getDataState().getUser();
         if (user != null && user.getEmbedded() != null
