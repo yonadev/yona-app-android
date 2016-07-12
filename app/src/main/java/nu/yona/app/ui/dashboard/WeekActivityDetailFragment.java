@@ -24,10 +24,13 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -102,6 +105,7 @@ public class WeekActivityDetailFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
+                fetchComments(position);
                 updateFlow(position);
             }
 
@@ -130,6 +134,7 @@ public class WeekActivityDetailFragment extends BaseFragment {
                 }
             }
             customPageAdapter.notifyDataSetChanged(weekActivityList);
+            fetchComments(weekActivityList.indexOf(activity));
             viewPager.setCurrentItem(weekActivityList.indexOf(activity));
             updateFlow(weekActivityList.indexOf(activity));
         } else {
@@ -159,5 +164,26 @@ public class WeekActivityDetailFragment extends BaseFragment {
         } else {
             nextItem.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void fetchComments(int position) {
+        APIManager.getInstance().getActivityManager().getCommentsForWeek(weekActivityList, position, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                if (result instanceof List<?>) {
+                    weekActivityList = (List<WeekActivity>) result;
+                    customPageAdapter.notifyDataSetChanged(weekActivityList);
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                } else {
+                    YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
+                }
+            }
+        });
     }
 }

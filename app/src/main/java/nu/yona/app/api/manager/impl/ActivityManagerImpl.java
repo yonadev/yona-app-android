@@ -153,6 +153,7 @@ public class ActivityManagerImpl implements ActivityManager {
                                     try {
                                         if (weekActivityList.get(i).getLinks().getWeekDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
                                             weekActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                                            weekActivityList.set(i, updateLinks(weekActivityList.get(i), resultActivity));
                                             weekActivityList.get(i).setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
                                             break;
                                         }
@@ -317,6 +318,54 @@ public class ActivityManagerImpl implements ActivityManager {
         }
     }
 
+    public void getCommentsForWeek(List<WeekActivity> weekActivityList, int position, final DataLoadListener listener) {
+        int pageNo = 0;
+        WeekActivity weekActivity = weekActivityList.get(position);
+        if (weekActivity != null) {
+            if (weekActivity.getComments() != null && weekActivity.getComments().getPage() != null) {
+                if (weekActivity.getComments().getPage().getNumber() + 1 == weekActivity.getComments().getPage().getTotalPages()) {
+                    listener.onDataLoad(weekActivityList);
+                } else {
+                    pageNo = weekActivity.getComments().getPage().getNumber() + 1;
+                    getCommentsFromServerForWeek(weekActivityList, weekActivity, pageNo, listener);
+                }
+            } else {
+                getCommentsFromServerForWeek(weekActivityList, weekActivity, pageNo, listener);
+            }
+        }
+    }
+
+    private void getCommentsFromServerForWeek(final List<WeekActivity> weekActivityList, final WeekActivity weekActivity, int pageNo, final DataLoadListener listener) {
+        activityNetwork.getComments(weekActivity.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), pageNo, AppConstant.PAGE_SIZE, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                if (result instanceof EmbeddedYonaActivity) {
+                    EmbeddedYonaActivity embeddedYonaActivity = (EmbeddedYonaActivity) result;
+                    if (weekActivity.getComments() == null) {
+                        weekActivity.setComments(embeddedYonaActivity);
+                    } else {
+                        if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
+                            weekActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
+                            weekActivity.getComments().setPage(embeddedYonaActivity.getEmbedded().getPage());
+                        }
+                    }
+                    updateWeekActivityList(weekActivityList, weekActivity, listener);
+                } else {
+                    listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    listener.onError(errorMessage);
+                } else {
+                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                }
+            }
+        });
+    }
+
     private void getCommentsFromServer(final List<DayActivity> dayActivityList, final DayActivity dayActivity, int pageNo, final DataLoadListener listener) {
         activityNetwork.getComments(dayActivity.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), pageNo, AppConstant.PAGE_SIZE, new DataLoadListener() {
             @Override
@@ -348,10 +397,25 @@ public class ActivityManagerImpl implements ActivityManager {
         });
     }
 
+
+    private void updateWeekActivityList(List<WeekActivity> weekActivityList, WeekActivity weekActivity, DataLoadListener listener) {
+        for (int i = 0; i < weekActivityList.size(); i++) {
+            try {
+                if (weekActivityList.get(i).getLinks().getSelf().getHref().equals(weekActivity.getLinks().getSelf().getHref())) {
+                    weekActivityList.set(i, weekActivity);
+                    listener.onDataLoad(weekActivityList);
+                    break;
+                }
+            } catch (Exception e) {
+                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            }
+        }
+    }
+
     private void updateDayActivityList(List<DayActivity> dayActivityList, DayActivity dayActivity, DataLoadListener listener) {
         for (int i = 0; i < dayActivityList.size(); i++) {
             try {
-                if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(dayActivity.getLinks().getYonaDayDetails().getHref())) {
+                if (dayActivityList.get(i).getLinks().getSelf().getHref().equals(dayActivity.getLinks().getSelf().getHref())) {
                     dayActivityList.set(i, dayActivity);
                     listener.onDataLoad(dayActivityList);
                     break;
@@ -971,6 +1035,36 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     private DayActivity updateLinks(DayActivity actualActivity, DayActivity resultActivity) {
+        if (resultActivity.getLinks() != null) {
+            if (resultActivity.getLinks().getSelf() != null) {
+                actualActivity.getLinks().setSelf(resultActivity.getLinks().getSelf());
+            }
+            if (resultActivity.getLinks().getEdit() != null) {
+                actualActivity.getLinks().setEdit(resultActivity.getLinks().getEdit());
+            }
+            if (resultActivity.getLinks().getReplyComment() != null) {
+                actualActivity.getLinks().setEdit(resultActivity.getLinks().getReplyComment());
+            }
+            if (resultActivity.getLinks().getYonaMessages() != null) {
+                actualActivity.getLinks().setYonaMessages(resultActivity.getLinks().getYonaMessages());
+            }
+            if (resultActivity.getLinks().getYonaUser() != null) {
+                actualActivity.getLinks().setYonaUser(resultActivity.getLinks().getYonaUser());
+            }
+            if (resultActivity.getLinks().getYonaDayDetails() != null) {
+                actualActivity.getLinks().setYonaDayDetails(resultActivity.getLinks().getYonaDayDetails());
+            }
+            if (resultActivity.getLinks().getYonaBuddy() != null) {
+                actualActivity.getLinks().setYonaBuddy(resultActivity.getLinks().getYonaBuddy());
+            }
+            if (resultActivity.getLinks().getAddComment() != null) {
+                actualActivity.getLinks().setAddComment(resultActivity.getLinks().getAddComment());
+            }
+        }
+        return actualActivity;
+    }
+
+    private WeekActivity updateLinks(WeekActivity actualActivity, WeekActivity resultActivity) {
         if (resultActivity.getLinks() != null) {
             if (resultActivity.getLinks().getSelf() != null) {
                 actualActivity.getLinks().setSelf(resultActivity.getLinks().getSelf());

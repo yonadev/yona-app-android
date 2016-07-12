@@ -61,7 +61,9 @@ public class WeekActivity extends BaseEntity {
     private List<WeekDayActivity> weekDayActivity;
     @Expose
     private int totalAccomplishedGoal;
-
+    @SerializedName("@@comments")
+    @Expose
+    private EmbeddedYonaActivity comments;
     /**
      * Gets date.
      *
@@ -281,5 +283,13 @@ public class WeekActivity extends BaseEntity {
     @Override
     public ContentValues getDbContentValues() {
         return null;
+    }
+
+    public EmbeddedYonaActivity getComments() {
+        return this.comments;
+    }
+
+    public void setComments(EmbeddedYonaActivity comments) {
+        this.comments = comments;
     }
 }
