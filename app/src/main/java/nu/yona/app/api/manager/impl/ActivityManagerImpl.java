@@ -104,7 +104,7 @@ public class ActivityManagerImpl implements ActivityManager {
     private void getDetailOfEachSpread() {
         List<DayActivity> dayActivities = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
         for (final DayActivity dayActivity : dayActivities) {
-            if (dayActivity.getTimeZoneSpread() == null || (dayActivity.getTimeZoneSpread() != null && dayActivity.getTimeZoneSpread().size() == 0)) {
+            if (dayActivity.getTimeZoneSpread() == null || (dayActivity.getTimeZoneSpread() != null && dayActivity.getTimeZoneSpread().size() == 0) || dayActivity.getChartTypeEnum() == ChartTypeEnum.TIME_FRAME_CONTROL) {
                 APIManager.getInstance().getActivityManager().getDayDetailActivity(dayActivity.getLinks().getYonaDayDetails().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
@@ -116,7 +116,7 @@ public class ActivityManagerImpl implements ActivityManager {
                                     try {
                                         if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
                                             dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
-                                            dayActivityList.set(i, updateLinks(dayActivityList.get(i), resultActivity));
+                                            YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().set(i, updateLinks(dayActivityList.get(i), resultActivity));
                                             break;
                                         }
                                     } catch (Exception e) {
@@ -325,7 +325,7 @@ public class ActivityManagerImpl implements ActivityManager {
             if (weekActivity.getComments() != null && weekActivity.getComments().getPage() != null) {
                 if (weekActivity.getComments().getPage().getNumber() + 1 == weekActivity.getComments().getPage().getTotalPages()) {
                     listener.onDataLoad(weekActivityList);
-                } else if(weekActivity.getComments().getEmbedded() != null){
+                } else if (weekActivity.getComments().getEmbedded() != null) {
                     pageNo = weekActivity.getComments().getPage().getNumber() + 1;
                     getCommentsFromServerForWeek(weekActivityList, weekActivity, pageNo, listener);
                 } else {
@@ -369,34 +369,36 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     private void getCommentsFromServer(final List<DayActivity> dayActivityList, final DayActivity dayActivity, int pageNo, final DataLoadListener listener) {
-        activityNetwork.getComments(dayActivity.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), pageNo, AppConstant.PAGE_SIZE, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                if (result instanceof EmbeddedYonaActivity) {
-                    EmbeddedYonaActivity embeddedYonaActivity = (EmbeddedYonaActivity) result;
-                    if (dayActivity.getComments() == null) {
-                        dayActivity.setComments(embeddedYonaActivity);
-                    } else {
-                        if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
-                            dayActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
-                            dayActivity.getComments().setPage(embeddedYonaActivity.getEmbedded().getPage());
+        if (dayActivity.getLinks() != null && dayActivity.getLinks().getYonaDayDetails() != null && !TextUtils.isEmpty(dayActivity.getLinks().getYonaDayDetails().getHref())) {
+            activityNetwork.getComments(dayActivity.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), pageNo, AppConstant.PAGE_SIZE, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    if (result instanceof EmbeddedYonaActivity) {
+                        EmbeddedYonaActivity embeddedYonaActivity = (EmbeddedYonaActivity) result;
+                        if (dayActivity.getComments() == null) {
+                            dayActivity.setComments(embeddedYonaActivity);
+                        } else {
+                            if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
+                                dayActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
+                                dayActivity.getComments().setPage(embeddedYonaActivity.getEmbedded().getPage());
+                            }
                         }
+                        updateDayActivityList(dayActivityList, dayActivity, listener);
+                    } else {
+                        listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
                     }
-                    updateDayActivityList(dayActivityList, dayActivity, listener);
-                } else {
-                    listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
                 }
-            }
 
-            @Override
-            public void onError(Object errorMessage) {
-                if (errorMessage instanceof ErrorMessage) {
-                    listener.onError(errorMessage);
-                } else {
-                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                @Override
+                public void onError(Object errorMessage) {
+                    if (errorMessage instanceof ErrorMessage) {
+                        listener.onError(errorMessage);
+                    } else {
+                        listener.onError(new ErrorMessage(errorMessage.toString()));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 
@@ -1031,6 +1033,7 @@ public class ActivityManagerImpl implements ActivityManager {
                                         if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
                                             dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
                                             dayActivityList.set(i, updateLinks(dayActivityList.get(i), resultActivity));
+                                            Log.e("SEt ", "Set links");
                                             break;
                                         }
                                     } catch (Exception e) {
