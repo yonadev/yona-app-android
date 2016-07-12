@@ -73,11 +73,11 @@ public class NotificationFragment extends BaseFragment {
                 } else if (yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.REQUESTED) {
                     mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_REQUEST.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
-                } else if(yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.ACTIVITYCOMMENTMESSAGE) {
+                } else if (yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.ACTIVITYCOMMENTMESSAGE) {
                     mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(yonaMessage.getLinks().getYonaBuddy()));
                     mMessageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, yonaMessage.getLinks().getYonaDayDetails().getHref());
-                    mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+                    mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
                 }
                 YonaActivity.getActivity().replaceFragment(mMessageIntent);
             }
@@ -239,6 +239,6 @@ public class NotificationFragment extends BaseFragment {
     }
 
     private YonaBuddy findBuddy(Href href) {
-        return  APIManager.getInstance().getActivityManager().findYonaBuddy(href);
+        return APIManager.getInstance().getActivityManager().findYonaBuddy(href);
     }
 }

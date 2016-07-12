@@ -96,9 +96,16 @@ public class SharedPreference {
      * @param password yona password
      */
     public void setYonaPassword(String password, boolean override) {
-        MyCipherData myCipherData = generateKey(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT));
-        if (null != myCipherData) {
-            yonaPwd = getDecryptedKey();
+        yonaPwd = null;
+        if (TextUtils.isEmpty(YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()) || override) {
+            //According to http://android-developers.blogspot.com.es/2013/08/some-securerandom-thoughts.html
+            try {
+                PRNGFixes.apply();
+                MyCipherData cipherData = new MyCipher(Build.SERIAL).encryptUTF8(password);
+                userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
+            } catch (Exception e) {
+                AppUtils.throwException(SharedPreference.class.getSimpleName(), e, Thread.currentThread(), null);
+            }
         }
     }
 
