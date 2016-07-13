@@ -46,5 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spread_graph_height" />
         </LinearLayout>
+
+        <include layout="@layout/comment_layout" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
