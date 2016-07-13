@@ -245,7 +245,7 @@ public class CustomPageAdapter extends PagerAdapter {
                     }
                     break;
                 case TIME_ZONE_GOAL:
-                    loadTimeFrameControlForWeek(weekActivity, holder);
+                    loadTimeFrameControlForWeek();
                     break;
                 case NOGO:
                     loadNoGoControlForWeek(weekActivity, holder);
@@ -261,14 +261,17 @@ public class CustomPageAdapter extends PagerAdapter {
         }
         holder.getGoalType().setText(mContext.getString(R.string.score));
         holder.getGoalScore().setText(Math.abs(timeFrameGoalMinutes) + "");
-        if (timeFrameGoalMinutes < 0) {
+        if (!dayActivity.getGoalAccomplished()) {
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
         } else {
+            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
         }
+
     }
 
-    private void loadTimeFrameControlForWeek(WeekActivity weekActivity, ChartItemHolder holder) {
+    private void loadTimeFrameControlForWeek() {
         graphView.setVisibility(View.GONE);
     }
 
@@ -279,14 +282,11 @@ public class CustomPageAdapter extends PagerAdapter {
             holder.getTimeBucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
         }
         holder.getGoalType().setText(mContext.getString(R.string.score));
-        if (goalMinutes < 0) {
+        if (!dayActivity.getGoalAccomplished()) {
             holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
-        } else {
-            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
-        }
-        if (goalMinutes < 0) {
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
         } else {
+            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
         }
         holder.getGoalScore().setText(Math.abs(goalMinutes) + "");
@@ -303,12 +303,9 @@ public class CustomPageAdapter extends PagerAdapter {
         holder.getGoalType().setText(mContext.getString(R.string.average));
         if (goalMinutes < 0) {
             holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
-        } else {
-            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
-        }
-        if (goalMinutes < 0) {
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
         } else {
+            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
         }
         holder.getGoalScore().setText(Math.abs(goalMinutes) + "");
@@ -390,10 +387,28 @@ public class CustomPageAdapter extends PagerAdapter {
         }
         goalType.setText(mContext.getString(R.string.spreiding));
         if (dayActivity != null) {
-            if (dayActivity.getGoalAccomplished()) {
-                goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-            } else {
-                goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+            GoalsEnum goalsEnum = GoalsEnum.fromName(dayActivity.getYonaGoal().getType());
+            switch (goalsEnum) {
+                case BUDGET_GOAL:
+                case TIME_ZONE_GOAL:
+                    if (dayActivity.getGoalAccomplished()) {
+                        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                        goalDesc.setText(mContext.getString(R.string.goaltotalminute));
+                    } else {
+                        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+                        goalDesc.setText(mContext.getString(R.string.budgetgoalbeyondtime));
+                    }
+                    break;
+                case NOGO:
+                    goalDesc.setText(mContext.getString(R.string.goaltotalminute));
+                    if (dayActivity.getGoalAccomplished()) {
+                        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                    } else {
+                        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+                    }
+                    break;
+                default:
+                    break;
             }
             goalScore.setText(dayActivity.getTotalActivityDurationMinutes() + "");
         } else if (weekActivity != null) {

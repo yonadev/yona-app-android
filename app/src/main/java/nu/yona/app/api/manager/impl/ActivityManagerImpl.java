@@ -890,7 +890,7 @@ public class ActivityManagerImpl implements ActivityManager {
             List<Integer> spreadCellsList;
             boolean isBudgetGoal = false;
             if (activity.getYonaGoal() != null && activity.getYonaGoal().getSpreadCells() != null) {
-                isBudgetGoal = activity.getYonaGoal().getType().equals(GoalsEnum.BUDGET_GOAL.getActionString());
+                isBudgetGoal = activity.getYonaGoal().getType().equals(GoalsEnum.BUDGET_GOAL.getActionString()) && activity.getYonaGoal().getMaxDurationMinutes() != 0;
                 spreadCellsList = activity.getYonaGoal().getSpreadCells();
             } else {
                 spreadCellsList = new ArrayList<>();

@@ -1,6 +1,7 @@
 package nu.yona.app.ui.dashboard;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -100,6 +101,16 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
     private void updatedetail(final DayActivity dayActivity, ChartItemHolder holder) {
         if (dayActivity.getYonaGoal() != null && !TextUtils.isEmpty(dayActivity.getYonaGoal().getActivityCategoryName())) {
             holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName() + "");
+        }
+        if (!dayActivity.getGoalAccomplished()) {
+            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
+        } else {
+            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
+        }
+        if (!dayActivity.getGoalAccomplished()) {
+            holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+        } else {
+            holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
         }
         holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
     }
