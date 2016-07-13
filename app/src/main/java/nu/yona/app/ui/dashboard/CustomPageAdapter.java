@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.WeekDayActivity;
@@ -31,6 +32,7 @@ import nu.yona.app.customview.graph.SpreadGraph;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.enums.WeekDayEnum;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.ChartItemHolder;
 
 /**
@@ -85,6 +87,9 @@ public class CustomPageAdapter extends PagerAdapter {
         goalScore = (YonaFontTextView) spreadView.findViewById(R.id.goalScore);
         mSpreadGraph = (SpreadGraph) spreadView.findViewById(R.id.spreadGraph);
         DayActivity dayActivity = dayActivities.get(position);
+        if (dayActivity != null && dayActivity.getLinks() != null && (dayActivity.getLinks().getReplyComment() != null || dayActivity.getLinks().getAddComment() != null)) {
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SHOW_CHAT_OPTION, null);
+        }
         graphView = ((FrameLayout) layout.findViewById(R.id.graphView));
         graphView.addView(inflateActivityView(inflater, dayActivity.getChartTypeEnum(), layout));
         updateView(new ChartItemHolder(graphView, null, dayActivity.getChartTypeEnum()), null, dayActivity);
