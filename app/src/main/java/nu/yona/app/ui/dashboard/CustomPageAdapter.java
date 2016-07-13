@@ -298,7 +298,7 @@ public class CustomPageAdapter extends PagerAdapter {
 
         int maxDurationAllow = (int) weekActivity.getYonaGoal().getMaxDurationMinutes();
         if (maxDurationAllow > 0) {
-            holder.getTimeBucketGraph().graphArguments(avgUsage.second, maxDurationAllow, weekActivity.getTotalActivityDurationMinutes());
+            holder.getTimeBucketGraph().graphArguments(Math.abs(goalMinutes), maxDurationAllow, avgUsage.first);
         }
         holder.getGoalType().setText(mContext.getString(R.string.average));
         if (goalMinutes < 0) {
@@ -389,19 +389,35 @@ public class CustomPageAdapter extends PagerAdapter {
             mSpreadGraph.chartValuePre(weekActivity.getTimeZoneSpread());
         }
         goalType.setText(mContext.getString(R.string.spreiding));
-        //Todo - spread time should be updated, change color according that
         if (dayActivity != null) {
             if (dayActivity.getGoalAccomplished()) {
                 goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-                goalScore.setText(dayActivity.getTotalActivityDurationMinutes() + "");
             } else {
-                goalScore.setText(dayActivity.getTotalMinutesBeyondGoal() + "");
                 goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
             }
+            goalScore.setText(dayActivity.getTotalActivityDurationMinutes() + "");
         } else if (weekActivity != null) {
-            goalScore.setText("");
+            GoalsEnum goalsEnum = GoalsEnum.fromName(weekActivity.getYonaGoal().getType());
+            switch (goalsEnum) {
+                case BUDGET_GOAL:
+                case TIME_ZONE_GOAL:
+                    goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                    break;
+                case NOGO:
+                    goalDesc.setText(mContext.getString(R.string.goaltotalminute));
+                    if (weekActivity.getTotalActivityDurationMinutes() > 0) {
+                        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
+                    } else {
+                        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                    }
+                    break;
+                default:
+                    break;
+            }
+            goalDesc.setText(mContext.getString(R.string.goaltotalminute));
+            goalScore.setText("" + weekActivity.getTotalActivityDurationMinutes());
         }
-        goalDesc.setText(mContext.getString(R.string.goaltotalminute));
+
     }
 
 
