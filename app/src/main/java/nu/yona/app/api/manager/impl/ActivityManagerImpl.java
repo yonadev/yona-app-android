@@ -888,14 +888,16 @@ public class ActivityManagerImpl implements ActivityManager {
         if (activity.getSpread() != null) {
             List<Integer> spreadsList = activity.getSpread();
             List<Integer> spreadCellsList;
+            boolean isBudgetGoal = false;
             if (activity.getYonaGoal() != null && activity.getYonaGoal().getSpreadCells() != null) {
+                isBudgetGoal = activity.getYonaGoal().getType().equals(GoalsEnum.BUDGET_GOAL.getActionString());
                 spreadCellsList = activity.getYonaGoal().getSpreadCells();
             } else {
                 spreadCellsList = new ArrayList<>();
             }
             List<TimeZoneSpread> timeZoneSpreadList = new ArrayList<>();
             for (int i = 0; i < spreadsList.size(); i++) {
-                setTimeZoneSpread(i, spreadsList.get(i), timeZoneSpreadList, spreadCellsList.contains(i));
+                setTimeZoneSpread(i, spreadsList.get(i), timeZoneSpreadList, spreadCellsList.contains(i) || isBudgetGoal);
             }
             activity.setTimeZoneSpread(timeZoneSpreadList);
         }
