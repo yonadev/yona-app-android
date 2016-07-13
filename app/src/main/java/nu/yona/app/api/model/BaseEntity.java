@@ -15,7 +15,7 @@ import java.io.Serializable;
 /**
  * Author @MobiquityInc.
  */
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 4243329623573859700L;
 

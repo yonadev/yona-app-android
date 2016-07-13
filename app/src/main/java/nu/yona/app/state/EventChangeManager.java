@@ -105,6 +105,8 @@ public class EventChangeManager {
 
     public static final int EVENT_UPDATE_FRIEND_TIMELINE = 19;
 
+    public static final int EVENT_SHOW_CHAT_OPTION = 20;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;
@@ -152,7 +154,6 @@ public class EventChangeManager {
             }
         }
     }
-
 
     /**
      * Gets data state.

@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
@@ -39,6 +40,8 @@ import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -47,7 +50,7 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by kinnarvasa on 13/06/16.
  */
-public class DayActivityDetailFragment extends BaseFragment {
+public class DayActivityDetailFragment extends BaseFragment implements EventChangeListener {
 
     private CustomPageAdapter customPageAdapter;
     private ViewPager viewPager;
@@ -60,6 +63,7 @@ public class DayActivityDetailFragment extends BaseFragment {
     private List<DayActivity> dayActivityList;
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
+    private LinearLayout commentBox;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +94,7 @@ public class DayActivityDetailFragment extends BaseFragment {
         previousItem = (ImageView) view.findViewById(R.id.previous);
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
-
+        commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity());
         viewPager.setAdapter(customPageAdapter);
@@ -140,7 +144,14 @@ public class DayActivityDetailFragment extends BaseFragment {
 
             }
         });
+        YonaApplication.getEventChangeManager().registerListener(this);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
     @Override
@@ -274,5 +285,16 @@ public class DayActivityDetailFragment extends BaseFragment {
 
             }
         });
+    }
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_SHOW_CHAT_OPTION:
+                commentBox.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
+        }
     }
 }

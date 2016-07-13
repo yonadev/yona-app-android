@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~  This Source Code Form is subject to the terms of the Mozilla Public
+  ~  License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comment_box"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:visibility="gone">
+
+    <EditText
+        android:id="@+id/userMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:maxLines="5"
+        android:minHeight="@dimen/fifty"
+        android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/btnSend"
+        style="@style/BtnTxtSmall"
+        android:layout_width="@dimen/eighty"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/mid_blue"
+        android:minHeight="@dimen/fifty"
+        android:text="@string/send" />
+</LinearLayout>
