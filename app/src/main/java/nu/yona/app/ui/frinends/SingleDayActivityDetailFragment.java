@@ -27,10 +27,10 @@ import java.util.List;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.api.model.Day;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.WeekActivity;
+import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
@@ -48,28 +48,30 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
     private CustomPageAdapter customPageAdapter;
     private ViewPager viewPager;
     private DayActivity activity;
-    private WeekActivity weekActivity;
-    private Day mDay;
     private View view;
     private ImageView previousItem, nextItem;
     private YonaFontTextView dateTitle;
     private YonaHeaderTheme mYonaHeaderTheme;
     private List<DayActivity> dayActivityList;
-    private List<WeekActivity> weekDayActivityList;
+    private String yonaDayDetailUrl;
+    private YonaBuddy yonaBuddy;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
-
-            if (getArguments().get(AppConstant.OBJECT) != null) {
-                if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity) {
-                    activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
+            if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
+                if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy) {
+                    yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+                } else {
+                    yonaBuddy = APIManager.getInstance().getActivityManager().findYonaBuddy((Href) getArguments().get(AppConstant.YONA_BUDDY_OBJ));
                 }
             }
-            if (getArguments().get(AppConstant.DAY_OBJECT) instanceof Day) {
-                mDay = (Day) getArguments().get(AppConstant.DAY_OBJECT);
+            if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null) {
+                mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+            }
+            if (getArguments().get(AppConstant.YONA_DAY_DEATIL_URL) != null) {
+                yonaDayDetailUrl = (String) getArguments().get(AppConstant.YONA_DAY_DEATIL_URL);
             }
         }
     }
@@ -86,7 +88,6 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
         }
 
         dayActivityList = new ArrayList<>();
-        weekDayActivityList = new ArrayList<>();
         previousItem = (ImageView) view.findViewById(R.id.previous);
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
@@ -125,11 +126,8 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
             }
         });
 
-        if (activity != null && activity.getLinks() != null && activity.getLinks().getYonaDayDetails() != null) {
+        if (!TextUtils.isEmpty(yonaDayDetailUrl)) {
             setDayActivityDetails();
-        }
-        if (mDay != null && mDay.getLinks() != null && mDay.getLinks().getYonaDayDetails() != null) {
-            setWeekDayActivityDetail();
         }
         return view;
     }
@@ -137,51 +135,46 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
     private void previousDayActivity() {
         if (activity != null) {
             loadDayActivity(activity.getLinks().getPrev().getHref());
-            setDayDetailTitleAndIcon();
-        }
-        if (weekActivity != null) {
-            loadWeekDayActivity(weekActivity.getLinks().getPrev().getHref());
-            setWeekDetailTitleAndIcon();
         }
     }
 
     private void nextDayActivity() {
         if (activity != null) {
             loadDayActivity(activity.getLinks().getNext().getHref());
-            setDayDetailTitleAndIcon();
-        }
-        if (weekActivity != null) {
-            loadWeekDayActivity(weekActivity.getLinks().getNext().getHref());
-            setWeekDetailTitleAndIcon();
         }
     }
 
     private void setDayActivityDetails() {
-        loadDayActivity(activity.getLinks().getYonaDayDetails().getHref());
+        loadDayActivity(yonaDayDetailUrl);
         setDayDetailTitleAndIcon();
     }
 
-    private void setWeekDayActivityDetail() {
-        loadWeekDayActivity(mDay.getLinks().getYonaDayDetails().getHref());
-        setWeekDetailTitleAndIcon();
-    }
-
     private void setDayDetailTitleAndIcon() {
-        if (activity != null && activity.getYonaGoal() != null && !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName())) {
-            toolbarTitle.setText(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
-        }
-        leftIcon.setVisibility(View.GONE);
-        rightIcon.setVisibility(View.GONE);
-        if (mYonaHeaderTheme != null && mYonaHeaderTheme.isBuddyFlow()) {
+        if (mYonaHeaderTheme.isBuddyFlow() && yonaBuddy != null) {
+            leftIcon.setVisibility(View.GONE);
+            rightIcon.setVisibility(View.GONE);
             rightIconProfile.setVisibility(View.VISIBLE);
-            rightIconProfile.setImageDrawable(TextDrawable.builder()
-                    .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                    .buildRound(activity.getYonaGoal().getNickName().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+            if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName())) {
+                rightIconProfile.setImageDrawable(TextDrawable.builder()
+                        .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
+                        .buildRound(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
+                                ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+            }
             profileClickEvent(rightIconProfile);
+
         } else {
-            rightIconProfile.setVisibility(View.GONE);
+            leftIcon.setVisibility(View.GONE);
+            rightIcon.setVisibility(View.GONE);
+            if (mYonaHeaderTheme.isBuddyFlow()) {
+                rightIconProfile.setVisibility(View.VISIBLE);
+                rightIconProfile.setImageDrawable(TextDrawable.builder()
+                        .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
+                        .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
+                                ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+                profileClickEvent(rightIconProfile);
+            }
         }
+        toolbarTitle.setText(mYonaHeaderTheme.getHeader_title());
     }
 
     private void profileClickEvent(View profileView) {
@@ -190,13 +183,10 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
                 intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
-                if (mYonaHeaderTheme != null && mYonaHeaderTheme.isBuddyFlow()) {
-                    intent.putExtra(AppConstant.COLOR_CODE, R.color.mid_blue_two);
-                    intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
-                }
-                if (activity.getLinks().getYonaBuddy() != null) {
-                    intent.putExtra(AppConstant.URL, activity.getLinks().getYonaBuddy().getHref());
+                if (yonaBuddy != null) {
+                    intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
                 } else {
+                    intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
                     intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
                 }
                 YonaActivity.getActivity().replaceFragment(intent);
@@ -242,15 +232,6 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
         return null;
     }
 
-    private WeekActivity getLocalWeekActivity(String url) {
-        for (WeekActivity weekActivity : weekDayActivityList) {
-            if (weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getSelf() != null && !TextUtils.isEmpty(weekActivity.getLinks().getSelf().getHref()) && url.equalsIgnoreCase(weekActivity.getLinks().getSelf().getHref())) {
-                return weekActivity;
-            }
-        }
-        return null;
-    }
-
     private void updateDayActivityData(DayActivity dayActivity) {
         customPageAdapter.notifyDataSetChanged(dayActivityList);
         fetchComments(dayActivityList.indexOf(activity));
@@ -259,77 +240,17 @@ public class SingleDayActivityDetailFragment extends BaseFragment {
         YonaActivity.getActivity().showLoadingView(false, null);
     }
 
-    private void updateWeekDayActivityData(WeekActivity weekActivity) {
-        customPageAdapter.notifyDataSetChanged(weekDayActivityList, false);
-        viewPager.setCurrentItem(weekDayActivityList.indexOf(weekActivity));
-        updateFlow(weekDayActivityList.indexOf(weekActivity));
-        YonaActivity.getActivity().showLoadingView(false, null);
-    }
-
-    private void loadWeekDayActivity(String url) {
-        if (url == null) {
-            return;
-        }
-        YonaActivity.getActivity().showLoadingView(true, null);
-
-        if (getLocalWeekActivity(url) != null) {
-            weekActivity = getLocalWeekActivity(url);
-            updateWeekDayActivityData(weekActivity);
-        } else {
-            APIManager.getInstance().getActivityManager().getWeeksDetailActivity(url, new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    if (result instanceof WeekActivity) {
-                        weekDayActivityList.add((WeekActivity) result);
-                        weekActivity = (WeekActivity) result;
-                        updateWeekDayActivityData(weekActivity);
-                    }
-                    YonaActivity.getActivity().showLoadingView(false, null);
-
-                }
-
-                @Override
-                public void onError(Object errorMessage) {
-                    YonaActivity.getActivity().showLoadingView(false, null);
-                }
-            });
-        }
-    }
-
-    private void setWeekDetailTitleAndIcon() {
-        if (weekActivity != null && weekActivity.getYonaGoal() != null && !TextUtils.isEmpty(weekActivity.getYonaGoal().getActivityCategoryName())) {
-            toolbarTitle.setText(weekActivity.getYonaGoal().getActivityCategoryName().toUpperCase());
-        }
-        leftIcon.setVisibility(View.GONE);
-        rightIcon.setVisibility(View.GONE);
-
-        if (mYonaHeaderTheme != null && mYonaHeaderTheme.isBuddyFlow()) {
-            rightIconProfile.setVisibility(View.VISIBLE);
-            rightIconProfile.setImageDrawable(TextDrawable.builder()
-                    .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                    .buildRound(weekActivity.getYonaGoal().getNickName().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
-            profileClickEvent(rightIconProfile);
-        } else {
-            rightIconProfile.setVisibility(View.GONE);
-        }
-    }
-
     private void updateFlow(int position) {
-        if (weekDayActivityList != null && weekDayActivityList.size() > 0) {
-            dateTitle.setText(weekDayActivityList.get(position).getStickyTitle());
-        } else if (dayActivityList != null && dayActivityList.size() > 0) {
+        if (dayActivityList != null && dayActivityList.size() > 0) {
             dateTitle.setText(dayActivityList.get(position).getStickyTitle());
         }
 
-        if ((activity != null && activity.getLinks() != null && activity.getLinks().getPrev() != null && !TextUtils.isEmpty(activity.getLinks().getPrev().getHref())) ||
-                (weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getPrev() != null && !TextUtils.isEmpty(weekActivity.getLinks().getPrev().getHref()))) {
+        if ((activity != null && activity.getLinks() != null && activity.getLinks().getPrev() != null && !TextUtils.isEmpty(activity.getLinks().getPrev().getHref()))) {
             previousItem.setVisibility(View.VISIBLE);
         } else {
             previousItem.setVisibility(View.INVISIBLE);
         }
-        if ((activity != null && activity.getLinks() != null && activity.getLinks().getNext() != null && !TextUtils.isEmpty(activity.getLinks().getNext().getHref())) ||
-                (weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getNext() != null && !TextUtils.isEmpty(weekActivity.getLinks().getNext().getHref()))) {
+        if ((activity != null && activity.getLinks() != null && activity.getLinks().getNext() != null && !TextUtils.isEmpty(activity.getLinks().getNext().getHref()))) {
             nextItem.setVisibility(View.VISIBLE);
         } else {
             nextItem.setVisibility(View.INVISIBLE);

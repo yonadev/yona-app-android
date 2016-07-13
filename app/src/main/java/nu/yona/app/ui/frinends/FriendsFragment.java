@@ -55,8 +55,12 @@ public class FriendsFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new TimelineFragment(), getString(R.string.timeline));
-        adapter.addFragment(new OverviewFragment(), getString(R.string.overiview));
+        TimelineFragment timelineFragment = new TimelineFragment();
+        timelineFragment.setArguments(getArguments());
+        OverviewFragment overviewFragment = new OverviewFragment();
+        overviewFragment.setArguments(getArguments());
+        adapter.addFragment(timelineFragment, getString(R.string.timeline));
+        adapter.addFragment(overviewFragment, getString(R.string.overiview));
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

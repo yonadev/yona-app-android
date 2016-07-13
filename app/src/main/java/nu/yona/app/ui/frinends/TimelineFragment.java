@@ -137,9 +137,11 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 
     private void openDetailPage(DayActivity activity) {
         Intent intent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
-        intent.putExtra(AppConstant.OBJECT, activity);
-        intent.putExtra(AppConstant.BOOLEAN, true);
-        intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+        intent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, activity.getLinks().getYonaDayDetails().getHref());
+        if (activity.getLinks().getYonaBuddy() != null) {
+            intent.putExtra(AppConstant.YONA_BUDDY_OBJ, activity.getLinks().getYonaBuddy());
+        }
+        intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, activity.getYonaGoal().getActivityCategoryName().toUpperCase(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
         YonaActivity.getActivity().replaceFragment(intent);
     }
 
