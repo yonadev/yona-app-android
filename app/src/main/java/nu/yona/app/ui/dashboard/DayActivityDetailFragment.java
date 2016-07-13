@@ -204,4 +204,20 @@ public class DayActivityDetailFragment extends BaseFragment {
             }
         });
     }
+
+    //TODO @Bhargav, when user click on send button from comment box, it will call this API.
+    private void addComment(String message) {
+
+        APIManager.getInstance().getActivityManager().addComment(activity, message, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                //TODO response will be object of YonaMessage -> add in list of comments array and notify UI to update item in list.
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+
+            }
+        });
+    }
 }

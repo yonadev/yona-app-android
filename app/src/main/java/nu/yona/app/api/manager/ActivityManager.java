@@ -87,4 +87,8 @@ public interface ActivityManager {
     void getCommentsForWeek(List<WeekActivity> weekActivityList, int position, final DataLoadListener listener);
 
     YonaBuddy findYonaBuddy(Href yonaBuddy);
+
+    void addComment(DayActivity dayActivity, String comment, final DataLoadListener listener);
+
+    void addComment(WeekActivity dayActivity, String comment, final DataLoadListener listener);
 }
