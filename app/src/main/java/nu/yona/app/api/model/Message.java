@@ -10,28 +10,18 @@
 
 package nu.yona.app.api.model;
 
-import com.google.gson.annotations.Expose;
-
 /**
- * Created by kinnarvasa on 09/05/16.
+ * Created by kinnarvasa on 13/07/16.
  */
-public class Properties {
 
-    @Expose
-    private Message message;
+public class Message {
+    private String message;
 
-    /**
-     * Instantiates a new Properties.
-     */
-    public Properties() {
-
-    }
-
-    public Message getMessage() {
+    public String getMessage() {
         return this.message;
     }
 
-    public void setMessage(Message message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 }

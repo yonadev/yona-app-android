@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,10 +75,14 @@ public class NotificationFragment extends BaseFragment {
                     mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_REQUEST.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
                 } else if (yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.ACTIVITYCOMMENTMESSAGE) {
-                    mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
-                    mMessageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(yonaMessage.getLinks().getYonaBuddy()));
-                    mMessageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, yonaMessage.getLinks().getYonaDayDetails().getHref());
-                    mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
+                    if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getYonaDayDetails() != null) {
+                        mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
+                        mMessageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(yonaMessage.getLinks().getYonaBuddy()));
+                        mMessageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, yonaMessage.getLinks().getYonaDayDetails().getHref());
+                        mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
+                    } else if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getWeekDetails() != null) {
+                        Log.e("Week Details", "Week Details message");
+                    }
                 }
                 YonaActivity.getActivity().replaceFragment(mMessageIntent);
             }

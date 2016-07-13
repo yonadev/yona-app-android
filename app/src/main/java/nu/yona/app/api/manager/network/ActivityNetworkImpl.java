@@ -13,7 +13,9 @@ package nu.yona.app.api.manager.network;
 import nu.yona.app.api.model.AppActivity;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
+import nu.yona.app.api.model.Message;
 import nu.yona.app.api.model.WeekActivity;
+import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
 import retrofit2.Call;
@@ -125,6 +127,28 @@ public class ActivityNetworkImpl extends BaseImpl {
     public void getComments(String url, String yonaPassword, int pageNo, int itemPerPage, final DataLoadListener listener) {
         try {
             getRestApi().getComments(url, yonaPassword, itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    public void addComment(String url, String yonaPassword, Message message, final DataLoadListener listener) {
+        try {
+            getRestApi().addComment(url, yonaPassword, message).enqueue(new Callback<YonaMessage>() {
+                @Override
+                public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response) {
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        onError(response, listener);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<YonaMessage> call, Throwable t) {
+                    onError(t, listener);
+                }
+            });
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

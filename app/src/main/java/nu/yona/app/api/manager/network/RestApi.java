@@ -16,6 +16,7 @@ import nu.yona.app.api.model.AppActivity;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.Goals;
+import nu.yona.app.api.model.Message;
 import nu.yona.app.api.model.MessageBody;
 import nu.yona.app.api.model.NewDevice;
 import nu.yona.app.api.model.NewDeviceRequest;
@@ -28,6 +29,7 @@ import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
+import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.utils.ApiList;
 import retrofit2.Call;
@@ -392,4 +394,7 @@ public interface RestApi {
 
     @GET
     Call<EmbeddedYonaActivity> getComments(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Query("size") int size, @Query("page") int page);
+
+    @POST
+    Call<YonaMessage> addComment(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body Message message);
 }

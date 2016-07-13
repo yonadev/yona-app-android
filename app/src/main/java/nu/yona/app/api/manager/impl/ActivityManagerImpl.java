@@ -42,6 +42,7 @@ import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.Message;
 import nu.yona.app.api.model.TimeZoneSpread;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.WeekActivity;
@@ -50,6 +51,7 @@ import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaDayActivityOverview;
 import nu.yona.app.api.model.YonaGoal;
+import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaWeekActivityOverview;
 import nu.yona.app.customview.graph.GraphUtils;
 import nu.yona.app.enums.ChartTypeEnum;
@@ -335,6 +337,53 @@ public class ActivityManagerImpl implements ActivityManager {
                 getCommentsFromServerForWeek(weekActivityList, weekActivity, pageNo, listener);
             }
         }
+    }
+
+    @Override
+    public void addComment(DayActivity dayActivity, String comment, DataLoadListener listener) {
+        Message message = new Message();
+        message.setMessage(comment);
+        if (dayActivity != null && dayActivity.getLinks() != null) {
+            if (dayActivity.getLinks().getAddComment() != null) {
+                doAddComment(dayActivity.getLinks().getAddComment().getHref(), message, listener);
+            } else if (dayActivity.getLinks().getReplyComment() != null) {
+                //todo reply this message api
+            }
+        }
+    }
+
+    @Override
+    public void addComment(WeekActivity weekActivity, String comment, DataLoadListener listener) {
+        Message message = new Message();
+        message.setMessage(comment);
+        if (weekActivity != null && weekActivity.getLinks() != null) {
+            if (weekActivity.getLinks().getAddComment() != null) {
+                doAddComment(weekActivity.getLinks().getAddComment().getHref(), message, listener);
+            } else if (weekActivity.getLinks().getReplyComment() != null) {
+                //todo reply this message api
+            }
+        }
+    }
+
+    private void doAddComment(String url, Message message, final DataLoadListener listener) {
+        activityNetwork.addComment(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), message, new DataLoadListener() {
+
+            @Override
+            public void onDataLoad(Object result) {
+                if (result instanceof YonaMessage) {
+                    listener.onDataLoad(result);
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    listener.onError(errorMessage);
+                } else {
+                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                }
+            }
+        });
     }
 
     private void getCommentsFromServerForWeek(final List<WeekActivity> weekActivityList, final WeekActivity weekActivity, int pageNo, final DataLoadListener listener) {
@@ -1033,7 +1082,6 @@ public class ActivityManagerImpl implements ActivityManager {
                                         if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
                                             dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
                                             dayActivityList.set(i, updateLinks(dayActivityList.get(i), resultActivity));
-                                            Log.e("SEt ", "Set links");
                                             break;
                                         }
                                     } catch (Exception e) {
