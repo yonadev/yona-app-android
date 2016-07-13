@@ -10,11 +10,12 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/chart_item_spreading_height"
+    android:layout_height="wrap_content"
     android:background="@drawable/item_gradient"
     android:orientation="vertical"
     android:paddingLeft="@dimen/chart_item_left_margin"
-    android:paddingRight="@dimen/chart_item_right_margin">
+    android:paddingRight="@dimen/chart_item_right_margin"
+    android:paddingBottom="24dp">
 
     <include layout="@layout/graph_top_info_layout" />
 

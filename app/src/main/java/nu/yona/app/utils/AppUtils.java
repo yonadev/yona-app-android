@@ -227,18 +227,22 @@ public class AppUtils {
      * @param listener  DataLoadListener to update UI
      */
     public static void throwException(String className, Exception e, Thread t, DataLoadListener listener) {
-        if (YonaApplication.getAppContext().getResources().getBoolean(R.bool.enableHockyTracking)) {
-            ExceptionHandler.saveException(e, t, YonaApplication.getYonaCustomCrashManagerListener());
-        } else {
-            Log.e(className, e.getMessage());
-        }
-
-        if (listener != null) {
-            if (e != null && e.getMessage() != null) {
-                listener.onError(new ErrorMessage(e.getMessage()));
+        try {
+            if (YonaApplication.getAppContext().getResources().getBoolean(R.bool.enableHockyTracking)) {
+                ExceptionHandler.saveException(e, t, YonaApplication.getYonaCustomCrashManagerListener());
             } else {
-                listener.onError(YonaApplication.getAppContext().getString(R.string.error_message));
+                Log.e(className, e.getMessage());
             }
+
+            if (listener != null) {
+                if (e != null && e.getMessage() != null) {
+                    listener.onError(new ErrorMessage(e.getMessage()));
+                } else {
+                    listener.onError(YonaApplication.getAppContext().getString(R.string.error_message));
+                }
+            }
+        } catch (Exception x) {
+            Log.e(AppUtils.class.getSimpleName(), "Exception in throwExcption method");
         }
     }
 
