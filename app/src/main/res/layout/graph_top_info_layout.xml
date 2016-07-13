@@ -34,7 +34,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="right|center"
-        android:text="minuten of totalae" />
+        android:gravity="right|center" />
 
 </LinearLayout>
