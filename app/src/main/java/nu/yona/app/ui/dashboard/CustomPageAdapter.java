@@ -11,7 +11,6 @@
 package nu.yona.app.ui.dashboard;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
@@ -23,7 +22,6 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import nu.yona.app.R;
-import nu.yona.app.api.model.Day;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.WeekDayActivity;
@@ -32,11 +30,8 @@ import nu.yona.app.customview.graph.CircleGraphView;
 import nu.yona.app.customview.graph.SpreadGraph;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.enums.GoalsEnum;
-import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.enums.WeekDayEnum;
 import nu.yona.app.ui.ChartItemHolder;
-import nu.yona.app.ui.YonaActivity;
-import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by kinnarvasa on 13/06/16.
@@ -54,6 +49,7 @@ public class CustomPageAdapter extends PagerAdapter {
     private int WEEK_DAYS = 7;
     private FrameLayout graphView;
     private boolean isWeekControlVisible = true;
+    private View.OnClickListener weekItemClickListener;
 
     /**
      * Instantiates a new Custom page adapter.
@@ -62,6 +58,11 @@ public class CustomPageAdapter extends PagerAdapter {
      */
     public CustomPageAdapter(Context context) {
         mContext = context;
+    }
+
+    public CustomPageAdapter(Context context, View.OnClickListener listener) {
+        mContext = context;
+        weekItemClickListener = listener;
     }
 
     @Override
@@ -195,21 +196,7 @@ public class CustomPageAdapter extends PagerAdapter {
         mWeekCircle.setTag(R.integer.week_key, weekActivity);
         mWeekCircle.setFillColor(color);
         mWeekCircle.invalidate();
-        mWeekCircle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Day day = (Day) view.getTag(R.integer.day_key);
-                if (day != null) {
-                    openDetailPage(day, (WeekActivity) view.getTag(R.integer.week_key));
-                }
-            }
-        });
-    }
-
-    private void openDetailPage(Day activity, WeekActivity weekActivity) {
-        Intent weekDayIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
-        weekDayIntent.putExtra(AppConstant.DAY_OBJECT, activity);
-        YonaActivity.getActivity().replaceFragment(weekDayIntent);
+        mWeekCircle.setOnClickListener(weekItemClickListener);
     }
 
     private View inflateActivityView(LayoutInflater inflater, GoalsEnum chartTypeEnum, ViewGroup collection) {

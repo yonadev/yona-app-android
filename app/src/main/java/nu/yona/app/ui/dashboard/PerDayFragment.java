@@ -29,6 +29,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
@@ -49,6 +50,7 @@ public class PerDayFragment extends BaseFragment {
     //    private EmbeddedYonaActivity embeddedYonaActivity;
     private boolean mIsLoading = false;
     private YonaHeaderTheme mYonaHeaderTheme;
+    private YonaBuddy yonaBuddy;
     /**
      * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
      */
@@ -80,6 +82,19 @@ public class PerDayFragment extends BaseFragment {
         }
     };
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
+            if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy) {
+                yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+            }
+        }
+        if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null) {
+            mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,10 +102,6 @@ public class PerDayFragment extends BaseFragment {
 
         listView = (RecyclerView) view.findViewById(R.id.listView);
         mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
-
-        if (getArguments() != null) {
-            mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
-        }
 
         perDayStickyAdapter = new PerDayStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener() {
             @Override
@@ -112,7 +123,9 @@ public class PerDayFragment extends BaseFragment {
     private void openDetailPage(DayActivity activity) {
         Intent intent = new Intent(IntentEnum.ACTION_ACTIVITY_DETAIL_VIEW.getActionString());
         intent.putExtra(AppConstant.OBJECT, activity);
+        intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
         intent.putExtra(AppConstant.BOOLEAN, true);
+        mYonaHeaderTheme.setHeader_title(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
         intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
         YonaActivity.getActivity().replaceFragment(intent);
     }

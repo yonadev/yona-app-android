@@ -65,14 +65,13 @@ public class DashboardFragment extends BaseFragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
-
+        setTitleAndIcon();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        setTitleAndIcon();
     }
 
     private void resetData() {
@@ -163,12 +162,9 @@ public class DashboardFragment extends BaseFragment {
                 Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
                 intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
                 if (yonaBuddy != null) {
-                    intent.putExtra(AppConstant.COLOR_CODE, R.color.mid_blue_two);
-                    intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
                     intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
                 } else {
-                    intent.putExtra(AppConstant.COLOR_CODE, R.color.grape);
-                    intent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.mid_blue);
+                    intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
                     intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
                 }
                 YonaActivity.getActivity().replaceFragment(intent);

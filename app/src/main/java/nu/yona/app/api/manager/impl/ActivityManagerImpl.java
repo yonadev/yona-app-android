@@ -387,38 +387,40 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     private void getCommentsFromServerForWeek(final List<WeekActivity> weekActivityList, final WeekActivity weekActivity, int pageNo, final DataLoadListener listener) {
-        activityNetwork.getComments(weekActivity.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), pageNo, AppConstant.PAGE_SIZE, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                if (result instanceof EmbeddedYonaActivity) {
-                    EmbeddedYonaActivity embeddedYonaActivity = (EmbeddedYonaActivity) result;
-                    if (weekActivity.getComments() == null) {
-                        weekActivity.setComments(embeddedYonaActivity);
-                    } else {
-                        if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
-                            weekActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
-                            weekActivity.getComments().setPage(embeddedYonaActivity.getEmbedded().getPage());
+        if (weekActivity.getLinks() != null && weekActivity.getLinks().getYonaMessages() != null && !TextUtils.isEmpty(weekActivity.getLinks().getYonaMessages().getHref())) {
+            activityNetwork.getComments(weekActivity.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), pageNo, AppConstant.PAGE_SIZE, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    if (result instanceof EmbeddedYonaActivity) {
+                        EmbeddedYonaActivity embeddedYonaActivity = (EmbeddedYonaActivity) result;
+                        if (weekActivity.getComments() == null) {
+                            weekActivity.setComments(embeddedYonaActivity);
+                        } else {
+                            if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
+                                weekActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
+                                weekActivity.getComments().setPage(embeddedYonaActivity.getEmbedded().getPage());
+                            }
                         }
+                        updateWeekActivityList(weekActivityList, weekActivity, listener);
+                    } else {
+                        listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
                     }
-                    updateWeekActivityList(weekActivityList, weekActivity, listener);
-                } else {
-                    listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
                 }
-            }
 
-            @Override
-            public void onError(Object errorMessage) {
-                if (errorMessage instanceof ErrorMessage) {
-                    listener.onError(errorMessage);
-                } else {
-                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                @Override
+                public void onError(Object errorMessage) {
+                    if (errorMessage instanceof ErrorMessage) {
+                        listener.onError(errorMessage);
+                    } else {
+                        listener.onError(new ErrorMessage(errorMessage.toString()));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void getCommentsFromServer(final List<DayActivity> dayActivityList, final DayActivity dayActivity, int pageNo, final DataLoadListener listener) {
-        if (dayActivity.getLinks() != null && dayActivity.getLinks().getYonaDayDetails() != null && !TextUtils.isEmpty(dayActivity.getLinks().getYonaDayDetails().getHref())) {
+        if (dayActivity.getLinks() != null && dayActivity.getLinks().getYonaMessages() != null && !TextUtils.isEmpty(dayActivity.getLinks().getYonaMessages().getHref())) {
             activityNetwork.getComments(dayActivity.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), pageNo, AppConstant.PAGE_SIZE, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
