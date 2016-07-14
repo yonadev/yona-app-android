@@ -10,12 +10,14 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 
 /**
  * Created by kinnarvasa on 09/05/16.
  */
-public class Properties {
+public class Properties extends BaseEntity {
 
     @Expose
     private Message message;
@@ -25,6 +27,11 @@ public class Properties {
      */
     public Properties() {
 
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 
     public Message getMessage() {

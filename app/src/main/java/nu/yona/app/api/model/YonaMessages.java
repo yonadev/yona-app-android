@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kinnarvasa on 09/05/16.
  */
-public class YonaMessages {
+public class YonaMessages extends BaseEntity {
 
     @SerializedName("_embedded")
     @Expose
@@ -80,5 +82,10 @@ public class YonaMessages {
      */
     public void setPage(Page page) {
         this.page = page;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

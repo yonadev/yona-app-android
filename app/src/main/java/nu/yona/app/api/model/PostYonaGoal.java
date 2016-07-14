@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kinnarvasa on 21/04/16.
  */
-public class PostYonaGoal {
+public class PostYonaGoal extends BaseEntity {
     @SerializedName("@type")
     @Expose
     private String Type;
@@ -58,5 +60,10 @@ public class PostYonaGoal {
      */
     public void setLinks(Links Links) {
         this.Links = Links;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

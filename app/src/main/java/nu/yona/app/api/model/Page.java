@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kinnarvasa on 09/05/16.
  */
-public class Page {
+public class Page extends BaseEntity {
     @SerializedName("size")
     @Expose
     private Integer size;
@@ -100,5 +102,10 @@ public class Page {
      */
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

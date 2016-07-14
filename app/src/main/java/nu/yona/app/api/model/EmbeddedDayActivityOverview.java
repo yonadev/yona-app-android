@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,7 +21,7 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-public class EmbeddedDayActivityOverview {
+public class EmbeddedDayActivityOverview extends BaseEntity {
     @SerializedName("yona:dayActivityOverviews")
     @Expose
     private List<YonaDayActivityOverview> yonaDayActivityOverviews = new ArrayList<YonaDayActivityOverview>();
@@ -42,4 +44,8 @@ public class EmbeddedDayActivityOverview {
         this.yonaDayActivityOverviews = yonaDayActivityOverviews;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

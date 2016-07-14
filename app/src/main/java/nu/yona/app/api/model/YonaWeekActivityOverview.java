@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,7 +21,7 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-public class YonaWeekActivityOverview {
+public class YonaWeekActivityOverview extends BaseEntity {
     @SerializedName("date")
     @Expose
     private String date;
@@ -103,5 +105,10 @@ public class YonaWeekActivityOverview {
      */
     public void setLinks(Links links) {
         this.links = links;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }
