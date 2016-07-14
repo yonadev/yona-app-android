@@ -14,6 +14,7 @@ import nu.yona.app.api.model.AppActivity;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.Message;
+import nu.yona.app.api.model.Properties;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.listener.DataLoadListener;
@@ -135,6 +136,28 @@ public class ActivityNetworkImpl extends BaseImpl {
     public void addComment(String url, String yonaPassword, Message message, final DataLoadListener listener) {
         try {
             getRestApi().addComment(url, yonaPassword, message).enqueue(new Callback<YonaMessage>() {
+                @Override
+                public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response) {
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        onError(response, listener);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<YonaMessage> call, Throwable t) {
+                    onError(t, listener);
+                }
+            });
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    public void replyComment(String url, String yonaPasswrod, Properties properties, final DataLoadListener listener) {
+        try {
+            getRestApi().replyComment(url, yonaPasswrod, properties).enqueue(new Callback<YonaMessage>() {
                 @Override
                 public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {

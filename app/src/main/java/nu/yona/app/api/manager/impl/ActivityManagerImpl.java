@@ -43,6 +43,7 @@ import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.Message;
+import nu.yona.app.api.model.Properties;
 import nu.yona.app.api.model.TimeZoneSpread;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.WeekActivity;
@@ -347,7 +348,9 @@ public class ActivityManagerImpl implements ActivityManager {
             if (dayActivity.getLinks().getAddComment() != null) {
                 doAddComment(dayActivity.getLinks().getAddComment().getHref(), message, listener);
             } else if (dayActivity.getLinks().getReplyComment() != null) {
-                //todo reply this message api
+                Properties properties = new Properties();
+                properties.setMessage(message);
+                reply(dayActivity.getLinks().getReplyComment().getHref(), properties, listener);
             }
         }
     }
@@ -360,9 +363,32 @@ public class ActivityManagerImpl implements ActivityManager {
             if (weekActivity.getLinks().getAddComment() != null) {
                 doAddComment(weekActivity.getLinks().getAddComment().getHref(), message, listener);
             } else if (weekActivity.getLinks().getReplyComment() != null) {
-                //todo reply this message api
+                Properties properties = new Properties();
+                properties.setMessage(message);
+                reply(weekActivity.getLinks().getReplyComment().getHref(), properties, listener);
             }
         }
+    }
+
+    private void reply(String url, Properties properties, final DataLoadListener listener) {
+        activityNetwork.replyComment(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), properties, new DataLoadListener() {
+
+            @Override
+            public void onDataLoad(Object result) {
+                if (result instanceof YonaMessage) {
+                    listener.onDataLoad(result);
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    listener.onError(errorMessage);
+                } else {
+                    listener.onError(new ErrorMessage(errorMessage.toString()));
+                }
+            }
+        });
     }
 
     private void doAddComment(String url, Message message, final DataLoadListener listener) {

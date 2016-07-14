@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -37,6 +38,7 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
+import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
@@ -64,6 +66,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
     private LinearLayout commentBox;
+    private YonaFontEditTextView messageTxt;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,6 +98,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
         commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
+        messageTxt = (YonaFontEditTextView) view.findViewById(R.id.userMessage);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity());
         viewPager.setAdapter(customPageAdapter);
@@ -123,6 +127,15 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             public void onClick(View v) {
                 if (viewPager.getCurrentItem() != dayActivityList.size() - 1) {
                     viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                }
+            }
+        });
+
+        view.findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(messageTxt.getText())) {
+                    addComment(messageTxt.getText().toString());
                 }
             }
         });
@@ -273,16 +286,18 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 
     //TODO @Bhargav, when user click on send button from comment box, it will call this API.
     private void addComment(String message) {
-
+        YonaActivity.getActivity().showLoadingView(true, null);
         APIManager.getInstance().getActivityManager().addComment(activity, message, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
+                YonaActivity.getActivity().showLoadingView(false, null);
                 //TODO response will be object of YonaMessage -> add in list of comments array and notify UI to update item in list.
             }
 
             @Override
             public void onError(Object errorMessage) {
-
+                YonaActivity.getActivity().showLoadingView(false, null);
+                //TODO show proper message
             }
         });
     }
