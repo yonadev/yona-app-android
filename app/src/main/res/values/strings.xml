@@ -171,4 +171,5 @@
     <string name="comment">Message</string>
     <string name="useraccountdeleted">User Account Deleted</string>
     <string name="send">SEND</string>
+    <string name="reply">Reply</string>
 </resources>

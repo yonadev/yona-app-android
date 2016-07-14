@@ -64,6 +64,7 @@ public class WeekActivity extends BaseEntity {
     @SerializedName("@@comments")
     @Expose
     private EmbeddedYonaActivity comments;
+
     /**
      * Gets date.
      *

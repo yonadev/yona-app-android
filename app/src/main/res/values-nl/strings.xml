@@ -173,4 +173,5 @@
     <string name="comment">Bericht</string>
     <string name="useraccountdeleted">User Account Deleted</string>
     <string name="send">VERSTUREN</string>
+    <string name="reply">Reply</string>
 </resources>

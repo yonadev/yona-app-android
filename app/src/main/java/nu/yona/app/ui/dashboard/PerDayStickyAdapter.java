@@ -112,7 +112,13 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
         } else {
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));
         }
-        holder.getGoalScore().setText(dayActivity.getTotalActivityDurationMinutes() + "");
+        int goalMinutes;
+        if(dayActivity.getChartTypeEnum() == ChartTypeEnum.TIME_FRAME_CONTROL) {
+            goalMinutes = dayActivity.getTotalMinutesBeyondGoal();
+        } else {
+            goalMinutes = Math.abs(((int) dayActivity.getYonaGoal().getMaxDurationMinutes()) - dayActivity.getTotalActivityDurationMinutes());
+        }
+        holder.getGoalScore().setText(goalMinutes + "");
     }
 
     @Override

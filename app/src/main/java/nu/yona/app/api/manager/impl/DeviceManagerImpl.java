@@ -169,7 +169,7 @@ public class DeviceManagerImpl implements DeviceManager {
                         @Override
                         public void onDataLoad(Object result) {
                             NewDevice device = (NewDevice) result;
-                            YonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword(device.getYonaPassword(), true);
+                            YonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword(device.getYonaPassword());
                             getUser(device, listener);
                         }
 
