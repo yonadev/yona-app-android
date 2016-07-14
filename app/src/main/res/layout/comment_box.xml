@@ -16,7 +16,7 @@
     android:orientation="horizontal"
     android:visibility="gone">
 
-    <EditText
+    <nu.yona.app.customview.YonaFontEditTextView
         android:id="@+id/userMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:minHeight="@dimen/fifty"
         android:scrollbars="vertical" />
 
-    <Button
+    <nu.yona.app.customview.YonaFontButton
         android:id="@+id/btnSend"
         style="@style/BtnTxtSmall"
         android:layout_width="@dimen/eighty"

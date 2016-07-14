@@ -24,6 +24,7 @@ import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
+import nu.yona.app.api.model.Properties;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.WeekActivity;
@@ -397,4 +398,7 @@ public interface RestApi {
 
     @POST
     Call<YonaMessage> addComment(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body Message message);
+
+    @POST
+    Call<YonaMessage> replyComment(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Body Properties properties);
 }
