@@ -645,6 +645,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                             return;
                         }
                         mContent = new SingleWeekDayActivityDetailFragment();
+                        mContent.setArguments(intent.getExtras());
                         clearFragmentStack = false;
                         addToBackstack = true;
                         break;

@@ -1,5 +1,7 @@
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +11,7 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-public class EmbeddedYonaActivity {
+public class EmbeddedYonaActivity extends BaseEntity{
     @SerializedName("_embedded")
     @Expose
     private Embedded embedded;
@@ -116,4 +118,8 @@ public class EmbeddedYonaActivity {
         this.weekActivityList = weekActivityList;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

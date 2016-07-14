@@ -89,18 +89,20 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
-            if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy) {
-                yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
-            } else {
-                yonaBuddy = APIManager.getInstance().getActivityManager().findYonaBuddy((Href) getArguments().get(AppConstant.YONA_BUDDY_OBJ));
+        if (getArguments() != null) {
+            if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
+                if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy) {
+                    yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+                } else {
+                    yonaBuddy = APIManager.getInstance().getActivityManager().findYonaBuddy((Href) getArguments().get(AppConstant.YONA_BUDDY_OBJ));
+                }
             }
-        }
-        if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null) {
-            mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
-        }
-        if (getArguments().get(AppConstant.YONA_WEEK_DETAIL_URL) != null) {
-            yonaWeekDetailUrl = (String) getArguments().get(AppConstant.YONA_WEEK_DETAIL_URL);
+            if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null) {
+                mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+            }
+            if (getArguments().get(AppConstant.YONA_WEEK_DETAIL_URL) != null) {
+                yonaWeekDetailUrl = (String) getArguments().get(AppConstant.YONA_WEEK_DETAIL_URL);
+            }
         }
     }
 
@@ -188,7 +190,6 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 
     private void setDayActivityDetails() {
         loadWeekActivity(yonaWeekDetailUrl);
-        setWeekDetailTitleAndIcon();
     }
 
     private void loadWeekActivity(String url) {
@@ -202,7 +203,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
             updateDayActivityData(weekActivity);
             YonaActivity.getActivity().showLoadingView(false, null);
         } else {
-            APIManager.getInstance().getActivityManager().getDayDetailActivity(url, new DataLoadListener() {
+            APIManager.getInstance().getActivityManager().getWeeksDetailActivity(url, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     if (result instanceof WeekActivity) {
@@ -210,6 +211,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
                         weekActivity = (WeekActivity) result;
                         updateDayActivityData(weekActivity);
                     }
+                    YonaActivity.getActivity().showLoadingView(false, null);
                 }
 
                 @Override
@@ -247,6 +249,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
         viewPager.setCurrentItem(weekActivityList.indexOf(weekActivity));
         updateFlow(weekActivityList.indexOf(weekActivity));
         YonaActivity.getActivity().showLoadingView(false, null);
+        setWeekDetailTitleAndIcon();
     }
 
     private void setWeekDetailTitleAndIcon() {
@@ -274,7 +277,9 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
                 profileClickEvent(rightIconProfile);
             }
         }
-        toolbarTitle.setText(mYonaHeaderTheme.getHeader_title());
+        if (weekActivity != null && weekActivity.getYonaGoal() != null && !TextUtils.isEmpty(weekActivity.getYonaGoal().getActivityCategoryName())) {
+            toolbarTitle.setText(weekActivity.getYonaGoal().getActivityCategoryName().toUpperCase());
+        }
     }
 
     private void profileClickEvent(View profileView) {
