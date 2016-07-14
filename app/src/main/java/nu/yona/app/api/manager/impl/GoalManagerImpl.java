@@ -23,6 +23,7 @@ import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -55,6 +56,7 @@ public class GoalManagerImpl implements GoalManager {
     public void getUserGoal(final DataLoadListener listener) {
         try {
             if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
+                YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
                 goalNetwork.getUserGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {

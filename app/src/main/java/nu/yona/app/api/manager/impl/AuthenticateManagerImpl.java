@@ -538,6 +538,6 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         SharedPreferences.Editor yonaPref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
         yonaPref.putBoolean(PreferenceConstant.STEP_PASSCODE, true);
         yonaPref.commit();
-        YonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword(code, false);
+        YonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword(code);
     }
 }

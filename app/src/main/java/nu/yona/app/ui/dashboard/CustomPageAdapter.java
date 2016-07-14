@@ -131,6 +131,9 @@ public class CustomPageAdapter extends PagerAdapter {
             weekChart.setVisibility(View.VISIBLE); // week control
             showWeekChartData(weekChart, weekActivity);
         }
+        if (weekActivity != null && weekActivity.getLinks() != null && (weekActivity.getLinks().getReplyComment() != null || weekActivity.getLinks().getAddComment() != null)) {
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SHOW_CHAT_OPTION, null);
+        }
         graphView = ((FrameLayout) layout.findViewById(R.id.graphView));
         GoalsEnum goalsEnum;
         goalsEnum = GoalsEnum.fromName(weekActivity.getYonaGoal().getType());
@@ -260,7 +263,7 @@ public class CustomPageAdapter extends PagerAdapter {
     }
 
     private void loadTimeFrameControlForDay(DayActivity dayActivity, ChartItemHolder holder) {
-        int timeFrameGoalMinutes = (dayActivity.getYonaGoal().getSpreadCells().size() * 15) - dayActivity.getTotalActivityDurationMinutes();
+        int timeFrameGoalMinutes = dayActivity.getTotalMinutesBeyondGoal();
         if (dayActivity.getTimeZoneSpread() != null) {
             holder.getTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
         }

@@ -14,11 +14,18 @@
     android:layout_marginLeft="@dimen/sixteen"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/childMessage"
+        android:layout_width="@dimen/sixty_four"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="@dimen/fifty_four"
         android:layout_height="@dimen/fifty_four"
-        android:layout_marginRight="@dimen/sixteen"/>
+        android:layout_marginRight="@dimen/sixteen"
+        android:layout_toRightOf="@id/childMessage" />
 
     <TextView
         android:id="@+id/nickname"
@@ -27,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
         android:layout_marginTop="2dp"
-        android:layout_toRightOf="@id/profileImage"/>
+        android:layout_toRightOf="@id/profileImage" />
 
     <TextView
         android:id="@+id/message"
@@ -36,12 +43,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/nickname"
         android:layout_marginBottom="@dimen/twenty"
-        android:layout_toRightOf="@id/profileImage"/>
+        android:layout_toRightOf="@id/profileImage" />
+
+    <TextView
+        android:id="@+id/reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message"
+        android:layout_marginLeft="@dimen/sixty_four"
+        android:text="@string/reply"
+        android:textColor="@color/mid_blue" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/one"
-        android:layout_below="@id/message"
+        android:layout_below="@id/reply"
         android:layout_marginLeft="@dimen/sixty_four"
         android:background="@color/white_three" />
 </RelativeLayout>
