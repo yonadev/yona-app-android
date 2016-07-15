@@ -32,33 +32,39 @@ import nu.yona.app.utils.PreferenceConstant;
  * Created by kinnarvasa on 25/03/16.
  */
 public class LaunchActivity extends BaseActivity {
-
-
+    private Bundle bundle;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_layout);
 
+        if (getIntent() != null) {
+            if (getIntent().getDataString() != null) {
+                bundle = new Bundle();
+                bundle.putString(AppConstant.URL, getIntent().getDataString());
+            } else if (getIntent().getExtras() != null) {
+                bundle = getIntent().getExtras();
+            }
+        }
         if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false)) {
-            startNewActivity(YonaCarrouselActivity.class);
+            startNewActivity(bundle, YonaCarrouselActivity.class);
         } else if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
             // We will skip here to load same activity
         } else if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)
                 && !YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
-            startNewActivity(OTPActivity.class);
+            startNewActivity(bundle, OTPActivity.class);
         } else if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
-            Bundle bundle = new Bundle();
             bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_grape);
             bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(LaunchActivity.this, R.color.grape));
             startNewActivity(bundle, PasscodeActivity.class);
         } else if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
-            startNewActivity(YonaActivity.class);
+            startNewActivity(bundle, YonaActivity.class);
         }
 
         findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startNewActivity(SignupActivity.class);
+                startNewActivity(bundle, SignupActivity.class);
             }
         });
 
@@ -101,5 +107,4 @@ public class LaunchActivity extends BaseActivity {
             }
         }, selectedEnvironment);
     }
-
 }

@@ -184,7 +184,11 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
      */
     private void moveToLaunchActivity() {
         YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
-        startActivity(new Intent(this, LaunchActivity.class));
+        Intent intent = new Intent(this, LaunchActivity.class);
+        if(getIntent() != null && getIntent().getExtras() != null) {
+            intent.putExtras(getIntent().getExtras());
+        }
+        startActivity(intent);
         finish();
     }
 

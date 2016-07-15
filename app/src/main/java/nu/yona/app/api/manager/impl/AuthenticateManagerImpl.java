@@ -96,6 +96,26 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         }
     }
 
+    public void registerUser(String url, RegisterUser user, final DataLoadListener listener){
+        authNetwork.registerUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), user, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                if(result != null) {
+                    YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
+                    updateDataForRegisterUser(result, listener);
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if(errorMessage instanceof ErrorMessage) {
+                    listener.onError(errorMessage);
+                } else {
+                    listener.onError(new ErrorMessage(errorMessage.toString() != null ? errorMessage.toString() : ""));
+                }
+            }
+        });
+    }
     /**
      * This will get response of server in case of register successful and store it in database, update on UI after that via listener.
      *

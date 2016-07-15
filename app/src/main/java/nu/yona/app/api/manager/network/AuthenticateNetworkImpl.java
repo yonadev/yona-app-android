@@ -47,6 +47,14 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         }
     }
 
+    public void registerUser(String url, String password, RegisterUser object, DataLoadListener listener) {
+        try {
+            getRestApi().registerUser(url, password, object).enqueue(getUserCallBack(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
     /**
      * Register user override.
      *
