@@ -60,6 +60,9 @@ public interface RestApi {
     Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword,
                             @Body RegisterUser body);
 
+    @PUT
+    Call<User> registerUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Body RegisterUser body);
+
     /**
      * Update register user call.
      *

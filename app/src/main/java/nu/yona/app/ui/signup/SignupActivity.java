@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -120,18 +121,33 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     private void doRegister() {
         showLoadingView(true, null);
-        APIManager.getInstance().getAuthenticateManager().registerUser(getRegisterUser(), false, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                showLoadingView(false, null);
-                showMobileVerificationScreen(null);
-            }
+        if (getIntent() != null && getIntent().getExtras() != null && !TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.URL))) {
+            APIManager.getInstance().getAuthenticateManager().registerUser(getIntent().getExtras().getString(AppConstant.URL), getRegisterUser(), new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    showLoadingView(false, null);
+                    showMobileVerificationScreen(null);
+                }
 
-            @Override
-            public void onError(Object errorMessage) {
-                showError(errorMessage);
-            }
-        });
+                @Override
+                public void onError(Object errorMessage) {
+                    showError(errorMessage);
+                }
+            });
+        } else {
+            APIManager.getInstance().getAuthenticateManager().registerUser(getRegisterUser(), false, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    showLoadingView(false, null);
+                    showMobileVerificationScreen(null);
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    showError(errorMessage);
+                }
+            });
+        }
     }
 
     private void showAlertForReRegisteruser(String title) {

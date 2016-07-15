@@ -117,4 +117,6 @@ public interface AuthenticateManager {
      * Gets user from server.
      */
     void getUserFromServer();
+
+    void registerUser(String url, RegisterUser user, final DataLoadListener listener);
 }
