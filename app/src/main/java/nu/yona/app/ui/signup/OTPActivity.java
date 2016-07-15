@@ -83,6 +83,9 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
             case EventChangeManager.EVENT_OTP_RESEND:
                 resendOTP();
                 break;
+            case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
+                finish();
+                break;
             default:
                 break;
         }

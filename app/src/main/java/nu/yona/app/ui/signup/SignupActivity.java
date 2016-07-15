@@ -97,7 +97,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         if (SIGNUP_STEP == 1) {
             loadSteopOne();
         } else {
-            startActivity(new Intent(SignupActivity.this, LaunchActivity.class));
+            startActivity(new Intent(this, LaunchActivity.class));
             finish();
         }
     }
@@ -204,6 +204,9 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
                 break;
             case EventChangeManager.EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT:
                 doRegister();
+                break;
+            case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
+                finish();
                 break;
             default:
                 break;

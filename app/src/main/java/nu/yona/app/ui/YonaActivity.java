@@ -219,7 +219,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
         super.onResume();
         if (isToDisplayLogin) {
-            Intent intent = new Intent(YonaActivity.this, PinActivity.class);
+            Intent intent = new Intent(this, PinActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.LOGGED_IN);
             bundle.putString(AppConstant.SCREEN_TITLE, getString(R.string.login));
@@ -818,6 +818,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 break;
             case EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST:
                 YonaApplication.getEventChangeManager().getDataState().clearActivityList(mContent);
+                break;
+            case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
+                finish();
                 break;
             default:
                 break;
