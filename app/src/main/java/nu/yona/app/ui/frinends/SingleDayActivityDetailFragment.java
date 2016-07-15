@@ -33,6 +33,8 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
+import nu.yona.app.customview.YonaFontButton;
+import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
@@ -59,6 +61,8 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
     private String yonaDayDetailUrl;
     private YonaBuddy yonaBuddy;
     private LinearLayout commentBox;
+    private YonaFontEditTextView messageTxt;
+    private YonaFontButton sendButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +103,9 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity());
         viewPager.setAdapter(customPageAdapter);
+        messageTxt = (YonaFontEditTextView) view.findViewById(R.id.userMessage);
+        sendButton = (YonaFontButton) view.findViewById(R.id.btnSend);
+
         previousItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +119,15 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
             }
         });
 
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(messageTxt.getText())) {
+                    addComment(messageTxt.getText().toString());
+                }
+            }
+        });
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -120,7 +136,6 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 
             @Override
             public void onPageSelected(int position) {
-
                 updateFlow(position);
             }
 
@@ -286,6 +301,24 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
                 } else {
                     YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
                 }
+            }
+        });
+    }
+
+    //TODO @Bhargav, when user click on send button from comment box, it will call this API.
+    private void addComment(String message) {
+        YonaActivity.getActivity().showLoadingView(true, null);
+        APIManager.getInstance().getActivityManager().addComment(activity, message, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                //TODO response will be object of YonaMessage -> add in list of comments array and notify UI to update item in list.
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                //TODO show proper message
             }
         });
     }

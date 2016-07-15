@@ -30,13 +30,12 @@ import java.util.List;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.api.model.Day;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
+import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
@@ -56,8 +55,6 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
     private CustomPageAdapter customPageAdapter;
     private ViewPager viewPager;
     private DayActivity activity;
-    private Day day;
-    private WeekActivity weekActivity;
     private View view;
     private ImageView previousItem, nextItem;
     private YonaFontTextView dateTitle;
@@ -66,6 +63,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
     private YonaBuddy yonaBuddy;
     private LinearLayout commentBox;
     private YonaFontEditTextView messageTxt;
+    private YonaFontButton sendButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +96,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
         commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
         messageTxt = (YonaFontEditTextView) view.findViewById(R.id.userMessage);
+        sendButton = (YonaFontButton) view.findViewById(R.id.btnSend);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity());
         viewPager.setAdapter(customPageAdapter);
@@ -105,12 +104,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             if (getArguments().get(AppConstant.OBJECT) != null) {
                 if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity) {
                     activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
-                } else {
-                    day = (Day) getArguments().get(AppConstant.OBJECT);
                 }
-            }
-            if (getArguments().get(AppConstant.WEEK_OBJECT) != null) {
-                weekActivity = (WeekActivity) getArguments().get(AppConstant.WEEK_OBJECT);
             }
         }
         previousItem.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +124,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             }
         });
 
-        view.findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(messageTxt.getText())) {

@@ -34,6 +34,7 @@ import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
+import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
@@ -59,8 +60,8 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
     private LinearLayout commentBox;
-    private YonaFontEditTextView messageTxt;
     private String yonaWeekDetailUrl;
+    private YonaFontEditTextView messageTxt;
 
     private View.OnClickListener itemClickListener = new View.OnClickListener() {
         @Override
