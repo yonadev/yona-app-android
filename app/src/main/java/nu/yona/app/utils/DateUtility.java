@@ -82,9 +82,11 @@ public class DateUtility {
         String retriveWeek = "";
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
-        if (WEEK_FORMAT.format(new Date()).equals(week)) {
+        Calendar prevWeekCalendar = Calendar.getInstance();
+        prevWeekCalendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 2);
+        if (WEEK_FORMAT.format(calendar.getTime()).equals(week)) {
             retriveWeek = YonaApplication.getAppContext().getString(R.string.this_week);
-        } else if (WEEK_FORMAT.format(calendar.getTime()).equals(week)) {
+        } else if (WEEK_FORMAT.format(prevWeekCalendar.getTime()).equals(week)) {
             retriveWeek = YonaApplication.getAppContext().getString(R.string.last_week);
         } else {
             calendar = Calendar.getInstance();
@@ -136,7 +138,8 @@ public class DateUtility {
             Calendar calendar = Calendar.getInstance();
             calendar.clear();
             calendar.setTime(WEEK_FORMAT.parse(currentYearWeek));// all done
-            int delta = -calendar.get(GregorianCalendar.DAY_OF_WEEK) + 1;
+            int delta = calendar.get(GregorianCalendar.DAY_OF_WEEK) - 1;
+            calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) + 1);
             calendar.add(Calendar.DAY_OF_MONTH, delta);
             for (int i = 0; i < mNoOfDayPerWeek; i++) {
                 listOfdates.put(DAY_FORMAT.format(calendar.getTime()), DAY_NO_FORMAT.format(calendar.getTime()));
