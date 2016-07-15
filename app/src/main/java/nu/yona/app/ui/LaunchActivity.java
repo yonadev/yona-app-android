@@ -107,4 +107,10 @@ public class LaunchActivity extends BaseActivity {
             }
         }, selectedEnvironment);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

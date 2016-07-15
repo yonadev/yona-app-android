@@ -33,6 +33,8 @@ import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
@@ -43,7 +45,7 @@ import nu.yona.app.utils.PreferenceConstant;
  * Created by kinnarvasa on 13/04/16.
  * This Activity is used only when user is trying to add another device.
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements EventChangeListener {
 
     private final InputFilter filter = new InputFilter() {
         @Override
@@ -125,12 +127,13 @@ public class LoginActivity extends BaseActivity {
         mobileNumber.requestFocus();
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
         mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), this, mobileNumberLayout));
-
+        YonaApplication.getEventChangeManager().registerListener(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
     @Override
@@ -219,5 +222,16 @@ public class LoginActivity extends BaseActivity {
                 // We don't need to handle this.
             }
         });
+    }
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -107,6 +107,8 @@ public class EventChangeManager {
 
     public static final int EVENT_SHOW_CHAT_OPTION = 20;
 
+    public static final int EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH = 21;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;

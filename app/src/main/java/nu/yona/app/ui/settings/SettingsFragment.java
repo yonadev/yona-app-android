@@ -134,6 +134,8 @@ public class SettingsFragment extends BaseFragment {
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, null);
                 YonaActivity.getActivity().showLoadingView(false, null);
                 startActivity(new Intent(YonaActivity.getActivity(), LaunchActivity.class));
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
+
             }
 
             @Override

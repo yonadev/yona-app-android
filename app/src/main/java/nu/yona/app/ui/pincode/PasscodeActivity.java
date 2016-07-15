@@ -140,6 +140,9 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
             case EventChangeManager.EVENT_PASSCODE_ERROR:
                 passcode_error.setText((String) object);
                 break;
+            case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
+                finish();
+                break;
             default:
                 break;
         }

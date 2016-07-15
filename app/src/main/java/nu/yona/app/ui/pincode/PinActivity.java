@@ -102,6 +102,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
                 passcode_error.setText((String) object);
                 break;
             case EventChangeManager.EVENT_USER_NOT_EXIST:
+            case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
                 finish();
                 break;
             default:
@@ -149,7 +150,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
     }
 
     private void loadOTPScreen() {
-        startActivity(new Intent(PinActivity.this, OTPActivity.class));
+        startActivity(new Intent(this, OTPActivity.class));
         finish();
     }
 
