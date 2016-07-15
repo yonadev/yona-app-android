@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,7 +21,7 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 08/06/16.
  */
-public class AppActivity {
+public class AppActivity extends BaseEntity {
     @SerializedName("deviceDateTime")
     @Expose
     private String deviceDateTime;
@@ -61,5 +63,10 @@ public class AppActivity {
      */
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

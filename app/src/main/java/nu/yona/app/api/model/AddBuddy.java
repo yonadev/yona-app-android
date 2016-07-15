@@ -10,13 +10,15 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kinnarvasa on 28/04/16.
  */
-public class AddBuddy {
+public class AddBuddy extends BaseEntity {
     @SerializedName("sendingStatus")
     @Expose
     private String sendingStatus;
@@ -102,4 +104,8 @@ public class AddBuddy {
         this.Embedded = Embedded;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

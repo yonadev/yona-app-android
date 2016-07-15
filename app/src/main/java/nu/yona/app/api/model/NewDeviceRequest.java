@@ -10,10 +10,12 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 /**
  * Created by kinnarvasa on 13/04/16.
  */
-public class NewDeviceRequest {
+public class NewDeviceRequest extends BaseEntity {
 
     private String newDeviceRequestPassword;
 
@@ -44,4 +46,8 @@ public class NewDeviceRequest {
         this.newDeviceRequestPassword = newDeviceRequestPassword;
     }
 
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
+    }
 }

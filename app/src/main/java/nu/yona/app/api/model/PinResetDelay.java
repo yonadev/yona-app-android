@@ -10,10 +10,12 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 /**
  * Created by kinnarvasa on 25/04/16.
  */
-public class PinResetDelay {
+public class PinResetDelay extends BaseEntity {
 
     private String delay;
 
@@ -33,5 +35,10 @@ public class PinResetDelay {
      */
     public void setDelay(String delay) {
         this.delay = delay;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

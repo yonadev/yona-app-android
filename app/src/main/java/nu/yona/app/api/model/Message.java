@@ -10,11 +10,13 @@
 
 package nu.yona.app.api.model;
 
+import android.content.ContentValues;
+
 /**
  * Created by kinnarvasa on 13/07/16.
  */
 
-public class Message {
+public class Message extends BaseEntity {
     private String message;
 
     public String getMessage() {
@@ -23,5 +25,10 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public ContentValues getDbContentValues() {
+        return null;
     }
 }

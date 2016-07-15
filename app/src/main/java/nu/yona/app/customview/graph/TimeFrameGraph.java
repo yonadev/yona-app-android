@@ -143,18 +143,24 @@ public class TimeFrameGraph extends BaseView {
         mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5, bottom, null);
 
         if (mListZoneSpread != null && mListZoneSpread.size() > 0) {
-            float currentIndex = 0;
-            float currentStartPos;
+            float currentStartPos = 0;
             float currentEndPos;
-            for (TimeZoneSpread timeZoneSpread : mListZoneSpread) {
-                currentEndPos = 0;
+
+            for (int i = 0; i < (mListZoneSpread.size() - 1); i++) {
                 Paint mZonePaint = new Paint();
                 mZonePaint.setStrokeWidth(1);
-                currentStartPos = currentIndex * mPartSize;
-                currentEndPos = (minValue * timeZoneSpread.getUsedValue()) + currentStartPos;
-                mZonePaint.setColor(timeZoneSpread.getColor());
+                if (currentStartPos == 0) {
+                    currentStartPos = mListZoneSpread.get(i).getIndex() * mPartSize;
+                } else {
+                    if (mListZoneSpread.get(i).getIndex() == mListZoneSpread.get(i - 1).getIndex()) {
+                        currentStartPos = (minValue * mListZoneSpread.get(i - 1).getUsedValue()) - (mListZoneSpread.get(i).getIndex() * mPartSize);
+                    } else {
+                        currentStartPos = mListZoneSpread.get(i).getIndex() * mPartSize;
+                    }
+                }
+                currentEndPos = (minValue * mListZoneSpread.get(i).getUsedValue()) + currentStartPos;
+                mZonePaint.setColor(mListZoneSpread.get(i).getColor());
                 mCanvas.drawRect(currentStartPos, top, currentEndPos, bottom, mZonePaint);
-                currentIndex++;
             }
         }
 
