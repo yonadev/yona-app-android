@@ -13,8 +13,7 @@
     android:orientation="vertical"
     android:paddingBottom="@dimen/horizontal_line_paddinBottom"
     android:paddingLeft="@dimen/horizontal_line_padding_left"
-    android:paddingRight="@dimen/timeline_list_paddingRight"
-    android:paddingTop="@dimen/horizontal_line_paddinTop">
+    android:paddingRight="@dimen/timeline_list_paddingRight">
 
     <View
         android:layout_width="match_parent"
