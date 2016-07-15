@@ -76,9 +76,13 @@ public class NotificationFragment extends BaseFragment {
                 } else if (yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.ACTIVITYCOMMENTMESSAGE) {
                     if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getYonaDayDetails() != null) {
                         mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
-                        mMessageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(yonaMessage.getLinks().getYonaBuddy()));
                         mMessageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, yonaMessage.getLinks().getYonaDayDetails().getHref());
-                        mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
+                        if (yonaMessage.getLinks().getReplyComment() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getReplyComment().getHref())) {
+                            mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
+                        } else {
+                            mMessageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(yonaMessage.getLinks().getYonaBuddy()));
+                            mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
+                        }
                     } else if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getWeekDetails() != null) {
                         mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_WEEK_DETAIL_VIEW.getActionString());
                         mMessageIntent.putExtra(AppConstant.YONA_WEEK_DETAIL_URL, yonaMessage.getLinks().getWeekDetails().getHref());
