@@ -39,7 +39,7 @@
     <dimen name="seventy_three">73dp</dimen>
     <dimen name="eighty">80dp</dimen>
     <dimen name="tabIndicatorHeight">4dp</dimen>
-    <dimen name="profile_layout">235dp</dimen>
+    <dimen name="profile_layout">193dp</dimen>
     <dimen name="signup_profile_btn_height">60dp</dimen>
     <dimen name="signup_profile_left_right_padding">32dp</dimen>
     <dimen name="signup_add_avatar_height">170dp</dimen>
