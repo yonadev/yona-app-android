@@ -105,6 +105,8 @@ public interface AppConstant {
      * The constant READ_CONTACTS_PERMISSIONS_REQUEST.
      */
     int READ_CONTACTS_PERMISSIONS_REQUEST = 10001;
+
+    int WRITE_EXTERNAL_SYSTEM = 10002;
     /**
      * The constant PASSCODE.
      */
@@ -278,4 +280,8 @@ public interface AppConstant {
      * URL to find buddy,user
      */
     String URL = "url";
+
+    String PROFILE_UUID = "profileUUID";
+
+    String YONA_FOLDER = "yonaFolder";
 }
