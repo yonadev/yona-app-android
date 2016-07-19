@@ -53,7 +53,7 @@ end
 
 
 Then(/Trigger unsubscribe from device A API call$/) do
-  sleep 2
+  sleep 4
   on(AddDevice).unsubscribeCall
 
 end
