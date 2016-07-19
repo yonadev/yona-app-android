@@ -25,6 +25,7 @@ import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontNumberTextView;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -36,7 +37,8 @@ import nu.yona.app.utils.AppConstant;
  */
 public class DetailsProfileFragment extends BaseProfileFragment implements EventChangeListener {
 
-    private YonaFontEditTextView firstName, lastName, nickName, mobileNumber;
+    private YonaFontEditTextView firstName, lastName, nickName;
+    private YonaFontNumberTextView mobileNumber;
     private YonaFontButton removeFriendButton;
     private User user;
     private YonaBuddy buddyUser;
@@ -53,7 +55,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
-        mobileNumber = (YonaFontEditTextView) view.findViewById(R.id.mobile_number);
+        mobileNumber = (YonaFontNumberTextView) view.findViewById(R.id.mobile_number);
 
         removeFriendButton = (YonaFontButton) view.findViewById(R.id.removeFriendButton);
 

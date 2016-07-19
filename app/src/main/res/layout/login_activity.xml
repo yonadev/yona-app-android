@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/twenty">
 
-                    <nu.yona.app.customview.YonaFontEditTextView
+                    <nu.yona.app.customview.YonaFontNumberTextView
                         android:id="@+id/mobile_number"
                         style="@style/InputLabel"
                         android:layout_width="match_parent"
