@@ -95,6 +95,11 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             mToolBar.setBackgroundResource(yonaHeaderTheme.getToolbar());
         }
 
+        if (yonaBuddy != null) {
+            ((YonaActivity) getActivity()).updateTabIcon(true);
+        } else {
+            ((YonaActivity) getActivity()).updateTabIcon(false);
+        }
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
 

@@ -71,6 +71,13 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
                 mUrl = getArguments().getString(AppConstant.URL);
             }
         }
+
+
+        if(yonaMessage != null || buddyUser != null){
+            ((YonaActivity) getActivity()).updateTabIcon(true);
+        } else {
+            ((YonaActivity) getActivity()).updateTabIcon(false);
+        }
         return view;
     }
 
