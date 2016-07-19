@@ -107,7 +107,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private int CAMERA_REQUEST = 2;
     private Fragment oldFragment;
     private User user;
-
+    private boolean isUpdateIconOnly = false;
 
     /**
      * Gets activity.
@@ -150,7 +150,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                updateTab(tab);
+                if (!isUpdateIconOnly) {
+                    updateTab(tab);
+                }
             }
 
             @Override
@@ -160,7 +162,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                updateTab(tab);
+                if (!isUpdateIconOnly) {
+                    updateTab(tab);
+                }
             }
         });
 
@@ -182,6 +186,16 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             AppUtils.startService(this);
         }
         AppUtils.registerReceiver(YonaApplication.getAppContext());
+    }
+
+    public void updateTabIcon(boolean isbuddyTab) {
+        isUpdateIconOnly = true;
+        if (isbuddyTab) {
+            mTabLayout.getTabAt(1).select();
+        } else {
+            mTabLayout.getTabAt(0).select();
+        }
+        isUpdateIconOnly = false;
     }
 
     private void updateTab(TabLayout.Tab tab) {

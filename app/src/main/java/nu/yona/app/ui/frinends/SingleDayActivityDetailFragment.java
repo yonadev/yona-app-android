@@ -94,6 +94,11 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
         if (mYonaHeaderTheme != null) {
             mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
         }
+        if (yonaBuddy != null) {
+            ((YonaActivity) getActivity()).updateTabIcon(true);
+        } else {
+            ((YonaActivity) getActivity()).updateTabIcon(false);
+        }
 
         dayActivityList = new ArrayList<>();
         previousItem = (ImageView) view.findViewById(R.id.previous);

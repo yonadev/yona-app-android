@@ -186,6 +186,7 @@ public class NotificationFragment extends BaseFragment {
      * update toolbar's Item
      */
     private void setTitleAndIcon() {
+        ((YonaActivity) getActivity()).updateTabIcon(false);
         leftIcon.setVisibility(View.GONE);
         toolbarTitle.setText(getString(R.string.message));
         rightIcon.setVisibility(View.GONE);
