@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
@@ -111,19 +109,8 @@ public class TimeFrameGraph extends BaseView {
         Bitmap moonBitmap = drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon));
         float bitmapWidth = moonBitmap.getWidth() / 2;
         //draw graphics of sun and moon
-        mCanvas.drawBitmap(moonBitmap, mStartPoint, bottom, null);
+        mCanvas.drawBitmap(moonBitmap, mStartPoint - (5 * scaleFactor), bottom, null);
         mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint - bitmapWidth, bottom, null);
-
-
-        Typeface timeFrameTypeFace = Typeface.createFromAsset(mContext.getAssets(), "fonts/" + "roboto-regular.ttf");
-        Paint mTextPaint = new Paint();
-        mTextPaint.setColor(GraphUtils.COLOR_TEXT);
-        mTextPaint.setTextSize(scaleFactor * GraphUtils.TEXT_SIZE);
-        mTextPaint.setStrokeWidth(8);
-        mTextPaint.setTypeface(timeFrameTypeFace);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mTextPaint.setLetterSpacing(GraphUtils.LETTER_SPACING);
-        }
 
         float spreadtime = fullWidth;
 
@@ -132,15 +119,15 @@ public class TimeFrameGraph extends BaseView {
         float minValue = mPartSize / mMinPerParts;
 
         float textPoint = (mMiddlePoint / 2) / 2;
-        mCanvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw, mTextPaint);
+        mCanvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw, getFontStyle());
         float textPoint2 = textPoint * 2 + ((textPoint / 2));
-        mCanvas.drawText(mContext.getString(R.string.eight_hours), textPoint2, heightDraw, mTextPaint);
+        mCanvas.drawText(mContext.getString(R.string.eight_hours), textPoint2, heightDraw, getFontStyle());
         float textPoint3 = textPoint * 5;
-        mCanvas.drawText(mContext.getString(R.string.sixteen_hours), textPoint3 - bitmapWidth, heightDraw, mTextPaint);
+        mCanvas.drawText(mContext.getString(R.string.sixteen_hours), textPoint3 - bitmapWidth, heightDraw, getFontStyle());
         float textPoint4 = textPoint * 6 + ((textPoint / 2));
-        mCanvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4 - bitmapWidth, heightDraw, mTextPaint);
+        mCanvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4 - bitmapWidth, heightDraw, getFontStyle());
         float textPoint5 = textPoint * 7 + ((textPoint / 2));
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5, bottom, null);
+        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5 - (2 * scaleFactor), bottom, null);
 
         if (mListZoneSpread != null && mListZoneSpread.size() > 0) {
             float currentStartPos = 0;
