@@ -86,6 +86,7 @@ import nu.yona.app.ui.settings.PrivacyFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.DownloadFileFromURL;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -319,6 +320,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             case MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS:
                 if (AppUtils.hasPermission(this)) {
                     AppUtils.startService(this);
+                    checkVPN();
                 } else {
                     checkPermission();
                 }
@@ -340,9 +342,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 break;
             case IMPORT_PROFILE:
                 if (resultCode == RESULT_OK) {
-                    YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(AppConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
+                    if(!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID))) {
+                        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
+                        AppUtils.startVPN(this);
+                    } else {
+                        importVPNProfile();
+                    }
                 }
-                AppUtils.startVPN(this);
+
                 break;
             case AppConstant.WRITE_EXTERNAL_SYSTEM:
                 checkFileWritePermission();
@@ -801,23 +808,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         replaceFragmentWithAction(intent);
     }
 
-    /**
-     * Gets right icon.
-     *
-     * @return the right icon
-     */
-//    public ImageView getRightIcon() {
-//        return rightIcon;
-//    }
-
-    /**
-     * Gets left icon.
-     *
-     * @return the left icon
-     */
-//    public ImageView getLeftIcon() {
-//        return leftIcon;
-//    }
     @Override
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
@@ -1038,7 +1028,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             public void run() {
                 isToDisplayLogin = false;
                 skipVerification = true;
-                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(AppConstant.PROFILE_UUID, "").equals("")) {
+                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
                     checkFileWritePermission();
                 } else {
                     AppUtils.startVPN(YonaActivity.this);
@@ -1047,7 +1037,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }, AppConstant.ONE_SECOND);
     }
 
-    private void copyProfile() {
+   /* private void copyProfile() {
         AppUtils.writeToFile(this, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
@@ -1059,25 +1049,28 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 Log.e(YonaActivity.class.getSimpleName(), ((ErrorMessage) errorMessage).getMessage());
             }
         });
-    }
+    }*/
 
     @TargetApi(Build.VERSION_CODES.M)
     private void checkFileWritePermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.WRITE_EXTERNAL_SYSTEM);
         } else {
-            copyProfile();
+            importVPNProfile();
         }
     }
 
     private void importVPNProfile() {
-        isToDisplayLogin = false;
-        skipVerification = true;
-        Intent startImport = new Intent(this, ConfigConverter.class);
-        startImport.setAction(ConfigConverter.IMPORT_PROFILE);
-        Uri uri = Uri.parse(getCacheDir() + "/" + AppConstant.YONA_FOLDER + "/profile.ovpn");
-        startImport.setData(uri);
-        startActivityForResult(startImport, IMPORT_PROFILE);
-        AppUtils.startVPN(YonaActivity.this);
+        if (YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() != null) {
+            isToDisplayLogin = false;
+            skipVerification = true;
+            Intent startImport = new Intent(this, ConfigConverter.class);
+            startImport.setAction(ConfigConverter.IMPORT_PROFILE);
+            Uri uri = Uri.parse(YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath());
+            startImport.setData(uri);
+            startActivityForResult(startImport, IMPORT_PROFILE);
+        } else {
+            AppUtils.downloadCertificates();
+        }
     }
 }

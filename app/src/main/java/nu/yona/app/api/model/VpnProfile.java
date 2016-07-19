@@ -26,9 +26,9 @@ public class VpnProfile extends BaseEntity {
     @SerializedName("vpnPassword")
     @Expose
     private String vpnPassword;
-    @SerializedName("openVPNProfile")
+    @SerializedName("_links")
     @Expose
-    private String openVPNProfile;
+    private Links links;
 
     /**
      * Gets vpn login id.
@@ -67,21 +67,21 @@ public class VpnProfile extends BaseEntity {
     }
 
     /**
-     * Gets open vpn profile.
+     * Gets links.
      *
-     * @return The openVPNProfile
+     * @return the links
      */
-    public String getOpenVPNProfile() {
-        return openVPNProfile;
+    public Links getLinks() {
+        return this.links;
     }
 
     /**
-     * Sets open vpn profile.
+     * Sets links.
      *
-     * @param openVPNProfile The openVPNProfile
+     * @param links the links
      */
-    public void setOpenVPNProfile(String openVPNProfile) {
-        this.openVPNProfile = openVPNProfile;
+    public void setLinks(Links links) {
+        this.links = links;
     }
 
     @Override

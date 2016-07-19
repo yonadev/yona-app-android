@@ -275,7 +275,6 @@ public class LaunchVPN extends Activity {
 
         if (loadTunModule)
             execeuteSUcmd("insmod /system/lib/modules/tun.ko");
-
         if (usecm9fix && !mCmfixed) {
             execeuteSUcmd("chown system /dev/tun");
         }

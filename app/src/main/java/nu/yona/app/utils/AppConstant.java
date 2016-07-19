@@ -281,7 +281,5 @@ public interface AppConstant {
      */
     String URL = "url";
 
-    String PROFILE_UUID = "profileUUID";
-
     String YONA_FOLDER = "yonaFolder";
 }

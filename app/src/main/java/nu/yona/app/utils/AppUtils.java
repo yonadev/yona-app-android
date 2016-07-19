@@ -35,12 +35,9 @@ import net.hockeyapp.android.ExceptionHandler;
 import org.joda.time.Period;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -54,6 +51,7 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.listener.DataLoadListener;
@@ -394,7 +392,7 @@ public class AppUtils {
     }
 
     public static void stopVPN(Context context) {
-        String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(AppConstant.PROFILE_UUID, "");
+        String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
         VpnProfile profile = ProfileManager.get(context, profileUUID);
         if (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile) {
             Intent disconnectVPN = new Intent(context, DisconnectVPN.class);
@@ -404,20 +402,21 @@ public class AppUtils {
     }
 
     public static void startVPN(Context context) {
-        String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(AppConstant.PROFILE_UUID, "");
+        String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
+        Log.e("profile id: ", "Profile ID: "+ profileUUID);
         VpnProfile profile = ProfileManager.get(context, profileUUID);
-        if (!VpnStatus.isVPNActive()) {
+        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+        if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null) {
+            profile.mUsername = "bsmith";//!TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
+            profile.mPassword = "yonaios"; //!TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
             startVPN(profile, context);
         }
     }
 
     private static void startVPN(VpnProfile profile, Context context) {
         if (profile != null) {
-            Log.e(AppUtils.class.getSimpleName(), "Starting VPN with username and password");
             ProfileManager.getInstance(context).saveProfile(context, profile);
             Intent intent = new Intent(context, LaunchVPN.class);
-            profile.mUsername = "bsmith";
-            profile.mPassword = "yonaios";
             intent.putExtra(LaunchVPN.EXTRA_KEY, profile.getUUID().toString());
             intent.setAction(Intent.ACTION_MAIN);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -425,57 +424,44 @@ public class AppUtils {
         }
     }
 
-    public static void writeToFile(Context context, DataLoadListener listener) {
-        try {
-            String folderPath = context.getApplicationContext().getCacheDir() + "/" + AppConstant.YONA_FOLDER;
-            if (!new File(folderPath).exists()) {
-                new File(folderPath).mkdir();
+    public static void downloadCertificates() {
+        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+        if (user != null && user.getLinks() != null) {
+            if (user.getLinks().getSslRootCert() != null
+                    && YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() == null) {
+                new DownloadFileFromURL(user.getLinks().getSslRootCert().getHref(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        if (result != null && !TextUtils.isEmpty(result.toString())) {
+                            YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
+                        }
+                        Log.e("Download", "Download successful: " + result.toString());
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+                        Log.e("Download", "Download fail");
+                    }
+                });
             }
-            InputStream ims = context.getAssets().open("vpn_profile/profile.ovpn");
+            if (user.getVpnProfile() != null && user.getVpnProfile().getLinks() != null && user.getVpnProfile().getLinks().getOvpnProfile() != null
+                    && YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() == null) {
+                new DownloadFileFromURL(user.getVpnProfile().getLinks().getOvpnProfile().getHref(), new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        if (result != null && !TextUtils.isEmpty(result.toString())) {
+                            YonaApplication.getEventChangeManager().getSharedPreference().setVPNProfilePath(result.toString());
+                        }
 
-            byte[] buffer = new byte[1024];
-            StringBuffer fileContent = new StringBuffer("");
-            int n;
-            while ((n = ims.read(buffer)) != -1) {
-                fileContent.append(new String(buffer, 0, n));
-            }
-            FileOutputStream fileOutputStream = new FileOutputStream(new File(folderPath, "profile.ovpn"));
-            OutputStreamWriter osw = new OutputStreamWriter(fileOutputStream);
-            osw.write(fileContent.toString());
-            osw.flush();
-            osw.close();
-            listener.onDataLoad("");
-        } catch (Exception e) {
-            listener.onError(new ErrorMessage(e.getMessage()));
-        }
-    }
+                        Log.e("Download", "Download successful: " + result.toString());
+                    }
 
-    private static String getStringFromInputStream(InputStream is) {
-
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    public void onError(Object errorMessage) {
+                        Log.e("Download", "Download fail");
+                    }
+                });
             }
         }
-
-        return sb.toString();
-
     }
 }

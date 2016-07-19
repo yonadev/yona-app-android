@@ -57,4 +57,14 @@ public interface PreferenceConstant {
      * The constant USER_BLOCKED.
      */
     String USER_BLOCKED = "userBlocked";
+
+    String VPN_PROFILE_PATH = "vpnProfilePath";
+
+    String VPN_PROFILE_ACTIVE = "vpnProfileActive";
+
+    String ROOT_CERTIFICATE = "rootCertificate";
+
+    String ROOT_CERTIFICATE_ACTIVE = "rootCertificateActive";
+
+    String PROFILE_UUID = "profileUUID";
 }
