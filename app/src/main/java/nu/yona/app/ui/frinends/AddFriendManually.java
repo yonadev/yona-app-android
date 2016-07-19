@@ -33,6 +33,7 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontNumberTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
@@ -45,7 +46,8 @@ import nu.yona.app.utils.AppUtils;
  * Created by kinnarvasa on 27/04/16.
  */
 public class AddFriendManually extends BaseFragment implements EventChangeListener {
-    private YonaFontEditTextView firstName, lastName, email, mobileNumber;
+    private YonaFontEditTextView firstName, lastName, email;
+    private YonaFontNumberTextView mobileNumber;
     private TextInputLayout firstNameLayout, lastNameLayout, emailLayout, mobileNumberLayout;
     private final TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -91,7 +93,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         email = (YonaFontEditTextView) view.findViewById(R.id.email);
-        mobileNumber = (YonaFontEditTextView) view.findViewById(R.id.mobile_number);
+        mobileNumber = (YonaFontNumberTextView) view.findViewById(R.id.mobile_number);
 
         firstName.addTextChangedListener(textWatcher);
         lastName.addTextChangedListener(textWatcher);
@@ -193,6 +195,14 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
     }
 
     private void updateErrorView(final TextInputLayout mInputLayout, final String mErrorMsg, final YonaFontEditTextView mEditText) {
+        mInputLayout.setErrorEnabled(true);
+        mInputLayout.setError(mErrorMsg);
+        mInputLayout.setFocusable(true);
+        YonaActivity.getActivity().showKeyboard(mEditText);
+        mEditText.requestFocus();
+    }
+
+    private void updateErrorView(final TextInputLayout mInputLayout, final String mErrorMsg, final YonaFontNumberTextView mEditText) {
         mInputLayout.setErrorEnabled(true);
         mInputLayout.setError(mErrorMsg);
         mInputLayout.setFocusable(true);

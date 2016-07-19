@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/hintText">
 
-                    <nu.yona.app.customview.YonaFontEditTextView
+                    <nu.yona.app.customview.YonaFontNumberTextView
                         android:id="@+id/mobile_number"
                         style="@style/InputTxt"
                         android:layout_width="match_parent"

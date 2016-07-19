@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
-import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontNumberTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
@@ -32,7 +32,7 @@ import nu.yona.app.utils.AppConstant;
  */
 public class PasscodeFragment extends BaseFragment implements EventChangeListener {
 
-    private YonaFontEditTextView passcode1, passcode2, passcode3, passcode4;
+    private YonaFontNumberTextView passcode1, passcode2, passcode3, passcode4;
     private final View.OnKeyListener keyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -104,8 +104,8 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         ((BaseActivity) getActivity()).showKeyboard(passcode1);
     }
 
-    private YonaFontEditTextView getLayout(View view, int id) {
-        YonaFontEditTextView textView = (YonaFontEditTextView) view.findViewById(id);
+    private YonaFontNumberTextView getLayout(View view, int id) {
+        YonaFontNumberTextView textView = (YonaFontNumberTextView) view.findViewById(id);
         textView.setTransformationMethod(yonaPasswordTransformationManager);
         textView.setOnKeyListener(keyListener);
         textView.addTextChangedListener(watcher);
@@ -146,7 +146,7 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         }
     }
 
-    private void setFocus(YonaFontEditTextView passcode1, YonaFontEditTextView passcode2) {
+    private void setFocus(YonaFontNumberTextView passcode1, YonaFontNumberTextView passcode2) {
         passcode2.setFocusableInTouchMode(true);
         passcode2.requestFocus();
         passcode1.setFocusableInTouchMode(false);

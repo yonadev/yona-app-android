@@ -26,6 +26,7 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontNumberTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.state.EventChangeListener;
@@ -38,7 +39,8 @@ import nu.yona.app.utils.AppUtils;
  */
 public class StepTwo extends BaseFragment implements EventChangeListener {
 
-    private YonaFontEditTextView mobileNumber, nickName;
+    private YonaFontNumberTextView mobileNumber;
+    private YonaFontEditTextView nickName;
     private TextInputLayout mobileNumberLayout, nickNameLayout;
     private SignupActivity activity;
 
@@ -51,7 +53,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
 
         ((YonaFontTextView) view.findViewById(R.id.toolbar_title)).setText(R.string.join);
 
-        mobileNumber = (YonaFontEditTextView) view.findViewById(R.id.mobile_number);
+        mobileNumber = (YonaFontNumberTextView) view.findViewById(R.id.mobile_number);
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
         nickName.setFilters(new InputFilter[]{AppUtils.getFilter()});
 
