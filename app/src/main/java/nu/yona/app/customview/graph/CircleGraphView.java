@@ -20,11 +20,9 @@ import android.view.View;
 public class CircleGraphView
         extends View {
 
-    private int circleRadius = 35;
     private int strokeColor = GraphUtils.COLOR_WHITE_THREE;
     private int strokeWidth = 2;
     private int fillColor = GraphUtils.COLOR_WHITE_THREE;
-    private int circleGap = 5;
 
     /**
      * Instantiates a new Circle graph view.
