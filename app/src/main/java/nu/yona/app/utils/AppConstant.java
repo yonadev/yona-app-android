@@ -282,4 +282,6 @@ public interface AppConstant {
     String URL = "url";
 
     String YONA_FOLDER = "yonaFolder";
+
+    String CA_CERTIFICATE = "smoothwall003.yona";
 }

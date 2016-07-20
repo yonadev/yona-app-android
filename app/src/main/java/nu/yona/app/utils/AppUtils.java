@@ -34,10 +34,13 @@ import net.hockeyapp.android.ExceptionHandler;
 
 import org.joda.time.Period;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.security.KeyStore;
+import java.util.Enumeration;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -56,7 +59,6 @@ import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.timepicker.time.Timepoint;
-
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -403,7 +405,7 @@ public class AppUtils {
 
     public static void startVPN(Context context) {
         String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
-        Log.e("profile id: ", "Profile ID: "+ profileUUID);
+        Log.e("profile id: ", "Profile ID: " + profileUUID);
         VpnProfile profile = ProfileManager.get(context, profileUUID);
         User user = YonaApplication.getEventChangeManager().getDataState().getUser();
         if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null) {
@@ -463,5 +465,48 @@ public class AppUtils {
                 });
             }
         }
+    }
+
+    public static byte[] getCACertificate(String path) {
+
+        File file = new File(path);
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+            return bytes;
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean checkCACertificate() {
+        boolean isCertExist = false;
+        try {
+            KeyStore ks = KeyStore.getInstance("AndroidCAStore");
+            if (ks != null) {
+                ks.load(null, null);
+                Enumeration aliases = ks.aliases();
+                while (aliases.hasMoreElements()) {
+                    String alias = (String) aliases.nextElement();
+                    java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate) ks.getCertificate(alias);
+                    if (cert.getIssuerDN().getName().contains(AppConstant.CA_CERTIFICATE)) {
+                        isCertExist = true;
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
+        return isCertExist;
+
     }
 }

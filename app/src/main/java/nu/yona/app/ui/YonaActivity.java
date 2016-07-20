@@ -27,6 +27,7 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.security.KeyChain;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -65,7 +66,6 @@ import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.enums.IntentEnum;
-import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.challenges.ChallengesFragment;
@@ -86,7 +86,6 @@ import nu.yona.app.ui.settings.PrivacyFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
-import nu.yona.app.utils.DownloadFileFromURL;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -100,6 +99,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static final int PICK_IMAGE = 3;
     private static final int PICK_CAMERA = 4;
     private static final int IMPORT_PROFILE = 5;
+    private static final int INSTALL_CERTIFICATE = 6;
     private static YonaActivity activity;
     private BaseFragment mContent, homeFragment;
     private boolean isStateActive = false;
@@ -191,6 +191,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         } else {
             AppUtils.startService(this);
         }
+        installCertificate();
         AppUtils.registerReceiver(YonaApplication.getAppContext());
     }
 
@@ -356,14 +357,20 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 break;
             case IMPORT_PROFILE:
                 if (resultCode == RESULT_OK) {
-                    if(!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID))) {
+                    if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID))) {
                         YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
                         AppUtils.startVPN(this);
                     } else {
                         importVPNProfile();
                     }
                 }
-
+                break;
+            case INSTALL_CERTIFICATE:
+                if (resultCode == RESULT_OK) {
+                    Log.e("Install", "Certificate installed successfully");
+                } else {
+                    Log.e("Install", "Certificate installation Fail");
+                }
                 break;
             case AppConstant.WRITE_EXTERNAL_SYSTEM:
                 checkFileWritePermission();
@@ -1051,20 +1058,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }, AppConstant.ONE_SECOND);
     }
 
-   /* private void copyProfile() {
-        AppUtils.writeToFile(this, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                importVPNProfile();
-            }
-
-            @Override
-            public void onError(Object errorMessage) {
-                Log.e(YonaActivity.class.getSimpleName(), ((ErrorMessage) errorMessage).getMessage());
-            }
-        });
-    }*/
-
     @TargetApi(Build.VERSION_CODES.M)
     private void checkFileWritePermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -1085,6 +1078,17 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             startActivityForResult(startImport, IMPORT_PROFILE);
         } else {
             AppUtils.downloadCertificates();
+        }
+    }
+
+
+    public void installCertificate() {
+        if (!AppUtils.checkCACertificate()) {
+            byte[] keystore = AppUtils.getCACertificate(YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath());
+            Intent installIntent = KeyChain.createInstallIntent();
+            installIntent.putExtra(KeyChain.EXTRA_CERTIFICATE, keystore);
+            installIntent.putExtra(KeyChain.EXTRA_NAME, getString(R.string.appname));
+            startActivityForResult(installIntent, INSTALL_CERTIFICATE);
         }
     }
 }
