@@ -33,14 +33,14 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class LaunchActivity extends BaseActivity {
     private Bundle bundle;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launch_layout);
-
+        bundle = new Bundle();
         if (getIntent() != null) {
             if (getIntent().getDataString() != null) {
-                bundle = new Bundle();
                 bundle.putString(AppConstant.URL, getIntent().getDataString());
             } else if (getIntent().getExtras() != null) {
                 bundle = getIntent().getExtras();
