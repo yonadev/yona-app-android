@@ -40,6 +40,7 @@ import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -179,6 +180,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
+                AppUtils.downloadCertificates();
                 updateData();
                 showPasscodeScreen();
             }

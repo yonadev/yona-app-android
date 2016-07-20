@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2012-2016 Arne Schwabe
+  ~ Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="InconsistentLayout">
+
+    <ImageButton
+        android:id="@+id/fab_import"
+        android:layout_width="@dimen/round_button_diameter"
+        android:layout_height="@dimen/round_button_diameter"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/add_button_margin_topfab"
+        android:layout_marginEnd="@dimen/add_button_margin"
+        android:background="@drawable/oval_ripple"
+        android:contentDescription="@string/import_config"
+        android:elevation="@dimen/elevation_low"
+        android:src="@drawable/ic_archive_grey600_24dp"
+        android:tint="@android:color/white" />
+
+    <ImageButton
+        android:id="@+id/fab_add"
+        android:layout_width="@dimen/round_button_diameter"
+        android:layout_height="@dimen/round_button_diameter"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/add_button_margin"
+        android:layout_marginEnd="@dimen/add_button_margin"
+        android:background="@drawable/oval_ripple"
+        android:contentDescription="@string/add_profile"
+        android:elevation="@dimen/elevation_low"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white" />
+
+</merge>

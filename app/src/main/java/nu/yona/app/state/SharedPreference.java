@@ -85,6 +85,32 @@ public class SharedPreference {
         }
     }
 
+    public void setVPNProfilePath(String path) {
+        SharedPreferences.Editor editor = userPreferences.edit();
+        editor.putString(PreferenceConstant.VPN_PROFILE_PATH, path);
+        editor.putBoolean(PreferenceConstant.VPN_PROFILE_ACTIVE, false);
+        editor.commit();
+    }
+
+    public String getVPNProfilePath() {
+        return userPreferences.getString(PreferenceConstant.VPN_PROFILE_PATH, null);
+    }
+
+    public void setRootCertPath(String path) {
+        SharedPreferences.Editor editor = userPreferences.edit();
+        editor.putString(PreferenceConstant.ROOT_CERTIFICATE, path);
+        editor.putBoolean(PreferenceConstant.ROOT_CERTIFICATE_ACTIVE, false);
+        editor.commit();
+    }
+
+    public String getRootCertPath() {
+        return userPreferences.getString(PreferenceConstant.ROOT_CERTIFICATE, null);
+    }
+
+    public boolean isRootCertActive() {
+        return userPreferences.getBoolean(PreferenceConstant.ROOT_CERTIFICATE_ACTIVE, false);
+    }
+
     private MyCipherData generateKey(String key) {
         if (TextUtils.isEmpty(YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword())) {
             //According to http://android-developers.blogspot.com.es/2013/08/some-securerandom-thoughts.html

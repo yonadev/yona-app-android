@@ -39,6 +39,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.transition.ChangeBounds;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -51,6 +52,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import de.blinkt.openvpn.VpnProfile;
+import de.blinkt.openvpn.activities.ConfigConverter;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.db.DatabaseHelper;
@@ -62,6 +65,7 @@ import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.challenges.ChallengesFragment;
@@ -82,6 +86,7 @@ import nu.yona.app.ui.settings.PrivacyFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.DownloadFileFromURL;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -94,6 +99,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static final int PICK_CONTACT = 2;
     private static final int PICK_IMAGE = 3;
     private static final int PICK_CAMERA = 4;
+    private static final int IMPORT_PROFILE = 5;
     private static YonaActivity activity;
     private BaseFragment mContent, homeFragment;
     private boolean isStateActive = false;
@@ -318,6 +324,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             showPermissionAlert();
         } else {
             AppUtils.startService(this);
+            checkVPN();
         }
     }
 
@@ -327,6 +334,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             case MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS:
                 if (AppUtils.hasPermission(this)) {
                     AppUtils.startService(this);
+                    checkVPN();
                 } else {
                     checkPermission();
                 }
@@ -345,6 +353,20 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (resultCode == RESULT_OK) {
                     loadCaptureImage(data);
                 }
+                break;
+            case IMPORT_PROFILE:
+                if (resultCode == RESULT_OK) {
+                    if(!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID))) {
+                        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
+                        AppUtils.startVPN(this);
+                    } else {
+                        importVPNProfile();
+                    }
+                }
+
+                break;
+            case AppConstant.WRITE_EXTERNAL_SYSTEM:
+                checkFileWritePermission();
                 break;
             default:
                 break;
@@ -800,23 +822,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         replaceFragmentWithAction(intent);
     }
 
-    /**
-     * Gets right icon.
-     *
-     * @return the right icon
-     */
-//    public ImageView getRightIcon() {
-//        return rightIcon;
-//    }
-
-    /**
-     * Gets left icon.
-     *
-     * @return the left icon
-     */
-//    public ImageView getLeftIcon() {
-//        return leftIcon;
-//    }
     @Override
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
@@ -1028,7 +1033,58 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         } else if (requestCode == AppConstant.READ_CONTACTS_PERMISSIONS_REQUEST) {
             openContactBook();
         }
+    }
 
 
+    private void checkVPN() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isToDisplayLogin = false;
+                skipVerification = true;
+                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
+                    checkFileWritePermission();
+                } else {
+                    AppUtils.startVPN(YonaActivity.this);
+                }
+            }
+        }, AppConstant.ONE_SECOND);
+    }
+
+   /* private void copyProfile() {
+        AppUtils.writeToFile(this, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                importVPNProfile();
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                Log.e(YonaActivity.class.getSimpleName(), ((ErrorMessage) errorMessage).getMessage());
+            }
+        });
+    }*/
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void checkFileWritePermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.WRITE_EXTERNAL_SYSTEM);
+        } else {
+            importVPNProfile();
+        }
+    }
+
+    private void importVPNProfile() {
+        if (YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() != null) {
+            isToDisplayLogin = false;
+            skipVerification = true;
+            Intent startImport = new Intent(this, ConfigConverter.class);
+            startImport.setAction(ConfigConverter.IMPORT_PROFILE);
+            Uri uri = Uri.parse(YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath());
+            startImport.setData(uri);
+            startActivityForResult(startImport, IMPORT_PROFILE);
+        } else {
+            AppUtils.downloadCertificates();
+        }
     }
 }

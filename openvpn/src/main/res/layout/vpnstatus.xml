@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2012-2016 Arne Schwabe
+  ~ Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+
+    <TextView
+        style="@style/logWindowStatusTitle"
+        android:text="@string/uploaded_data" />
+
+    <TextView
+        android:id="@+id/speedUp"
+        style="@style/logWindowStatusText"
+        tools:text="4 Mbit/s 6.7 GB" />
+
+    <TextView
+        style="@style/logWindowStatusTitle"
+        android:text="@string/downloaded_data" />
+
+    <TextView
+        android:id="@+id/speedDown"
+        style="@style/logWindowStatusText"
+        tools:text="2 Mbit/s 4.7 GB" />
+
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+
+    <TextView
+        style="@style/logWindowStatusTitle"
+        android:text="@string/vpn_status" />
+
+    <TextView
+        android:id="@+id/speedStatus"
+        style="@style/logWindowStatusText"
+        tools:text="Connected" />
+
+
+</merge>

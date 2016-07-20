@@ -113,6 +113,12 @@ public class Links extends BaseEntity {
     @SerializedName("yona:reply")
     @Expose
     private Href replyComment;
+    @SerializedName("yona:ovpnProfile")
+    @Expose
+    private Href ovpnProfile;
+    @SerializedName("yona:sslRootCert")
+    @Expose
+    private Href sslRootCert;
 
     /**
      * Gets self.
@@ -659,5 +665,41 @@ public class Links extends BaseEntity {
      */
     public void setReplyComment(Href replyComment) {
         this.replyComment = replyComment;
+    }
+
+    /**
+     * Gets ovpn profile.
+     *
+     * @return the ovpn profile
+     */
+    public Href getOvpnProfile() {
+        return this.ovpnProfile;
+    }
+
+    /**
+     * Sets ovpn profile.
+     *
+     * @param ovpnProfile the ovpn profile
+     */
+    public void setOvpnProfile(Href ovpnProfile) {
+        this.ovpnProfile = ovpnProfile;
+    }
+
+    /**
+     * Gets ssl root cert.
+     *
+     * @return the ssl root cert
+     */
+    public Href getSslRootCert() {
+        return this.sslRootCert;
+    }
+
+    /**
+     * Sets ssl root cert.
+     *
+     * @param sslRootCert the ssl root cert
+     */
+    public void setSslRootCert(Href sslRootCert) {
+        this.sslRootCert = sslRootCert;
     }
 }
