@@ -14,7 +14,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
 
@@ -134,29 +133,18 @@ public class TimeBucketGraph extends BaseView {
 
         float txtHeight = yEndPoint + txtHeightMarginTop;
 
-
-        Typeface timeFrameTypeFace = Typeface.createFromAsset(mContext.getAssets(), "fonts/" + "roboto-regular.ttf");
-        Paint mTextPaint = new Paint();
-        mTextPaint.setColor(GraphUtils.COLOR_TEXT);
-        mTextPaint.setTextSize(scaleFactor * GraphUtils.TEXT_SIZE);
-        mTextPaint.setStrokeWidth(8);
-        mTextPaint.setTypeface(timeFrameTypeFace);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mTextPaint.setLetterSpacing(GraphUtils.LETTER_SPACING);
-        }
-
-        canvas.drawText(String.valueOf((int) txtStartValue), xStartPoint, txtHeight, mTextPaint);
+        canvas.drawText(String.valueOf((int) txtStartValue), xStartPoint, txtHeight, getFontStyle());
 
         String textlenth = String.valueOf(txtEndValue);
         int useItemCount = textlenth.length();
-        canvas.drawText(String.valueOf((int) txtEndValue), xEndPoint - ((getWidthOfText(String.valueOf(txtEndValue), mTextPaint)) - ((useItemCount + 2) * scaleFactor)), txtHeight, mTextPaint);
+        canvas.drawText(String.valueOf((int) txtEndValue), xEndPoint - ((getWidthOfText(String.valueOf(txtEndValue), getFontStyle())) - ((useItemCount + 2) * scaleFactor)), txtHeight, getFontStyle());
 
         //Filling usage of time
         Paint mDrawRange = new Paint();
         float fillStartPoint;
         if (mDifference < 0) {
             mDrawRange.setColor(GraphUtils.COLOR_PINK);
-            canvas.drawText(String.valueOf(0), mFillEndRange - getWidthOfText("0", mTextPaint), txtHeight, mTextPaint);
+            canvas.drawText(String.valueOf(0), mFillEndRange - getWidthOfText("0", getFontStyle()), txtHeight, getFontStyle());
         } else {
             mDrawRange.setColor(GraphUtils.COLOR_GREEN);
         }

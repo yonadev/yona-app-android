@@ -11,3 +11,6 @@
 # puts "Mobile Number=#{$strMobliNumb}, Yona Password=#{$yona_pwd} and NewDevicepassword=#{$newDevicePwd}"
 # # # #
 # # # #
+str='http://85.222.227.142/users/7a7b3fc2-fa58-4944-902e-08be25e38df4?includePrivateData=true'
+puts  /(?<=users\/)[^}]*(?=\?)/.match(str)
+

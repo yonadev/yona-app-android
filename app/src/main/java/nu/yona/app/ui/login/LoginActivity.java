@@ -30,6 +30,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontNumberTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.listener.DataLoadListener;
@@ -58,7 +59,8 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
             return null;
         }
     };
-    private YonaFontEditTextView mobileNumber, passcode;
+    private YonaFontNumberTextView mobileNumber;
+    private YonaFontEditTextView passcode;
     private TextInputLayout mobileNumberLayout, passcodeLayout;
     private final TextWatcher watcher = new TextWatcher() {
         @Override
@@ -88,7 +90,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
         mobileNumberLayout = (TextInputLayout) findViewById(R.id.mobile_number_layout);
         passcodeLayout = (TextInputLayout) findViewById(R.id.passcode_layout);
 
-        mobileNumber = (YonaFontEditTextView) findViewById(R.id.mobile_number);
+        mobileNumber = (YonaFontNumberTextView) findViewById(R.id.mobile_number);
         passcode = (YonaFontEditTextView) findViewById(R.id.passcode);
         passcode.setFilters(new InputFilter[]{new InputFilter.LengthFilter(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT), filter});
         passcode.addTextChangedListener(watcher);

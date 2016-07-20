@@ -70,11 +70,18 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                 holder.swipeLayout.setRightSwipeEnabled(false);
             }
             if (yonaObject.getEmbedded() != null) {
-                if (yonaObject.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getFirstName())) {
-                    String username = yonaObject.getEmbedded().getYonaUser().getFirstName();
-                    holder.txtFooterMsg.setText(username);
-                    if (username.length() > 0) {
-                        holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(username.substring(0, 1).toUpperCase(),
+                StringBuilder strBuilder = new StringBuilder();
+                if (yonaObject.getEmbedded().getYonaUser() != null) {
+                    if (!TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getFirstName())) {
+                        strBuilder.append(yonaObject.getEmbedded().getYonaUser().getFirstName());
+                    }
+                    if (!TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getLastName())) {
+                        strBuilder.append(" ");
+                        strBuilder.append(yonaObject.getEmbedded().getYonaUser().getLastName());
+                    }
+                    holder.txtFooterMsg.setText(strBuilder.toString());
+                    if (strBuilder.toString().length() > 0) {
+                        holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(strBuilder.toString().substring(0, 1).toUpperCase(),
                                 ContextCompat.getColor(activity, R.color.grape)));
                     }
                 }

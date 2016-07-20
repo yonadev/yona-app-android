@@ -9,8 +9,12 @@
 package nu.yona.app.customview;
 
 import android.content.Context;
+import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * Created by bhargavsuthar on 3/31/16.
@@ -26,7 +30,7 @@ public class YonaFontEditTextView extends EditText {
      */
     public YonaFontEditTextView(Context context) {
         super(context);
-
+        setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         YonaFontUtils.applyCustomFont(this, context, null);
     }
 
@@ -38,7 +42,7 @@ public class YonaFontEditTextView extends EditText {
      */
     public YonaFontEditTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         YonaFontUtils.applyCustomFont(this, context, attrs);
     }
 
@@ -51,7 +55,7 @@ public class YonaFontEditTextView extends EditText {
      */
     public YonaFontEditTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
+        setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         YonaFontUtils.applyCustomFont(this, context, attrs);
     }
 
@@ -76,4 +80,20 @@ public class YonaFontEditTextView extends EditText {
         this.lenghtBlock = etLength;
     }
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DEL) {
+            if (getText().toString().length() == 0) {
+                setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+            }
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+
+    @Override
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        Log.e("KEy", "Key :" + keyCode);
+        return super.onKeyPreIme(keyCode, event);
+    }
 }

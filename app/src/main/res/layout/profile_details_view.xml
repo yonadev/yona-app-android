@@ -46,6 +46,7 @@
                 android:maxLength="@integer/char_limit"
                 android:maxLines="1"
                 android:nextFocusForward="@id/last_name"
+                android:paddingTop="@dimen/profile_padding_top"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
@@ -74,6 +75,7 @@
                 android:maxLength="@integer/char_limit"
                 android:maxLines="1"
                 android:nextFocusForward="@+id/nick_name"
+                android:paddingTop="@dimen/profile_padding_top"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
@@ -102,6 +104,7 @@
                 android:maxLength="@integer/char_limit"
                 android:maxLines="1"
                 android:nextFocusForward="@id/mobile_number"
+                android:paddingTop="@dimen/profile_padding_top"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
@@ -116,7 +119,7 @@
             android:paddingTop="@dimen/twenty"
             app:hintTextAppearance="@style/hintText">
 
-            <nu.yona.app.customview.YonaFontEditTextView
+            <nu.yona.app.customview.YonaFontNumberTextView
                 android:id="@+id/mobile_number"
                 style="@style/InputTxt"
                 android:layout_width="match_parent"
@@ -130,6 +133,7 @@
                 android:inputType="phone"
                 android:maxLength="@integer/number_limit"
                 android:maxLines="1"
+                android:paddingTop="@dimen/profile_padding_top"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 

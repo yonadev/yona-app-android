@@ -39,6 +39,7 @@ import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontNumberTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
@@ -52,7 +53,8 @@ import nu.yona.app.utils.PreferenceConstant;
  * Created by kinnarvasa on 10/05/16.
  */
 public class EditDetailsProfileFragment extends BaseProfileFragment implements EventChangeListener {
-    private YonaFontEditTextView firstName, lastName, nickName, mobileNumber;
+    private YonaFontEditTextView firstName, lastName, nickName;
+    private YonaFontNumberTextView mobileNumber;
     private TextInputLayout firstnameLayout, lastNameLayout, nickNameLayout, mobileNumberLayout;
     private ImageView profileImage, updateProfileImage;
     private View.OnClickListener listener;
@@ -124,7 +126,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         nickName.addTextChangedListener(textWatcher);
         nickName.setOnFocusChangeListener(onFocusChangeListener);
 
-        mobileNumber = (YonaFontEditTextView) view.findViewById(R.id.mobile_number);
+        mobileNumber = (YonaFontNumberTextView) view.findViewById(R.id.mobile_number);
         mobileNumber.setText(R.string.country_code_with_zero);
         mobileNumber.requestFocus();
         YonaActivity.getActivity().showKeyboard(mobileNumber);

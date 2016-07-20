@@ -12,6 +12,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -44,6 +45,8 @@ public class BaseView extends View {
      * The M height.
      */
     protected float mHeight;
+
+    private Paint mFontStyle;
 
     /**
      * Instantiates a new Base view.
@@ -126,6 +129,27 @@ public class BaseView extends View {
         linePaint.setStrokeWidth(1);
         linePaint.setColor(GraphUtils.COLOR_WHITE_THREE);
 
+    }
+
+    /**
+     * Get Font Style of Graph
+     *
+     * @return
+     */
+    protected Paint getFontStyle() {
+        if (mFontStyle == null) {
+            Typeface timeFrameTypeFace = Typeface.createFromAsset(mContext.getAssets(), "fonts/" + "roboto-regular.ttf");
+            Paint mTextPaint = new Paint();
+            mTextPaint.setColor(GraphUtils.COLOR_TEXT);
+            mTextPaint.setTextSize(scaleFactor * GraphUtils.TEXT_SIZE);
+            mTextPaint.setStrokeWidth(8);
+            mTextPaint.setTypeface(timeFrameTypeFace);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mTextPaint.setLetterSpacing(GraphUtils.LETTER_SPACING);
+            }
+            mFontStyle = mTextPaint;
+        }
+        return mFontStyle;
     }
 
 }

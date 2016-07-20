@@ -154,6 +154,27 @@ class Signup < MobTest::Base
 
     end
 
+    def checkPermissionPopup
+      begin
+        sleep 2
+        webel=@driver.find_elements(:id,'android:id/button1')
+        puts "empty=#{webel.size}"
+        if(webel.size>0)
+          permOK_element.click
+          sleep 1
+          btnswitch_element.click
+          sleep 1
+          permOK_element.click
+          @driver.navigate.back
+          sleep 1
+          enterPin
+        end
+      rescue Excpetion => e
+        puts "Excepiton occurred"
+        puts e.message
+      end
+    end
+
 
   end
 
@@ -171,19 +192,7 @@ class Signup < MobTest::Base
   end
 
 
-  def checkPermissionPopup
-    if(COMMON_UI.eledisplayed?(permOK_element))
-      permOK_element.click
-      sleep 1
-      btnswitch_element.click
-      sleep 1
-      permOK_element.click
-      @driver.navigate.back
-      sleep 1
-      enterPin
-    end
 
-  end
 
 
 

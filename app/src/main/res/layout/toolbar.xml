@@ -12,6 +12,7 @@
     android:layout_height="@dimen/sixty_four"
     android:background="@drawable/triangle_shadow_grape"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+    app:elevation="0dp"
     app:layout_scrollFlags="scroll|enterAlways"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 

@@ -142,8 +142,8 @@
     </style>
 
     <style name="parentFooterTxt">
-        <item name="android:textSize">14sp</item>
-        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">2sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
     </style>
 

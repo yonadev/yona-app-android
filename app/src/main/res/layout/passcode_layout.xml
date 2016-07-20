@@ -17,28 +17,28 @@
     android:orientation="horizontal"
     android:weightSum="4">
 
-    <nu.yona.app.customview.YonaFontEditTextView
+    <nu.yona.app.customview.YonaFontNumberTextView
         android:id="@+id/passcode1"
         style="@style/passcode_editText"
         android:imeOptions="actionNext">
 
         <requestFocus />
-    </nu.yona.app.customview.YonaFontEditTextView>
+    </nu.yona.app.customview.YonaFontNumberTextView>
 
 
-    <nu.yona.app.customview.YonaFontEditTextView
+    <nu.yona.app.customview.YonaFontNumberTextView
         android:id="@+id/passcode2"
         style="@style/passcode_editText"
         android:layout_marginLeft="@dimen/passcode_margin_left"
         android:imeOptions="actionNext" />
 
-    <nu.yona.app.customview.YonaFontEditTextView
+    <nu.yona.app.customview.YonaFontNumberTextView
         android:id="@+id/passcode3"
         style="@style/passcode_editText"
         android:layout_marginLeft="@dimen/passcode_margin_left"
         android:imeOptions="actionNext" />
 
-    <nu.yona.app.customview.YonaFontEditTextView
+    <nu.yona.app.customview.YonaFontNumberTextView
         android:id="@+id/passcode4"
         style="@style/passcode_editText"
         android:layout_marginLeft="@dimen/passcode_margin_left"
