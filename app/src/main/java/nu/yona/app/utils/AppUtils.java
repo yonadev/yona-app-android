@@ -58,6 +58,7 @@ import nu.yona.app.api.model.User;
 import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.EventChangeManager;
 import nu.yona.timepicker.time.Timepoint;
 
 /**
@@ -69,6 +70,7 @@ public class AppUtils {
     private static Intent activityMonitorIntent;
     private static ScheduledExecutorService scheduler;
     private static YonaReceiver receiver;
+    private static int trialCertificateCount = 0, trialVPNCount = 0;
 
     /**
      * Gets circle bitmap.
@@ -183,6 +185,7 @@ public class AppUtils {
      * @param context the context
      */
     public static void registerReceiver(Context context) {
+        Log.e("REgister", "Register REceiver from apputil 187");
         receiver = new YonaReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_ON);
@@ -405,12 +408,11 @@ public class AppUtils {
 
     public static void startVPN(Context context) {
         String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
-        Log.e("profile id: ", "Profile ID: " + profileUUID);
         VpnProfile profile = ProfileManager.get(context, profileUUID);
         User user = YonaApplication.getEventChangeManager().getDataState().getUser();
         if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null) {
-            profile.mUsername = "bsmith";//!TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
-            profile.mPassword = "yonaios"; //!TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
+            profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
+            profile.mPassword = !TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
             startVPN(profile, context);
         }
     }
@@ -436,6 +438,7 @@ public class AppUtils {
                     public void onDataLoad(Object result) {
                         if (result != null && !TextUtils.isEmpty(result.toString())) {
                             YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
+                            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
                         }
                         Log.e("Download", "Download successful: " + result.toString());
                     }
@@ -443,46 +446,60 @@ public class AppUtils {
                     @Override
                     public void onError(Object errorMessage) {
                         Log.e("Download", "Download fail");
-                    }
-                });
-            }
-            if (user.getVpnProfile() != null && user.getVpnProfile().getLinks() != null && user.getVpnProfile().getLinks().getOvpnProfile() != null
-                    && YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() == null) {
-                new DownloadFileFromURL(user.getVpnProfile().getLinks().getOvpnProfile().getHref(), new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        if (result != null && !TextUtils.isEmpty(result.toString())) {
-                            YonaApplication.getEventChangeManager().getSharedPreference().setVPNProfilePath(result.toString());
+                        trialCertificateCount++;
+                        if (trialCertificateCount < 3) {
+                            downloadCertificates();
                         }
-
-                        Log.e("Download", "Download successful: " + result.toString());
-                    }
-
-                    @Override
-                    public void onError(Object errorMessage) {
-                        Log.e("Download", "Download fail");
                     }
                 });
             }
         }
     }
 
-    public static byte[] getCACertificate(String path) {
+    public static void downloadVPNProfile() {
+        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+        if (user.getVpnProfile() != null && user.getVpnProfile().getLinks() != null && user.getVpnProfile().getLinks().getOvpnProfile() != null
+                && YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() == null) {
+            new DownloadFileFromURL(user.getVpnProfile().getLinks().getOvpnProfile().getHref(), new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    if (result != null && !TextUtils.isEmpty(result.toString())) {
+                        YonaApplication.getEventChangeManager().getSharedPreference().setVPNProfilePath(result.toString());
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_VPN_CERTIFICATE_DOWNLOADED, null);
+                    }
 
-        File file = new File(path);
-        int size = (int) file.length();
-        byte[] bytes = new byte[size];
-        try {
-            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-            buf.read(bytes, 0, bytes.length);
-            buf.close();
-            return bytes;
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+                    Log.e("Download", "Download successful: " + result.toString());
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    Log.e("Download", "Download fail");
+                    trialVPNCount++;
+                    if (trialVPNCount < 3) {
+                        downloadVPNProfile();
+                    }
+                }
+            });
+        }
+    }
+
+    public static byte[] getCACertificate(String path) {
+        if (path != null && !TextUtils.isEmpty(path)) {
+            File file = new File(path);
+            int size = (int) file.length();
+            byte[] bytes = new byte[size];
+            try {
+                BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+                buf.read(bytes, 0, bytes.length);
+                buf.close();
+                return bytes;
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         return null;
     }

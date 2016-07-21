@@ -99,7 +99,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static final int PICK_IMAGE = 3;
     private static final int PICK_CAMERA = 4;
     private static final int IMPORT_PROFILE = 5;
-    private static final int INSTALL_CERTIFICATE = 6;
+    private static final int REQUEST_PERMISSION_SETTING = 6;
+    private static final int INSTALL_CERTIFICATE = 7;
     private static YonaActivity activity;
     private BaseFragment mContent, homeFragment;
     private boolean isStateActive = false;
@@ -113,7 +114,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private int CAMERA_REQUEST = 2;
     private Fragment oldFragment;
     private User user;
-    private boolean isUpdateIconOnly = false;
+    private boolean isUpdateIconOnly;
+    private boolean isUserFromOnCreate;
 
     /**
      * Gets activity.
@@ -193,19 +195,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 mTabLayout.getTabAt(0).select();
             }
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    checkPermission();
-                }
-            }, AppConstant.ONE_SECOND);
-        } else {
-            AppUtils.startService(this);
-        }
-        installCertificate();
         AppUtils.registerReceiver(YonaApplication.getAppContext());
+        isUserFromOnCreate = true;
     }
 
     public void updateTabIcon(boolean isbuddyTab) {
@@ -247,6 +238,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     @Override
     protected void onResume() {
+        Log.e(YonaActivity.class.getSimpleName(), "onResume");
         mStateSaved = false;
         if (isStateActive) {
             isStateActive = false;
@@ -269,6 +261,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 onBackPressed();
             }
             hideSoftInput();
+            if (isUserFromOnCreate) {
+                isUserFromOnCreate = false;
+                isToDisplayLogin = true;
+                getFileWritePermission();
+            }
         }
     }
 
@@ -338,21 +335,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             showPermissionAlert();
         } else {
             AppUtils.startService(this);
-            checkVPN();
+            installCertificate();
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS:
-                if (AppUtils.hasPermission(this)) {
-                    AppUtils.startService(this);
-                    checkVPN();
-                } else {
-                    checkPermission();
-                }
-                break;
             case PICK_CONTACT:
                 if (resultCode == RESULT_OK) {
                     showContactDetails(data);
@@ -369,6 +358,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 }
                 break;
             case IMPORT_PROFILE:
+                isToDisplayLogin = false;
                 if (resultCode == RESULT_OK) {
                     if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID))) {
                         YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
@@ -378,19 +368,41 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     }
                 }
                 break;
-            case INSTALL_CERTIFICATE:
-                if (resultCode == RESULT_OK) {
-                    Log.e("Install", "Certificate installed successfully");
-                } else {
-                    Log.e("Install", "Certificate installation Fail");
-                }
+            case REQUEST_PERMISSION_SETTING:
+                isToDisplayLogin = false;
+                getFileWritePermission();
                 break;
-            case AppConstant.WRITE_EXTERNAL_SYSTEM:
-                checkFileWritePermission();
+            case MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS:
+                isToDisplayLogin = false;
+                isUserFromOnCreate = true;
+                break;
+            case INSTALL_CERTIFICATE:
+                isToDisplayLogin = false;
+                isUserFromOnCreate = true;
                 break;
             default:
                 break;
         }
+    }
+
+    private void showInstallAlert(final byte[] keystore) {
+        //TODO show alert to ask user to install certificate.
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Certificate installation");
+        builder.setMessage("Installation of certificate require for security reason. Please click ok");
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                isToDisplayLogin = false;
+                Intent installIntent = KeyChain.createInstallIntent();
+                installIntent.putExtra(KeyChain.EXTRA_CERTIFICATE, keystore);
+                installIntent.putExtra(KeyChain.EXTRA_NAME, getString(R.string.appname));
+                startActivityForResult(installIntent, INSTALL_CERTIFICATE);
+            }
+        });
+        builder.setCancelable(false);
+        builder.create().show();
+
     }
 
     private void loadCaptureImage(final Intent data) {
@@ -474,13 +486,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                isToDisplayLogin = false;
                 startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
             }
         });
         builder.setCancelable(false);
@@ -861,6 +868,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
                 finish();
                 break;
+            case EventChangeManager.EVENT_VPN_CERTIFICATE_DOWNLOADED:
+                checkVPN();
+                break;
+            case EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED:
+                installCertificate();
+                break;
             default:
                 break;
         }
@@ -1031,10 +1044,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         return this.isToDisplayLogin;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
+        Log.e(YonaActivity.class.getSimpleName(), "onRequestPermissionsResult");
+        isToDisplayLogin = false;
         // Make sure it's our original READ_CONTACTS request
         if (requestCode == READ_EXTERNAL_STORAGE_REQUEST) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -1052,9 +1068,43 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
         } else if (requestCode == AppConstant.READ_CONTACTS_PERMISSIONS_REQUEST) {
             openContactBook();
+        } else if (requestCode == AppConstant.FILE_WRITE_PERMISSION) {
+            for (int i = 0, len = permissions.length; i < len; i++) {
+                String permission = permissions[i];
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    boolean showRationale = shouldShowRequestPermissionRationale(permission);
+                    if (!showRationale) {
+                        allowPermission();
+                        break;
+                    } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
+                        checkFlow();
+                        break;
+                    }
+                } else if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    isUserFromOnCreate = true;
+                }
+            }
         }
     }
 
+    private void allowPermission() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Allow File Write Permission");
+        builder.setMessage("Yona wants to write some files on file system, you will redirect on setting screen, please click on \"Permission\" and \"ON\" Storage permission.");
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+            }
+        });
+        builder.setCancelable(false);
+        builder.create().show();
+
+
+    }
 
     private void checkVPN() {
         new Handler().postDelayed(new Runnable() {
@@ -1069,6 +1119,32 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 }
             }
         }, AppConstant.ONE_SECOND);
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void getFileWritePermissionAlert() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Allow File Write");
+        builder.setMessage("Yona wants to write some files on file system, click Allow on next alert.");
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                isToDisplayLogin = false;
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstant.FILE_WRITE_PERMISSION);
+            }
+        });
+        builder.setCancelable(false);
+        builder.create().show();
+    }
+
+
+    private void getFileWritePermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            isUserFromOnCreate = false;
+            getFileWritePermissionAlert();
+        } else {
+            checkFlow();
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -1096,12 +1172,32 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 
     public void installCertificate() {
-        if (!AppUtils.checkCACertificate()) {
-            byte[] keystore = AppUtils.getCACertificate(YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath());
-            Intent installIntent = KeyChain.createInstallIntent();
-            installIntent.putExtra(KeyChain.EXTRA_CERTIFICATE, keystore);
-            installIntent.putExtra(KeyChain.EXTRA_NAME, getString(R.string.appname));
-            startActivityForResult(installIntent, INSTALL_CERTIFICATE);
+        new AsyncTask<Void, Void, byte[]>() {
+            @Override
+            protected byte[] doInBackground(Void... params) {
+                if (!AppUtils.checkCACertificate()) {
+                    return AppUtils.getCACertificate(YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath());
+                }
+                return null;
+            }
+
+            protected void onPostExecute(byte[] keystore) {
+                if (keystore != null) {
+                    showInstallAlert(keystore);
+                } else {
+                    checkVPN();
+                }
+            }
+        }.execute();
+
+    }
+
+    private void checkFlow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            checkPermission();
+        } else {
+            AppUtils.startService(this);
+            installCertificate();
         }
     }
 }

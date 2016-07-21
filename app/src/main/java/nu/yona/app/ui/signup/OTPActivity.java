@@ -106,6 +106,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
             @Override
             public void onDataLoad(Object result) {
                 AppUtils.downloadCertificates();
+                AppUtils.downloadVPNProfile();
                 getActivityCategories();
                 showLoadingView(false, null);
                 if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {

@@ -106,7 +106,9 @@ public interface AppConstant {
      */
     int READ_CONTACTS_PERMISSIONS_REQUEST = 10001;
 
-    int WRITE_EXTERNAL_SYSTEM = 10002;
+    int FILE_WRITE_PERMISSION = 10002;
+
+    int WRITE_EXTERNAL_SYSTEM = 10003;
     /**
      * The constant PASSCODE.
      */
