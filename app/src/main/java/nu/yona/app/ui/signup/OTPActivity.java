@@ -13,6 +13,8 @@ package nu.yona.app.ui.signup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -22,14 +24,17 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.pincode.BasePasscodeActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.ui.pincode.PasscodeFragment;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by kinnarvasa on 04/04/16.
@@ -103,7 +108,12 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
                 AppUtils.downloadCertificates();
                 getActivityCategories();
                 showLoadingView(false, null);
-                showPasscodeScreen();
+                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {
+                    YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, true).apply();
+                    showProfileScreen();
+                } else {
+                    showPasscodeScreen();
+                }
             }
 
             @Override
@@ -154,6 +164,14 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 
     private void showPasscodeScreen() {
         startActivity(new Intent(OTPActivity.this, PasscodeActivity.class));
+        finish();
+    }
+
+    private void showProfileScreen() {
+        Intent intent = new Intent(OTPActivity.this, YonaActivity.class);
+        intent.setAction(IntentEnum.ACTION_PROFILE.getActionString());
+        intent.putExtra(AppConstant.FROM_LOGIN, true);
+        ActivityCompat.startActivity(this, intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
         finish();
     }
 

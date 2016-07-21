@@ -67,4 +67,6 @@ public interface PreferenceConstant {
     String ROOT_CERTIFICATE_ACTIVE = "rootCertificateActive";
 
     String PROFILE_UUID = "profileUUID";
+
+    String PROFILE_OTP_STEP = "profileOtpStep";
 }

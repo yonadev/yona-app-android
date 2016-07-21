@@ -327,44 +327,15 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         ErrorMessage message = (ErrorMessage) errorMessage;
         YonaActivity.getActivity().showLoadingView(false, null);
         if (message.getCode() != null && message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)) {
-            CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.appname), getString(R.string.useroverride, user.getMobileNumber()),
-                    getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            OverrideUser();
-                        }
-                    }, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+            CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.useralreadyregister), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
         } else {
             Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
         }
-    }
-
-    /**
-     * When user is already registered with same number and want to override same user.
-     */
-    private void OverrideUser() {
-        YonaActivity.getActivity().showLoadingView(true, null);
-        APIManager.getInstance().getAuthenticateManager().requestUserOverride(user.getMobileNumber(), new DataLoadListener() {
-
-            @Override
-            public void onDataLoad(Object result) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(AppConstant.USER, user);
-                showMobileVerificationScreen(bundle);
-            }
-
-            @Override
-            public void onError(Object errorMessage) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-                showError(errorMessage);
-            }
-        });
     }
 
     private void showMobileVerificationScreen(Bundle bundle) {
@@ -379,9 +350,8 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
     private void removeStoredPassCode() {
         SharedPreferences.Editor yonaPref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
-        yonaPref.putString(PreferenceConstant.YONA_PASSCODE, getString(R.string.blank)); // remove user's passcode from device.
-        yonaPref.putBoolean(PreferenceConstant.STEP_PASSCODE, false);
         yonaPref.putBoolean(PreferenceConstant.STEP_OTP, false);
+        yonaPref.putBoolean(PreferenceConstant.PROFILE_OTP_STEP, true);
         yonaPref.commit();
     }
 }
