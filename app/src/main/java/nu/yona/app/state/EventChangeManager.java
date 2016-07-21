@@ -109,6 +109,10 @@ public class EventChangeManager {
 
     public static final int EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH = 21;
 
+    public static final int EVENT_VPN_CERTIFICATE_DOWNLOADED = 22;
+
+    public static final int EVENT_ROOT_CERTIFICATE_DOWNLOADED = 23;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;

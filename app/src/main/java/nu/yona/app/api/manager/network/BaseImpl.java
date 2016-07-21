@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.manager.network;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.ConnectException;
@@ -168,6 +170,11 @@ class BaseImpl {
                     listener.onError(new ErrorMessage(e.getMessage()));
                 }
             } else {
+                try {
+                    Log.e("Response code", "Response Code from server :" + response.code() + ", error :" + response.errorBody().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.somethingwentwrong)));
             }
         }

@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 
 import de.blinkt.openvpn.LaunchVPN;
 import de.blinkt.openvpn.R;
@@ -55,25 +56,16 @@ public class DisconnectVPN extends Activity implements DialogInterface.OnClickLi
         Intent intent = new Intent(this, OpenVPNService.class);
         intent.setAction(OpenVPNService.START_SERVICE);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        showDisconnectDialog();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unbindService(mConnection);
-    }
-
-    private void showDisconnectDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.title_cancel);
-        builder.setMessage(R.string.cancel_connection_query);
-        builder.setNegativeButton(android.R.string.no, this);
-        builder.setNeutralButton(R.string.reconnect, this);
-        builder.setPositiveButton(android.R.string.yes, this);
-        builder.setOnCancelListener(this);
-
-        builder.show();
+        try {
+            unbindService(mConnection);
+        } catch (Exception e) {
+            Log.e(DisconnectVPN.class.getSimpleName(), e.getMessage());
+        }
     }
 
     @Override

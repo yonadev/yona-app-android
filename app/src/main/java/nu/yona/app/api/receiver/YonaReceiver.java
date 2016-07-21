@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import nu.yona.app.YonaApplication;
 import nu.yona.app.utils.AppConstant;
@@ -19,9 +20,12 @@ public class YonaReceiver extends BroadcastReceiver {
         switch (intent.getAction()) {
             case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_SCREEN_ON:
+                Log.e("Screen On", "Screen On");
                 startService(context);
+                AppUtils.startVPN(context);
                 break;
             case Intent.ACTION_SCREEN_OFF:
+                Log.e("Screen Off", "Screen Off");
                 AppUtils.setNullScheduler();
                 AppUtils.sendLogToServer(AppConstant.ONE_SECOND);
                 AppUtils.stopService(context);

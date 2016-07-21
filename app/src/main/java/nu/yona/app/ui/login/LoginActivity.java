@@ -181,6 +181,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
                 AppUtils.downloadCertificates();
+                AppUtils.downloadVPNProfile();
                 updateData();
                 showPasscodeScreen();
             }
