@@ -214,7 +214,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     public void verifyOTPAfterUser(String otp, final DataLoadListener listener) {
         try {
             if (otp.length() == AppConstant.OTP_LENGTH) {
-                if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
+                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false) || !YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
                     if (authenticateDao.getUser() != null && authenticateDao.getUser().getLinks() != null
                             && authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber() != null
                             && !TextUtils.isEmpty(authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber().getHref())) {

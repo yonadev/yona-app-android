@@ -138,7 +138,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         setupTabs();
 
         YonaApplication.getEventChangeManager().registerListener(this);
-        homeFragment = new DashboardFragment();
+
         Bundle bundle = new Bundle();
         user = YonaApplication.getEventChangeManager().getDataState().getUser();
 
@@ -147,6 +147,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         } else {
             bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
         }
+
+        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {
+            homeFragment = new ProfileFragment();
+            bundle.putSerializable(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
+        } else {
+            homeFragment = new DashboardFragment();
+        }
+
         homeFragment.setArguments(bundle);
         mContent = homeFragment;
 
@@ -174,11 +182,16 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
         });
 
-        //Load default dashboard_selector fragment on start after login, if signup, start challenges.
-        if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
-            mTabLayout.getTabAt(2).select();
+        if(YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)){
+            updateTabIcon(false);
+            YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.PROFILE_OTP_STEP, false).commit();
         } else {
-            mTabLayout.getTabAt(0).select();
+            //Load default dashboard_selector fragment on start after login, if signup, start challenges.
+            if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
+                mTabLayout.getTabAt(2).select();
+            } else {
+                mTabLayout.getTabAt(0).select();
+            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
