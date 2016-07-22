@@ -1066,14 +1066,25 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
         } else if (requestCode == AppConstant.READ_CONTACTS_PERMISSIONS_REQUEST) {
-            openContactBook();
+            for (int i = 0, len = permissions.length; i < len; i++) {
+                String permission = permissions[i];
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    openContactBook();
+                } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    boolean showRationale = shouldShowRequestPermissionRationale(permission);
+                    if (!showRationale) {
+                        allowContactPermission(getString(R.string.contact_permission), getString(R.string.contact_permission_detail));
+                        break;
+                    }
+                }
+            }
         } else if (requestCode == AppConstant.FILE_WRITE_PERMISSION) {
             for (int i = 0, len = permissions.length; i < len; i++) {
                 String permission = permissions[i];
                 if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                     boolean showRationale = shouldShowRequestPermissionRationale(permission);
                     if (!showRationale) {
-                        allowPermission();
+                        allowPermission(getString(R.string.file_write_permission), getString(R.string.file_write_permission_detail));
                         break;
                     } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
                         getFileWritePermission();
@@ -1086,10 +1097,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
-    private void allowPermission() {
+    private void allowPermission(String title, String message) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.file_write_permission));
-        builder.setMessage(getString(R.string.file_write_permission_detail));
+        builder.setTitle(title);
+        builder.setMessage(message);
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1097,6 +1108,31 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 Uri uri = Uri.fromParts("package", getPackageName(), null);
                 intent.setData(uri);
                 startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+            }
+        });
+        builder.setCancelable(false);
+        builder.create().show();
+
+
+    }
+
+    private void allowContactPermission(String title, String message) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                builder.create().dismiss();
             }
         });
         builder.setCancelable(false);
@@ -1136,7 +1172,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         builder.setCancelable(false);
         builder.create().show();
     }
-
 
     private void getFileWritePermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
