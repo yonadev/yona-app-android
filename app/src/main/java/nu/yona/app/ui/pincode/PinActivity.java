@@ -15,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.WindowManager;
 
 import nu.yona.app.R;
@@ -44,7 +45,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
         super.onCreate(savedInstanceState);
 
         YonaApplication.getEventChangeManager().registerListener(this);
-
+        passcode_error.setVisibility(View.GONE);
         passcodeFragment = new PasscodeFragment();
         passcodeFragment.setArguments(getIntent().getExtras());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -89,10 +90,12 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
                 if (APIManager.getInstance().getPasscodeManager().validatePasscode(passcode)) {
                     showChallengesScreen();
                 } else if (APIManager.getInstance().getPasscodeManager().isWrongCounterReached()) {
+                    passcode_error.setVisibility(View.GONE);
                     YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
                     updateBlockMsg();
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
                 } else {
+                    passcode_error.setVisibility(View.VISIBLE);
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcodetryagain));
                 }
                 break;

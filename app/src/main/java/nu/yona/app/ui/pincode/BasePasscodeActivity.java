@@ -228,6 +228,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         passcode_title.setText(getString(R.string.accountlogin));
         passcode_description.setText(getString(R.string.accountloginsecuritymessage));
         updateTitle(getString(R.string.join));
+        passcode_error.setVisibility(View.GONE);
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_progress_sixty));
         profile_progress.setProgressDrawable(ContextCompat.getDrawable(this, progressDrawable));
         passcode_reset.setText(getString(R.string.sendotpagain));
@@ -296,6 +297,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         passcode_title.setVisibility(View.VISIBLE);
         passcode_description.setVisibility(View.GONE);
         profile_progress.setVisibility(View.GONE);
+        passcode_error.setVisibility(View.GONE);
         passcode_reset.setVisibility(View.VISIBLE);
     }
 
@@ -312,7 +314,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         accont_image.setImageResource(R.drawable.icn_secure);
         passcode_title.setText(getString(R.string.passcodestep2title));
         passcode_description.setText(getString(R.string.passcodestep2desc));
-        passcode_error.setText("");
+        passcode_error.setVisibility(View.GONE);
         updateTitle(getString(R.string.pincode));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_verify_progerss));
         showAnimation();
@@ -326,6 +328,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         passcode_title.setText(getString(R.string.passcodestep1title));
         passcode_description.setText(getString(R.string.passcodestep1desc));
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_create_progress));
+        passcode_error.setVisibility(View.GONE);
         updateTitle(getString(R.string.pincode));
         showAnimation();
     }

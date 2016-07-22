@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.View;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -37,6 +38,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         YonaApplication.getEventChangeManager().registerListener(this);
+        passcode_error.setVisibility(View.GONE);
         loadPasscodeView();
         initializeAnimation();
     }
