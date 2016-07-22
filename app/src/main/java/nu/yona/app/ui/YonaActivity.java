@@ -184,7 +184,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
         });
 
-        if(YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)){
+        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {
             updateTabIcon(false);
             YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.PROFILE_OTP_STEP, false).commit();
         } else {
@@ -386,10 +386,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void showInstallAlert(final byte[] keystore) {
-        //TODO show alert to ask user to install certificate.
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Certificate installation");
-        builder.setMessage("Installation of certificate require for security reason. Please click ok");
+        builder.setTitle(getString(R.string.certificate_installation));
+        builder.setMessage(getString(R.string.certfiicate_installtion_detail));
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1077,7 +1076,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         allowPermission();
                         break;
                     } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
-                        checkFlow();
+                        getFileWritePermission();
                         break;
                     }
                 } else if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
@@ -1089,8 +1088,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     private void allowPermission() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Allow File Write Permission");
-        builder.setMessage("Yona wants to write some files on file system, you will redirect on setting screen, please click on \"Permission\" and \"ON\" Storage permission.");
+        builder.setTitle(getString(R.string.file_write_permission));
+        builder.setMessage(getString(R.string.file_write_permission_detail));
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1115,6 +1114,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
                     checkFileWritePermission();
                 } else {
+                    isUserFromOnCreate = true;
                     AppUtils.startVPN(YonaActivity.this);
                 }
             }
@@ -1124,8 +1124,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     @TargetApi(Build.VERSION_CODES.M)
     private void getFileWritePermissionAlert() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Allow File Write");
-        builder.setMessage("Yona wants to write some files on file system, click Allow on next alert.");
+        builder.setTitle(getString(R.string.file_write_permission));
+        builder.setMessage(getString(R.string.file_write_permission_detail));
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

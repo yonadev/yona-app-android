@@ -21,6 +21,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -83,7 +84,7 @@ public class ActivityMonitorService extends Service {
 
     private void restartReceiver() {
         if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false)) {
-            YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
+            YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, false).commit();
             AppUtils.registerReceiver(YonaApplication.getAppContext());
         }
     }
@@ -157,6 +158,7 @@ public class ActivityMonitorService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
+        Log.e("Task removed", "onTaskRemoved");
         YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
         shutdownScheduler();
         restartService();
@@ -184,10 +186,7 @@ public class ActivityMonitorService extends Service {
 
         PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarmService.set(
-                AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + AppConstant.ONE_SECOND,
-                restartServicePendingIntent);
+        alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + AppConstant.ONE_SECOND, restartServicePendingIntent);
 
     }
 }
