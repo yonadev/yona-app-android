@@ -173,4 +173,8 @@
     <string name="send">VERSTUREN</string>
     <string name="reply">Reply</string>
     <string name="useralreadyregister">User already register with this number.</string>
+    <string name="file_write_permission">Laat File Write Toestemming</string>
+    <string name="file_write_permission_detail">Yona wil bestanden op je telefoon bewaren. Je wordt doorgestuurd naar instellingen. Klik op \"Toestaan\" en zet Toestemming van opslag \"aan\".</string>
+    <string name="certificate_installation">Certificaat Installeren</string>
+    <string name="certfiicate_installtion_detail"> Om veiligheidsredenen is het installeren van een certificaat noodzakelijk. Klik op \"OK\".</string>
 </resources>

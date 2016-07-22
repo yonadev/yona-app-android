@@ -23,6 +23,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.text.InputFilter;
@@ -47,6 +48,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import de.blinkt.openvpn.LaunchVPN;
 import de.blinkt.openvpn.VpnProfile;
+import de.blinkt.openvpn.activities.ConfigConverter;
 import de.blinkt.openvpn.activities.DisconnectVPN;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VpnStatus;
@@ -423,6 +425,7 @@ public class AppUtils {
             Intent intent = new Intent(context, LaunchVPN.class);
             intent.putExtra(LaunchVPN.EXTRA_KEY, profile.getUUID().toString());
             intent.setAction(Intent.ACTION_MAIN);
+            intent.putExtra(AppConstant.FROM_LOGIN, true);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }

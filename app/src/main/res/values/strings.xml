@@ -173,5 +173,8 @@
     <string name="send">SEND</string>
     <string name="reply">Reply</string>
     <string name="useralreadyregister">User already register with this number.</string>
-    <string name="file_write_permission"></string>
+    <string name="file_write_permission">Allow File Write Permission</string>
+    <string name="file_write_permission_detail">Yona wants to write some files on file system, you will redirect on setting screen, please click on "Permission" and "ON" Storage permission.</string>
+    <string name="certificate_installation">Certificate Installation</string>
+    <string name="certfiicate_installtion_detail">Installation of certificate required for security reason. Please click ok on next alert.</string>
 </resources>
