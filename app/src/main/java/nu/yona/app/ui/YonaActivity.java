@@ -265,6 +265,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 isUserFromOnCreate = false;
                 isToDisplayLogin = true;
                 getFileWritePermission();
+            } else {
+                checkVPN();
             }
         }
     }
@@ -361,6 +363,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 isToDisplayLogin = false;
                 if (resultCode == RESULT_OK) {
                     if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID))) {
+                        Log.e("Start VPN", "Start VPN");
                         YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
                         AppUtils.startVPN(this);
                     } else {
@@ -1151,10 +1154,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     checkFileWritePermission();
                 } else {
                     isUserFromOnCreate = true;
+                    Log.e("Start VPN", "Start VPN");
                     AppUtils.startVPN(YonaActivity.this);
                 }
             }
-        }, AppConstant.ONE_SECOND);
+        }, AppConstant.TIMER_DELAY_TWO_SEC);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
