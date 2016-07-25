@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.MessageBody;
@@ -140,8 +139,8 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
                         !TextUtils.isEmpty(mYonaMessage.getEmbedded().getYonaUser().getLastName()) ? mYonaMessage.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
             }
             profileNickName.setText(!TextUtils.isEmpty(mYonaMessage.getNickname()) ? mYonaMessage.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
+            profileImage.setImageDrawable(getImage(null, false, R.color.grape_two, mYonaMessage.getEmbedded().getYonaUser().getFirstName(), mYonaMessage.getEmbedded().getYonaUser().getLastName()));
         }
-        profileImage.setImageDrawable(getImage(null, false, R.color.grape_two, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
         profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue_two));
     }
 
