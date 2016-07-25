@@ -8,7 +8,7 @@
 
 <resources>
 
-    <string name="appname">yona</string>
+    <string name="appname">Yona</string>
     <string name="dashboard">DASHBOARD</string>
     <string name="friends">FRIENDS</string>
     <string name="challenges">CHALLENGES</string>
@@ -131,14 +131,14 @@
     <string name="remove_friend_btn">REMOVE FRIEND</string>
     <!-- Status Messages -->
     <string name="status_friend_request">Friend request</string>
-    <string name="delete">Verwijder</string>
+    <string name="delete">Delete</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="this_week">This Week</string>
     <string name="last_week">Last Week</string>
     <string name="buddyconnectrequested">Friend request</string>
-    <string name="buddyresponserejected">Vriendenverzoek geweigerd</string>
-    <string name="buddyresponseaccepted">Vriendenverzoek geaccepteerd</string>
+    <string name="buddyresponserejected">Friend request declined</string>
+    <string name="buddyresponseaccepted">Friend request accepted</string>
     <string name="buddyconnectresponseaccepted">Friend request accepted</string>
     <string name="buddyconnectresponserejected">Friend request declined</string>
     <string name="buddydisconnectmessageuserromovedbuddy">You are removed as a friend</string>

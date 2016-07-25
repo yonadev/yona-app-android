@@ -8,7 +8,7 @@
 
 <resources>
 
-    <string name="appname">yona</string>
+    <string name="appname">Yona</string>
     <string name="dashboard">DASHBOARD</string>
     <string name="friends">VRIENDEN</string>
     <string name="challenges">CHALLENGES</string>
@@ -132,8 +132,8 @@
     <!-- Status Messages -->
     <string name="status_friend_request">Vriendenverzoek</string>
     <string name="delete">Verwijder</string>
-    <string name="today">Today</string>
-    <string name="yesterday">Yesterday</string>
+    <string name="today">Vandaag</string>
+    <string name="yesterday">Gisteren</string>
     <string name="this_week">This Week</string>
     <string name="last_week">Last Week</string>
     <string name="buddyconnectrequested">Vriendenverzoek</string>
