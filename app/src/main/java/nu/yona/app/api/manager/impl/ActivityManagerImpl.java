@@ -633,7 +633,11 @@ public class ActivityManagerImpl implements ActivityManager {
         }
         WeekActivity resultActivity = generateTimeZoneSpread(weekActivity);
         try {
-            if (weekActivity.getLinks().getWeekDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
+            if (weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getWeekDetails() != null
+                    && !TextUtils.isEmpty(weekActivity.getLinks().getWeekDetails().getHref())
+                    && resultActivity != null && resultActivity.getLinks() != null && resultActivity.getLinks().getSelf() != null
+                    && !TextUtils.isEmpty(resultActivity.getLinks().getSelf().getHref())
+                    && weekActivity.getLinks().getWeekDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
                 weekActivity.setTimeZoneSpread(resultActivity.getTimeZoneSpread());
                 weekActivity.setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
             }
