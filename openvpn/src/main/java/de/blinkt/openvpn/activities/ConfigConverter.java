@@ -89,7 +89,6 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
     private Vector<String> mLogEntries = new Vector<>();
     private Uri mSourceUri;
     private EditText mProfilename;
-    private AsyncTask<Void, Void, Integer> mImportTask;
     private LinearLayout mLogLayout;
     private TextView mProfilenameLabel;
 
@@ -153,12 +152,12 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
             return true;
         }
 
-        mResult.mName = getString(R.string.app);
-        ProfileManager vpl = ProfileManager.getInstance(this);
-        if (vpl.getProfileByName(mResult.mName) != null) {
-            mProfilename.setError(getString(R.string.duplicate_profile_name));
-            return true;
-        }
+//        mResult.mName = getString(R.string.app);
+//        ProfileManager vpl = ProfileManager.getInstance(this);
+//        if (vpl.getProfileByName(mResult.mName) != null) {
+//            mProfilename.setError(getString(R.string.duplicate_profile_name));
+//            return true;
+//        }
 
         Intent in = installPKCS12();
 
@@ -708,7 +707,7 @@ public class ConfigConverter extends BaseActivity implements FileSelectCallback,
     }
 
     private void startImportTask(final Uri data, final String possibleName) {
-        mImportTask = new AsyncTask<Void, Void, Integer>() {
+        new AsyncTask<Void, Void, Integer>() {
             private ProgressBar mProgress;
 
             @Override
