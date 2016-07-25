@@ -49,7 +49,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
 
     public void registerUser(String url, String password, RegisterUser object, DataLoadListener listener) {
         try {
-            getRestApi().registerUser(url, password, object).enqueue(getUserCallBack(listener));
+            getRestApi().registerUser(url, password, localLanguage, object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -125,7 +125,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void requestUserOverride(String mobileNumber, DataLoadListener listener) {
         try {
-            getRestApi().requestUserOverride(mobileNumber, localLanguage).enqueue(getCall(listener));
+            getRestApi().requestUserOverride(localLanguage, mobileNumber).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -197,7 +197,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doClearPin(String url) {
         try {
-            getRestApi().clearPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),  localLanguage).enqueue(getCall(new DataLoadListener() {
+            getRestApi().clearPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), localLanguage).enqueue(getCall(new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     // Do nothing as we don't worry about this response.
