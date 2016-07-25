@@ -101,7 +101,7 @@
     <string name="urlnotfound">URL niet gevonden.</string>
     <string name="dataparseerror">Data Parsing error.</string>
     <string name="challengesnogosubText">Vermijd %1$s gerelateerde content</string>
-    <string name="challengestimzoesubtext">Toegestaan tussen %1$s en %2$s</string>
+    <string name="challengestimzoesubtext">Toegestaan %1$s</string>
     <string name="challengesbudgetsubtext">Je kunt per dag %1$s minuten %2$s</string>
     <string name="email">E-mail</string>
     <string name="invitefriend">VRIEND UITNODIGEN</string>
