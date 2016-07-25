@@ -131,7 +131,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     private boolean validateNickName() {
         if (!APIManager.getInstance().getAuthenticateManager().validateText(nickName.getText().toString())) {
             nickNameLayout.setErrorEnabled(true);
-            nickNameLayout.setError(getString(R.string.enternumbervalidation));
+            nickNameLayout.setError(getString(R.string.enternicknamevalidation));
             activity.showKeyboard(nickName);
             nickName.requestFocus();
             return false;
