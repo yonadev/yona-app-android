@@ -1153,6 +1153,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     checkFileWritePermission();
                 } else {
                     isUserFromOnCreate = true;
+                    isToDisplayLogin = false;
+                    skipVerification = true;
                     Log.e("Start VPN", "Start VPN");
                     AppUtils.startVPN(YonaActivity.this);
                 }
