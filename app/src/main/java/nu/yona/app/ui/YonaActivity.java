@@ -305,6 +305,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 Snackbar.make(findViewById(android.R.id.content), errorMessage.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         }
+        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
     }
 
     @Override
