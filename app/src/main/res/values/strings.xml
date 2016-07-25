@@ -101,7 +101,7 @@
     <string name="urlnotfound">URL not found.</string>
     <string name="dataparseerror">Data Parsing error.</string>
     <string name="challengesnogosubText">Avoid %1$s related content</string>
-    <string name="challengestimzoesubtext">Permitted between %1$ and %2$s</string>
+    <string name="challengestimzoesubtext">Permitted %1$s</string>
     <string name="challengesbudgetsubtext">Per dag %1$s minutes %2$s</string>
     <string name="email">Email</string>
     <string name="invitefriend">INVITE FRIEND</string>
