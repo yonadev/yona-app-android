@@ -291,7 +291,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      */
     public void showError(ErrorMessage errorMessage) {
         if (!isFinishing()) {
-            if (errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND)) {
+            if (errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND) && this != null) {
                 CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -301,13 +301,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         editor.commit();
                         startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
                         dialogInterface.dismiss();
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
                     }
                 });
             } else {
                 Snackbar.make(findViewById(android.R.id.content), errorMessage.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         }
-        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
     }
 
     @Override
