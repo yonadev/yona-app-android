@@ -132,6 +132,7 @@
 
     <!-- Friend Request -->
     <dimen name="marginTop_for_button">27dp</dimen>
+    <dimen name="remove_friend_padding_bottom">56dp</dimen>
 
     <!-- Welcome carrousel -->
     <dimen name="carrousel_center_image_width">256dp</dimen>
