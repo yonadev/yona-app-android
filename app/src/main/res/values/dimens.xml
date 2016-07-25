@@ -210,6 +210,7 @@
     <dimen name="loading_width">38dp</dimen>
     <dimen name="loading_height">38dp</dimen>
     <dimen name="loading_thick_size">3dp</dimen>
+    <dimen name="sticky_header_height">53dp</dimen>
 
 
 </resources>

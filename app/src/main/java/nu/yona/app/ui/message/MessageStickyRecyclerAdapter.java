@@ -22,14 +22,15 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.api.model.YonaMessage;
-import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.enums.NotificationMessageEnum;
+import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
 
 /**
  * Created by bhargavsuthar on 10/05/16.
  */
-public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageItemViewHolder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
+public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageItemViewHolder> implements StickyRecyclerHeadersAdapter<StickyHeaderHolder> {
 
     private List<YonaMessage> listYonaMessage;
     private YonaActivity activity;
@@ -80,15 +81,23 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                         strBuilder.append(yonaObject.getEmbedded().getYonaUser().getLastName());
                     }
                     holder.txtFooterMsg.setText(strBuilder.toString());
-                    if (strBuilder.toString().length() > 0) {
-                        holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(strBuilder.toString().substring(0, 1).toUpperCase(),
-                                ContextCompat.getColor(activity, R.color.grape)));
+                    if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED) {
+                        holder.img_avtar.setImageResource(R.drawable.adult_sad);
+                    } else {
+                        if (strBuilder.toString().length() > 0) {
+                            holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(strBuilder.toString().substring(0, 1).toUpperCase(),
+                                    ContextCompat.getColor(activity, R.color.grape)));
+                        }
                     }
                 }
             } else if (!TextUtils.isEmpty(yonaObject.getNickname())) {
                 holder.txtFooterMsg.setText(yonaObject.getNickname());
-                holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(yonaObject.getNickname().substring(0, 1).toUpperCase(),
-                        ContextCompat.getColor(activity, R.color.grape)));
+                if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED) {
+                    holder.img_avtar.setImageResource(R.drawable.adult_sad);
+                } else {
+                    holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(yonaObject.getNickname().substring(0, 1).toUpperCase(),
+                            ContextCompat.getColor(activity, R.color.grape)));
+                }
             }
             holder.deleteMsg.setTag(yonaObject);
             holder.messageContainer.setTag(yonaObject);
@@ -112,19 +121,18 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
+    public StickyHeaderHolder onCreateHeaderViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.message_header_layout, parent, false);
-        return new RecyclerView.ViewHolder(view) {
+        return new StickyHeaderHolder(view) {
         };
     }
 
     @Override
-    public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
-        YonaFontTextView textView = (YonaFontTextView) holder.itemView;
+    public void onBindHeaderViewHolder(StickyHeaderHolder holder, int position) {
         Object yonaObject = getItem(position);
         if (yonaObject != null) {
-            textView.setText(((YonaMessage) yonaObject).getStickyTitle());
+            holder.getHeaderText().setText(((YonaMessage) yonaObject).getStickyTitle());
         }
     }
 
