@@ -12,6 +12,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.dao.ActivityCategoriesDAO;
@@ -19,6 +20,7 @@ import nu.yona.app.api.manager.dao.AuthenticateDAO;
 import nu.yona.app.api.manager.network.ActivityCategoriesNetworkImpl;
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
 
@@ -52,7 +54,8 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
     @Override
     public void getActivityCategoriesById(final DataLoadListener listener) {
         try {
-            if (!TextUtils.isEmpty(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref())) {
+            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref())) {
                 activityCategoriesNetwork.getActivityCategories(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref(), new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {

@@ -1149,8 +1149,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                isToDisplayLogin = false;
-                skipVerification = true;
                 if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
                     checkFileWritePermission();
                 } else {
@@ -1198,8 +1196,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     private void importVPNProfile() {
         if (YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() != null) {
-            isToDisplayLogin = false;
-            skipVerification = true;
             Intent startImport = new Intent(this, ConfigConverter.class);
             startImport.setAction(ConfigConverter.IMPORT_PROFILE);
             Uri uri = Uri.parse(YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath());
