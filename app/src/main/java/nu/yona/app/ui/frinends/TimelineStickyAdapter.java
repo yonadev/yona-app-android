@@ -22,15 +22,15 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.api.model.DayActivity;
-import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.ChartTypeEnum;
+import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
 /**
  * Created by bhargavsuthar on 28/06/16.
  */
-public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
+public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> implements StickyRecyclerHeadersAdapter<StickyHeaderHolder> {
 
     private List<DayActivity> dayActivityList;
     private View.OnClickListener listener;
@@ -139,10 +139,10 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 
 
     @Override
-    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
+    public StickyHeaderHolder onCreateHeaderViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.message_header_layout, parent, false);
-        return new RecyclerView.ViewHolder(view) {
+        return new StickyHeaderHolder(view) {
         };
     }
 
@@ -152,11 +152,10 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
     }
 
     @Override
-    public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
-        YonaFontTextView textView = (YonaFontTextView) holder.itemView;
+    public void onBindHeaderViewHolder(StickyHeaderHolder holder, int position) {
         Object yonaObject = getItem(position);
         if (yonaObject != null) {
-            textView.setText(((DayActivity) yonaObject).getStickyTitle());
+            holder.getHeaderText().setText(((DayActivity) yonaObject).getStickyTitle());
         }
     }
 

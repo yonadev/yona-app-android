@@ -24,14 +24,14 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.api.model.YonaBuddy;
-import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.message.MessageItemViewHolder;
 
 /**
  * Created by bhargavsuthar on 25/05/16.
  */
-public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
+public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder> implements StickyRecyclerHeadersAdapter<StickyHeaderHolder> {
 
     private final OnFriendsItemClickListener mOnFriendsItemClickListener;
     private List<YonaBuddy> listYonaMessage;
@@ -107,19 +107,18 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
+    public StickyHeaderHolder onCreateHeaderViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.message_header_layout, parent, false);
-        return new RecyclerView.ViewHolder(view) {
+        return new StickyHeaderHolder(view) {
         };
     }
 
     @Override
-    public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
-        YonaFontTextView textView = (YonaFontTextView) holder.itemView;
+    public void onBindHeaderViewHolder(StickyHeaderHolder holder, int position) {
         Object yonaObject = getItem(position);
         if (yonaObject != null) {
-            textView.setText(((YonaBuddy) yonaObject).getSendingStatus());
+            holder.getHeaderText().setText(((YonaBuddy) yonaObject).getSendingStatus());
         }
     }
 
