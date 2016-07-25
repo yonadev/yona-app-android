@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,9 +141,9 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
         intent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, activity.getLinks().getYonaDayDetails().getHref());
         if (activity.getLinks().getYonaBuddy() != null) {
             intent.putExtra(AppConstant.YONA_BUDDY_OBJ, activity.getLinks().getYonaBuddy());
-            intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, activity.getYonaGoal().getActivityCategoryName().toUpperCase(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+            intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName()) ? activity.getYonaGoal().getActivityCategoryName().toUpperCase() : getString(R.string.blank), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
         } else {
-            intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, activity.getYonaGoal().getActivityCategoryName().toUpperCase(), R.color.grape, R.drawable.triangle_shadow_grape));
+            intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName()) ? activity.getYonaGoal().getActivityCategoryName().toUpperCase() : getString(R.string.blank), R.color.grape, R.drawable.triangle_shadow_grape));
         }
         YonaActivity.getActivity().replaceFragment(intent);
     }
