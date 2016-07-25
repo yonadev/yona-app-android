@@ -65,13 +65,13 @@ public class DashboardFragment extends BaseFragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
-        setTitleAndIcon();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        setTitleAndIcon();
     }
 
     private void resetData() {
