@@ -28,7 +28,7 @@ public class ActivityCategoriesNetworkImpl extends BaseImpl {
      * @param listener the listener
      */
     public void getActivityCategories(String url, final DataLoadListener listener) {
-        getRestApi().getActivityCategories().enqueue(new Callback<ActivityCategories>() {
+        getRestApi().getActivityCategories(localLanguage).enqueue(new Callback<ActivityCategories>() {
             @Override
             public void onResponse(Call<ActivityCategories> call, Response<ActivityCategories> response) {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {

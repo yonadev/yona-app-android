@@ -38,9 +38,9 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     public void registerUser(String url, String password, RegisterUser object, boolean isEditMode, final DataLoadListener listener) {
         try {
             if (!isEditMode) {
-                getRestApi().registerUser(password, object).enqueue(getUserCallBack(listener));
+                getRestApi().registerUser(password, localLanguage, object).enqueue(getUserCallBack(listener));
             } else {
-                getRestApi().updateRegisterUser(url, password, object).enqueue(getUserCallBack(listener));
+                getRestApi().updateRegisterUser(url, password, localLanguage, object).enqueue(getUserCallBack(listener));
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -65,7 +65,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void registerUserOverride(String password, RegisterUser object, String otp, final DataLoadListener listener) {
         try {
-            getRestApi().overrideRegisterUser(password, otp, object).enqueue(getUserCallBack(listener));
+            getRestApi().overrideRegisterUser(password, localLanguage, otp, object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -80,7 +80,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void getUser(String url, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().getUser(url, yonaPassword).enqueue(getUserCallBack(listener));
+            getRestApi().getUser(url, yonaPassword, localLanguage).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -96,7 +96,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void verifyMobileNumber(String password, String url, OTPVerficationCode otp, final DataLoadListener listener) {
         try {
-            getRestApi().verifyMobileNumber(url, password, otp).enqueue(getUserCallBack(listener));
+            getRestApi().verifyMobileNumber(url, password, localLanguage, otp).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -111,7 +111,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void resendOTP(String url, String password, final DataLoadListener listener) {
         try {
-            getRestApi().resendOTP(url, password).enqueue(getCall(listener));
+            getRestApi().resendOTP(url, password, localLanguage).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -125,7 +125,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void requestUserOverride(String mobileNumber, DataLoadListener listener) {
         try {
-            getRestApi().requestUserOverride(mobileNumber).enqueue(getCall(listener));
+            getRestApi().requestUserOverride(mobileNumber, localLanguage).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -140,7 +140,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void deleteUser(String url, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().deleteUser(url, yonaPassword).enqueue(getCall(listener));
+            getRestApi().deleteUser(url, yonaPassword, localLanguage).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -155,7 +155,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doPasscodeReset(String url, String yonaPassword, final DataLoadListener listener) {
         try {
-            getRestApi().requestPinReset(url, yonaPassword).enqueue(new Callback<PinResetDelay>() {
+            getRestApi().requestPinReset(url, yonaPassword, localLanguage).enqueue(new Callback<PinResetDelay>() {
                 @Override
                 public void onResponse(Call<PinResetDelay> call, Response<PinResetDelay> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
@@ -184,7 +184,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doVerifyPin(String url, String otp, final DataLoadListener listener) {
         try {
-            getRestApi().verifyPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new OTPVerficationCode(otp)).enqueue(getCall(listener));
+            getRestApi().verifyPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), localLanguage, new OTPVerficationCode(otp)).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -197,7 +197,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doClearPin(String url) {
         try {
-            getRestApi().clearPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()).enqueue(getCall(new DataLoadListener() {
+            getRestApi().clearPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),  localLanguage).enqueue(getCall(new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     // Do nothing as we don't worry about this response.
