@@ -175,7 +175,9 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         } else if (user != null) {
             name.setText(getString(R.string.full_name, !TextUtils.isEmpty(user.getFirstName()) ? user.getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
                     !TextUtils.isEmpty(user.getLastName()) ? user.getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
-            nickName.setText(!TextUtils.isEmpty(user.getNickname()) ? user.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
+            if (TextUtils.isEmpty(nickName.getText().toString())) {
+                nickName.setText(!TextUtils.isEmpty(user.getNickname()) ? user.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
+            }
             profileImageView.setImageDrawable(getImage(null, false, profileBgColor, user.getFirstName(), user.getLastName()));
         } else if (yonaMessage != null) {
             if (yonaMessage.getEmbedded() != null && yonaMessage.getEmbedded().getYonaUser() != null) {
