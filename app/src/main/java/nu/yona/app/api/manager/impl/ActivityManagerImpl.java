@@ -455,7 +455,9 @@ public class ActivityManagerImpl implements ActivityManager {
                         if (dayActivity.getComments() == null) {
                             dayActivity.setComments(embeddedYonaActivity);
                         } else {
-                            if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
+                            if (dayActivity != null && dayActivity.getComments() != null
+                                    && dayActivity.getComments().getEmbedded() != null && dayActivity.getComments().getEmbedded().getYonaMessages() != null
+                                    && embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
                                 dayActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
                                 dayActivity.getComments().setPage(embeddedYonaActivity.getEmbedded().getPage());
                             }

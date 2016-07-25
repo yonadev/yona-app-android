@@ -34,7 +34,7 @@ public class BuddyNetworkImpl extends BaseImpl {
      */
     public void addBuddy(String url, String yonaPassowrd, AddBuddy buddy, final DataLoadListener listener) {
         try {
-            getRestApi().addBuddy(url, yonaPassowrd, buddy).enqueue(new Callback<YonaBuddy>() {
+            getRestApi().addBuddy(url, yonaPassowrd, localLanguage, buddy).enqueue(new Callback<YonaBuddy>() {
                 @Override
                 public void onResponse(Call<YonaBuddy> call, Response<YonaBuddy> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
@@ -63,7 +63,7 @@ public class BuddyNetworkImpl extends BaseImpl {
      */
     public void getBuddies(String url, String password, final DataLoadListener listener) {
         try {
-            getRestApi().getBuddy(url, password).enqueue(new Callback<YonaBuddies>() {
+            getRestApi().getBuddy(url, password, localLanguage).enqueue(new Callback<YonaBuddies>() {
                 @Override
                 public void onResponse(Call<YonaBuddies> call, Response<YonaBuddies> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
@@ -92,7 +92,7 @@ public class BuddyNetworkImpl extends BaseImpl {
      */
     public void deleteBuddy(String url, String passwrod, DataLoadListener listener) {
         try {
-            getRestApi().deleteBuddy(url, passwrod).enqueue(getCall(listener));
+            getRestApi().deleteBuddy(url, passwrod, localLanguage).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

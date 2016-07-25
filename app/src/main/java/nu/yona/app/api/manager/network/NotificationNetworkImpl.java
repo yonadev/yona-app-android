@@ -34,7 +34,7 @@ public class NotificationNetworkImpl extends BaseImpl {
      */
     public void getMessage(String url, String yonaPassword, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
-            getRestApi().getMessages(url, yonaPassword, itemsPerPage, pageNo).enqueue(new Callback<YonaMessages>() {
+            getRestApi().getMessages(url, yonaPassword, localLanguage, itemsPerPage, pageNo).enqueue(new Callback<YonaMessages>() {
                 @Override
                 public void onResponse(Call<YonaMessages> call, Response<YonaMessages> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
@@ -63,7 +63,7 @@ public class NotificationNetworkImpl extends BaseImpl {
      */
     public void deleteMessage(String url, String password, DataLoadListener listener) {
         try {
-            getRestApi().deleteMessage(url, password).enqueue(getCall(listener));
+            getRestApi().deleteMessage(url, password, localLanguage).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -79,7 +79,7 @@ public class NotificationNetworkImpl extends BaseImpl {
      */
     public void postMessage(String url, String password, MessageBody body, DataLoadListener listener) {
         try {
-            getRestApi().postMessage(url, password, body).enqueue(getCall(listener));
+            getRestApi().postMessage(url, password, localLanguage, body).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -87,7 +87,7 @@ public class NotificationNetworkImpl extends BaseImpl {
 
     public void getComments(String url, String password, final int itemsPerPage, final int pageNo, DataLoadListener listener) {
         try {
-            getRestApi().getComments(url, password, itemsPerPage, pageNo).enqueue(getCall(listener));
+            getRestApi().getComments(url, password, localLanguage, itemsPerPage, pageNo).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

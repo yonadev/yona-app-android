@@ -39,7 +39,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      */
     public void getDaysActivity(String url, String yonaPassword, int itemsPerPage, int pageNo, DataLoadListener listener) {
         try {
-            getRestApi().getActivity(url, yonaPassword, itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getActivity(url, yonaPassword, localLanguage, itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -54,7 +54,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      */
     public void getDayDetailActivity(String url, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().getDayDetailActivity(url, yonaPassword).enqueue(getDayDetailActivity(listener));
+            getRestApi().getDayDetailActivity(url, yonaPassword, localLanguage).enqueue(getDayDetailActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -71,7 +71,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      */
     public void getWeeksActivity(String url, String password, int itemsPerPage, int pageNo, DataLoadListener listener) {
         try {
-            getRestApi().getActivity(url, password, itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getActivity(url, password, localLanguage, itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -86,7 +86,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      */
     public void getWeeksDetailActivity(String url, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().getWeekDetailActivity(url, yonaPassword).enqueue(getweekDetailActivity(listener));
+            getRestApi().getWeekDetailActivity(url, yonaPassword, localLanguage).enqueue(getweekDetailActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -103,7 +103,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      */
     public void getWithBuddyActivity(String url, String yonaPassword, int itemPerPage, int pageNo, DataLoadListener listener) {
         try {
-            getRestApi().getWithBuddyActivity(url, yonaPassword, itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getWithBuddyActivity(url, yonaPassword, localLanguage, itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -119,7 +119,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      */
     public void postAppActivity(String url, String yonaPassword, AppActivity appActivity, DataLoadListener listener) {
         try {
-            getRestApi().postAppActivity(url, yonaPassword, appActivity).enqueue(getCall(listener));
+            getRestApi().postAppActivity(url, yonaPassword, localLanguage, appActivity).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -127,7 +127,7 @@ public class ActivityNetworkImpl extends BaseImpl {
 
     public void getComments(String url, String yonaPassword, int pageNo, int itemPerPage, final DataLoadListener listener) {
         try {
-            getRestApi().getComments(url, yonaPassword, itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getComments(url, yonaPassword, localLanguage, itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -135,7 +135,7 @@ public class ActivityNetworkImpl extends BaseImpl {
 
     public void addComment(String url, String yonaPassword, Message message, final DataLoadListener listener) {
         try {
-            getRestApi().addComment(url, yonaPassword, message).enqueue(new Callback<YonaMessage>() {
+            getRestApi().addComment(url, yonaPassword, localLanguage, message).enqueue(new Callback<YonaMessage>() {
                 @Override
                 public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
@@ -157,7 +157,7 @@ public class ActivityNetworkImpl extends BaseImpl {
 
     public void replyComment(String url, String yonaPasswrod, Properties properties, final DataLoadListener listener) {
         try {
-            getRestApi().replyComment(url, yonaPasswrod, properties).enqueue(new Callback<YonaMessage>() {
+            getRestApi().replyComment(url, yonaPasswrod, localLanguage, properties).enqueue(new Callback<YonaMessage>() {
                 @Override
                 public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {

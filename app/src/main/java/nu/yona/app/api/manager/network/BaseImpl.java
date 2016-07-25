@@ -40,14 +40,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 class BaseImpl {
     private final int maxStale = 60 * 60 * 24 * 28; // keep cache for 28 days.
+    public final String localLanguage = Locale.getDefault().toString().replace('_', '-');
     private final Interceptor getInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response response = null;
             Request request = chain.request();
-            chain.request().newBuilder().addHeader(NetworkConstant.ACCEPT_LAUNGUAGE, Locale.getDefault().toString().replace('_', '-'));
             chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
-
             if (NetworkUtils.isOnline(YonaApplication.getAppContext())) {
                 chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
             } else if (request.method().equalsIgnoreCase("GET") && !request.cacheControl().noCache()) {

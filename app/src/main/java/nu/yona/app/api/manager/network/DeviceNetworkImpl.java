@@ -33,7 +33,7 @@ public class DeviceNetworkImpl extends BaseImpl {
      */
     public void addDevice(String url, NewDeviceRequest devicePassword, String yonaPassword, final DataLoadListener listener) {
         try {
-            getRestApi().addDevice(url, yonaPassword, devicePassword).enqueue(getCall(listener));
+            getRestApi().addDevice(url, yonaPassword, localLanguage, devicePassword).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
@@ -48,7 +48,7 @@ public class DeviceNetworkImpl extends BaseImpl {
      */
     public void deleteDevice(String url, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().deleteDevice(url, yonaPassword).enqueue(getCall(listener));
+            getRestApi().deleteDevice(url, yonaPassword,  localLanguage).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
@@ -63,7 +63,7 @@ public class DeviceNetworkImpl extends BaseImpl {
      */
     public void checkDevice(String devicePassword, String mobileNumber, final DataLoadListener listener) {
         try {
-            getRestApi().checkDevice(mobileNumber, devicePassword).enqueue(new Callback<NewDevice>() {
+            getRestApi().checkDevice(mobileNumber, devicePassword,  localLanguage).enqueue(new Callback<NewDevice>() {
                 @Override
                 public void onResponse(Call<NewDevice> call, Response<NewDevice> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
