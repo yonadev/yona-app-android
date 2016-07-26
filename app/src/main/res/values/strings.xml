@@ -142,7 +142,7 @@
     <string name="buddyconnectresponseaccepted">Friend request accepted</string>
     <string name="buddyconnectresponserejected">Friend request declined</string>
     <string name="buddydisconnectmessageuserromovedbuddy">You are removed as a friend</string>
-    <string name="friend_request_content">Please note that this request may be sent by someone else. Check mobile number %1$s.</string>
+    <string name="friend_request_content">Please note that this request may be sent by someone else. Check mobile number: %1$s.</string>
     <string name="reject">REJECT</string>
     <string name="accept">ACCEPT</string>
     <string name="category_added">You already Added this category.</string>
