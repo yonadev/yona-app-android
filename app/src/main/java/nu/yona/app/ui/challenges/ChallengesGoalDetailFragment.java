@@ -465,7 +465,9 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
      * Go back to screen
      */
     private void goBackToScreen() {
-        getActivity().onBackPressed();
+        if (YonaActivity.getActivity() != null) {
+            YonaActivity.getActivity().onBackPressed();
+        }
     }
 
     /**
