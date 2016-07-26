@@ -646,7 +646,9 @@ public class ActivityManagerImpl implements ActivityManager {
         } catch (Exception e) {
             AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
-        listener.onDataLoad(weekActivity);
+        if (listener != null) {
+            listener.onDataLoad(weekActivity);
+        }
     }
 
     private WeekActivity getWeekDayActivity(WeekActivity activity) {
