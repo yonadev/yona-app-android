@@ -484,15 +484,17 @@ public class ActivityManagerImpl implements ActivityManager {
 
 
     private void updateWeekActivityList(List<WeekActivity> weekActivityList, WeekActivity weekActivity, DataLoadListener listener) {
-        for (int i = 0; i < weekActivityList.size(); i++) {
-            try {
-                if (weekActivityList.get(i).getLinks().getSelf().getHref().equals(weekActivity.getLinks().getSelf().getHref())) {
-                    weekActivityList.set(i, weekActivity);
-                    listener.onDataLoad(weekActivityList);
-                    break;
+        if (weekActivityList != null) {
+            for (int i = 0; i < weekActivityList.size(); i++) {
+                try {
+                    if (weekActivityList.get(i).getLinks().getSelf().getHref().equals(weekActivity.getLinks().getSelf().getHref())) {
+                        weekActivityList.set(i, weekActivity);
+                        listener.onDataLoad(weekActivityList);
+                        break;
+                    }
+                } catch (Exception e) {
+                    AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
                 }
-            } catch (Exception e) {
-                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
             }
         }
     }
