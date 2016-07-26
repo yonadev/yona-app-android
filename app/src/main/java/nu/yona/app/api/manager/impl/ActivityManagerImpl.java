@@ -151,17 +151,19 @@ public class ActivityManagerImpl implements ActivityManager {
                         if (result instanceof WeekActivity) {
                             try {
                                 WeekActivity resultActivity = generateTimeZoneSpread((WeekActivity) result);
-                                List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
-                                for (int i = 0; i < weekActivityList.size(); i++) {
-                                    try {
-                                        if (weekActivityList.get(i).getLinks().getWeekDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
-                                            weekActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
-                                            weekActivityList.set(i, updateLinks(weekActivityList.get(i), resultActivity));
-                                            weekActivityList.get(i).setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
-                                            break;
+                                if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() != null) {
+                                    List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
+                                    for (int i = 0; i < weekActivityList.size(); i++) {
+                                        try {
+                                            if (weekActivityList.get(i).getLinks().getWeekDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
+                                                weekActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                                                weekActivityList.set(i, updateLinks(weekActivityList.get(i), resultActivity));
+                                                weekActivityList.get(i).setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
                                         }
-                                    } catch (Exception e) {
-                                        AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
                                     }
                                 }
                             } catch (Exception e) {
@@ -1114,17 +1116,19 @@ public class ActivityManagerImpl implements ActivityManager {
                         if (result instanceof DayActivity) {
                             try {
                                 DayActivity resultActivity = generateTimeZoneSpread((DayActivity) result);
-                                List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList();
-                                if (dayActivityList != null) {
-                                    for (int i = 0; i < dayActivityList.size(); i++) {
-                                        try {
-                                            if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
-                                                dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
-                                                dayActivityList.set(i, updateLinks(dayActivityList.get(i), resultActivity));
-                                                break;
+                                if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() != null) {
+                                    List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList();
+                                    if (dayActivityList != null) {
+                                        for (int i = 0; i < dayActivityList.size(); i++) {
+                                            try {
+                                                if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
+                                                    dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                                                    dayActivityList.set(i, updateLinks(dayActivityList.get(i), resultActivity));
+                                                    break;
+                                                }
+                                            } catch (Exception e) {
+                                                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
                                             }
-                                        } catch (Exception e) {
-                                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
                                         }
                                     }
                                 }
