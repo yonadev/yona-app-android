@@ -255,24 +255,27 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     private void postActivityOnServer(final AppActivity activity, final boolean fromDB) {
-        activityNetwork.postAppActivity(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaAppActivity().getHref(),
-                YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        //on success nothing to do, as it is posted on server.
-                        if (fromDB) {
-                            activityTrackerDAO.clearActivities();
+        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+        if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref())) {
+            activityNetwork.postAppActivity(user.getLinks().getYonaAppActivity().getHref(),
+                    YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, new DataLoadListener() {
+                        @Override
+                        public void onDataLoad(Object result) {
+                            //on success nothing to do, as it is posted on server.
+                            if (fromDB) {
+                                activityTrackerDAO.clearActivities();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        //on failure, we need to store data in database to resend next time.
-                        if (!fromDB) {
-                            activityTrackerDAO.saveActivities(activity.getActivities());
+                        @Override
+                        public void onError(Object errorMessage) {
+                            //on failure, we need to store data in database to resend next time.
+                            if (!fromDB) {
+                                activityTrackerDAO.saveActivities(activity.getActivities());
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     public void postAllDBActivities() {

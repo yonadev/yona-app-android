@@ -142,7 +142,7 @@
     <string name="buddyconnectresponseaccepted">Vriendenverzoek geaccepteerd</string>
     <string name="buddyconnectresponserejected">Vriendenverzoek geweigerd</string>
     <string name="buddydisconnectmessageuserromovedbuddy">Je bent verwijderd als vriend</string>
-    <string name="friend_request_content">Let op: dit verzoek kan door iemand anders zijn verstuurd. Controleer het telefoonnummer %1$s.</string>
+    <string name="friend_request_content">Let op: dit verzoek kan door iemand anders zijn verstuurd. Controleer het telefoonnummer: %1$s.</string>
     <string name="reject">AFWIJZEN</string>
     <string name="accept">ACCEPTEER</string>
     <string name="category_added">You already Added this category.</string>

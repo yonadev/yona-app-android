@@ -46,8 +46,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/forty_two"
                     android:layout_marginBottom="@dimen/sixty_four"
+                    android:layout_marginTop="@dimen/forty_two"
                     android:scaleType="centerInside"
                     android:src="@drawable/add_avatar" />
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -83,6 +83,7 @@
                         android:inputType="textVisiblePassword|textCapWords"
                         android:maxLength="@integer/char_limit"
                         android:maxLines="1"
+                        android:paddingTop="@dimen/profile_padding_top"
                         android:textColorHint="@color/black" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -104,6 +105,7 @@
                         android:inputType="textVisiblePassword|textCapWords"
                         android:maxLength="@integer/char_limit"
                         android:maxLines="1"
+                        android:paddingTop="@dimen/profile_padding_top"
                         android:textColorHint="@color/black" />
                 </android.support.design.widget.TextInputLayout>
 

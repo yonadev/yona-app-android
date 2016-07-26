@@ -43,6 +43,7 @@
                 android:inputType="textVisiblePassword|textCapWords"
                 android:maxLength="@integer/char_limit"
                 android:maxLines="1"
+                android:paddingTop="@dimen/profile_padding_top"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
@@ -70,6 +71,7 @@
                 android:inputType="textVisiblePassword|textCapWords"
                 android:maxLength="@integer/char_limit"
                 android:maxLines="1"
+                android:paddingTop="@dimen/profile_padding_top"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
@@ -97,6 +99,7 @@
                 android:inputType="textEmailAddress"
                 android:maxLength="@integer/char_limit"
                 android:maxLines="1"
+                android:paddingTop="@dimen/profile_padding_top"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 
@@ -125,6 +128,7 @@
                 android:inputType="phone"
                 android:maxLength="@integer/number_limit"
                 android:maxLines="1"
+                android:paddingTop="@dimen/profile_padding_top"
                 android:textColorHint="@color/black" />
         </android.support.design.widget.TextInputLayout>
 

@@ -73,7 +73,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         }
 
 
-        if(yonaMessage != null || buddyUser != null){
+        if (yonaMessage != null || buddyUser != null) {
             ((YonaActivity) getActivity()).updateTabIcon(true);
         } else {
             ((YonaActivity) getActivity()).updateTabIcon(false);
@@ -143,6 +143,10 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
             });
         } else {
             removeFriendButton.setVisibility(View.GONE);
+        }
+
+        if (yonaMessage != null) {
+            ((YonaActivity) getActivity()).updateTabIcon(true);
         }
         int NUMBER_LENGTH = 9;
 
