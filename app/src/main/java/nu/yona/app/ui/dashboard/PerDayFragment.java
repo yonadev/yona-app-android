@@ -215,7 +215,7 @@ public class PerDayFragment extends BaseFragment {
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList() != null
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().size() > 0) {
             perDayStickyAdapter.notifyDataSetChange(setHeaderListView());
-        } else {
+        } else if (YonaActivity.getActivity() != null) {
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
         }
     }
