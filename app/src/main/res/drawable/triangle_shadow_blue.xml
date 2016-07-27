@@ -11,21 +11,9 @@
             <solid android:color="@color/mid_blue_two" />
         </shape>
     </item>
-    <item>
-        <rotate
-            android:fromDegrees="-13"
-            android:pivotX="-10%"
-            android:pivotY="120%"
-            android:toDegrees="20">
-            <shape>
-                <size
-                    android:width="45dp"
-                    android:height="45dp" />
-                <stroke
-                    android:width="1dp"
-                    android:color="@color/mid_blue" />
-                <solid android:color="@color/mid_blue" />
-            </shape>
-        </rotate>
-    </item>
+
+    <item
+        android:width="@dimen/toolbar_width"
+        android:height="@dimen/toolbar_height"
+        android:drawable="@drawable/triagle_blue_bitmap"></item>
 </layer-list>

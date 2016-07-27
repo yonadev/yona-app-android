@@ -8,7 +8,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/challenges_header_detail_height"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/challenges_header_margin_bottom"
@@ -37,7 +37,6 @@
         style="@style/SubscribeTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/challenges_margin_bottom"
         android:layout_marginTop="@dimen/challenges_desc_margin_top"
         android:gravity="center" />
 

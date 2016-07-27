@@ -62,13 +62,14 @@
     <dimen name="passcode_error_margin_top">44dp</dimen>
     <dimen name="passcode_box_margin_top">36dp</dimen>
     <!-- Challenges -->
+    <dimen name="challenges_header_detail_height">236dp</dimen>
     <dimen name="challenges_tab_layout_height">135dp</dimen>
     <dimen name="challenges_margin_left">15dp</dimen>
     <dimen name="challenges_counter_width">18dp</dimen>
     <dimen name="challenges_counter_height">16dp</dimen>
     <dimen name="tab_counter_padding_left">6dp</dimen>
     <dimen name="tab_challenges_image_padding">4dp</dimen>
-    <dimen name="tab_challenges_margin_top">40dp</dimen>
+    <dimen name="tab_challenges_margin_top">28dp</dimen>
     <dimen name="header_creation_height">81dp</dimen>
     <dimen name="img_padding">4dp</dimen>
     <dimen name="img_width">56dp</dimen>
@@ -84,13 +85,14 @@
     <dimen name="toolbar_icon_size">24dp</dimen>
     <dimen name="image_bucket_size">96dp</dimen>
     <dimen name="margin_bucket_screen">47dp</dimen>
-    <dimen name="image_margin_top">26dp</dimen>
+    <dimen name="image_margin_top">22dp</dimen>
     <dimen name="challenges_padding_imge">24dp</dimen>
     <dimen name="challenges_margin_top">23dp</dimen>
-    <dimen name="challenges_desc_margin_top">13dp</dimen>
+    <dimen name="challenges_desc_margin_top">14dp</dimen>
     <dimen name="challenges_margin_bottom">30dp</dimen>
     <dimen name="challenges_footer_text_bottom_padding">10dp</dimen>
     <dimen name="challenges_header_margin_bottom">31dp</dimen>
+    <dimen name="challenges_tab_height">108dp</dimen>
 
     <dimen name="footer_challenges_detail">170dp</dimen>
     <dimen name="challenge_opslaan_margin">22dp</dimen>
@@ -212,5 +214,7 @@
     <dimen name="loading_thick_size">3dp</dimen>
     <dimen name="sticky_header_height">53dp</dimen>
 
+    <dimen name="toolbar_height">50dp</dimen>
+    <dimen name="toolbar_width">215dp</dimen>
 
 </resources>
