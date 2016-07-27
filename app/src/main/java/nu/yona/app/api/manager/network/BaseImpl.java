@@ -40,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 class BaseImpl {
     private final int maxStale = 60 * 60 * 24 * 28; // keep cache for 28 days.
-    public final String localLanguage = Locale.getDefault().toString().replace('_', '-');
+//    public final String localLanguage = ;
     private final Interceptor getInterceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {

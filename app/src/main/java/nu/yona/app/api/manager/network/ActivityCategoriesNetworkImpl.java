@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.manager.network;
 
+import java.util.Locale;
+
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.listener.DataLoadListener;
 import retrofit2.Call;
@@ -28,7 +30,7 @@ public class ActivityCategoriesNetworkImpl extends BaseImpl {
      * @param listener the listener
      */
     public void getActivityCategories(String url, final DataLoadListener listener) {
-        getRestApi().getActivityCategories(localLanguage).enqueue(new Callback<ActivityCategories>() {
+        getRestApi().getActivityCategories(Locale.getDefault().toString().replace('_', '-')).enqueue(new Callback<ActivityCategories>() {
             @Override
             public void onResponse(Call<ActivityCategories> call, Response<ActivityCategories> response) {
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
