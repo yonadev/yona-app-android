@@ -9,7 +9,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0.0"
-        manifestPlaceholders = [HOCKEYAPP_APP_ID: "ad6d6ae9670e48b693b8fbf377fffb2f"]
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "e1e6d73a1d244306ba07e8a43a8565f4"]
     }
     buildTypes {
         release {
@@ -70,8 +70,11 @@ android {
         }
         zacceptance {
             //do nothing here, just merge in custom res
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: "ad6d6ae9670e48b693b8fbf377fffb2f"]
         }
-
+        zuat {
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: "e1e6d73a1d244306ba07e8a43a8565f4"]
+        }
     }
 
     buildTypes {
