@@ -12,7 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -26,7 +25,7 @@ import nu.yona.app.YonaApplication;
  */
 public class DateUtility {
 
-    private static final int mNoOfDayPerWeek = 7;
+    private static final int M_NO_OF_DAY_PER_WEEK = 7;
     /**
      * The constant DAY_FORMAT.
      */
@@ -50,7 +49,7 @@ public class DateUtility {
 
         String relativeDate = "";
 
-        long days = getDateDiff(future.getTime(), Calendar.getInstance().getTime(), TimeUnit.DAYS);
+        long days = getDateDiff(future.getTime(), Calendar.getInstance(Locale.getDefault()).getTime(), TimeUnit.DAYS);
 
         if (days == 0) {
             relativeDate = YonaApplication.getAppContext().getString(R.string.today);
@@ -59,7 +58,7 @@ public class DateUtility {
         } else {
             try {
                 Date date = new Date(future.getTimeInMillis());
-                Calendar futureCalendar = Calendar.getInstance();
+                Calendar futureCalendar = Calendar.getInstance(Locale.getDefault());
                 futureCalendar.setTime(date);
                 relativeDate = new SimpleDateFormat("EEEE, d MMM").format(future.getTime());
 
@@ -80,19 +79,20 @@ public class DateUtility {
      */
     public static String getRetriveWeek(String week) throws ParseException {
         String retriveWeek = "";
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
-        Calendar prevWeekCalendar = Calendar.getInstance();
-        prevWeekCalendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 2);
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
+        Calendar prevWeekCalendar = Calendar.getInstance(Locale.getDefault());
+        prevWeekCalendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
         if (WEEK_FORMAT.format(calendar.getTime()).equals(week)) {
             retriveWeek = YonaApplication.getAppContext().getString(R.string.this_week);
         } else if (WEEK_FORMAT.format(prevWeekCalendar.getTime()).equals(week)) {
             retriveWeek = YonaApplication.getAppContext().getString(R.string.last_week);
         } else {
-            calendar = Calendar.getInstance();
+            calendar = Calendar.getInstance(Locale.getDefault());
             calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
             Date date = WEEK_FORMAT.parse(week);
             calendar.setTime(date);
+            calendar.add(Calendar.DAY_OF_WEEK, -1);
             Date startDate = calendar.getTime();
             calendar.add(Calendar.DAY_OF_MONTH, 6);
             Date endDate = calendar.getTime();
@@ -135,15 +135,13 @@ public class DateUtility {
     public static Map<String, String> getWeekDay(String currentYearWeek) {
         LinkedHashMap<String, String> listOfdates = new LinkedHashMap<>();
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.clear();
-            calendar.setTime(WEEK_FORMAT.parse(currentYearWeek));// all done
-            int delta = calendar.get(GregorianCalendar.DAY_OF_WEEK) - 1;
-            calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) + 1);
-            calendar.add(Calendar.DAY_OF_MONTH, delta);
-            for (int i = 0; i < mNoOfDayPerWeek; i++) {
+            Date date = WEEK_FORMAT.parse(currentYearWeek);
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.setTime(date);
+            calendar.add(Calendar.DAY_OF_WEEK, -1);
+            for (int i = 0; i < M_NO_OF_DAY_PER_WEEK; i++) {
                 listOfdates.put(DAY_FORMAT.format(calendar.getTime()), DAY_NO_FORMAT.format(calendar.getTime()));
-                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                calendar.add(Calendar.DAY_OF_WEEK, 1);
             }
         } catch (Exception e) {
             AppUtils.throwException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
