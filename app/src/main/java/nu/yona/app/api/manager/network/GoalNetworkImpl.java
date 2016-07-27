@@ -8,6 +8,8 @@
 
 package nu.yona.app.api.manager.network;
 
+import java.util.Locale;
+
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.Goals;
 import nu.yona.app.api.model.PostBudgetYonaGoal;
@@ -31,7 +33,7 @@ public class GoalNetworkImpl extends BaseImpl {
      */
     public void getUserGoals(String url, DataLoadListener listener) {
         try {
-            getRestApi().getUserGoals(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),  localLanguage).enqueue(getGoals(listener));
+            getRestApi().getUserGoals(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),  Locale.getDefault().toString().replace('_', '-')).enqueue(getGoals(listener));
         } catch (Exception e) {
             AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
@@ -47,7 +49,7 @@ public class GoalNetworkImpl extends BaseImpl {
      */
     public void putUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener) {
         try {
-            getRestApi().putUserGoals(url, yonaPassword,  localLanguage, goal).enqueue(getGoals(listener));
+            getRestApi().putUserGoals(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), goal).enqueue(getGoals(listener));
         } catch (Exception e) {
             AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
@@ -63,7 +65,7 @@ public class GoalNetworkImpl extends BaseImpl {
      */
     public void putUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener) {
         try {
-            getRestApi().putUserGoals(url, yonaPassword,  localLanguage, goal).enqueue(getGoals(listener));
+            getRestApi().putUserGoals(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), goal).enqueue(getGoals(listener));
         } catch (Exception e) {
             AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
@@ -78,7 +80,7 @@ public class GoalNetworkImpl extends BaseImpl {
      */
     public void deleteGoal(String url, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().deleteUserGoal(url, yonaPassword,  localLanguage).enqueue(getCall(listener));
+            getRestApi().deleteUserGoal(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
@@ -94,7 +96,7 @@ public class GoalNetworkImpl extends BaseImpl {
      */
     public void updateUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener) {
         try {
-            getRestApi().updateUserGoal(url, yonaPassword,  localLanguage, "", goal).enqueue(getGoals(listener));
+            getRestApi().updateUserGoal(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), "", goal).enqueue(getGoals(listener));
         } catch (Exception e) {
             AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
@@ -110,7 +112,7 @@ public class GoalNetworkImpl extends BaseImpl {
      */
     public void updateUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener) {
         try {
-            getRestApi().updateUserGoal(url, yonaPassword,  localLanguage, "", goal).enqueue(getGoals(listener));
+            getRestApi().updateUserGoal(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), "", goal).enqueue(getGoals(listener));
         } catch (Exception e) {
             AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }

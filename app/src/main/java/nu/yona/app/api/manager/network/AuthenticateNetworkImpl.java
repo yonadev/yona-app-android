@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.manager.network;
 
+import java.util.Locale;
+
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.PinResetDelay;
@@ -38,9 +40,9 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     public void registerUser(String url, String password, RegisterUser object, boolean isEditMode, final DataLoadListener listener) {
         try {
             if (!isEditMode) {
-                getRestApi().registerUser(password, localLanguage, object).enqueue(getUserCallBack(listener));
+                getRestApi().registerUser(password, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
             } else {
-                getRestApi().updateRegisterUser(url, password, localLanguage, object).enqueue(getUserCallBack(listener));
+                getRestApi().updateRegisterUser(url, password, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -49,7 +51,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
 
     public void registerUser(String url, String password, RegisterUser object, DataLoadListener listener) {
         try {
-            getRestApi().registerUser(url, password, localLanguage, object).enqueue(getUserCallBack(listener));
+            getRestApi().registerUser(url, password, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -65,7 +67,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void registerUserOverride(String password, RegisterUser object, String otp, final DataLoadListener listener) {
         try {
-            getRestApi().overrideRegisterUser(password, localLanguage, otp, object).enqueue(getUserCallBack(listener));
+            getRestApi().overrideRegisterUser(password, Locale.getDefault().toString().replace('_', '-'), otp, object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -80,7 +82,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void getUser(String url, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().getUser(url, yonaPassword, localLanguage).enqueue(getUserCallBack(listener));
+            getRestApi().getUser(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -96,7 +98,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void verifyMobileNumber(String password, String url, OTPVerficationCode otp, final DataLoadListener listener) {
         try {
-            getRestApi().verifyMobileNumber(url, password, localLanguage, otp).enqueue(getUserCallBack(listener));
+            getRestApi().verifyMobileNumber(url, password, Locale.getDefault().toString().replace('_', '-'), otp).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -111,7 +113,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void resendOTP(String url, String password, final DataLoadListener listener) {
         try {
-            getRestApi().resendOTP(url, password, localLanguage).enqueue(getCall(listener));
+            getRestApi().resendOTP(url, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -125,7 +127,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void requestUserOverride(String mobileNumber, DataLoadListener listener) {
         try {
-            getRestApi().requestUserOverride(localLanguage, mobileNumber).enqueue(getCall(listener));
+            getRestApi().requestUserOverride(Locale.getDefault().toString().replace('_', '-'), mobileNumber).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -140,7 +142,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void deleteUser(String url, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().deleteUser(url, yonaPassword, localLanguage).enqueue(getCall(listener));
+            getRestApi().deleteUser(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -155,7 +157,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doPasscodeReset(String url, String yonaPassword, final DataLoadListener listener) {
         try {
-            getRestApi().requestPinReset(url, yonaPassword, localLanguage).enqueue(new Callback<PinResetDelay>() {
+            getRestApi().requestPinReset(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(new Callback<PinResetDelay>() {
                 @Override
                 public void onResponse(Call<PinResetDelay> call, Response<PinResetDelay> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {
@@ -184,7 +186,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doVerifyPin(String url, String otp, final DataLoadListener listener) {
         try {
-            getRestApi().verifyPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), localLanguage, new OTPVerficationCode(otp)).enqueue(getCall(listener));
+            getRestApi().verifyPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), Locale.getDefault().toString().replace('_', '-'), new OTPVerficationCode(otp)).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -197,7 +199,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void doClearPin(String url) {
         try {
-            getRestApi().clearPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), localLanguage).enqueue(getCall(new DataLoadListener() {
+            getRestApi().clearPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     // Do nothing as we don't worry about this response.
