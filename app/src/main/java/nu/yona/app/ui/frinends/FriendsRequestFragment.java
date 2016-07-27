@@ -111,6 +111,7 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
                 mTxtContentDesc.setText(getString(R.string.friend_request_content, mYonaMessage.getEmbedded().getYonaUser().getMobileNumber()));
             }
         }
+        YonaActivity.getActivity().updateTabIcon(true);
     }
 
     @Override
