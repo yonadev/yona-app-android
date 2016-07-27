@@ -65,7 +65,7 @@
     <string name="passcode">CODE</string>
     <string name="inloggin">LOGIN</string>
     <string name="enterpasscode">You need to enter a 6 digit alphanumeric passcode.</string>
-    <string name="resetpinrequest">Your request for reset has been received. You will receive an text message with a PIN reset confirmation code within %1$s hours.</string>
+    <string name="resetpinrequest">Your request for reset has been received. You will receive an text message with a PIN reset confirmation code within %1$s.</string>
     <string name="useroverride">Mobile Number %1$s is already registered with Yona. Do you want to re-register same number? (Note: All data associated with this number will be removed, if you want to add another device, you can go back and click on Login.)</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -114,7 +114,7 @@
     <string name="timepickerendtimelable">Select the <b>time untill</b></string>
     <string name="timepickererror">Current time must be future time</string>
     <string name="timepickerselect">Select time you want to spent:</string>
-    <string name="add_goal_error">Please add at least one time to add in %1s$.</string>
+    <string name="add_goal_error">Please add at least one time to add in %1$s.</string>
     <string name="challengesdetail">CAPTURE %1$s</string>
     <string name="challengestimesbetween">between %1$s and %2$s </string>
     <string name="edit_profile">EDIT ACCOUNT</string>
