@@ -10,21 +10,20 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/twenty"
+    android:layout_height="@dimen/challenges_tab_height"
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tab_challenges_margin_top"
         android:gravity="center_horizontal">
 
         <ImageView
             android:id="@+id/tab_image"
             android:layout_width="@dimen/tab_icon_height"
             android:layout_height="@dimen/tab_icon_height"
-            android:layout_marginTop="@dimen/tab_challenges_margin_top"
             android:padding="@dimen/tab_challenges_image_padding"
             android:src="@drawable/icn_challenge_nogo" />
 
@@ -49,6 +48,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/thirteen"
         android:gravity="center_horizontal"
-        android:text="Challangels"
         android:textColor="@color/white" />
 </LinearLayout>
