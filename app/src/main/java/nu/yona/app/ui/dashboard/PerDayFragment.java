@@ -49,6 +49,7 @@ public class PerDayFragment extends BaseFragment {
     private LinearLayoutManager mLayoutManager;
     //    private EmbeddedYonaActivity embeddedYonaActivity;
     private boolean mIsLoading = false;
+    private boolean isDataLoading = false;
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
     /**
@@ -158,7 +159,10 @@ public class PerDayFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        refreshAdapter();
+        if (!isDataLoading) {
+            isDataLoading = true;
+            refreshAdapter();
+        }
     }
 
     /**
@@ -194,6 +198,7 @@ public class PerDayFragment extends BaseFragment {
             APIManager.getInstance().getActivityManager().getDaysActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), mYonaHeaderTheme.getDayActivityUrl(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
+                    isDataLoading = false;
                     YonaActivity.getActivity().showLoadingView(false, null);
                     showData();
                     mIsLoading = false;
@@ -201,6 +206,7 @@ public class PerDayFragment extends BaseFragment {
 
                 @Override
                 public void onError(Object errorMessage) {
+                    isDataLoading = false;
                     YonaActivity.getActivity().showLoadingView(false, null);
                     YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
                 }
