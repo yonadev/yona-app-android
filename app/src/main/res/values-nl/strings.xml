@@ -177,4 +177,5 @@
     <string name="file_write_permission_detail">Yona wil bestanden op je telefoon bewaren. Je wordt doorgestuurd naar instellingen. Klik op \"Toestaan\" en zet Toestemming van opslag \"aan\".</string>
     <string name="certificate_installation">Certificaat Installeren</string>
     <string name="certfiicate_installtion_detail"> Om veiligheidsredenen is het installeren van een certificaat noodzakelijk. Klik op \"OK\".</string>
+    <string name="not_accepted_yet">heeft nog niet geaccepteerd</string>
 </resources>

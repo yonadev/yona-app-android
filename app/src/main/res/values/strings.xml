@@ -179,4 +179,5 @@
     <string name="contact_permission_detail">Yona wants to read contacts, you will redirect on setting screen, please click on "Permission" and "ON" Contact permission.</string>
     <string name="certificate_installation">Certificate Installation</string>
     <string name="certfiicate_installtion_detail">Installation of certificate required for security reason. Please click ok on next alert.</string>
+    <string name="not_accepted_yet">Not accepted yet</string>
 </resources>

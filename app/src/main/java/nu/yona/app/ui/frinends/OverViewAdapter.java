@@ -8,6 +8,7 @@
 
 package nu.yona.app.ui.frinends;
 
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -35,15 +36,16 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
 
     private final OnFriendsItemClickListener mOnFriendsItemClickListener;
     private List<YonaBuddy> listYonaMessage;
-
+    private Context context;
     /**
      * Instantiates a new Overview adapter.
      *
      * @param yonaMessages      the yona messages
      * @param itemClickListener the item click listener
      */
-    public OverViewAdapter(final List<YonaBuddy> yonaMessages, OnFriendsItemClickListener itemClickListener) {
+    public OverViewAdapter(final List<YonaBuddy> yonaMessages, Context context, OnFriendsItemClickListener itemClickListener) {
         this.listYonaMessage = yonaMessages;
+        this.context = context;
         this.mOnFriendsItemClickListener = itemClickListener;
 
     }
@@ -73,7 +75,7 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
             if (yonaObject.getEmbedded() != null) {
                 if (yonaObject.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getFirstName())) {
                     String userFirstname = yonaObject.getEmbedded().getYonaUser().getFirstName();
-                    holder.txtFooterMsg.setText(userFirstname);
+                    holder.txtFooterMsg.setText(context.getString(R.string.not_accepted_yet));
                     if (userFirstname.length() > 0) {
                         holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(username.substring(0, 1).toUpperCase(),
                                 ContextCompat.getColor(YonaActivity.getActivity(), R.color.grape)));
