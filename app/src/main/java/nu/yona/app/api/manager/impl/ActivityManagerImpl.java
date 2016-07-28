@@ -505,15 +505,21 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     private void updateDayActivityList(List<DayActivity> dayActivityList, DayActivity dayActivity, DataLoadListener listener) {
-        for (int i = 0; i < dayActivityList.size(); i++) {
-            try {
-                if (dayActivityList.get(i).getLinks().getSelf().getHref().equals(dayActivity.getLinks().getSelf().getHref())) {
-                    dayActivityList.set(i, dayActivity);
-                    listener.onDataLoad(dayActivityList);
-                    break;
+        if (dayActivityList != null) {
+            for (int i = 0; i < dayActivityList.size(); i++) {
+                try {
+                    if (dayActivityList.get(i) != null && dayActivityList.get(i).getLinks() != null && dayActivityList.get(i).getLinks().getSelf() != null
+                            && !TextUtils.isEmpty(dayActivityList.get(i).getLinks().getSelf().getHref())
+                            && dayActivity.getLinks() != null && dayActivity.getLinks().getSelf() != null
+                            &&  !TextUtils.isEmpty(dayActivity.getLinks().getSelf().getHref())
+                            && dayActivityList.get(i).getLinks().getSelf().getHref().equals(dayActivity.getLinks().getSelf().getHref())) {
+                        dayActivityList.set(i, dayActivity);
+                        listener.onDataLoad(dayActivityList);
+                        break;
+                    }
+                } catch (Exception e) {
+                    AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
                 }
-            } catch (Exception e) {
-                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
             }
         }
     }
