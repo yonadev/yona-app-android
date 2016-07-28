@@ -58,7 +58,7 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
         mFriendsRecyclerView = (RecyclerView) view.findViewById(R.id.listView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
         mFriendsRecyclerView.setLayoutManager(mLayoutManager);
-        mOverViewAdapter = new OverViewAdapter(mListBuddy, new OnFriendsItemClickListener() {
+        mOverViewAdapter = new OverViewAdapter(mListBuddy, YonaActivity.getActivity(), new OnFriendsItemClickListener() {
             @Override
             public void onFriendsItemClick(View v) {
                 Intent friendIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
