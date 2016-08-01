@@ -14,7 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
-import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
@@ -33,7 +33,6 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
-import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -56,7 +55,10 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
         @Override
         public void afterTextChanged(Editable s) {
-
+            if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ')) {
+                firstName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+                lastName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+            }
         }
     };
 
@@ -77,11 +79,9 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
         firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
         firstName.addTextChangedListener(watcher);
-        firstName.setFilters(new InputFilter[]{AppUtils.getFilter()});
 
         lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
         lastName.addTextChangedListener(watcher);
-        lastName.setFilters(new InputFilter[]{AppUtils.getFilter()});
 
         firstNameLayout.setOnClickListener(new View.OnClickListener() {
             @Override

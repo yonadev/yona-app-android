@@ -268,21 +268,21 @@ public class AppUtils {
      *
      * @return the filter
      */
-    public static InputFilter getFilter() {
-        if (filter == null) {
-            filter = new InputFilter() {
-                @Override
-                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                    String blockCharacterSet = "~#^&|$%*!@/()-'\":;,?{}=!$^';,?×÷<>{}€£¥₩%~`¤♡♥_|《》¡¿°•○●□■◇◆♧♣▲▼▶◀↑↓←→☆★▪:-);-):-(:'(:O 1234567890";
-                    if (source != null && blockCharacterSet.contains(("" + source))) {
-                        return "";
-                    }
-                    return null;
-                }
-            };
-        }
-        return filter;
-    }
+//    public static InputFilter getFilter() {
+//        if (filter == null) {
+//            filter = new InputFilter() {
+//                @Override
+//                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+//                    String blockCharacterSet = "~#^&|$%*!@/()-'\":;,?{}=!$^';,?×÷<>{}€£¥₩%~`¤♡♥_|《》¡¿°•○●□■◇◆♧♣▲▼▶◀↑↓←→☆★▪:-);-):-(:'(:O 1234567890";
+//                    if (source != null && blockCharacterSet.contains(("" + source))) {
+//                        return "";
+//                    }
+//                    return null;
+//                }
+//            };
+//        }
+//        return filter;
+//    }
 
     /**
      * Get splited time. ex: 21:00 - 23:54 whill return 21:00 and 23:54
