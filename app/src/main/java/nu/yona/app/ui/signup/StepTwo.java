@@ -13,7 +13,9 @@ package nu.yona.app.ui.signup;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.text.InputFilter;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +34,6 @@ import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
-import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -43,6 +44,25 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     private YonaFontEditTextView nickName;
     private TextInputLayout mobileNumberLayout, nickNameLayout;
     private SignupActivity activity;
+
+    private final TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            nickName.setError(null);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ')) {
+                nickName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+            }
+        }
+    };
 
     @Nullable
     @Override
@@ -55,7 +75,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
 
         mobileNumber = (YonaFontNumberTextView) view.findViewById(R.id.mobile_number);
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
-        nickName.setFilters(new InputFilter[]{AppUtils.getFilter()});
+        nickName.addTextChangedListener(watcher);
 
         mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
         nickNameLayout = (TextInputLayout) view.findViewById(R.id.nick_name_layout);

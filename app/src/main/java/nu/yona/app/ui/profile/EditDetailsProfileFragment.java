@@ -20,6 +20,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -89,7 +90,11 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ')) {
+                    firstName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+                    lastName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+                    nickName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+                }
             }
         };
 

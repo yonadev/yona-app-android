@@ -16,6 +16,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -62,7 +63,10 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
         @Override
         public void afterTextChanged(Editable s) {
-
+            if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ')) {
+                firstName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+                lastName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+            }
         }
     };
     private YonaFontButton addFriendButton;
@@ -105,9 +109,6 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
 
         addFriendButton = (YonaFontButton) view.findViewById(R.id.addFriendButton);
-
-        firstName.setFilters(new InputFilter[]{AppUtils.getFilter()});
-        lastName.setFilters(new InputFilter[]{AppUtils.getFilter()});
 
         mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
         mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity(), mobileNumberLayout));
