@@ -11,6 +11,7 @@ package nu.yona.app.ui.tour;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.animation.Interpolator;
 
 import java.lang.reflect.Field;
@@ -21,6 +22,8 @@ import java.lang.reflect.Field;
 public class CarrouselViewPager extends ViewPager {
 
     private CarrouselScroller mScroller = null;
+    private float mStartDragX;
+    private OnSwipeOutListener mListener;
 
     /**
      * Instantiates a new Carrousel view pager.
@@ -59,6 +62,35 @@ public class CarrouselViewPager extends ViewPager {
             scroller.set(this, mScroller);
         } catch (Exception e) {
         }
+    }
+
+    public void setOnSwipeOutListener(OnSwipeOutListener listener) {
+        mListener = listener;
+    }
+
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        float x = ev.getX();
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mStartDragX = x;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mStartDragX < x) {
+                    mListener.onSwipeOutAtStart();
+                } else if (mStartDragX > x) {
+                    mListener.onSwipeOutAtEnd();
+                }
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    public interface OnSwipeOutListener {
+        public void onSwipeOutAtStart();
+
+        public void onSwipeOutAtEnd();
     }
 
 }
