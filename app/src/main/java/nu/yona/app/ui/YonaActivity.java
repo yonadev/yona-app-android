@@ -103,19 +103,20 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static final int INSTALL_CERTIFICATE = 7;
     private static YonaActivity activity;
     private BaseFragment mContent, homeFragment;
-    private boolean isStateActive = false;
+    private boolean isStateActive;
     private boolean mStateSaved;
-    private boolean isBackPressed = false;
+    private boolean isBackPressed;
     private TabLayout mTabLayout;
     private boolean isToDisplayLogin = true;
-    private boolean skipVerification = false;
-    private boolean launchedPinActiivty = false;
+    private boolean skipVerification;
+    private boolean launchedPinActiivty;
     private int READ_EXTERNAL_STORAGE_REQUEST = 1;
     private int CAMERA_REQUEST = 2;
     private Fragment oldFragment;
     private User user;
     private boolean isUpdateIconOnly;
     private boolean isUserFromOnCreate;
+    private boolean isUserFromPinScreenAlert;
 
     /**
      * Gets activity.
@@ -212,6 +213,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private void updateTab(TabLayout.Tab tab) {
         switch (tab.getCustomView().getTag().hashCode()) {
             case R.string.dashboard:
+                YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(null);
+                YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(null);
                 Bundle bundle = new Bundle();
                 if (user != null && user.getLinks() != null) {
                     bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
@@ -223,6 +226,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 replaceFragmentWithAction(dashboardIntent);
                 break;
             case R.string.friends:
+                YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
                 replaceFragmentWithAction(new Intent(IntentEnum.ACTION_FRIENDS.getActionString()));
                 break;
             case R.string.challenges:
@@ -245,6 +249,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
         super.onResume();
         if (isToDisplayLogin) {
+            isUserFromPinScreenAlert = true;
             Intent intent = new Intent(this, PinActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(AppConstant.SCREEN_TYPE, AppConstant.LOGGED_IN);
@@ -263,7 +268,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             hideSoftInput();
             if (isUserFromOnCreate) {
                 isUserFromOnCreate = false;
-                isToDisplayLogin = true;
                 getFileWritePermission();
             } else {
                 checkVPN();
@@ -325,8 +329,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         } else if (!skipVerification) {
             isToDisplayLogin = true;
         } else {
+            if (isUserFromPinScreenAlert) {
+                isUserFromPinScreenAlert = false;
+                isToDisplayLogin = true;
+            }
             skipVerification = false;
         }
+        YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
+        YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(null);
+        YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(null);
         mStateSaved = true;
     }
 
@@ -361,7 +372,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 }
                 break;
             case IMPORT_PROFILE:
-                isToDisplayLogin = false;
                 if (resultCode == RESULT_OK) {
                     if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID))) {
                         Log.e("Start VPN", "Start VPN");
@@ -889,7 +899,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         isToDisplayLogin = false;
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, PICK_CONTACT);
-        skipVerification = true;
+        setSkipVerification(true);
     }
 
     /**
@@ -1146,20 +1156,19 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void checkVPN() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
-                    checkFileWritePermission();
-                } else {
-                    isUserFromOnCreate = true;
-                    isToDisplayLogin = false;
-                    skipVerification = true;
-                    Log.e("Start VPN", "Start VPN");
-                    AppUtils.startVPN(YonaActivity.this);
-                }
-            }
-        }, AppConstant.TIMER_DELAY_TWO_SEC);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                isToDisplayLogin = false;
+//                skipVerification = true;
+//                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
+//                    checkFileWritePermission();
+//                } else {
+//                    isUserFromOnCreate = true;
+//                    AppUtils.startVPN(YonaActivity.this);
+//                }
+//            }
+//        }, AppConstant.ONE_SECOND);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -1198,6 +1207,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     private void importVPNProfile() {
         if (YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() != null) {
+            setSkipVerification(true);
             Intent startImport = new Intent(this, ConfigConverter.class);
             startImport.setAction(ConfigConverter.IMPORT_PROFILE);
             Uri uri = Uri.parse(YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath());

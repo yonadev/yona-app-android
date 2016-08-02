@@ -166,12 +166,12 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
     }
 
     private void getDayActivity(boolean loadMore) {
-        if (YonaActivity.getActivity().isToDisplayLogin()) {
-            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
-            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() != null) {
-                return;
-            }
-        }
+//        if (YonaActivity.getActivity().isToDisplayLogin()) {
+//            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
+//            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() != null) {
+//                return;
+//            }
+//        }
         final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
                 || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
