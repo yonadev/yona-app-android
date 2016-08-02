@@ -31,10 +31,10 @@ import nu.yona.app.utils.PreferenceConstant;
 /**
  * Created by bhargavsuthar on 18/05/16.
  */
-public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener, ViewPager.PageTransformer {
+public class YonaCarrouselActivity extends BaseActivity implements View.OnClickListener, ViewPager.PageTransformer {
 
-    private final int TIMER_DELAY = 3000;
-    private final int TIMER_PERIOD = 4000;
+    private final int TIMER_DELAY = 5000;
+    private final int TIMER_PERIOD = 5000;
     private final float TRANFORMATION_POSITION = 0.999f;
     /**
      * The View.
@@ -46,7 +46,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
     private int dotsCount;
     private ImageView[] dots;
     private YonaCarrouselAdapter mAdapter;
-    private int currentPage = 0;
+    private int currentPage;
     private Timer timer = new Timer();
     private int[] mImageResources = {
             R.drawable.slider_transparantie_clean,
@@ -72,9 +72,7 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.carrousel_pager_layout);
         initializeView();
@@ -95,7 +93,54 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
         mAdapter = new YonaCarrouselAdapter(this, mImageResources);
         intro_images.setAdapter(mAdapter);
         intro_images.setCurrentItem(0);
-        intro_images.addOnPageChangeListener(this);
+        intro_images.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(final int position) {
+                for (int i = 0; i < dotsCount; i++) {
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(YonaCarrouselActivity.this, R.drawable.carrousel_nonselected_item));
+                }
+                currentPage = position;
+                switch (position) {
+                    case 0:
+                        displayFirstItem(position);
+                        break;
+                    case 1:
+                        dots[position].setImageDrawable(ContextCompat.getDrawable(YonaCarrouselActivity.this, R.drawable.carrousel_selected_green_item_dot));
+                        break;
+                    case 2:
+                        dots[position].setImageDrawable(ContextCompat.getDrawable(YonaCarrouselActivity.this, R.drawable.carrousel_selected_blue_item_dot));
+                        break;
+                    case 3:
+                        dots[position].setImageDrawable(ContextCompat.getDrawable(YonaCarrouselActivity.this, R.drawable.carrousel_selected_orange_item_dot));
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        intro_images.setOnSwipeOutListener(new CarrouselViewPager.OnSwipeOutListener() {
+            @Override
+            public void onSwipeOutAtStart() {
+                if (timer != null) {
+                    timer.cancel();
+                    timer.schedule(new CarrouselTimer(), TIMER_DELAY, TIMER_PERIOD);
+                }
+            }
+
+            @Override
+            public void onSwipeOutAtEnd() {
+                if (timer != null) {
+                    timer.cancel();
+                    timer.schedule(new CarrouselTimer(), TIMER_DELAY, TIMER_PERIOD);
+                }
+            }
+        });
         intro_images.setPageTransformer(true, this);
         setUiPageViewController();
         timer.schedule(new CarrouselTimer(), TIMER_DELAY, TIMER_PERIOD);
@@ -132,15 +177,9 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
             case R.id.btn_next:
                 moveToLaunchActivity();
                 break;
-
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     /**
@@ -152,40 +191,13 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
         dots[position].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.carrousel_selected_pink_item_dot));
     }
 
-    @Override
-    public void onPageSelected(int position) {
-        for (int i = 0; i < dotsCount; i++) {
-            dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.carrousel_nonselected_item));
-        }
-        currentPage = position;
-        switch (position) {
-            case 0:
-                displayFirstItem(position);
-                break;
-            case 1:
-                dots[position].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.carrousel_selected_green_item_dot));
-                break;
-            case 2:
-                dots[position].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.carrousel_selected_blue_item_dot));
-                break;
-            case 3:
-                dots[position].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.carrousel_selected_orange_item_dot));
-                break;
-        }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
     /**
      * Redirect user to Launcher page
      */
     private void moveToLaunchActivity() {
         YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
         Intent intent = new Intent(this, LaunchActivity.class);
-        if(getIntent() != null && getIntent().getExtras() != null) {
+        if (getIntent() != null && getIntent().getExtras() != null) {
             intent.putExtras(getIntent().getExtras());
         }
         startActivity(intent);
@@ -233,8 +245,11 @@ public class YonaCarrouselActivity extends BaseActivity implements ViewPager.OnP
      * Changing next item of Carrousel till not reached last page
      */
     private void displayNextCarrousel() {
-        if (currentPage < mAdapter.getCount()) {
+        if (currentPage < mAdapter.getCount() - 1) {
             intro_images.setCurrentItem(currentPage + 1);
+        } else {
+            currentPage = 0;
+            intro_images.setCurrentItem(currentPage, false);
         }
     }
 
