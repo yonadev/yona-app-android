@@ -8,6 +8,10 @@
 
 package nu.yona.app.utils;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -79,19 +83,17 @@ public class DateUtility {
      */
     public static String getRetriveWeek(String week) throws ParseException {
         String retriveWeek = "";
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR));
-        Calendar prevWeekCalendar = Calendar.getInstance(Locale.getDefault());
-        prevWeekCalendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) - 1);
-        if (WEEK_FORMAT.format(calendar.getTime()).equals(week)) {
+        DateTime time = new DateTime();
+        int thisWeek = time.getWeekOfWeekyear();
+        int pastWeek = thisWeek - 1;
+        if (week.endsWith("" + thisWeek)) {
             retriveWeek = YonaApplication.getAppContext().getString(R.string.this_week);
-        } else if (WEEK_FORMAT.format(prevWeekCalendar.getTime()).equals(week)) {
+        } else if (week.endsWith("" + pastWeek)) {
             retriveWeek = YonaApplication.getAppContext().getString(R.string.last_week);
         } else {
-            calendar = Calendar.getInstance(Locale.getDefault());
-            calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
-            Date date = WEEK_FORMAT.parse(week);
-            calendar.setTime(date);
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            LocalDateTime localDateTime = LocalDateTime.parse(week, DateTimeFormat.forPattern("yyyy-'W'ww"));
+            calendar.setTime(new Date(localDateTime.toDate().getTime()));
             calendar.add(Calendar.DAY_OF_WEEK, -1);
             Date startDate = calendar.getTime();
             calendar.add(Calendar.DAY_OF_MONTH, 6);
@@ -135,9 +137,9 @@ public class DateUtility {
     public static Map<String, String> getWeekDay(String currentYearWeek) {
         LinkedHashMap<String, String> listOfdates = new LinkedHashMap<>();
         try {
-            Date date = WEEK_FORMAT.parse(currentYearWeek);
             Calendar calendar = Calendar.getInstance(Locale.getDefault());
-            calendar.setTime(date);
+            LocalDateTime localDateTime = LocalDateTime.parse(currentYearWeek, DateTimeFormat.forPattern("yyyy-'W'ww"));
+            calendar.setTime(new Date(localDateTime.toDate().getTime()));
             calendar.add(Calendar.DAY_OF_WEEK, -1);
             for (int i = 0; i < M_NO_OF_DAY_PER_WEEK; i++) {
                 listOfdates.put(DAY_FORMAT.format(calendar.getTime()), DAY_NO_FORMAT.format(calendar.getTime()));

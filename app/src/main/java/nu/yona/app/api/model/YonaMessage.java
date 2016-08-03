@@ -57,6 +57,9 @@ public class YonaMessage extends BaseEntity {
     @SerializedName("@Buddy")
     @Expose
     private YonaBuddy yonaBuddy;
+    @SerializedName("isRead")
+    @Expose
+    private boolean isRead;
 
     /**
      * Gets creation time.
@@ -248,5 +251,13 @@ public class YonaMessage extends BaseEntity {
 
     public void setYonaBuddy(YonaBuddy yonaBuddy) {
         this.yonaBuddy = yonaBuddy;
+    }
+
+    public boolean isRead() {
+        return this.isRead;
+    }
+
+    public void setRead(boolean read) {
+        this.isRead = read;
     }
 }
