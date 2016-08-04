@@ -63,9 +63,11 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaHeaderTheme;
+import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.challenges.ChallengesFragment;
@@ -213,6 +215,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private void updateTab(TabLayout.Tab tab) {
         switch (tab.getCustomView().getTag().hashCode()) {
             case R.string.dashboard:
+                getUserMessages();
                 YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(null);
                 YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(null);
                 Bundle bundle = new Bundle();
@@ -249,6 +252,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
         super.onResume();
         if (isToDisplayLogin) {
+            getUserMessages();
             isUserFromPinScreenAlert = true;
             Intent intent = new Intent(this, PinActivity.class);
             Bundle bundle = new Bundle();
@@ -274,6 +278,28 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
         }
     }
+
+
+    private void getUserMessages() {
+        YonaActivity.getActivity().showLoadingView(true, null);
+        APIManager.getInstance().getNotificationManager().getMessage(AppConstant.PAGE_SIZE, 0, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                if (result != null && result instanceof YonaMessages) {
+                    YonaMessages yonaMessages = (YonaMessages) result;
+                    YonaApplication.getEventChangeManager().getDataState().setNotificaitonCount(yonaMessages.getPage().getTotalElements());
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+            }
+        });
+    }
+
 
     @Override
     public void onDestroy() {

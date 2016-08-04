@@ -32,6 +32,7 @@ public class DataState {
     private EmbeddedYonaActivity embeddedWeekActivity;
     private EmbeddedYonaActivity embeddedWithBuddyActivity;
     private RegisterUser registerUser;
+    private int notificaitonCount;
 
     /**
      * Gets user.
@@ -153,7 +154,7 @@ public class DataState {
     }
 
     public RegisterUser getRegisterUser() {
-        if(registerUser == null) {
+        if (registerUser == null) {
             registerUser = new RegisterUser();
         }
         return registerUser;
@@ -162,4 +163,13 @@ public class DataState {
     public void setRegisterUser(RegisterUser registerUser) {
         this.registerUser = registerUser;
     }
+
+    public int getNotificaitonCount() {
+        return notificaitonCount;
+    }
+
+    public void setNotificaitonCount(int notificaitonCount) {
+        this.notificaitonCount = notificaitonCount;
+    }
+
 }
