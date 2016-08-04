@@ -50,7 +50,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
         YonaApplication.getEventChangeManager().registerListener(this);
         loadOTPFragment();
         screenTitle = getString(R.string.join);
-        screen_type = AppConstant.OTP;
+        screenType = AppConstant.OTP;
         if (getIntent() != null && getIntent().getExtras() != null) {
             user = (RegisterUser) getIntent().getExtras().getSerializable(AppConstant.USER);
         }

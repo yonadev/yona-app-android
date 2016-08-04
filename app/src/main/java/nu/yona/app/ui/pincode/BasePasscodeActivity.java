@@ -61,10 +61,6 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      */
     protected ImageView accont_image;
     /**
-     * The Screen type.
-     */
-    protected String screen_type;
-    /**
      * The Passcode title.
      */
     protected YonaFontTextView passcode_title, /**
@@ -179,8 +175,8 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void doPasscodeReset() {
-        if (screen_type != null) {
-            switch (screen_type) {
+        if (screenType != null) {
+            switch (screenType) {
                 case AppConstant.OTP:
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_OTP_RESEND, null);
                     break;
@@ -208,14 +204,14 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      */
     protected void updateScreenUI() {
         unblockUserUpdateUI();
-        if (!TextUtils.isEmpty(screen_type)) {
-            if (screen_type.equalsIgnoreCase(AppConstant.LOGGED_IN)) {
+        if (!TextUtils.isEmpty(screenType)) {
+            if (screenType.equalsIgnoreCase(AppConstant.LOGGED_IN)) {
                 visibleLoginView();
                 populateLoginView();
-            } else if (screen_type.equalsIgnoreCase(AppConstant.OTP)) {
+            } else if (screenType.equalsIgnoreCase(AppConstant.OTP)) {
                 populateOTPView();
                 visibleView();
-            } else if (screen_type.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
+            } else if (screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
                 populatePinResetVerificationView();
                 visibleLoginView();
                 visibleView();
