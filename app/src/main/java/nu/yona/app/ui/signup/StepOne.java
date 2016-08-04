@@ -130,8 +130,8 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
     private void goToNext() {
         if (validateFirstName() && validateLastName()) {
-            activity.getRegisterUser().setFirstName(firstName.getText().toString());
-            activity.getRegisterUser().setLastName(lastName.getText().toString());
+            YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setFirstName(firstName.getText().toString());
+            YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setLastName(lastName.getText().toString());
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT, null);
         }
     }
