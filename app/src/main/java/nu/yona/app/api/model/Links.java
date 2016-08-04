@@ -702,4 +702,5 @@ public class Links extends BaseEntity {
     public void setSslRootCert(Href sslRootCert) {
         this.sslRootCert = sslRootCert;
     }
+
 }

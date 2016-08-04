@@ -15,6 +15,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +38,7 @@ import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
+import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
@@ -44,6 +48,7 @@ import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
@@ -64,6 +69,54 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
     private LinearLayout commentBox;
     private YonaFontEditTextView messageTxt;
     private YonaFontButton sendButton;
+    private boolean isUserCommenting = false;
+    private RecyclerView commentRecyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private List<YonaMessage> mYonaCommentsList;
+    private CommentsAdapter commentsAdapter;
+    private YonaMessage currentReplayingMsg;
+
+    private View.OnClickListener messageItemClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v.getTag() instanceof YonaMessage) {
+                YonaMessage currentMsg = (YonaMessage) v.getTag();
+                //Todo update ui of current selected page of adapter
+                if (customPageAdapter != null) {
+                    setUserCommenting(true);
+                    currentReplayingMsg = currentMsg;
+                    visibleAddCommentView(currentReplayingMsg);
+                }
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SHOW_CHAT_OPTION, null);
+            }
+        }
+    };
+
+    private NestedScrollView.OnScrollChangeListener nesteadScrollistener = new NestedScrollView.OnScrollChangeListener() {
+        @Override
+        public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+            if (!isUserCommenting()) {
+                View view = (View) v.getChildAt(v.getChildCount() - 1);
+                int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+                if (diff == 0) {
+                    int visibleItemCount = mLayoutManager.getChildCount();
+                    int totalItemCount = mLayoutManager.getItemCount();
+                    int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+                    EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+                    if (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
+                            && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
+                            && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
+                        loadMoreItems();
+                    }
+                }
+            }
+        }
+    };
+
+    private void loadMoreItems() {
+        fetchComments(viewPager.getCurrentItem());
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,8 +151,11 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         messageTxt = (YonaFontEditTextView) view.findViewById(R.id.userMessage);
         sendButton = (YonaFontButton) view.findViewById(R.id.btnSend);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.nesteadScrollview);
+        nestedScrollView.setOnScrollChangeListener(nesteadScrollistener);
         customPageAdapter = new CustomPageAdapter(getActivity());
         viewPager.setAdapter(customPageAdapter);
+        initilizeCommentControl(view);
         if (getArguments() != null) {
             if (getArguments().get(AppConstant.OBJECT) != null) {
                 if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity) {
@@ -128,30 +184,27 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(messageTxt.getText())) {
-                    addComment(messageTxt.getText().toString());
+
+                    if (isUserCommenting()) {
+                        replyComment(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null);
+                    } else {
+                        addComment(messageTxt.getText().toString(), activity.getLinks().getAddComment().getHref());
+                    }
                 }
             }
         });
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                fetchComments(position);
-                updateFlow(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         YonaApplication.getEventChangeManager().registerListener(this);
         return view;
+    }
+
+    private void initilizeCommentControl(View view) {
+        commentRecyclerView = (RecyclerView) view.findViewById(R.id.messageList);
+        mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
+        mLayoutManager.setAutoMeasureEnabled(true);
+        commentsAdapter = new CommentsAdapter(mYonaCommentsList, messageItemClick);
+        commentRecyclerView.setLayoutManager(mLayoutManager);
+        commentRecyclerView.setAdapter(commentsAdapter);
     }
 
     @Override
@@ -165,6 +218,25 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         super.onResume();
         if (activity != null) {
             setDayActivityDetails();
+        }
+        if (viewPager != null) {
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    fetchComments(position);
+                    updateFlow(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
         }
     }
 
@@ -256,34 +328,67 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         }
     }
 
-    private void fetchComments(int position) {
+    private void fetchComments(final int position) {
         APIManager.getInstance().getActivityManager().getComments(dayActivityList, position, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                if (result instanceof List<?>) {
-                    dayActivityList = (List<DayActivity>) result;
-                    customPageAdapter.notifyDataSetChanged(dayActivityList);
-                }
-            }
+                    @Override
+                    public void onDataLoad(Object result) {
+                        if (result instanceof List<?>) {
+                            dayActivityList = (List<DayActivity>) result;
+                            customPageAdapter.notifyDataSetChanged(dayActivityList, position);
+                            updateCurrentCommentList(dayActivityList, position);
+                        }
+                    }
 
-            @Override
-            public void onError(Object errorMessage) {
-                if (errorMessage instanceof ErrorMessage) {
-                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
-                } else {
-                    YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
+                    @Override
+                    public void onError(Object errorMessage) {
+                        if (errorMessage instanceof ErrorMessage) {
+                            YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                        } else {
+                            YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
+                        }
+                    }
                 }
-            }
-        });
+
+        );
+    }
+
+    private void updateCurrentCommentList(List<DayActivity> dayActivityList, int position) {
+        DayActivity mDayActivity = dayActivityList.get(position);
+        if (mDayActivity != null && mDayActivity.getComments() != null && mDayActivity.getComments().getEmbedded() != null && mDayActivity.getComments().getEmbedded().getYonaMessages() != null) {
+            this.mYonaCommentsList = mDayActivity.getComments().getEmbedded().getYonaMessages();
+        } else {
+            this.mYonaCommentsList = null;
+        }
+        commentsAdapter.notifyDatasetChanged(mYonaCommentsList);
     }
 
     //TODO @Bhargav, when user click on send button from comment box, it will call this API.
-    private void addComment(String message) {
+
+    private void addComment(String message, String url) {
+        doComment(message, url, false);
+    }
+
+    private void replyComment(String message, String url) {
+        doComment(message, url, true);
+    }
+
+    private void doComment(String message, String url, boolean isreplaying) {
         YonaActivity.getActivity().showLoadingView(true, null);
-        APIManager.getInstance().getActivityManager().addComment(activity, message, new DataLoadListener() {
+        if (activity != null && activity.getComments() != null) {
+            if (activity.getComments().getPage() != null) {
+                activity.getComments().setPage(null);
+            }
+            if (activity.getComments().getEmbedded() != null && activity.getComments().getEmbedded().getYonaMessages() != null) {
+                activity.getComments().getEmbedded().getYonaMessages().clear();
+            }
+        }
+        APIManager.getInstance().getActivityManager().addComment(url, isreplaying, message, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 YonaActivity.getActivity().showLoadingView(false, null);
+                messageTxt.getText().clear();
+                updateParentcommentView();
+                fetchComments(viewPager.getCurrentItem());
                 //TODO response will be object of YonaMessage -> add in list of comments array and notify UI to update item in list.
             }
 
@@ -295,6 +400,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         });
     }
 
+
     @Override
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
@@ -305,4 +411,33 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
                 break;
         }
     }
+
+    public void visibleAddCommentView(YonaMessage currentMsg) {
+        if (commentsAdapter != null) {
+            List<YonaMessage> yonaMessages = new ArrayList<>();
+            yonaMessages.add(currentMsg);
+            this.mYonaCommentsList = yonaMessages;
+            commentsAdapter.notifyDatasetChanged(yonaMessages);
+        }
+    }
+
+    public boolean isUserCommenting() {
+        return isUserCommenting;
+    }
+
+    public void updateParentcommentView() {
+        setUserCommenting(false);
+        if (activity != null && activity.getComments() != null && activity.getComments().getEmbedded() != null && activity.getComments().getEmbedded().getYonaMessages() != null) {
+            mYonaCommentsList = activity.getComments().getEmbedded().getYonaMessages();
+        }
+        commentsAdapter.notifyDatasetChanged(mYonaCommentsList);
+        if (!mYonaHeaderTheme.isBuddyFlow() && yonaBuddy == null) {
+            commentBox.setVisibility(View.GONE);
+        }
+    }
+
+    public void setUserCommenting(boolean userCommenting) {
+        isUserCommenting = userCommenting;
+    }
+
 }

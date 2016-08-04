@@ -60,6 +60,9 @@ public class YonaMessage extends BaseEntity {
     @SerializedName("isRead")
     @Expose
     private boolean isRead;
+    @SerializedName("threadHeadMessageID")
+    @Expose
+    private String threadMessageId;
 
     /**
      * Gets creation time.
@@ -259,5 +262,13 @@ public class YonaMessage extends BaseEntity {
 
     public void setRead(boolean read) {
         this.isRead = read;
+    }
+
+    public String getThreadMessageId() {
+        return threadMessageId;
+    }
+
+    public void setThreadMessageId(String threadMessageId) {
+        this.threadMessageId = threadMessageId;
     }
 }

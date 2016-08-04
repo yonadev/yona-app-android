@@ -88,7 +88,7 @@ public interface ActivityManager {
 
     YonaBuddy findYonaBuddy(Href yonaBuddy);
 
-    void addComment(DayActivity dayActivity, String comment, final DataLoadListener listener);
+    void addComment(String url,boolean isReplaying, String comment, final DataLoadListener listener);
 
     void addComment(WeekActivity dayActivity, String comment, final DataLoadListener listener);
 }
