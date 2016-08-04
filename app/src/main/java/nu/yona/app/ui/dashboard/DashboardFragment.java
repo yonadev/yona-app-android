@@ -123,6 +123,7 @@ public class DashboardFragment extends BaseFragment {
                             leftIcon.setVisibility(View.GONE);
                             rightIcon.setVisibility(View.GONE);
                             rightIconProfile.setVisibility(View.VISIBLE);
+                            txtNotificationCounter.setVisibility(View.GONE);
                             rightIconProfile.setImageDrawable(TextDrawable.builder()
                                     .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
                                     .buildRound(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
@@ -136,6 +137,8 @@ public class DashboardFragment extends BaseFragment {
                                             ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
                             rightIcon.setVisibility(View.VISIBLE);
                             rightIconProfile.setVisibility(View.GONE);
+                            txtNotificationCounter.setText(""+YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount());
+                            txtNotificationCounter.setVisibility(View.VISIBLE);
                             rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
 
                             rightIconClickEvent(rightIcon);

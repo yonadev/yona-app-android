@@ -240,4 +240,7 @@
     <dimen name="child_msg_buddy_msg_margin_top">7dp</dimen>
     <dimen name="child_msg_buddy_reply_margin_top">12dp</dimen>
 
+    <dimen name="notification_counter_width">21dp</dimen>
+    <dimen name="notification_counter_height">21dp</dimen>
+
 </resources>
