@@ -37,7 +37,8 @@ public class BaseFragment extends Fragment {
     /**
      * The Toolbar title.
      */
-    protected YonaFontTextView toolbarTitle;
+    protected YonaFontTextView toolbarTitle,
+            txtNotificationCounter;
     /**
      * The Left icon.
      */
@@ -59,6 +60,7 @@ public class BaseFragment extends Fragment {
         leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
         rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
         rightIconProfile = (ImageView) mToolBar.findViewById(R.id.rightIconProfile);
+        txtNotificationCounter = (YonaFontTextView) mToolBar.findViewById(R.id.txtNotificationCounter);
         if (!(this instanceof DashboardFragment)) {
             mToolBar.removeView(leftIcon);
         }

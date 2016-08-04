@@ -205,6 +205,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="notificationTxt" parent="parentDate">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="DateSixtyOpacity" parent="parentDate">
         <item name="android:textColor">@color/black_sixty_opacity</item>
     </style>

@@ -11,8 +11,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/sixty_four"
-    android:layout_marginRight="@dimen/challenges_margin_left"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingRight="@dimen/challenges_margin_left">
 
     <ImageView
         android:id="@+id/leftIcon"
@@ -38,6 +38,17 @@
         android:gravity="center_vertical"
         android:maxLines="1"
         android:textColor="@color/white" />
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/txtNotificationCounter"
+        style="@style/BdgTxt"
+        android:layout_width="@dimen/notification_counter_width"
+        android:layout_height="@dimen/notification_counter_height"
+        android:layout_marginBottom="@dimen/eleven"
+        android:layout_marginTop="@dimen/twenty_nine"
+        android:background="@drawable/notification_circle_counter"
+        android:gravity="center"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/rightIcon"
