@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentCommentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_two"
+    android:paddingLeft="@dimen/parent_msg_padding_left"
+    android:paddingRight="@dimen/parent_msg_padding_right"
+    android:paddingTop="@dimen/parent_msg_padding_top">
+
+    <View
+        android:id="@+id/horizontalline"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one"
+        android:layout_marginLeft="@dimen/parent_msg_horizontal_line_padding_left"
+        android:background="@color/bg_gradient_three" />
+
+    <ImageView
+        android:id="@+id/imgParentBuddyIcon"
+        android:layout_width="@dimen/img_width"
+        android:layout_height="@dimen/img_height"
+        android:layout_below="@id/horizontalline"
+        android:layout_marginRight="@dimen/parent_msg_img_margin_right"
+        android:layout_marginTop="@dimen/parent_msg_img_margin_top"
+        android:scaleType="fitXY"
+        android:src="@drawable/icn_avatar" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imgParentBuddyIcon"
+        android:layout_toEndOf="@+id/imgParentBuddyIcon"
+        android:layout_toRightOf="@id/imgParentBuddyIcon"
+        android:orientation="vertical">
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txtBuddyName"
+            style="@style/FooterTxtFortyOpactiy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/parent_msg_buddy_name_margin_top" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txtBuddyMessage"
+            style="@style/FooterTitleNoOpacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/parent_msg_buddy_message_margin_top" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txtBuddyReply"
+            style="@style/replayComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/parent_msg_buddy_reply_margin_top"
+            android:text="@string/reply" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -142,7 +142,7 @@
     </style>
 
     <style name="parentFooterTxt">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:lineSpacingExtra">2sp</item>
         <item name="textStyle">@integer/roboto_regular</item>
     </style>
@@ -151,6 +151,9 @@
         <item name="android:textColor">@color/black_sixty_opacity</item>
     </style>
 
+    <style name="FooterTxtNoOpacity" parent="parentFooterTxt">
+        <item name="android:textColor">@color/black</item>
+    </style>
 
     <style name="FooterTxtFortyOpactiy" parent="parentFooterTxt">
         <item name="android:textColor">@color/black_forty_opacity</item>
@@ -260,5 +263,12 @@
         <item name="android:layout_width">@dimen/week_score_width</item>
         <item name="android:layout_height">@dimen/week_score_height</item>
         <item name="android:layout_marginLeft">8dp</item>
+    </style>
+
+    <style name="replayComment">
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textColor">@color/mid_blue</item>
+        <item name="textStyle">@integer/roboto_regular</item>
     </style>
 </resources>
