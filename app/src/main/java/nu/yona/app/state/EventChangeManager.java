@@ -113,6 +113,8 @@ public class EventChangeManager {
 
     public static final int EVENT_ROOT_CERTIFICATE_DOWNLOADED = 23;
 
+    public static final int EVENT_NOTIFICATION_COUNT = 24;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;
