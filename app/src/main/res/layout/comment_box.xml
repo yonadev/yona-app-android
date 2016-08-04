@@ -12,7 +12,7 @@
     android:id="@+id/comment_box"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/white_two"
     android:orientation="horizontal"
     android:visibility="gone">
 
@@ -35,4 +35,5 @@
         android:background="@color/mid_blue"
         android:minHeight="@dimen/fifty"
         android:text="@string/send" />
+
 </LinearLayout>

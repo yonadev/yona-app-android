@@ -102,4 +102,10 @@
         <item name="android:letterSpacing">0.1</item>
     </style>
 
+    <style name="replayComment">
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textColor">@color/mid_blue</item>
+        <item name="textStyle">@integer/roboto_regular</item>
+    </style>
 </resources>
