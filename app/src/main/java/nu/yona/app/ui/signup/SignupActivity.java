@@ -22,7 +22,6 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
@@ -41,7 +40,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     private StepOne stepOne;
     private StepTwo stepTwo;
     private int SIGNUP_STEP = 0;
-    private RegisterUser registerUser;
     private YonaFontButton prevButton;
 
     @Override
@@ -51,7 +49,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
         stepOne = new StepOne();
         stepTwo = new StepTwo();
-        registerUser = new RegisterUser();
 
         YonaFontButton nextButton = (YonaFontButton) findViewById(R.id.next);
         prevButton = (YonaFontButton) findViewById(R.id.previous);
@@ -122,7 +119,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     private void doRegister() {
         showLoadingView(true, null);
         if (getIntent() != null && getIntent().getExtras() != null && !TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.URL))) {
-            APIManager.getInstance().getAuthenticateManager().registerUser(getIntent().getExtras().getString(AppConstant.URL), getRegisterUser(), new DataLoadListener() {
+            APIManager.getInstance().getAuthenticateManager().registerUser(getIntent().getExtras().getString(AppConstant.URL), YonaApplication.getEventChangeManager().getDataState().getRegisterUser(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     showLoadingView(false, null);
@@ -135,7 +132,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
                 }
             });
         } else {
-            APIManager.getInstance().getAuthenticateManager().registerUser(getRegisterUser(), false, new DataLoadListener() {
+            APIManager.getInstance().getAuthenticateManager().registerUser(YonaApplication.getEventChangeManager().getDataState().getRegisterUser(), false, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     showLoadingView(false, null);
@@ -151,7 +148,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     }
 
     private void showAlertForReRegisteruser(String title) {
-        CustomAlertDialog.show(SignupActivity.this, title, getString(R.string.useroverride, getRegisterUser().getMobileNumber()), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
+        CustomAlertDialog.show(this, title, getString(R.string.useroverride, YonaApplication.getEventChangeManager().getDataState().getRegisterUser().getMobileNumber()), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 OverrideUser();
@@ -169,13 +166,13 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
      */
     private void OverrideUser() {
         showLoadingView(true, null);
-        APIManager.getInstance().getAuthenticateManager().requestUserOverride(getRegisterUser().getMobileNumber(), new DataLoadListener() {
+        APIManager.getInstance().getAuthenticateManager().requestUserOverride(YonaApplication.getEventChangeManager().getDataState().getRegisterUser().getMobileNumber(), new DataLoadListener() {
 
             @Override
             public void onDataLoad(Object result) {
                 showLoadingView(false, null);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(AppConstant.USER, getRegisterUser());
+                bundle.putSerializable(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getRegisterUser());
                 showMobileVerificationScreen(bundle);
             }
 
@@ -185,15 +182,6 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
                 showError(errorMessage);
             }
         });
-    }
-
-    /**
-     * Gets register user.
-     *
-     * @return the register user
-     */
-    public RegisterUser getRegisterUser() {
-        return registerUser;
     }
 
     @Override
