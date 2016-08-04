@@ -16,7 +16,7 @@ import nu.yona.app.api.model.AppActivity;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.Message;
-import nu.yona.app.api.model.Properties;
+import nu.yona.app.api.model.MessageBody;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.listener.DataLoadListener;
@@ -157,9 +157,9 @@ public class ActivityNetworkImpl extends BaseImpl {
         }
     }
 
-    public void replyComment(String url, String yonaPasswrod, Properties properties, final DataLoadListener listener) {
+    public void replyComment(String url, String yonaPasswrod, MessageBody messageBody, final DataLoadListener listener) {
         try {
-            getRestApi().replyComment(url, yonaPasswrod, Locale.getDefault().toString().replace('_', '-'), properties).enqueue(new Callback<YonaMessage>() {
+            getRestApi().replyComment(url, yonaPasswrod, Locale.getDefault().toString().replace('_', '-'), messageBody).enqueue(new Callback<YonaMessage>() {
                 @Override
                 public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {

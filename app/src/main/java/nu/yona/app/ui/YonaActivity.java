@@ -819,6 +819,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 mContent.setUserVisibleHint(true);
                 if (mContent instanceof ChallengesFragment && ((ChallengesFragment) mContent).isChildViewVisible()) {
                     ((ChallengesFragment) mContent).updateView();
+                } else if (mContent instanceof DayActivityDetailFragment && ((DayActivityDetailFragment) mContent).isUserCommenting()) {
+                    ((DayActivityDetailFragment) mContent).updateParentcommentView();
+                } else if (mContent instanceof SingleDayActivityDetailFragment && ((SingleDayActivityDetailFragment) mContent).isUserCommenting()) {
+                    ((SingleDayActivityDetailFragment) mContent).updateParentcommentView();
+                } else if (mContent instanceof WeekActivityDetailFragment && ((WeekActivityDetailFragment) mContent).isUserCommenting()) {
+                    ((WeekActivityDetailFragment) mContent).updateParentcommentView();
+                } else if (mContent instanceof SingleWeekDayActivityDetailFragment && ((SingleWeekDayActivityDetailFragment) mContent).isUserCommenting()) {
+                    ((SingleWeekDayActivityDetailFragment) mContent).updateParentcommentView();
                 }
                 mContent.onStart();
                 mContent.onResume();
@@ -836,6 +844,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             AppUtils.setSubmitPressed(false);
             if (mContent instanceof ChallengesFragment && ((ChallengesFragment) mContent).isChildViewVisible()) {
                 ((ChallengesFragment) mContent).updateView();
+            } else if (mContent instanceof DayActivityDetailFragment && ((DayActivityDetailFragment) mContent).isUserCommenting()) {
+                ((DayActivityDetailFragment) mContent).updateParentcommentView();
+            } else if (mContent instanceof SingleDayActivityDetailFragment && ((SingleDayActivityDetailFragment) mContent).isUserCommenting()) {
+                ((SingleDayActivityDetailFragment) mContent).updateParentcommentView();
+            } else if (mContent instanceof WeekActivityDetailFragment && ((WeekActivityDetailFragment) mContent).isUserCommenting()) {
+                ((WeekActivityDetailFragment) mContent).updateParentcommentView();
+            } else if (mContent instanceof SingleWeekDayActivityDetailFragment && ((SingleWeekDayActivityDetailFragment) mContent).isUserCommenting()) {
+                ((SingleWeekDayActivityDetailFragment) mContent).updateParentcommentView();
             } else {
                 isBackPressed = true;
                 if (isStackEmpty() && !(mContent instanceof DashboardFragment)) {

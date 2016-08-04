@@ -14,6 +14,8 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.WeekDayActivity;
+import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.graph.CircleGraphView;
 import nu.yona.app.customview.graph.SpreadGraph;
@@ -34,6 +37,7 @@ import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.enums.WeekDayEnum;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.ChartItemHolder;
+import nu.yona.app.ui.comment.CommentsAdapter;
 
 /**
  * Created by kinnarvasa on 13/06/16.
@@ -47,11 +51,27 @@ public class CustomPageAdapter extends PagerAdapter {
     private YonaFontTextView goalDesc;
     private YonaFontTextView goalType;
     private SpreadGraph mSpreadGraph;
-    private int SPREAD_CELL_MINUTE = 15;
-    private int WEEK_DAYS = 7;
     private FrameLayout graphView;
     private boolean isWeekControlVisible = true;
     private View.OnClickListener weekItemClickListener;
+    private RecyclerView commentRecyclerView;
+    private CommentsAdapter commentsAdapter;
+    private LinearLayoutManager mLayoutManager;
+    public List<YonaMessage> messageList;
+    private boolean isUserCommenting = false;
+    private ViewGroup layout;
+    private View.OnClickListener mCommentClickListener;
+    private YonaMessage currentReplyingMsg;
+
+    public RecyclerView.OnScrollListener getRecyclerviewOnScrollListener() {
+        return recyclerviewOnScrollListener;
+    }
+
+    public void setRecyclerviewOnScrollListener(RecyclerView.OnScrollListener recyclerviewOnScrollListener) {
+        this.recyclerviewOnScrollListener = recyclerviewOnScrollListener;
+    }
+
+    private RecyclerView.OnScrollListener recyclerviewOnScrollListener;
 
     /**
      * Instantiates a new Custom page adapter.
@@ -80,7 +100,7 @@ public class CustomPageAdapter extends PagerAdapter {
 
     private ViewGroup initiateDayActivityReport(ViewGroup collection, int position) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.detail_activity_fragment, collection, false);
+        layout = (ViewGroup) inflater.inflate(R.layout.detail_activity_fragment, collection, false);
         View spreadView = layout.findViewById(R.id.spreadGraphView);
         goalDesc = (YonaFontTextView) spreadView.findViewById(R.id.goalDesc);
         goalType = (YonaFontTextView) spreadView.findViewById(R.id.goalType);
@@ -95,6 +115,11 @@ public class CustomPageAdapter extends PagerAdapter {
         updateView(new ChartItemHolder(graphView, null, dayActivity.getChartTypeEnum()), null, dayActivity);
         collection.addView(layout);
         return layout;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 
     private View inflateActivityView(LayoutInflater inflater, ChartTypeEnum chartTypeEnum, ViewGroup collection) {
@@ -443,11 +468,6 @@ public class CustomPageAdapter extends PagerAdapter {
 
     }
 
-
-    private void updateSpreadingScore(int totalMin, int usageMin) {
-
-    }
-
     @Override
     public int getCount() {
         if (dayActivities != null) {
@@ -459,7 +479,6 @@ public class CustomPageAdapter extends PagerAdapter {
         }
     }
 
-
     /**
      * Notify data set changed.
      *
@@ -467,6 +486,40 @@ public class CustomPageAdapter extends PagerAdapter {
      */
     public void notifyDataSetChanged(List<?> activityList) {
         notifyChanges(activityList);
+    }
+
+    /*public void notifyDataSetChanged(List<DayActivity> dayActivities1, int position) {
+        if (commentsAdapter != null) {
+            if (dayActivities1.get(position) != null && dayActivities1.get(position).getComments() != null && dayActivities1.get(position).getComments().getEmbedded() != null && dayActivities1.get(position).getComments().getEmbedded().getYonaMessages() != null) {
+                messageList = dayActivities1.get(position).getComments().getEmbedded().getYonaMessages();
+                commentsAdapter.notifyData(dayActivities1.get(position).getComments().getEmbedded().getYonaMessages());
+            } else {
+                commentsAdapter.notifyData(null);
+            }
+        }
+        notifyChanges(dayActivities1);
+    }*/
+
+    public void notifyDataSetChanged(List<?> currentActivities, int position) {
+        if (commentsAdapter != null && currentActivities != null && currentActivities.size() > 0) {
+            if (currentActivities.get(0) instanceof WeekActivity) {
+                WeekActivity currentPosWeekActivity = (WeekActivity) currentActivities.get(position);
+                if (currentPosWeekActivity != null && currentPosWeekActivity.getComments() != null && currentPosWeekActivity.getComments().getEmbedded() != null && currentPosWeekActivity.getComments().getEmbedded().getYonaMessages() != null) {
+                    messageList = currentPosWeekActivity.getComments().getEmbedded().getYonaMessages();
+                } else {
+                    messageList = null;
+                }
+            } else {
+                DayActivity currentDayActivity = (DayActivity) currentActivities.get(position);
+                if (currentDayActivity != null && currentDayActivity.getComments() != null && currentDayActivity.getComments().getEmbedded() != null && currentDayActivity.getComments().getEmbedded().getYonaMessages() != null) {
+                    messageList = currentDayActivity.getComments().getEmbedded().getYonaMessages();
+                } else {
+                    messageList = null;
+                }
+            }
+            commentsAdapter.notifyData(messageList);
+        }
+        notifyChanges(currentActivities);
     }
 
     /**
@@ -492,4 +545,5 @@ public class CustomPageAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
+
 }

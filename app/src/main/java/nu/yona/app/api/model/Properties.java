@@ -20,7 +20,7 @@ import com.google.gson.annotations.Expose;
 public class Properties extends BaseEntity {
 
     @Expose
-    private Message message;
+    private String message = null;
 
     /**
      * Instantiates a new Properties.
@@ -34,11 +34,11 @@ public class Properties extends BaseEntity {
         return null;
     }
 
-    public Message getMessage() {
+    public String getMessage() {
         return this.message;
     }
 
-    public void setMessage(Message message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 }

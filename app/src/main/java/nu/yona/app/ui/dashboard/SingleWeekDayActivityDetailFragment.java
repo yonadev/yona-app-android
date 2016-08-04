@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +32,13 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.Day;
+import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
-import nu.yona.app.customview.YonaFontButton;
+import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
@@ -43,6 +47,7 @@ import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.utils.AppConstant;
 
 /**
@@ -62,6 +67,13 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
     private LinearLayout commentBox;
     private String yonaWeekDetailUrl;
     private YonaFontEditTextView messageTxt;
+    private RecyclerView commentRecyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private List<YonaMessage> mYonaCommentsList;
+    private boolean isUserCommenting = false;
+    private CommentsAdapter commentsAdapter;
+    private YonaMessage currentReplayingMsg;
+
 
     private View.OnClickListener itemClickListener = new View.OnClickListener() {
         @Override
@@ -78,6 +90,48 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
             }
         }
     };
+
+    private View.OnClickListener messageItemClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v.getTag() instanceof YonaMessage) {
+                YonaMessage currentMsg = (YonaMessage) v.getTag();
+                //Todo update ui of current selected page of adapter
+                if (customPageAdapter != null) {
+                    isUserCommenting = true;
+                    currentReplayingMsg = currentMsg;
+                    visibleAddCommentView(currentReplayingMsg);
+                }
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SHOW_CHAT_OPTION, null);
+
+            }
+        }
+    };
+
+    private NestedScrollView.OnScrollChangeListener nesteadScrollistener = new NestedScrollView.OnScrollChangeListener() {
+        @Override
+        public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+            if (!isUserCommenting()) {
+                View view = (View) v.getChildAt(v.getChildCount() - 1);
+                int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+                if (diff == 0) {
+                    int visibleItemCount = mLayoutManager.getChildCount();
+                    int totalItemCount = mLayoutManager.getItemCount();
+                    int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+                    EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+                    if (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
+                            && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
+                            && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
+                        loadMoreItems();
+                    }
+                }
+            }
+        }
+    };
+
+    private void loadMoreItems() {
+        fetchComments(viewPager.getCurrentItem());
+    }
 
     private void openDetailPage(Day activity) {
         Intent weekDayIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
@@ -125,7 +179,10 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
         messageTxt = (YonaFontEditTextView) view.findViewById(R.id.userMessage);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity(), itemClickListener);
+        NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.nesteadScrollview);
+        nestedScrollView.setOnScrollChangeListener(nesteadScrollistener);
         viewPager.setAdapter(customPageAdapter);
+        initalizeCommentControl(view);
         if (getArguments() != null) {
             if (getArguments().get(AppConstant.OBJECT) != null) {
                 weekActivity = (WeekActivity) getArguments().get(AppConstant.OBJECT);
@@ -148,7 +205,11 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(messageTxt.getText())) {
-                    addComment(messageTxt.getText().toString());
+                    if (isUserCommenting) {
+                        replyComment(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null);
+                    } else {
+                        addComment(messageTxt.getText().toString(), weekActivity.getLinks().getAddComment().getHref());
+                    }
                 }
             }
         });
@@ -175,6 +236,15 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
         }
         YonaApplication.getEventChangeManager().registerListener(this);
         return view;
+    }
+
+    private void initalizeCommentControl(View view) {
+        commentRecyclerView = (RecyclerView) view.findViewById(R.id.messageList);
+        mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
+        mLayoutManager.setAutoMeasureEnabled(true);
+        commentsAdapter = new CommentsAdapter(mYonaCommentsList, messageItemClick);
+        commentRecyclerView.setLayoutManager(mLayoutManager);
+        commentRecyclerView.setAdapter(commentsAdapter);
     }
 
     private void previousDayActivity() {
@@ -319,13 +389,14 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 
     }
 
-    private void fetchComments(int position) {
+    private void fetchComments(final int position) {
         APIManager.getInstance().getActivityManager().getCommentsForWeek(weekActivityList, position, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 if (result instanceof List<?>) {
                     weekActivityList = (List<WeekActivity>) result;
                     customPageAdapter.notifyDataSetChanged(weekActivityList);
+                    updateCurrentCommentList(weekActivityList, position);
                 }
             }
 
@@ -340,13 +411,41 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
         });
     }
 
+    private void updateCurrentCommentList(List<WeekActivity> weekActivities, int position) {
+        WeekActivity mWeekActivity = weekActivities.get(position);
+        if (mWeekActivity != null && mWeekActivity.getComments() != null && mWeekActivity.getComments().getEmbedded() != null && mWeekActivity.getComments().getEmbedded().getYonaMessages() != null) {
+            this.mYonaCommentsList = mWeekActivity.getComments().getEmbedded().getYonaMessages();
+        } else {
+            this.mYonaCommentsList = null;
+        }
+        commentsAdapter.notifyDatasetChanged(mYonaCommentsList);
+    }
+
     //TODO @Bhargav, when user click on send button from comment box, it will call this API.
-    private void addComment(String message) {
+    private void addComment(String message, String url) {
+        doComment(message, url, false);
+    }
+
+    private void replyComment(String message, String url) {
+        doComment(message, url, true);
+    }
+
+    private void doComment(String message, String url, final boolean isreplaying) {
         YonaActivity.getActivity().showLoadingView(true, null);
-        APIManager.getInstance().getActivityManager().addComment(weekActivity, message, new DataLoadListener() {
+        if (weekActivity != null && weekActivity.getComments() != null) {
+            if (weekActivity.getComments().getPage() != null) {
+                weekActivity.getComments().setPage(null);
+            }
+            if (weekActivity.getComments().getEmbedded() != null && weekActivity.getComments().getEmbedded().getYonaMessages() != null) {
+                weekActivity.getComments().getEmbedded().getYonaMessages().clear();
+            }
+        }
+        APIManager.getInstance().getActivityManager().addComment(url, isreplaying, message, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 YonaActivity.getActivity().showLoadingView(false, null);
+                messageTxt.getText().clear();
+                fetchComments(viewPager.getCurrentItem());
                 //TODO response will be object of YonaMessage -> add in list of comments array and notify UI to update item in list.
             }
 
@@ -358,6 +457,17 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
         });
     }
 
+    public void updateParentcommentView() {
+        setUserCommenting(false);
+        if (weekActivity != null && weekActivity.getComments() != null && weekActivity.getComments().getEmbedded() != null && weekActivity.getComments().getEmbedded().getYonaMessages() != null) {
+            mYonaCommentsList = weekActivity.getComments().getEmbedded().getYonaMessages();
+        }
+        commentsAdapter.notifyDatasetChanged(mYonaCommentsList);
+        if (!mYonaHeaderTheme.isBuddyFlow() && yonaBuddy == null) {
+            commentBox.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
@@ -367,5 +477,22 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
             default:
                 break;
         }
+    }
+
+    public void visibleAddCommentView(YonaMessage currentMsg) {
+        if (commentsAdapter != null) {
+            List<YonaMessage> yonaMessages = new ArrayList<>();
+            yonaMessages.add(currentMsg);
+            this.mYonaCommentsList = yonaMessages;
+            commentsAdapter.notifyDatasetChanged(yonaMessages);
+        }
+    }
+
+    public boolean isUserCommenting() {
+        return isUserCommenting;
+    }
+
+    public void setUserCommenting(boolean userCommenting) {
+        isUserCommenting = userCommenting;
     }
 }
