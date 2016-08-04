@@ -53,8 +53,8 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
         fragmentTransaction.commit();
 
         isUserBlocked = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false);
-        if (TextUtils.isEmpty(screen_type)) {
-            screen_type = AppConstant.LOGGED_IN;
+        if (TextUtils.isEmpty(screenType)) {
+            screenType = AppConstant.LOGGED_IN;
         }
         if (!isUserBlocked) {
             updateScreenUI();
