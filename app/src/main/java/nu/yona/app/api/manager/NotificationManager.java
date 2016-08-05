@@ -10,7 +10,10 @@
 
 package nu.yona.app.api.manager;
 
+import java.util.List;
+
 import nu.yona.app.api.model.MessageBody;
+import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.listener.DataLoadListener;
 
 /**
@@ -54,5 +57,5 @@ public interface NotificationManager {
      */
     void deleteMessage(String url, final int itemsPerPage, final int pageNo, DataLoadListener listener);
 
-    void getComments(String url, final int itemsPerPage, final int pageNo, DataLoadListener listener);
+    void setReadMessage(List<YonaMessage> yonaMessageList, YonaMessage message, DataLoadListener listener);
 }

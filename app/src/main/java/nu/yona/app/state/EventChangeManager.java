@@ -115,6 +115,8 @@ public class EventChangeManager {
 
     public static final int EVENT_NOTIFICATION_COUNT = 24;
 
+    public static final int EVENT_UPDATE_NOTIFICATION_COUNT = 25;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;

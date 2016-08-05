@@ -27,6 +27,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
+import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
@@ -36,7 +37,7 @@ import nu.yona.app.utils.AppConstant;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class DashboardFragment extends BaseFragment {
+public class DashboardFragment extends BaseFragment implements EventChangeListener {
 
     private TabLayout tabLayout;
     private YonaHeaderTheme mYonaHeaderTheme;
@@ -71,6 +72,7 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_NOTIFICATION_COUNT, null);
         setTitleAndIcon();
     }
 
@@ -137,7 +139,7 @@ public class DashboardFragment extends BaseFragment {
                                             ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
                             rightIcon.setVisibility(View.VISIBLE);
                             rightIconProfile.setVisibility(View.GONE);
-                            if(YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount() > 0) {
+                            if (YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount() > 0) {
                                 txtNotificationCounter.setText("" + YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount());
                             }
                             txtNotificationCounter.setVisibility(View.VISIBLE);
@@ -190,5 +192,16 @@ public class DashboardFragment extends BaseFragment {
                 YonaActivity.getActivity().replaceFragment(friendIntent);
             }
         });
+    }
+
+    @Override
+    public void onStateChange(int eventType, Object object) {
+        switch (eventType) {
+            case EventChangeManager.EVENT_UPDATE_NOTIFICATION_COUNT:
+                setTitleAndIcon();
+                break;
+            default:
+                break;
+        }
     }
 }
