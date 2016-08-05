@@ -75,11 +75,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteAllData() {
         try {
             Log.e(DatabaseHelper.class.getSimpleName(), "Delete all data");
-            mInstance.db.execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_USER_DATA);
-            mInstance.db.execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_ACTIVITY_CATEGORIES);
-            mInstance.db.execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_GOAL);
-            mInstance.db.execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_ACTIVITY_TRACKER);
-            createTables(mInstance.db);
+            mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_USER_DATA);
+            mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_ACTIVITY_CATEGORIES);
+            mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_GOAL);
+            mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_ACTIVITY_TRACKER);
+            createTables(mInstance.getWritableDatabase());
         } catch (Exception e) {
             AppUtils.throwException(DatabaseHelper.class.getSimpleName(), e, Thread.currentThread(), null);
         }
