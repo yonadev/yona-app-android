@@ -137,7 +137,9 @@ public class DashboardFragment extends BaseFragment {
                                             ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
                             rightIcon.setVisibility(View.VISIBLE);
                             rightIconProfile.setVisibility(View.GONE);
-                            txtNotificationCounter.setText(""+YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount());
+                            if(YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount() > 0) {
+                                txtNotificationCounter.setText("" + YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount());
+                            }
                             txtNotificationCounter.setVisibility(View.VISIBLE);
                             rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
 
