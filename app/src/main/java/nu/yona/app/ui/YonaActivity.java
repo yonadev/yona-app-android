@@ -119,6 +119,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private boolean isUpdateIconOnly;
     private boolean isUserFromOnCreate;
     private boolean isUserFromPinScreenAlert;
+    private boolean isSkipPinFlow;
 
     /**
      * Gets activity.
@@ -359,6 +360,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             if (isUserFromPinScreenAlert) {
                 isUserFromPinScreenAlert = false;
                 isToDisplayLogin = true;
+            } else if (isSkipPinFlow) {
+                isSkipPinFlow = false;
+                isToDisplayLogin = true;
             }
             skipVerification = false;
         }
@@ -387,16 +391,19 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (resultCode == RESULT_OK) {
                     showContactDetails(data);
                 }
+                isToDisplayLogin = false;
                 break;
             case PICK_IMAGE:
                 if (resultCode == RESULT_OK) {
                     loadPickedImage(data);
                 }
+                isToDisplayLogin = false;
                 break;
             case PICK_CAMERA:
                 if (resultCode == RESULT_OK) {
                     loadCaptureImage(data);
                 }
+                isToDisplayLogin = false;
                 break;
             case IMPORT_PROFILE:
                 if (resultCode == RESULT_OK) {
@@ -942,10 +949,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * Open contact book.
      */
     public void openContactBook() {
-        isToDisplayLogin = false;
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, PICK_CONTACT);
-        setSkipVerification(true);
     }
 
     /**
@@ -1103,6 +1108,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         return this.isToDisplayLogin;
     }
 
+    public void setToDisplayLogin(boolean toDisplayLogin) {
+        this.isToDisplayLogin = toDisplayLogin;
+    }
+
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -1213,10 +1222,21 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     } else {
                         isUserFromOnCreate = true;
                         AppUtils.startVPN(YonaActivity.this);
+                        isUserFromPinScreenAlert = false;
+                        lockScreen();
                     }
                 }
             }, AppConstant.ONE_SECOND);
         }
+    }
+
+    private void lockScreen() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isSkipPinFlow = true;
+            }
+        }, AppConstant.FIVE_SECONDS);
     }
 
     @TargetApi(Build.VERSION_CODES.M)

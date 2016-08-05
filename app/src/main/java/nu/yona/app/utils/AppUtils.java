@@ -23,11 +23,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -48,7 +46,6 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import de.blinkt.openvpn.LaunchVPN;
 import de.blinkt.openvpn.VpnProfile;
-import de.blinkt.openvpn.activities.ConfigConverter;
 import de.blinkt.openvpn.activities.DisconnectVPN;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VpnStatus;

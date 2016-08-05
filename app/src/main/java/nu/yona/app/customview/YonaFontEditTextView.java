@@ -89,11 +89,4 @@ public class YonaFontEditTextView extends EditText {
         }
         return super.onKeyUp(keyCode, event);
     }
-
-
-    @Override
-    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
-        Log.e("KEy", "Key :" + keyCode);
-        return super.onKeyPreIme(keyCode, event);
-    }
 }
