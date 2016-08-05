@@ -16,7 +16,7 @@
     android:orientation="horizontal"
     android:visibility="gone">
 
-    <nu.yona.app.customview.YonaFontEditTextView
+    <nu.yona.app.customview.YonaFontEditTextViewGeneral
         android:id="@+id/userMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

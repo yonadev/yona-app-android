@@ -203,6 +203,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         isUserFromOnCreate = true;
     }
 
+    public void changeBottomTabVisibility(boolean isVisible) {
+        if (isVisible) {
+            mTabLayout.setVisibility(View.VISIBLE);
+        } else {
+            mTabLayout.setVisibility(View.GONE);
+        }
+    }
+
     public void updateTabIcon(boolean isbuddyTab) {
         isUpdateIconOnly = true;
         if (isbuddyTab) {

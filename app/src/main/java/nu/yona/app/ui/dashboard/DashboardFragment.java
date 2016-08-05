@@ -141,8 +141,10 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
                             rightIconProfile.setVisibility(View.GONE);
                             if (YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount() > 0) {
                                 txtNotificationCounter.setText("" + YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount());
+                                txtNotificationCounter.setVisibility(View.VISIBLE);
+                            } else {
+                                txtNotificationCounter.setVisibility(View.GONE);
                             }
-                            txtNotificationCounter.setVisibility(View.VISIBLE);
                             rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
 
                             rightIconClickEvent(rightIcon);
