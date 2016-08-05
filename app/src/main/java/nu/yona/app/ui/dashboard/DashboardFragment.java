@@ -185,6 +185,13 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
      * @param rightIconView
      */
     private void rightIconClickEvent(View rightIconView) {
+        txtNotificationCounter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
+                YonaActivity.getActivity().replaceFragment(friendIntent);
+            }
+        });
         rightIconView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
