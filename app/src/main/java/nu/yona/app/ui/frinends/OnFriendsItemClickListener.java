@@ -28,4 +28,6 @@ public interface OnFriendsItemClickListener {
      * @param v the view
      */
     void onFriendsItemDeleteClick(View v);
+
+    void onItemClick(View v);
 }

@@ -289,6 +289,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (result != null && result instanceof YonaMessages) {
                     YonaMessages yonaMessages = (YonaMessages) result;
                     YonaApplication.getEventChangeManager().getDataState().setNotificaitonCount(yonaMessages.getPage().getTotalElements());
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_NOTIFICATION_COUNT, null);
                 }
             }
 
@@ -929,6 +930,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 break;
             case EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED:
                 installCertificate();
+            case EventChangeManager.EVENT_NOTIFICATION_COUNT:
+                getUserMessages();
                 break;
             default:
                 break;

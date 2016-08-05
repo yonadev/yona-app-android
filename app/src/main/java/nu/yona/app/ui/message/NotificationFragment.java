@@ -22,6 +22,7 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -93,6 +94,7 @@ public class NotificationFragment extends BaseFragment {
                         }
                     }
                 }
+                updateStatusAsRead(yonaMessage);
                 YonaActivity.getActivity().replaceFragment(mMessageIntent);
             }
         }
@@ -101,6 +103,7 @@ public class NotificationFragment extends BaseFragment {
         public void onFriendsItemDeleteClick(View view) {
             if (view.getTag() instanceof YonaMessage) {
                 YonaMessage yonaMessage = (YonaMessage) view.getTag();
+                updateStatusAsRead(yonaMessage);
                 if (yonaMessage != null && yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getEdit().getHref())) {
                     YonaActivity.getActivity().showLoadingView(true, null);
                     APIManager.getInstance().getNotificationManager().deleteMessage(yonaMessage.getLinks().getEdit().getHref(), 0, 0, new DataLoadListener() {
@@ -117,6 +120,14 @@ public class NotificationFragment extends BaseFragment {
                         }
                     });
                 }
+            }
+        }
+
+        @Override
+        public void onItemClick(View view) {
+            if (view.getTag() instanceof YonaMessage) {
+                YonaMessage yonaMessage = (YonaMessage) view.getTag();
+                updateStatusAsRead(yonaMessage);
             }
         }
     };
@@ -255,5 +266,19 @@ public class NotificationFragment extends BaseFragment {
 
     private YonaBuddy findBuddy(Href href) {
         return APIManager.getInstance().getActivityManager().findYonaBuddy(href);
+    }
+
+    private void updateStatusAsRead(YonaMessage message) {
+        APIManager.getInstance().getNotificationManager().setReadMessage(mYonaMessages.getEmbedded().getYonaMessages(), message, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                mMessageStickyRecyclerAdapter.notifyDataSetChange((List<YonaMessage>) result);
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+
+            }
+        });
     }
 }

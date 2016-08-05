@@ -86,6 +86,9 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
                 }
                 break;
             default:
+                if (onFriendsItemClickListener != null) {
+                    onFriendsItemClickListener.onItemClick(v);
+                }
                 break;
         }
     }

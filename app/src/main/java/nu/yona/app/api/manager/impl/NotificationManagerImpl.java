@@ -225,11 +225,35 @@ public class NotificationManagerImpl implements NotificationManager {
         }
     }
 
-    public void getComments(String url, final int itemsPerPage, final int pageNo, DataLoadListener listener) {
+    public void setReadMessage(List<YonaMessage> yonaMessageList, YonaMessage message, DataLoadListener listener) {
         try {
+            if (message != null && message.getLinks() != null && message.getLinks().getMarkRead() != null && !TextUtils.isEmpty(message.getLinks().getMarkRead().getHref())) {
+                String selectedMessageUrl = null;
+                // post message on server:
+                MessageBody body = new MessageBody();
+                body.setProperties(new Properties());
+                postMessageForProcess(message.getLinks().getMarkRead().getHref(), body);
+                // update on UI
+                if (message.getLinks().getSelf() != null && !TextUtils.isEmpty(message.getLinks().getSelf().getHref())) {
+                    selectedMessageUrl = message.getLinks().getSelf().getHref();
+                }
+                message.getLinks().setMarkRead(null);
+                if (yonaMessageList != null && selectedMessageUrl != null) {
 
+                    for (int i = 0; i < yonaMessageList.size(); i++) {
+                        if (yonaMessageList.get(i) != null && yonaMessageList.get(i).getLinks() != null && yonaMessageList.get(i).getLinks().getSelf() != null
+                                && yonaMessageList.get(i).getLinks().getSelf().getHref() != null && !TextUtils.isEmpty(yonaMessageList.get(i).getLinks().getSelf().getHref())
+                                && yonaMessageList.get(i).getLinks().getSelf().getHref().equals(selectedMessageUrl)) {
+                            yonaMessageList.set(i, message);
+                            break;
+                        }
+                    }
+                }
+            }
         } catch (Exception e) {
             AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        } finally {
+            listener.onDataLoad(yonaMessageList);
         }
     }
 

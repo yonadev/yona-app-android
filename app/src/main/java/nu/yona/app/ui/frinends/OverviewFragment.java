@@ -81,6 +81,11 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
             public void onFriendsItemDeleteClick(View v) {
 
             }
+
+            @Override
+            public void onItemClick(View v) {
+
+            }
         });
         mFriendsRecyclerView.setAdapter(mOverViewAdapter);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(mOverViewAdapter));
