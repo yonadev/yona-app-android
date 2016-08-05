@@ -916,6 +916,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (object != null && object instanceof ErrorMessage) {
                     showError((ErrorMessage) object);
                 }
+                YonaApplication.getEventChangeManager().clearAll();
                 break;
             case EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST:
                 YonaApplication.getEventChangeManager().getDataState().clearActivityList(mContent);
@@ -1198,19 +1199,21 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void checkVPN() {
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                isToDisplayLogin = false;
-//                skipVerification = true;
-//                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
-//                    checkFileWritePermission();
-//                } else {
-//                    isUserFromOnCreate = true;
-//                    AppUtils.startVPN(YonaActivity.this);
-//                }
-//            }
-//        }, AppConstant.ONE_SECOND);
+        if (!getResources().getBoolean(R.bool.developerMode)) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isToDisplayLogin = false;
+                    skipVerification = true;
+                    if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
+                        checkFileWritePermission();
+                    } else {
+                        isUserFromOnCreate = true;
+                        AppUtils.startVPN(YonaActivity.this);
+                    }
+                }
+            }, AppConstant.ONE_SECOND);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)

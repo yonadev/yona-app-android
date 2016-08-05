@@ -175,6 +175,11 @@ public class EventChangeManager {
         return dataState;
     }
 
+    public void clearAll() {
+        dataState = null;
+        sharedPreference = null;
+    }
+
     public SharedPreference getSharedPreference() {
         if (sharedPreference == null) {
             sharedPreference = new SharedPreference();
