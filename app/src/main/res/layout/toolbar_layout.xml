@@ -19,8 +19,6 @@
         android:layout_width="@dimen/dashboard_profile_icon"
         android:layout_height="@dimen/dashboard_profile_icon"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/seven"
-        android:layout_marginTop="@dimen/twenty_five"
         android:background="@drawable/icn_avatar"
         android:scaleType="fitXY"
         android:transitionName="@string/profile_transition"
@@ -53,20 +51,20 @@
     <ImageView
         android:id="@+id/rightIcon"
         android:layout_width="@dimen/toolbar_icon_size"
-        android:layout_height="@dimen/toolbar_icon_size"
-        android:layout_marginBottom="@dimen/eleven"
-        android:layout_marginTop="@dimen/twenty_nine"
+        android:layout_height="@dimen/sixty_four"
+        android:paddingBottom="@dimen/eleven"
+        android:paddingTop="@dimen/twenty_nine"
         android:scaleType="fitXY"
         android:visibility="gone" />
 
     <ImageView
         android:id="@+id/rightIconProfile"
         android:layout_width="@dimen/dashboard_profile_icon"
-        android:layout_height="@dimen/dashboard_profile_icon"
+        android:layout_height="@dimen/sixty_four"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/five"
-        android:layout_marginTop="@dimen/twenty"
         android:background="@drawable/icn_avatar"
+        android:paddingBottom="@dimen/five"
+        android:paddingTop="@dimen/twenty"
         android:scaleType="fitXY"
         android:transitionName="@string/profile_transition"
         android:visibility="gone" />
