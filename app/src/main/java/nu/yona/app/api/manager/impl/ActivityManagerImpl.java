@@ -472,7 +472,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 public void onDataLoad(Object result) {
                     if (result instanceof EmbeddedYonaActivity) {
                         EmbeddedYonaActivity embeddedYonaActivity = (EmbeddedYonaActivity) result;
-                        if (dayActivity.getComments() == null) {
+                        if (dayActivity.getComments() == null || dayActivity.getComments().getEmbedded() == null) {
                             dayActivity.setComments(embeddedYonaActivity);
                         } else {
                             if (dayActivity != null && dayActivity.getComments() != null
