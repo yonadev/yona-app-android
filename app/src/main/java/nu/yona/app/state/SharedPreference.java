@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.Arrays;
 
@@ -55,12 +54,9 @@ public class SharedPreference {
      * @return return yona password
      */
     public String getYonaPassword() {
-        Log.i("Yona Password", "Yona Password getYonaPassword()");
         if (yonaPwd == null) {
             yonaPwd = getUserPreferences().getString(PreferenceConstant.YONA_DATA, "");
-            Log.i("Yona Password", "Yona Password yona passowrd not null");
             if (TextUtils.isEmpty(yonaPwd)) {
-                Log.i("Yona Password", "Yona Password yona password null in preference");
                 MyCipherData myCipherData = generateKey(AppUtils.getRandomString(AppConstant.YONA_PASSWORD_CHAR_LIMIT));
                 if (null != myCipherData) {
                     yonaPwd = getDecryptedKey();
@@ -69,7 +65,6 @@ public class SharedPreference {
                 yonaPwd = getDecryptedKey();
             }
         }
-        Log.i("Yona Password", "Yona Password ()" + yonaPwd);
         return yonaPwd;
     }
 
@@ -80,7 +75,6 @@ public class SharedPreference {
      */
     public void setYonaPassword(String password) {
         yonaPwd = null;
-        Log.i("Yona Password", "Yona Password setYonaPassword()");
         //According to http://android-developers.blogspot.com.es/2013/08/some-securerandom-thoughts.html
         try {
             PRNGFixes.apply();
@@ -120,13 +114,10 @@ public class SharedPreference {
     private MyCipherData generateKey(String key) {
         if (TextUtils.isEmpty(YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword())) {
             //According to http://android-developers.blogspot.com.es/2013/08/some-securerandom-thoughts.html
-            Log.i("Yona Password", "Yona Password generate key");
             try {
                 PRNGFixes.apply();
                 MyCipherData cipherData = new MyCipher(Build.SERIAL).encryptUTF8(key);
                 userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
-                Log.i("Yona Password", "Yona Password in pref, yona data: " + userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
-                Log.i("Yona Password", "Yona Password in pref, yona IV: " + userPreferences.getString(PreferenceConstant.YONA_IV, ""));
                 return cipherData;
             } catch (Exception e) {
                 AppUtils.throwException(SharedPreference.class.getSimpleName(), e, Thread.currentThread(), null);
@@ -136,7 +127,6 @@ public class SharedPreference {
     }
 
     private String getDecryptedKey() {
-        Log.i("Yona Password", "Yona Password Get decrypt key");
         byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
         byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
         IvParameterSpec iv = new IvParameterSpec(dataIV);
