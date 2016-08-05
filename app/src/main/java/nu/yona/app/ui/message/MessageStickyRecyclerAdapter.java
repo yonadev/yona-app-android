@@ -99,6 +99,11 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                             ContextCompat.getColor(activity, R.color.grape)));
                 }
             }
+            if (yonaObject.getLinks() != null && yonaObject.getLinks().getMarkRead() != null && !TextUtils.isEmpty(yonaObject.getLinks().getMarkRead().getHref())) {
+                holder.messageContainer.setBackground(ContextCompat.getDrawable(activity, R.drawable.item_selected_gradient));
+            } else {
+                holder.messageContainer.setBackground(ContextCompat.getDrawable(activity, R.drawable.item_gradient));
+            }
             holder.deleteMsg.setTag(yonaObject);
             holder.messageContainer.setTag(yonaObject);
         }
