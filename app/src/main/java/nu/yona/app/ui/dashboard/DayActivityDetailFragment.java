@@ -23,7 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
@@ -66,7 +66,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
     private List<DayActivity> dayActivityList;
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
-    private RelativeLayout commentBox;
+    private LinearLayout commentBox;
     private YonaFontEditTextViewGeneral messageTxt;
     private YonaFontButton sendButton;
     private boolean isUserCommenting = false;
@@ -149,7 +149,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         previousItem = (ImageView) view.findViewById(R.id.previous);
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
-        commentBox = (RelativeLayout) view.findViewById(R.id.comment_box);
+        commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
         messageTxt = (YonaFontEditTextViewGeneral) view.findViewById(R.id.userMessage);
         sendButton = (YonaFontButton) view.findViewById(R.id.btnSend);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);

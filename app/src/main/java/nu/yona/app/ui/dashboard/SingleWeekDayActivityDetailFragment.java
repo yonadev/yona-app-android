@@ -21,7 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
@@ -64,7 +64,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
     private List<WeekActivity> weekActivityList;
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
-    private RelativeLayout commentBox;
+    private LinearLayout commentBox;
     private String yonaWeekDetailUrl;
     private YonaFontEditTextViewGeneral messageTxt;
     private RecyclerView commentRecyclerView;
@@ -177,7 +177,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
         previousItem = (ImageView) view.findViewById(R.id.previous);
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
-        commentBox = (RelativeLayout) view.findViewById(R.id.comment_box);
+        commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
         messageTxt = (YonaFontEditTextViewGeneral) view.findViewById(R.id.userMessage);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity(), itemClickListener);

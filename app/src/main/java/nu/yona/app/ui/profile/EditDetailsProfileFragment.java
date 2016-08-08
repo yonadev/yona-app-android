@@ -70,7 +70,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_profile_detail_fragment, null);
-        final View activityRootView = view.findViewById(R.id.profileView);
+        final View activityRootView = view.findViewById(R.id.main_content);
 
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

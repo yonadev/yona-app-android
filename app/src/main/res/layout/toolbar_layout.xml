@@ -62,7 +62,6 @@
         android:layout_width="@dimen/dashboard_profile_icon"
         android:layout_height="@dimen/sixty_four"
         android:layout_gravity="bottom"
-        android:background="@drawable/icn_avatar"
         android:paddingBottom="@dimen/five"
         android:paddingTop="@dimen/twenty"
         android:scaleType="fitXY"
