@@ -140,7 +140,7 @@ public class TimeFrameGraph extends BaseView {
                     currentStartPos = mListZoneSpread.get(i).getIndex() * mPartSize;
                 } else {
                     if (mListZoneSpread.get(i).getIndex() == mListZoneSpread.get(i - 1).getIndex()) {
-                        currentStartPos = (minValue * mListZoneSpread.get(i - 1).getUsedValue()) - (mListZoneSpread.get(i).getIndex() * mPartSize);
+                        currentStartPos = (mListZoneSpread.get(i).getIndex() * mPartSize) + (minValue * mListZoneSpread.get(i - 1).getUsedValue());
                     } else {
                         currentStartPos = mListZoneSpread.get(i).getIndex() * mPartSize;
                     }
