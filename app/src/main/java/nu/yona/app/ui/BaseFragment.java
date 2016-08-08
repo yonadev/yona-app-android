@@ -12,6 +12,7 @@ package nu.yona.app.ui;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import nu.yona.app.R;
@@ -25,6 +26,7 @@ import nu.yona.app.ui.frinends.FriendsRequestFragment;
 import nu.yona.app.ui.message.NotificationFragment;
 import nu.yona.app.ui.settings.PrivacyFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -78,5 +80,20 @@ public class BaseFragment extends Fragment {
         } else if (this instanceof FriendsFragment || this instanceof FriendsRequestFragment || this instanceof AddFriendFragment) {
             mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
         }
+    }
+
+    public void udpateBottomTabVisibility(final View view) {
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (isAdded()) {
+                    if (AppUtils.checkKeyboardOpen(view)) {
+                        ((YonaActivity) getActivity()).changeBottomTabVisibility(false);
+                    } else {
+                        ((YonaActivity) getActivity()).changeBottomTabVisibility(true);
+                    }
+                }
+            }
+        });
     }
 }

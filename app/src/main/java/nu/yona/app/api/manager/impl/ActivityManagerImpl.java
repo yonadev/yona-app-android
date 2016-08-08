@@ -920,7 +920,7 @@ public class ActivityManagerImpl implements ActivityManager {
                         && buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null) {
                     List<YonaGoal> yonaGoals = buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
                     for (YonaGoal goal : yonaGoals) {
-                        if (goal.getLinks().getSelf().getHref().equals(goalHref.getHref())) {
+                        if (goal != null && goal.getLinks() != null && goal.getLinks().getSelf() != null && !TextUtils.isEmpty(goal.getLinks().getSelf().getHref()) && goal.getLinks().getSelf().getHref().equals(goalHref.getHref())) {
                             goal.setActivityCategoryName(getActivityCategory(goal));
                             goal.setNickName(buddy.getNickname());
                             return goal;

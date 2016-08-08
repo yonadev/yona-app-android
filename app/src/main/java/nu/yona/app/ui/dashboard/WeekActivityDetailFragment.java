@@ -42,7 +42,7 @@ import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
-import nu.yona.app.customview.YonaFontEditTextView;
+import nu.yona.app.customview.YonaFontEditTextViewGeneral;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
@@ -69,7 +69,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
     private LinearLayout commentBox;
-    private YonaFontEditTextView messageTxt;
+    private YonaFontEditTextViewGeneral messageTxt;
     private RecyclerView commentRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private List<YonaMessage> mYonaCommentsList;
@@ -163,6 +163,8 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.detail_pager_fragment, null);
+        View activityRootView = view.findViewById(R.id.main_content);
+        udpateBottomTabVisibility(activityRootView);
 
         setupToolbar(view);
         if (mYonaHeaderTheme != null) {
@@ -173,7 +175,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
         commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
-        messageTxt = (YonaFontEditTextView) view.findViewById(R.id.userMessage);
+        messageTxt = (YonaFontEditTextViewGeneral) view.findViewById(R.id.userMessage);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity(), itemClickListener);
         NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.nesteadScrollview);

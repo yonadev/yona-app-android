@@ -9,18 +9,13 @@
 package nu.yona.app.customview;
 
 import android.content.Context;
-import android.text.InputType;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
 
 /**
  * Created by bhargavsuthar on 3/31/16.
  */
-public class YonaFontEditTextView extends EditText {
+public class YonaFontEditTextViewGeneral extends EditText {
 
     private int lenghtBlock;
 
@@ -29,9 +24,8 @@ public class YonaFontEditTextView extends EditText {
      *
      * @param context the context
      */
-    public YonaFontEditTextView(Context context) {
+    public YonaFontEditTextViewGeneral(Context context) {
         super(context);
-        setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         YonaFontUtils.applyCustomFont(this, context, null);
     }
 
@@ -41,9 +35,8 @@ public class YonaFontEditTextView extends EditText {
      * @param context the context
      * @param attrs   the attrs
      */
-    public YonaFontEditTextView(Context context, AttributeSet attrs) {
+    public YonaFontEditTextViewGeneral(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         YonaFontUtils.applyCustomFont(this, context, attrs);
     }
 
@@ -54,9 +47,8 @@ public class YonaFontEditTextView extends EditText {
      * @param attrs    the attrs
      * @param defStyle the def style
      */
-    public YonaFontEditTextView(Context context, AttributeSet attrs, int defStyle) {
+    public YonaFontEditTextViewGeneral(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         YonaFontUtils.applyCustomFont(this, context, attrs);
     }
 
@@ -81,13 +73,4 @@ public class YonaFontEditTextView extends EditText {
         this.lenghtBlock = etLength;
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DEL) {
-            if (getText().toString().length() == 0) {
-                setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
 }

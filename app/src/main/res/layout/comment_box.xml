@@ -16,13 +16,15 @@
     android:orientation="horizontal"
     android:visibility="gone">
 
-    <nu.yona.app.customview.YonaFontEditTextView
+    <nu.yona.app.customview.YonaFontEditTextViewGeneral
         android:id="@+id/userMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@color/white"
         android:maxLines="5"
+        android:inputType="textCapSentences"
+        android:padding="@dimen/comment_box_msg_padding"
         android:minHeight="@dimen/fifty"
         android:scrollbars="vertical" />
 

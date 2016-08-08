@@ -28,6 +28,8 @@ import android.os.Handler;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
 
 import net.hockeyapp.android.ExceptionHandler;
 
@@ -525,5 +527,18 @@ public class AppUtils {
         }
         return isCertExist;
 
+    }
+
+    public static boolean checkKeyboardOpen(View view) {
+        int defaultKeyboardDp = 100;
+        Rect r = new Rect();
+        view.getWindowVisibleDisplayFrame(r);
+
+        int estimatedKeyboardHeight = (int) TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, defaultKeyboardDp, view.getResources().getDisplayMetrics());
+
+        view.getWindowVisibleDisplayFrame(r);
+        int heightDiff = view.getRootView().getHeight() - (r.bottom - r.top);
+        return heightDiff > estimatedKeyboardHeight;
     }
 }

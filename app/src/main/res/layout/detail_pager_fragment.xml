@@ -5,7 +5,7 @@
   ~  License, v. 2.0. If a copy of the MPL was not distributed with this
   ~  file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     style="@style/FragmentStyle"
@@ -14,24 +14,19 @@
     android:background="@color/white_three"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/comment_box"
-        layout="@layout/comment_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
     <LinearLayout
         android:id="@+id/parentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/comment_box"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             app:elevation="0dp">
 
             <include
@@ -140,6 +135,10 @@
         </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 
-</RelativeLayout>
+    <include
+        android:id="@+id/comment_box"
+        layout="@layout/comment_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-
+</LinearLayout>

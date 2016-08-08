@@ -27,6 +27,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,6 +49,7 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -68,6 +70,20 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.edit_profile_detail_fragment, null);
+        final View activityRootView = view.findViewById(R.id.main_content);
+
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (isAdded()) {
+                    if (AppUtils.checkKeyboardOpen(activityRootView)) {
+                        ((YonaActivity) getActivity()).changeBottomTabVisibility(false);
+                    } else {
+                        ((YonaActivity) getActivity()).changeBottomTabVisibility(true);
+                    }
+                }
+            }
+        });
 
         setupToolbar(view);
 
