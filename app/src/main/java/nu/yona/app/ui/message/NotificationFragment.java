@@ -182,6 +182,7 @@ public class NotificationFragment extends BaseFragment {
         mMessageRecyclerView.setAdapter(mMessageStickyRecyclerAdapter);
         mMessageRecyclerView.addOnScrollListener(mRecyclerViewOnScrollListener);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(mMessageStickyRecyclerAdapter));
+        getUser();
         return view;
     }
 
@@ -212,6 +213,9 @@ public class NotificationFragment extends BaseFragment {
         YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
     }
 
+    private void getUser() {
+        APIManager.getInstance().getAuthenticateManager().getUserFromServer();
+    }
     /**
      * to get the list of user's messages
      */
