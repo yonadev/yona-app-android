@@ -29,6 +29,9 @@ import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.MessageBody;
 import nu.yona.app.api.model.Properties;
+import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.enums.NotificationMessageEnum;
@@ -99,6 +102,13 @@ public class NotificationManagerImpl implements NotificationManager {
                                         } else {
                                             message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getChange()));
                                         }
+                                        if (message.getLinks() != null && message.getLinks().getYonaUser() != null
+                                                && !TextUtils.isEmpty(message.getLinks().getYonaUser().getHref())) {
+                                            if (message.getEmbedded() == null) {
+                                                message.setEmbedded(new Embedded());
+                                            }
+                                            message.getEmbedded().setYonaUser(getYonaUser(message.getLinks().getYonaUser().getHref()));
+                                        }
                                         String uploadDate = "";
 
                                         String createdTime = message.getCreationTime();
@@ -143,6 +153,28 @@ public class NotificationManagerImpl implements NotificationManager {
         } catch (Exception e) {
             AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
+    }
+
+    private RegisterUser getYonaUser(String href) {
+        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+        if (user != null && user.getEmbedded() != null && user.getEmbedded().getYonaBuddies() != null
+                && user.getEmbedded().getYonaBuddies().getEmbedded() != null
+                && user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null) {
+            List<YonaBuddy> yonaBuddies = user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
+            for (YonaBuddy yonaBuddy : yonaBuddies) {
+                if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null
+                        && yonaBuddy.getEmbedded().getYonaUser().getLinks() != null && yonaBuddy.getEmbedded().getYonaUser().getLinks().getSelf() != null
+                        && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getLinks().getSelf().getHref())
+                        && yonaBuddy.getEmbedded().getYonaUser().getLinks().getSelf().getHref().equals(href)) {
+                    RegisterUser registerUser = new RegisterUser();
+                    registerUser.setFirstName(yonaBuddy.getEmbedded().getYonaUser().getFirstName());
+                    registerUser.setLastName(yonaBuddy.getEmbedded().getYonaUser().getLastName());
+                    return registerUser;
+                }
+
+            }
+        }
+        return null;
     }
 
     /**
