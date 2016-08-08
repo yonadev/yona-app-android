@@ -233,6 +233,7 @@
 
     <dimen name="comment_layout_recyclerview_padding_bottom">28dp</dimen>
     <dimen name="comment_layout_recyclerview_padding_top">18dp</dimen>
+    <dimen name="comment_box_msg_padding">3dp</dimen>
 
     <dimen name="child_msg_padding_left">87dp</dimen>
     <dimen name="child_msg_padding_top">19dp</dimen>

@@ -23,6 +23,8 @@
         android:layout_weight="1"
         android:background="@color/white"
         android:maxLines="5"
+        android:inputType="textCapSentences"
+        android:padding="@dimen/comment_box_msg_padding"
         android:minHeight="@dimen/fifty"
         android:scrollbars="vertical" />
 
