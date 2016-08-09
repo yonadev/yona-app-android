@@ -33,7 +33,6 @@ import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
-import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -162,6 +161,8 @@ public class PerDayFragment extends BaseFragment {
         if (!isDataLoading) {
             isDataLoading = true;
             refreshAdapter();
+        } else if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
+            showData();
         }
     }
 
@@ -185,12 +186,12 @@ public class PerDayFragment extends BaseFragment {
      * to get the list of user's messages
      */
     private void getDayActivity(boolean loadMore) {
-        if (YonaActivity.getActivity().isToDisplayLogin()) {
-            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
-            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
-                return;
-            }
-        }
+//        if (YonaActivity.getActivity().isToDisplayLogin()) {
+//            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
+//            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
+//                return;
+//            }
+//        }
         final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
                 || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
@@ -221,6 +222,8 @@ public class PerDayFragment extends BaseFragment {
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList() != null
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().size() > 0) {
             perDayStickyAdapter.notifyDataSetChange(setHeaderListView());
+            mIsLoading = false;
+            YonaActivity.getActivity().showLoadingView(false, null);
         } else if (YonaActivity.getActivity() != null) {
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
         }

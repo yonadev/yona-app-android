@@ -16,6 +16,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
     private TabLayout tabLayout;
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
+    private ViewPager viewPager;
+    private ViewPagerAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
         if (mYonaHeaderTheme != null) {
             mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
         }
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
@@ -90,7 +93,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
 
     private void setupViewPager(ViewPager viewPager) {
         setTabs();
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
         PerDayFragment perDayFragment = new PerDayFragment();
         perDayFragment.setArguments(getArguments());
         PerWeekFragment perWeekFragment = new PerWeekFragment();

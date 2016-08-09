@@ -256,15 +256,35 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
                     AppUtils.throwException(DayActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
                 }
             }
-            customPageAdapter.notifyDataSetChanged(dayActivityList);
-            fetchComments(dayActivityList.indexOf(activity));
-            viewPager.setCurrentItem(dayActivityList.indexOf(activity));
-            updateFlow(dayActivityList.indexOf(activity));
+            int itemIndex = getIndex(activity);
+            if (itemIndex >= 0) {
+                customPageAdapter.notifyDataSetChanged(dayActivityList);
+                fetchComments(itemIndex);
+                viewPager.setCurrentItem(itemIndex);
+                updateFlow(itemIndex);
+            } else {
+                YonaActivity.getActivity().onBackPressed();
+            }
         } else {
             YonaActivity.getActivity().onBackPressed();
         }
 
         setDayDetailTitleAndIcon();
+    }
+
+    private int getIndex(DayActivity selectedActivity) {
+        if (dayActivityList != null && selectedActivity != null && selectedActivity.getLinks() != null && selectedActivity.getLinks().getSelf() != null
+                && !TextUtils.isEmpty(selectedActivity.getLinks().getSelf().getHref())) {
+            String selectedUrl = selectedActivity.getLinks().getSelf().getHref();
+            for (int i = 0; i < dayActivityList.size(); i++) {
+                if (dayActivityList.get(i).getLinks() != null && dayActivityList.get(i).getLinks().getSelf() != null
+                        && !TextUtils.isEmpty(dayActivityList.get(i).getLinks().getSelf().getHref())
+                        && selectedUrl.equals(dayActivityList.get(i).getLinks().getSelf().getHref())) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     private void setDayDetailTitleAndIcon() {

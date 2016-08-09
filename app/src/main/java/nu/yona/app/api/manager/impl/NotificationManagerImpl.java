@@ -259,7 +259,8 @@ public class NotificationManagerImpl implements NotificationManager {
 
     public void setReadMessage(List<YonaMessage> yonaMessageList, YonaMessage message, DataLoadListener listener) {
         try {
-            if (message != null && message.getLinks() != null && message.getLinks().getMarkRead() != null && !TextUtils.isEmpty(message.getLinks().getMarkRead().getHref())) {
+            if (yonaMessageList != null && yonaMessageList.size() > 0 && message != null
+                    && message.getLinks() != null && message.getLinks().getMarkRead() != null && !TextUtils.isEmpty(message.getLinks().getMarkRead().getHref())) {
                 String selectedMessageUrl = null;
                 // post message on server:
                 MessageBody body = new MessageBody();

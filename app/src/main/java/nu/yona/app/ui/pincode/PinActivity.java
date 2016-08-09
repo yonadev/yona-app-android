@@ -182,9 +182,6 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 
     private void updateData() {
         AppUtils.sendLogToServer(0);
-        YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(null);
-        YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(null);
-        YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
         APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(null);
     }
 }
