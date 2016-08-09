@@ -269,10 +269,15 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
                     AppUtils.throwException(WeekActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
                 }
             }
-            customPageAdapter.notifyDataSetChanged(weekActivityList);
-            fetchComments(weekActivityList.indexOf(activity));
-            viewPager.setCurrentItem(weekActivityList.indexOf(activity));
-            updateFlow(weekActivityList.indexOf(activity));
+            int itemIndex = getIndex(activity);
+            if (itemIndex >= 0) {
+                customPageAdapter.notifyDataSetChanged(weekActivityList);
+                fetchComments(itemIndex);
+                viewPager.setCurrentItem(itemIndex);
+                updateFlow(itemIndex);
+            } else {
+                YonaActivity.getActivity().onBackPressed();
+            }
         } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -282,6 +287,21 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             }, AppConstant.ONE_SECOND);
         }
         setDayDetailTitleAndIcon();
+    }
+
+    private int getIndex(WeekActivity selectedActivity) {
+        if (weekActivityList != null && selectedActivity != null && selectedActivity.getLinks() != null && selectedActivity.getLinks().getSelf() != null
+                && !TextUtils.isEmpty(selectedActivity.getLinks().getSelf().getHref())) {
+            String selectedUrl = selectedActivity.getLinks().getSelf().getHref();
+            for (int i = 0; i < weekActivityList.size(); i++) {
+                if (weekActivityList.get(i).getLinks() != null && weekActivityList.get(i).getLinks().getSelf() != null
+                        && !TextUtils.isEmpty(weekActivityList.get(i).getLinks().getSelf().getHref())
+                        && selectedUrl.equals(weekActivityList.get(i).getLinks().getSelf().getHref())) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     private void setDayDetailTitleAndIcon() {

@@ -374,9 +374,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
             skipVerification = false;
         }
-        YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
-        YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(null);
-        YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(null);
         mStateSaved = true;
     }
 
