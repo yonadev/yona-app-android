@@ -145,8 +145,17 @@ public class ChallengesManagerImpl implements ChallengesManager {
     public boolean hasUserCreatedGoal() {
         Goals userGoals = APIManager.getInstance().getGoalManager().getUserGoalFromDb();
         try {
-            if (userGoals != null) {
-                if (YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() < userGoals.getEmbedded().getYonaGoals().size()) {
+            if (userGoals != null
+                    && !YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
+                int serversetGoal = 0;
+                if(userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals() != null) {
+                    for (int i = 0; i < userGoals.getEmbedded().getYonaGoals().size(); i++) {
+                        if(userGoals.getEmbedded().getYonaGoals().get(i).getLinks() != null && userGoals.getEmbedded().getYonaGoals().get(i).getLinks().getEdit() == null) {
+                            serversetGoal++;
+                        }
+                    }
+                }
+                if (YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() > serversetGoal) {
                     YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
                     return true;
                 }
