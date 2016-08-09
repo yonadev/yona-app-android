@@ -49,7 +49,9 @@
     <string name="passcodetryagain">Probeer opnieuw</string>
     <string name="pincode">PINCODE</string>
     <string name="passcodestep1title">Account aangemaakt</string>
+    <string name="passcodestep1retrytitle">PINcode komt niet overeen</string>
     <string name="passcodestep1desc">Voor een goede beveiliging is het verplicht om de Yona app te voorzien van een pincode. Stel je pincode hieronder in.</string>
+    <string name="passcodestep1retrydesc">Je tweede PINcode komt niet overeen met de eerste. Geef opnieuw een PINcode in.</string>
     <string name="passcodestep2title">Bevestig pincode</string>
     <string name="passcodestep2desc">Vul je pincode nog een keer in ter bevestiging.</string>
     <string name="msgblockuser">Om veiligheidsredenen is je account geblokkeerd. Gebruik de ‘PIN reset’ knop hieronder om je account opnieuw te activeren.</string>

@@ -165,6 +165,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
                 showChallengesScreen();
             }
         } else {
+            isPasscodeFlowRetry = true;
             doBack();
             first_passcode = "";
 
