@@ -25,7 +25,7 @@ public enum NotificationMessageEnum {
     /**
      * Buddy connect request rejected notification message enum.
      */
-    BUDDY_CONNECT_REQUEST_REJECTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.REJECTED, getString(R.string.buddyconnectrequested), 0),
+    BUDDY_CONNECT_REQUEST_REJECTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.REJECTED, getString(R.string.buddyresponserejected), R.drawable.icn_no),
     /**
      * Buddy connect request requested notification message enum.
      */
