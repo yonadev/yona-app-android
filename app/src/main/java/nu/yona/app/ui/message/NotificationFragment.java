@@ -216,6 +216,7 @@ public class NotificationFragment extends BaseFragment {
     private void getUser() {
         APIManager.getInstance().getAuthenticateManager().getUserFromServer();
     }
+
     /**
      * to get the list of user's messages
      */
@@ -226,8 +227,9 @@ public class NotificationFragment extends BaseFragment {
             public void onDataLoad(Object result) {
                 YonaActivity.getActivity().showLoadingView(false, null);
                 if (isAdded() && result != null && result instanceof YonaMessages) {
-                    mYonaMessages = (YonaMessages) result;
-                    if (mYonaMessages.getEmbedded() != null && mYonaMessages.getEmbedded().getYonaMessages() != null) {
+                    YonaMessages mMessages = (YonaMessages) result;
+                    if (mMessages.getEmbedded() != null && mMessages.getEmbedded().getYonaMessages() != null) {
+                        mYonaMessages = mMessages;
                         if (mIsLoading) {
                             mMessageStickyRecyclerAdapter.updateData(mYonaMessages.getEmbedded().getYonaMessages());
                         } else {
