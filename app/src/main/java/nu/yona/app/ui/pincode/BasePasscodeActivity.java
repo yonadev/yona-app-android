@@ -90,6 +90,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      */
     protected View passcodeView;
     private AnimationSet animationView;
+    protected boolean isPasscodeFlowRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -321,8 +322,13 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      */
     protected void populatePasscodeView() {
         accont_image.setImageResource(R.drawable.icn_account_created);
-        passcode_title.setText(getString(R.string.passcodestep1title));
-        passcode_description.setText(getString(R.string.passcodestep1desc));
+        if (isPasscodeFlowRetry) {
+            passcode_title.setText(getString(R.string.passcodestep1retrytitle));
+            passcode_description.setText(getString(R.string.passcodestep1retrydesc));
+        } else {
+            passcode_title.setText(getString(R.string.passcodestep1desc));
+            passcode_description.setText(getString(R.string.passcodestep1desc));
+        }
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_create_progress));
         passcode_error.setVisibility(View.GONE);
         updateTitle(getString(R.string.pincode));
