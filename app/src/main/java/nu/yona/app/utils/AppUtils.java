@@ -513,12 +513,15 @@ public class AppUtils {
             if (ks != null) {
                 ks.load(null, null);
                 Enumeration aliases = ks.aliases();
-                while (aliases.hasMoreElements()) {
-                    String alias = (String) aliases.nextElement();
-                    java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate) ks.getCertificate(alias);
-                    if (cert.getIssuerDN().getName().contains(AppConstant.CA_CERTIFICATE)) {
-                        isCertExist = true;
-                        break;
+                String caCertName = YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN();
+                if (!TextUtils.isEmpty(caCertName)) {
+                    while (aliases.hasMoreElements()) {
+                        String alias = (String) aliases.nextElement();
+                        java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate) ks.getCertificate(alias);
+                        if (cert.getIssuerDN().getName().contains(caCertName)) {
+                            isCertExist = true;
+                            break;
+                        }
                     }
                 }
             }
