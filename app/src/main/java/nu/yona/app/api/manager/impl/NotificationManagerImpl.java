@@ -84,9 +84,10 @@ public class NotificationManagerImpl implements NotificationManager {
 
     private void getMessage(final int itemsPerPage, final int pageNo, final boolean isUnreadStatus, final DataLoadListener listener, final boolean isProcessUpdate) {
         try {
-            if (YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages() != null
-                    && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages().getHref())) {
-                notificationNetwork.getMessage(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus,
+            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            if (user != null && user.getLinks() != null && user.getLinks().getYonaMessages() != null
+                    && !TextUtils.isEmpty(user.getLinks().getYonaMessages().getHref())) {
+                notificationNetwork.getMessage(user.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus,
                         itemsPerPage, pageNo, new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {
