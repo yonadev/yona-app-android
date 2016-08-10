@@ -59,6 +59,10 @@ public class User extends BaseEntity {
     @Expose
     private String mobileNumberConfirmationCode;
 
+    @SerializedName("sslRootCertCN")
+    @Expose
+    private String sslRootCertCN;
+
     /**
      * Gets mobile number confirmation code.
      *
@@ -225,5 +229,13 @@ public class User extends BaseEntity {
     @Override
     public ContentValues getDbContentValues() {
         return null;
+    }
+
+    public String getSslRootCertCN() {
+        return this.sslRootCertCN;
+    }
+
+    public void setSslRootCertCN(String sslRootCertCN) {
+        this.sslRootCertCN = sslRootCertCN;
     }
 }
