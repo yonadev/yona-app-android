@@ -194,10 +194,11 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
-        profileImage.setOnClickListener(listener);
-
         updateProfileImage = (ImageView) view.findViewById(R.id.updateProfileImage);
-        updateProfileImage.setOnClickListener(listener);
+        //TODO following 2 lines are disable until server implements Image upload feature.
+//        profileImage.setOnClickListener(listener);
+//        updateProfileImage.setOnClickListener(listener);
+        updateProfileImage.setVisibility(View.GONE);
         profileViewMode();
     }
 
