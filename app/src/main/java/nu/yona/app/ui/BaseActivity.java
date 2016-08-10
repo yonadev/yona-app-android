@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -23,7 +24,6 @@ import net.hockeyapp.android.UpdateManager;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.CustomProgressDialog;
-import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 18/03/16.
@@ -57,7 +57,7 @@ public class BaseActivity extends AppCompatActivity {
                 progressDialog = null;
             }
         } catch (Exception e) {
-            AppUtils.throwException(BaseActivity.class.getSimpleName(), e, Thread.currentThread(), null);
+            Log.e(BaseActivity.class.getSimpleName(), e.getMessage());
         }
     }
 
