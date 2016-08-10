@@ -63,7 +63,7 @@
         android:layout_height="@dimen/sixty_four"
         android:layout_gravity="bottom"
         android:paddingBottom="@dimen/five"
-        android:paddingTop="@dimen/twenty"
+        android:paddingTop="@dimen/twenty_seven"
         android:scaleType="fitXY"
         android:transitionName="@string/profile_transition"
         android:visibility="gone" />
