@@ -34,9 +34,9 @@ public class NotificationNetworkImpl extends BaseImpl {
      * @param pageNo       the page no
      * @param listener     the listener
      */
-    public void getMessage(String url, String yonaPassword, int itemsPerPage, int pageNo, final DataLoadListener listener) {
+    public void getMessage(String url, String yonaPassword, boolean isUnreadStatus, int itemsPerPage, int pageNo, final DataLoadListener listener) {
         try {
-            getRestApi().getMessages(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemsPerPage, pageNo).enqueue(new Callback<YonaMessages>() {
+            getRestApi().getMessages(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), isUnreadStatus, itemsPerPage, pageNo).enqueue(new Callback<YonaMessages>() {
                 @Override
                 public void onResponse(Call<YonaMessages> call, Response<YonaMessages> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {

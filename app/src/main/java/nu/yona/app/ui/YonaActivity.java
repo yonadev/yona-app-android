@@ -254,7 +254,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     @Override
     protected void onResume() {
-        Log.e(YonaActivity.class.getSimpleName(), "onResume");
         mStateSaved = false;
         if (isStateActive) {
             isStateActive = false;
@@ -290,11 +289,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 
     private void getUserMessages() {
-        YonaActivity.getActivity().showLoadingView(true, null);
-        APIManager.getInstance().getNotificationManager().getMessage(AppConstant.PAGE_SIZE, 0, new DataLoadListener() {
+        showLoadingView(true, null);
+        APIManager.getInstance().getNotificationManager().getMessage(AppConstant.PAGE_SIZE, 0, true, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                YonaActivity.getActivity().showLoadingView(false, null);
+                showLoadingView(false, null);
                 if (result != null && result instanceof YonaMessages) {
                     YonaMessages yonaMessages = (YonaMessages) result;
                     YonaApplication.getEventChangeManager().getDataState().setNotificaitonCount(yonaMessages.getPage().getTotalElements());
@@ -304,8 +303,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
             @Override
             public void onError(Object errorMessage) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-                YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                showLoadingView(false, null);
+                showError((ErrorMessage) errorMessage);
             }
         });
     }
@@ -905,6 +904,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
         } else {
             AppUtils.setSubmitPressed(true);
+        }
+        if (mContent instanceof NotificationFragment) {
+            getUserMessages();
         }
     }
 

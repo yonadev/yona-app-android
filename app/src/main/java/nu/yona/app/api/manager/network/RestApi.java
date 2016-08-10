@@ -324,6 +324,7 @@ public interface RestApi {
     @GET
     Call<YonaMessages> getMessages(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
                                    @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+                                   @Query("onlyUnreadMessages") boolean isUnreadMessage,
                                    @Query("size") int size, @Query("page") int page);
 
     /**

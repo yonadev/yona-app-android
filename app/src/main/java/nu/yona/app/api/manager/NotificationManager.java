@@ -36,6 +36,8 @@ public interface NotificationManager {
      */
     void getMessage(int itemsPerPage, int pageNo, DataLoadListener listener);
 
+    void getMessage(final int itemsPerPage, final int pageNo, boolean isUnreadStatus, final DataLoadListener listener);
+
     /**
      * Post message.
      *
