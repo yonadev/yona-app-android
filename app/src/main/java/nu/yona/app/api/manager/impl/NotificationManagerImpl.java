@@ -67,6 +67,10 @@ public class NotificationManagerImpl implements NotificationManager {
         getMessage(0, 0, listener); //set default page 0, start page = 0
     }
 
+    public void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener) {
+        getMessage(itemsPerPage, pageNo, false, listener);
+    }
+
     /**
      * Gets message.
      *
@@ -74,79 +78,80 @@ public class NotificationManagerImpl implements NotificationManager {
      * @param pageNo       the page no
      * @param listener     the listener
      */
-    public void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener) {
-        getMessage(itemsPerPage, pageNo, listener, false);
+    public void getMessage(final int itemsPerPage, final int pageNo, boolean isUnreadStatus, final DataLoadListener listener) {
+        getMessage(itemsPerPage, pageNo, isUnreadStatus, listener, false);
     }
 
-    private void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener, final boolean isProcessUpdate) {
+    private void getMessage(final int itemsPerPage, final int pageNo, final boolean isUnreadStatus, final DataLoadListener listener, final boolean isProcessUpdate) {
         try {
             if (YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages() != null
                     && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages().getHref())) {
-                notificationNetwork.getMessage(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), itemsPerPage, pageNo, new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        if (listener != null) {
-                            if (result instanceof YonaMessages) {
-                                YonaMessages yonaMessages = (YonaMessages) result;
-                                if (yonaMessages != null && yonaMessages.getEmbedded() != null) {
-                                    Embedded embedded = yonaMessages.getEmbedded();
-                                    List<YonaMessage> listMessages = embedded.getYonaMessages();
-                                    boolean isAnyProcessed = false;
-                                    SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
-                                    for (YonaMessage message : listMessages) {
-                                        //update enum
-                                        if (message.getStatus() != null) {
-                                            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));
-                                        } else if (message.getDropBuddyReason() != null) {
-                                            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getDropBuddyReason()));
-                                        } else {
-                                            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getChange()));
-                                        }
-                                        if (message.getLinks() != null && message.getLinks().getYonaUser() != null
-                                                && !TextUtils.isEmpty(message.getLinks().getYonaUser().getHref())) {
-                                            if (message.getEmbedded() == null) {
-                                                message.setEmbedded(new Embedded());
+                notificationNetwork.getMessage(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus,
+                        itemsPerPage, pageNo, new DataLoadListener() {
+                            @Override
+                            public void onDataLoad(Object result) {
+                                if (listener != null) {
+                                    if (result instanceof YonaMessages) {
+                                        YonaMessages yonaMessages = (YonaMessages) result;
+                                        if (yonaMessages != null && yonaMessages.getEmbedded() != null) {
+                                            Embedded embedded = yonaMessages.getEmbedded();
+                                            List<YonaMessage> listMessages = embedded.getYonaMessages();
+                                            boolean isAnyProcessed = false;
+                                            SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
+                                            for (YonaMessage message : listMessages) {
+                                                //update enum
+                                                if (message.getStatus() != null) {
+                                                    message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));
+                                                } else if (message.getDropBuddyReason() != null) {
+                                                    message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getDropBuddyReason()));
+                                                } else {
+                                                    message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getChange()));
+                                                }
+                                                if (message.getLinks() != null && message.getLinks().getYonaUser() != null
+                                                        && !TextUtils.isEmpty(message.getLinks().getYonaUser().getHref())) {
+                                                    if (message.getEmbedded() == null) {
+                                                        message.setEmbedded(new Embedded());
+                                                    }
+                                                    message.getEmbedded().setYonaUser(getYonaUser(message.getLinks().getYonaUser().getHref()));
+                                                }
+                                                String uploadDate = "";
+
+                                                String createdTime = message.getCreationTime();
+                                                try {
+                                                    Date date = sdf.parse(createdTime);
+
+                                                    Calendar futureCalendar = Calendar.getInstance();
+                                                    futureCalendar.setTime(date);
+
+                                                    uploadDate = DateUtility.getRelativeDate(futureCalendar);
+                                                    message.setStickyTitle(uploadDate);
+                                                } catch (Exception e) {
+                                                    AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+                                                }
+                                                yonaMessages.setEmbedded(embedded);
+                                                if (!isProcessUpdate && message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null
+                                                        && !TextUtils.isEmpty(message.getLinks().getYonaPreocess().getHref())) {
+                                                    isAnyProcessed = true;
+                                                    MessageBody body = new MessageBody();
+                                                    body.setProperties(new Properties());
+                                                    postMessageForProcess(message.getLinks().getYonaPreocess().getHref(), body);
+                                                }
                                             }
-                                            message.getEmbedded().setYonaUser(getYonaUser(message.getLinks().getYonaUser().getHref()));
+                                            if (isAnyProcessed) {
+                                                getMessage(itemsPerPage, pageNo, isUnreadStatus, listener, true);
+                                            }
+                                            APIManager.getInstance().getAuthenticateManager().getUserFromServer();
                                         }
-                                        String uploadDate = "";
-
-                                        String createdTime = message.getCreationTime();
-                                        try {
-                                            Date date = sdf.parse(createdTime);
-
-                                            Calendar futureCalendar = Calendar.getInstance();
-                                            futureCalendar.setTime(date);
-
-                                            uploadDate = DateUtility.getRelativeDate(futureCalendar);
-                                            message.setStickyTitle(uploadDate);
-                                        } catch (Exception e) {
-                                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-                                        }
-                                        yonaMessages.setEmbedded(embedded);
-                                        if (!isProcessUpdate && message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null
-                                                && !TextUtils.isEmpty(message.getLinks().getYonaPreocess().getHref())) {
-                                            isAnyProcessed = true;
-                                            MessageBody body = new MessageBody();
-                                            body.setProperties(new Properties());
-                                            postMessageForProcess(message.getLinks().getYonaPreocess().getHref(), body);
-                                        }
+                                        listener.onDataLoad(yonaMessages);
                                     }
-                                    if (isAnyProcessed) {
-                                        getMessage(itemsPerPage, pageNo, listener, true);
-                                    }
-                                    APIManager.getInstance().getAuthenticateManager().getUserFromServer();
                                 }
-                                listener.onDataLoad(yonaMessages);
                             }
-                        }
-                    }
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        throwError(listener, errorMessage);
-                    }
-                });
+                            @Override
+                            public void onError(Object errorMessage) {
+                                throwError(listener, errorMessage);
+                            }
+                        });
             } else {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }

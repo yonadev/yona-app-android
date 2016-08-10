@@ -16,7 +16,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,9 +58,9 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.viewpager_fragment, null);
+        YonaApplication.getEventChangeManager().registerListener(this);
         resetData();
         setupToolbar(view);
-
         if (mYonaHeaderTheme != null) {
             mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
         }
@@ -89,6 +88,12 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
     public void onDetach() {
         super.onDetach();
         resetData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
     private void setupViewPager(ViewPager viewPager) {
