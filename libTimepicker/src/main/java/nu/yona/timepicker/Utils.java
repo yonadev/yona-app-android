@@ -36,13 +36,16 @@ public class Utils {
     // Alpha level for fully opaque.
     public static final int FULL_ALPHA = 255;
     public static final String ROBOTO_MEDIUM = "lib-roboto-medium";
+    public static final String OSWALD_LIGHT = "lib-oswald-light";
+    public static final String ROBOTO_BOLD = "lib-roboto-bold";
 
     public static boolean isJellybeanOrLater() {
-      return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
 
     /**
      * Try to speak the specified text, for accessibility. Only available on JB or later.
+     *
      * @param text Text to announce.
      */
     @SuppressLint("NewApi")
@@ -64,9 +67,9 @@ public class Utils {
      * @return The julian day for the Monday of the given week since the epoch
      */
     /**
-    public static int getJulianMondayFromWeeksSinceEpoch(int week) {
-        return MONDAY_BEFORE_JULIAN_EPOCH + week * 7;
-    }
+     public static int getJulianMondayFromWeeksSinceEpoch(int week) {
+     return MONDAY_BEFORE_JULIAN_EPOCH + week * 7;
+     }
      */
 
     /**
@@ -83,23 +86,24 @@ public class Utils {
      * @return Weeks since the epoch
      */
     /**
-    public static int getWeeksSinceEpochFromJulianDay(int julianDay, int firstDayOfWeek) {
-        int diff = Time.THURSDAY - firstDayOfWeek;
-        if (diff < 0) {
-            diff += 7;
-        }
-        int refDay = Time.EPOCH_JULIAN_DAY - diff;
-        return (julianDay - refDay) / 7;
-    }
+     public static int getWeeksSinceEpochFromJulianDay(int julianDay, int firstDayOfWeek) {
+     int diff = Time.THURSDAY - firstDayOfWeek;
+     if (diff < 0) {
+     diff += 7;
+     }
+     int refDay = Time.EPOCH_JULIAN_DAY - diff;
+     return (julianDay - refDay) / 7;
+     }
      */
 
     /**
      * Render an animator to pulsate a view in place.
+     *
      * @param labelToAnimate the view to pulsate.
      * @return The animator object. Use .start() to begin.
      */
     public static ObjectAnimator getPulseAnimator(View labelToAnimate, float decreaseRatio,
-            float increaseRatio) {
+                                                  float increaseRatio) {
         Keyframe k0 = Keyframe.ofFloat(0f, 1f);
         Keyframe k1 = Keyframe.ofFloat(0.275f, decreaseRatio);
         Keyframe k2 = Keyframe.ofFloat(0.69f, increaseRatio);
@@ -118,7 +122,7 @@ public class Utils {
      * Convert Dp to Pixel
      */
     @SuppressWarnings("unused")
-    public static int dpToPx(float dp, Resources resources){
+    public static int dpToPx(float dp, Resources resources) {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
         return (int) px;
     }
@@ -132,6 +136,7 @@ public class Utils {
 
     /**
      * Gets the colorAccent from the current context, if possible/available
+     *
      * @param context The context to use as reference for the color
      * @return the accent color of the current context
      */
@@ -153,6 +158,7 @@ public class Utils {
 
     /**
      * Gets dialog type (Light/Dark) from current theme
+     *
      * @param context The context to use as reference for the boolean
      * @param current Default value to return if cannot resolve the attribute
      * @return true if dark mode, false if light.
@@ -163,8 +169,9 @@ public class Utils {
 
     /**
      * Gets the required boolean value from the current context, if possible/available
-     * @param context The context to use as reference for the boolean
-     * @param attr Attribute id to resolve
+     *
+     * @param context  The context to use as reference for the boolean
+     * @param attr     Attribute id to resolve
      * @param fallback Default value to return if no value is specified in theme
      * @return the boolean value from current theme
      */

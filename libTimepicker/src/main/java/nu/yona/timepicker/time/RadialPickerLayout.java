@@ -153,7 +153,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
      * @param is24HourMode Indicates whether we should render in 24hour mode or with AM/PM selectors
      */
     public void initialize(Context context, TimePickerDialog timePickerDialog,
-            Timepoint initialTime, boolean is24HourMode) {
+                           Timepoint initialTime, boolean is24HourMode) {
         if (mTimeInitialized) {
             Log.e(TAG, "Time has already been initialized.");
             return;
@@ -595,7 +595,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
      * @return Degrees from 0 to 360, if the selection was within the legal range. -1 if not.
      */
     private int getDegreesFromCoords(float pointX, float pointY, boolean forceLegal,
-            final Boolean[] isInnerCircle) {
+                                     final Boolean[] isInnerCircle) {
         switch(getCurrentItemShowing()) {
             case HOUR_INDEX:
                 return mHourRadialSelectorView.getDegreesFromCoords(
@@ -795,8 +795,8 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
                 degrees = getDegreesFromCoords(eventX, eventY, true, isInnerCircle);
                 if (degrees != -1) {
                     value = roundToValidTime(
-                                getTimeFromDegrees(degrees, isInnerCircle[0], false),
-                                getCurrentItemShowing()
+                            getTimeFromDegrees(degrees, isInnerCircle[0], false),
+                            getCurrentItemShowing()
                     );
                     reselectSelector(value, true, getCurrentItemShowing());
                     if (value != null && (mLastValueSelected == null || !mLastValueSelected.equals(value))) {
