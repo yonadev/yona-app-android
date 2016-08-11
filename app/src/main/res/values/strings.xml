@@ -182,4 +182,6 @@
     <string name="certificate_installation">Certificate Installation</string>
     <string name="certfiicate_installtion_detail">Installation of certificate required for security reason. Please click ok on next alert.</string>
     <string name="not_accepted_yet">Not accepted yet</string>
+    <string name="vpn_disconnected">VPN Disconnected. Click to connect again.</string>
+    <string name="device_restart">Device Need to restart for establishing secure VPN connection.</string>
 </resources>

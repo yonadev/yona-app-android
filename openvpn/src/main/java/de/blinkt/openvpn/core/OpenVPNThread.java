@@ -6,6 +6,9 @@
 package de.blinkt.openvpn.core;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -44,9 +47,13 @@ public class OpenVPNThread implements Runnable {
     private String mDumpPath;
     private Map<String, String> mProcessEnv;
     private boolean mBrokenPie = false;
-    private boolean mNoProcessExitStatus = false;
+    private boolean mNoProcessExitStatus;
+    private long startVPNTime;
+    private final int CONNECTED_TIME = 5000;
+    private Context mContext;
 
-    public OpenVPNThread(OpenVPNService service, String[] argv, Map<String, String> processEnv, String nativelibdir) {
+    public OpenVPNThread(Context context, OpenVPNService service, String[] argv, Map<String, String> processEnv, String nativelibdir) {
+        mContext = context;
         mArgv = argv;
         mNativeDir = nativelibdir;
         mService = service;
@@ -64,12 +71,10 @@ public class OpenVPNThread implements Runnable {
     @Override
     public void run() {
         try {
-            Log.i(TAG, "Starting openvpn");
             startOpenVPNThreadArgs(mArgv, mProcessEnv);
-            Log.i(TAG, "OpenVPN process exited");
+            startVPNTime = new Date().getTime();
         } catch (Exception e) {
             VpnStatus.logException("Starting OpenVPN Thread", e);
-            Log.e(TAG, "OpenVPNThread Got " + e.toString());
         } finally {
             int exitvalue = 0;
             try {
@@ -98,9 +103,17 @@ public class OpenVPNThread implements Runnable {
 
             }
 
-            if (!mNoProcessExitStatus)
+            if (!mNoProcessExitStatus) {
+                long stopTime = new Date().getTime();
+                if (stopTime - startVPNTime < CONNECTED_TIME && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    Intent intent = new Intent("com.yona.app.RESTART_DEVICE");
+                    mContext.sendBroadcast(intent);
+                } else {
+                    Intent intent = new Intent("com.yona.app.RESTART_VPN");
+                    mContext.sendBroadcast(intent);
+                }
                 VpnStatus.updateStateString("NOPROCESS", "No process running.", R.string.state_noprocess, ConnectionStatus.LEVEL_NOTCONNECTED);
-
+            }
             if (mDumpPath != null) {
                 try {
                     BufferedWriter logout = new BufferedWriter(new FileWriter(mDumpPath + ".log"));

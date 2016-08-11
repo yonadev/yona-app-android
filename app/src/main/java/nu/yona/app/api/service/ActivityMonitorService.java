@@ -158,7 +158,6 @@ public class ActivityMonitorService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Log.e("Task removed", "onTaskRemoved");
         YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
         shutdownScheduler();
         restartService();

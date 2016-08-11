@@ -242,7 +242,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                         listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
                     }
                 } else {
-                    if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getVerifyPinReset().getHref())) {
+                    if (YonaApplication.getEventChangeManager().getDataState().getUser() != null
+                            && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
+                            && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getVerifyPinReset() != null
+                            && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getVerifyPinReset().getHref())) {
                         authNetwork.doVerifyPin(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref(), otp, new DataLoadListener() {
                             @Override
                             public void onDataLoad(Object result) {

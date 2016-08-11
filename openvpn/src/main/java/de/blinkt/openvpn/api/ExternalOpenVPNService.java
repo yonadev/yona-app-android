@@ -25,6 +25,7 @@ import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -396,6 +397,10 @@ public class ExternalOpenVPNService extends Service implements StateListener {
             this.level = level;
         }
     }
-
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.e("Task removed", "onTaskRemoved External OpenVPNService");
+        super.onTaskRemoved(rootIntent);
+    }
 
 }
