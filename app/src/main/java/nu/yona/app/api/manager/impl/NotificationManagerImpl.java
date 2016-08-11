@@ -175,6 +175,7 @@ public class NotificationManagerImpl implements NotificationManager {
                     RegisterUser registerUser = new RegisterUser();
                     registerUser.setFirstName(yonaBuddy.getEmbedded().getYonaUser().getFirstName());
                     registerUser.setLastName(yonaBuddy.getEmbedded().getYonaUser().getLastName());
+                    registerUser.setMobileNumber(yonaBuddy.getEmbedded().getYonaUser().getMobileNumber());
                     return registerUser;
                 }
 
