@@ -278,6 +278,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 onBackPressed();
             }
             hideSoftInput();
+            changeBottomTabVisibility(true);
             if (isUserFromOnCreate) {
                 isUserFromOnCreate = false;
                 getFileWritePermission();
@@ -878,35 +879,37 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     @Override
     public void onBackPressed() {
-        if (Foreground.get().isForeground()) {
-            AppUtils.setSubmitPressed(false);
-            if (mContent instanceof ChallengesFragment && ((ChallengesFragment) mContent).isChildViewVisible()) {
-                ((ChallengesFragment) mContent).updateView();
-            } else if (mContent instanceof DayActivityDetailFragment && ((DayActivityDetailFragment) mContent).isUserCommenting()) {
-                ((DayActivityDetailFragment) mContent).updateParentcommentView();
-            } else if (mContent instanceof SingleDayActivityDetailFragment && ((SingleDayActivityDetailFragment) mContent).isUserCommenting()) {
-                ((SingleDayActivityDetailFragment) mContent).updateParentcommentView();
-            } else if (mContent instanceof WeekActivityDetailFragment && ((WeekActivityDetailFragment) mContent).isUserCommenting()) {
-                ((WeekActivityDetailFragment) mContent).updateParentcommentView();
-            } else if (mContent instanceof SingleWeekDayActivityDetailFragment && ((SingleWeekDayActivityDetailFragment) mContent).isUserCommenting()) {
-                ((SingleWeekDayActivityDetailFragment) mContent).updateParentcommentView();
-            } else {
-                isBackPressed = true;
-                if (isStackEmpty() && !(mContent instanceof DashboardFragment)) {
-                    Fragment oldFragment = mContent;
-                    //todo - check which content of instace is that and according update the view
-                    mContent = homeFragment;
-                    mTabLayout.getTabAt(0).select();
-                    loadFragment(true, false, oldFragment);
-                    return;
+        if (mContent instanceof ChallengesFragment) {
+            if (Foreground.get().isForeground()) {
+                AppUtils.setSubmitPressed(false);
+                if (((ChallengesFragment) mContent).isChildViewVisible()) {
+                    ((ChallengesFragment) mContent).updateView();
                 }
-                super.onBackPressed();
+            } else {
+                AppUtils.setSubmitPressed(true);
             }
+        } else if (mContent instanceof DayActivityDetailFragment && ((DayActivityDetailFragment) mContent).isUserCommenting()) {
+            ((DayActivityDetailFragment) mContent).updateParentcommentView();
+        } else if (mContent instanceof SingleDayActivityDetailFragment && ((SingleDayActivityDetailFragment) mContent).isUserCommenting()) {
+            ((SingleDayActivityDetailFragment) mContent).updateParentcommentView();
+        } else if (mContent instanceof WeekActivityDetailFragment && ((WeekActivityDetailFragment) mContent).isUserCommenting()) {
+            ((WeekActivityDetailFragment) mContent).updateParentcommentView();
+        } else if (mContent instanceof SingleWeekDayActivityDetailFragment && ((SingleWeekDayActivityDetailFragment) mContent).isUserCommenting()) {
+            ((SingleWeekDayActivityDetailFragment) mContent).updateParentcommentView();
         } else {
-            AppUtils.setSubmitPressed(true);
-        }
-        if (mContent instanceof NotificationFragment) {
-            getUserMessages();
+            isBackPressed = true;
+            if (isStackEmpty() && !(mContent instanceof DashboardFragment)) {
+                Fragment oldFragment = mContent;
+                //todo - check which content of instace is that and according update the view
+                mContent = homeFragment;
+                if(mContent instanceof NotificationFragment){
+                    getUserMessages();
+                }
+                mTabLayout.getTabAt(0).select();
+                loadFragment(true, false, oldFragment);
+                return;
+            }
+            super.onBackPressed();
         }
     }
 
