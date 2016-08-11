@@ -276,17 +276,22 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
                 viewPager.setCurrentItem(itemIndex);
                 updateFlow(itemIndex);
             } else {
-                YonaActivity.getActivity().onBackPressed();
+                goBack();
             }
         } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    YonaActivity.getActivity().onBackPressed();
-                }
-            }, AppConstant.ONE_SECOND);
+           goBack();
         }
         setDayDetailTitleAndIcon();
+    }
+
+
+    private void goBack() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                YonaActivity.getActivity().onBackPressed();
+            }
+        }, AppConstant.ONE_SECOND);
     }
 
     private int getIndex(WeekActivity selectedActivity) {
