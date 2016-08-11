@@ -8,10 +8,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/goal_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/goal_item_height"
+    android:layout_height="@dimen/challenges_budget_goal_header_height"
     android:background="@color/white_two"
-    android:padding="@dimen/layout_margin"
-    android:visibility="gone">
+    android:paddingBottom="@dimen/thirty"
+    android:paddingLeft="@dimen/layout_margin"
+    android:paddingRight="@dimen/layout_margin"
+    android:paddingTop="@dimen/twenty_nine"
+    android:visibility="visible">
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goal_item_text"
@@ -27,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:text="20" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goal_item_subtext"
@@ -41,6 +45,23 @@
         android:layout_toLeftOf="@id/goal_minutes_num"
         android:layout_toStartOf="@id/goal_minutes_num"
         android:text="@string/budgetgoaldesc" />
+
+    <SeekBar
+        android:id="@+id/budget_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/goal_minutes_num"
+        android:layout_marginTop="@dimen/seekbar_margin_top"
+        android:max="240"
+        android:maxHeight="@dimen/seekbar_max_height"
+        android:minHeight="@dimen/seekbar_min_height"
+        android:paddingLeft="@dimen/seekbar_padding_left"
+        android:paddingRight="@dimen/seekbar_padding_right"
+        android:progress="0"
+        android:progressDrawable="@drawable/seekbar_base"
+        android:splitTrack="false"
+        android:thumb="@drawable/seek_bar_thumb"
+        android:thumbOffset="@dimen/seekbar_thuboffset" />
 
 
 </RelativeLayout>
