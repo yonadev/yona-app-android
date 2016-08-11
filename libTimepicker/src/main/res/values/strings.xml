@@ -83,4 +83,6 @@
     <string name="mdtp_day_of_week_label_typeface" translatable="false">sans-serif</string>
 
     <string name="error_msg_dual_screen">Current time must be future time</string>
+    <string name="from">VAN</string>
+    <string name="to">TOT</string>
 </resources>

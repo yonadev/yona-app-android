@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2016 Stichting Yona Foundation
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/mdtp_header_label_width"
+    android:layout_height="@dimen/mdtp_header_label_height"
+    android:background="@color/mdtp_pea"
+    android:orientation="vertical">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/time_display"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mdtp_header_top_height"
+        android:layout_gravity="center"
+        android:background="@color/mdtp_pea">
+
+        <View
+            android:id="@+id/center_view"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="#00000000"
+            android:importantForAccessibility="no"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/hour_space"
+            style="@style/mdtp_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/separator"
+            android:importantForAccessibility="no"
+            android:text="@string/mdtp_time_placeholder"
+            android:visibility="invisible" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/hour_space"
+            android:layout_alignRight="@+id/hour_space"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/mdtp_extra_time_label_margin"
+            android:layout_marginRight="@dimen/mdtp_extra_time_label_margin"
+            android:clipChildren="false">
+
+            <nu.yona.timepicker.AccessibleTextView
+                android:id="@+id/hours"
+                style="@style/mdtp_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:text="@string/mdtp_time_placeholder"
+                android:textColor="@color/mdtp_white" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/separator"
+            style="@style/mdtp_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/center_view"
+            android:layout_centerVertical="true"
+            android:importantForAccessibility="no"
+            android:paddingLeft="@dimen/mdtp_separator_padding"
+            android:paddingRight="@dimen/mdtp_separator_padding"
+            android:text="@string/mdtp_time_separator"
+            android:textColor="@color/mdtp_accent_color_focused" />
+
+        <TextView
+            android:id="@+id/minutes_space"
+            style="@style/mdtp_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/separator"
+            android:importantForAccessibility="no"
+            android:text="@string/mdtp_time_placeholder"
+            android:textColor="@color/mdtp_accent_color_focused"
+            android:visibility="invisible" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/minutes_space"
+            android:layout_alignRight="@+id/minutes_space"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/mdtp_extra_time_label_margin"
+            android:layout_marginRight="@dimen/mdtp_extra_time_label_margin">
+
+            <nu.yona.timepicker.AccessibleTextView
+                android:id="@+id/minutes"
+                style="@style/mdtp_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:text="@string/mdtp_time_placeholder"
+                android:textColor="@color/mdtp_accent_color_focused" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/separator_seconds"
+            style="@style/mdtp_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/minutes_space"
+            android:importantForAccessibility="no"
+            android:paddingLeft="@dimen/mdtp_separator_padding"
+            android:paddingRight="@dimen/mdtp_separator_padding"
+            android:text="@string/mdtp_time_separator"
+            android:textColor="@color/mdtp_accent_color_focused" />
+
+        <TextView
+            android:id="@+id/seconds_space"
+            style="@style/mdtp_time_label_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/separator_seconds"
+            android:importantForAccessibility="no"
+            android:text="@string/mdtp_time_placeholder"
+            android:textColor="@color/mdtp_accent_color_focused"
+            android:visibility="invisible" />
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/seconds_space"
+            android:layout_alignRight="@+id/seconds_space"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="-15dp"
+            android:layout_marginRight="-15dp">
+
+            <nu.yona.timepicker.AccessibleTextView
+                android:id="@+id/seconds"
+                style="@style/mdtp_time_label_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:text="@string/mdtp_time_placeholder"
+                android:textColor="@color/mdtp_accent_color_focused" />
+        </FrameLayout>
+
+        <nu.yona.timepicker.AccessibleTextView
+            android:id="@+id/ampm_hitspace"
+            android:layout_width="@dimen/mdtp_ampm_label_size"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ampm_label"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/ampm_label"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/ampm_label"
+            style="@style/mdtp_ampm_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/seconds_space"
+            android:layout_toEndOf="@+id/seconds_space"
+            android:layout_toRightOf="@+id/seconds_space"
+            android:importantForAccessibility="no"
+            android:paddingLeft="@dimen/mdtp_ampm_left_padding"
+            android:paddingRight="@dimen/mdtp_ampm_left_padding"
+            android:text="@string/mdtp_time_placeholder"
+            android:textColor="@color/mdtp_accent_color_focused"
+            android:visibility="gone" />
+
+        <nu.yona.timepicker.AccessibleTextView
+            android:id="@+id/txtTitleTab"
+            style="@style/header_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/hour_space"
+            android:layout_alignLeft="@+id/hour_space"
+            android:layout_alignStart="@+id/hour_space"
+            android:text="@string/from"
+            android:textColor="@color/mdtp_text_selector1" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/tabIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/mdtp_image_indicator_height"
+        android:layout_gravity="bottom"
+        android:background="@drawable/tab_indicator"
+        android:contentDescription=""
+        android:visibility="gone" />
+</LinearLayout>
