@@ -12,6 +12,7 @@ package nu.yona.app.ui.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -263,13 +264,22 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
                 viewPager.setCurrentItem(itemIndex);
                 updateFlow(itemIndex);
             } else {
-                YonaActivity.getActivity().onBackPressed();
+                goBack();
             }
         } else {
-            YonaActivity.getActivity().onBackPressed();
+            goBack();
         }
 
         setDayDetailTitleAndIcon();
+    }
+
+    private void goBack() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                YonaActivity.getActivity().onBackPressed();
+            }
+        }, AppConstant.ONE_SECOND);
     }
 
     private int getIndex(DayActivity selectedActivity) {
