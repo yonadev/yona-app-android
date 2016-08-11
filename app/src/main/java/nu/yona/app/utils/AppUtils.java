@@ -192,6 +192,8 @@ public class AppUtils {
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+        filter.addAction("com.yona.app.RESTART_DEVICE");
+        filter.addAction("com.yona.app.RESTART_VPN");
         context.registerReceiver(receiver, filter);
     }
 
@@ -407,15 +409,22 @@ public class AppUtils {
         }
     }
 
-    public static void startVPN(Context context) {
+    public static Intent startVPN(Context context, boolean returnIntent) {
         String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
         VpnProfile profile = ProfileManager.get(context, profileUUID);
         User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+
+
         if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null) {
             profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
             profile.mPassword = !TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
-            startVPN(profile, context);
+            if (returnIntent) {
+                return getVPNIntent(profile, context);
+            } else {
+                startVPN(profile, context);
+            }
         }
+        return null;
     }
 
     private static void startVPN(VpnProfile profile, Context context) {
@@ -428,6 +437,19 @@ public class AppUtils {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
+    }
+
+    private static Intent getVPNIntent(VpnProfile profile, Context context) {
+        if (profile != null) {
+            ProfileManager.getInstance(context).saveProfile(context, profile);
+            Intent intent = new Intent(context, LaunchVPN.class);
+            intent.putExtra(LaunchVPN.EXTRA_KEY, profile.getUUID().toString());
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.putExtra(AppConstant.FROM_LOGIN, true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            return intent;
+        }
+        return null;
     }
 
     public static void downloadCertificates() {

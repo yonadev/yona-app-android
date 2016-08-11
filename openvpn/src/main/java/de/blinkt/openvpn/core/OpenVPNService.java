@@ -465,7 +465,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
         } else {
             HashMap<String, String> env = new HashMap<>();
-            processThread = new OpenVPNThread(this, argv, env, nativeLibraryDirectory);
+            processThread = new OpenVPNThread(getBaseContext(), this, argv, env, nativeLibraryDirectory);
             mOpenVPNThread = processThread;
         }
 

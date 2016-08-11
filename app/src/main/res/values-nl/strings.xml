@@ -180,4 +180,6 @@
     <string name="certificate_installation">Certificaat Installeren</string>
     <string name="certfiicate_installtion_detail"> Om veiligheidsredenen is het installeren van een certificaat noodzakelijk. Klik op \"OK\".</string>
     <string name="not_accepted_yet">heeft nog niet geaccepteerd</string>
+    <string name="vpn_disconnected">VPN Disconnected. Click to connect again.</string>
+    <string name="device_restart">Device Need to restart for establishing secure VPN connection.</string>
 </resources>

@@ -117,6 +117,10 @@ public class EventChangeManager {
 
     public static final int EVENT_UPDATE_NOTIFICATION_COUNT = 25;
 
+    public static final int EVENT_DEVICE_RESTART_REQUIRE = 26;
+
+    public static final int EVENT_RECONNECT_VPN = 27;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;

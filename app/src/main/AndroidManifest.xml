@@ -116,6 +116,10 @@
                 <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="nu.yona.app.RESTART_DEVICE" />
+                <action android:name="nu.yona.app.RESTART_VPN" />
+            </intent-filter>
         </receiver>
     </application>
 
