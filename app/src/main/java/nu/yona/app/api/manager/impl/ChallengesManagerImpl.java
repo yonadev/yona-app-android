@@ -69,11 +69,12 @@ public class ChallengesManagerImpl implements ChallengesManager {
                     if (!TextUtils.isEmpty(activityCategories.getName()) && !TextUtils.isEmpty(activityCategories.get_links().getSelf().getHref())) {
                         mGoalCategoriesMap.put(activityCategories.getName(), activityCategories.get_links().getSelf().getHref());
                     }
-                    if (mYonaGoals != null && mYonaGoals.getEmbedded() != null && mYonaGoals.getEmbedded().getYonaGoals() != null && mYonaGoals.getEmbedded().getYonaGoals().size() > 0) {
+                    if (mYonaGoals != null && mYonaGoals.getEmbedded() != null && mYonaGoals.getEmbedded().getYonaGoals() != null && mYonaGoals.getEmbedded().getYonaGoals().size() > 0
+                            && activityCategories != null && activityCategories.get_links() != null && activityCategories.get_links().getSelf() != null) {
                         List<YonaGoal> yonaGoals = sortGoals(mYonaGoals.getEmbedded().getYonaGoals());
                         for (YonaGoal mYonaGoal : yonaGoals) {
-                            if (mYonaGoal != null) {
-                                if (!TextUtils.isEmpty(mYonaGoal.getActivityCategoryName()) && !TextUtils.isEmpty(activityCategories.getName()) && mYonaGoal.getActivityCategoryName().equalsIgnoreCase(activityCategories.getName())) {
+                            if (mYonaGoal != null && mYonaGoal.getLinks() != null && mYonaGoal.getLinks().getYonaActivityCategory() != null) {
+                                if (!TextUtils.isEmpty(mYonaGoal.getLinks().getYonaActivityCategory().getHref()) && !TextUtils.isEmpty(activityCategories.get_links().getSelf().getHref()) && mYonaGoal.getLinks().getYonaActivityCategory().getHref().equalsIgnoreCase(activityCategories.get_links().getSelf().getHref())) {
                                     mYonaActivityCategoriesList.remove(activityCategories);
                                 }
                             }
@@ -148,9 +149,9 @@ public class ChallengesManagerImpl implements ChallengesManager {
             if (userGoals != null
                     && !YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
                 int serversetGoal = 0;
-                if(userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals() != null) {
+                if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals() != null) {
                     for (int i = 0; i < userGoals.getEmbedded().getYonaGoals().size(); i++) {
-                        if(userGoals.getEmbedded().getYonaGoals().get(i).getLinks() != null && userGoals.getEmbedded().getYonaGoals().get(i).getLinks().getEdit() == null) {
+                        if (userGoals.getEmbedded().getYonaGoals().get(i).getLinks() != null && userGoals.getEmbedded().getYonaGoals().get(i).getLinks().getEdit() == null) {
                             serversetGoal++;
                         }
                     }
