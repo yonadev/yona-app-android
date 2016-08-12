@@ -70,6 +70,7 @@ public interface AppConstant {
      */
     int ONE_SECOND = 1000;
 
+    int THREE_SECOND = 3000;
     /**
      * The constant FIVE_SECONDS.
      */
