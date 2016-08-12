@@ -187,9 +187,13 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(messageTxt.getText())) {
                     if (isUserCommenting) {
-                        replyComment(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null);
+                        replyComment(messageTxt.getText().toString(), (currentReplayingMsg != null
+                                && currentReplayingMsg.getLinks() != null && currentReplayingMsg.getLinks().getReplyComment() != null
+                                && currentReplayingMsg.getLinks().getReplyComment().getHref() != null) ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null);
                     } else {
-                        addComment(messageTxt.getText().toString(), activity.getLinks().getAddComment().getHref());
+                        if (activity != null && activity.getLinks() != null && activity.getLinks().getAddComment() != null && activity.getLinks().getAddComment().getHref() != null) {
+                            addComment(messageTxt.getText().toString(), activity.getLinks().getAddComment().getHref());
+                        }
                     }
                 }
             }
