@@ -374,6 +374,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             } else if (isSkipPinFlow) {
                 isSkipPinFlow = false;
                 isToDisplayLogin = true;
+            } else if (isUserFromOnCreate) {
+                isToDisplayLogin = false;
+            } else {
+                isToDisplayLogin = true;
+                launchedPinActiivty = true;
             }
             skipVerification = false;
         }
@@ -1233,6 +1238,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Log.e("onPause", "Check VPN");
                     isToDisplayLogin = false;
                     skipVerification = true;
                     if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
@@ -1254,7 +1260,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             public void run() {
                 isSkipPinFlow = true;
             }
-        }, AppConstant.FIVE_SECONDS);
+        }, AppConstant.THREE_SECOND);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
