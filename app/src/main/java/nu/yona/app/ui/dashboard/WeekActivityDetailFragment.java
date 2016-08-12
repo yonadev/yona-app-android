@@ -76,6 +76,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
     private boolean isUserCommenting = false;
     private CommentsAdapter commentsAdapter;
     private YonaMessage currentReplayingMsg;
+    private ImageView chatBoxImage;
 
     private View.OnClickListener itemClickListener = new View.OnClickListener() {
         @Override
@@ -175,6 +176,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
         commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
+        chatBoxImage = (ImageView) view.findViewById(R.id.comment_box_image);
         messageTxt = (YonaFontEditTextViewGeneral) view.findViewById(R.id.userMessage);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity(), itemClickListener);
@@ -397,6 +399,11 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             this.mYonaCommentsList = mWeekActivity.getComments().getEmbedded().getYonaMessages();
         } else {
             this.mYonaCommentsList = null;
+        }
+        if(mYonaCommentsList != null && mYonaCommentsList.size() > 0){
+            chatBoxImage.setVisibility(View.VISIBLE);
+        } else {
+            chatBoxImage.setVisibility(View.GONE);
         }
         commentsAdapter.notifyDatasetChanged(mYonaCommentsList);
     }

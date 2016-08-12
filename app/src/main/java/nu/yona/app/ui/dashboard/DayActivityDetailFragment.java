@@ -76,6 +76,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
     private List<YonaMessage> mYonaCommentsList;
     private CommentsAdapter commentsAdapter;
     private YonaMessage currentReplayingMsg;
+    private ImageView chatBoxImage;
 
     private View.OnClickListener messageItemClick = new View.OnClickListener() {
         @Override
@@ -151,6 +152,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
         commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
+        chatBoxImage = (ImageView) view.findViewById(R.id.comment_box_image);
         messageTxt = (YonaFontEditTextViewGeneral) view.findViewById(R.id.userMessage);
         sendButton = (YonaFontButton) view.findViewById(R.id.btnSend);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
@@ -390,6 +392,11 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             this.mYonaCommentsList = mDayActivity.getComments().getEmbedded().getYonaMessages();
         } else {
             this.mYonaCommentsList = null;
+        }
+        if (mYonaCommentsList != null && mYonaCommentsList.size() > 0) {
+            chatBoxImage.setVisibility(View.VISIBLE);
+        } else {
+            chatBoxImage.setVisibility(View.GONE);
         }
         commentsAdapter.notifyDatasetChanged(mYonaCommentsList);
     }
