@@ -50,8 +50,9 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
     private RecyclerView listView;
     private TimelineStickyAdapter mDayTimelineStickyAdapter;
     private LinearLayoutManager mLayoutManager;
-    private boolean mIsLoading = false;
-    private YonaHeaderTheme mYonaHeaderTheme;
+    private boolean mIsLoading;
+    private boolean isDataLoading;
+
     private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -87,10 +88,6 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
         listView = (RecyclerView) view.findViewById(R.id.listView);
         mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
 
-        if (getArguments() != null) {
-            mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
-        }
-
         mDayTimelineStickyAdapter = new TimelineStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,9 +107,6 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 
     private void setRecyclerHeaderAdapterUpdate(final StickyRecyclerHeadersDecoration headerDecor) {
         listView.addItemDecoration(headerDecor);
-
-        // Add decoration for dividers between list items
-        // listView.addItemDecoration(new DividerDecoration(getActivity()));
 
         // Add touch listeners
         StickyRecyclerHeadersTouchListener touchListener =
@@ -151,7 +145,12 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
     @Override
     public void onResume() {
         super.onResume();
-        refreshAdapter();
+        if (!isDataLoading) {
+            isDataLoading = true;
+            refreshAdapter();
+        } else if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
+            showData();
+        }
     }
 
     private void refreshAdapter() {
@@ -166,12 +165,6 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
     }
 
     private void getDayActivity(boolean loadMore) {
-//        if (YonaActivity.getActivity().isToDisplayLogin()) {
-//            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
-//            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() != null) {
-//                return;
-//            }
-//        }
         final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
                 || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
@@ -179,13 +172,14 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
             APIManager.getInstance().getActivityManager().getWithBuddyActivity(loadMore, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
+                    isDataLoading = false;
                     showData();
                     mIsLoading = false;
-                    YonaActivity.getActivity().showLoadingView(false, null);
                 }
 
                 @Override
                 public void onError(Object errorMessage) {
+                    isDataLoading = false;
                     YonaActivity.getActivity().showLoadingView(false, null);
                     YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
                 }
@@ -200,6 +194,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList() != null
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList().size() > 0) {
             mDayTimelineStickyAdapter.notifyDataSetChange(setHeaderListView());
+            YonaActivity.getActivity().showLoadingView(false, null);
         } else {
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
         }

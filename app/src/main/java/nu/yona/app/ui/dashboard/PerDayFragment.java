@@ -200,7 +200,6 @@ public class PerDayFragment extends BaseFragment {
                 @Override
                 public void onDataLoad(Object result) {
                     isDataLoading = false;
-                    YonaActivity.getActivity().showLoadingView(false, null);
                     showData();
                     mIsLoading = false;
                 }
