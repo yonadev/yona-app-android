@@ -9,6 +9,6 @@
   -->
 
 <resources>
-    <string name="server_url">http://85.222.227.142</string>
+    <string name="server_url">http://85.222.227.84</string>
     <string name="hockey_app_key">e1e6d73a1d244306ba07e8a43a8565f4</string>
 </resources>
