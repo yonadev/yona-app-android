@@ -41,6 +41,7 @@
             android:background="@color/bg_gradient_three" />
 
         <LinearLayout
+            android:id="@+id/topnextPrevPanel"
             android:layout_width="match_parent"
             android:layout_height="@dimen/fifty_four"
             android:background="@color/white_three"
@@ -53,7 +54,8 @@
                 android:layout_gravity="center"
                 android:paddingLeft="@dimen/thirty_two"
                 android:paddingRight="@dimen/ten"
-                android:src="@drawable/icn_date_back" />
+                android:src="@drawable/icn_date_back"
+                android:visibility="gone" />
 
             <nu.yona.app.customview.YonaFontTextView
                 android:id="@+id/date"
@@ -70,7 +72,8 @@
                 android:layout_gravity="center"
                 android:paddingLeft="@dimen/ten"
                 android:paddingRight="@dimen/thirty_two"
-                android:src="@drawable/icn_date_forward" />
+                android:src="@drawable/icn_date_forward"
+                android:visibility="gone" />
         </LinearLayout>
 
         <View

@@ -75,6 +75,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
     private List<YonaMessage> mYonaCommentsList;
     private CommentsAdapter commentsAdapter;
     private YonaMessage currentReplayingMsg;
+    private ImageView chatBoxImage;
 
     private View.OnClickListener messageItemClick = new View.OnClickListener() {
         @Override
@@ -160,6 +161,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
         nextItem = (ImageView) view.findViewById(R.id.next);
         dateTitle = (YonaFontTextView) view.findViewById(R.id.date);
         commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
+        chatBoxImage = (ImageView) view.findViewById(R.id.comment_box_image);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         customPageAdapter = new CustomPageAdapter(getActivity());
         viewPager.setAdapter(customPageAdapter);
@@ -392,8 +394,14 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
         DayActivity mDayActivity = dayActivityList.get(position);
         if (mDayActivity != null && mDayActivity.getComments() != null && mDayActivity.getComments().getEmbedded() != null && mDayActivity.getComments().getEmbedded().getYonaMessages() != null) {
             this.mYonaCommentsList = mDayActivity.getComments().getEmbedded().getYonaMessages();
+
         } else {
             this.mYonaCommentsList = null;
+        }
+        if(mYonaCommentsList != null && mYonaCommentsList.size() > 0){
+            chatBoxImage.setVisibility(View.VISIBLE);
+        } else {
+            chatBoxImage.setVisibility(View.GONE);
         }
         commentsAdapter.notifyDatasetChanged(mYonaCommentsList);
     }
