@@ -502,7 +502,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                 btnChallengesContainer.setVisibility(View.VISIBLE);
             }
         } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
-            btnChallengesContainer.setVisibility(View.GONE);
+            btnChallengesContainer.setVisibility(View.VISIBLE);
         }
     }
 

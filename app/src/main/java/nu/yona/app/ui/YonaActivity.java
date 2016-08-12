@@ -893,7 +893,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (((ChallengesFragment) mContent).isChildViewVisible()) {
                     ((ChallengesFragment) mContent).updateView();
                 } else {
-                    super.onBackPressed();
+                    checkStackAndDoOnBackPressed();
                 }
             } else {
                 AppUtils.setSubmitPressed(true);
@@ -907,20 +907,25 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         } else if (mContent instanceof SingleWeekDayActivityDetailFragment && ((SingleWeekDayActivityDetailFragment) mContent).isUserCommenting()) {
             ((SingleWeekDayActivityDetailFragment) mContent).updateParentcommentView();
         } else {
-            isBackPressed = true;
-            if (isStackEmpty() && !(mContent instanceof DashboardFragment)) {
-                Fragment oldFragment = mContent;
-                //todo - check which content of instace is that and according update the view
-                mContent = homeFragment;
-                if (mContent instanceof NotificationFragment) {
-                    getUserMessages();
-                }
-                mTabLayout.getTabAt(0).select();
-                loadFragment(true, false, oldFragment);
-                return;
-            }
-            super.onBackPressed();
+            checkStackAndDoOnBackPressed();
         }
+    }
+
+
+    private void checkStackAndDoOnBackPressed() {
+        isBackPressed = true;
+        if (isStackEmpty() && !(mContent instanceof DashboardFragment)) {
+            Fragment oldFragment = mContent;
+            //todo - check which content of instace is that and according update the view
+            mContent = homeFragment;
+            if (mContent instanceof NotificationFragment) {
+                getUserMessages();
+            }
+            mTabLayout.getTabAt(0).select();
+            loadFragment(true, false, oldFragment);
+            return;
+        }
+        super.onBackPressed();
     }
 
     /**
