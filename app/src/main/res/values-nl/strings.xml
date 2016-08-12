@@ -91,6 +91,7 @@
     <string name="budgetgoaltitle">Tegoed</string>
     <string name="timezonegoalheadersubtext">Bepaal hier wanneer je wel of geen tijd aan %1$s wilt besteden</string>
     <string name="budgetgoalheadersubtext">Bepaal hier hoeveel tijd je aan %1$s wil besteden.</string>
+    <string name="timezonegoalsubtext">waarbinnen gebruik is toegestaan</string>
     <string name="timezone">Tijdzone</string>
     <string name="screentitle1">Transparantie</string>
     <string name="screentitle2">Delen</string>

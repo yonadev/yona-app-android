@@ -107,7 +107,9 @@
 
     <dimen name="goal_item_height">110dp</dimen>
     <dimen name="goal_item_desc_margin_top">5dp</dimen>
-    <dimen name="time_zone_goal_item_height">60dp</dimen>
+    <dimen name="time_zone_goal_lock_width">79dp</dimen>
+    <dimen name="time_zone_goal_header_item_margint_top">8dp</dimen>
+    <dimen name="time_zone_goal_item_height">84dp</dimen>
     <dimen name="time_zone_goal_index_margin_right">26dp</dimen>
     <dimen name="time_zone_goal_van_margin_left">20dp</dimen>
     <dimen name="time_zone_goal_van_margin_right">12dp</dimen>
@@ -233,7 +235,8 @@
     <dimen name="parent_msg_img_margin_right">16dp</dimen>
     <dimen name="parent_msg_img_margin_top">13dp</dimen>
     <dimen name="parent_msg_buddy_name_margin_top">3dp</dimen>
-    <dimen name="parent_msg_buddy_message_margin_top">@dimen/parent_msg_buddy_name_margin_top</dimen>
+    <dimen name="parent_msg_buddy_message_margin_top">@dimen/parent_msg_buddy_name_margin_top
+    </dimen>
     <dimen name="parent_msg_buddy_reply_margin_top">12dp</dimen>
 
     <dimen name="comment_layout_recyclerview_padding_bottom">28dp</dimen>

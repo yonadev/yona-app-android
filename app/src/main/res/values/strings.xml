@@ -91,6 +91,7 @@
     <string name="budgetgoaltitle">Credit</string>
     <string name="timezonegoalheadersubtext">Specify the time range you do or don\'t want to spend on %1$s.</string>
     <string name="budgetgoalheadersubtext">Specify how much time you want to spend on %1$s.</string>
+    <string name="timezonegoalsubtext">waarbinnen gebruik is toegestaan</string>
     <string name="timezone">Timezone</string>
     <string name="screentitle1">Transparency</string>
     <string name="screentitle2">Share</string>

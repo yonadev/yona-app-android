@@ -30,15 +30,15 @@
         android:background="@drawable/item_gradient"
         android:orientation="horizontal">
 
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/index_time_zone_goal"
+        <ImageView
             style="@style/SeTitle"
-            android:layout_width="@dimen/seventy"
+            android:layout_width="@dimen/time_zone_goal_lock_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingLeft="@dimen/time_zone_goal_index_margin_right"
-            android:paddingRight="@dimen/time_zone_goal_index_margin_right" />
+            android:paddingRight="@dimen/time_zone_goal_index_margin_right"
+            android:src="@drawable/bounds" />
 
         <View
             android:id="@+id/view3"
@@ -55,16 +55,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <nu.yona.app.customview.YonaFontTextView
                     android:id="@+id/textVan"
                     style="@style/FooterTxtFortyOpactiy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
                     android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
+                    android:layout_marginTop="@dimen/time_zone_goal_header_item_margint_top"
                     android:text="van" />
 
                 <nu.yona.app.customview.YonaFontTextView
@@ -72,8 +73,8 @@
                     style="@style/SeScorePos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="@dimen/ten"
+                    android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
+                    android:layout_marginRight="@dimen/twenty"
                     android:maxLines="1" />
             </LinearLayout>
 
@@ -90,16 +91,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <nu.yona.app.customview.YonaFontTextView
                     android:id="@+id/txtTot"
                     style="@style/FooterTxtFortyOpactiy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
                     android:layout_marginRight="@dimen/time_zone_goal_van_margin_right"
+                    android:layout_marginTop="@dimen/time_zone_goal_header_item_margint_top"
                     android:text="tot" />
 
                 <nu.yona.app.customview.YonaFontTextView
@@ -107,7 +109,7 @@
                     style="@style/SeScorePos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/time_zone_goal_van_margin_left"
                     android:layout_marginRight="@dimen/ten"
                     android:maxLines="1" />
 

@@ -9,7 +9,7 @@
     android:id="@+id/goal_item_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/challenges_budget_goal_header_height"
-    android:background="@color/white_two"
+    android:background="@color/bg_gradient_one"
     android:paddingBottom="@dimen/thirty"
     android:paddingLeft="@dimen/layout_margin"
     android:paddingRight="@dimen/layout_margin"

@@ -25,29 +25,30 @@
         android:padding="@dimen/img_padding"
         android:src="@drawable/add_circel" />
 
-    <nu.yona.app.customview.YonaFontTextView
-        android:id="@+id/txt_header_text"
-        style="@style/FooterTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/layout_margin"
-        android:layout_marginRight="@dimen/tab_challenges_margin_top"
-        android:layout_toLeftOf="@+id/img_add_goal"
-        android:layout_toStartOf="@+id/img_add_goal"
-        android:maxLines="2"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <nu.yona.app.customview.YonaFontTextView
-        android:id="@+id/txt_timezone"
-        style="@style/SeTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/layout_margin"
         android:layout_marginRight="@dimen/tab_challenges_margin_top"
-        android:layout_toLeftOf="@+id/img_add_goal"
         android:layout_toStartOf="@+id/img_add_goal"
-        android:maxLines="1"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:orientation="vertical">
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txt_timezone"
+            style="@style/SeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/txt_header_text"
+            style="@style/FooterTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
 </RelativeLayout>

@@ -21,10 +21,6 @@ import nu.yona.app.customview.YonaFontTextView;
 public class TimeZoneGoalViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     /**
-     * The Index goal txt.
-     */
-    public final YonaFontTextView indexGoalTxt;
-    /**
      * The Start time txt.
      */
     public final YonaFontTextView startTimeTxt;
@@ -48,7 +44,6 @@ public class TimeZoneGoalViewHolder extends RecyclerView.ViewHolder implements V
         super(itemView);
         itemView.setClickable(true);
         this.mClickListener = listener;
-        indexGoalTxt = (YonaFontTextView) itemView.findViewById(R.id.index_time_zone_goal);
         startTimeTxt = (YonaFontTextView) itemView.findViewById(R.id.txtGoalStartTime);
         endTimeTxt = (YonaFontTextView) itemView.findViewById(R.id.txtGoalEndTime);
         imgDelete = (ImageView) itemView.findViewById(R.id.swipe_delete_goal);
