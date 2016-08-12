@@ -59,25 +59,29 @@ public class YonaReceiver extends BroadcastReceiver {
     }
 
     private void showRestartVPN(final String message) {
-        Intent intent = AppUtils.startVPN(mContext, true);
-        PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis() + 10000, intent, 0);
+        try {
+            Intent intent = AppUtils.startVPN(mContext, true);
+            PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis() + 10000, intent, 0);
 
-        Notification notification = new Notification.Builder(mContext).setContentTitle(mContext.getString(R.string.appname))
-                .setContentText(message)
-                .setTicker(mContext.getString(R.string.appname))
-                .setWhen(0)
-                .setVibrate(new long[]{1, 1, 1})
-                .setDefaults(Notification.DEFAULT_SOUND)
-                .setStyle(new Notification.BigTextStyle().bigText(message))
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher))
-                .setContentIntent(pIntent)
-                .setAutoCancel(true)
-                .build();
+            Notification notification = new Notification.Builder(mContext).setContentTitle(mContext.getString(R.string.appname))
+                    .setContentText(message)
+                    .setTicker(mContext.getString(R.string.appname))
+                    .setWhen(0)
+                    .setVibrate(new long[]{1, 1, 1})
+                    .setDefaults(Notification.DEFAULT_SOUND)
+                    .setStyle(new Notification.BigTextStyle().bigText(message))
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher))
+                    .setContentIntent(pIntent)
+                    .setAutoCancel(true)
+                    .build();
 
-        notification.flags |= Notification.FLAG_NO_CLEAR;
+            notification.flags |= Notification.FLAG_NO_CLEAR;
 
-        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
+            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
+            notificationManager.notify(0, notification);
+        } catch (Exception e) {
+            Log.e(YonaReceiver.class.getSimpleName(), e.getMessage());
+        }
     }
 }

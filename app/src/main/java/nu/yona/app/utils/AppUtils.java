@@ -535,14 +535,16 @@ public class AppUtils {
             if (ks != null) {
                 ks.load(null, null);
                 Enumeration aliases = ks.aliases();
-                String caCertName = YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN();
-                if (!TextUtils.isEmpty(caCertName)) {
-                    while (aliases.hasMoreElements()) {
-                        String alias = (String) aliases.nextElement();
-                        java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate) ks.getCertificate(alias);
-                        if (cert.getIssuerDN().getName().contains(caCertName)) {
-                            isCertExist = true;
-                            break;
+                if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN() != null) {
+                    String caCertName = YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN();
+                    if (!TextUtils.isEmpty(caCertName)) {
+                        while (aliases.hasMoreElements()) {
+                            String alias = (String) aliases.nextElement();
+                            java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate) ks.getCertificate(alias);
+                            if (cert.getIssuerDN().getName().contains(caCertName)) {
+                                isCertExist = true;
+                                break;
+                            }
                         }
                     }
                 }
