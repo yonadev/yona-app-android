@@ -135,6 +135,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
                             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
+                            APIManager.getInstance().getPasscodeManager().resetWrongCounter();
                             loadOTPScreen();
                         }
                     });

@@ -887,6 +887,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 AppUtils.setSubmitPressed(false);
                 if (((ChallengesFragment) mContent).isChildViewVisible()) {
                     ((ChallengesFragment) mContent).updateView();
+                } else {
+                    super.onBackPressed();
                 }
             } else {
                 AppUtils.setSubmitPressed(true);
