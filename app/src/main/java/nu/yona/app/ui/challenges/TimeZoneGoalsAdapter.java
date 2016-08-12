@@ -49,7 +49,6 @@ class TimeZoneGoalsAdapter extends RecyclerView.Adapter<TimeZoneGoalViewHolder> 
     public void onBindViewHolder(TimeZoneGoalViewHolder holder, int position) {
         String txtTime = (String) getItem(position);
         if (!TextUtils.isEmpty(txtTime)) {
-            holder.indexGoalTxt.setText("" + (position + 1));
             String[] times = AppUtils.getSplitedTime(txtTime);
             Bundle tagBundle = new Bundle();
             if (times.length > 0) {
