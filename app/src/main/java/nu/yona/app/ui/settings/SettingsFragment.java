@@ -180,17 +180,19 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void showAlert(String message, final boolean doDelete) {
-        YonaActivity.getActivity().showLoadingView(false, null);
-        Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(R.string.ok), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (doDelete) {
-                            doDeleteDeviceRequest();
+        if (YonaActivity.getActivity() != null) {
+            YonaActivity.getActivity().showLoadingView(false, null);
+            Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getString(R.string.ok), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (doDelete) {
+                                doDeleteDeviceRequest();
+                            }
                         }
-                    }
-                })
-                .show();
+                    })
+                    .show();
+        }
     }
 
     private void doDeleteDeviceRequest() {

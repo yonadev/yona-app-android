@@ -913,19 +913,23 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 
     private void checkStackAndDoOnBackPressed() {
-        isBackPressed = true;
-        if (isStackEmpty() && !(mContent instanceof DashboardFragment)) {
-            Fragment oldFragment = mContent;
-            //todo - check which content of instace is that and according update the view
-            mContent = homeFragment;
-            if (mContent instanceof NotificationFragment) {
-                getUserMessages();
+        try {
+            isBackPressed = true;
+            if (isStackEmpty() && !(mContent instanceof DashboardFragment)) {
+                Fragment oldFragment = mContent;
+                //todo - check which content of instace is that and according update the view
+                mContent = homeFragment;
+                if (mContent instanceof NotificationFragment) {
+                    getUserMessages();
+                }
+                mTabLayout.getTabAt(0).select();
+                loadFragment(true, false, oldFragment);
+                return;
             }
-            mTabLayout.getTabAt(0).select();
-            loadFragment(true, false, oldFragment);
-            return;
+            super.onBackPressed();
+        } catch (Exception e) {
+            Log.e(YonaActivity.class.getSimpleName(), e.getMessage());
         }
-        super.onBackPressed();
     }
 
     /**
@@ -1321,7 +1325,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             @Override
             protected byte[] doInBackground(Void... params) {
                 if (!AppUtils.checkCACertificate()) {
-                    return AppUtils.getCACertificate(YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath());
+                    String path = YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath();
+                    if (path != null) {
+                        return AppUtils.getCACertificate(path);
+                    }
                 }
                 return null;
             }
