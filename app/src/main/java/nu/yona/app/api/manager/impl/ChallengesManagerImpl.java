@@ -60,6 +60,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
 
     private synchronized void getListOfCategory() {
         mYonaActivityCategoriesList.clear();
+        mGoalCategoriesMap.clear();
         Goals mYonaGoals = APIManager.getInstance().getGoalManager().getUserGoalFromDb();
         ActivityCategories embeddedActivityCategories = APIManager.getInstance().getActivityCategoryManager().getListOfActivityCategories();
         if (embeddedActivityCategories != null && embeddedActivityCategories.getEmbeddedActivityCategories() != null && embeddedActivityCategories.getEmbeddedActivityCategories().getYonaActivityCategories() != null) {
