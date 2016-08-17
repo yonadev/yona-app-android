@@ -9,27 +9,15 @@
 package nu.yona.app.ui.message;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.Href;
-import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
@@ -93,6 +81,12 @@ public class NotificationFragment extends BaseFragment {
                             mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
                         }
                     }
+                } else if ((yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.GOALCONFLICTMESSAGE
+                        || yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.GOALCHANGEMESSAGE)
+                        && yonaMessage.getLinks().getYonaDayDetails() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getYonaDayDetails().getHref())) {
+                    mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
+                    mMessageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, yonaMessage.getLinks().getYonaDayDetails().getHref());
+                    mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
                 }
                 updateStatusAsRead(yonaMessage);
                 YonaActivity.getActivity().replaceFragment(mMessageIntent);
