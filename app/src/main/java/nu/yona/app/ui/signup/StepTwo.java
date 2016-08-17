@@ -12,6 +12,7 @@ package nu.yona.app.ui.signup;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputType;
@@ -44,6 +45,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     private YonaFontEditTextView nickName;
     private TextInputLayout mobileNumberLayout, nickNameLayout;
     private SignupActivity activity;
+    private AppBarLayout appbar;
 
     private final TextWatcher watcher = new TextWatcher() {
         @Override
@@ -80,6 +82,8 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
         nickNameLayout = (TextInputLayout) view.findViewById(R.id.nick_name_layout);
 
+        appbar = (AppBarLayout) view.findViewById(R.id.appbar);
+
         mobileNumber.setText(R.string.country_code_with_zero);
         mobileNumber.requestFocus();
         activity.showKeyboard(mobileNumber);
@@ -112,6 +116,12 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         YonaApplication.getEventChangeManager().registerListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        appbar.setExpanded(true);
     }
 
     @Override

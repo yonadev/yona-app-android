@@ -54,6 +54,6 @@
     <color name="thirty_opacity">#30000000</color>
     <color name="progressbar_color">#389df3</color>
     <color name="chat_background">#d8d8d8</color>
-    <color name="unread_message_up">#C0E4FC</color>
-    <color name="unread_message_down">#E4F5FF</color>
+    <color name="unread_message_up">#ECF2F8</color>
+    <color name="unread_message_down">#ECF2F8</color>
 </resources>
