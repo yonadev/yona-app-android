@@ -12,6 +12,7 @@ package nu.yona.app.ui.signup;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputType;
@@ -40,6 +41,7 @@ import nu.yona.app.ui.BaseFragment;
 public class StepOne extends BaseFragment implements EventChangeListener {
 
     private TextInputLayout firstNameLayout, lastNameLayout;
+    private AppBarLayout appbar;
 
     private final TextWatcher watcher = new TextWatcher() {
         @Override
@@ -107,12 +109,20 @@ public class StepOne extends BaseFragment implements EventChangeListener {
             }
         });
 
+        appbar = (AppBarLayout) view.findViewById(R.id.appbar);
+
         YonaFontTextView privacyPolicy = (YonaFontTextView) view.findViewById(R.id.privacyPolicy);
         privacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
 
         YonaApplication.getEventChangeManager().registerListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        appbar.setExpanded(true);
     }
 
     @Override
