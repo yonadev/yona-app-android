@@ -44,12 +44,14 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
     private YonaBuddy yonaBuddy;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
+    private String pageTitle;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+            pageTitle = mYonaHeaderTheme.getHeader_title();
             yonaBuddy = (YonaBuddy) getArguments().getSerializable(AppConstant.YONA_BUDDY_OBJ);
         }
     }
@@ -160,7 +162,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
                         }
                     }
                 }
-                toolbarTitle.setText(mYonaHeaderTheme.getHeader_title());
+                toolbarTitle.setText(pageTitle);
                 tabLayout.setVisibility(View.VISIBLE);
             }
         }, AppConstant.TIMER_DELAY_HUNDRED);

@@ -9,15 +9,27 @@
 package nu.yona.app.ui.message;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
