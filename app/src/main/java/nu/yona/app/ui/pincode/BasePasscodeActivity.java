@@ -326,7 +326,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
             passcode_title.setText(getString(R.string.passcodestep1retrytitle));
             passcode_description.setText(getString(R.string.passcodestep1retrydesc));
         } else {
-            passcode_title.setText(getString(R.string.passcodestep1desc));
+            passcode_title.setText(getString(R.string.passcodestep1title));
             passcode_description.setText(getString(R.string.passcodestep1desc));
         }
         profile_progress.setProgress(getResources().getInteger(R.integer.passcode_create_progress));
