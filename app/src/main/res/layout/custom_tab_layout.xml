@@ -10,7 +10,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/challenges_tab_height"
+    android:layout_height="@dimen/challenge_tab_height"
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
@@ -24,7 +24,6 @@
             android:id="@+id/tab_image"
             android:layout_width="@dimen/tab_icon_height"
             android:layout_height="@dimen/tab_icon_height"
-            android:padding="@dimen/tab_challenges_image_padding"
             android:src="@drawable/icn_challenge_nogo" />
 
         <nu.yona.app.customview.YonaFontTextView

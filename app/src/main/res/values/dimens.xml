@@ -40,6 +40,7 @@
     <dimen name="seventy_three">73dp</dimen>
     <dimen name="ninty">90dp</dimen>
     <dimen name="topTabBarHeight">46dp</dimen>
+    <dimen name="challenge_tab_height">116dp</dimen>
     <dimen name="tabIndicatorHeight">4dp</dimen>
     <dimen name="send_bttuon">109dp</dimen>
     <dimen name="profile_layout">175dp</dimen>

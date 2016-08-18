@@ -32,7 +32,7 @@
     <string name="previous">PREVIOUS</string>
     <string name="next">NEXT</string>
     <string name="connectionnotavailable">OOPS! No Internet Connection Available, please connect and try again.</string>
-    <string name="somethingwentwrong">Something went wrong, please try again.</string>
+    <string name="somethingwentwrong">Opps, Something went wrong</string>
     <string name="firstname">FIRST NAME</string>
     <string name="name">NAAM</string>
     <string name="lastname">LAST NAME</string>

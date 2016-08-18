@@ -111,8 +111,8 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
 
     private void setTabs() {
         ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
-        mParams.height = getResources().getDimensionPixelSize(R.dimen.sixty_four);
-        tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.fifteen), 0, 0);
+        mParams.height = getResources().getDimensionPixelSize(R.dimen.topTabBarHeight);
+        tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.ten), 0, 0);
         if (mYonaHeaderTheme != null) {
             tabLayout.setBackgroundResource(mYonaHeaderTheme.getHeadercolor());
             if (mYonaHeaderTheme.isBuddyFlow()) {
