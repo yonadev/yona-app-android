@@ -156,7 +156,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
 
     private void setTabs() {
         ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
-        mParams.height = getResources().getDimensionPixelSize(R.dimen.challenges_tab_layout_height);
+        mParams.height = getResources().getDimensionPixelSize(R.dimen.challenge_tab_height);
         tabLayout.setLayoutParams(mParams);
         tabLayout.setBackgroundResource(R.color.pea);
     }

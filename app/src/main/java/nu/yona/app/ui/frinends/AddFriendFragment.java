@@ -18,7 +18,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import nu.yona.app.R;
 import nu.yona.app.ui.BaseFragment;
@@ -89,7 +88,7 @@ public class AddFriendFragment extends BaseFragment {
     private void setTabs() {
         tabLayout.setVisibility(View.VISIBLE);
         ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
-        mParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        mParams.height = getResources().getDimensionPixelSize(R.dimen.topTabBarHeight);
         tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.ten), 0, 0);
         tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.friends_deselected_tab), ContextCompat.getColor(getActivity(), R.color.friends_selected_tab));
         tabLayout.setLayoutParams(mParams);

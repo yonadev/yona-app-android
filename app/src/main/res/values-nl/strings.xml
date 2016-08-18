@@ -32,7 +32,7 @@
     <string name="previous">VORIGE</string>
     <string name="next">VOLGENDE</string>
     <string name="connectionnotavailable">OEPS! Geen internetverbinding beschikbaar, maak opnieuw verbinding en probeer opnieuw.</string>
-    <string name="somethingwentwrong">Something went wrong, please try again.</string>
+    <string name="somethingwentwrong">Oeps! Er is lets mis gegaan</string>
     <string name="firstname">VOORNAAM</string>
     <string name="name">NAAM</string>
     <string name="lastname">ACHTERNAAM</string>

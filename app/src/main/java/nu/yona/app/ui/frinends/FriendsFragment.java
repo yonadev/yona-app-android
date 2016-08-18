@@ -97,7 +97,7 @@ public class FriendsFragment extends BaseFragment {
 
     private void setTabs() {
         ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
-        mParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        mParams.height = getResources().getDimensionPixelSize(R.dimen.topTabBarHeight);
         tabLayout.setPadding(0, getResources().getDimensionPixelSize(R.dimen.ten), 0, 0);
         tabLayout.setLayoutParams(mParams);
         tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.friends_deselected_tab), ContextCompat.getColor(getActivity(), R.color.friends_selected_tab));
