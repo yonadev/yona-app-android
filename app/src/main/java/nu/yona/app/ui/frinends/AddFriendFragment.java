@@ -81,7 +81,7 @@ public class AddFriendFragment extends BaseFragment {
     private void setTitleAndIcon() {
         setTabs();
         leftIcon.setVisibility(View.GONE);
-        toolbarTitle.setText(getString(R.string.friends));
+        toolbarTitle.setText(getString(R.string.add_friend));
         rightIcon.setVisibility(View.GONE);
 
     }
