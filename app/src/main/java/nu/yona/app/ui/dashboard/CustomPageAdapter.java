@@ -296,7 +296,7 @@ public class CustomPageAdapter extends PagerAdapter {
         holder.getGoalScore().setText(Math.abs(timeFrameGoalMinutes) + "");
         if (!dayActivity.getGoalAccomplished()) {
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
-            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
+            holder.getGoalDesc().setText(mContext.getString(R.string.goaloverminute));
         } else {
             holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.black));

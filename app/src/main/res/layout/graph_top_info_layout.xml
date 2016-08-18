@@ -30,7 +30,7 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goalDesc"
-        style="@style/FooterTxtFortyOpactiy"
+        style="@style/FooterTitleFiftyOpacity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
