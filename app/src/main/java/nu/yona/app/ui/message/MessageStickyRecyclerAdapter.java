@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.util.List;
@@ -26,6 +25,7 @@ import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
+import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by bhargavsuthar on 10/05/16.
@@ -85,22 +85,22 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                         holder.img_avtar.setImageResource(R.drawable.adult_sad);
                     } else {
                         if (strBuilder.toString().length() > 0) {
-                            holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(strBuilder.toString().substring(0, 1).toUpperCase(),
-                                    ContextCompat.getColor(activity, R.color.grape)));
+                            holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(activity, strBuilder.toString().substring(0, 1).toUpperCase(),
+                                    ContextCompat.getColor(activity, R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
                         }
                     }
                 } else if (!TextUtils.isEmpty(yonaObject.getNickname())) {
                     holder.txtFooterMsg.setText(yonaObject.getNickname());
-                    holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(yonaObject.getNickname().toString().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(activity, R.color.grape)));
+                    holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(activity, yonaObject.getNickname().toString().substring(0, 1).toUpperCase(),
+                            ContextCompat.getColor(activity, R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
                 }
             } else if (!TextUtils.isEmpty(yonaObject.getNickname())) {
                 holder.txtFooterMsg.setText(yonaObject.getNickname());
                 if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED) {
                     holder.img_avtar.setImageResource(R.drawable.adult_sad);
                 } else {
-                    holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(yonaObject.getNickname().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(activity, R.color.grape)));
+                    holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(activity, yonaObject.getNickname().substring(0, 1).toUpperCase(),
+                            ContextCompat.getColor(activity, R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
                 }
             }
             if (yonaObject.getLinks() != null && yonaObject.getLinks().getMarkRead() != null && !TextUtils.isEmpty(yonaObject.getLinks().getMarkRead().getHref())) {
