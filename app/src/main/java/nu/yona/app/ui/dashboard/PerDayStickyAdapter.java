@@ -105,7 +105,7 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
             holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName() + "");
         }
         if (!dayActivity.getGoalAccomplished()) {
-            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
+            holder.getGoalDesc().setText(mContext.getString(R.string.goaloverminute));
         } else {
             holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
         }
