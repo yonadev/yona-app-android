@@ -11,6 +11,7 @@
     <string name="appname">Yona</string>
     <string name="dashboard">DASHBOARD</string>
     <string name="friends">FRIENDS</string>
+    <string name="add_friend">ADD FRIEND</string>
     <string name="challenges">CHALLENGES</string>
     <string name="settings">SETTINGS</string>
     <string name="perday">Per day</string>
