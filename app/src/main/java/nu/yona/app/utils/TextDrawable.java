@@ -24,7 +24,6 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RectShape;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 /**
  * Created by kinnarvasa on 17/08/16.
@@ -72,9 +71,11 @@ public class TextDrawable extends ShapeDrawable {
 
         // border paint settings
         borderThickness = builder.borderThickness;
-        borderPaint = new Paint();
+        borderPaint = new Paint(textPaint);
         borderPaint.setColor(getLighterShade(color));
+        borderPaint.setFakeBoldText(builder.isBold);
         borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setTextAlign(Paint.Align.CENTER);
         borderPaint.setStrokeWidth(borderThickness);
 
         // drawable paint color
@@ -109,7 +110,6 @@ public class TextDrawable extends ShapeDrawable {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         scaleFactor = metrics.density;
         int fontSize = this.fontSize < 0 ? (Math.min(width, height) / 2) : this.fontSize;
-        Log.e("Font Size", "Font size : " + (scaleFactor * fontSize));
         textPaint.setTextSize(scaleFactor * fontSize);
 
         canvas.drawText(text, width / 2, height / 2 - ((textPaint.descent() + textPaint.ascent()) / 2), textPaint);
@@ -123,7 +123,7 @@ public class TextDrawable extends ShapeDrawable {
         rect.inset(borderThickness / 2, borderThickness / 2);
 
         if (shape instanceof OvalShape) {
-            canvas.drawOval(rect, borderPaint);
+            canvas.drawCircle(rect.height() / 2, rect.width() / 2, rect.width() - borderThickness / 2, borderPaint);
         } else if (shape instanceof RoundRectShape) {
             canvas.drawRoundRect(rect, radius, radius, borderPaint);
         } else {

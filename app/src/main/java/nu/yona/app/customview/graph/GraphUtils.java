@@ -23,7 +23,7 @@ public class GraphUtils {
     /**
      * The constant MARGIN_TOP.
      */
-    public static int MARGIN_TOP = 15;
+    public static int MARGIN_TOP = 20;
     /**
      * The constant COLOR_PINK.
      */
