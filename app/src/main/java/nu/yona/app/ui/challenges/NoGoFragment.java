@@ -55,6 +55,7 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
         switch (v.getId()) {
             case R.id.img_add_goal:
                 //show new goal list creation view
+                mDescTab.setText(getActivity().getString(R.string.challenge_nogo_add_title));
                 showNewListOfGoalView(ChallengesEnum.NO_GO_TAB.getTab());
                 break;
             default:
