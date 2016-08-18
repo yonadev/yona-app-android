@@ -20,8 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.YonaBuddy;
@@ -33,6 +31,7 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -138,15 +137,15 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
                             txtNotificationCounter.setVisibility(View.GONE);
                             rightIconProfile.setImageDrawable(TextDrawable.builder()
                                     .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                                    .buildRound(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
-                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+                                    .buildRound(YonaActivity.getActivity(), yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
+                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue), YonaActivity.getActivity().getResources().getInteger(R.integer.profile_icon_circle_font_size)));
                             profileClickEvent(rightIconProfile);
                         } else {
                             leftIcon.setVisibility(View.VISIBLE);
                             leftIcon.setImageDrawable(TextDrawable.builder()
                                     .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                                    .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
-                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+                                    .buildRound(YonaActivity.getActivity(), YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
+                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue), YonaActivity.getActivity().getResources().getInteger(R.integer.profile_icon_circle_font_size)));
                             rightIcon.setVisibility(View.VISIBLE);
                             rightIconProfile.setVisibility(View.GONE);
                             if (YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount() > 0) {

@@ -26,8 +26,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +51,7 @@ import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by kinnarvasa on 13/06/16.
@@ -281,7 +280,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
                 goBack();
             }
         } else {
-           goBack();
+            goBack();
         }
         setDayDetailTitleAndIcon();
     }
@@ -319,8 +318,8 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName())) {
                 rightIconProfile.setImageDrawable(TextDrawable.builder()
                         .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                        .buildRound(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
-                                ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue)));
+                        .buildRound(YonaActivity.getActivity(), yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
+                                ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
             }
             profileClickEvent(rightIconProfile);
 
@@ -331,8 +330,8 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
                 rightIconProfile.setVisibility(View.VISIBLE);
                 rightIconProfile.setImageDrawable(TextDrawable.builder()
                         .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                        .buildRound(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
-                                ContextCompat.getColor(YonaActivity.getActivity(), mYonaHeaderTheme.isBuddyFlow() ? R.color.mid_blue : R.color.grape)));
+                        .buildRound(YonaActivity.getActivity(), YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
+                                ContextCompat.getColor(YonaActivity.getActivity(), mYonaHeaderTheme.isBuddyFlow() ? R.color.mid_blue : R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
                 profileClickEvent(rightIconProfile);
             }
         }
@@ -400,7 +399,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
         } else {
             this.mYonaCommentsList = null;
         }
-        if(mYonaCommentsList != null && mYonaCommentsList.size() > 0){
+        if (mYonaCommentsList != null && mYonaCommentsList.size() > 0) {
             chatBoxImage.setVisibility(View.VISIBLE);
         } else {
             chatBoxImage.setVisibility(View.GONE);

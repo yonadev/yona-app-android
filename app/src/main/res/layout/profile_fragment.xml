@@ -50,7 +50,7 @@
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/topTabBarHeight"
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@android:color/white"
                 app:tabIndicatorHeight="@dimen/tabIndicatorHeight"

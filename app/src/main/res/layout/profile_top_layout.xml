@@ -15,10 +15,10 @@
 
     <ImageView
         android:id="@+id/profileImage"
-        android:layout_width="@dimen/eighty"
-        android:layout_height="@dimen/eighty"
+        android:layout_width="@dimen/ninty"
+        android:layout_height="@dimen/ninty"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/twenty_three"
+        android:layout_marginTop="@dimen/nine"
         android:background="@drawable/profile_selector"
         android:gravity="center_horizontal"
         android:transitionName="@string/profile_transition" />
@@ -27,7 +27,7 @@
         android:id="@+id/name"
         style="@style/SplashTxt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/twenty_nine"
         android:layout_marginTop="@dimen/fifteen"
         android:gravity="center_horizontal" />
 
@@ -35,7 +35,7 @@
         android:id="@id/nick_name"
         style="@style/NavTitleFiftyOpacity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/ninteen"
         android:layout_marginTop="@dimen/three"
         android:gravity="center_horizontal" />
 </LinearLayout>

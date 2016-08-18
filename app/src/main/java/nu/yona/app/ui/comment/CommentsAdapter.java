@@ -16,12 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-
 import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.api.model.YonaMessage;
+import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by bhargavsuthar on 28/07/16.
@@ -70,8 +69,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                     holder.getLineTop().setVisibility(View.VISIBLE);
                 }
                 if (!TextUtils.isEmpty(mYonaMsg.getNickname())) {
-                    holder.getImgParentBuddyIcon().setImageDrawable(TextDrawable.builder().buildRound(mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(mContext, R.color.grape)));
+                    holder.getImgParentBuddyIcon().setImageDrawable(TextDrawable.builder().buildRound(mContext, mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase(),
+                            ContextCompat.getColor(mContext, R.color.grape), mContext.getResources().getInteger(R.integer.list_item_icon_text_size)));
                 }
                 holder.getTxtParentBuddyName().setText(mYonaMsg.getNickname());
                 holder.getTxtParentBuddyMsg().setText(mYonaMsg.getMessage());
@@ -88,8 +87,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                 break;
             case 2:
                 if (!TextUtils.isEmpty(mYonaMsg.getNickname())) {
-                    holder.getImgChildBuddyIcon().setImageDrawable(TextDrawable.builder().buildRound(mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(mContext, R.color.grape)));
+                    holder.getImgChildBuddyIcon().setImageDrawable(TextDrawable.builder().buildRound(mContext, mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase(),
+                            ContextCompat.getColor(mContext, R.color.grape), mContext.getResources().getInteger(R.integer.list_item_icon_text_size)));
                 }
                 holder.getTxtChildBuddyName().setText(mYonaMsg.getNickname());
                 holder.getTxtChildBuddyMsg().setText(mYonaMsg.getMessage());

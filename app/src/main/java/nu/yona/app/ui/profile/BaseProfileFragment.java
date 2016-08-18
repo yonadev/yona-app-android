@@ -20,13 +20,12 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.TextUtils;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by kinnarvasa on 10/05/16.
@@ -58,8 +57,8 @@ public class BaseProfileFragment extends BaseFragment {
         } else {
             TextDrawable image = TextDrawable.builder().beginConfig().withBorder(AppConstant.PROFILE_IMAGE_BORDER_SIZE)
                     .textColor(Color.WHITE).endConfig()
-                    .buildRound(getName(firstName, lastName),
-                            ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor));
+                    .buildRound(YonaActivity.getActivity(), getName(firstName, lastName),
+                            ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor), YonaApplication.getAppContext().getResources().getInteger(R.integer.profile_circle_font_size));
             if (withAlpha) {
                 image.setAlpha(ALPHA);
             }

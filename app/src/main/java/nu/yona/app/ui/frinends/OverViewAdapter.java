@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.util.Collections;
@@ -29,6 +28,7 @@ import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.message.MessageItemViewHolder;
+import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by bhargavsuthar on 25/05/16.
@@ -84,14 +84,14 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
                         holder.txtFooterMsg.setText(context.getString(R.string.not_accepted_yet));
                     }
                     if (username.length() > 0) {
-                        holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(username.substring(0, 1).toUpperCase(),
-                                ContextCompat.getColor(YonaActivity.getActivity(), R.color.grape)));
+                        holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(YonaActivity.getActivity(), username.substring(0, 1).toUpperCase(),
+                                ContextCompat.getColor(YonaActivity.getActivity(), R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
                     }
                 }
             } else if (!TextUtils.isEmpty(yonaObject.getNickname())) {
                 holder.txtFooterMsg.setText(yonaObject.getNickname());
-                holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(yonaObject.getNickname().substring(0, 1).toUpperCase(),
-                        ContextCompat.getColor(YonaActivity.getActivity(), R.color.grape)));
+                holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(YonaActivity.getActivity(), yonaObject.getNickname().substring(0, 1).toUpperCase(),
+                        ContextCompat.getColor(YonaActivity.getActivity(), R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
             }
         }
 

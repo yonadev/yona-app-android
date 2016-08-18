@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.util.List;
@@ -26,6 +25,7 @@ import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by bhargavsuthar on 28/06/16.
@@ -118,8 +118,8 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
     private void updateProfileImage(TimelineHolder holder, DayActivity dayActivity) {
         holder.getmUserIcon().setImageDrawable(TextDrawable.builder()
                 .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                .buildRound(dayActivity.getYonaGoal().getNickName().substring(0, 1).toUpperCase(),
-                        ContextCompat.getColor(YonaActivity.getActivity(), R.color.grape)));
+                .buildRound(YonaActivity.getActivity(), dayActivity.getYonaGoal().getNickName().substring(0, 1).toUpperCase(),
+                        ContextCompat.getColor(YonaActivity.getActivity(), R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
     }
 
     @Override
