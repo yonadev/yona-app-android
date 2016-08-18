@@ -85,6 +85,9 @@
     <string name="cancel">Annuleren</string>
     <string name="challengesnogoheader">Hier leg je vast waar je helemaal niet wilt komen.</string>
     <string name="challengestijdzoneheader">Kies een categorie waarvoor je een tijdzone voor wilt instellen</string>
+    <string name="challenge_budget_title">Stel jezelf een doel door een dagelijk tegoed vast te stellen</string>
+    <string name="challenge_timezone_title">Bepaal zelf wanneer je wel of niet tijd wilt besteden.</string>
+    <string name="challenge_nogo_add_title">Kies een categorie waar je een no go voor wilt instellen</string>
     <string name="challengestegoedheader">Kies een categorie waarvoor je een tegoed wilt vastleggen</string>
     <string name="challengesfooter">De volgende apps zijn onderdeel van deze challenge:</string>
     <string name="challengesgoalcreatebutton">CHALLENGE OPSLAAN</string>

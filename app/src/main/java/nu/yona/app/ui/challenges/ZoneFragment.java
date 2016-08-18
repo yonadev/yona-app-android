@@ -38,7 +38,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
         mGoalListView.setOnItemClickListener(itemClickListener);
         showCurrentGoalListView(ChallengesEnum.ZONE_TAB.getTab());
         btnGoalAdd.setOnClickListener(this);
-        mDescTab.setText(getActivity().getString(R.string.challengestijdzoneheader));
+        mDescTab.setText(getActivity().getString(R.string.challenge_timezone_title));
         return view;
     }
 
@@ -53,6 +53,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
         switch (v.getId()) {
             case R.id.img_add_goal:
                 //show new goal list creation view
+                mDescTab.setText(getActivity().getString(R.string.challengestijdzoneheader));
                 showNewListOfGoalView(ChallengesEnum.ZONE_TAB.getTab());
                 break;
             default:
@@ -65,6 +66,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_UPDATE_GOALS:
+                mDescTab.setText(getActivity().getString(R.string.challenge_timezone_title));
                 mGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfTimeZoneGoals());
                 break;
             default:

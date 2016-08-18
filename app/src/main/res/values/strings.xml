@@ -85,6 +85,9 @@
     <string name="cancel">Cancel</string>
     <string name="challengesnogoheader">Here you will capture where you do not want to come at all.</string>
     <string name="challengestijdzoneheader">Choose a category from where you want to set a time zone</string>
+    <string name="challenge_budget_title">Set yourself a target by setting a daily balance</string>
+    <string name="challenge_timezone_title">Decide if you want to spend time or not.</string>
+    <string name="challenge_nogo_add_title">Choose a category in which you want to set up a no go for</string>
     <string name="challengestegoedheader">Select a category from where you want to define a credit for</string>
     <string name="challengesfooter">The following apps are part of this challenge:</string>
     <string name="challengesgoalcreatebutton">SAVE CHALLENGE</string>

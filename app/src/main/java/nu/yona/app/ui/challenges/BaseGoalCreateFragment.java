@@ -154,6 +154,18 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
      * onBackpressed of button it will call from main activity
      */
     public void onBackPressedView() {
+        switch (ChallengesEnum.getEnum(CURRENT_TAB)) {
+            case CREDIT_TAB:
+                mDescTab.setText(getActivity().getString(R.string.challenge_budget_title));
+                break;
+            case NO_GO_TAB:
+                mDescTab.setText(getActivity().getString(R.string.challengesnogoheader));
+                break;
+            case ZONE_TAB:
+                mDescTab.setText(getActivity().getString(R.string.challenge_timezone_title));
+                break;
+        }
+
         showCurrentGoalListView(CURRENT_TAB);
     }
 

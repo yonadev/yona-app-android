@@ -37,7 +37,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
         mGoalListAdapter = new GoalListAdapter(getActivity(), APIManager.getInstance().getChallengesManager().getListOfBudgetGoals());
         mGoalListView.setAdapter(mGoalListAdapter);
         mGoalListView.setOnItemClickListener(itemClickListener);
-        mDescTab.setText(getActivity().getString(R.string.challengestegoedheader));
+        mDescTab.setText(getActivity().getString(R.string.challenge_budget_title));
         btnGoalAdd.setOnClickListener(this);
         return view;
     }
@@ -54,6 +54,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
         switch (v.getId()) {
             case R.id.img_add_goal:
                 //show new goal list creation view
+                mDescTab.setText(getActivity().getString(R.string.challengestegoedheader));
                 showNewListOfGoalView(ChallengesEnum.CREDIT_TAB.getTab());
                 break;
             default:
@@ -66,6 +67,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
     public void onStateChange(int eventType, Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_UPDATE_GOALS:
+                mDescTab.setText(getActivity().getString(R.string.challenge_budget_title));
                 mGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfBudgetGoals());
                 break;
             default:
