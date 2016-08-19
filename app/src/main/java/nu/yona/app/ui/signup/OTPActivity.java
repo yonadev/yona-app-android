@@ -18,6 +18,9 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.WindowManager;
+
+import java.util.Date;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -57,6 +60,25 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
         updateScreenUI();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0) > new Date().getTime()) {
+            showTimer();
+        } else {
+            hideTimer();
+        }
+    }
+
+    private void showTimer() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        showTimerToUser();
+    }
+
+    private void hideTimer() {
+        hideTimerFromUser();
+    }
+
     private void loadOTPFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.blank_container, getOTPFragment());
@@ -91,6 +113,9 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
                 break;
             case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
                 finish();
+                break;
+            case EventChangeManager.EVENT_RESUME_OTP_VIEW:
+                onResume();
                 break;
             default:
                 break;

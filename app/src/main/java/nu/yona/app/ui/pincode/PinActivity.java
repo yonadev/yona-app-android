@@ -8,22 +8,24 @@
 
 package nu.yona.app.ui.pincode;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
+
+import java.util.Date;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.PinResetDelay;
-import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -130,15 +132,12 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
                 showLoadingView(false, null);
                 if (result instanceof PinResetDelay) {
                     PinResetDelay delay = (PinResetDelay) result;
-                    CustomAlertDialog.show(PinActivity.this, getString(R.string.resetpinrequest, AppUtils.getTimeForOTP(delay.getDelay())), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
-                            APIManager.getInstance().getPasscodeManager().resetWrongCounter();
-                            loadOTPScreen();
-                        }
-                    });
+                    final Pair<String, Long> delayTime = AppUtils.getTimeForOTP(delay.getDelay());
+                    SharedPreferences.Editor pref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+                    pref.putLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, (new Date().getTime() + delayTime.second));
+                    pref.putString(PreferenceConstant.USER_WAIT_TIME_IN_STRING, delayTime.first);
+                    pref.commit();
+                    loadOTPScreen();
                 }
             }
 
