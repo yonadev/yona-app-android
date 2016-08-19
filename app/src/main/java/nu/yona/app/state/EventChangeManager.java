@@ -121,6 +121,8 @@ public class EventChangeManager {
 
     public static final int EVENT_RECONNECT_VPN = 27;
 
+    public static final int EVENT_RESUME_OTP_VIEW = 28;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;

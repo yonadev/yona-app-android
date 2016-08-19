@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -216,24 +217,28 @@ public class AppUtils {
      * @param time the time
      * @return the time for otp
      */
-    public static String getTimeForOTP(String time) {
+    public static Pair<String, Long> getTimeForOTP(String time) {
         try {
             StringBuffer buffer = new StringBuffer();
+            long totalTime = 0;
             Period period = new Period(time);
             if (period.getHours() > 0) {
+                totalTime += period.getHours() * AppConstant.ONE_SECOND * 60 * 60;
                 buffer.append(YonaApplication.getAppContext().getString(R.string.hours, period.getHours() + ""));
             }
             if (period.getMinutes() > 0) {
+                totalTime += period.getMinutes() * AppConstant.ONE_SECOND * 60;
                 buffer.append(YonaApplication.getAppContext().getString(R.string.minute, period.getMinutes() + ""));
             }
             if (period.getSeconds() > 0) {
+                totalTime += period.getSeconds() * AppConstant.ONE_SECOND;
                 buffer.append(YonaApplication.getAppContext().getString(R.string.seconds, period.getSeconds() + ""));
             }
-            return buffer.toString();
+            return Pair.create(buffer.toString(), totalTime);
         } catch (Exception e) {
             AppUtils.throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
         }
-        return time;
+        return Pair.create(time, (long) 0);
     }
 
     /**

@@ -9,6 +9,7 @@
 package nu.yona.app.ui.pincode;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -17,7 +18,11 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import java.util.Date;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -26,6 +31,7 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by bhargavsuthar on 03/06/16.
@@ -77,6 +83,10 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      * The Passcode reset btn.
      */
     protected YonaFontButton passcodeResetBtn;
+
+    protected LinearLayout timerLayout;
+
+    protected TextView hourText, minuteText, secondText;
     /**
      * The Screen title.
      */
@@ -91,6 +101,8 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     protected View passcodeView;
     private AnimationSet animationView;
     protected boolean isPasscodeFlowRetry;
+    final Handler mHandler = new Handler();
+    long totalTimerTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +120,11 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         passcode_reset = (YonaFontTextView) findViewById(R.id.passcode_reset);
         passcode_reset.setOnClickListener(this);
         passcodeResetBtn = (YonaFontButton) findViewById(R.id.btnPasscodeReset);
+        timerLayout = (LinearLayout) findViewById(R.id.timerLayout);
+        hourText = (TextView) findViewById(R.id.hourText);
+        minuteText = (TextView) findViewById(R.id.minuteText);
+        secondText = (TextView) findViewById(R.id.secondText);
+
         passcodeResetBtn.setOnClickListener(this);
 
         passcodeView = findViewById(R.id.blank_container);
@@ -360,4 +377,81 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+    protected void hideTimerFromUser() {
+        passcode_reset.setVisibility(View.VISIBLE);
+        passcodeResetBtn.setVisibility(View.GONE);
+        passcodeView.setVisibility(View.VISIBLE);
+        profile_progress.setVisibility(View.VISIBLE);
+        passcode_error.setVisibility(View.VISIBLE);
+        timerLayout.setVisibility(View.GONE);
+        populateOTPView();
+    }
+
+    protected void showTimerToUser() {
+
+        passcode_reset.setVisibility(View.GONE);
+        timerLayout.setVisibility(View.VISIBLE);
+        passcodeView.setVisibility(View.GONE);
+        profile_progress.setVisibility(View.GONE);
+        passcode_description.setText(getString(R.string.timer_wait_desc, YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.USER_WAIT_TIME_IN_STRING, "")));
+        passcode_description.setVisibility(View.VISIBLE);
+        passcode_error.setVisibility(View.GONE);
+        accont_image.setImageResource(R.drawable.icn_secure);
+        passcode_title.setText(getString(R.string.timer_wait_title));
+        showTime();
+    }
+
+    private void showTime() {
+        totalTimerTime = 0;
+        long serverTime = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0);
+        if (serverTime > new Date().getTime()) {
+            totalTimerTime = serverTime - new Date().getTime();
+            mHandler.post(mUpdateUI);
+        } else {
+            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RESUME_OTP_VIEW, null);
+        }
+    }
+
+    private final Runnable mUpdateUI = new Runnable() {
+        public void run() {
+            if (totalTimerTime > 0) {
+                displayData();
+                mHandler.postDelayed(mUpdateUI, AppConstant.ONE_SECOND); // 1 second
+            } else {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RESUME_OTP_VIEW, null);
+            }
+        }
+    };
+
+    private void displayData() {
+        long remainingTime = totalTimerTime;
+        final int HOUR = 3600000, MINUTE = 60000;
+        totalTimerTime -= AppConstant.ONE_SECOND; // decreasing one second
+        int hour = (int) remainingTime / HOUR;
+        if (hour > 0) {
+            remainingTime -= HOUR;
+        }
+        int minute = (int) remainingTime / MINUTE;
+        if (minute > 0) {
+            remainingTime -= MINUTE;
+        }
+        int seconds = (int) remainingTime / AppConstant.ONE_SECOND;
+        if (hour < 10) {
+            hourText.setText("0" + hour);
+        } else {
+            hourText.setText("" + hour);
+        }
+
+        if (minute < 10) {
+            minuteText.setText("0" + minute);
+        } else {
+            minuteText.setText("" + minute);
+        }
+
+        if (seconds < 10) {
+            secondText.setText("0" + seconds);
+        } else {
+            secondText.setText("" + seconds);
+        }
+    }
 }

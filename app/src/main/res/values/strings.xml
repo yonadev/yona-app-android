@@ -189,4 +189,9 @@
     <string name="not_accepted_yet">Not accepted yet</string>
     <string name="vpn_disconnected">VPN Disconnected. Click to connect again.</string>
     <string name="device_restart">Device Need to restart for establishing secure VPN connection.</string>
+    <string name="timer_hour">H</string>
+    <string name="timer_minute">M</string>
+    <string name="timer_second">S</string>
+    <string name="timer_wait_title">You have to wait</string>
+    <string name="timer_wait_desc">For security reasons your account blocked. Can activate %1$s after you have applied for a new PIN.</string>
 </resources>

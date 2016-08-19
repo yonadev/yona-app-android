@@ -187,4 +187,9 @@
     <string name="not_accepted_yet">heeft nog niet geaccepteerd</string>
     <string name="vpn_disconnected">VPN Disconnected. Click to connect again.</string>
     <string name="device_restart">Device Need to restart for establishing secure VPN connection.</string>
+    <string name="timer_hour">U</string>
+    <string name="timer_minute">M</string>
+    <string name="timer_second">S</string>
+    <string name="timer_wait_title">Je moet even wachten</string>
+    <string name="timer_wait_desc">Om veiligheidsredenen is je account geblokkeerd. Activeren kan %1$s nadat je een nieuwe PIN code hebt aangevraagd.</string>
 </resources>

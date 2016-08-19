@@ -58,6 +58,10 @@ public interface PreferenceConstant {
      */
     String USER_BLOCKED = "userBlocked";
 
+    String USER_WAIT_TIME_IN_LONG = "userWaitTime";
+
+    String USER_WAIT_TIME_IN_STRING = "userWaitTimeTxt";
+
     String VPN_PROFILE_PATH = "vpnProfilePath";
 
     String VPN_PROFILE_ACTIVE = "vpnProfileActive";
