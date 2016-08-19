@@ -109,8 +109,8 @@ public class TimeFrameGraph extends BaseView {
         Bitmap moonBitmap = drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon));
         float bitmapWidth = moonBitmap.getWidth() / 2;
         //draw graphics of sun and moon
-        mCanvas.drawBitmap(moonBitmap, mStartPoint - (5 * scaleFactor), bottom, null);
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint - bitmapWidth, bottom, null);
+        mCanvas.drawBitmap(moonBitmap, mStartPoint - (5 * scaleFactor), bottom + (5 * scaleFactor), null);
+        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint - bitmapWidth, bottom + (5 * scaleFactor), null);
 
         float spreadtime = fullWidth;
 
@@ -127,7 +127,7 @@ public class TimeFrameGraph extends BaseView {
         float textPoint4 = textPoint * 6 + ((textPoint / 2));
         mCanvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4 - bitmapWidth, heightDraw, getFontStyle());
         float textPoint5 = textPoint * 7 + ((textPoint / 2));
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5 - (2 * scaleFactor), bottom, null);
+        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5 - (2 * scaleFactor), bottom + (5 * scaleFactor), null);
 
         if (mListZoneSpread != null && mListZoneSpread.size() > 0) {
             float currentStartPos = 0;
