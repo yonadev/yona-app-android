@@ -32,7 +32,7 @@
     <string name="previous">PREVIOUS</string>
     <string name="next">NEXT</string>
     <string name="connectionnotavailable">OOPS! No Internet Connection Available, please connect and try again.</string>
-    <string name="somethingwentwrong">Opps, Something went wrong</string>
+    <string name="somethingwentwrong">Oops, Something went wrong</string>
     <string name="firstname">FIRST NAME</string>
     <string name="name">NAAM</string>
     <string name="lastname">LAST NAME</string>
@@ -85,7 +85,7 @@
     <string name="cancel">Cancel</string>
     <string name="challengesnogoheader">Here you will capture where you do not want to come at all.</string>
     <string name="challengestijdzoneheader">Choose a category from where you want to set a time zone</string>
-    <string name="challenge_budget_title">Set yourself a target by setting a daily balance</string>
+    <string name="challenge_budget_title">Set yourself a target by setting a daily credit balance</string>
     <string name="challenge_timezone_title">Decide if you want to spend time or not.</string>
     <string name="challenge_nogo_add_title">Choose a category in which you want to set up a no go for</string>
     <string name="challengestegoedheader">Select a category from where you want to define a credit for</string>
@@ -109,7 +109,7 @@
     <string name="dataparseerror">Data Parsing error.</string>
     <string name="challengesnogosubText">Avoid %1$s related content</string>
     <string name="challengestimzoesubtext">Permitted %1$s</string>
-    <string name="challengesbudgetsubtext">Per day %1$s minutes %2$s</string>
+    <string name="challengesbudgetsubtext">You can spend %1$s minutes a day on %2$s</string>
     <string name="email">Email</string>
     <string name="invitefriend">INVITE FRIEND</string>
     <string name="addfriendmanually">Manual</string>

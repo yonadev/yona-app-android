@@ -32,7 +32,7 @@
     <string name="previous">VORIGE</string>
     <string name="next">VOLGENDE</string>
     <string name="connectionnotavailable">OEPS! Geen internetverbinding beschikbaar, maak opnieuw verbinding en probeer opnieuw.</string>
-    <string name="somethingwentwrong">Oeps! Er is lets mis gegaan</string>
+    <string name="somethingwentwrong">Oeps! Er is iets mis gegaan</string>
     <string name="firstname">VOORNAAM</string>
     <string name="name">NAAM</string>
     <string name="lastname">ACHTERNAAM</string>
@@ -79,7 +79,7 @@
     <string name="challenges.addBudgetGoal.budgetChallengeDescription">Bepaal hier hoeveel tijd je aan %1$s wilt besteden</string>
     <string name="challenges.addBudgetGoal.bottomLabelText">De volgende apps zijn onderdeel van deze challenge:</string>
     <string name="challenges.addBudgetGoal.deletedGoalMessage">Verwijder challenge</string>
-    <string name="deleteuser">Unsubscribe</string>
+    <string name="deleteuser">Uitschrijven</string>
     <string name="challengesaddBudgetGoalcannotDeleteMandatoryGoalMessage">Kan verplichte challenge niet verwijderen</string>
     <string name="deleteusermessage">Uitschrijven betekent dat je alle informatie (vrienden, meldingen, uitdagingen, activiteiten, etc.) op al je apparaten verliest. Druk op OK wanneer dit de bedoeling is.</string>
     <string name="cancel">Annuleren</string>
@@ -109,7 +109,7 @@
     <string name="dataparseerror">Data Parsing error.</string>
     <string name="challengesnogosubText">Vermijd %1$s gerelateerde content</string>
     <string name="challengestimzoesubtext">Toegestaan %1$s</string>
-    <string name="challengesbudgetsubtext">Je kunt per dag %1$s minuten %2$s</string>
+    <string name="challengesbudgetsubtext">Je kunt per dag %1$s minuten op %2$s doorbrengen</string>
     <string name="email">E-mail</string>
     <string name="invitefriend">VRIEND UITNODIGEN</string>
     <string name="addfriendmanually">Handmatig</string>
@@ -164,6 +164,7 @@
     <string name="average">Gemield</string>
     <string name="nogogoalachieved">geen hits, hou vol!</string>
     <string name="nogogoalbeyond">%1$s minuten</string>
+    <string name="budgetgoalbeyondtime">minuten over je limiet</string>
     <string name="budgetgoalbeyond">minuten over je limiet</string>
     <string name="budgetgoaltime">minuten tegoed</string>
     <string name="app_usage_permission_title">Toestemming</string>
