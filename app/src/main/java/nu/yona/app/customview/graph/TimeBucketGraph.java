@@ -8,6 +8,9 @@
 
 package nu.yona.app.customview.graph;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,6 +19,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by bhargavsuthar on 07/06/16.
@@ -31,6 +37,15 @@ public class TimeBucketGraph extends BaseView {
     private float mDifference;
     //equal parts
     private float mVolume = 0;
+    private float animEndPoint;
+    private float greenEndPoint;
+
+    private List<Animator> animList;
+    private List<Animator> viewAnimList;
+
+    private float xGStartPoint;
+    private float xGEndPoint;
+
 
     /**
      * Instantiates a new Time bucket graph.
@@ -86,6 +101,9 @@ public class TimeBucketGraph extends BaseView {
         mTotalActivityBeyondGoal = totalActivityBeyondGoal;
         mTotalActivityDurationMin = totalActivityDurationMinutes;
         mTotalMinTarget = totalMinTarget;
+
+        animList = new ArrayList<>();
+        viewAnimList = new ArrayList<Animator>();
     }
 
     @Override
@@ -125,6 +143,7 @@ public class TimeBucketGraph extends BaseView {
         float xStartPoint = 0, yStartPoint = 0;
 
         float xEndPoint = fullWidth;
+        float xGreenEndPoint = fullWidth + height;
         float yEndPoint = yStartPoint + height;
 
         //Drawing main Rectangle of Grey
@@ -141,7 +160,6 @@ public class TimeBucketGraph extends BaseView {
 
         //Filling usage of time
         Paint mDrawRange = new Paint();
-        float fillStartPoint;
         if (mDifference < 0) {
             mDrawRange.setColor(GraphUtils.COLOR_PINK);
             canvas.drawText(String.valueOf(0), mFillEndRange - getWidthOfText("0", getFontStyle()), txtHeight, getFontStyle());
@@ -149,9 +167,66 @@ public class TimeBucketGraph extends BaseView {
             mDrawRange.setColor(GraphUtils.COLOR_GREEN);
         }
 
-        RectF rectFill = new RectF(xStartPoint, yStartPoint, mFillEndRange, yEndPoint);
-        canvas.drawRect(rectFill, mDrawRange);
+        Paint greenBarPaint = new Paint();
+        greenBarPaint.setColor(GraphUtils.COLOR_GREEN);
 
+        if (mDifference < 0) {
+            //when there is no over min usage
+
+            //first draw the green bar
+            RectF greenRectFill = new RectF(mFillEndRange, xStartPoint, greenEndPoint, yEndPoint);
+            canvas.drawRect(greenRectFill, greenBarPaint);
+            //second draw the pink bar
+            RectF pinkRectFill = new RectF(animEndPoint, yStartPoint, mFillEndRange, yEndPoint);
+            canvas.drawRect(pinkRectFill, mDrawRange);
+        } else {
+            //when full width and mfillEndRange is equl then no animation else do animation
+            if (mFillEndRange == getWidth()) {
+                RectF rectFill = new RectF(xStartPoint, yStartPoint, mFillEndRange, yEndPoint);
+                canvas.drawRect(rectFill, mDrawRange);
+            } else {
+                RectF rectFill = new RectF(xStartPoint, yStartPoint, animEndPoint, yEndPoint);
+                canvas.drawRect(rectFill, mDrawRange);
+            }
+        }
+
+    }
+
+    public void startAnimation() {
+        // now we add them all to the anim list
+        AnimatorSet animSet = new AnimatorSet();
+
+        if (mFillEndRange == getWidth()) {
+            return;
+        }
+
+        Animator animGreen = ObjectAnimator.ofFloat(this, "greenEndPoint", this.getWidth(), mFillEndRange).setDuration(500);
+        viewAnimList.add(animGreen);
+
+        if (!(mDifference < 0)) {
+            Animator anim = ObjectAnimator.ofFloat(this, "animEndPoint", this.getWidth(), mFillEndRange).setDuration(1000);
+            viewAnimList.add(anim);
+        } else {
+            Animator anim = ObjectAnimator.ofFloat(this, "animEndPoint", mFillEndRange, 0.0f).setDuration(2000);
+            viewAnimList.add(anim);
+        }
+
+        animSet.playTogether(viewAnimList);
+        animList.add(animSet);
+
+        AnimatorSet menuAnimSet = new AnimatorSet();
+        menuAnimSet.playSequentially(animList);
+        menuAnimSet.start();
+    }
+
+    public void setAnimEndPoint(float endPoint) {
+        this.animEndPoint = endPoint;
+        invalidate();
+    }
+
+    public void setGreenEndPoint(float endPoint) {
+        this.greenEndPoint = endPoint;
+        invalidate();
     }
 
     private float getWidthOfText(String text, Paint paint) {
