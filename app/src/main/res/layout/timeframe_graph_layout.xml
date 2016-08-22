@@ -9,6 +9,7 @@
 <nu.yona.app.customview.graph.TimeFrameGraph xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/timeFrameControl"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/seventy_three">
+    android:layout_height="@dimen/seventy_three"
+    android:layout_marginTop="@dimen/five">
 
 </nu.yona.app.customview.graph.TimeFrameGraph>

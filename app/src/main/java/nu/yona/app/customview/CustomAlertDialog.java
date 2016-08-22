@@ -50,7 +50,7 @@ public class CustomAlertDialog extends android.support.v7.app.AlertDialog.Builde
     public static synchronized CustomAlertDialog show(Context context, CharSequence title, CharSequence message, CharSequence positiveButton,
                                                       CharSequence negativeButton, OnClickListener positiveListener, OnClickListener negativeListener) {
 
-        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context, R.style.MyDialogTheme);
+        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context, R.style.YonaDialogTheme);
         customAlertDialog.setCancelable(false);
         if (!TextUtils.isEmpty(title)) {
             customAlertDialog.setTitle(title);
@@ -85,7 +85,7 @@ public class CustomAlertDialog extends android.support.v7.app.AlertDialog.Builde
 
     private static CustomAlertDialog show(Context context, String title, CharSequence message, CharSequence positiveButton, OnClickListener positiveListener) {
 
-        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context, R.style.MyDialogTheme);
+        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context, R.style.YonaDialogTheme);
         customAlertDialog.setCancelable(false);
         customAlertDialog.setMessage(message);
         if (!TextUtils.isEmpty(title)) {
@@ -108,7 +108,7 @@ public class CustomAlertDialog extends android.support.v7.app.AlertDialog.Builde
      */
     public static CustomAlertDialog show(Context context, CharSequence message,
                                          CharSequence[] listItems, OnClickListener itemChooseListener, int selectedItem) {
-        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context, R.style.MyDialogTheme);
+        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context, R.style.YonaDialogTheme);
         customAlertDialog.setCancelable(false);
 
         customAlertDialog.setTitle(message);
