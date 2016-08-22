@@ -127,7 +127,7 @@ public class BaseView extends View {
 
         linePaint = new Paint();
         linePaint.setStrokeWidth(1);
-        linePaint.setColor(GraphUtils.COLOR_WHITE_THREE);
+        linePaint.setColor(GraphUtils.COLOR_BULLET_LIGHT_DOT);
 
     }
 

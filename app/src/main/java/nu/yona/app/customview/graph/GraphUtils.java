@@ -47,7 +47,7 @@ public class GraphUtils {
     /**
      * The constant COLOR_WHITE_THREE_TWO.
      */
-    public static int COLOR_WHITE_THREE_TWO = 0xffffffff;
+    public static int COLOR_WHITE_THREE_TWO = 0x80ffffff;
     /**
      * The constant COLOR_BULLET_DOT.
      */

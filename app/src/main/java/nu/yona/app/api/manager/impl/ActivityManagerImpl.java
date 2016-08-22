@@ -994,7 +994,7 @@ public class ActivityManagerImpl implements ActivityManager {
         if (allowed) {
             timeZoneSpread.setColor(GraphUtils.COLOR_GREEN);
         } else {
-            timeZoneSpread.setColor(GraphUtils.COLOR_WHITE_THREE);
+            timeZoneSpread.setColor(GraphUtils.COLOR_BULLET_LIGHT_DOT);
         }
         timeZoneSpread.setUsedValue(usage); // out of 15 mins, if 10 min used, so here we need to show 5 min as green
         return timeZoneSpread;

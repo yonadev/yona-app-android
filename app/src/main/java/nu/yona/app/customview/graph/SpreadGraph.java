@@ -118,20 +118,20 @@ public class SpreadGraph extends BaseView {
         //draw graphics of sun and moon
         Bitmap moonBitmap = drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon));
         float bitmapWidth = moonBitmap.getWidth() / 2;
-        mCanvas.drawBitmap(moonBitmap, mStartPoint - (5 * scaleFactor), bottom, null);
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint - bitmapWidth, bottom, null);
+        mCanvas.drawBitmap(moonBitmap, mStartPoint - (5 * scaleFactor), bottom + (5 * scaleFactor), null);
+        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint - bitmapWidth, bottom + (5 * scaleFactor), null);
 
 
         float textPoint = (mMiddlePoint / 2) / 2;
-        mCanvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw, getFontStyle());
+        mCanvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw + scaleFactor, getFontStyle());
         float textPoint2 = textPoint * 2 + ((textPoint / 2));
-        mCanvas.drawText(mContext.getString(R.string.eight_hours), textPoint2, heightDraw, getFontStyle());
+        mCanvas.drawText(mContext.getString(R.string.eight_hours), textPoint2, heightDraw + scaleFactor, getFontStyle());
         float textPoint3 = textPoint * 5;
-        mCanvas.drawText(mContext.getString(R.string.sixteen_hours), textPoint3 - bitmapWidth, heightDraw, getFontStyle());
+        mCanvas.drawText(mContext.getString(R.string.sixteen_hours), textPoint3 - bitmapWidth, heightDraw + scaleFactor, getFontStyle());
         float textPoint4 = textPoint * 6 + ((textPoint / 2));
-        mCanvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4 - bitmapWidth, heightDraw, getFontStyle());
+        mCanvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4 - bitmapWidth, heightDraw + scaleFactor, getFontStyle());
         float textPoint5 = textPoint * 7 + ((textPoint / 2));
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5, bottom, null);
+        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5, bottom + (5 * scaleFactor), null);
 
         if (mListZoneSpread != null && mListZoneSpread.size() > 0) {
             float currentStartPos;
@@ -139,24 +139,37 @@ public class SpreadGraph extends BaseView {
             Paint barGraphPaint = new Paint();
             barGraphPaint.setStyle(Paint.Style.STROKE);
             barGraphPaint.setStrokeWidth(5);
+            boolean skipThis;
             for (TimeZoneSpread timeZoneSpread : mListZoneSpread) {
+                skipThis = false;
                 currentStartPos = (float) timeZoneSpread.getIndex() * mPartSize;
                 Path barPath = new Path();
                 if (timeZoneSpread.getColor() == GraphUtils.COLOR_PINK || timeZoneSpread.getColor() == GraphUtils.COLOR_BLUE) {
                     currentEndPos = timeZoneSpread.getUsedValue();
                     barGraphPaint.setColor(timeZoneSpread.getColor());
                 } else if (timeZoneSpread.getColor() == GraphUtils.COLOR_GREEN) {
+                    if (timeZoneSpread.getUsedValue() == 15) {
+                        currentEndPos = startEndPoint;
+                        barGraphPaint.setColor(GraphUtils.COLOR_BULLET_DOT);
+                    } else {
+                        currentEndPos = startEndPoint;
+                        barGraphPaint.setColor(GraphUtils.COLOR_BLUE);
+                    }
+                } else if (timeZoneSpread.getUsedValue() != 15 && timeZoneSpread.getColor() == GraphUtils.COLOR_BULLET_LIGHT_DOT) {
                     currentEndPos = startEndPoint;
-                    barGraphPaint.setColor(GraphUtils.COLOR_BULLET_DOT);
+                    barGraphPaint.setColor(timeZoneSpread.getColor());
+                    skipThis = true;
                 } else {
                     currentEndPos = startEndPoint;
                     barGraphPaint.setColor(timeZoneSpread.getColor());
                 }
-                float newXPos = mXStart + currentStartPos;
-                barPath.moveTo(newXPos, mYStart);
-                float noPartsHeight = heightOfbar / 15;
-                barPath.lineTo(currentStartPos, mYStart - (currentEndPos * noPartsHeight));
-                canvas.drawPath(barPath, barGraphPaint);
+                if (!skipThis) {
+                    float newXPos = mXStart + currentStartPos;
+                    barPath.moveTo(newXPos, mYStart);
+                    float noPartsHeight = heightOfbar / 15;
+                    barPath.lineTo(currentStartPos, mYStart - (currentEndPos * noPartsHeight) - 1);
+                    canvas.drawPath(barPath, barGraphPaint);
+                }
             }
 
         }
