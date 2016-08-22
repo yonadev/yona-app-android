@@ -34,7 +34,7 @@
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/goal_challenge_type_subscribeTxt"
-        style="@style/SubscribeTxt"
+        style="@style/SubscribeTxtWithoutLineSpacing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/challenges_desc_margin_top"

@@ -15,8 +15,9 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/tab_icon_top_width"
+        android:layout_height="@dimen/tab_icon_top_height"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/tab_challenges_margin_top"
         android:gravity="center_horizontal">
 
@@ -32,7 +33,7 @@
             android:layout_width="@dimen/challenges_counter_width"
             android:layout_height="@dimen/challenges_counter_width"
             android:layout_alignEnd="@id/tab_image"
-            android:layout_alignRight="@id/tab_image"
+            android:layout_alignParentRight="true"
             android:layout_alignTop="@id/tab_image"
             android:background="@drawable/circle_counter"
             android:gravity="center"

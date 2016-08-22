@@ -310,7 +310,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private void setBudgetGoalViewVisibility() {
         timezoneGoalView.setVisibility(View.GONE);
         budgetGoalView.setVisibility(View.VISIBLE);
-        mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_timezone);
+        mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_timebucket);
     }
 
     /**
@@ -319,7 +319,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private void setTimezoneGoalViewVisibility() {
         timezoneGoalView.setVisibility(View.VISIBLE);
         budgetGoalView.setVisibility(View.GONE);
-        mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_timebucket);
+        mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_timezone);
     }
 
     /**

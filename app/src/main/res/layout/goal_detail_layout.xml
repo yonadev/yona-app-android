@@ -33,12 +33,12 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            app:elevation="0dp">
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/challenges_header_detail_height"
                 android:background="@color/pea"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -55,9 +55,9 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
             android:layout_gravity="fill_vertical"
             android:background="@color/white_three"
+            android:fillViewport="true"
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
