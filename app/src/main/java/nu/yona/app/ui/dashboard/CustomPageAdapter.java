@@ -420,19 +420,13 @@ public class CustomPageAdapter extends PagerAdapter {
         }
         goalType.setText(mContext.getString(R.string.spreiding));
         if (dayActivity != null) {
-            GoalsEnum goalsEnum = GoalsEnum.fromName(dayActivity.getYonaGoal().getType());
-            switch (goalsEnum) {
-                case BUDGET_GOAL:
-                case TIME_ZONE_GOAL:
-                    if (dayActivity.getGoalAccomplished()) {
-                        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-                        goalDesc.setText(mContext.getString(R.string.goaltotalminute));
-                    } else {
-                        goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
-                        goalDesc.setText(mContext.getString(R.string.budgetgoalbeyondtime));
-                    }
+            switch (dayActivity.getChartTypeEnum()) {
+                case TIME_BUCKET_CONTROL:
+                case TIME_FRAME_CONTROL:
+                    goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                    goalDesc.setText(mContext.getString(R.string.goaltotalminute));
                     break;
-                case NOGO:
+                case NOGO_CONTROL:
                     goalDesc.setText(mContext.getString(R.string.goaltotalminute));
                     if (dayActivity.getGoalAccomplished()) {
                         goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
@@ -445,13 +439,12 @@ public class CustomPageAdapter extends PagerAdapter {
             }
             goalScore.setText(dayActivity.getTotalActivityDurationMinutes() + "");
         } else if (weekActivity != null) {
-            GoalsEnum goalsEnum = GoalsEnum.fromName(weekActivity.getYonaGoal().getType());
-            switch (goalsEnum) {
-                case BUDGET_GOAL:
-                case TIME_ZONE_GOAL:
+            switch (weekActivity.getChartTypeEnum()) {
+                case TIME_BUCKET_CONTROL:
+                case TIME_FRAME_CONTROL:
                     goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.black));
                     break;
-                case NOGO:
+                case NOGO_CONTROL:
                     goalDesc.setText(mContext.getString(R.string.goaltotalminute));
                     if (weekActivity.getTotalActivityDurationMinutes() > 0) {
                         goalScore.setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));
