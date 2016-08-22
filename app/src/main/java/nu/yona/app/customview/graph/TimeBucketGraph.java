@@ -137,7 +137,7 @@ public class TimeBucketGraph extends BaseView {
 
         String textlenth = String.valueOf(txtEndValue);
         int useItemCount = textlenth.length();
-        canvas.drawText(String.valueOf((int) txtEndValue), xEndPoint - ((getWidthOfText(String.valueOf(txtEndValue), getFontStyle())) - ((useItemCount + 2) * scaleFactor)), txtHeight, getFontStyle());
+        canvas.drawText(String.valueOf((int) txtEndValue), xEndPoint - ((getWidthOfText(String.valueOf(txtEndValue), getFontStyle())) - ((useItemCount + 5) * scaleFactor)), txtHeight, getFontStyle());
 
         //Filling usage of time
         Paint mDrawRange = new Paint();
