@@ -119,15 +119,15 @@ public class TimeFrameGraph extends BaseView {
         float minValue = mPartSize / mMinPerParts;
 
         float textPoint = (mMiddlePoint / 2) / 2;
-        mCanvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw, getFontStyle());
+        mCanvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw + scaleFactor, getFontStyle());
         float textPoint2 = textPoint * 2 + ((textPoint / 2));
-        mCanvas.drawText(mContext.getString(R.string.eight_hours), textPoint2, heightDraw, getFontStyle());
+        mCanvas.drawText(mContext.getString(R.string.eight_hours), textPoint2, heightDraw + scaleFactor, getFontStyle());
         float textPoint3 = textPoint * 5;
-        mCanvas.drawText(mContext.getString(R.string.sixteen_hours), textPoint3 - bitmapWidth, heightDraw, getFontStyle());
+        mCanvas.drawText(mContext.getString(R.string.sixteen_hours), textPoint3 - bitmapWidth, heightDraw + scaleFactor, getFontStyle());
         float textPoint4 = textPoint * 6 + ((textPoint / 2));
-        mCanvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4 - bitmapWidth, heightDraw, getFontStyle());
+        mCanvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4 - bitmapWidth, heightDraw + scaleFactor, getFontStyle());
         float textPoint5 = textPoint * 7 + ((textPoint / 2));
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5 - (2 * scaleFactor), bottom + (5 * scaleFactor), null);
+        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5, bottom + (5 * scaleFactor), null);
 
         if (mListZoneSpread != null && mListZoneSpread.size() > 0) {
             float currentStartPos = 0;
