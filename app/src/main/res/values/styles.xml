@@ -21,6 +21,10 @@
         <item name="android:windowBackground">@drawable/welkom_screen</item>
     </style>
 
+    <style name="YonaDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/yona_dialog_button</item>
+    </style>
+
     <style name="YonaCustomTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">@android:color/white</item>
         <item name="tabIndicatorHeight">2dp</item>
