@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/one"
         android:layout_marginLeft="@dimen/parent_msg_horizontal_line_padding_left"
-        android:background="@color/bg_gradient_three" />
+        android:background="@color/white_three" />
 
     <ImageView
         android:id="@+id/imgParentBuddyIcon"

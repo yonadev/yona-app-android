@@ -21,12 +21,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/white"
+        android:background="@drawable/comment_background"
         android:inputType="textCapSentences|textMultiLine"
         android:maxLines="5"
         android:minHeight="@dimen/fifty"
-        android:padding="@dimen/comment_box_msg_padding"
-        android:scrollbars="vertical" />
+        android:paddingBottom="@dimen/comment_box_msg_padding"
+        android:paddingLeft="@dimen/comment_box_msg_padding_left"
+        android:paddingRight="@dimen/comment_box_msg_padding"
+        android:paddingTop="@dimen/comment_box_msg_padding"
+        android:scrollbars="vertical"
+        android:textCursorDrawable="@drawable/edit_text_cursor" />
 
     <nu.yona.app.customview.YonaFontButton
         android:id="@+id/btnSend"

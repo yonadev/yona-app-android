@@ -165,9 +165,9 @@ public class SpreadGraph extends BaseView {
                 }
                 if (!skipThis) {
                     float newXPos = mXStart + currentStartPos;
-                    barPath.moveTo(newXPos, mYStart);
+                    barPath.moveTo(newXPos + 2, mYStart);
                     float noPartsHeight = heightOfbar / 15;
-                    barPath.lineTo(currentStartPos, mYStart - (currentEndPos * noPartsHeight) - 1);
+                    barPath.lineTo(currentStartPos + 2, mYStart - (currentEndPos * noPartsHeight) - 1);
                     canvas.drawPath(barPath, barGraphPaint);
                 }
             }
