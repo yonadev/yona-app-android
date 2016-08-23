@@ -11,8 +11,8 @@
         <shape android:shape="oval">
             <solid android:color="@color/pea" />
             <size
-                android:width="15dp"
-                android:height="15dp" />
+                android:width="17dp"
+                android:height="17dp" />
         </shape>
     </item>
     <item>
@@ -22,8 +22,8 @@
                 android:color="@android:color/transparent" />
             <solid android:color="@color/pea" />
             <size
-                android:width="10dp"
-                android:height="10dp" />
+                android:width="17dp"
+                android:height="17dp" />
         </shape>
     </item>
 </layer-list>
