@@ -23,6 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -103,6 +105,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     protected boolean isPasscodeFlowRetry;
     final Handler mHandler = new Handler();
     long totalTimerTime;
+    private Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +180,14 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         super.onResume();
         if (!TextUtils.isEmpty(screenTitle)) {
             updateTitle(screenTitle);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (timer != null) {
+            timer.cancel();
         }
     }
 
@@ -385,6 +396,9 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         passcode_error.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.GONE);
         populateOTPView();
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 
     protected void showTimerToUser() {
@@ -406,22 +420,30 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
         long serverTime = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0);
         if (serverTime > new Date().getTime()) {
             totalTimerTime = serverTime - new Date().getTime();
-            mHandler.post(mUpdateUI);
+            timer = new Timer();
+            timer.schedule(new DelayTimer(), AppConstant.ONE_SECOND, AppConstant.ONE_SECOND);
         } else {
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RESUME_OTP_VIEW, null);
         }
     }
 
-    private final Runnable mUpdateUI = new Runnable() {
+    private class DelayTimer extends TimerTask {
+
+        @Override
         public void run() {
-            if (totalTimerTime > 0) {
-                displayData();
-                mHandler.postDelayed(mUpdateUI, AppConstant.ONE_SECOND); // 1 second
-            } else {
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RESUME_OTP_VIEW, null);
-            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (totalTimerTime > 0) {
+                        displayData();
+                    } else {
+                        timer.cancel();
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RESUME_OTP_VIEW, null);
+                    }
+                }
+            });
         }
-    };
+    }
 
     private void displayData() {
         long remainingTime = totalTimerTime;

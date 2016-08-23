@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -180,18 +181,22 @@ public class SettingsFragment extends BaseFragment {
     }
 
     private void showAlert(String message, final boolean doDelete) {
-        if (YonaActivity.getActivity() != null) {
-            YonaActivity.getActivity().showLoadingView(false, null);
-            Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(getString(R.string.ok), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (doDelete) {
-                                doDeleteDeviceRequest();
+        try {
+            if (YonaActivity.getActivity() != null) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(getString(R.string.ok), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (doDelete) {
+                                    doDeleteDeviceRequest();
+                                }
                             }
-                        }
-                    })
-                    .show();
+                        })
+                        .show();
+            }
+        } catch (Exception e) {
+            Log.e(SettingsFragment.class.getSimpleName(), e.getMessage());
         }
     }
 
