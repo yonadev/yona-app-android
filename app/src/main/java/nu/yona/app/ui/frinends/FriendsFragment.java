@@ -111,8 +111,8 @@ public class FriendsFragment extends BaseFragment {
         ((YonaActivity) getActivity()).updateTabIcon(true);
         leftIcon.setVisibility(View.GONE);
         toolbarTitle.setText(R.string.friends);
-        rightIcon.setVisibility(View.GONE);
-        showOptionsInSelectedTab(viewPager.getCurrentItem());
+        rightIcon.setVisibility(View.VISIBLE);
+        rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_add));
     }
 
     private void setTabs() {
@@ -122,28 +122,6 @@ public class FriendsFragment extends BaseFragment {
         tabLayout.setLayoutParams(mParams);
         tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.friends_deselected_tab), ContextCompat.getColor(getActivity(), R.color.friends_selected_tab));
         tabLayout.setBackgroundResource(R.color.mid_blue_two);
-    }
-
-    private void showOptionsInSelectedTab(int position) {
-        switch (position) {
-            case OVERVIEW:
-                showOverviewFragmentOptions();
-                break;
-            case TIMELINE:
-            default:
-                showTimeLineFragmentOptions();
-                break;
-        }
-    }
-
-    private void showTimeLineFragmentOptions() {
-        rightIcon.setVisibility(View.GONE);
-    }
-
-    private void showOverviewFragmentOptions() {
-        rightIcon.setVisibility(View.VISIBLE);
-        rightIcon.setTag(getString(R.string.overiview));
-        rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_add));
     }
 
     private void addFriend() {
