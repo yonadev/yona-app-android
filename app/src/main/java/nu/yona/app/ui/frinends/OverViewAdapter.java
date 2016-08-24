@@ -75,11 +75,10 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
             holder.txtTitleMsg.setText(username.toString());
 
             if (yonaObject.getEmbedded() != null) {
-                if (yonaObject.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getFirstName())) {
+                if (yonaObject.getEmbedded().getYonaUser() != null) {
 
                     if (StatusEnum.getStatusEnum(yonaObject.getReceivingStatus()) == StatusEnum.ACCEPTED) {
-                        String userFirstname = yonaObject.getEmbedded().getYonaUser().getFirstName();
-                        holder.txtFooterMsg.setText(userFirstname);
+                        holder.txtFooterMsg.setText(yonaObject.getNickname());
                     } else {
                         holder.txtFooterMsg.setText(context.getString(R.string.not_accepted_yet));
                     }
