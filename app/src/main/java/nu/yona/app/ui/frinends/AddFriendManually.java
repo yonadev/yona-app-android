@@ -10,6 +10,8 @@
 
 package nu.yona.app.ui.frinends;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -25,6 +27,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -239,28 +243,48 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
     @Override
     public void onStateChange(int eventType, Object object) {
-        int NUMBER_LENGTH = 9;
         switch (eventType) {
             case EventChangeManager.EVENT_CONTAT_CHOOSED:
                 if (object instanceof RegisterUser) {
-                    RegisterUser user = (RegisterUser) object;
-                    firstName.setText(user.getFirstName());
-                    lastName.setText(user.getLastName());
-                    email.setText(user.getEmailAddress());
-                    if (!TextUtils.isEmpty(user.getMobileNumber())) {
-                        String number = user.getMobileNumber().replace(getString(R.string.space), getString(R.string.blank));
-                        if (number.length() > NUMBER_LENGTH) {
-                            number = number.substring(number.length() - NUMBER_LENGTH);
-                            number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
-                        }
-                        mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
-                    } else {
-                        mobileNumber.setText(getString(R.string.country_code_with_zero));
-                    }
+                    updateUser((RegisterUser) object);
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    private void updateUser(RegisterUser user) {
+        int NUMBER_LENGTH = 9;
+        firstName.setText(user.getFirstName());
+        lastName.setText(user.getLastName());
+        email.setText(user.getEmailAddress());
+        if (!TextUtils.isEmpty(user.getMobileNumber())) {
+            String number = user.getMobileNumber().replace(getString(R.string.space), getString(R.string.blank));
+            if (number.length() > NUMBER_LENGTH) {
+                number = number.substring(number.length() - NUMBER_LENGTH);
+                number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
+            }
+            mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
+        } else if (user.getMultipleNumbers() != null && user.getMultipleNumbers().size() > 1) {
+            showNumberChooser(user.getMultipleNumbers(), user);
+        } else {
+            mobileNumber.setText(getString(R.string.country_code_with_zero));
+        }
+    }
+
+    private void showNumberChooser(final List<String> numbers, final RegisterUser user) {
+        final CharSequence[] charSequences = numbers.toArray(new CharSequence[numbers.size()]);
+        AlertDialog.Builder builder = new AlertDialog.Builder(YonaActivity.getActivity());
+        builder.setTitle(getString(R.string.choose_number, user.getFirstName()));
+        builder.setItems(charSequences, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                // Do something with the selection
+                user.setMobileNumber(charSequences[item].toString());
+                updateUser(user);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

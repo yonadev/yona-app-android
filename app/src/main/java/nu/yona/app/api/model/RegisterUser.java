@@ -16,6 +16,8 @@ import android.os.Parcel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by kinnarvasa on 31/03/16.
  */
@@ -39,6 +41,8 @@ public class RegisterUser extends BaseEntity {
     @SerializedName("_links")
     @Expose
     private Links_ Links;
+    @SerializedName("@multipleMobileNo")
+    private List<String> multipleNumbers;
 
     /**
      * Instantiates a new Register user.
@@ -167,5 +171,13 @@ public class RegisterUser extends BaseEntity {
      */
     public void setEmailAddress(String email) {
         this.emailAddress = email;
+    }
+
+    public List<String> getMultipleNumbers() {
+        return this.multipleNumbers;
+    }
+
+    public void setMultipleNumbers(List<String> multipleNumbers) {
+        this.multipleNumbers = multipleNumbers;
     }
 }
