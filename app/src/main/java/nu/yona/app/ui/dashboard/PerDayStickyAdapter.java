@@ -1,6 +1,7 @@
 package nu.yona.app.ui.dashboard;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -60,7 +61,7 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
     }
 
     @Override
-    public void onBindViewHolder(ChartItemHolder holder, int position) {
+    public void onBindViewHolder(final ChartItemHolder holder, int position) {
         DayActivity dayActivity = (DayActivity) getItem(position);
 
         if (dayActivity != null) {
@@ -76,6 +77,12 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
                     int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
                     if (maxDurationAllow > 0) {
                         holder.getTimeBucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.getTimeBucketGraph().startAnimation();
+                            }
+                        }, 100);
                     }
                     updatedetail(dayActivity, holder);
                     break;

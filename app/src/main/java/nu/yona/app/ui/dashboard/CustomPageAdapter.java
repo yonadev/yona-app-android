@@ -11,6 +11,7 @@
 package nu.yona.app.ui.dashboard;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
@@ -308,11 +309,17 @@ public class CustomPageAdapter extends PagerAdapter {
         graphView.setVisibility(View.GONE);
     }
 
-    private void loadTimeBucketControlForDay(DayActivity dayActivity, ChartItemHolder holder) {
+    private void loadTimeBucketControlForDay(DayActivity dayActivity, final ChartItemHolder holder) {
         int goalMinutes = ((int) dayActivity.getYonaGoal().getMaxDurationMinutes()) - dayActivity.getTotalActivityDurationMinutes();
         int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
         if (maxDurationAllow > 0) {
             holder.getTimeBucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    holder.getTimeBucketGraph().startAnimation();
+                }
+            }, 100);
         }
         holder.getGoalType().setText(mContext.getString(R.string.score));
         if (!dayActivity.getGoalAccomplished()) {
@@ -325,13 +332,19 @@ public class CustomPageAdapter extends PagerAdapter {
         holder.getGoalScore().setText(Math.abs(goalMinutes) + "");
     }
 
-    private void loadTimeBucketControlForWeek(WeekActivity weekActivity, ChartItemHolder holder) {
+    private void loadTimeBucketControlForWeek(WeekActivity weekActivity, final ChartItemHolder holder) {
         Pair<Integer, Integer> avgUsage = getAverageUsageMinute(weekActivity);
         int goalMinutes = ((int) weekActivity.getYonaGoal().getMaxDurationMinutes()) - avgUsage.first;
 
         int maxDurationAllow = (int) weekActivity.getYonaGoal().getMaxDurationMinutes();
         if (maxDurationAllow > 0) {
             holder.getTimeBucketGraph().graphArguments(Math.abs(goalMinutes), maxDurationAllow, avgUsage.first);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    holder.getTimeBucketGraph().startAnimation();
+                }
+            }, 100);
         }
         holder.getGoalType().setText(mContext.getString(R.string.average));
         if (goalMinutes < 0) {
