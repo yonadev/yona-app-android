@@ -55,6 +55,8 @@ import android.widget.LinearLayout;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.activities.ConfigConverter;
@@ -1036,10 +1038,17 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     // To get Mobile number of contact
                     Cursor phoneCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                             null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[]{id}, null);
-                    if (phoneCur.moveToFirst()) {
+                    List<String> numberList = new ArrayList<String>();
+                    phoneCur.moveToFirst();
+                    do {
                         String number = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         number = TextUtils.isEmpty(number) ? getString(R.string.blank) : number.replace(getString(R.string.space), getString(R.string.blank));
-                        user.setMobileNumber(number);
+                        numberList.add(number);
+                    } while (phoneCur.moveToNext());
+                    if (numberList.size() == 1) {
+                        user.setMobileNumber(numberList.get(0));
+                    } else {
+                        user.setMultipleNumbers(numberList);
                     }
                     phoneCur.close();
                 } catch (Exception e) {
