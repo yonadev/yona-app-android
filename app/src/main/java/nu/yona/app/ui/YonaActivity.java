@@ -293,11 +293,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 
     private void getUserMessages() {
-        showLoadingView(true, null);
         APIManager.getInstance().getNotificationManager().getMessage(AppConstant.PAGE_SIZE, 0, true, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-//                showLoadingView(false, null);
                 if (result != null && result instanceof YonaMessages) {
                     YonaMessages yonaMessages = (YonaMessages) result;
                     YonaApplication.getEventChangeManager().getDataState().setNotificaitonCount(yonaMessages.getPage().getTotalElements());
