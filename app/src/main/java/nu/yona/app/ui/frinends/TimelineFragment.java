@@ -52,6 +52,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
     private LinearLayoutManager mLayoutManager;
     private boolean mIsLoading;
     private boolean isDataLoading;
+    private boolean isCurrentTabInView;
 
     private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
@@ -158,6 +159,10 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
         getDayActivity(false);
     }
 
+    public void setIsInView(boolean isInView) {
+        isCurrentTabInView = isInView;
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -194,8 +199,11 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList() != null
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList().size() > 0) {
             mDayTimelineStickyAdapter.notifyDataSetChange(setHeaderListView());
-            YonaActivity.getActivity().showLoadingView(false, null);
+            if (isCurrentTabInView) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+            }
         } else {
+            YonaActivity.getActivity().showLoadingView(false, null);
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
         }
     }

@@ -20,6 +20,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.ui.YonaActivity;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -41,6 +42,7 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
         showCurrentGoalListView(ChallengesEnum.NO_GO_TAB.getTab());
         mDescTab.setText(getActivity().getString(R.string.challengesnogoheader));
         YonaApplication.getEventChangeManager().registerListener(this);
+        YonaActivity.getActivity().showLoadingView(false, null);
         return view;
     }
 
