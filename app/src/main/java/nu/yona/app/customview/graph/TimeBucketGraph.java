@@ -43,10 +43,6 @@ public class TimeBucketGraph extends BaseView {
     private List<Animator> animList;
     private List<Animator> viewAnimList;
 
-    private float xGStartPoint;
-    private float xGEndPoint;
-
-
     /**
      * Instantiates a new Time bucket graph.
      *
@@ -219,11 +215,17 @@ public class TimeBucketGraph extends BaseView {
         menuAnimSet.start();
     }
 
+    /**
+     * do not remove this method, animEndPoint's ObjectAnimator is using this
+     */
     public void setAnimEndPoint(float endPoint) {
         this.animEndPoint = endPoint;
         invalidate();
     }
 
+    /**
+     * do not remove this method, greenEndPoint's ObjectAnimator is using this
+     */
     public void setGreenEndPoint(float endPoint) {
         this.greenEndPoint = endPoint;
         invalidate();

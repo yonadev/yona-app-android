@@ -1,5 +1,7 @@
 package nu.yona.app.customview.graph;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -19,12 +21,17 @@ import nu.yona.app.api.model.TimeZoneSpread;
  */
 public class TimeFrameGraph extends BaseView {
 
-    private final int mNoParts = 96;
-    private final int mMinPerParts = 15;
+    private static final int NO_PARTS = 96;
+    private static final int MIN_PER_PARTS = 15;
+    long animationDuration = 1000;
     private List<TimeZoneSpread> mListZoneSpread;
-    private Canvas mCanvas;
     private float mStartPoint;
     private float mMiddlePoint;
+    private float endPoint;
+    private float currentStartPos = 0;
+    private float currentEndPos;
+    boolean isCanvasInvalidated = false;
+    private List<GraphData> graphDataList;
 
     /**
      * Instantiates a new Time frame graph.
@@ -74,6 +81,23 @@ public class TimeFrameGraph extends BaseView {
 
     private void init() {
         mListZoneSpread = new ArrayList<TimeZoneSpread>();
+        this.postInvalidate();
+    }
+
+    float fullWidth;
+    float left, top;
+    float height;
+    float right;
+    float bottom;
+    float mPartSize;
+    float minValue;
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (mListZoneSpread != null) {
+            chartValuePre(mListZoneSpread);
+        }
     }
 
     /**
@@ -82,57 +106,33 @@ public class TimeFrameGraph extends BaseView {
      * @param mListZoneSpread the m list zone spread
      */
     public void chartValuePre(List<TimeZoneSpread> mListZoneSpread) {
+        position = 0;
         this.mListZoneSpread = mListZoneSpread;
-    }
+        graphDataList = new ArrayList<>();
 
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        this.mCanvas = canvas;
-        float fullWidth = canvas.getWidth();
-        float height = scaleFactor * GraphUtils.HEIGHT_BAR;
+        fullWidth = getWidth();
+        height = scaleFactor * GraphUtils.HEIGHT_BAR;
 
         //first bar
-        float left = 0, top = 0; // basically (X1, Y1)
+        left = 0;
+        top = 0; // basically (X1, Y1)
 
-        float right = fullWidth; // width (distance from X1 to X2)
-        float bottom = top + height; // height (distance from Y1 to Y2)
+        right = fullWidth; // width (distance from X1 to X2)
+        bottom = top + height; // height (distance from Y1 to Y2)
 
         mStartPoint = 0;
         mMiddlePoint = (fullWidth / 2);
 
-        RectF myRectum = new RectF(left, top, right, bottom);
-        mCanvas.drawRect(myRectum, linePaint);
-
-        //todraw text from height
-        float heightDraw = bottom + (GraphUtils.MARGIN_TOP * scaleFactor);
-
-        Bitmap moonBitmap = drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon));
-        float bitmapWidth = moonBitmap.getWidth() / 2;
-        //draw graphics of sun and moon
-        mCanvas.drawBitmap(moonBitmap, mStartPoint - (5 * scaleFactor), bottom + (5 * scaleFactor), null);
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint - bitmapWidth, bottom + (5 * scaleFactor), null);
-
         float spreadtime = fullWidth;
 
-        float mPartSize = spreadtime / mNoParts;
+        mPartSize = spreadtime / NO_PARTS;
 
-        float minValue = mPartSize / mMinPerParts;
+        minValue = mPartSize / MIN_PER_PARTS;
 
-        float textPoint = (mMiddlePoint / 2) / 2;
-        mCanvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw + scaleFactor, getFontStyle());
-        float textPoint2 = textPoint * 2 + ((textPoint / 2));
-        mCanvas.drawText(mContext.getString(R.string.eight_hours), textPoint2, heightDraw + scaleFactor, getFontStyle());
-        float textPoint3 = textPoint * 5;
-        mCanvas.drawText(mContext.getString(R.string.sixteen_hours), textPoint3 - bitmapWidth, heightDraw + scaleFactor, getFontStyle());
-        float textPoint4 = textPoint * 6 + ((textPoint / 2));
-        mCanvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4 - bitmapWidth, heightDraw + scaleFactor, getFontStyle());
-        float textPoint5 = textPoint * 7 + ((textPoint / 2));
-        mCanvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5, bottom + (5 * scaleFactor), null);
 
         if (mListZoneSpread != null && mListZoneSpread.size() > 0) {
-            float currentStartPos = 0;
-            float currentEndPos;
-
+            currentStartPos = 0;
+            currentEndPos = 0;
             for (int i = 0; i < (mListZoneSpread.size() - 1); i++) {
                 Paint mZonePaint = new Paint();
                 mZonePaint.setStrokeWidth(1);
@@ -147,9 +147,81 @@ public class TimeFrameGraph extends BaseView {
                 }
                 currentEndPos = (minValue * mListZoneSpread.get(i).getUsedValue()) + currentStartPos;
                 mZonePaint.setColor(mListZoneSpread.get(i).getColor());
-                mCanvas.drawRect(currentStartPos, top, currentEndPos, bottom, mZonePaint);
+
+                GraphData newGraphData = new GraphData(currentStartPos, currentEndPos, mZonePaint);
+                /*graphDataList.add(newGraphData);*/
+                udpateGraphData(newGraphData, i);
+                startAnimation();
             }
         }
 
+    }
+
+    private int position;
+
+    private void udpateGraphData(GraphData mGraphdata, int pos) {
+        GraphData currentGraphData = mGraphdata;
+        if (graphDataList.size() > 0) {
+            GraphData previousGraphData = graphDataList.get(position - 1);
+            if (currentGraphData.getPaint().getColor() == GraphUtils.COLOR_PINK && previousGraphData.getPaint().getColor() == GraphUtils.COLOR_PINK) {
+                previousGraphData.setEndPoint(currentGraphData.getEndPoint());
+            } else {
+                graphDataList.add(currentGraphData);
+                position++;
+            }
+        } else {
+            graphDataList.add(currentGraphData);
+            position++;
+        }
+
+    }
+
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+
+        RectF myRectum = new RectF(left, top, right, bottom);
+        canvas.drawRect(myRectum, linePaint);
+
+        //todraw text from height
+        float heightDraw = bottom + (GraphUtils.MARGIN_TOP * scaleFactor);
+
+        Bitmap moonBitmap = drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon));
+        float bitmapWidth = moonBitmap.getWidth() / 2;
+        //draw graphics of sun and moon
+        canvas.drawBitmap(moonBitmap, mStartPoint - (5 * scaleFactor), bottom + (5 * scaleFactor), null);
+        canvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icn_sun)), mMiddlePoint - bitmapWidth, bottom + (5 * scaleFactor), null);
+
+        float textPoint = (mMiddlePoint / 2) / 2;
+        canvas.drawText(mContext.getString(R.string.four_hours), textPoint, heightDraw + scaleFactor, getFontStyle());
+        float textPoint2 = textPoint * 2 + ((textPoint / 2));
+        canvas.drawText(mContext.getString(R.string.eight_hours), textPoint2, heightDraw + scaleFactor, getFontStyle());
+        float textPoint3 = textPoint * 5;
+        canvas.drawText(mContext.getString(R.string.sixteen_hours), textPoint3 - bitmapWidth, heightDraw + scaleFactor, getFontStyle());
+        float textPoint4 = textPoint * 6 + ((textPoint / 2));
+        canvas.drawText(mContext.getString(R.string.twenty_hours), textPoint4 - bitmapWidth, heightDraw + scaleFactor, getFontStyle());
+        float textPoint5 = textPoint * 7 + ((textPoint / 2));
+        canvas.drawBitmap(drawableToBitmap(ContextCompat.getDrawable(mContext, R.drawable.icon_moon)), textPoint5, bottom + (5 * scaleFactor), null);
+
+
+        for (GraphData graphData : graphDataList) {
+            graphData.draw(canvas, top, bottom, endPoint);
+        }
+    }
+
+
+    public void startAnimation() {
+        Animator anim = ObjectAnimator.ofFloat(this, "endPoint", 0, 1);
+        anim.setDuration(animationDuration);
+        anim.start();
+    }
+
+    /**
+     * do not remove this method, endPoint's ObjectAnimator is using this
+     */
+    public void setEndPoint(float endPoint) {
+        this.endPoint = endPoint;
+        isCanvasInvalidated = true;
+        invalidate();
     }
 }
