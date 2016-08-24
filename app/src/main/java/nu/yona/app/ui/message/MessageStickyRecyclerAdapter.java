@@ -70,31 +70,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
             } else {
                 holder.swipeLayout.setRightSwipeEnabled(false);
             }
-            if (yonaObject.getEmbedded() != null) {
-                StringBuilder strBuilder = new StringBuilder();
-                if (yonaObject.getEmbedded().getYonaUser() != null) {
-                    if (!TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getFirstName())) {
-                        strBuilder.append(yonaObject.getEmbedded().getYonaUser().getFirstName());
-                    }
-                    if (!TextUtils.isEmpty(yonaObject.getEmbedded().getYonaUser().getLastName())) {
-                        strBuilder.append(" ");
-                        strBuilder.append(yonaObject.getEmbedded().getYonaUser().getLastName());
-                    }
-                    holder.txtFooterMsg.setText(strBuilder.toString());
-                    if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED) {
-                        holder.img_avtar.setImageResource(R.drawable.adult_sad);
-                    } else {
-                        if (strBuilder.toString().length() > 0) {
-                            holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(activity, strBuilder.toString().substring(0, 1).toUpperCase(),
-                                    ContextCompat.getColor(activity, R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
-                        }
-                    }
-                } else if (!TextUtils.isEmpty(yonaObject.getNickname())) {
-                    holder.txtFooterMsg.setText(yonaObject.getNickname());
-                    holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(activity, yonaObject.getNickname().toString().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(activity, R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
-                }
-            } else if (!TextUtils.isEmpty(yonaObject.getNickname())) {
+            if (!TextUtils.isEmpty(yonaObject.getNickname())) {
                 holder.txtFooterMsg.setText(yonaObject.getNickname());
                 if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED) {
                     holder.img_avtar.setImageResource(R.drawable.adult_sad);
