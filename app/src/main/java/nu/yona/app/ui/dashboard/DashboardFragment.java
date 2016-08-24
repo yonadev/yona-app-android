@@ -44,6 +44,8 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
     private String pageTitle;
+    private PerDayFragment perDayFragment;
+    private PerWeekFragment perWeekFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +79,19 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
         super.onResume();
         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_NOTIFICATION_COUNT, null);
         setTitleAndIcon();
+        if (viewPager != null) {
+            switch (viewPager.getCurrentItem()) {
+                case 1:
+                    perDayFragment.setIsInView(false);
+                    perWeekFragment.setIsInView(true);
+                    break;
+                case 0:
+                default:
+                    perDayFragment.setIsInView(true);
+                    perWeekFragment.setIsInView(false);
+                    break;
+            }
+        }
     }
 
     private void resetData() {
@@ -100,13 +115,35 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
     private void setupViewPager(ViewPager viewPager) {
         setTabs();
         adapter = new ViewPagerAdapter(getChildFragmentManager());
-        PerDayFragment perDayFragment = new PerDayFragment();
+        perDayFragment = new PerDayFragment();
         perDayFragment.setArguments(getArguments());
-        PerWeekFragment perWeekFragment = new PerWeekFragment();
+        perWeekFragment = new PerWeekFragment();
         perWeekFragment.setArguments(getArguments());
         adapter.addFragment(perDayFragment, getString(R.string.perday));
         adapter.addFragment(perWeekFragment, getString(R.string.perweek));
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    perDayFragment.setIsInView(false);
+                    perWeekFragment.setIsInView(true);
+                } else {
+                    perDayFragment.setIsInView(true);
+                    perWeekFragment.setIsInView(false);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void setTabs() {

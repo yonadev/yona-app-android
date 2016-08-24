@@ -17,7 +17,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import nu.yona.app.R;
 import nu.yona.app.enums.IntentEnum;
@@ -32,6 +31,8 @@ public class FriendsFragment extends BaseFragment {
     private final int TIMELINE = 0, OVERVIEW = 1;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private TimelineFragment timelineFragment;
+    private OverviewFragment overviewFragment;
 
     @Nullable
     @Override
@@ -55,9 +56,9 @@ public class FriendsFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        TimelineFragment timelineFragment = new TimelineFragment();
+        timelineFragment = new TimelineFragment();
         timelineFragment.setArguments(getArguments());
-        OverviewFragment overviewFragment = new OverviewFragment();
+        overviewFragment = new OverviewFragment();
         overviewFragment.setArguments(getArguments());
         adapter.addFragment(timelineFragment, getString(R.string.timeline));
         adapter.addFragment(overviewFragment, getString(R.string.overiview));
@@ -70,7 +71,13 @@ public class FriendsFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                showOptionsInSelectedTab(position);
+                if (position == 0) {
+                    timelineFragment.setIsInView(false);
+                    overviewFragment.setIsInView(true);
+                } else {
+                    timelineFragment.setIsInView(true);
+                    overviewFragment.setIsInView(false);
+                }
             }
 
             @Override
@@ -84,6 +91,19 @@ public class FriendsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setTitleAndIcon();
+        if (viewPager != null) {
+            switch (viewPager.getCurrentItem()) {
+                case 1:
+                    timelineFragment.setIsInView(false);
+                    overviewFragment.setIsInView(true);
+                    break;
+                case 0:
+                default:
+                    timelineFragment.setIsInView(true);
+                    overviewFragment.setIsInView(false);
+                    break;
+            }
+        }
     }
 
     private void setTitleAndIcon() {

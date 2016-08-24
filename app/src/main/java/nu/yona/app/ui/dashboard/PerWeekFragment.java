@@ -33,7 +33,6 @@ import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
-import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -51,6 +50,7 @@ public class PerWeekFragment extends BaseFragment {
     private boolean mIsLoading = false;
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
+    private boolean isCurrentTabInView;
 
     /**
      * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
@@ -154,6 +154,10 @@ public class PerWeekFragment extends BaseFragment {
         getWeekActivity(false);
     }
 
+    public void setIsInView(boolean isInView) {
+        isCurrentTabInView = isInView;
+    }
+
     /**
      * load more items
      */
@@ -166,12 +170,6 @@ public class PerWeekFragment extends BaseFragment {
      * to get the list of user's messages
      */
     private void getWeekActivity(boolean loadMore) {
-//        if (YonaActivity.getActivity().isToDisplayLogin()) {
-//            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
-//            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() != null) {
-//                return;
-//            }
-//        }
         final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
                 || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
@@ -179,7 +177,6 @@ public class PerWeekFragment extends BaseFragment {
             APIManager.getInstance().getActivityManager().getWeeksActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), mYonaHeaderTheme.getWeekActivityUrl(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
-                    YonaActivity.getActivity().showLoadingView(false, null);
                     showData();
                     mIsLoading = false;
                 }
@@ -200,7 +197,11 @@ public class PerWeekFragment extends BaseFragment {
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList() != null
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList().size() > 0) {
             perWeekStickyAdapter.notifyDataSetChange(setHeaderListView());
+            if (isCurrentTabInView) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+            }
         } else {
+            YonaActivity.getActivity().showLoadingView(false, null);
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
         }
     }

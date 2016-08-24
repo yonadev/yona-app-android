@@ -48,6 +48,7 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
     private List<YonaBuddy> mListBuddy;
     private OverViewAdapter mOverViewAdapter;
     private RecyclerView mFriendsRecyclerView;
+    private boolean isCurrentTabInView;
 
     @Nullable
     @Override
@@ -105,6 +106,10 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
         YonaApplication.getEventChangeManager().unRegisterListener(this);
     }
 
+    public void setIsInView(boolean isInView) {
+        isCurrentTabInView = isInView;
+    }
+
     /**
      * Get Buddies
      */
@@ -113,7 +118,6 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
         APIManager.getInstance().getBuddyManager().getBuddies(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
-                YonaActivity.getActivity().showLoadingView(false, null);
                 if (result instanceof YonaBuddies) {
                     YonaBuddies buddies = (YonaBuddies) result;
                     mListBuddy.clear();
@@ -121,6 +125,9 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
                         mListBuddy = buddies.getEmbedded().getYonaBuddies();
                         mOverViewAdapter.notifyDataSetChange(mListBuddy);
                     }
+                }
+                if(isCurrentTabInView) {
+                    YonaActivity.getActivity().showLoadingView(false, null);
                 }
             }
 
