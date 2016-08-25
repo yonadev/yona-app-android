@@ -101,6 +101,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     }
 
     private void getActivityCategories() {
+        YonaActivity.getActivity().showLoadingView(true, null);
         APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
