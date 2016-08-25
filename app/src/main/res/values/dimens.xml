@@ -78,7 +78,7 @@
     <dimen name="challenges_counter_height">16dp</dimen>
     <dimen name="tab_counter_padding_left">6dp</dimen>
     <dimen name="tab_challenges_image_padding">4dp</dimen>
-    <dimen name="tab_challenges_margin_top">28dp</dimen>
+    <dimen name="tab_challenges_margin_top">25dp</dimen>
     <dimen name="header_creation_height">81dp</dimen>
     <dimen name="img_padding">4dp</dimen>
     <dimen name="img_width">54dp</dimen>
