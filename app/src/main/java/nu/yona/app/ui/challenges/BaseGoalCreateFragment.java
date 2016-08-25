@@ -77,9 +77,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
         mGoalListView = (ListView) view.findViewById(R.id.goal_listview);
         mGoalCreationListView = (ListView) view.findViewById(R.id.new_goal_listview);
         List<YonaActivityCategories> goals = APIManager.getInstance().getChallengesManager().getListOfCategories();
-        if (goals != null && goals.size() > 0) {
-            categoryGoalListAdapter = new GoalCategoryListAdapter(YonaActivity.getActivity(), goals);
-        }
+        categoryGoalListAdapter = getCategoryGoalListAdapter();
         mGoalCreationListView.setAdapter(categoryGoalListAdapter);
         btnGoalAdd = (ImageButton) view.findViewById(R.id.img_add_goal);
         mDescTab = (YonaFontTextView) view.findViewById(R.id.txt_header_text);
@@ -93,6 +91,13 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
         updateCategoryView();
     }
 
+    private GoalCategoryListAdapter getCategoryGoalListAdapter() {
+        if (categoryGoalListAdapter == null) {
+            categoryGoalListAdapter = new GoalCategoryListAdapter(YonaActivity.getActivity(), APIManager.getInstance().getChallengesManager().getListOfCategories());
+        }
+        return categoryGoalListAdapter;
+    }
+
     /**
      * Update category view.
      */
@@ -103,9 +108,7 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
                 mGoalCreationListView.setVisibility(View.GONE);
                 mGoalListView.setVisibility(View.VISIBLE);
             } else {
-                if (categoryGoalListAdapter != null) {
-                    categoryGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfCategories());
-                }
+                getCategoryGoalListAdapter().notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfCategories());
                 if (mGoalCreationListView.getVisibility() == View.VISIBLE) {
                     btnGoalAdd.setVisibility(View.INVISIBLE);
                     mGoalListView.setVisibility(View.GONE);
