@@ -43,6 +43,15 @@ public class TimeBucketGraph extends BaseView {
     private List<Animator> animList;
     private List<Animator> viewAnimList;
 
+    private float height;
+    private float txtHeightMarginTop;
+    private int fullWidth;
+    private float xStartPoint;
+    private float yStartPoint;
+    private float xEndPoint;
+    private float yEndPoint;
+    private float txtHeight;
+
     /**
      * Instantiates a new Time bucket graph.
      *
@@ -50,6 +59,7 @@ public class TimeBucketGraph extends BaseView {
      */
     public TimeBucketGraph(Context context) {
         super(context);
+        this.postInvalidate();
     }
 
     /**
@@ -60,6 +70,7 @@ public class TimeBucketGraph extends BaseView {
      */
     public TimeBucketGraph(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.postInvalidate();
     }
 
     /**
@@ -71,6 +82,7 @@ public class TimeBucketGraph extends BaseView {
      */
     public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.postInvalidate();
     }
 
     /**
@@ -84,7 +96,14 @@ public class TimeBucketGraph extends BaseView {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        this.postInvalidate();
     }
+
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        graphArguments(mTotalActivityBeyondGoal, mTotalMinTarget, mTotalActivityDurationMin);
+    }
+
 
     /**
      * Graph arguments.
@@ -100,14 +119,10 @@ public class TimeBucketGraph extends BaseView {
 
         animList = new ArrayList<>();
         viewAnimList = new ArrayList<Animator>();
-    }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        int fullWidth = getWidth();
-        float height = scaleFactor * GraphUtils.HEIGHT_BAR;
-        float txtHeightMarginTop = scaleFactor * GraphUtils.MARGIN_TOP;
+        fullWidth = getWidth();
+        height = scaleFactor * GraphUtils.HEIGHT_BAR;
+        txtHeightMarginTop = scaleFactor * GraphUtils.MARGIN_TOP;
 
         //using mDifference to check wheather its beyond time or not
         mDifference = mTotalMinTarget - mTotalActivityDurationMin;
@@ -136,17 +151,27 @@ public class TimeBucketGraph extends BaseView {
         }
 
 
-        float xStartPoint = 0, yStartPoint = 0;
+        xStartPoint = 0;
+        yStartPoint = 0;
 
-        float xEndPoint = fullWidth;
-        float xGreenEndPoint = fullWidth + height;
-        float yEndPoint = yStartPoint + height;
+        xEndPoint = fullWidth;
+        yEndPoint = yStartPoint + height;
+        animEndPoint = 0;
+        greenEndPoint = 0;
+
+        startAnimation();
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
 
         //Drawing main Rectangle of Grey
         RectF myRectum = new RectF(xStartPoint, yStartPoint, xEndPoint, yEndPoint);
         canvas.drawRect(myRectum, linePaint);
 
-        float txtHeight = yEndPoint + txtHeightMarginTop;
+        txtHeight = yEndPoint + txtHeightMarginTop;
 
         canvas.drawText(String.valueOf((int) txtStartValue), xStartPoint, txtHeight, getFontStyle());
 
