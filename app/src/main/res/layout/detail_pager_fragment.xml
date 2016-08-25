@@ -59,7 +59,7 @@
 
             <nu.yona.app.customview.YonaFontTextView
                 android:id="@+id/date"
-                style="@style/Date"
+                style="@style/DateSixtyOpacity"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
