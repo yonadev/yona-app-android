@@ -342,6 +342,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         editor.clear();
                         editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
                         editor.commit();
+                        //delete database
+                        DatabaseHelper.getInstance(YonaActivity.this).deleteAllData();
+                        YonaApplication.getEventChangeManager().clearAll();
                         startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
                         dialogInterface.dismiss();
                         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
