@@ -29,8 +29,8 @@ public class PasscodeManagerImpl implements PasscodeManager {
     @Override
     public boolean validatePasscode(String passCode) {
         if (passCode.equalsIgnoreCase(getStoredPassCode())) {
-            updateWrongPasscodeCounter(0);
             counter = 0;
+            updateWrongPasscodeCounter(counter);
             return true;
         } else {
             updateWrongPasscodeCounter(counter++);
@@ -89,8 +89,8 @@ public class PasscodeManagerImpl implements PasscodeManager {
      * Reset the Passocde wrong counter once user has successfull log in
      */
     public void resetWrongCounter() {
-        updateWrongPasscodeCounter(0);
         counter = 0;
+        updateWrongPasscodeCounter(counter);
     }
 
     /**

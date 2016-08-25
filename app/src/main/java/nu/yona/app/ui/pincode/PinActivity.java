@@ -137,6 +137,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
                     pref.putLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, (new Date().getTime() + delayTime.second));
                     pref.putString(PreferenceConstant.USER_WAIT_TIME_IN_STRING, delayTime.first);
                     pref.commit();
+                    APIManager.getInstance().getPasscodeManager().resetWrongCounter();
                     loadOTPScreen();
                 }
             }
