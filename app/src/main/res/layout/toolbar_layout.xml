@@ -19,6 +19,7 @@
         android:layout_width="@dimen/dashboard_profile_icon"
         android:layout_height="@dimen/dashboard_profile_icon"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/five"
         android:background="@drawable/icn_avatar"
         android:scaleType="fitXY"
         android:transitionName="@string/profile_transition"
