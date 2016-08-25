@@ -9,7 +9,6 @@
 package nu.yona.app.ui.frinends;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -93,12 +92,6 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
                     int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
                     if (maxDurationAllow > 0) {
                         holder.getmTimebucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.getmTimebucketGraph().startAnimation();
-                            }
-                        }, 100);
                     }
                     updateProfileImage(holder, dayActivity);
                     break;
