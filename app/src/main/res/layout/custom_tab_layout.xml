@@ -46,6 +46,7 @@
         style="@style/TabTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/twelve"
         android:layout_marginTop="@dimen/thirteen"
         android:gravity="center_horizontal"
         android:textColor="@color/white" />
