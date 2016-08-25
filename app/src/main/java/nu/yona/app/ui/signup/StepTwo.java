@@ -46,6 +46,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     private TextInputLayout mobileNumberLayout, nickNameLayout;
     private SignupActivity activity;
     private AppBarLayout appbar;
+    private boolean isAdding;
 
     private final TextWatcher watcher = new TextWatcher() {
         @Override
@@ -55,12 +56,13 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            isAdding = count == 1 ? true : false;
             nickName.setError(null);
         }
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ')) {
+            if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ') && isAdding) {
                 nickName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
             }
         }

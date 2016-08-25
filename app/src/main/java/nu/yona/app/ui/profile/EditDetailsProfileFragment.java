@@ -65,6 +65,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     private String oldUserNumber;
     private RegisterUser user;
     private View.OnFocusChangeListener onFocusChangeListener;
+    private boolean isAdding;
 
     @Nullable
     @Override
@@ -101,12 +102,13 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                isAdding = count == 1 ? true : false;
                 hideErrorMessages();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ')) {
+                if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ') && isAdding) {
                     firstName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                     lastName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                     nickName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
