@@ -147,7 +147,7 @@ public class Foreground implements Application.ActivityLifecycleCallbacks {
                     inForeground = true;
                 }
             }
-        }, AppConstant.TIMER_DELAY_TWO_SEC);
+        }, AppConstant.TIMER_DELAY);
     }
 }
 

@@ -199,9 +199,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList() != null
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList().size() > 0) {
             mDayTimelineStickyAdapter.notifyDataSetChange(setHeaderListView());
-            if (isCurrentTabInView) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-            }
+            YonaActivity.getActivity().showLoadingView(false, null);
         } else {
             YonaActivity.getActivity().showLoadingView(false, null);
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));

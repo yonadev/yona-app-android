@@ -55,7 +55,7 @@
 
                     <nu.yona.app.customview.YonaFontNumberTextView
                         android:id="@+id/mobile_number"
-                        style="@style/InputLabel"
+                        style="@style/InputTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:digits="1234567890 "
@@ -76,7 +76,7 @@
 
                     <nu.yona.app.customview.YonaFontEditTextView
                         android:id="@+id/passcode"
-                        style="@style/InputLabel"
+                        style="@style/InputTxt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableRight="@drawable/icn_name"
