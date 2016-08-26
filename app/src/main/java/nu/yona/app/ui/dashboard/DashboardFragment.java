@@ -175,7 +175,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
                             rightIconProfile.setImageDrawable(TextDrawable.builder()
                                     .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
                                     .buildRound(YonaActivity.getActivity(), yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
-                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue), YonaActivity.getActivity().getResources().getInteger(R.integer.profile_icon_circle_font_size)));
+                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
                             profileClickEvent(rightIconProfile);
                         } else {
                             leftIcon.setVisibility(View.VISIBLE);

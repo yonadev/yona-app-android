@@ -126,9 +126,7 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
                         mOverViewAdapter.notifyDataSetChange(mListBuddy);
                     }
                 }
-                if(isCurrentTabInView) {
-                    YonaActivity.getActivity().showLoadingView(false, null);
-                }
+                YonaActivity.getActivity().showLoadingView(false, null);
             }
 
             @Override

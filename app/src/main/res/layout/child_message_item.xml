@@ -42,7 +42,7 @@
         style="@style/FooterTitleNoOpacity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/child_msg_buddy_msg_margin_top" />
+        android:layout_marginTop="@dimen/twelve" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/txtChildBuddyReply"
@@ -50,5 +50,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/child_msg_buddy_reply_margin_top"
-        android:text="@string/reply"/>
+        android:text="@string/reply" />
 </LinearLayout>
