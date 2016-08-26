@@ -123,6 +123,8 @@ public class EventChangeManager {
 
     public static final int EVENT_RESUME_OTP_VIEW = 28;
 
+    public static final int EVENT_KEY_BACK_PRESSED = 29;
+
     private final Set<EventChangeListener> listeners = new HashSet<>();
 
     private DataState dataState;
