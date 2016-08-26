@@ -194,4 +194,5 @@
     <string name="timer_wait_title">Je moet even wachten</string>
     <string name="timer_wait_desc">Om veiligheidsredenen is je account geblokkeerd. Activeren kan %1$s nadat je een nieuwe PIN code hebt aangevraagd.</string>
     <string name="choose_number">Choose Number of %1$s</string>
+    <string name="message_delete">verwijder</string>
 </resources>

@@ -10,6 +10,7 @@
     <dimen name="three">3dp</dimen>
     <dimen name="four">4dp</dimen>
     <dimen name="five">5dp</dimen>
+    <dimen name="six">6dp</dimen>
     <dimen name="nine">9dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="eleven">11dp</dimen>
@@ -20,6 +21,7 @@
     <dimen name="sixteen">16dp</dimen>
     <dimen name="ninteen">19dp</dimen>
     <dimen name="twenty">20dp</dimen>
+    <dimen name="twenty_two">22dp</dimen>
     <dimen name="twenty_three">23dp</dimen>
     <dimen name="twenty_four">24dp</dimen>
     <dimen name="twenty_five">25dp</dimen>
@@ -140,6 +142,7 @@
     <dimen name="message_item_height">88dp</dimen>
     <dimen name="user_avatar_padding">16dp</dimen>
     <dimen name="img_badges_padding_top_bottom">24dp</dimen>
+    <dimen name="img_delete_botom_margin">17dp</dimen>
     <dimen name="message_header">55dp</dimen>
 
 
