@@ -12,7 +12,14 @@ package nu.yona.app.customview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
+import android.view.inputmethod.InputConnectionWrapper;
 import android.widget.EditText;
+
+import nu.yona.app.YonaApplication;
+import nu.yona.app.state.EventChangeManager;
 
 /**
  * Created by kinnarvasa on 19/07/16.
@@ -74,5 +81,28 @@ public class YonaFontNumberTextView extends EditText {
      */
     public void setNotEditableLength(int etLength) {
         this.lenghtBlock = etLength;
+    }
+
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+        return new YonaInputConnection(super.onCreateInputConnection(outAttrs),
+                true);
+    }
+
+    private class YonaInputConnection extends InputConnectionWrapper {
+
+        public YonaInputConnection(InputConnection target, boolean mutable) {
+            super(target, mutable);
+        }
+
+        @Override
+        public boolean sendKeyEvent(KeyEvent event) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN
+                    && event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
+                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_KEY_BACK_PRESSED, null);
+            }
+            return super.sendKeyEvent(event);
+        }
+
     }
 }

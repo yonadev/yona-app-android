@@ -11,6 +11,7 @@ package nu.yona.app.ui.pincode;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -33,31 +34,6 @@ import nu.yona.app.utils.AppConstant;
 public class PasscodeFragment extends BaseFragment implements EventChangeListener {
 
     private YonaFontNumberTextView passcode1, passcode2, passcode3, passcode4;
-    private final View.OnKeyListener keyListener = new View.OnKeyListener() {
-        @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-            //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
-            if (keyCode == KeyEvent.KEYCODE_DEL) {
-                if (v.getId() == R.id.passcode4) {
-                    if (passcode4.getText().length() == 0) {
-                        setFocus(passcode4, passcode3);
-                        passcode3.getText().clear();
-                    }
-                } else if (v.getId() == R.id.passcode3) {
-                    if (passcode3.getText().length() == 0) {
-                        setFocus(passcode3, passcode2);
-                        passcode2.getText().clear();
-                    }
-                } else if (v.getId() == R.id.passcode2) {
-                    if (passcode2.getText().length() == 0) {
-                        setFocus(passcode2, passcode1);
-                        passcode1.getText().clear();
-                    }
-                }
-            }
-            return false;
-        }
-    };
     private PasscodeManagerImpl passcodeManagerImpl;
     private YonaPasswordTransformationManager yonaPasswordTransformationManager;
     private FieldTextWatcher watcher;
@@ -101,13 +77,12 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
         passcode2.setBackgroundResource(backgroundDrawable);
         passcode3.setBackgroundResource(backgroundDrawable);
         passcode4.setBackgroundResource(backgroundDrawable);
-        ((BaseActivity) getActivity()).showKeyboard(passcode1);
     }
 
     private YonaFontNumberTextView getLayout(View view, int id) {
         YonaFontNumberTextView textView = (YonaFontNumberTextView) view.findViewById(id);
         textView.setTransformationMethod(yonaPasswordTransformationManager);
-        textView.setOnKeyListener(keyListener);
+//        textView.setOnKeyListener(keyListener);
         textView.addTextChangedListener(watcher);
         return textView;
     }
@@ -141,8 +116,36 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             case EventChangeManager.EVENT_PASSCODE_ERROR:
                 resetDigit();
                 break;
+            case EventChangeManager.EVENT_KEY_BACK_PRESSED:
+                clearLastDigit();
             default:
                 break;
+        }
+    }
+
+    private void clearLastDigit() {
+        if (!TextUtils.isEmpty(passcode4.getText().toString())) {
+            passcode4.getText().clear();
+            passcode4.setFocusableInTouchMode(false);
+            passcode3.requestFocus();
+        } else if (!TextUtils.isEmpty(passcode3.getText().toString())) {
+            passcode3.getText().clear();
+            passcode4.setFocusableInTouchMode(false);
+            passcode3.setFocusableInTouchMode(false);
+            passcode2.requestFocus();
+        } else if (!TextUtils.isEmpty(passcode2.getText().toString())) {
+            passcode2.getText().clear();
+            passcode4.setFocusableInTouchMode(false);
+            passcode3.setFocusableInTouchMode(false);
+            passcode2.setFocusableInTouchMode(false);
+            passcode1.requestFocus();
+        } else if (!TextUtils.isEmpty(passcode1.getText().toString())) {
+            passcode1.getText().clear();
+            passcode4.setFocusableInTouchMode(false);
+            passcode3.setFocusableInTouchMode(false);
+            passcode2.setFocusableInTouchMode(false);
+            passcode1.setFocusableInTouchMode(true);
+            passcode1.requestFocus();
         }
     }
 

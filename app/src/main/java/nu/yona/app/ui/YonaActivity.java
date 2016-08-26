@@ -335,24 +335,29 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     public void showError(ErrorMessage errorMessage) {
         if (!isFinishing()) {
             if (errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND) && this != null) {
-                CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        SharedPreferences.Editor editor = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
-                        editor.clear();
-                        editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
-                        editor.commit();
-                        //delete database
-                        DatabaseHelper.getInstance(YonaActivity.this).deleteAllData();
-                        YonaApplication.getEventChangeManager().clearAll();
-                        startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
-                        dialogInterface.dismiss();
-                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
-                    }
-                });
+                try {
+                    CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            SharedPreferences.Editor editor = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+                            editor.clear();
+                            editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
+                            editor.commit();
+                            //delete database
+                            DatabaseHelper.getInstance(YonaActivity.this).deleteAllData();
+                            YonaApplication.getEventChangeManager().clearAll();
+                            startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
+                            dialogInterface.dismiss();
+                            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e(YonaActivity.class.getSimpleName(), e.getMessage());
+                }
             } else {
                 Snackbar.make(findViewById(android.R.id.content), errorMessage.getMessage(), Snackbar.LENGTH_LONG).show();
             }
+
         }
     }
 
