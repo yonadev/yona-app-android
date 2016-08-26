@@ -11,6 +11,7 @@ package nu.yona.app.ui.message;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import nu.yona.app.R;
@@ -45,7 +46,7 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
     /**
      * The Delete msg.
      */
-    public ImageView deleteMsg;
+    public LinearLayout deleteMsg;
     /**
      * The Message container.
      */
@@ -63,7 +64,7 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
         this.onFriendsItemClickListener = itemClickListener;
         swipeLayout = (com.daimajia.swipe.SwipeLayout) itemView.findViewById(R.id.swipe_layout);
         messageContainer = (RelativeLayout) itemView.findViewById(R.id.messageContainer);
-        deleteMsg = (ImageView) itemView.findViewById(R.id.swipe_delete_goal);
+        deleteMsg = (LinearLayout) itemView.findViewById(R.id.swipe_delete_goal);
         img_avtar = (ImageView) itemView.findViewById(R.id.img_user_icon);
         img_status = (ImageView) itemView.findViewById(R.id.img_status);
         txtTitleMsg = (YonaFontTextView) itemView.findViewById(R.id.txt_title);

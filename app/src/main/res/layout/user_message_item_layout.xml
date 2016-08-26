@@ -15,13 +15,27 @@
     swipe:rightEdgeSwipeOffset="0dp">
 
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/swipe_delete_goal"
         android:layout_width="@dimen/message_item_height"
         android:layout_height="@dimen/message_item_height"
         android:background="@color/darkish_pink"
-        android:padding="@dimen/img_badges_padding_top_bottom"
-        android:src="@drawable/icn_trash" />
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="@dimen/twenty_four"
+            android:layout_height="@dimen/twenty_four"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/twenty_two"
+            android:src="@drawable/icn_trash"/>
+        <TextView
+            android:layout_width="@dimen/message_item_height"
+            android:layout_height="@dimen/ninteen"
+            android:layout_marginTop="@dimen/six"
+            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:text="@string/message_delete" />
+    </LinearLayout>
+
 
 
     <RelativeLayout
