@@ -48,7 +48,6 @@ import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.ui.dashboard.CustomPageAdapter;
 import nu.yona.app.utils.AppConstant;
-import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by kinnarvasa on 13/06/16.
@@ -264,23 +263,21 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
             rightIcon.setVisibility(View.GONE);
             rightIconProfile.setVisibility(View.VISIBLE);
             if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName())) {
-                rightIconProfile.setImageDrawable(TextDrawable.builder()
-                        .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                        .buildRound(YonaActivity.getActivity(), yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
-                                ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
+                profileIconTxt.setVisibility(View.VISIBLE);
+                profileIconTxt.setText(yonaBuddy.getNickname().substring(0, 1).toUpperCase());
+                profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
             }
-            profileClickEvent(rightIconProfile);
+            profileClickEvent(profileIconTxt);
 
         } else {
             leftIcon.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
             if (mYonaHeaderTheme.isBuddyFlow()) {
                 rightIconProfile.setVisibility(View.VISIBLE);
-                rightIconProfile.setImageDrawable(TextDrawable.builder()
-                        .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                        .buildRound(YonaActivity.getActivity(), YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
-                                ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
-                profileClickEvent(rightIconProfile);
+                profileIconTxt.setVisibility(View.VISIBLE);
+                profileIconTxt.setText(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname().substring(0, 1).toUpperCase());
+                profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
+                profileClickEvent(profileIconTxt);
             }
         }
         toolbarTitle.setText(mYonaHeaderTheme.getHeader_title());

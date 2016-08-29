@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -42,6 +43,7 @@ import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontNumberTextView;
+import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
@@ -66,6 +68,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     private RegisterUser user;
     private View.OnFocusChangeListener onFocusChangeListener;
     private boolean isAdding;
+    private YonaFontTextView profileImageTxt;
 
     @Nullable
     @Override
@@ -196,6 +199,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
+        profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileIcon);
         updateProfileImage = (ImageView) view.findViewById(R.id.updateProfileImage);
         //TODO following 2 lines are disable until server implements Image upload feature.
 //        profileImage.setOnClickListener(listener);
@@ -243,8 +247,10 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     }
 
     private void profileViewMode() {
-        profileImage.setImageDrawable(getImage(null, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
-
+//        profileImage.setImageDrawable(getImage(null, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
+        profileImageTxt.setVisibility(View.VISIBLE);
+        profileImageTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round));
+        profileImageTxt.setText(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1) + YonaApplication.getEventChangeManager().getDataState().getUser().getLastName().substring(0, 1));
         firstName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName());
         lastName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getLastName());
         nickName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getNickname());

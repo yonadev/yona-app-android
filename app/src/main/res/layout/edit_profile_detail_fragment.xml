@@ -52,11 +52,24 @@
                     android:layout_height="@dimen/edit_profile_detail_top_layout_height"
                     android:background="@color/grape">
 
+                    <nu.yona.app.customview.YonaFontTextView
+                        android:id="@+id/profileIcon"
+                        style="@style/editProfileTxt"
+                        android:layout_width="@dimen/profile_image_size"
+                        android:layout_height="@dimen/profile_image_size"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="@dimen/nine"
+                        android:background="@drawable/bg_small_self_round"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:visibility="visible" />
+
                     <ImageView
                         android:id="@+id/profileImage"
                         android:layout_width="@dimen/profile_image_size"
                         android:layout_height="@dimen/profile_image_size"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
 
                     <ImageView
                         android:id="@+id/updateProfileImage"

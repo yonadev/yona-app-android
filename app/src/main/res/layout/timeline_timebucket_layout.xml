@@ -6,27 +6,38 @@
   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bg_gradient_one"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingLeft="@dimen/timeline_list_paddingLeft"
     android:paddingRight="@dimen/timeline_list_paddingRight">
 
+
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/profileTextIcon"
+        style="@style/MsgIconText"
+        android:layout_width="@dimen/timeline_user_icon_width"
+        android:layout_height="@dimen/timeline_user_icon_width"
+        android:layout_below="@id/horizontalline"
+        android:layout_gravity="center_horizontal|top"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:visibility="visible" />
 
     <ImageView
         android:id="@+id/img_user_icon"
         android:layout_width="@dimen/timeline_user_icon_width"
         android:layout_height="@dimen/timeline_user_icon_height"
-        android:contentDescription="@string/empty_description" />
+        android:contentDescription="@string/empty_description"
+        android:visibility="gone" />
 
     <include
         layout="@layout/timebucket_graph_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/seventy_three"
         android:layout_marginLeft="@dimen/timeline_graph_container_margin_left"
-        android:layout_marginTop="@dimen/timeline_grpah_margin_top"
-        android:layout_toRightOf="@id/img_user_icon" />
+        android:layout_marginTop="@dimen/timeline_grpah_margin_top" />
 
-</RelativeLayout>
+</LinearLayout>

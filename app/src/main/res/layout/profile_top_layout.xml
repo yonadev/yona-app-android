@@ -13,15 +13,28 @@
     android:orientation="vertical"
     app:layout_scrollFlags="scroll|enterAlways">
 
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/profileIcon"
+        style="@style/SplashTxt"
+        android:layout_width="@dimen/eighty_three"
+        android:layout_height="@dimen/eighty_three"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/nine"
+        android:background="@drawable/bg_small_self_round"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:visibility="visible" />
+
     <ImageView
         android:id="@+id/profileImage"
-        android:layout_width="@dimen/ninty"
-        android:layout_height="@dimen/ninty"
+        android:layout_width="@dimen/eighty_three"
+        android:layout_height="@dimen/eighty_three"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/nine"
         android:background="@drawable/profile_selector"
         android:gravity="center_horizontal"
-        android:transitionName="@string/profile_transition" />
+        android:transitionName="@string/profile_transition"
+        android:visibility="gone" />
 
     <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/name"

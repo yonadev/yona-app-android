@@ -31,6 +31,7 @@ public class TimelineHolder extends RecyclerView.ViewHolder {
     private ImageView mNogoImage;
     private YonaFontTextView mTxtNogo;
     private YonaFontTextView mTxtNogoTime;
+    private YonaFontTextView profileImageTxt;
     private View view;
 
     public TimelineHolder(View itemView, View.OnClickListener listener, ChartTypeEnum chartTypeEnum) {
@@ -67,12 +68,14 @@ public class TimelineHolder extends RecyclerView.ViewHolder {
     private void initTimeBucketControlView() {
         mTimebucketGraph = (TimeBucketGraph) view.findViewById(R.id.timeBucketGraph);
         mUserIcon = (ImageView) view.findViewById(R.id.img_user_icon);
+        profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileTextIcon);
 
     }
 
     private void initTimeFrameControlView() {
         mTimeFrameGraph = (TimeFrameGraph) view.findViewById(R.id.timeFrameControl);
         mUserIcon = (ImageView) view.findViewById(R.id.img_user_icon);
+        profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileTextIcon);
     }
 
 
@@ -148,4 +151,11 @@ public class TimelineHolder extends RecyclerView.ViewHolder {
         this.view = view;
     }
 
+    public YonaFontTextView getProfileImageTxt() {
+        return this.profileImageTxt;
+    }
+
+    public void setProfileImageTxt(YonaFontTextView profileImageTxt) {
+        this.profileImageTxt = profileImageTxt;
+    }
 }

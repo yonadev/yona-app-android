@@ -25,7 +25,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
-import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by kinnarvasa on 10/05/16.
@@ -54,16 +53,8 @@ public class BaseProfileFragment extends BaseFragment {
             drawable.setCornerRadius(Math.max(bitmap.getWidth(), bitmap.getHeight()));
             drawable.setAlpha(ALPHA);
             return drawable;
-        } else {
-            TextDrawable image = TextDrawable.builder().beginConfig().withBorder(AppConstant.PROFILE_IMAGE_BORDER_SIZE)
-                    .textColor(Color.WHITE).endConfig()
-                    .buildRound(YonaActivity.getActivity(), getName(firstName, lastName),
-                            ContextCompat.getColor(YonaActivity.getActivity(), backgroundColor), YonaApplication.getAppContext().getResources().getInteger(R.integer.profile_circle_font_size));
-            if (withAlpha) {
-                image.setAlpha(ALPHA);
-            }
-            return image;
         }
+        return null;
     }
 
     private String getName(String firstName, String lastName) {

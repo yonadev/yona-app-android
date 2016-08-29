@@ -50,8 +50,9 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
     /**
      * The Message container.
      */
-    public RelativeLayout messageContainer;
+    public LinearLayout messageContainer;
     private OnFriendsItemClickListener onFriendsItemClickListener;
+    public YonaFontTextView profileIconTxt;
 
     /**
      * Instantiates a new Message item view holder.
@@ -63,9 +64,10 @@ public class MessageItemViewHolder extends RecyclerView.ViewHolder implements Vi
         super(itemView);
         this.onFriendsItemClickListener = itemClickListener;
         swipeLayout = (com.daimajia.swipe.SwipeLayout) itemView.findViewById(R.id.swipe_layout);
-        messageContainer = (RelativeLayout) itemView.findViewById(R.id.messageContainer);
+        messageContainer = (LinearLayout) itemView.findViewById(R.id.messageContainer);
         deleteMsg = (LinearLayout) itemView.findViewById(R.id.swipe_delete_goal);
         img_avtar = (ImageView) itemView.findViewById(R.id.img_user_icon);
+        profileIconTxt = (YonaFontTextView) itemView.findViewById(R.id.profileTextIcon);
         img_status = (ImageView) itemView.findViewById(R.id.img_status);
         txtTitleMsg = (YonaFontTextView) itemView.findViewById(R.id.txt_title);
         txtFooterMsg = (YonaFontTextView) itemView.findViewById(R.id.txt_footer);

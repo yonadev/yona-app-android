@@ -69,6 +69,28 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="editProfileTxt">
+        <item name="android:textSize">36sp</item>
+        <item name="textStyle">@integer/roboto_light</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name ="ProfileIconTextParent">
+        <item name="android:textSize">12sp</item>
+        <item name="textStyle">@integer/roboto_light</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="profileIconText" parent="ProfileIconTextParent"/>
+
+    <style name ="MsgTextParent">
+        <item name="android:textSize">18sp</item>
+        <item name="textStyle">@integer/roboto_light</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="MsgIconText" parent="MsgTextParent"/>
+
     <style name="ChallengeTitle">
         <item name="android:textSize">16sp</item>
         <item name="textStyle">@integer/roboto_bold</item>

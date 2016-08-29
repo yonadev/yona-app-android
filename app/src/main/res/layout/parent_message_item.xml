@@ -21,6 +21,20 @@
         android:layout_marginLeft="@dimen/parent_msg_horizontal_line_padding_left"
         android:background="@color/white_three" />
 
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/profileTextIcon"
+        style="@style/MsgIconText"
+        android:layout_width="@dimen/img_width"
+        android:layout_height="@dimen/img_width"
+        android:layout_below="@id/horizontalline"
+        android:layout_gravity="center"
+        android:layout_marginRight="@dimen/parent_msg_img_margin_right"
+        android:layout_marginTop="@dimen/parent_msg_img_margin_top"
+        android:background="@drawable/bg_small_self_round"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/imgParentBuddyIcon"
         android:layout_width="@dimen/img_width"
@@ -29,7 +43,8 @@
         android:layout_marginRight="@dimen/parent_msg_img_margin_right"
         android:layout_marginTop="@dimen/parent_msg_img_margin_top"
         android:scaleType="fitXY"
-        android:src="@drawable/icn_avatar" />
+        android:src="@drawable/icn_avatar"
+        android:visibility="gone" />
 
 
     <LinearLayout

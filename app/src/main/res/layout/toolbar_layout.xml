@@ -26,6 +26,19 @@
         android:visibility="gone" />
 
     <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/leftIconTxt"
+        style="@style/profileIconText"
+        android:layout_width="@dimen/dashboard_profile_icon"
+        android:layout_height="@dimen/dashboard_profile_icon"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/five"
+        android:gravity="center"
+        android:scaleType="fitXY"
+        android:textColor="@color/white"
+        android:transitionName="@string/profile_transition"
+        android:visibility="gone" />
+
+    <nu.yona.app.customview.YonaFontTextView
         android:id="@+id/toolbar_title"
         style="@style/NavTitle"
         android:layout_width="0dp"
@@ -69,4 +82,15 @@
         android:transitionName="@string/profile_transition"
         android:visibility="gone" />
 
+    <nu.yona.app.customview.YonaFontTextView
+        android:id="@+id/profileToolbarIcon"
+        style="@style/profileIconText"
+        android:layout_width="@dimen/dashboard_profile_icon"
+        android:layout_height="@dimen/dashboard_profile_icon"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/five"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:transitionName="@string/profile_transition"
+        android:visibility="gone" />
 </LinearLayout>

@@ -11,6 +11,7 @@ package nu.yona.app.ui.comment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.customview.YonaFontTextView;
@@ -32,6 +33,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
     private YonaFontTextView txtChildBuddyMsg;
     private YonaFontTextView txtParentCommentReplay;
     private YonaFontTextView txtChildCommentReplay;
+    private YonaFontTextView profileImageTxt;
     private View.OnClickListener clickListener;
 
     public CommentHolder(View itemView, View.OnClickListener listener, int id) {
@@ -57,6 +59,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
         parentCommentLayout = view.findViewById(R.id.parentCommentLayout);
         lineTop = view.findViewById(R.id.horizontalline);
         imgParentBuddyIcon = (ImageView) view.findViewById(R.id.imgParentBuddyIcon);
+        profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileTextIcon);
         txtParentBuddyName = (YonaFontTextView) view.findViewById(R.id.txtBuddyName);
         txtParentBuddyMsg = (YonaFontTextView) view.findViewById(R.id.txtBuddyMessage);
         txtParentCommentReplay = (YonaFontTextView) view.findViewById(R.id.txtBuddyReply);
@@ -137,5 +140,13 @@ public class CommentHolder extends RecyclerView.ViewHolder {
 
     public void setLineTop(View lineTop) {
         this.lineTop = lineTop;
+    }
+
+    public YonaFontTextView getProfileImageTxt() {
+        return this.profileImageTxt;
+    }
+
+    public void setProfileImageTxt(YonaFontTextView profileImageTxt) {
+        this.profileImageTxt = profileImageTxt;
     }
 }

@@ -50,7 +50,6 @@ public class PerWeekFragment extends BaseFragment {
     private boolean mIsLoading = false;
     private YonaHeaderTheme mYonaHeaderTheme;
     private YonaBuddy yonaBuddy;
-    private boolean isCurrentTabInView;
 
     /**
      * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
@@ -155,7 +154,6 @@ public class PerWeekFragment extends BaseFragment {
     }
 
     public void setIsInView(boolean isInView) {
-        isCurrentTabInView = isInView;
     }
 
     /**
@@ -197,9 +195,7 @@ public class PerWeekFragment extends BaseFragment {
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList() != null
                 && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList().size() > 0) {
             perWeekStickyAdapter.notifyDataSetChange(setHeaderListView());
-            if (isCurrentTabInView) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-            }
+            YonaActivity.getActivity().showLoadingView(false, null);
         } else {
             YonaActivity.getActivity().showLoadingView(false, null);
             YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));

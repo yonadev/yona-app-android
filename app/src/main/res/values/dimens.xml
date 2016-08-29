@@ -40,6 +40,7 @@
     <dimen name="seventy">70dp</dimen>
     <dimen name="seven">7dp</dimen>
     <dimen name="seventy_three">73dp</dimen>
+    <dimen name="eighty_three">83dp</dimen>
     <dimen name="ninty">90dp</dimen>
     <dimen name="topTabBarHeight">46dp</dimen>
     <dimen name="challenge_tab_height">116dp</dimen>

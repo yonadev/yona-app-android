@@ -25,7 +25,6 @@ import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
-import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by bhargavsuthar on 10/05/16.
@@ -75,8 +74,9 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                 if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED) {
                     holder.img_avtar.setImageResource(R.drawable.adult_sad);
                 } else {
-                    holder.img_avtar.setImageDrawable(TextDrawable.builder().buildRound(activity, yonaObject.getNickname().substring(0, 1).toUpperCase(),
-                            ContextCompat.getColor(activity, R.color.grape), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
+                    holder.profileIconTxt.setVisibility(View.VISIBLE);
+                    holder.profileIconTxt.setText(yonaObject.getNickname().substring(0, 1).toUpperCase());
+                    holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
                 }
             }
             if (yonaObject.getLinks() != null && yonaObject.getLinks().getMarkRead() != null && !TextUtils.isEmpty(yonaObject.getLinks().getMarkRead().getHref())) {
