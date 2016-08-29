@@ -57,6 +57,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     private YonaHeaderTheme yonaHeaderTheme;
     private DetailsProfileFragment detailsProfileFragment;
     private String mUrl;
+    private YonaFontTextView profileImageTxt;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
 
         profileImageView = (ImageView) view.findViewById(R.id.profileImage);
+        profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileIcon);
         profileTopLayout = (CollapsingToolbarLayout) view.findViewById(R.id.profile_top_layout);
         name = (YonaFontTextView) view.findViewById(R.id.name);
         nickName = (YonaFontTextView) view.findViewById(R.id.nick_name);
@@ -169,7 +171,8 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             if (user.getEmbedded() != null && user.getEmbedded().getYonaUser() != null) {
                 name.setText(getString(R.string.full_name, !TextUtils.isEmpty(user.getEmbedded().getYonaUser().getFirstName()) ? user.getEmbedded().getYonaUser().getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
                         !TextUtils.isEmpty(user.getEmbedded().getYonaUser().getLastName()) ? user.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
-                profileImageView.setImageDrawable(getImage(null, false, profileBgColor, user.getEmbedded().getYonaUser().getFirstName(), user.getEmbedded().getYonaUser().getLastName()));
+                profileImageTxt.setText(user.getEmbedded().getYonaUser().getFirstName().substring(0, 1) + user.getEmbedded().getYonaUser().getLastName().substring(0, 1));
+                profileImageTxt.setBackground(profileBgColor == R.color.grape ? ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_self_round) : ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round));
             }
             nickName.setText(!TextUtils.isEmpty(user.getNickname()) ? user.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
         } else if (user != null) {
@@ -178,19 +181,22 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             if (yonaMessage == null) {
                 nickName.setText((!TextUtils.isEmpty(user.getNickname())) ? user.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
             }
-            profileImageView.setImageDrawable(getImage(null, false, profileBgColor, user.getFirstName(), user.getLastName()));
+            profileImageTxt.setText(user.getFirstName().substring(0, 1) + user.getLastName().substring(0, 1));
+            profileImageTxt.setBackground(profileBgColor == R.color.grape ? ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_self_round) : ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round));
         } else if (yonaMessage != null) {
             if (yonaMessage.getEmbedded() != null && yonaMessage.getEmbedded().getYonaUser() != null) {
                 name.setText(getString(R.string.full_name, !TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getFirstName()) ? yonaMessage.getEmbedded().getYonaUser().getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
                         !TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getLastName()) ? yonaMessage.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
-                profileImageView.setImageDrawable(getImage(null, false, profileBgColor, yonaMessage.getEmbedded().getYonaUser().getFirstName(), yonaMessage.getEmbedded().getYonaUser().getLastName()));
+                profileImageTxt.setText(user.getEmbedded().getYonaUser().getFirstName().substring(0, 1) + user.getEmbedded().getYonaUser().getLastName().substring(0, 1));
+                profileImageTxt.setBackground(profileBgColor == R.color.grape ? ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_self_round) : ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round));
             }
             nickName.setText(!TextUtils.isEmpty(yonaMessage.getNickname()) ? yonaMessage.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
         } else if (yonaBuddy != null) {
             if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null) {
                 name.setText(getString(R.string.full_name, !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName()) ? yonaBuddy.getEmbedded().getYonaUser().getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
                         !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getLastName()) ? yonaBuddy.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
-                profileImageView.setImageDrawable(getImage(null, false, profileBgColor, yonaBuddy.getEmbedded().getYonaUser().getFirstName(), yonaBuddy.getEmbedded().getYonaUser().getLastName()));
+                profileImageTxt.setText(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1) + yonaBuddy.getEmbedded().getYonaUser().getLastName().substring(0, 1));
+                profileImageTxt.setBackground(profileBgColor == R.color.grape ? ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round) : ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_self_round));
             }
             nickName.setText(!TextUtils.isEmpty(yonaBuddy.getNickname()) ? yonaBuddy.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
         }

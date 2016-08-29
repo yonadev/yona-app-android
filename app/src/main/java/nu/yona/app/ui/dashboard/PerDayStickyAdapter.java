@@ -104,14 +104,14 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
         if (dayActivity.getYonaGoal() != null && !TextUtils.isEmpty(dayActivity.getYonaGoal().getActivityCategoryName())) {
             holder.getGoalType().setText(dayActivity.getYonaGoal().getActivityCategoryName() + "");
         }
-        if (!dayActivity.getGoalAccomplished()) {
-            if(dayActivity.getChartTypeEnum() == ChartTypeEnum.TIME_BUCKET_CONTROL) {
+        if (dayActivity.getChartTypeEnum() == ChartTypeEnum.TIME_BUCKET_CONTROL) {
+            if (!dayActivity.getGoalAccomplished()) {
                 holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoalbeyondtime));
             } else {
-                holder.getGoalDesc().setText(mContext.getString(R.string.goaloverminute));
+                holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
             }
         } else {
-            holder.getGoalDesc().setText(mContext.getString(R.string.budgetgoaltime));
+            holder.getGoalDesc().setText(mContext.getString(R.string.goaloverminute));
         }
         if (!dayActivity.getGoalAccomplished()) {
             holder.getGoalScore().setTextColor(ContextCompat.getColor(mContext, R.color.darkish_pink));

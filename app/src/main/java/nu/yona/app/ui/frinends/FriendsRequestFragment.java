@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.api.manager.APIManager;
@@ -59,11 +60,13 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
     /**
      * Accept button
      */
-    private YonaFontButton btnAccept,
+    private YonaFontButton btnAccept;
     /**
      * Reject button
      */
-    btnReject;
+    private YonaFontButton btnReject;
+
+    private TextView profileIconTxt;
     private ImageView profileImage;
     /**
      * Profile top layout for updatig background color
@@ -89,6 +92,7 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
         profileNickName = (YonaFontTextView) view.findViewById(R.id.nick_name);
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
         profileTopLayout = (CollapsingToolbarLayout) view.findViewById(R.id.profile_top_layout);
+        profileIconTxt = (TextView) view.findViewById(R.id.profileIcon);
         btnAccept = (YonaFontButton) view.findViewById(R.id.btnAccepter);
         btnAccept.setOnClickListener(this);
         btnReject = (YonaFontButton) view.findViewById(R.id.btnReject);
@@ -140,9 +144,20 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
                         !TextUtils.isEmpty(mYonaMessage.getEmbedded().getYonaUser().getLastName()) ? mYonaMessage.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
             }
             profileNickName.setText(!TextUtils.isEmpty(mYonaMessage.getNickname()) ? mYonaMessage.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
-            profileImage.setImageDrawable(getImage(null, false, R.color.grape_two, mYonaMessage.getEmbedded().getYonaUser().getFirstName(), mYonaMessage.getEmbedded().getYonaUser().getLastName()));
+            setTextIcon();
+//            profileImage.setImageDrawable(getImage(null, false, R.color.grape_two, mYonaMessage.getEmbedded().getYonaUser().getFirstName(), mYonaMessage.getEmbedded().getYonaUser().getLastName()));
         }
         profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue_two));
+    }
+
+    private void setTextIcon() {
+        profileIconTxt.setVisibility(View.VISIBLE);
+        profileIconTxt.setText(getNameInital());
+        profileIconTxt.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_big_self_round));
+    }
+
+    private String getNameInital() {
+        return mYonaMessage.getEmbedded().getYonaUser().getFirstName().substring(0, 1) + mYonaMessage.getEmbedded().getYonaUser().getLastName().substring(0, 1);
     }
 
     @Override

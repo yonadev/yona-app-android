@@ -91,7 +91,7 @@ public interface AppConstant {
     /**
      * The constant PROFILE_IMAGE_BORDER_SIZE.
      */
-    int PROFILE_IMAGE_BORDER_SIZE = 10;
+    int PROFILE_IMAGE_BORDER_SIZE = 6;
 
     /**
      * The constant PROFILE_ICON_BORDER_SIZE.

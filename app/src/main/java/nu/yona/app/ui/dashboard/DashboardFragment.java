@@ -31,7 +31,6 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
-import nu.yona.app.utils.TextDrawable;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -172,17 +171,17 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
                             rightIcon.setVisibility(View.GONE);
                             rightIconProfile.setVisibility(View.VISIBLE);
                             txtNotificationCounter.setVisibility(View.GONE);
-                            rightIconProfile.setImageDrawable(TextDrawable.builder()
-                                    .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                                    .buildRound(YonaActivity.getActivity(), yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase(),
-                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue), YonaActivity.getActivity().getResources().getInteger(R.integer.list_item_icon_text_size)));
-                            profileClickEvent(rightIconProfile);
+                            rightIconProfile.setVisibility(View.VISIBLE);
+                            profileIconTxt.setVisibility(View.VISIBLE);
+                            profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
+                            profileIconTxt.setText(yonaBuddy.getNickname().substring(0, 1).toUpperCase());
+                            profileClickEvent(profileIconTxt);
                         } else {
-                            leftIcon.setVisibility(View.VISIBLE);
-                            leftIcon.setImageDrawable(TextDrawable.builder()
-                                    .beginConfig().withBorder(AppConstant.PROFILE_ICON_BORDER_SIZE).endConfig()
-                                    .buildRound(YonaActivity.getActivity(), YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1).toUpperCase(),
-                                            ContextCompat.getColor(YonaActivity.getActivity(), R.color.mid_blue), YonaActivity.getActivity().getResources().getInteger(R.integer.profile_icon_circle_font_size)));
+                            leftIconTxt.setVisibility(View.VISIBLE);
+                            leftIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
+                            leftIconTxt.setText(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname().substring(0, 1).toUpperCase());
+                            profileClickEvent(leftIconTxt);
+
                             rightIcon.setVisibility(View.VISIBLE);
                             rightIconProfile.setVisibility(View.GONE);
                             if (YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount() > 0) {
@@ -194,7 +193,6 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
                             rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_reminder));
 
                             rightIconClickEvent(rightIcon);
-                            profileClickEvent(leftIcon);
                         }
                     }
                 }

@@ -58,6 +58,14 @@
         <item name="android:letterSpacing">0.1</item>
     </style>
 
+    <style name="profileIconText" parent="ProfileIconTextParent">
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
+    <style name="MsgIconText" parent="MsgTextParent">
+        <item name="android:letterSpacing">0.7</item>
+    </style>
+
     <style name="NavTitle" parent="@style/parentNavTitle">
         <item name="android:textColor">@color/white</item>
         <item name="android:letterSpacing">0.08</item>
