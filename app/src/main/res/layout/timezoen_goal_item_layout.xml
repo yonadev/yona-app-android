@@ -21,7 +21,7 @@
         android:layout_height="@dimen/time_zone_goal_item_height"
         android:background="@color/darkish_pink"
         android:orientation="horizontal"
-        android:padding="@dimen/challenges_counter_width"
+        android:padding="@dimen/thirty"
         android:src="@drawable/icn_trash" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

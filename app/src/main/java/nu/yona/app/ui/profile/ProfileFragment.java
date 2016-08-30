@@ -187,7 +187,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             if (yonaMessage.getEmbedded() != null && yonaMessage.getEmbedded().getYonaUser() != null) {
                 name.setText(getString(R.string.full_name, !TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getFirstName()) ? yonaMessage.getEmbedded().getYonaUser().getFirstName() : YonaActivity.getActivity().getString(R.string.blank),
                         !TextUtils.isEmpty(yonaMessage.getEmbedded().getYonaUser().getLastName()) ? yonaMessage.getEmbedded().getYonaUser().getLastName() : YonaActivity.getActivity().getString(R.string.blank)));
-                profileImageTxt.setText(user.getEmbedded().getYonaUser().getFirstName().substring(0, 1) + user.getEmbedded().getYonaUser().getLastName().substring(0, 1));
+                profileImageTxt.setText(yonaMessage.getEmbedded().getYonaUser().getFirstName().substring(0, 1) + yonaMessage.getEmbedded().getYonaUser().getLastName().substring(0, 1));
                 profileImageTxt.setBackground(profileBgColor == R.color.grape ? ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_self_round) : ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round));
             }
             nickName.setText(!TextUtils.isEmpty(yonaMessage.getNickname()) ? yonaMessage.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
