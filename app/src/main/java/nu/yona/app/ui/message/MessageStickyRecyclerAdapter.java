@@ -76,7 +76,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                 } else {
                     holder.profileIconTxt.setVisibility(View.VISIBLE);
                     holder.profileIconTxt.setText(yonaObject.getNickname().substring(0, 1).toUpperCase());
-                    holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
+                    holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
                 }
             }
             if (yonaObject.getLinks() != null && yonaObject.getLinks().getMarkRead() != null && !TextUtils.isEmpty(yonaObject.getLinks().getMarkRead().getHref())) {
