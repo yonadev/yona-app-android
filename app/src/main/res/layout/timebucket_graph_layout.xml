@@ -9,7 +9,7 @@
 <nu.yona.app.customview.graph.TimeBucketGraph xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/timeBucketGraph"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/seventy_three"
+    android:layout_height="@dimen/sixty_four"
     android:layout_marginTop="@dimen/five">
 
 </nu.yona.app.customview.graph.TimeBucketGraph>
