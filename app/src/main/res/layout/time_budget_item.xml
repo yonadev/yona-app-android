@@ -18,6 +18,10 @@
 
     <include layout="@layout/graph_top_info_layout" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/five" />
+
     <include layout="@layout/timebucket_graph_layout" />
 
 </LinearLayout>
