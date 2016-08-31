@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white_two"
         android:paddingBottom="@dimen/comment_layout_recyclerview_padding_bottom"
+        android:paddingTop="@dimen/thirty_two"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </android.support.v7.widget.RecyclerView>

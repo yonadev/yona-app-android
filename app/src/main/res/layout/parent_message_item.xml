@@ -5,79 +5,84 @@
   ~ License, v. 2.0. If a copy of the MPL was not distributed with this
   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parentCommentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white_two"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/parent_msg_padding_left"
-    android:paddingRight="@dimen/parent_msg_padding_right"
-    android:paddingTop="@dimen/parent_msg_padding_top">
+    android:paddingRight="@dimen/parent_msg_padding_right">
 
     <View
         android:id="@+id/horizontalline"
         android:layout_width="match_parent"
         android:layout_height="@dimen/one"
+        android:layout_marginBottom="@dimen/twenty"
         android:layout_marginLeft="@dimen/parent_msg_horizontal_line_padding_left"
+        android:layout_marginTop="@dimen/twenty"
         android:background="@color/white_three" />
 
-    <nu.yona.app.customview.YonaFontTextView
-        android:id="@+id/profileTextIcon"
-        style="@style/MsgIconText"
-        android:layout_width="@dimen/img_width"
-        android:layout_height="@dimen/img_width"
-        android:layout_below="@id/horizontalline"
-        android:layout_gravity="center"
-        android:layout_marginRight="@dimen/parent_msg_img_margin_right"
-        android:layout_marginTop="@dimen/parent_msg_img_margin_top"
-        android:background="@drawable/bg_small_self_round"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/imgParentBuddyIcon"
-        android:layout_width="@dimen/img_width"
-        android:layout_height="@dimen/img_height"
-        android:layout_below="@id/horizontalline"
-        android:layout_marginRight="@dimen/parent_msg_img_margin_right"
-        android:layout_marginTop="@dimen/parent_msg_img_margin_top"
-        android:scaleType="fitXY"
-        android:src="@drawable/icn_avatar"
-        android:visibility="gone" />
-
-
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imgParentBuddyIcon"
-        android:layout_toEndOf="@+id/imgParentBuddyIcon"
-        android:layout_toRightOf="@id/imgParentBuddyIcon"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/txtBuddyName"
-            style="@style/FooterTxtFortyOpactiy"
+            android:id="@+id/profileTextIcon"
+            style="@style/MsgIconText"
+            android:layout_width="@dimen/img_width"
+            android:layout_height="@dimen/img_width"
+            android:layout_below="@id/horizontalline"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/parent_msg_img_margin_right"
+            android:background="@drawable/bg_small_self_round"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/imgParentBuddyIcon"
+            android:layout_width="@dimen/img_width"
+            android:layout_height="@dimen/img_height"
+            android:layout_below="@id/horizontalline"
+            android:layout_marginRight="@dimen/parent_msg_img_margin_right"
+            android:layout_marginTop="@dimen/parent_msg_img_margin_top"
+            android:scaleType="fitXY"
+            android:src="@drawable/icn_avatar"
+            android:visibility="gone" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/parent_msg_buddy_name_margin_top" />
+            android:layout_marginTop="@dimen/seven"
+            android:orientation="vertical">
 
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/txtBuddyMessage"
-            style="@style/FooterTitleNoOpacity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/parent_msg_buddy_message_margin_top" />
+            <nu.yona.app.customview.YonaFontTextView
+                android:id="@+id/txtBuddyName"
+                style="@style/FooterTxtFortyOpactiy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hi" />
 
-        <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/txtBuddyReply"
-            style="@style/replayComment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/parent_msg_buddy_reply_margin_top"
-            android:text="@string/reply" />
+            <nu.yona.app.customview.YonaFontTextView
+                android:id="@+id/txtBuddyMessage"
+                style="@style/FooterTitleNoOpacity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/parent_msg_buddy_message_margin_top"
+                android:text="Text" />
 
+            <nu.yona.app.customview.YonaFontTextView
+                android:id="@+id/txtBuddyReply"
+                style="@style/replayComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/parent_msg_buddy_reply_margin_top"
+                android:text="@string/reply" />
+
+        </LinearLayout>
     </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

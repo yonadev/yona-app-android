@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.YonaMessage;
 
 /**
@@ -70,7 +71,16 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                 if (!TextUtils.isEmpty(mYonaMsg.getNickname())) {
                     holder.getProfileImageTxt().setVisibility(View.VISIBLE);
                     holder.getProfileImageTxt().setText(mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase());
-                    holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
+                    try {
+                        if (YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref().contains(mYonaMsg.getLinks().getYonaUser().getHref())) {
+                            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
+                        } else {
+                            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
+                        }
+                    } catch (Exception e) {
+                        holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
+                    }
+
                 }
                 holder.getTxtParentBuddyName().setText(mYonaMsg.getNickname());
                 holder.getTxtParentBuddyMsg().setText(mYonaMsg.getMessage());
@@ -89,7 +99,15 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                 if (!TextUtils.isEmpty(mYonaMsg.getNickname())) {
                     holder.getProfileImageTxt().setVisibility(View.VISIBLE);
                     holder.getProfileImageTxt().setText(mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase());
-                    holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
+                    try {
+                        if (YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref().contains(mYonaMsg.getLinks().getYonaUser().getHref())) {
+                            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
+                        } else {
+                            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
+                        }
+                    } catch (Exception e) {
+                        holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
+                    }
                 }
                 holder.getTxtChildBuddyName().setText(mYonaMsg.getNickname());
                 holder.getTxtChildBuddyMsg().setText(mYonaMsg.getMessage());

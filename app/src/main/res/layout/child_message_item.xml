@@ -20,12 +20,24 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <nu.yona.app.customview.YonaFontTextView
+            android:id="@+id/profileTextIcon"
+            style="@style/MsgIconText"
+            android:layout_width="@dimen/child_buddy_width"
+            android:layout_height="@dimen/child_buddy_width"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_small_self_round"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/imgChildBuddyIcon"
             android:layout_width="@dimen/child_buddy_width"
             android:layout_height="@dimen/child_buddy_height"
             android:scaleType="fitXY"
-            android:src="@drawable/icn_avatar" />
+            android:src="@drawable/icn_avatar"
+            android:visibility="gone" />
 
         <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/childBuddyname"

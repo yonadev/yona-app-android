@@ -165,7 +165,6 @@
     <string name="nogogoalachieved">geen hits, hou vol!</string>
     <string name="nogogoalbeyond">%1$s minuten</string>
     <string name="budgetgoalbeyondtime">minuten over je limiet</string>
-    <string name="budgetgoalbeyond">minuten over je limiet</string>
     <string name="budgetgoaltime">minuten tegoed</string>
     <string name="app_usage_permission_title">Toestemming</string>
     <string name="app_usage_permission_message">Yona wil het gebruik van je apps graag kunnen meten. Zet in het volgende scherm het vinkje achter Yona op ‘aan’.</string>
