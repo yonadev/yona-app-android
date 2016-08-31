@@ -71,6 +71,7 @@ public class CommentHolder extends RecyclerView.ViewHolder {
         view.findViewById(R.id.childCommentLayout).setVisibility(View.VISIBLE);
         childCommentLayout = view.findViewById(R.id.childCommentLayout);
         imgChildBuddyIcon = (ImageView) view.findViewById(R.id.imgChildBuddyIcon);
+        profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileTextIcon);
         txtChildBuddyName = (YonaFontTextView) view.findViewById(R.id.childBuddyname);
         txtChildBuddyMsg = (YonaFontTextView) view.findViewById(R.id.childBuddyMessage);
         txtChildCommentReplay = (YonaFontTextView) view.findViewById(R.id.txtChildBuddyReply);
