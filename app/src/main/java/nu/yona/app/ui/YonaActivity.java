@@ -429,7 +429,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             case IMPORT_PROFILE:
                 if (resultCode == RESULT_OK) {
                     if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID))) {
-                        Log.e("Start VPN", "Start VPN");
                         YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
                         AppUtils.startVPN(this, false);
                     } else {
@@ -455,22 +454,23 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void showInstallAlert(final byte[] keystore) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.certificate_installation));
-        builder.setMessage(getString(R.string.certfiicate_installtion_detail));
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                isToDisplayLogin = false;
-                Intent installIntent = KeyChain.createInstallIntent();
-                installIntent.putExtra(KeyChain.EXTRA_CERTIFICATE, keystore);
-                installIntent.putExtra(KeyChain.EXTRA_NAME, getString(R.string.appname));
-                startActivityForResult(installIntent, INSTALL_CERTIFICATE);
-            }
-        });
-        builder.setCancelable(false);
-        builder.create().show();
-
+        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, null) != null) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.certificate_installation));
+            builder.setMessage(getString(R.string.certfiicate_installtion_detail));
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    isToDisplayLogin = false;
+                    Intent installIntent = KeyChain.createInstallIntent();
+                    installIntent.putExtra(KeyChain.EXTRA_CERTIFICATE, keystore);
+                    installIntent.putExtra(KeyChain.EXTRA_NAME, getString(R.string.appname));
+                    startActivityForResult(installIntent, INSTALL_CERTIFICATE);
+                }
+            });
+            builder.setCancelable(false);
+            builder.create().show();
+        }
     }
 
     private void loadCaptureImage(final Intent data) {
