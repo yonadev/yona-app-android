@@ -162,6 +162,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
         finish();
     }
 

@@ -32,8 +32,6 @@ import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
 
-import net.hockeyapp.android.ExceptionHandler;
-
 import org.joda.time.Period;
 
 import java.io.BufferedInputStream;
@@ -251,11 +249,12 @@ public class AppUtils {
      */
     public static void throwException(String className, Exception e, Thread t, DataLoadListener listener) {
         try {
-            if (YonaApplication.getAppContext().getResources().getBoolean(R.bool.enableHockyTracking)) {
-                ExceptionHandler.saveException(e, t, YonaApplication.getYonaCustomCrashManagerListener());
-            } else {
-                Log.e(className, e.getMessage());
-            }
+//            if (YonaApplication.getAppContext().getResources().getBoolean(R.bool.enableHockyTracking)) {
+////                ExceptionHandler.saveException(e, t, YonaApplication.getYonaCustomCrashManagerListener());
+//                //TODO handle excpetion here to post on google play store.
+//            } else {
+            Log.e(className, e.getMessage());
+//            }
 
             if (listener != null) {
                 if (e != null && e.getMessage() != null) {

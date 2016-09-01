@@ -11,7 +11,6 @@ package nu.yona.app;
 import android.app.Application;
 import android.os.StrictMode;
 
-import nu.yona.app.listener.YonaCustomCrashManagerListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
 
@@ -22,7 +21,6 @@ public class YonaApplication extends Application {
 
     private static YonaApplication mContext;
     private static EventChangeManager eventChangeManager;
-    private static YonaCustomCrashManagerListener yonaCustomCrashManagerListener;
 
     /**
      * Gets app context.
@@ -31,18 +29,6 @@ public class YonaApplication extends Application {
      */
     public static synchronized YonaApplication getAppContext() {
         return mContext;
-    }
-
-    /**
-     * Gets yona custom crash manager listener.
-     *
-     * @return the yona custom crash manager listener
-     */
-    public static YonaCustomCrashManagerListener getYonaCustomCrashManagerListener() {
-        if (yonaCustomCrashManagerListener == null) {
-            yonaCustomCrashManagerListener = new YonaCustomCrashManagerListener();
-        }
-        return yonaCustomCrashManagerListener;
     }
 
     /**

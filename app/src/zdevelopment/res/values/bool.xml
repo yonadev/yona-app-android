@@ -9,7 +9,6 @@
   -->
 
 <resources>
-    <bool name="enableHockyTracking">false</bool>
     <bool name="developerMode">true</bool>
     <bool name="allowEnvironmentSwitch">true</bool>
 </resources>
