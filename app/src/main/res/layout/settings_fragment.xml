@@ -25,13 +25,13 @@
         android:gravity="center"
         android:keepScreenOn="true" />
 
-    <TextView
-        android:id="@+id/label_server"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:dividerHeight="0dp"
-        android:gravity="center" />
+    <!--<TextView-->
+        <!--android:id="@+id/label_server"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:dividerHeight="0dp"-->
+        <!--android:gravity="center" />-->
 
     <TextView
         android:id="@+id/label_version"
