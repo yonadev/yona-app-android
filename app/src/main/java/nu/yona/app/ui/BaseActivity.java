@@ -18,11 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
-
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.customview.CustomProgressDialog;
 
 /**
@@ -58,38 +54,6 @@ public class BaseActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.e(BaseActivity.class.getSimpleName(), e.getMessage());
-        }
-    }
-
-    @Override
-    protected void onPause() {
-//        if (progressDialog != null && progressDialog.isShowing()) {
-//            progressDialog.dismiss();
-//        }
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkForCrashes();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterManagers();
-    }
-
-    private void checkForCrashes() {
-        if (getResources().getBoolean(R.bool.enableHockyTracking)) {
-            CrashManager.register(this, getResources().getString(R.string.hockey_app_key), YonaApplication.getYonaCustomCrashManagerListener());
-        }
-    }
-
-    private void unregisterManagers() {
-        if (getResources().getBoolean(R.bool.enableHockyTracking)) {
-            UpdateManager.unregister();
         }
     }
 

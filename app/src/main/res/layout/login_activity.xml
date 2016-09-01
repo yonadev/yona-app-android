@@ -9,6 +9,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -51,7 +52,8 @@
                     android:id="@+id/mobile_number_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/twenty">
+                    android:layout_marginTop="@dimen/twenty"
+                    app:hintTextAppearance="@style/hintText">
 
                     <nu.yona.app.customview.YonaFontNumberTextView
                         android:id="@+id/mobile_number"
@@ -72,7 +74,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/passcode_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/hintText">
 
                     <nu.yona.app.customview.YonaFontEditTextView
                         android:id="@+id/passcode"
