@@ -58,6 +58,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             isAdding = count == 1 ? true : false;
             nickName.setError(null);
+            nickNameLayout.setErrorEnabled(false);
         }
 
         @Override

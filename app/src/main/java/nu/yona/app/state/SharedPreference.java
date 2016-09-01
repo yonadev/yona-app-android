@@ -104,7 +104,10 @@ public class SharedPreference {
     }
 
     public String getRootCertPath() {
-        return userPreferences.getString(PreferenceConstant.ROOT_CERTIFICATE, null);
+        if (userPreferences != null) {
+            return userPreferences.getString(PreferenceConstant.ROOT_CERTIFICATE, null);
+        }
+        return null;
     }
 
     public boolean isRootCertActive() {
