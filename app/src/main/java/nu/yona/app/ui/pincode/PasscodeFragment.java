@@ -144,7 +144,6 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             passcode4.setFocusableInTouchMode(false);
             passcode3.setFocusableInTouchMode(false);
             passcode2.setFocusableInTouchMode(false);
-            passcode1.setFocusableInTouchMode(true);
             passcode1.requestFocus();
         }
     }
@@ -176,6 +175,14 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
                     setFocus(passcode2, passcode3);
                 } else if (passcode3.hasFocus()) {
                     setFocus(passcode3, passcode4);
+                }
+            } else {
+                if (passcode4.hasFocus()) {
+                    setFocus(passcode4, passcode3);
+                } else if (passcode3.hasFocus()) {
+                    setFocus(passcode3, passcode2);
+                } else if (passcode2.hasFocus()) {
+                    setFocus(passcode2, passcode1);
                 }
             }
         }
