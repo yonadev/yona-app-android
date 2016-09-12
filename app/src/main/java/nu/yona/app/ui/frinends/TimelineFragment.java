@@ -26,6 +26,7 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -132,6 +133,9 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
     }
 
     private void openDetailPage(DayActivity activity) {
+        if (activity.getYonaGoal() != null && activity.getYonaGoal().getActivityCategoryName() != null) {
+            YonaAnalytics.createTapEventWithCategory(getString(R.string.timeline), activity.getYonaGoal().getActivityCategoryName());
+        }
         Intent intent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
         intent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, activity.getLinks().getYonaDayDetails().getHref());
         if (activity.getLinks().getYonaBuddy() != null) {

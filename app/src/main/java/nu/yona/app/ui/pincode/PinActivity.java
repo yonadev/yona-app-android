@@ -23,6 +23,7 @@ import java.util.Date;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.PinResetDelay;
@@ -50,6 +51,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
         passcode_error.setVisibility(View.GONE);
         passcodeFragment = new PasscodeFragment();
         passcodeFragment.setArguments(getIntent().getExtras());
+        passcodeFragment.getArguments().putString(AppConstant.PASSCODE_SCREEN_NAME, AnalyticsConstant.PASSCODE_SCREEN);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.blank_container, passcodeFragment);
         fragmentTransaction.commit();
@@ -70,7 +72,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null) {
             updateBlockMsg();

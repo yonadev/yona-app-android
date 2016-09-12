@@ -30,6 +30,8 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaActivityCategories;
@@ -255,6 +257,8 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
             updateTimeZoneUI();
         }
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_CHALLENGES_GOAL_DETAIL));
+
         return view;
     }
 
@@ -287,6 +291,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
      */
     private void doDeleteGoal() {
         YonaActivity.getActivity().showLoadingView(true, null);
+        YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.CHALLENGES_SCREEN, AnalyticsConstant.DELETE_GOAL);
         APIManager.getInstance().getChallengesManager().deleteGoal((YonaGoal) mYonaGoal, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
@@ -513,6 +518,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnChallenges:
+                YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.CHALLENGES_SCREEN, AnalyticsConstant.SAVE_GOAL);
                 if (currentTab.equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString())) {
                     if (TextUtils.isEmpty(mBudgetGoalTime.getText())) {
                         showError(new ErrorMessage(getString(R.string.add_goal_error, getString(R.string.challengescredit))));
@@ -641,5 +647,10 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.CHALLENGES_GOAL_DETAIL;
     }
 }

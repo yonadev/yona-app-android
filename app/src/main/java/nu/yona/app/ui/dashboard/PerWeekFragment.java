@@ -25,6 +25,7 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
@@ -220,6 +221,7 @@ public class PerWeekFragment extends BaseFragment {
     }
 
     private void openDetailPage(WeekActivity activity) {
+        YonaAnalytics.createTapEventWithCategory(getString(R.string.perweek), activity.getYonaGoal().getActivityCategoryName().toUpperCase());
         Intent intent = new Intent(IntentEnum.ACTION_WEEK_DETAIL_VIEW.getActionString());
         intent.putExtra(AppConstant.OBJECT, activity);
         intent.putExtra(AppConstant.BOOLEAN, true);

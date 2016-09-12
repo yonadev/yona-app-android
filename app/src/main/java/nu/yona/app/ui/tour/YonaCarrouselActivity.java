@@ -24,6 +24,8 @@ import java.util.TimerTask;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.utils.PreferenceConstant;
@@ -76,6 +78,7 @@ public class YonaCarrouselActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.carrousel_pager_layout);
         initializeView();
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.WELCOME_CARROUSEL, AnalyticsConstant.WELCOME_CARROUSEL);
     }
 
     /**

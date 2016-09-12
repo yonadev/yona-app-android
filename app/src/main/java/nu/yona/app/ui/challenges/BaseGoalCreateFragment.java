@@ -23,6 +23,8 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.YonaActivityCategories;
 import nu.yona.app.api.model.YonaGoal;
@@ -178,10 +180,12 @@ public class BaseGoalCreateFragment extends BaseFragment implements EventChangeL
 
             if (object instanceof YonaGoal) {
                 goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaGoal) object);
+                YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.CHALLENGES_SCREEN, ((YonaGoal) object).getActivityCategoryName());
             } else if (object instanceof YonaActivityCategories) {
                 YonaGoal yonaGoal = APIManager.getInstance().getChallengesManager().getYonaGoalByCategoryType((YonaActivityCategories) object);
                 if (yonaGoal == null) {
                     goalIntent.putExtra(AppConstant.GOAL_OBJECT, (YonaActivityCategories) object);
+                    YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.CHALLENGES_SCREEN, ((YonaActivityCategories) object).getName());
                 } else {
                     Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), getString(R.string.category_added), Snackbar.LENGTH_LONG).show();
                     return;

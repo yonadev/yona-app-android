@@ -16,6 +16,9 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import nu.yona.app.R;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.Categorizable;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
@@ -31,7 +34,7 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class BaseFragment extends Fragment {
+public class BaseFragment extends Fragment implements Categorizable {
     /**
      * The M tool bar.
      */
@@ -52,6 +55,25 @@ public class BaseFragment extends Fragment {
     rightIconProfile;
 
     protected YonaFontTextView profileIconTxt, leftIconTxt;
+
+    private PauseResumeHook hook;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (hook != null) {
+            hook.onPause(this);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        YonaAnalytics.updateScreen(this);
+        if (hook != null) {
+            hook.onResume(this);
+        }
+    }
 
     /**
      * Sets toolbar.
@@ -99,5 +121,14 @@ public class BaseFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.SCREEN_BASE_FRAGMENT;
+    }
+
+    public void setHook(PauseResumeHook hook) {
+        this.hook = hook;
     }
 }

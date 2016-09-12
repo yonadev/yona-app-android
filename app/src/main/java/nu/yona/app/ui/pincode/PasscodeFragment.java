@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
 import nu.yona.app.customview.YonaFontNumberTextView;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
-import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.utils.AppConstant;
 
@@ -38,6 +36,8 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private YonaPasswordTransformationManager yonaPasswordTransformationManager;
     private FieldTextWatcher watcher;
     private int backgroundDrawable = R.drawable.passcode_edit_bg_grape;
+
+    private String passcodeScreenName;
 
     @Nullable
     @Override
@@ -63,9 +63,11 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             if (getArguments().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
                 backgroundDrawable = getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND);
             }
+            if (getArguments().get(AppConstant.PASSCODE_SCREEN_NAME) != null) {
+                passcodeScreenName = getArguments().getString(AppConstant.PASSCODE_SCREEN_NAME);
+            }
         }
         resetDigit();
-
         return view;
 
     }
@@ -200,5 +202,10 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             }
         }
 
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return passcodeScreenName;
     }
 }

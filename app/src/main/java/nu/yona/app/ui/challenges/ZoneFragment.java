@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.state.EventChangeListener;
@@ -53,6 +55,7 @@ public class ZoneFragment extends BaseGoalCreateFragment implements View.OnClick
         switch (v.getId()) {
             case R.id.img_add_goal:
                 //show new goal list creation view
+                YonaAnalytics.createTapEventWithCategory(getString(R.string.timezone), AnalyticsConstant.ADD_GOAL);
                 mDescTab.setText(getActivity().getString(R.string.challengestijdzoneheader));
                 showNewListOfGoalView(ChallengesEnum.ZONE_TAB.getTab());
                 break;

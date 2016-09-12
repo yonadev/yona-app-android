@@ -28,6 +28,8 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
@@ -117,7 +119,7 @@ public class StepOne extends BaseFragment implements EventChangeListener {
         privacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
 
         YonaApplication.getEventChangeManager().registerListener(this);
-
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_REGISTRATION_STEP_ONE));
         return view;
     }
 
@@ -142,6 +144,7 @@ public class StepOne extends BaseFragment implements EventChangeListener {
 
     private void goToNext() {
         if (validateFirstName() && validateLastName()) {
+            YonaAnalytics.createTapEvent(getString(R.string.next));
             YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setFirstName(firstName.getText().toString());
             YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setLastName(lastName.getText().toString());
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT, null);
@@ -168,5 +171,10 @@ public class StepOne extends BaseFragment implements EventChangeListener {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.REGISTRATION_STEP_ONE;
     }
 }

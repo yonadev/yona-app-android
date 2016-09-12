@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
@@ -70,6 +72,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_DASHBOARD));
         return view;
     }
 
@@ -79,17 +82,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_NOTIFICATION_COUNT, null);
         setTitleAndIcon();
         if (viewPager != null) {
-            switch (viewPager.getCurrentItem()) {
-                case 1:
-                    perDayFragment.setIsInView(false);
-                    perWeekFragment.setIsInView(true);
-                    break;
-                case 0:
-                default:
-                    perDayFragment.setIsInView(true);
-                    perWeekFragment.setIsInView(false);
-                    break;
-            }
+            updateView(viewPager.getCurrentItem());
         }
     }
 
@@ -129,13 +122,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0) {
-                    perDayFragment.setIsInView(false);
-                    perWeekFragment.setIsInView(true);
-                } else {
-                    perDayFragment.setIsInView(true);
-                    perWeekFragment.setIsInView(false);
-                }
+                updateView(position);
             }
 
             @Override
@@ -212,6 +199,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
         profileView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DASHBOARD_SCREEN, AnalyticsConstant.SCREEN_PROFILE);
                 Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
                 intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
                 if (yonaBuddy != null) {
@@ -235,6 +223,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
             @Override
             public void onClick(View v) {
                 Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
+                YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DASHBOARD_SCREEN, AnalyticsConstant.NOTIFICATION);
                 YonaActivity.getActivity().replaceFragment(friendIntent);
             }
         });
@@ -242,6 +231,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
             @Override
             public void onClick(View v) {
                 Intent friendIntent = new Intent(IntentEnum.ACTION_MESSAGE.getActionString());
+                YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DASHBOARD_SCREEN, AnalyticsConstant.NOTIFICATION);
                 YonaActivity.getActivity().replaceFragment(friendIntent);
             }
         });
@@ -256,5 +246,22 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
             default:
                 break;
         }
+    }
+
+    private void updateView(int position) {
+        if (position == 0) {
+            perDayFragment.setIsInView(false);
+            perWeekFragment.setIsInView(true);
+            YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.DASHBOARD_SCREEN, getString(R.string.perday));
+        } else {
+            perDayFragment.setIsInView(true);
+            perWeekFragment.setIsInView(false);
+            YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.DASHBOARD_SCREEN, getString(R.string.perweek));
+        }
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.SCREEN_BASE_FRAGMENT;
     }
 }

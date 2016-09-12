@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
@@ -48,6 +50,7 @@ public class FriendsFragment extends BaseFragment {
         rightIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.FRIENDS_SCREEN, AnalyticsConstant.ADD_FRIEND);
                 addFriend();
             }
         });
@@ -71,13 +74,7 @@ public class FriendsFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0) {
-                    timelineFragment.setIsInView(false);
-                    overviewFragment.setIsInView(true);
-                } else {
-                    timelineFragment.setIsInView(true);
-                    overviewFragment.setIsInView(false);
-                }
+                updateView(position);
             }
 
             @Override
@@ -92,17 +89,19 @@ public class FriendsFragment extends BaseFragment {
         super.onResume();
         setTitleAndIcon();
         if (viewPager != null) {
-            switch (viewPager.getCurrentItem()) {
-                case 1:
-                    timelineFragment.setIsInView(false);
-                    overviewFragment.setIsInView(true);
-                    break;
-                case 0:
-                default:
-                    timelineFragment.setIsInView(true);
-                    overviewFragment.setIsInView(false);
-                    break;
-            }
+            updateView(viewPager.getCurrentItem());
+        }
+    }
+
+    private void updateView(int position) {
+        if (position == 0) {
+            timelineFragment.setIsInView(false);
+            overviewFragment.setIsInView(true);
+            YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.FRIENDS_SCREEN, getString(R.string.timeline));
+        } else {
+            timelineFragment.setIsInView(true);
+            overviewFragment.setIsInView(false);
+            YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.FRIENDS_SCREEN, getString(R.string.overiview));
         }
     }
 
@@ -127,5 +126,10 @@ public class FriendsFragment extends BaseFragment {
     private void addFriend() {
         Intent friendIntent = new Intent(IntentEnum.ACTION_ADD_FRIEND.getActionString());
         YonaActivity.getActivity().replaceFragment(friendIntent);
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.SCREEN_BASE_FRAGMENT;
     }
 }

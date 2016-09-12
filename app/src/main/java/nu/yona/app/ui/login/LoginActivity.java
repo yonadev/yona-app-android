@@ -27,6 +27,8 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.customview.YonaFontEditTextView;
@@ -145,6 +147,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     }
 
     private void doBack() {
+        YonaAnalytics.createTapEvent(AnalyticsConstant.BACK_FROM_LOGIN_SCREEN);
         startActivity(new Intent(LoginActivity.this, LaunchActivity.class));
         finish();
     }
@@ -210,6 +213,7 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
     private void goToNext() {
         if (validateMobileNumber(getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length()).replace(getString(R.string.space), getString(R.string.blank)))
                 && validatePasscode(passcode.getText().toString())) {
+            YonaAnalytics.createTapEvent(getString(R.string.next));
             doLogin();
         }
     }
@@ -238,5 +242,10 @@ public class LoginActivity extends BaseActivity implements EventChangeListener {
             default:
                 break;
         }
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.LOGIN_SCREEN;
     }
 }

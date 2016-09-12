@@ -28,6 +28,8 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -219,6 +221,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
         if (!TextUtils.isEmpty(yonaDayDetailUrl)) {
             setDayActivityDetails();
         }
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_DAY_ACTIVITY_DETAIL_SCREEN));
         YonaApplication.getEventChangeManager().registerListener(this);
         return view;
     }
@@ -242,12 +245,14 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 
     private void previousDayActivity() {
         if (activity != null) {
+            YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.PREVIOUS);
             loadDayActivity(activity.getLinks().getPrev().getHref());
         }
     }
 
     private void nextDayActivity() {
         if (activity != null) {
+            YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.NEXT);
             loadDayActivity(activity.getLinks().getNext().getHref());
         }
     }
@@ -414,6 +419,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 
     private void doComment(String message, String url, boolean isreplaying) {
         YonaActivity.getActivity().showLoadingView(true, null);
+        YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.SEND);
         if (activity != null && activity.getComments() != null) {
             if (activity.getComments().getPage() != null) {
                 activity.getComments().setPage(null);
@@ -479,4 +485,10 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
     public void setUserCommenting(boolean userCommenting) {
         isUserCommenting = userCommenting;
     }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN;
+    }
+
 }

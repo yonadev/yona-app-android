@@ -25,6 +25,8 @@ import android.widget.ImageView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
@@ -84,6 +86,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         } else {
             profileBgColor = R.color.mid_blue; // default bg color for profile picture.
         }
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_PROFILE_SCREEN));
     }
 
     @Nullable
@@ -122,6 +125,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         }
 
         YonaApplication.getEventChangeManager().registerListener(this);
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_PROFILE_SCREEN));
         return view;
     }
 
@@ -130,7 +134,9 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         super.onResume();
         setTitleAndIcon();
         updateProfile();
-        showOptionsInSelectedTab(viewPager.getCurrentItem());
+        if (viewPager != null) {
+            showOptionsInSelectedTab(viewPager.getCurrentItem());
+        }
     }
 
     @Override
@@ -215,16 +221,17 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         toolbarTitle.setText(getString(R.string.blank));
         rightIcon.setVisibility(View.GONE);
         viewPager.setCurrentItem(0);
-        showOptionsInSelectedTab(viewPager.getCurrentItem());
     }
 
     private void showOptionsInSelectedTab(int position) {
         switch (position) {
             case PROFILE:
+                YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.SCREEN_PROFILE, getString(R.string.profiledetails));
                 showProfileOptions();
                 break;
             case BADGES:
             default:
+                YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.SCREEN_PROFILE, getString(R.string.badges));
                 showBadgeOptions();
                 break;
         }
@@ -245,8 +252,10 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
                     rightIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            YonaAnalytics.createTapEvent(getString(R.string.profile));
                             Intent friendIntent = new Intent(IntentEnum.ACTION_EDIT_PROFILE.getActionString());
                             YonaActivity.getActivity().replaceFragment(friendIntent);
+                            YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.SCREEN_PROFILE, getString(R.string.edit_profile));
                         }
                     });
                 }

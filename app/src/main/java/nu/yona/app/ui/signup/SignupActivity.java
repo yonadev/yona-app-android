@@ -20,6 +20,7 @@ import android.widget.EditText;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.utils.ServerErrorCode;
@@ -75,7 +76,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
     }
 
@@ -92,6 +93,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
 
     private void doBack() {
         if (SIGNUP_STEP == 1) {
+            YonaAnalytics.createTapEvent(getString(R.string.previous));
             loadSteopOne();
         } else {
             startActivity(new Intent(this, LaunchActivity.class));

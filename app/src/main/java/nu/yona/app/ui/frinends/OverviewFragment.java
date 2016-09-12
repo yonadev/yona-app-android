@@ -25,6 +25,8 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.YonaBuddies;
@@ -66,6 +68,7 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
                 if (yonaBuddy != null && !yonaBuddy.getSendingStatus().equals(StatusEnum.REQUESTED.getStatus())) {
                     Intent friendIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
                     Bundle bundle = new Bundle();
+                    YonaAnalytics.createTapEventWithCategory(getString(R.string.overiview), AnalyticsConstant.FRIEND_TIMELINE);
                     if (yonaBuddy.getLinks() != null) {
                         bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, yonaBuddy.getLinks().getYonaDailyActivityReports(), yonaBuddy.getLinks().getYonaWeeklyActivityReports(), 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
                     } else {
@@ -91,13 +94,8 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
         mFriendsRecyclerView.setAdapter(mOverViewAdapter);
         setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(mOverViewAdapter));
         YonaApplication.getEventChangeManager().registerListener(this);
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         getBuddies();
+        return view;
     }
 
     @Override

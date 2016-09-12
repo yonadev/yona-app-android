@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
@@ -61,6 +63,7 @@ public class AddFriendFragment extends BaseFragment {
             public void onPageSelected(int position) {
                 if (position == ADD_FRIENT_CONTACT) {
                     YonaActivity.getActivity().checkContactPermission();
+                    updateView(position);
                 }
             }
 
@@ -75,6 +78,9 @@ public class AddFriendFragment extends BaseFragment {
         super.onResume();
         viewPager.setCurrentItem(ADD_FRIEND_MANUALLY, true);
         setTitleAndIcon();
+        if (viewPager != null) {
+            updateView(viewPager.getCurrentItem());
+        }
     }
 
     private void setTitleAndIcon() {
@@ -93,5 +99,18 @@ public class AddFriendFragment extends BaseFragment {
         tabLayout.setTabTextColors(ContextCompat.getColor(getActivity(), R.color.friends_deselected_tab), ContextCompat.getColor(getActivity(), R.color.friends_selected_tab));
         tabLayout.setLayoutParams(mParams);
         tabLayout.setBackgroundResource(R.color.mid_blue_two);
+    }
+
+    private void updateView(int position) {
+        if (position == 0) {
+            YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.ADD_FRIEND, getString(R.string.addfriendmanually));
+        } else {
+            YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.ADD_FRIEND, getString(R.string.addfriendcontacts));
+        }
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.SCREEN_BASE_FRAGMENT;
     }
 }

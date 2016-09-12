@@ -27,6 +27,8 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontNumberTextView;
@@ -117,7 +119,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
             }
         });
         YonaApplication.getEventChangeManager().registerListener(this);
-
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_REGISTRATION_STEP_TWO));
         return view;
     }
 
@@ -144,6 +146,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         String number = getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length());
         String phonenumber = number.replace(" ", "");
         if (validateMobileNumber(phonenumber) && validateNickName()) {
+            YonaAnalytics.createTapEvent(getString(R.string.next));
             YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setMobileNumber(phonenumber);
             YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setNickName(nickName.getText().toString());
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT, null);
@@ -170,5 +173,10 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.REGISTRATION_STEP_TWO;
     }
 }

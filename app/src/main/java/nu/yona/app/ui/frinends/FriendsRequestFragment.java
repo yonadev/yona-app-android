@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import nu.yona.app.R;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.MessageBody;
@@ -100,6 +102,7 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
         mTxtContentTitle = (YonaFontTextView) view.findViewById(R.id.content_title);
         mTxtContentDesc = (YonaFontTextView) view.findViewById(R.id.content_desc);
         populateView();
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_FRIEND_REQUEST));
         return view;
     }
 
@@ -169,11 +172,13 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
             case R.id.btnAccepter:
                 if (!TextUtils.isEmpty(mYonaMessage.getLinks().getYonaAccept().getHref())) {
                     responseFriendRequest(mYonaMessage.getLinks().getYonaAccept().getHref());
+                    YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.FRIEND_REQUEST_SCREEN, getString(R.string.accept));
                 }
                 break;
             case R.id.btnReject:
                 if (!TextUtils.isEmpty(mYonaMessage.getLinks().getYonaReject().getHref())) {
                     responseFriendRequest(mYonaMessage.getLinks().getYonaReject().getHref());
+                    YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.FRIEND_REQUEST_SCREEN, getString(R.string.reject));
                 }
                 break;
             default:
@@ -208,5 +213,10 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
      */
     private void goBackToScreen() {
         YonaActivity.getActivity().onBackPressed();
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.FRIEND_REQUEST_SCREEN;
     }
 }

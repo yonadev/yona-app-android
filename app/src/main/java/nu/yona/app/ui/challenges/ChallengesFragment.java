@@ -19,6 +19,8 @@ import android.widget.ImageView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListener;
@@ -43,6 +45,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
     private ZoneFragment zoneFragment;
     private NoGoFragment noGoFragment;
     private int currentTab = 0;
+    private boolean allowTracking = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +94,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_TWO), TAB_ALPHA_UNSELECTED);
         updateTabViewBackground(tabLayout.getTabAt(TAB_INDEX_THREE), TAB_ALPHA_SELECTED);
         updateTab();
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_CHALLENGES_SCREEN));
         return view;
     }
 
@@ -137,17 +141,39 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
      * This is require to update all tabs count.
      */
     private void updateTab() {
+        allowTracking = false;
         currentTab = tabLayout.getSelectedTabPosition();
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             tabLayout.getTabAt(i).select();
         }
         tabLayout.getTabAt(currentTab).select();
+        allowTracking = true;
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setTitleAndIcon();
+        if (viewPager != null) {
+            showOptionsInSelectedTab(viewPager.getCurrentItem());
+        }
+    }
+
+    private void showOptionsInSelectedTab(int position) {
+        if (allowTracking) {
+            switch (position) {
+                case TAB_INDEX_ONE:
+                    YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.CHALLENGES_SCREEN, getString(R.string.challengescredit));
+                    break;
+                case TAB_INDEX_TWO:
+                    YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.CHALLENGES_SCREEN, getString(R.string.timezone));
+                    break;
+                case TAB_INDEX_THREE:
+                default:
+                    YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.CHALLENGES_SCREEN, getString(R.string.challengesnogo));
+                    break;
+            }
+        }
     }
 
     private void setTitleAndIcon() {
@@ -169,6 +195,22 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
         adapter.addFragment(noGoFragment, getString(R.string.challengesnogo));
         viewPager.setOffscreenPageLimit(0);
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                showOptionsInSelectedTab(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 

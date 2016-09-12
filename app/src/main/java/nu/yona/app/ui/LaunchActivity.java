@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.ui.login.LoginActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
@@ -84,6 +86,7 @@ public class LaunchActivity extends BaseActivity {
                 return true;
             }
         });
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
     }
 
     /**

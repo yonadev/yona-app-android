@@ -176,7 +176,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (!TextUtils.isEmpty(screenTitle)) {
             updateTitle(screenTitle);
@@ -184,7 +184,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         if (timer != null) {
             timer.cancel();

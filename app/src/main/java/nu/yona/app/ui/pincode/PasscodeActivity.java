@@ -20,6 +20,8 @@ import android.view.View;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
@@ -62,9 +64,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
 
     @Override
     public void onBackPressed() {
-        if (PASSCODE_STEP != 1) {
-            finish();
-        }
+        doBack();
     }
 
     @Override
@@ -78,6 +78,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
             first_passcode = null;
             loadPasscodeView();
         } else {
+            YonaAnalytics.createTapEvent(AnalyticsConstant.BACK_FROM_PASSCODE_SCREEN);
             finish();
         }
     }
@@ -87,6 +88,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
         if (getIntent().getExtras() != null && getIntent().getExtras().get(AppConstant.COLOR_CODE) != null) {
             bPasscode.putAll(getIntent().getExtras());
         }
+        bPasscode.putString(AppConstant.PASSCODE_SCREEN_NAME, AnalyticsConstant.PASSCODE_SCREEN);
         bPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
         PasscodeFragment passcodeFragment = new PasscodeFragment();
         passcodeFragment.setArguments(bPasscode);
@@ -99,6 +101,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
             bVerifyPasscode.putAll(getIntent().getExtras());
         }
         bVerifyPasscode.putInt(AppConstant.COLOR_CODE, colorCode);
+        bVerifyPasscode.putString(AppConstant.PASSCODE_SCREEN_NAME, AnalyticsConstant.REENTER_PASSCODE_SCREEN);
         PasscodeFragment verifyPasscodeFragment = new PasscodeFragment();
         verifyPasscodeFragment.setArguments(bVerifyPasscode);
         return verifyPasscodeFragment;
@@ -122,7 +125,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         hideSoftInput();
     }
