@@ -178,7 +178,7 @@
     <string name="comment">Bericht</string>
     <string name="useraccountdeleted">Gebruikersaccount verwijderd</string>
     <string name="send">VERSTUREN</string>
-    <string name="reply">Reply</string>
+    <string name="reply">Beantwoorden</string>
     <string name="useralreadyregister">User already register with this number.</string>
     <string name="file_write_permission">Laat File Write Toestemming</string>
     <string name="file_write_permission_detail">Yona wil bestanden op je telefoon bewaren. Je wordt doorgestuurd naar instellingen. Klik op \"Toestaan\" en zet Toestemming van opslag \"aan\".</string>

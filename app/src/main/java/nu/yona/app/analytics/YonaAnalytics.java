@@ -79,26 +79,6 @@ public class YonaAnalytics {
                     .setCategory(getCurrentCategoryId())
                     .setAction(action)
                     .setLabel(label);
-
-            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-
-            if (user == null) {
-                return;
-            } else if (!(user.getLinks() != null && user.getLinks().getSelf() != null && !TextUtils.isEmpty(user.getLinks().getSelf().getHref()))) {
-                return;
-            }
-            String userLink = user.getLinks().getSelf().getHref();
-            eb.setCustomDimension(1, userLink); //user id
-            if (extraDimensions != null) {
-                int index = 3;
-                for (String s : extraDimensions) {
-                    eb.setCustomDimension(index, s);
-                    index++;
-                }
-            }
-            if (metrics != 0) {
-                Metrics.registerMetrics(eb, metrics);
-            }
             t.send(eb.build());
         }
     }
