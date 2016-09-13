@@ -21,6 +21,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import nu.yona.app.R;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
+import nu.yona.app.analytics.YonaAnalytics.BackHook;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.ApiList;
@@ -56,6 +59,7 @@ public class PrivacyFragment extends BaseFragment {
                 YonaActivity.getActivity().showLoadingView(false, null);
             }
         });
+        setHook(new BackHook(AnalyticsConstant.BACK_FROM_SCREEN_PRIVACY));
         return view;
     }
 
@@ -69,5 +73,10 @@ public class PrivacyFragment extends BaseFragment {
         leftIcon.setVisibility(View.GONE);
         toolbarTitle.setText(getString(R.string.privacy));
         rightIcon.setVisibility(View.GONE);
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.SCREEN_PRIVACY;
     }
 }

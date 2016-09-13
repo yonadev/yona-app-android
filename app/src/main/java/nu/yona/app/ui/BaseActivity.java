@@ -19,15 +19,20 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import nu.yona.app.R;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.Categorizable;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.customview.CustomProgressDialog;
 
 /**
  * Created by kinnarvasa on 18/03/16.
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements Categorizable {
 
     private CustomProgressDialog progressDialog;
     private InputMethodManager inputMethodManager;
+    private Runnable backPressListener = null;
+    private PauseResumeHook hook;
 
     /**
      * Show loading view.
@@ -94,6 +99,23 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (hook != null) {
+            hook.onPause(this);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        YonaAnalytics.updateScreen(this);
+        if (hook != null) {
+            hook.onResume(this);
+        }
+    }
+
     /**
      * Hide the Keyboard
      */
@@ -107,5 +129,29 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (backPressListener != null) {
+            backPressListener.run();
+        }
 
+        super.onBackPressed();
+    }
+
+    public void addBackPressListener(Runnable r) {
+        backPressListener = r;
+    }
+
+    public void clearBackPressListener() {
+        backPressListener = null;
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.SCREEN_BASE_FRAGMENT;
+    }
+
+    public void setHook(PauseResumeHook hook) {
+        this.hook = hook;
+    }
 }

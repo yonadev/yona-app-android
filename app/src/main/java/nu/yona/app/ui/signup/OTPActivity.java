@@ -24,6 +24,8 @@ import java.util.Date;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
@@ -61,7 +63,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0) > new Date().getTime()) {
             showTimer();
@@ -90,6 +92,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
             Bundle bPasscode = new Bundle();
             bPasscode.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(this, R.color.grape));
             bPasscode.putString(AppConstant.SCREEN_TYPE, AppConstant.OTP);
+            bPasscode.putString(AppConstant.PASSCODE_SCREEN_NAME, AnalyticsConstant.PASSCODE_SCREEN);
             otpFragment = new PasscodeFragment();
             otpFragment.setArguments(bPasscode);
         }
@@ -162,6 +165,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        YonaAnalytics.createTapEvent(AnalyticsConstant.BACK_FROM_OTP_SCREEN);
         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
         finish();
     }
@@ -201,5 +205,4 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
         ActivityCompat.startActivity(this, intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
         finish();
     }
-
 }

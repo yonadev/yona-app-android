@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nu.yona.app.R;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 
 /**
  * Created by kinnarvasa on 21/03/16.

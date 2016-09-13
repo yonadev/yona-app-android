@@ -31,6 +31,8 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -170,6 +172,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             @Override
             public void onClick(View v) {
                 if (viewPager.getCurrentItem() != 0) {
+                    YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.PREVIOUS);
                     viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
                 }
             }
@@ -178,6 +181,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             @Override
             public void onClick(View v) {
                 if (viewPager.getCurrentItem() != dayActivityList.size() - 1) {
+                    YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.NEXT);
                     viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                 }
             }
@@ -187,7 +191,6 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(messageTxt.getText())) {
-
                     if (isUserCommenting()) {
                         replyComment(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null);
                     } else {
@@ -198,6 +201,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         });
 
         YonaApplication.getEventChangeManager().registerListener(this);
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_DAY_ACTIVITY_DETAIL_SCREEN));
         return view;
     }
 
@@ -407,6 +411,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 
     private void doComment(String message, String url, boolean isreplaying) {
         YonaActivity.getActivity().showLoadingView(true, null);
+        YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.SEND);
         if (activity != null && activity.getComments() != null) {
             if (activity.getComments().getPage() != null) {
                 activity.getComments().setPage(null);
@@ -473,4 +478,9 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
         isUserCommenting = userCommenting;
     }
 
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN;
+    }
 }

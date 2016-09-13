@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.state.EventChangeListener;
@@ -54,6 +56,7 @@ public class CreditFragment extends BaseGoalCreateFragment implements View.OnCli
         switch (v.getId()) {
             case R.id.img_add_goal:
                 //show new goal list creation view
+                YonaAnalytics.createTapEventWithCategory(getString(R.string.challengescredit), AnalyticsConstant.ADD_GOAL);
                 mDescTab.setText(getActivity().getString(R.string.challengestegoedheader));
                 showNewListOfGoalView(ChallengesEnum.CREDIT_TAB.getTab());
                 break;

@@ -28,6 +28,8 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.Day;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -235,6 +237,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
         if (!TextUtils.isEmpty(yonaWeekDetailUrl)) {
             setDayActivityDetails();
         }
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_WEEK_ACTIVITY_DETAIL_SCREEN));
         YonaApplication.getEventChangeManager().registerListener(this);
         return view;
     }
@@ -250,12 +253,14 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 
     private void previousDayActivity() {
         if (weekActivity != null) {
+            YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.PREVIOUS);
             loadWeekActivity(weekActivity.getLinks().getPrev().getHref());
         }
     }
 
     private void nextDayActivity() {
         if (weekActivity != null) {
+            YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.NEXT);
             loadWeekActivity(weekActivity.getLinks().getNext().getHref());
         }
     }
@@ -434,6 +439,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 
     private void doComment(String message, String url, final boolean isreplaying) {
         YonaActivity.getActivity().showLoadingView(true, null);
+        YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.SEND);
         if (weekActivity != null && weekActivity.getComments() != null) {
             if (weekActivity.getComments().getPage() != null) {
                 weekActivity.getComments().setPage(null);
@@ -496,5 +502,10 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 
     public void setUserCommenting(boolean userCommenting) {
         isUserCommenting = userCommenting;
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN;
     }
 }

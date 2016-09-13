@@ -145,6 +145,8 @@ public interface AppConstant {
      * The constant PASSCODE_TEXT_BACKGROUND.
      */
     String PASSCODE_TEXT_BACKGROUND = "passcodeBackground";
+
+    String PASSCODE_SCREEN_NAME = "passcodeScreenName";
     /**
      * The constant FROM_LOGIN.
      */

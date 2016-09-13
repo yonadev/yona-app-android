@@ -31,6 +31,8 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.Day;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -191,6 +193,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             @Override
             public void onClick(View v) {
                 if (viewPager.getCurrentItem() != 0) {
+                    YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.PREVIOUS);
                     viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
                 }
             }
@@ -199,6 +202,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             @Override
             public void onClick(View v) {
                 if (viewPager.getCurrentItem() != weekActivityList.size() - 1) {
+                    YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.NEXT);
                     viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                 }
             }
@@ -235,6 +239,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             }
         });
         YonaApplication.getEventChangeManager().registerListener(this);
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_WEEK_ACTIVITY_DETAIL_SCREEN));
         return view;
     }
 
@@ -415,6 +420,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 
     private void doComment(String message, String url, boolean isreplaying) {
         YonaActivity.getActivity().showLoadingView(true, null);
+        YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.SEND);
         if (activity != null && activity.getComments() != null) {
             if (activity.getComments().getPage() != null) {
                 activity.getComments().setPage(null);
@@ -479,5 +485,10 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 
     public void setUserCommenting(boolean userCommenting) {
         isUserCommenting = userCommenting;
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN;
     }
 }

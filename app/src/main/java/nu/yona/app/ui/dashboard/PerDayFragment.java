@@ -25,6 +25,7 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -122,6 +123,7 @@ public class PerDayFragment extends BaseFragment {
     }
 
     private void openDetailPage(DayActivity activity) {
+        YonaAnalytics.createTapEventWithCategory(getString(R.string.perday), activity.getYonaGoal().getActivityCategoryName().toUpperCase());
         Intent intent = new Intent(IntentEnum.ACTION_ACTIVITY_DETAIL_VIEW.getActionString());
         intent.putExtra(AppConstant.OBJECT, activity);
         intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);

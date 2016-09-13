@@ -32,6 +32,8 @@ import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
@@ -53,7 +55,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
     private YonaFontNumberTextView mobileNumber;
     private TextInputLayout firstNameLayout, lastNameLayout, emailLayout, mobileNumberLayout;
     private boolean isAdding;
-    
+
     private final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -68,7 +70,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ')  && isAdding) {
+            if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ') && isAdding) {
                 firstName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 lastName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
             }
@@ -220,6 +222,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
     private void addFriend() {
         ((YonaActivity) getActivity()).showLoadingView(true, null);
+        YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.ADD_FRIEND, getString(R.string.invitefriend));
         APIManager.getInstance().getBuddyManager().addBuddy(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), mobileNumber.getText().toString(), new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {

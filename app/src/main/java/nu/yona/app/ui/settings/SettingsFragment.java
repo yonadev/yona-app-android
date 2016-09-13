@@ -27,6 +27,8 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.impl.DeviceManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
@@ -63,13 +65,17 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.changepin))) {
+                    YonaAnalytics.createTapEvent(getString(R.string.changepin));
                     showChangePin();
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.privacy))) {
+                    YonaAnalytics.createTapEvent(getString(R.string.privacy));
                     showPrivacy();
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.adddevice))) {
+                    YonaAnalytics.createTapEvent(getString(R.string.adddevice));
                     YonaActivity.getActivity().showLoadingView(true, null);
                     addDevice(AppUtils.getRandomString(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT));
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.deleteuser))) {
+                    YonaAnalytics.createTapEvent(getString(R.string.deleteuser));
                     unsubscribeUser();
                 }
             }
@@ -80,12 +86,7 @@ public class SettingsFragment extends BaseFragment {
         } catch (PackageManager.NameNotFoundException e) {
             AppUtils.throwException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
         }
-//        for (int i = 0; i < AppConstant.environmentList.length; i++) {
-//            if (AppConstant.environemntPath[i].toString().equalsIgnoreCase(YonaApplication.getEventChangeManager().getDataState().getServerUrl())) {
-//                ((TextView) view.findViewById(R.id.label_server)).setText(getString(R.string.environemnt, AppConstant.environmentList[i]));
-//                break;
-//            }
-//        }
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_SCREEN_SETTINGS));
         return view;
     }
 
@@ -116,11 +117,13 @@ public class SettingsFragment extends BaseFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        YonaAnalytics.createTapEvent(getString(R.string.ok));
                         doUnsubscribe();
                     }
                 }, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        YonaAnalytics.createTapEvent(getString(R.string.cancel));
                         dialog.dismiss();
                     }
                 });
@@ -217,5 +220,10 @@ public class SettingsFragment extends BaseFragment {
             AppUtils.throwException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
             showAlert(e.toString(), false);
         }
+    }
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.SCREEN_SETTINGS;
     }
 }

@@ -73,6 +73,8 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                 holder.txtFooterMsg.setText(yonaObject.getNickname());
                 if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED) {
                     holder.img_avtar.setImageResource(R.drawable.adult_sad);
+                    holder.img_avtar.setVisibility(View.VISIBLE);
+                    holder.profileIconTxt.setVisibility(View.GONE);
                 } else {
                     holder.profileIconTxt.setVisibility(View.VISIBLE);
                     holder.profileIconTxt.setText(yonaObject.getNickname().substring(0, 1).toUpperCase());

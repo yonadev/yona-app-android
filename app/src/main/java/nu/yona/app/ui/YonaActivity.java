@@ -258,7 +258,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         mStateSaved = false;
         if (isStateActive) {
             isStateActive = false;
@@ -368,7 +368,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         if (launchedPinActiivty) {
             isToDisplayLogin = false;

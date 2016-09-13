@@ -36,6 +36,8 @@ import android.widget.TextView;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
@@ -128,6 +130,8 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
             }
         };
         inflateView(view);
+
+        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_EDIT_PROFILE));
 
         YonaApplication.getEventChangeManager().registerListener(this);
         return view;
@@ -222,6 +226,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
     private void goToNext() {
         if (validateFields()) {
+            YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.SCREEN_EDIT_PROFILE, AnalyticsConstant.SAVE);
             updateUserProfile();
         }
     }
@@ -383,5 +388,11 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         yonaPref.putBoolean(PreferenceConstant.STEP_OTP, false);
         yonaPref.putBoolean(PreferenceConstant.PROFILE_OTP_STEP, true);
         yonaPref.commit();
+    }
+
+
+    @Override
+    public String getAnalyticsCategory() {
+        return AnalyticsConstant.SCREEN_EDIT_PROFILE;
     }
 }

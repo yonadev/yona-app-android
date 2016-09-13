@@ -154,4 +154,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile project(path: ':openvpn')
+    compile 'com.google.android.gms:play-services-analytics:9.2.0'
 }

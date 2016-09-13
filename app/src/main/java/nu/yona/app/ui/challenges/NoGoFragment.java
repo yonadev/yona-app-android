@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.enums.ChallengesEnum;
 import nu.yona.app.state.EventChangeListener;
@@ -57,6 +59,7 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
         switch (v.getId()) {
             case R.id.img_add_goal:
                 //show new goal list creation view
+                YonaAnalytics.createTapEventWithCategory(getString(R.string.challengesnogo), AnalyticsConstant.ADD_GOAL);
                 mDescTab.setText(getActivity().getString(R.string.challenge_nogo_add_title));
                 showNewListOfGoalView(ChallengesEnum.NO_GO_TAB.getTab());
                 break;
@@ -75,5 +78,4 @@ public class NoGoFragment extends BaseGoalCreateFragment implements View.OnClick
                 break;
         }
     }
-
 }
