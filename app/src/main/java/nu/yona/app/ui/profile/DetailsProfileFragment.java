@@ -97,13 +97,13 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         String number;
 
         firstName.setClickable(false);
-        firstName.setKeyListener(null);
+        firstName.setFocusable(false);
 
         lastName.setClickable(false);
-        lastName.setKeyListener(null);
+        lastName.setFocusable(false);
 
         nickName.setClickable(false);
-        nickName.setKeyListener(null);
+        nickName.setFocusable(false);
 
         if (user != null && yonaMessage != null) {
             firstName.setText(TextUtils.isEmpty(user.getFirstName()) ? getString(R.string.blank) : user.getFirstName());
@@ -151,7 +151,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
         int NUMBER_LENGTH = 9;
 
         mobileNumber.setClickable(false);
-        mobileNumber.setKeyListener(null);
+        mobileNumber.setFocusable(false);
 
         if (!TextUtils.isEmpty(number) && number.length() > NUMBER_LENGTH) {
             number = number.substring(number.length() - NUMBER_LENGTH);
