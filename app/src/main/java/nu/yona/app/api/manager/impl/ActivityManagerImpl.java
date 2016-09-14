@@ -945,6 +945,19 @@ public class ActivityManagerImpl implements ActivityManager {
         return null;
     }
 
+    public String getActivityCategoryName(String categoryPath) {
+        ActivityCategories categories = APIManager.getInstance().getActivityCategoryManager().getListOfActivityCategories();
+        if (categories != null) {
+            List<YonaActivityCategories> categoriesList = categories.getEmbeddedActivityCategories().getYonaActivityCategories();
+            for (YonaActivityCategories yonaActivityCategories : categoriesList) {
+                if (yonaActivityCategories.get_links().getSelf().getHref().equals(categoryPath)) {
+                    return yonaActivityCategories.getName();
+                }
+            }
+        }
+        return null;
+    }
+
     private DayActivity generateTimeZoneSpread(DayActivity activity) {
 
         if (activity.getSpread() != null) {
