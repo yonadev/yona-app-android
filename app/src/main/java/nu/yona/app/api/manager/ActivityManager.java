@@ -91,4 +91,6 @@ public interface ActivityManager {
     void addComment(String url,boolean isReplaying, String comment, final DataLoadListener listener);
 
     void addComment(WeekActivity dayActivity, String comment, final DataLoadListener listener);
+
+    String getActivityCategoryName(String categoryPath);
 }

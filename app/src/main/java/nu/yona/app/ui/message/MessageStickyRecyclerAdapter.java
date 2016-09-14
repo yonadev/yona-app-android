@@ -76,6 +76,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                     holder.img_avtar.setVisibility(View.VISIBLE);
                     holder.profileIconTxt.setVisibility(View.GONE);
                 } else {
+                    holder.img_avtar.setVisibility(View.GONE);
                     holder.profileIconTxt.setVisibility(View.VISIBLE);
                     holder.profileIconTxt.setText(yonaObject.getNickname().substring(0, 1).toUpperCase());
                     holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));

@@ -279,6 +279,8 @@ public interface AppConstant {
      */
     String YONA_BUDDY_OBJ = "yonaBuddyObj";
 
+    String YONA_MESSAGE = "yonaMessage";
+
     String YONA_DAY_DEATIL_URL = "dayDetailUrl";
     String YONA_WEEK_DETAIL_URL = "weekDetailUrl";
     /**

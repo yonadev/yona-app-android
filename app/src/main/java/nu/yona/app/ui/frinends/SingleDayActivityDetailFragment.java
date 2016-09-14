@@ -76,6 +76,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
     private CommentsAdapter commentsAdapter;
     private YonaMessage currentReplayingMsg;
     private ImageView chatBoxImage;
+    private YonaMessage notificationMessage;
 
     private View.OnClickListener messageItemClick = new View.OnClickListener() {
         @Override
@@ -135,6 +136,9 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
             }
             if (getArguments().get(AppConstant.YONA_DAY_DEATIL_URL) != null) {
                 yonaDayDetailUrl = (String) getArguments().get(AppConstant.YONA_DAY_DEATIL_URL);
+            }
+            if (getArguments().get(AppConstant.YONA_MESSAGE) != null) {
+                notificationMessage = (YonaMessage) getArguments().get(AppConstant.YONA_MESSAGE);
             }
         }
     }
@@ -277,15 +281,19 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
         } else {
             leftIcon.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
-            if (mYonaHeaderTheme.isBuddyFlow()) {
+            if (notificationMessage != null && notificationMessage.getLinks() != null && notificationMessage.getLinks().getYonaBuddy() != null) {
                 rightIconProfile.setVisibility(View.VISIBLE);
                 profileIconTxt.setVisibility(View.VISIBLE);
                 profileIconTxt.setText(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname().substring(0, 1).toUpperCase());
                 profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
                 profileClickEvent(profileIconTxt);
             }
+            if (notificationMessage != null && notificationMessage.getLinks() != null && notificationMessage.getLinks().getYonaActivityCategory() != null) {
+                String categoryName = APIManager.getInstance().getActivityManager().getActivityCategoryName(notificationMessage.getLinks().getYonaActivityCategory().getHref());
+                toolbarTitle.setText(categoryName != null ? categoryName.toUpperCase() : "");
+                toolbarTitle.setVisibility(View.VISIBLE);
+            }
         }
-        toolbarTitle.setText(mYonaHeaderTheme.getHeader_title());
     }
 
     private void profileClickEvent(View profileView) {

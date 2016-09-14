@@ -104,10 +104,17 @@ public class NotificationFragment extends BaseFragment {
                         && yonaMessage.getLinks().getYonaDayDetails() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getYonaDayDetails().getHref())) {
                     mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
                     mMessageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, yonaMessage.getLinks().getYonaDayDetails().getHref());
-                    mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
+                    if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getSelf() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getSelf().getHref())) {
+                        mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
+                    } else {
+                        mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
+                    }
                     YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, NotificationEnum.GOALCONFLICTMESSAGE.getNotificationType());
                 }
                 updateStatusAsRead(yonaMessage);
+                if (mMessageIntent != null) {
+                    mMessageIntent.putExtra(AppConstant.YONA_MESSAGE, yonaMessage);
+                }
                 YonaActivity.getActivity().replaceFragment(mMessageIntent);
             }
         }
