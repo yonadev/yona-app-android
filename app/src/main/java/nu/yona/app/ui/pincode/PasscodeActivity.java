@@ -196,6 +196,8 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
         }, AppConstant.TIMER_DELAY);
 
     }
+
+
 }
 
 

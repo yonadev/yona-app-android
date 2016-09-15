@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
 import nu.yona.app.customview.YonaFontNumberTextView;
 import nu.yona.app.state.EventChangeListener;
@@ -202,10 +203,5 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             }
         }
 
-    }
-
-    @Override
-    public String getAnalyticsCategory() {
-        return passcodeScreenName;
     }
 }
