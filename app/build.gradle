@@ -7,7 +7,7 @@ android {
         applicationId "nu.yona.app"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 4
+        versionCode 5
         versionName "1.0.1"
     }
     buildTypes {
@@ -103,7 +103,7 @@ def getBuildNumber() {
     if ('BUILD_NUMBER' in project.ext.properties) {
         buildNumber = project.ext.properties['BUILD_NUMBER']
     } else {
-        buildNumber = "4"
+        buildNumber = "5"
     }
     return buildNumber
 }
