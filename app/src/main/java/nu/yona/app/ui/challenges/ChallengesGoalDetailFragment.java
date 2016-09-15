@@ -227,7 +227,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 } else {
                     btnChallenges.setVisibility(View.GONE);
-                    mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, (yonaActivityCategories != null && !TextUtils.isEmpty(yonaActivityCategories.getName())) ? yonaActivityCategories.getName() : ""));
+                    mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext));
                     mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_nogo);
                     view.findViewById(R.id.goalTypeView).setVisibility(View.GONE);
                 }
@@ -249,7 +249,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
                     ((YonaFontTextView) view.findViewById(R.id.txt_header_text)).setText(getString(R.string.timezonegoalsubtext));
                     view.findViewById(R.id.img_add_goal).setOnClickListener(this);
                 } else if (currentTab.equalsIgnoreCase(GoalsEnum.NOGO.getActionString())) {
-                    mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext, yonaActivityCategories.getName()));
+                    mHTxtGoalSubscribe.setText(getString(R.string.nogoheadersubtext));
                     mHGoalTypeImg.setImageResource(R.drawable.icn_challenge_nogo);
                     view.findViewById(R.id.goalTypeView).setVisibility(View.GONE);
                 }

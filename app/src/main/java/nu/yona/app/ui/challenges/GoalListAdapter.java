@@ -89,7 +89,7 @@ class GoalListAdapter<T> extends BaseAdapter {
             YonaGoal mYonaGoal = (YonaGoal) getItem(position);
             if (mYonaGoal != null) {
                 if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.BUDGET_GOAL.getActionString()) && mYonaGoal.getMaxDurationMinutes() > 0) {
-                    goalViewHolder.desc_goal.setText(mContext.getString(R.string.challengesbudgetsubtext, mYonaGoal.getMaxDurationMinutes(), mYonaGoal.getActivityCategoryName()));
+                    goalViewHolder.desc_goal.setText(mContext.getString(R.string.challengesbudgetsubtext, mYonaGoal.getMaxDurationMinutes() + ""));
                 } else if (mYonaGoal.getType().equalsIgnoreCase(GoalsEnum.TIME_ZONE_GOAL.getActionString()) && (mYonaGoal.getZones() != null && mYonaGoal.getZones().size() > 0)) {
                     StringBuilder timesBuilder = new StringBuilder();
                     for (String timesZone : mYonaGoal.getZones()) {
@@ -100,7 +100,7 @@ class GoalListAdapter<T> extends BaseAdapter {
                     }
                     goalViewHolder.desc_goal.setText(mContext.getString(R.string.challengestimzoesubtext, timesBuilder.toString()));
                 } else {
-                    goalViewHolder.desc_goal.setText(mContext.getString(R.string.challengesnogosubText, mYonaGoal.getActivityCategoryName()));
+                    goalViewHolder.desc_goal.setText(mContext.getString(R.string.challengesnogosubText));
                 }
                 goalViewHolder.title_goal.setText(mYonaGoal.getActivityCategoryName());
             }
