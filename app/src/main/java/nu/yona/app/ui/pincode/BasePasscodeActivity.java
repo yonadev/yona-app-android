@@ -28,6 +28,8 @@ import java.util.TimerTask;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeManager;
@@ -249,6 +251,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void populateOTPView() {
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.OTP_SCREEN, AnalyticsConstant.OTP_SCREEN);
         accont_image.setImageResource(R.drawable.add_avatar);
         passcode_title.setText(getString(R.string.accountlogin));
         passcode_description.setText(getString(R.string.accountloginsecuritymessage));
@@ -272,6 +275,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void populatePinResetVerificationView() {
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.VERIFY_PIN_BEFORE_RESET, AnalyticsConstant.VERIFY_PIN_BEFORE_RESET);
         accont_image.setImageResource(R.drawable.icn_secure);
         passcode_title.setText(getString(R.string.settings_current_pin));
         passcode_description.setText(getString(R.string.settings_current_pin_message));
@@ -285,6 +289,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      * Populate pin reset first step.
      */
     protected void populatePinResetFirstStep() {
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.FIRST_PASSCODE_SCREEN, AnalyticsConstant.FIRST_PASSCODE_SCREEN);
         accont_image.setImageResource(R.drawable.icn_account_created);
         passcode_title.setText(getString(R.string.settings_new_pincode));
         passcode_description.setText(getString(R.string.settings_new_pin_message));
@@ -299,6 +304,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      * Populate pin reset second step.
      */
     protected void populatePinResetSecondStep() {
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.SECOND_PASSCODE_SCREEN, AnalyticsConstant.SECOND_PASSCODE_SCREEN);
         accont_image.setImageResource(R.drawable.icn_account_created);
         passcode_title.setText(getString(R.string.settings_confirm_new_pin));
         passcode_description.setText(getString(R.string.settings_confirm_new_pin_message));
@@ -327,6 +333,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void populateLoginView() {
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LOGIN_PASSCODE_SCREEN, AnalyticsConstant.LOGIN_PASSCODE_SCREEN);
         accont_image.setImageResource(R.drawable.icn_y);
         passcode_title.setText(getString(R.string.passcodetitle));
         passcode_reset.setText(getString(R.string.passcodereset));
@@ -336,6 +343,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      * update screen's text as per account pincode's verification
      */
     protected void populateVerifyPasscodeView() {
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.SECOND_PASSCODE_SCREEN, AnalyticsConstant.SECOND_PASSCODE_SCREEN);
         accont_image.setImageResource(R.drawable.icn_secure);
         passcode_title.setText(getString(R.string.passcodestep2title));
         passcode_description.setText(getString(R.string.passcodestep2desc));
@@ -349,6 +357,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      * update screen's text as per Account pincode creation
      */
     protected void populatePasscodeView() {
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.FIRST_PASSCODE_SCREEN, AnalyticsConstant.FIRST_PASSCODE_SCREEN);
         accont_image.setImageResource(R.drawable.icn_account_created);
         if (isPasscodeFlowRetry) {
             passcode_title.setText(getString(R.string.passcodestep1retrytitle));
@@ -375,7 +384,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
      * Block user.
      */
     protected void blockUser() {
-
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.USER_BLOCK_VIEW, AnalyticsConstant.USER_BLOCK_VIEW);
         passcode_reset.setVisibility(View.GONE);
         passcodeResetBtn.setVisibility(View.VISIBLE);
         passcodeView.setVisibility(View.GONE);
@@ -389,6 +398,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
 
 
     protected void hideTimerFromUser() {
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.OTP_SCREEN, AnalyticsConstant.OTP_SCREEN);
         passcode_reset.setVisibility(View.VISIBLE);
         passcodeResetBtn.setVisibility(View.GONE);
         passcodeView.setVisibility(View.VISIBLE);
@@ -402,7 +412,7 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
     }
 
     protected void showTimerToUser() {
-
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.TIMER_VIEW, AnalyticsConstant.TIMER_VIEW);
         passcode_reset.setVisibility(View.GONE);
         timerLayout.setVisibility(View.VISIBLE);
         passcodeView.setVisibility(View.GONE);

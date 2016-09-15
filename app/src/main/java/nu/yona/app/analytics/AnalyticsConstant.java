@@ -31,8 +31,15 @@ public interface AnalyticsConstant {
     String NOGO_GOAL_SCREEN = "NoGo";
     String PASSCODE_SCREEN = "PasscodeScreen";
     String REENTER_PASSCODE_SCREEN = "ReEnterPasscodeScreen";
+    String VERIFY_PIN_BEFORE_RESET = "VerifyPinBeforeResetScreen";
     String REGISTRATION_STEP_ONE = "RegistrationStepOneScreen";
     String REGISTRATION_STEP_TWO = "RegistrationStepTwoScreen";
+    String FIRST_PASSCODE_SCREEN = "NewPasscodeScreen";
+    String USER_BLOCK_VIEW = "UserBlockScreen";
+    String TIMER_VIEW = "TimerView";
+    String SECOND_PASSCODE_SCREEN = "ReEnterNewPasscodeScreen";
+    String LOGIN_PASSCODE_SCREEN = "LoginPasscodeScreen";
+    String VERIFY_PASSCODE_SCREEN = "VerfiyPasscodeScreen";
     String LOGIN_SCREEN = "LoginScreen";
     String OTP_SCREEN = "OtpScreen";
     String DASHBOARD_SCREEN = "DashboardView";
