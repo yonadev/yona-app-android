@@ -75,7 +75,7 @@
             android:name=".ui.YonaActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustPan"></activity>
 
         <activity
             android:name=".ui.pincode.PasscodeActivity"
