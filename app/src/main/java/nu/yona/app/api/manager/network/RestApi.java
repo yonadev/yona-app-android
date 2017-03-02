@@ -51,16 +51,15 @@ public interface RestApi {
     /********
      * USER
      *
-     * @param yonaPassword the yona password
      * @param body         the body
      * @return the call
      */
     @POST(ApiList.USER)
-    Call<User> registerUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<User> registerUser(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
                             @Body RegisterUser body);
 
     @PUT
-    Call<User> registerUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<User> registerUser(@Url String url, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
                             @Body RegisterUser body);
 
     /**

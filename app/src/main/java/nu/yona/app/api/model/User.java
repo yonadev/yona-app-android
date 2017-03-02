@@ -18,6 +18,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.yona.app.YonaApplication;
+
 /**
  * The type User.
  */
@@ -62,6 +64,10 @@ public class User extends BaseEntity {
     @SerializedName("sslRootCertCN")
     @Expose
     private String sslRootCertCN;
+
+    @SerializedName("yonaPassword")
+    @Expose
+    private String yonaPassword;
 
     /**
      * Gets mobile number confirmation code.
@@ -238,4 +244,14 @@ public class User extends BaseEntity {
     public void setSslRootCertCN(String sslRootCertCN) {
         this.sslRootCertCN = sslRootCertCN;
     }
+
+    public String getYonaPassword() {
+        return this.yonaPassword;
+    }
+
+    public void setYonaPassword(String yonaPassword) {
+        YonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword(yonaPassword);
+        this.yonaPassword = yonaPassword;
+    }
+
 }

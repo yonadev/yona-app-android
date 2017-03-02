@@ -27,6 +27,7 @@
     <string name="challengesnogo">NO-GO</string>
     <string name="changepin">WIJZIG PIN</string>
     <string name="privacy">PRIVACY</string>
+    <string name="contact_us">Contact Us</string>
     <string name="join">DOE MEE</string>
     <string name="login">INLOGGEN</string>
     <string name="previous">VORIGE</string>
@@ -80,8 +81,10 @@
     <string name="challenges.addBudgetGoal.bottomLabelText">De volgende apps zijn onderdeel van deze challenge:</string>
     <string name="challenges.addBudgetGoal.deletedGoalMessage">Verwijder challenge</string>
     <string name="deleteuser">Uitschrijven</string>
+    <string name="usercredential">User Credential</string>
     <string name="challengesaddBudgetGoalcannotDeleteMandatoryGoalMessage">Kan verplichte challenge niet verwijderen</string>
     <string name="deleteusermessage">Uitschrijven betekent dat je alle informatie (vrienden, meldingen, uitdagingen, activiteiten, etc.) op al je apparaten verliest. Druk op OK wanneer dit de bedoeling is.</string>
+    <string name="usercredentialmsg">Alle gegeven zijn encrypted opgeslagen. Om bepaalde problemen op te kunnen lossen moeten we deze decrypten. Gebruik deze optie alleen wanneer het support team hier om vraagt.</string>
     <string name="cancel">ANNULEREN</string>
     <string name="challengesnogoheader">Hier leg je vast waar je helemaal niet wilt komen.</string>
     <string name="challengestijdzoneheader">Kies een categorie waarvoor je een tijdzone wilt instellen</string>
@@ -194,4 +197,5 @@
     <string name="timer_wait_desc">Om veiligheidsredenen is je account geblokkeerd. Activeren kan %1$s nadat je een nieuwe PIN code hebt aangevraagd.</string>
     <string name="choose_number">Choose Number of %1$s</string>
     <string name="message_delete">verwijder</string>
+    <string name="system_message">Message from Yona</string>
 </resources>

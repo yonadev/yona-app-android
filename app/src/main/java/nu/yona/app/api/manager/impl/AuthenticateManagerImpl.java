@@ -98,7 +98,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     }
 
     public void registerUser(String url, RegisterUser user, final DataLoadListener listener) {
-        authNetwork.registerUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), user, new DataLoadListener() {
+        authNetwork.registerUser(url, user, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 if (result != null) {

@@ -27,6 +27,7 @@
     <string name="challengesnogo">NO-GO</string>
     <string name="changepin">CHANGE PIN</string>
     <string name="privacy">PRIVACY</string>
+    <string name="contact_us">Contact Us</string>
     <string name="join">JOIN</string>
     <string name="login">LOGIN</string>
     <string name="previous">PREVIOUS</string>
@@ -80,8 +81,10 @@
     <string name="challenges.addBudgetGoal.bottomLabelText">The following apps are part of this challenge:</string>
     <string name="challenges.addBudgetGoal.deletedGoalMessage">Remove challenge</string>
     <string name="deleteuser">Unsubscribe</string>
+    <string name="usercredential">User Credential</string>
     <string name="challengesaddBudgetGoalcannotDeleteMandatoryGoalMessage">Can\'t remove mandatory challenge</string>
     <string name="deleteusermessage">Unsubscribing means you lose all information (friends, notifications, challenges, activities, etc.) on all of your devices. Press OK if this is intended.</string>
+    <string name="usercredentialmsg">All data is encrypted. To solve some problems we have to decrypt. Only use this option when your support team ask for it.</string>
     <string name="cancel">CANCEL</string>
     <string name="challengesnogoheader">Here you will capture where you do not want to come at all.</string>
     <string name="challengestijdzoneheader">Choose a category from where you want to set a time zone</string>
@@ -196,4 +199,5 @@
     <string name="timer_wait_desc">For security reasons your account blocked. Can activate %1$s after you have applied for a new PIN.</string>
     <string name="choose_number">Choose Number of %1$s</string>
     <string name="message_delete">delete</string>
+    <string name="system_message">Message from Yona</string>
 </resources>
