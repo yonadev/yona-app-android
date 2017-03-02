@@ -40,7 +40,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     public void registerUser(String url, String password, RegisterUser object, boolean isEditMode, final DataLoadListener listener) {
         try {
             if (!isEditMode) {
-                getRestApi().registerUser(password, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
+                getRestApi().registerUser(Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
             } else {
                 getRestApi().updateRegisterUser(url, password, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
             }
@@ -49,9 +49,9 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         }
     }
 
-    public void registerUser(String url, String password, RegisterUser object, DataLoadListener listener) {
+    public void registerUser(String url, RegisterUser object, DataLoadListener listener) {
         try {
-            getRestApi().registerUser(url, password, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
+            getRestApi().registerUser(url, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

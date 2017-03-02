@@ -45,6 +45,8 @@ public enum NotificationEnum {
     DISCLOSURERESPONSEMESSAGE("DisclosureResponseMessage"),
 
     ACTIVITYCOMMENTMESSAGE("ActivityCommentMessage"),
+
+    SYSTEMMESSAGE("SystemMessage"),
     /**
      * None notification enum.
      */

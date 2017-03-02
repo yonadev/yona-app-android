@@ -112,6 +112,8 @@ public enum NotificationMessageEnum {
     GOALCONFLICTMESSAGE_DISCLOSURE_REJECTED(NotificationEnum.GOALCONFLICTMESSAGE, StatusEnum.DISCLOSURE_REJECTED, "DISCLOSURE_REJECTED", 0),
 
     ACTIVITY_COMMENT_MESSAGE(NotificationEnum.ACTIVITYCOMMENTMESSAGE, StatusEnum.NONE, getString(R.string.comment), 0),
+
+    SYSTEM_MESSAGE(NotificationEnum.SYSTEMMESSAGE, StatusEnum.NONE, getString(R.string.system_message), 0),
     /**
      * None none notification message enum.
      */

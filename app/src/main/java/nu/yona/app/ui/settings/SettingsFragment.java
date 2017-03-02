@@ -12,10 +12,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +61,7 @@ public class SettingsFragment extends BaseFragment {
 
         ListView listView = (ListView) view.findViewById(R.id.list_view);
         deviceManager = new DeviceManagerImpl(getActivity());
-        listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.settings_list_item, new String[]{getString(R.string.changepin), getString(R.string.privacy), getString(R.string.adddevice), getString(R.string.deleteuser)}));
+        listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.settings_list_item, new String[]{getString(R.string.changepin), getString(R.string.privacy), getString(R.string.adddevice), getString(R.string.contact_us), getString(R.string.deleteuser)}));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,6 +79,8 @@ public class SettingsFragment extends BaseFragment {
                 } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.deleteuser))) {
                     YonaAnalytics.createTapEvent(getString(R.string.deleteuser));
                     unsubscribeUser();
+                } else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.contact_us))) {
+                    openEmail();
                 }
             }
         });
@@ -220,6 +224,30 @@ public class SettingsFragment extends BaseFragment {
             AppUtils.throwException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
             showAlert(e.toString(), false);
         }
+    }
+
+    private void openEmail() {
+        CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.usercredential), getString(R.string.usercredentialmsg),
+                getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String userCredential = Html.fromHtml("<html> Base URL:" + YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref()
+                                + "<br>" + "Password: " + YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword() + "</html>").toString();
+                        showEmailClient(userCredential);
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showEmailClient("");
+                    }
+                });
+    }
+
+    private void showEmailClient(String userCredential) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data = Uri.parse("mailto:app@yona.nu?subject=Yona" + "&body=" + userCredential);
+        intent.setData(data);
+        startActivity(intent);
     }
 
     @Override
