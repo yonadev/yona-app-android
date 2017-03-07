@@ -85,6 +85,7 @@ import nu.yona.app.ui.frinends.AddFriendFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
 import nu.yona.app.ui.frinends.FriendsRequestFragment;
 import nu.yona.app.ui.frinends.SingleDayActivityDetailFragment;
+import nu.yona.app.ui.message.AdminNotificationFragment;
 import nu.yona.app.ui.message.NotificationFragment;
 import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.ui.profile.EditDetailsProfileFragment;
@@ -776,6 +777,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                             return;
                         }
                         mContent = new SingleWeekDayActivityDetailFragment();
+                        mContent.setArguments(intent.getExtras());
+                        clearFragmentStack = false;
+                        addToBackstack = true;
+                        break;
+                    case ACTION_ADMIN_MESSAGE_DETAIL:
+                        if(mContent instanceof AdminNotificationFragment) {
+                            return;
+                        }
+                        mContent = new AdminNotificationFragment();
                         mContent.setArguments(intent.getExtras());
                         clearFragmentStack = false;
                         addToBackstack = true;

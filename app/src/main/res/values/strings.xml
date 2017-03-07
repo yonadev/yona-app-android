@@ -200,4 +200,5 @@
     <string name="choose_number">Choose Number of %1$s</string>
     <string name="message_delete">delete</string>
     <string name="system_message">Message from Yona</string>
+    <string name="message_from_yona">Message from Yona</string>
 </resources>
