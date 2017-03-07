@@ -48,6 +48,7 @@ public interface AnalyticsConstant {
     String FRIENDS_SCREEN = "FriendsTimelineScreen";
     String ADD_FRIEND = "AddFriend";
     String DAY_ACTIVITY_DETAIL_SCREEN = "DayActivityDetailScreen";
+    String ADMIN_MESSAGE_SCREEN = "AdminMessageScreen";
     String WEEK_ACTIVITY_DETAIL_SCREEN = "WeekActivityDetailScreen";
     String NEXT = "Next";
     String PREVIOUS = "Previous";

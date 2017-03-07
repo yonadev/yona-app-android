@@ -23,7 +23,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.security.MyCipher;
 import nu.yona.app.security.MyCipherData;
 import nu.yona.app.security.PRNGFixes;
-import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
@@ -54,7 +53,7 @@ public class SharedPreference {
      * @return return yona password
      */
     public String getYonaPassword() {
-        if (yonaPwd != null) {
+        if (yonaPwd == null) {
             yonaPwd = getDecryptedKey();
         }
         return yonaPwd;
@@ -108,10 +107,14 @@ public class SharedPreference {
 
 
     private String getDecryptedKey() {
-        byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
-        byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
-        IvParameterSpec iv = new IvParameterSpec(dataIV);
-        return new MyCipher(Build.SERIAL).decryptUTF8(encrypted_data, iv);
+        if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, ""))) {
+            byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
+            byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
+            IvParameterSpec iv = new IvParameterSpec(dataIV);
+            return new MyCipher(Build.SERIAL).decryptUTF8(encrypted_data, iv);
+        } else {
+            return "";
+        }
     }
 
     private byte[] byteToString(String response) {

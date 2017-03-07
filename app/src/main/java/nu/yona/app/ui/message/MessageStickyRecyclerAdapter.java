@@ -69,7 +69,14 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
             } else {
                 holder.swipeLayout.setRightSwipeEnabled(false);
             }
-            if (!TextUtils.isEmpty(yonaObject.getNickname())) {
+            if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.SYSTEM_MESSAGE) {
+                if (!TextUtils.isEmpty(yonaObject.getMessage())) {
+                    holder.txtFooterMsg.setText(yonaObject.getMessage());
+                }
+                holder.profileIconTxt.setVisibility(View.VISIBLE);
+                holder.profileIconTxt.setText(yonaObject.getNickname().substring(0, 1).toUpperCase());
+                holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_admin_round));
+            } else if (!TextUtils.isEmpty(yonaObject.getNickname())) {
                 holder.txtFooterMsg.setText(yonaObject.getNickname());
                 if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED) {
                     holder.img_avtar.setImageResource(R.drawable.adult_sad);
@@ -79,7 +86,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                     holder.img_avtar.setVisibility(View.GONE);
                     holder.profileIconTxt.setVisibility(View.VISIBLE);
                     holder.profileIconTxt.setText(yonaObject.getNickname().substring(0, 1).toUpperCase());
-                    holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
+                    holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
                 }
             }
             if (yonaObject.getLinks() != null && yonaObject.getLinks().getMarkRead() != null && !TextUtils.isEmpty(yonaObject.getLinks().getMarkRead().getHref())) {
@@ -90,6 +97,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
             holder.deleteMsg.setTag(yonaObject);
             holder.messageContainer.setTag(yonaObject);
         }
+
     }
 
     /**

@@ -37,6 +37,7 @@ import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.enums.NotificationEnum;
+import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.ui.BaseFragment;
@@ -66,7 +67,12 @@ public class NotificationFragment extends BaseFragment {
             if (view.getTag() instanceof YonaMessage) {
                 YonaMessage yonaMessage = (YonaMessage) view.getTag();
                 Intent mMessageIntent = null;
-                if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null && yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.ACCEPTED) {
+                if (yonaMessage.getNotificationMessageEnum() == NotificationMessageEnum.SYSTEM_MESSAGE) {
+                    mMessageIntent = new Intent(IntentEnum.ACTION_ADMIN_MESSAGE_DETAIL.getActionString());
+                    mMessageIntent.putExtra(AppConstant.ADMIN_MESSAGE, yonaMessage);
+                    mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
+                    YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, AnalyticsConstant.ADMIN_MESSAGE_SCREEN);
+                } else if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null && yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.ACCEPTED) {
                     mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_PROFILE.getActionString());
                     YonaHeaderTheme yonaHeaderTheme = new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue);
                     mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, yonaHeaderTheme);
