@@ -125,6 +125,19 @@ public class Links extends BaseEntity {
     @SerializedName("yona:markUnread")
     @Expose
     private Href markUnRead;
+
+    @Expose
+    @SerializedName("yona:repliedMessage")
+    private Href repliedMessage;
+
+    public Href getRepliedMessage() {
+        return this.repliedMessage;
+    }
+
+    public void setRepliedMessage(Href repliedMessage) {
+        this.repliedMessage = repliedMessage;
+    }
+
     /**
      * Gets self.
      *

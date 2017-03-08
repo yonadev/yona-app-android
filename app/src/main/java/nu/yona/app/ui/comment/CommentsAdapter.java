@@ -73,12 +73,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                     holder.getProfileImageTxt().setText(mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase());
                     try {
                         if (YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref().contains(mYonaMsg.getLinks().getYonaUser().getHref())) {
-                            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
-                        } else {
                             holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
+                        } else {
+                            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
                         }
                     } catch (Exception e) {
-                        holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
+                        holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
                     }
 
                 }
@@ -101,12 +101,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                     holder.getProfileImageTxt().setText(mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase());
                     try {
                         if (YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref().contains(mYonaMsg.getLinks().getYonaUser().getHref())) {
-                            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
-                        } else {
                             holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
+                        } else {
+                            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
                         }
                     } catch (Exception e) {
-                        holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
+                        holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
                     }
                 }
                 holder.getTxtChildBuddyName().setText(mYonaMsg.getNickname());
@@ -138,13 +138,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
     public int getItemViewType(int position) {
         int viewType = 1;
         YonaMessage currentYonaMsg = listMessages.get(position);
-        if (position > 0) {
-            YonaMessage previousYonaMsg = listMessages.get(position - 1);
-            if (currentYonaMsg != null && currentYonaMsg.getThreadMessageId() != null && previousYonaMsg != null && previousYonaMsg.getThreadMessageId() != null && currentYonaMsg.getThreadMessageId().equalsIgnoreCase(previousYonaMsg.getThreadMessageId())) {
-                viewType = 2;
-            }
+        if (position > 0 && !TextUtils.isEmpty(currentYonaMsg.getLinks().getRepliedMessage().getHref())) {
+            viewType = 2;
         }
-
         return viewType;
     }
 
