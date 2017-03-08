@@ -117,9 +117,9 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
         holder.getProfileImageTxt().setVisibility(View.VISIBLE);
         holder.getProfileImageTxt().setText(dayActivity.getYonaGoal().getNickName().substring(0, 1).toUpperCase());
         if (dayActivity.getLinks().getYonaUser() != null) {
-            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
-        } else {
             holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
+        } else {
+            holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
         }
     }
 
