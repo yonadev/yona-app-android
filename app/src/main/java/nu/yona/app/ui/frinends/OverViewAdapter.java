@@ -84,14 +84,14 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
                     if (username.length() > 0) {
                         holder.profileIconTxt.setVisibility(View.VISIBLE);
                         holder.profileIconTxt.setText(username.substring(0, 1).toUpperCase());
-                        holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
+                        holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
                     }
                 }
             } else if (!TextUtils.isEmpty(yonaObject.getNickname())) {
                 holder.txtFooterMsg.setText(yonaObject.getNickname());
                 holder.profileIconTxt.setVisibility(View.VISIBLE);
                 holder.profileIconTxt.setText(username.substring(0, 1).toUpperCase());
-                holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
+                holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
             }
         }
 
