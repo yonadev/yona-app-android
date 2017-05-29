@@ -27,7 +27,7 @@
     <string name="challengesnogo">NO-GO</string>
     <string name="changepin">CHANGE PIN</string>
     <string name="privacy">PRIVACY</string>
-    <string name="contact_us">Contact Us</string>
+    <string name="contact_us">CONTACT US</string>
     <string name="join">JOIN</string>
     <string name="login">LOGIN</string>
     <string name="previous">PREVIOUS</string>
@@ -63,7 +63,7 @@
     <string name="accountlogin">Account is being created</string>
     <string name="accountloginsecuritymessage">For security, you will receive a code by SMS. Please enter this code below.</string>
     <string name="sendotpagain">Send code again</string>
-    <string name="adddevice">Add device</string>
+    <string name="adddevice">ADD DEVICE</string>
     <string name="yonaadddevicemessage">%1$s enter this passcode on the new device where you like to use Yona.</string>
     <string name="loggedinadddevicemessage">You have not logged on this device before. Go to your primary device (probably your mobile), open Yona, open settings and use \'Add Device\' and enter the fields below.</string>
     <string name="passcode">CODE</string>
@@ -80,7 +80,7 @@
     <string name="challenges.addBudgetGoal.budgetChallengeDescription">Specify how much time you want to spend on %1$s</string>
     <string name="challenges.addBudgetGoal.bottomLabelText">The following apps are part of this challenge:</string>
     <string name="challenges.addBudgetGoal.deletedGoalMessage">Remove challenge</string>
-    <string name="deleteuser">Unsubscribe</string>
+    <string name="deleteuser">UNSUBSCRIBE</string>
     <string name="usercredential">User Credential</string>
     <string name="challengesaddBudgetGoalcannotDeleteMandatoryGoalMessage">Can\'t remove mandatory challenge</string>
     <string name="deleteusermessage">Unsubscribing means you lose all information (friends, notifications, challenges, activities, etc.) on all of your devices. Press OK if this is intended.</string>
