@@ -782,7 +782,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         addToBackstack = true;
                         break;
                     case ACTION_ADMIN_MESSAGE_DETAIL:
-                        if(mContent instanceof AdminNotificationFragment) {
+                        if (mContent instanceof AdminNotificationFragment) {
                             return;
                         }
                         mContent = new AdminNotificationFragment();
@@ -1268,24 +1268,22 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void checkVPN() {
-        if (!getResources().getBoolean(R.bool.developerMode)) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Log.e("onPause", "Check VPN");
-                    isToDisplayLogin = false;
-                    skipVerification = true;
-                    if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
-                        checkFileWritePermission();
-                    } else {
-                        isUserFromOnCreate = true;
-                        AppUtils.startVPN(YonaActivity.this, false);
-                        isUserFromPinScreenAlert = false;
-                        lockScreen();
-                    }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.e("onPause", "Check VPN");
+                isToDisplayLogin = false;
+                skipVerification = true;
+                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
+                    checkFileWritePermission();
+                } else {
+                    isUserFromOnCreate = true;
+                    AppUtils.startVPN(YonaActivity.this, false);
+                    isUserFromPinScreenAlert = false;
+                    lockScreen();
                 }
-            }, AppConstant.ONE_SECOND);
-        }
+            }
+        }, AppConstant.ONE_SECOND);
     }
 
     private void lockScreen() {
