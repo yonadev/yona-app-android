@@ -28,12 +28,13 @@
 
     <application
         android:name=".YonaApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appname"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
 
         <activity
             android:name=".ui.LaunchActivity"

@@ -77,13 +77,12 @@ public interface RestApi {
     /**
      * Override register user call.
      *
-     * @param yonaPassword the yona password
      * @param otp          the otp
      * @param body         the body
      * @return the call
      */
     @POST(ApiList.USER)
-    Call<User> overrideRegisterUser(@Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<User> overrideRegisterUser(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
                                     @Query("overwriteUserConfirmationCode") String otp,
                                     @Body RegisterUser body);
 
