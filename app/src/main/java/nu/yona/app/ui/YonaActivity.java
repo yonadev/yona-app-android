@@ -123,7 +123,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private Fragment oldFragment;
     private User user;
     private boolean isUpdateIconOnly;
-    private boolean isUserFromOnCreate;
+    private static boolean isUserFromOnCreate;
     private boolean isUserFromPinScreenAlert;
     private boolean isSkipPinFlow;
 
@@ -471,6 +471,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             });
             builder.setCancelable(false);
             builder.create().show();
+        } else {
+            checkVPN();
         }
     }
 

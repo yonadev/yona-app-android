@@ -67,7 +67,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      */
     public void registerUserOverride(String password, RegisterUser object, String otp, final DataLoadListener listener) {
         try {
-            getRestApi().overrideRegisterUser(password, Locale.getDefault().toString().replace('_', '-'), otp, object).enqueue(getUserCallBack(listener));
+            getRestApi().overrideRegisterUser(Locale.getDefault().toString().replace('_', '-'), otp, object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

@@ -38,8 +38,6 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
     private FieldTextWatcher watcher;
     private int backgroundDrawable = R.drawable.passcode_edit_bg_grape;
 
-    private String passcodeScreenName;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,9 +61,6 @@ public class PasscodeFragment extends BaseFragment implements EventChangeListene
             }
             if (getArguments().get(AppConstant.PASSCODE_TEXT_BACKGROUND) != null) {
                 backgroundDrawable = getArguments().getInt(AppConstant.PASSCODE_TEXT_BACKGROUND);
-            }
-            if (getArguments().get(AppConstant.PASSCODE_SCREEN_NAME) != null) {
-                passcodeScreenName = getArguments().getString(AppConstant.PASSCODE_SCREEN_NAME);
             }
         }
         resetDigit();
