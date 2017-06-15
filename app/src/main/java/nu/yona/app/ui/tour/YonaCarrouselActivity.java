@@ -227,7 +227,6 @@ public class YonaCarrouselActivity extends BaseActivity implements View.OnClickL
         if (position < -TRANFORMATION_POSITION) { // [-Infinity,-1)
             // This page is way off-screen to the left so hide it.
             view.setAlpha(0);
-            view.setVisibility(View.GONE);
             view.setTranslationX(pageWidth);
         } else if (position <= TRANFORMATION_POSITION) { // (-1, 1)
             // The further the page is from being center page the more transparent it is.
