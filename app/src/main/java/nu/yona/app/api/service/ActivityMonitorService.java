@@ -151,7 +151,7 @@ public class ActivityMonitorService extends Service {
     }
 
     private void updateOnServer(String pkgname) {
-        if (previousAppName != null && !pkgname.equals("NULL") && startTime != null && endTime != null) {
+        if (previousAppName != null && !pkgname.equals("NULL") && startTime != null && endTime != null && startTime.before(endTime)) {
             APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
         }
     }
