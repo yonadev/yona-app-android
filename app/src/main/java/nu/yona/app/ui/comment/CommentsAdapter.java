@@ -138,7 +138,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
     public int getItemViewType(int position) {
         int viewType = 1;
         YonaMessage currentYonaMsg = listMessages.get(position);
-        if (position > 0 && !TextUtils.isEmpty(currentYonaMsg.getLinks().getRepliedMessage().getHref())) {
+        if (position > 0 && currentYonaMsg != null
+                && currentYonaMsg.getLinks() != null
+                && currentYonaMsg.getLinks().getRepliedMessage() != null
+                && !TextUtils.isEmpty(currentYonaMsg.getLinks().getRepliedMessage().getHref())) {
             viewType = 2;
         }
         return viewType;
