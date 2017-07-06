@@ -30,7 +30,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
     private List<YonaMessage> listMessages;
     private View.OnClickListener commentsItemClick;
     private Context mContext;
-    private boolean isReplingComment;
+    private boolean isReplyingComment;
 
     public CommentsAdapter(List<YonaMessage> messageList, View.OnClickListener clickListener) {
         listMessages = messageList;
@@ -84,7 +84,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                 }
                 holder.getTxtParentBuddyName().setText(mYonaMsg.getNickname());
                 holder.getTxtParentBuddyMsg().setText(mYonaMsg.getMessage());
-                if (!isReplingComment()) {
+                if (!isReplyingComment()) {
                     if (mYonaMsg.getLinks() != null && mYonaMsg.getLinks().getReplyComment() != null && !TextUtils.isEmpty(mYonaMsg.getLinks().getReplyComment().getHref())) {
                         holder.getTxtParentCommentReplay().setVisibility(View.VISIBLE);
                     } else {
@@ -111,7 +111,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                 }
                 holder.getTxtChildBuddyName().setText(mYonaMsg.getNickname());
                 holder.getTxtChildBuddyMsg().setText(mYonaMsg.getMessage());
-                if (!isReplingComment()) {
+                if (!isReplyingComment()) {
                     if (mYonaMsg.getLinks() != null && mYonaMsg.getLinks().getReplyComment() != null && !TextUtils.isEmpty(mYonaMsg.getLinks().getReplyComment().getHref())) {
                         holder.getTxtChildCommentReplay().setVisibility(View.VISIBLE);
                     } else {
@@ -161,11 +161,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
         return listMessages != null ? listMessages.size() : 0;
     }
 
-    public boolean isReplingComment() {
-        return isReplingComment;
+    public boolean isReplyingComment() {
+        return isReplyingComment;
     }
 
-    public void setReplingComment(boolean replingComment) {
-        isReplingComment = replingComment;
+    public void setReplyingComment(boolean replyingComment) {
+        isReplyingComment = replyingComment;
     }
 }
