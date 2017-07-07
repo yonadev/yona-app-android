@@ -160,6 +160,7 @@
     <string name="minute">%1$s minute(s)</string>
     <string name="seconds">%1$s second(s)</string>
     <string name="no_data_found">Oeps, geen data gevonden.</string>
+    <string name="no_friend_text">Geen vrienden om weer te geven.</string>
     <string name="goaloverminute">minuten buiten tijd</string>
     <string name="goaltotalminute">minuten totaal</string>
     <string name="spreiding">Spreiding</string>
