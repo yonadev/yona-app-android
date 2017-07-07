@@ -160,6 +160,7 @@
     <string name="minute">%1$s minute(s)</string>
     <string name="seconds">%1$s second(s)</string>
     <string name="no_data_found">Oops, no data found.</string>
+    <string name="no_friend_text">No friends to show.</string>
     <string name="goaloverminute">minutes out of time</string>
     <string name="goaltotalminute">minutes total</string>
     <string name="spreiding">Scatter</string>
