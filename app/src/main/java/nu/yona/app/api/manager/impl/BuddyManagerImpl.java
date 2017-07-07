@@ -74,9 +74,8 @@ public class BuddyManagerImpl implements BuddyManager {
         if (TextUtils.isEmpty(mobileNumber)) { // 9 digits of mobile number and '+31'
             return false;
         }
-        String number = mContext.getString(R.string.country_code) + mobileNumber.substring(mContext.getString(R.string.country_code_with_zero).length());
-        String phonenumber = number.replace(" ", "");
-        return phonenumber.length() == AppConstant.MOBILE_NUMBER_LENGTH && android.util.Patterns.PHONE.matcher(phonenumber).matches();
+        String phonenumber = mobileNumber.replace(" ", "");
+        return android.util.Patterns.PHONE.matcher(phonenumber).matches();
     }
 
     /**
@@ -148,7 +147,7 @@ public class BuddyManagerImpl implements BuddyManager {
     }
 
     private AddBuddy getBuddy(String firstName, String lastName, String email, String mobileNumber) {
-        String number = mContext.getString(R.string.country_code) + mobileNumber.substring(mContext.getString(R.string.country_code_with_zero).length());
+        String number = mobileNumber;
         String phonenumber = number.replace(" ", "");
         AddBuddy addBuddy = new AddBuddy();
         String status = StatusEnum.REQUESTED.getStatus();

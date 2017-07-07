@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import nu.yona.app.R;
@@ -43,9 +44,11 @@ import nu.yona.app.ui.BaseFragment;
  */
 public class StepTwo extends BaseFragment implements EventChangeListener {
 
-    private YonaFontNumberTextView mobileNumber;
+    private YonaFontNumberTextView mobileNumber, countryCode;
     private YonaFontEditTextView nickName;
-    private TextInputLayout mobileNumberLayout, nickNameLayout;
+    private TextInputLayout nickNameLayout;
+    private LinearLayout mobileNumberLayout;
+    private YonaFontTextView mobileErrorTextview;
     private SignupActivity activity;
     private AppBarLayout appbar;
     private boolean isAdding;
@@ -80,20 +83,21 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
 
         ((YonaFontTextView) view.findViewById(R.id.toolbar_title)).setText(R.string.join);
 
-        mobileNumber = (YonaFontNumberTextView) view.findViewById(R.id.mobile_number);
+        mobileNumber = (YonaFontNumberTextView) view.findViewById(R.id.mobileNumber);
+        countryCode = (YonaFontNumberTextView) view.findViewById(R.id.countryCode);
         nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
         nickName.addTextChangedListener(watcher);
 
-        mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
+        mobileNumberLayout = (LinearLayout) view.findViewById(R.id.mobile_number_layout);
         nickNameLayout = (TextInputLayout) view.findViewById(R.id.nick_name_layout);
 
         appbar = (AppBarLayout) view.findViewById(R.id.appbar);
+        mobileErrorTextview = (YonaFontTextView) view.findViewById(R.id.mobile_error_text);
 
-        mobileNumber.setText(R.string.country_code_with_zero);
+        countryCode.setText(R.string.country_code);
         mobileNumber.requestFocus();
         activity.showKeyboard(mobileNumber);
-        mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
-        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity(), mobileNumberLayout));
+        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getActivity(), mobileErrorTextview));
 
         mobileNumberLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +147,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
     }
 
     private void goToNext() {
-        String number = getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length());
+        String number = countryCode.getText().toString() + mobileNumber.getText().toString();
         String phonenumber = number.replace(" ", "");
         if (validateMobileNumber(phonenumber) && validateNickName()) {
             YonaAnalytics.createTapEvent(getString(R.string.next));
@@ -155,8 +159,8 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
 
     private boolean validateMobileNumber(String number) {
         if (!APIManager.getInstance().getAuthenticateManager().validateMobileNumber(number)) {
-            mobileNumberLayout.setErrorEnabled(true);
-            mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
+            mobileErrorTextview.setVisibility(View.VISIBLE);
+            mobileErrorTextview.setText(getString(R.string.enternumbervalidation));
             activity.showKeyboard(mobileNumber);
             mobileNumber.requestFocus();
             return false;

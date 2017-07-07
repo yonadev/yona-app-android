@@ -157,11 +157,9 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         nickName.setOnFocusChangeListener(onFocusChangeListener);
 
         mobileNumber = (YonaFontNumberTextView) view.findViewById(R.id.mobile_number);
-        mobileNumber.setText(R.string.country_code_with_zero);
         mobileNumber.requestFocus();
         YonaActivity.getActivity().showKeyboard(mobileNumber);
-        mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
-        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity(), mobileNumberLayout));
+        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getActivity(), null));
 
         firstnameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,21 +257,15 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         firstName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName());
         lastName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getLastName());
         nickName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getNickname());
-        int NUMBER_LENGTH = 9;
 
         String number = YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber();
-        if (!TextUtils.isEmpty(number) && number.length() > NUMBER_LENGTH) {
-            oldUserNumber = number;
-            number = number.substring(number.length() - NUMBER_LENGTH);
-            number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
-            mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
-        }
+        mobileNumber.setText(number);
         firstName.requestFocus();
     }
 
     private boolean validateFields() {
-        String number = YonaActivity.getActivity().getString(R.string.country_code) + mobileNumber.getText().toString().substring(YonaActivity.getActivity().getString(R.string.country_code_with_zero).length());
-        String phonenumber = number.replace(getString(R.string.space), getString(R.string.blank));
+        String number = mobileNumber.getText().toString();
+        String phonenumber = number.replaceAll(getString(R.string.space), getString(R.string.blank));
         if (!APIManager.getInstance().getAuthenticateManager().validateText(firstName.getText().toString())) {
             firstnameLayout.setErrorEnabled(true);
             firstnameLayout.setError(getString(R.string.enternamevalidation));
@@ -315,7 +307,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
             user.setFirstName(firstName.getText().toString());
             user.setLastName(lastName.getText().toString());
             user.setNickName(nickName.getText().toString());
-            String number = getString(R.string.country_code) + mobileNumber.getText().toString().substring(getString(R.string.country_code_with_zero).length());
+            String number = mobileNumber.getText().toString();
             user.setMobileNumber(number.replace(" ", ""));
             YonaActivity.getActivity().showLoadingView(true, null);
             APIManager.getInstance().getAuthenticateManager().registerUser(user, true, new DataLoadListener() {

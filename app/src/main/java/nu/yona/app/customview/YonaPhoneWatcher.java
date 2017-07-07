@@ -13,81 +13,61 @@ package nu.yona.app.customview;
  */
 
 import android.content.Context;
-import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
-
-import nu.yona.app.R;
 
 /**
  * The type Yona phone watcher.
  */
 public class YonaPhoneWatcher implements TextWatcher {
 
-    private boolean backspacingFlag = false;
-    private boolean editedFlag = false;
-    private int cursorComplement;
     private EditText mobileNumber;
-    private String prefixText;
     private Context mContext;
-    private TextInputLayout mobileNumberLayout;
+    private YonaFontTextView mobileNumberErrView;
+    private YonaFontNumberTextView mobileNumberView;
+    private int textlength = 0;
+
 
     /**
      * Instantiates a new Yona phone watcher.
      *
-     * @param editText           the edit text
-     * @param prefix             the prefix
-     * @param context            the context
-     * @param mobileNumberLayout the mobile number layout
+     * @param editText            the edit text
+     * @param context             the context
+     * @param mobileNumberErrView the mobile number layout
      */
-    public YonaPhoneWatcher(EditText editText, String prefix, Context context, TextInputLayout mobileNumberLayout) {
+    public YonaPhoneWatcher(EditText editText, Context context, YonaFontTextView mobileNumberErrView) {
         super();
-        mobileNumber = editText;
-        prefixText = prefix;
+        this.mobileNumber = editText;
         mContext = context;
-        this.mobileNumberLayout = mobileNumberLayout;
+        this.mobileNumberErrView = mobileNumberErrView;
     }
 
     @Override
     public synchronized void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        cursorComplement = s.length() - mobileNumber.getSelectionStart();
-        backspacingFlag = count > after;
+        if (mobileNumberErrView != null) {
+            mobileNumberErrView.setVisibility(View.GONE);
+        }
     }
 
     @Override
-    public synchronized void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (s.toString().length() < prefixText.length()
-                || !s.toString().startsWith(prefixText)
-                || s.toString().equals(prefixText + "0")) {
-            mobileNumber.setText(R.string.country_code_with_zero);
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+        String text = mobileNumber.getText().toString();
+        textlength = mobileNumber.getText().length();
+
+        if (text.endsWith(" "))
+            return;
+
+        if (textlength == 4) {
+            mobileNumber.setText(new StringBuilder(text).insert(text.length() - 1, " ").toString());
             mobileNumber.setSelection(mobileNumber.getText().length());
-        }
 
-        String string = s.toString();
-        String phone = string.replaceAll("[^\\d]", mContext.getString(R.string.blank));
-
-        if (!editedFlag) {
-            editedFlag = true;
-            String ans = "";
-            if (!backspacingFlag) {
-                if (phone.length() >= 13) {
-                    ans = prefixText + phone.substring(3, 6) + mContext.getString(R.string.space) + phone.substring(6, 9) + mContext.getString(R.string.space) + phone.substring(9, 13);
-                } else if (phone.length() > 10) {
-                    ans = prefixText + phone.substring(3, 6) + mContext.getString(R.string.space) + phone.substring(6, 9) + mContext.getString(R.string.space) + phone.substring(9);
-                } else if (phone.length() > 7) {
-                    ans = prefixText + phone.substring(3, 6) + mContext.getString(R.string.space) + phone.substring(6);
-                } else if (phone.length() >= 3) {
-                    ans = prefixText + phone.substring(3);
-                }
-                mobileNumber.setText(ans);
-                mobileNumber.setSelection(mobileNumber.getText().length() - cursorComplement);
-            }
-        } else {
-            editedFlag = false;
-        }
-        if (mobileNumberLayout != null) {
-            mobileNumberLayout.setError(null);
+        } else if (textlength == 8) {
+            mobileNumber.setText(new StringBuilder(text).insert(text.length() - 1, " ").toString());
+            mobileNumber.setSelection(mobileNumber.getText().length());
         }
     }
 
