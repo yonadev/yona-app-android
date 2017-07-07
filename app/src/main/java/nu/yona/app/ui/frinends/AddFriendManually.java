@@ -119,8 +119,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
 
         addFriendButton = (YonaFontButton) view.findViewById(R.id.addFriendButton);
 
-        mobileNumber.setNotEditableLength(getString(R.string.country_code_with_zero).length());
-        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getString(R.string.country_code_with_zero), getActivity(), mobileNumberLayout));
+        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getActivity(), null));
 
         firstNameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +163,8 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus && TextUtils.isEmpty(mobileNumber.getText())) {
-                    mobileNumber.setText(R.string.country_code_with_zero);
+                    mobileNumber.setText(R.string.country_code);
+                    mobileNumber.setSelection(getString(R.string.country_code).length());
                 }
             }
         });
@@ -261,21 +261,16 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
     }
 
     private void updateUser(RegisterUser user) {
-        int NUMBER_LENGTH = 9;
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
         email.setText(user.getEmailAddress());
         if (!TextUtils.isEmpty(user.getMobileNumber())) {
             String number = user.getMobileNumber().replace(getString(R.string.space), getString(R.string.blank));
-            if (number.length() > NUMBER_LENGTH) {
-                number = number.substring(number.length() - NUMBER_LENGTH);
-                number = number.substring(0, 3) + getString(R.string.space) + number.substring(3, 6) + getString(R.string.space) + number.substring(6, 9);
-            }
-            mobileNumber.setText(getString(R.string.country_code_with_zero) + number);
+            mobileNumber.setText(number);
         } else if (user.getMultipleNumbers() != null && user.getMultipleNumbers().size() > 1) {
             showNumberChooser(user.getMultipleNumbers(), user);
         } else {
-            mobileNumber.setText(getString(R.string.country_code_with_zero));
+            mobileNumber.setText(getString(R.string.country_code));
         }
     }
 

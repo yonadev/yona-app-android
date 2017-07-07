@@ -48,18 +48,32 @@
                     android:text="@string/loggedinadddevicemessage"
                     android:textColor="@color/black" />
 
-                <android.support.design.widget.TextInputLayout
+                <LinearLayout
                     android:id="@+id/mobile_number_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/twenty"
-                    app:hintTextAppearance="@style/hintText">
+                    android:orientation="horizontal"
+                    android:weightSum="6">
 
                     <nu.yona.app.customview.YonaFontNumberTextView
-                        android:id="@+id/mobile_number"
+                        android:id="@+id/countryCode"
                         style="@style/InputTxt"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:digits="1234567890 +()"
+                        android:inputType="phone"
+                        android:imeOptions="actionNext"
+                        android:maxLength="4"
+                        android:maxLines="1" />
+
+                    <nu.yona.app.customview.YonaFontNumberTextView
+                        android:id="@+id/mobileNumber"
+                        style="@style/InputTxt"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="5"
                         android:digits="1234567890 "
                         android:drawableRight="@drawable/icn_mobile"
                         android:ellipsize="end"
@@ -69,7 +83,18 @@
                         android:maxLength="@integer/number_limit"
                         android:maxLines="1"
                         android:textColorHint="@color/black" />
-                </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <nu.yona.app.customview.YonaFontTextView
+                    android:id="@+id/mobile_error_text"
+                    style="@style/InputTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="gone" />
+
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/passcode_layout"
