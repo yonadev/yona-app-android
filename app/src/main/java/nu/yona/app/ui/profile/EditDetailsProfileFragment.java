@@ -259,6 +259,9 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         nickName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getNickname());
 
         String number = YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber();
+        if (!TextUtils.isEmpty(number)) {
+            oldUserNumber = number;
+        }
         mobileNumber.setText(number);
         firstName.requestFocus();
     }
