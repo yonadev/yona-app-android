@@ -1,3 +1,3 @@
 <resources>
-    <string name="server_url">http://85.222.227.142</string>
+    <string name="server_url">http://mobtest.dev.yona.nu:31002</string>
 </resources>
