@@ -10,12 +10,11 @@
 
 package nu.yona.app.api.manager.network;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.ConnectException;
-import java.util.Locale;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
 import nu.yona.app.R;
@@ -49,9 +48,13 @@ class BaseImpl {
             chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
             if (NetworkUtils.isOnline(YonaApplication.getAppContext())) {
                 chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
-            } else if (request.method().equalsIgnoreCase("GET") && !request.cacheControl().noCache()) {
+            } /*else if (request.method().equalsIgnoreCase("GET") && !request.cacheControl().noCache()) {
+                // In case if we want cache macahnism back in Offline mode.
                 chain.request().newBuilder().addHeader("Cache-Control", "public, max-stale=" + maxStale).build();
+            }*/ else {
+                throw new UnknownHostException();
             }
+
             request = request.newBuilder().build();
             response = chain.proceed(request);
             return response.newBuilder()
@@ -138,7 +141,7 @@ class BaseImpl {
      */
     void onError(Throwable t, DataLoadListener listener) {
         if (listener != null) {
-            if (t instanceof ConnectException) {
+            if (t instanceof ConnectException || t instanceof UnknownHostException || t instanceof SocketTimeoutException) {
                 listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.connectionnotavailable)));
             } else {
                 listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.somethingwentwrong)));
@@ -154,27 +157,19 @@ class BaseImpl {
      */
     void onError(retrofit2.Response response, DataLoadListener listener) {
         if (listener != null) {
-            if (response.code() == NetworkConstant.RESPONSE_ERROR_CODE) {
-                try {
-                    Converter<ResponseBody, ErrorMessage> errorConverter =
-                            getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
-                    ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
-                    if (errorMessage != null && errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND)) {
-                        reinitializeRetrofit();
-                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, errorMessage);
-                    } else {
-                        listener.onError(errorMessage);
-                    }
-                } catch (IOException e) {
-                    listener.onError(new ErrorMessage(e.getMessage()));
+            try {
+                Converter<ResponseBody, ErrorMessage> errorConverter =
+                        getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
+                ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
+                if (errorMessage != null && errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND)) {
+                    reinitializeRetrofit();
+                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, errorMessage);
+                } else {
+                    listener.onError(errorMessage);
                 }
-            } else {
-                try {
-                    Log.e("Response code", "Response Code from server :" + response.code() + ", error :" + response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.somethingwentwrong)));
+            } catch (IOException e) {
+                listener.onError(new ErrorMessage(e.getMessage()));
+                //listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.somethingwentwrong)));
             }
         }
     }
