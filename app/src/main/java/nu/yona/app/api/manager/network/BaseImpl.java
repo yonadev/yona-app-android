@@ -48,10 +48,7 @@ class BaseImpl {
             chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
             if (NetworkUtils.isOnline(YonaApplication.getAppContext())) {
                 chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
-            } /*else if (request.method().equalsIgnoreCase("GET") && !request.cacheControl().noCache()) {
-                // In case if we want cache macahnism back in Offline mode.
-                chain.request().newBuilder().addHeader("Cache-Control", "public, max-stale=" + maxStale).build();
-            }*/ else {
+            } else {
                 throw new UnknownHostException();
             }
 
@@ -169,7 +166,6 @@ class BaseImpl {
                 }
             } catch (IOException e) {
                 listener.onError(new ErrorMessage(e.getMessage()));
-                //listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.somethingwentwrong)));
             }
         }
     }
