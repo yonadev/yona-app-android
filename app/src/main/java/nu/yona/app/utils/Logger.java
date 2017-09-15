@@ -6,6 +6,7 @@ import nu.yona.app.BuildConfig;
 
 /**
  * Created by spatni on 15/09/17.
+ * A common Logger implementation to support loggin mechanism in application.
  */
 
 public class Logger {

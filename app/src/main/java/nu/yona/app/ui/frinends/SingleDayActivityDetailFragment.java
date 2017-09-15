@@ -148,8 +148,8 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
                 NotificationLinkData linkData = new NotificationLinkData();
                 linkData.setUrl(getArguments().getString(AppConstant.URL, ""));
 
-                if (getArguments().get(AppConstant.HH_MM) != null) {
-                    linkData.setEventTime(getArguments().getString(AppConstant.HH_MM, ""));
+                if (getArguments().get(AppConstant.EVENT_TIME) != null) {
+                    linkData.setEventTime(getArguments().getString(AppConstant.EVENT_TIME, ""));
                 }
 
                 linkList.add(linkData);

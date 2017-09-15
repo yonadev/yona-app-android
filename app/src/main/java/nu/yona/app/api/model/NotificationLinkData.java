@@ -2,6 +2,7 @@ package nu.yona.app.api.model;
 
 /**
  * Created by spatni on 15/09/17.
+ * Data class written to hold link & event time for NoGo notifications.
  */
 
 public class NotificationLinkData {

@@ -9,13 +9,11 @@
 package nu.yona.app.ui.message;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +50,7 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -125,10 +124,10 @@ public class NotificationFragment extends BaseFragment {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(date);
 
-                        mMessageIntent.putExtra(AppConstant.HH_MM, calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
+                        mMessageIntent.putExtra(AppConstant.EVENT_TIME, calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
                     } catch (Exception e) {
                         if(BuildConfig.DEBUG) {
-                            e.printStackTrace();
+                            Logger.printStackTrace(e);
                         }
                     }
 
