@@ -13,15 +13,14 @@ package nu.yona.app.analytics;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.model.User;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.PauseResumeHook;
+import static nu.yona.app.utils.Logger.*;
 
 /**
  * Created by kinnarvasa on 02/09/16.
@@ -30,7 +29,7 @@ import nu.yona.app.ui.PauseResumeHook;
 public class YonaAnalytics {
     private static YonaAnalytics instance;
     private Categorizable category = null;
-    private static String TAG = YonaAnalytics.class.getSimpleName();
+    private static String TAG = "YonaAnalytics";
 
     public static YonaAnalytics getInstance() {
         if (instance == null) {
@@ -62,7 +61,7 @@ public class YonaAnalytics {
         if (category == null || category.equals("null") || category.equals(AnalyticsConstant.SCREEN_BASE_FRAGMENT)) {
             return;
         }
-        Log.i(TAG, "Analytics: Category: [" + category + "] Label: [" + label + "] Action: [" + action + "]");
+        logi(TAG, "Analytics: Category: [" + category + "] Label: [" + label + "] Action: [" + action + "]");
         //commented out until things are probably working
         Tracker t = YonaApplication.getTracker();
         if (YonaApplication.getEventChangeManager().getDataState().getUser() != null
@@ -85,7 +84,7 @@ public class YonaAnalytics {
 
     private String getCurrentCategoryId() {
         if (category == null) {
-            Log.e(TAG, "Attempt to fire analytics event prior to initializing current Categorizable");
+            loge(TAG, "Attempt to fire analytics event prior to initializing current Categorizable");
             return "null";
         }
         return category.getAnalyticsCategory();

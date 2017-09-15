@@ -126,9 +126,7 @@ public class NotificationFragment extends BaseFragment {
 
                         mMessageIntent.putExtra(AppConstant.EVENT_TIME, calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
                     } catch (Exception e) {
-                        if(BuildConfig.DEBUG) {
-                            Logger.printStackTrace(e);
-                        }
+                        Logger.printStackTrace(e);
                     }
 
                     if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getSelf() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getSelf().getHref())) {

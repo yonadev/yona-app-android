@@ -23,6 +23,12 @@ public class Logger {
         }
     }
 
+    public static void logd(String TAG, String message) {
+        if(BuildConfig.DEBUG) {
+            Log.d(TAG, message);
+        }
+    }
+
     public static void printStackTrace(Exception e) {
         if(BuildConfig.DEBUG) {
             e.printStackTrace();
