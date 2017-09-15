@@ -35,6 +35,7 @@ import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.NotificationLinkData;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
@@ -119,6 +120,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
         fetchComments(viewPager.getCurrentItem());
     }
 
+    private List<NotificationLinkData> linkList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +141,18 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
             }
             if (getArguments().get(AppConstant.YONA_MESSAGE) != null) {
                 notificationMessage = (YonaMessage) getArguments().get(AppConstant.YONA_MESSAGE);
+            }
+
+            if (getArguments().get(AppConstant.URL) != null) {
+
+                NotificationLinkData linkData = new NotificationLinkData();
+                linkData.setUrl(getArguments().getString(AppConstant.URL, ""));
+
+                if (getArguments().get(AppConstant.HH_MM) != null) {
+                    linkData.setEventTime(getArguments().getString(AppConstant.HH_MM, ""));
+                }
+
+                linkList.add(linkData);
             }
         }
     }
@@ -167,7 +181,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
         commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
         chatBoxImage = (ImageView) view.findViewById(R.id.comment_box_image);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        customPageAdapter = new CustomPageAdapter(getActivity());
+        customPageAdapter = new CustomPageAdapter(getActivity(), linkList);
         viewPager.setAdapter(customPageAdapter);
         initilizeCommentControl(view);
         messageTxt = (YonaFontEditTextViewGeneral) view.findViewById(R.id.userMessage);

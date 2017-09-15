@@ -45,6 +45,19 @@
                 android:id="@+id/spreadGraph"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spread_graph_height" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llLinkParent" android:layout_height="wrap_content" android:layout_width="match_parent"
+            android:paddingLeft="@dimen/chart_item_left_margin" android:paddingRight="@dimen/chart_item_right_margin"
+            android:background="@drawable/item_gradient" android:visibility="gone" android:orientation="vertical">
+
+            <TextView android:id="@+id/txtLinkLabel" android:layout_height="48dp" android:layout_width="match_parent" android:textStyle="bold"
+                android:text="@string/link" android:gravity="center_vertical" />
+
+            <android.support.v7.widget.RecyclerView android:id="@+id/commentRecyclerView" android:layout_width="match_parent" android:layout_height="wrap_content" />
+
         </LinearLayout>
 
     </LinearLayout>

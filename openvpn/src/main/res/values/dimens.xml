@@ -22,4 +22,5 @@
     <dimen name="switchbar_pad">16dp</dimen>
     <dimen name="vpn_setting_padding">16dp</dimen>
     <dimen name="fifty_four">54dp</dimen>
+    <dimen name="dp_48">48dp</dimen>
 </resources>

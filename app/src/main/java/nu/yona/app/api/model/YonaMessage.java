@@ -24,6 +24,19 @@ public class YonaMessage extends BaseEntity {
     @SerializedName("creationTime")
     @Expose
     private String creationTime;
+
+    @SerializedName("url")
+    @Expose
+    private String url;
+
+    @SerializedName("activityStartTime")
+    @Expose
+    private String activityStartTime;
+
+    @SerializedName("activityEndTime")
+    @Expose
+    private String activityEndTime;
+
     @SerializedName("nickname")
     @Expose
     private String nickname;
@@ -270,5 +283,29 @@ public class YonaMessage extends BaseEntity {
 
     public void setThreadMessageId(String threadMessageId) {
         this.threadMessageId = threadMessageId;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getActivityStartTime() {
+        return activityStartTime;
+    }
+
+    public void setActivityStartTime(String activityStartTime) {
+        this.activityStartTime = activityStartTime;
+    }
+
+    public String getActivityEndTime() {
+        return activityEndTime;
+    }
+
+    public void setActivityEndTime(String activityEndTime) {
+        this.activityEndTime = activityEndTime;
     }
 }

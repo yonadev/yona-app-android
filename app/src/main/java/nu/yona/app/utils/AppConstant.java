@@ -288,6 +288,7 @@ public interface AppConstant {
      * URL to find buddy,user
      */
     String URL = "url";
+    String HH_MM = "eventTime";
 
     String YONA_FOLDER = "yonaFolder";
 

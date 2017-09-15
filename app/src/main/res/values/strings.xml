@@ -203,4 +203,5 @@
     <string name="system_message">Message from Yona</string>
     <string name="message_from_yona">Message from Yona</string>
     <string name="yona_administrator">Yona administrator</string>
+    <string name="link">Link</string>
 </resources>

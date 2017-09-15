@@ -21,11 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.DayActivity;
+import nu.yona.app.api.model.NotificationLinkData;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.WeekDayActivity;
 import nu.yona.app.api.model.YonaMessage;
@@ -62,6 +64,7 @@ public class CustomPageAdapter extends PagerAdapter {
     private ViewGroup layout;
     private View.OnClickListener mCommentClickListener;
     private YonaMessage currentReplyingMsg;
+    private NotificationLinkAdapter notificationLinkAdapter;
 
     public RecyclerView.OnScrollListener getRecyclerviewOnScrollListener() {
         return recyclerviewOnScrollListener;
@@ -80,6 +83,18 @@ public class CustomPageAdapter extends PagerAdapter {
      */
     public CustomPageAdapter(Context context) {
         mContext = context;
+    }
+
+    private List<NotificationLinkData> linkList = new ArrayList<>();
+
+    /**
+     * Instantiates a new Custom page adapter.
+     *
+     * @param context the context
+     */
+    public CustomPageAdapter(Context context, List<NotificationLinkData> linkList) {
+        mContext = context;
+        this.linkList = linkList;
     }
 
     public CustomPageAdapter(Context context, View.OnClickListener listener) {
@@ -106,6 +121,25 @@ public class CustomPageAdapter extends PagerAdapter {
         goalType = (YonaFontTextView) spreadView.findViewById(R.id.goalType);
         goalScore = (YonaFontTextView) spreadView.findViewById(R.id.goalScore);
         mSpreadGraph = (SpreadGraph) spreadView.findViewById(R.id.spreadGraph);
+
+        // This we have considered as an List of link will be display to user as per displaying in
+        if(linkList != null && linkList.size() > 0) {
+            commentRecyclerView = (RecyclerView) layout.findViewById(R.id.commentRecyclerView);
+
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            commentRecyclerView.setHasFixedSize(true);
+
+            // use a linear layout manager
+            mLayoutManager = new LinearLayoutManager(mContext);
+            commentRecyclerView.setLayoutManager(mLayoutManager);
+
+            layout.findViewById(R.id.llLinkParent).setVisibility(View.VISIBLE);
+
+            notificationLinkAdapter = new NotificationLinkAdapter(linkList);
+            commentRecyclerView.setAdapter(notificationLinkAdapter);
+        }
+
         DayActivity dayActivity = dayActivities.get(position);
         if (dayActivity != null && dayActivity.getLinks() != null && (dayActivity.getLinks().getReplyComment() != null || dayActivity.getLinks().getAddComment() != null)) {
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SHOW_CHAT_OPTION, null);
