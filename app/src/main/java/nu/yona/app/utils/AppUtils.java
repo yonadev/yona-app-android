@@ -27,7 +27,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.text.InputFilter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
@@ -60,6 +59,7 @@ import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.timepicker.time.Timepoint;
+import static nu.yona.app.utils.Logger.*;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -71,6 +71,8 @@ public class AppUtils {
     private static ScheduledExecutorService scheduler;
     private static YonaReceiver receiver;
     private static int trialCertificateCount = 0, trialVPNCount = 0;
+
+    private static final String TAG = "AppUtils";
 
     /**
      * Gets circle bitmap.
@@ -185,7 +187,7 @@ public class AppUtils {
      * @param context the context
      */
     public static void registerReceiver(Context context) {
-        Log.e("REgister", "Register REceiver from apputil 187");
+        loge(TAG, "Register REceiver from apputil 187");
         receiver = new YonaReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_ON);
@@ -249,13 +251,6 @@ public class AppUtils {
      */
     public static void throwException(String className, Exception e, Thread t, DataLoadListener listener) {
         try {
-//            if (YonaApplication.getAppContext().getResources().getBoolean(R.bool.enableHockyTracking)) {
-////                ExceptionHandler.saveException(e, t, YonaApplication.getYonaCustomCrashManagerListener());
-//                //TODO handle excpetion here to post on google play store.
-//            } else {
-            Log.e(className, e.getMessage());
-//            }
-
             if (listener != null) {
                 if (e != null && e.getMessage() != null) {
                     listener.onError(new ErrorMessage(e.getMessage()));
@@ -264,7 +259,7 @@ public class AppUtils {
                 }
             }
         } catch (Exception x) {
-            Log.e(AppUtils.class.getSimpleName(), "Exception in throwExcption method");
+            loge(TAG, "Exception in throwExcption method");
         }
     }
 
@@ -468,12 +463,12 @@ public class AppUtils {
                             YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
                             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
                         }
-                        Log.e("Download", "Download successful: " + result.toString());
+                        logi(TAG, "Download successful: " + result.toString());
                     }
 
                     @Override
                     public void onError(Object errorMessage) {
-                        Log.e("Download", "Download fail");
+                        loge(TAG, "Download fail");
                         trialCertificateCount++;
                         if (trialCertificateCount < 3) {
                             downloadCertificates();
@@ -496,12 +491,12 @@ public class AppUtils {
                         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_VPN_CERTIFICATE_DOWNLOADED, null);
                     }
 
-                    Log.e("Download", "Download successful: " + result.toString());
+                    logi(TAG, "Download successful: " + result.toString());
                 }
 
                 @Override
                 public void onError(Object errorMessage) {
-                    Log.e("Download", "Download fail");
+                    loge(TAG, "Download fail");
                     trialVPNCount++;
                     if (trialVPNCount < 3) {
                         downloadVPNProfile();
@@ -522,11 +517,9 @@ public class AppUtils {
                 buf.close();
                 return bytes;
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                printStackTrace(e);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                printStackTrace(e);
             }
         }
         return null;

@@ -18,7 +18,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +47,7 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.timepicker.time.TimePickerDialog;
 import nu.yona.timepicker.time.Timepoint;
+import static nu.yona.app.utils.Logger.*;
 
 /**
  * Created by bhargavsuthar on 20/04/16.
@@ -63,6 +63,8 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
     private List<String> listOfTimes;
     private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
     private View btnChallengesContainer;
+
+    private static final String TAG = "ChallengesGoalDetailFragment";
     /**
      * Use this listener only for Time zone picker
      */
@@ -489,7 +491,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
         mTimePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
-                Log.d("TimePicker", "Dialog was cancelled");
+                logd(TAG, "TimePicker Dialog was cancelled");
             }
         });
         mTimePickerDialog.show(getActivity().getFragmentManager(), "Timepickerdialog");
@@ -634,7 +636,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        Log.i(ChallengesGoalDetailFragment.class.getName(), "progress...." + progress);
+        logi(TAG, "progress...." + progress);
         mBudgetGoalTime.setText("" + progress);
         updateTimeZoneUI();
     }

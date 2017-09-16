@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 28/03/16.
@@ -29,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private DatabaseHelper(Context context) {
         super(context, DBConstant.DATABASE_NAME, null, DBConstant.DATABASE_VERSION);
         synchronized (this) {
-            Log.i(DatabaseHelper.class.getName(), "DatabaseHelper constructor called");
+            Logger.logi(DatabaseHelper.class.getName(), "DatabaseHelper constructor called");
             this.getWritableDatabase();
         }
     }
