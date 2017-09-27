@@ -7,7 +7,7 @@ android {
         applicationId "nu.yona.app"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 13
+        versionCode 14
         versionName "1.0.6"
     }
     buildTypes {
@@ -91,6 +91,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            zipAlignEnabled true
         }
     }
     android.defaultConfig.versionName = getVersionString()
