@@ -26,6 +26,11 @@ public class YonaActivityCategories extends BaseEntity {
     private
     String name;
 
+    @SerializedName("description")
+    @Expose
+    private
+    String description;
+
     @SerializedName("mandatoryNoGo")
     @Expose
     private
@@ -116,5 +121,11 @@ public class YonaActivityCategories extends BaseEntity {
         return null;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

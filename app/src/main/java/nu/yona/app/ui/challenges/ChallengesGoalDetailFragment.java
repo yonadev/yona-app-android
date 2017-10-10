@@ -190,16 +190,8 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
             yonaActivityCategories = APIManager.getInstance().getChallengesManager().getSelectedGoalCategories(((YonaGoal) mYonaGoal).getActivityCategoryName());
         }
 
-        if (yonaActivityCategories != null && yonaActivityCategories.getApplications() != null) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (String activityName : yonaActivityCategories.getApplications()) {
-                stringBuilder.append(activityName);
-                stringBuilder.append(", ");
-            }
-            if (!TextUtils.isEmpty(stringBuilder.toString()) && stringBuilder.toString().trim().length() > 0) {
-                stringBuilder.deleteCharAt(stringBuilder.toString().trim().length() - 1);
-                mFTxtGoalSubscribe.setText(stringBuilder.toString());
-            }
+        if (yonaActivityCategories != null && yonaActivityCategories.getDescription() != null) {
+            mFTxtGoalSubscribe.setText(yonaActivityCategories.getDescription());
         }
 
         if (mYonaGoal != null) {
