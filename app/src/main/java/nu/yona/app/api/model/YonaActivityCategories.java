@@ -26,14 +26,15 @@ public class YonaActivityCategories extends BaseEntity {
     private
     String name;
 
+    @SerializedName("description")
+    @Expose
+    private
+    String description;
+
     @SerializedName("mandatoryNoGo")
     @Expose
     private
     boolean mandatoryNoGo;
-
-    @SerializedName("applications")
-    @Expose
-    private List<String> applications = new ArrayList<>();
 
     @SerializedName("_links")
     @Expose
@@ -76,24 +77,6 @@ public class YonaActivityCategories extends BaseEntity {
     }
 
     /**
-     * Gets applications.
-     *
-     * @return the applications
-     */
-    public List<String> getApplications() {
-        return applications;
-    }
-
-    /**
-     * Sets applications.
-     *
-     * @param applications the applications
-     */
-    public void setApplications(List<String> applications) {
-        this.applications = applications;
-    }
-
-    /**
      * Gets links.
      *
      * @return the links
@@ -116,5 +99,11 @@ public class YonaActivityCategories extends BaseEntity {
         return null;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

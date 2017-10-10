@@ -62,9 +62,8 @@
             style="@style/FooterTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/footer_detail_margin_top"
             android:gravity="center"
-            android:paddingBottom="@dimen/challenges_footer_text_bottom_padding"
+            android:padding="@dimen/sixteen"
             android:textColor="@color/fifty_opacity" />
 
     </LinearLayout>
