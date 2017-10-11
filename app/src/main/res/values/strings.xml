@@ -78,7 +78,6 @@
     <string name="challenges.addBudgetGoal.timeZoneLabel">Timezone</string>
     <string name="challenges.addBudgetGoal.minutesPerDayLabel">minutes per day</string>
     <string name="challenges.addBudgetGoal.budgetChallengeDescription">Specify how much time you want to spend on %1$s</string>
-    <string name="challenges.addBudgetGoal.bottomLabelText">The following apps are part of this challenge:</string>
     <string name="challenges.addBudgetGoal.deletedGoalMessage">Remove challenge</string>
     <string name="deleteuser">UNSUBSCRIBE</string>
     <string name="usercredential">User Credential</string>
@@ -92,7 +91,6 @@
     <string name="challenge_timezone_title">Decide if you want to spend time or not.</string>
     <string name="challenge_nogo_add_title">Choose a category in which you want to set up a no go for</string>
     <string name="challengestegoedheader">Select a category from where you want to define a credit for</string>
-    <string name="challengesfooter">The following apps are part of this challenge:</string>
     <string name="challengesgoalcreatebutton">SAVE CHALLENGE</string>
     <string name="budgetgoaldesc">minutes per day</string>
     <string name="budgetgoaltitle">Credit</string>

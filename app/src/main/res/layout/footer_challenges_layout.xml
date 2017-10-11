@@ -48,16 +48,6 @@
             android:background="@drawable/triangle_shadow_gray" />
 
         <nu.yona.app.customview.YonaFontTextView
-            android:id="@+id/challenges_goal_footer_title"
-            style="@style/FooterTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twenty"
-            android:gravity="center"
-            android:text="@string/challengesfooter"
-            android:textColor="@color/thirty_opacity" />
-
-        <nu.yona.app.customview.YonaFontTextView
             android:id="@+id/challenges_goal_footer_subscribeTxt"
             style="@style/FooterTxt"
             android:layout_width="match_parent"

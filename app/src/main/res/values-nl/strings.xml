@@ -78,7 +78,6 @@
     <string name="challenges.addBudgetGoal.timeZoneLabel">Tijdzone</string>
     <string name="challenges.addBudgetGoal.minutesPerDayLabel">minuten per dag</string>
     <string name="challenges.addBudgetGoal.budgetChallengeDescription">Bepaal hier hoeveel tijd je aan %1$s wilt besteden</string>
-    <string name="challenges.addBudgetGoal.bottomLabelText">De volgende apps zijn onderdeel van deze challenge:</string>
     <string name="challenges.addBudgetGoal.deletedGoalMessage">Verwijder challenge</string>
     <string name="deleteuser">UITSCHRIJVEN</string>
     <string name="usercredential">User Credential</string>
@@ -92,7 +91,6 @@
     <string name="challenge_timezone_title">Bepaal zelf wanneer je wel of niet tijd wilt besteden.</string>
     <string name="challenge_nogo_add_title">Kies een categorie waar je een no go voor wilt instellen</string>
     <string name="challengestegoedheader">Kies een categorie waarvoor je een tegoed wilt vastleggen</string>
-    <string name="challengesfooter">De volgende apps zijn onderdeel van deze challenge:</string>
     <string name="challengesgoalcreatebutton">CHALLENGE OPSLAAN</string>
     <string name="budgetgoaldesc">minuten per dag</string>
     <string name="budgetgoaltitle">Tegoed</string>
