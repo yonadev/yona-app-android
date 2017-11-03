@@ -48,14 +48,14 @@
 
             <intent-filter android:label="@string/appname">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="85.222.227.84"
+                    android:host="@string/host_name"
                     android:pathPrefix="/users/"
-                    android:scheme="http" />
+                    android:scheme="@string/http_scheme" />
+                <data android:scheme="@string/https_scheme" />
 
             </intent-filter>
 

@@ -35,6 +35,10 @@ public class YonaBuddy extends BaseEntity {
     @SerializedName("_embedded")
     @Expose
     private EmbeddedYonaUser Embedded;
+    @SerializedName("lastMonitoredActivityDate")
+    @Expose
+    private String lastMonitoredActivityDate;
+
 
     /**
      * Gets links.
@@ -124,6 +128,14 @@ public class YonaBuddy extends BaseEntity {
      */
     public void setEmbedded(EmbeddedYonaUser Embedded) {
         this.Embedded = Embedded;
+    }
+
+    public String getLastMonitoredActivityDate() {
+        return lastMonitoredActivityDate;
+    }
+
+    public void setLastMonitoredActivityDate(String lastMonitoredActivityDate) {
+        this.lastMonitoredActivityDate = lastMonitoredActivityDate;
     }
 
     @Override

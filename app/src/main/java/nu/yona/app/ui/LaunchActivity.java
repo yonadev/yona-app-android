@@ -43,11 +43,16 @@ public class LaunchActivity extends BaseActivity {
         bundle = new Bundle();
         if (getIntent() != null) {
             if (getIntent().getDataString() != null) {
-                bundle.putString(AppConstant.URL, getIntent().getDataString());
+                bundle.putString(AppConstant.DEEP_LINK, getIntent().getDataString());
+                startNewActivity(bundle, SignupActivity.class);
+                // and it will not launch tour for first time user and so can be marked true.
+                YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
+                return;
             } else if (getIntent().getExtras() != null) {
                 bundle = getIntent().getExtras();
             }
         }
+
         if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false)) {
             startNewActivity(bundle, YonaCarrouselActivity.class);
         } else if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {

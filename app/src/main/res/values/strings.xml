@@ -34,6 +34,7 @@
     <string name="next">NEXT</string>
     <string name="connectionnotavailable">OOPS! No Internet Connection Available, please connect and try again.</string>
     <string name="somethingwentwrong">Oops, Something went wrong</string>
+    <string name="server_not_rechable">Server is not accessible. Try again.</string>
     <string name="firstname">FIRST NAME</string>
     <string name="name">NAAM</string>
     <string name="lastname">LAST NAME</string>

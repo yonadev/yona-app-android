@@ -17,6 +17,7 @@ import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
+import nu.yona.app.api.model.YonaUser;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
 import retrofit2.Call;
@@ -52,6 +53,14 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     public void registerUser(String url, RegisterUser object, DataLoadListener listener) {
         try {
             getRestApi().registerUser(url, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    public void readDeepLinkData(String url, DataLoadListener listener) {
+        try {
+            getRestApi().readDeepLinkData(url, Locale.getDefault().toString().replace('_', '-')).enqueue(getDeepLinkUserDataCallBack(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -234,4 +243,21 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         };
     }
 
+    private Callback<YonaUser> getDeepLinkUserDataCallBack(final DataLoadListener listener) {
+        return new Callback<YonaUser>() {
+            @Override
+            public void onResponse(Call<YonaUser> call, Response<YonaUser> response) {
+                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                    listener.onDataLoad(response.body());
+                } else {
+                    onError(response, listener);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<YonaUser> call, Throwable t) {
+                onError(t, listener);
+            }
+        };
+    }
 }

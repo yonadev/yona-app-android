@@ -119,6 +119,29 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
         });
     }
 
+    @Override
+    public void readDeepLinkUserInfo(String url, final DataLoadListener listener) {
+        authNetwork.readDeepLinkData(url, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                if (listener != null) {
+                    listener.onDataLoad(result);
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (listener != null) {
+                    if (errorMessage instanceof ErrorMessage) {
+                        listener.onError(errorMessage);
+                    } else {
+                        listener.onError(new ErrorMessage(errorMessage.toString()));
+                    }
+                }
+            }
+        });
+    }
+
     /**
      * This will get response of server in case of register successful and store it in database, update on UI after that via listener.
      *

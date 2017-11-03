@@ -23,6 +23,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.text.InputFilter;
@@ -39,10 +41,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStore;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import de.blinkt.openvpn.LaunchVPN;
 import de.blinkt.openvpn.VpnProfile;
@@ -59,7 +66,10 @@ import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.timepicker.time.Timepoint;
-import static nu.yona.app.utils.Logger.*;
+
+import static nu.yona.app.utils.Logger.loge;
+import static nu.yona.app.utils.Logger.logi;
+import static nu.yona.app.utils.Logger.printStackTrace;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -564,5 +574,39 @@ public class AppUtils {
         view.getWindowVisibleDisplayFrame(r);
         int heightDiff = view.getRootView().getHeight() - (r.bottom - r.top);
         return heightDiff > estimatedKeyboardHeight;
+    }
+
+    private final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd");
+
+    public long whatIsDifferenceWithToday(String requestedDate) {
+        long dayDuration = 0l;
+
+        try {
+            Date date1 = SDF_YYYY_MM_DD.parse(requestedDate);
+            Date date2 = Calendar.getInstance().getTime();
+            long diff = date2.getTime() - date1.getTime();
+            dayDuration = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            System.out.println ("Days: " + dayDuration);
+            Logger.logi(TAG, "Days: " + dayDuration);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dayDuration;
+    }
+
+    /**
+     * Check for network availability.
+     * @param context requested context object.
+     * @return true if available else false.
+     */
+    public static boolean isNetworkAvailable(final Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
     }
 }

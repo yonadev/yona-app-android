@@ -24,6 +24,7 @@ import nu.yona.app.api.utils.NetworkUtils;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.utils.AppUtils;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -138,10 +139,16 @@ class BaseImpl {
      */
     void onError(Throwable t, DataLoadListener listener) {
         if (listener != null) {
-            if (t instanceof ConnectException || t instanceof UnknownHostException || t instanceof SocketTimeoutException) {
-                listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.connectionnotavailable)));
+
+            if(t instanceof ConnectException || t instanceof SocketTimeoutException) {
+                // If client causing problem.
+                if(!AppUtils.isNetworkAvailable(YonaApplication.getAppContext())) {
+                    listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.connectionnotavailable)));
+                } else {
+                    listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.server_not_rechable)));
+                }
             } else {
-                listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.somethingwentwrong)));
+                listener.onError(t.getMessage());
             }
         }
     }

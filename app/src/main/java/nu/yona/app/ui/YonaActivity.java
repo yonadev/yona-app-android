@@ -847,7 +847,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     ft.addSharedElement(ivProfile, getString(R.string.profile_transition));
                 }
                 ft.commitAllowingStateLoss();
-                getFragmentManager().executePendingTransactions();
+                getSupportFragmentManager().executePendingTransactions();
             } else {
                 oldFragment.setUserVisibleHint(false);
                 if (!clearFragmentStack && addToBackstack) {
