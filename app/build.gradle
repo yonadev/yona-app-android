@@ -7,7 +7,7 @@ android {
         applicationId "nu.yona.app"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 15
+        versionCode 16
         versionName "1.0.6"
     }
     buildTypes {
@@ -55,7 +55,7 @@ android {
                 apkName += "-RELEASE"
 
             output.outputFile = new File(apk.parent, apkName + '.apk')
-            output.packageApplication.outputFile = new File(apk.parent, apkName + '-unaligned.apk')
+            output.packageApplication.outputFile = new File(apk.parent, apkName + '.apk')
         }
     }
 
