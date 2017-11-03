@@ -25,7 +25,6 @@ import java.util.Date;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
-import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.RegisterUser;
@@ -162,17 +161,9 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        YonaAnalytics.createTapEvent(AnalyticsConstant.BACK_FROM_OTP_SCREEN);
-        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
-        finish();
-    }
-
-    /*
-         * Get all activity categories
-         */
+    /**
+     * Get all activity categories
+     */
     private void getActivityCategories() {
         APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(null);
     }
@@ -193,8 +184,13 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
         });
     }
 
+    /**
+     * Show Passcode Activity and clear back stack.
+     */
     private void showPasscodeScreen() {
-        startActivity(new Intent(OTPActivity.this, PasscodeActivity.class));
+        Intent intent = new Intent(OTPActivity.this, PasscodeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
         finish();
     }
 

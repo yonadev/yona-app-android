@@ -31,6 +31,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.api.model.YonaUser;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.state.EventChangeListener;
@@ -176,5 +177,12 @@ public class StepOne extends BaseFragment implements EventChangeListener {
     @Override
     public String getAnalyticsCategory() {
         return AnalyticsConstant.REGISTRATION_STEP_ONE;
+    }
+
+    public void onDeepLinkDataReceived(YonaUser user) {
+        if(user != null) {
+            firstName.setText(user.getFirstName() != null ? user.getFirstName() : "");
+            lastName.setText(user.getLastName() != null ? user.getLastName() : "");
+        }
     }
 }

@@ -34,6 +34,7 @@
     <string name="next">VOLGENDE</string>
     <string name="connectionnotavailable">OEPS! Geen internetverbinding beschikbaar, maak opnieuw verbinding en probeer opnieuw.</string>
     <string name="somethingwentwrong">Oeps! Er is iets mis gegaan</string>
+    <string name="server_not_rechable">Server is niet toegankelijk. Probeer het nog eens</string>
     <string name="firstname">VOORNAAM</string>
     <string name="name">NAAM</string>
     <string name="lastname">ACHTERNAAM</string>

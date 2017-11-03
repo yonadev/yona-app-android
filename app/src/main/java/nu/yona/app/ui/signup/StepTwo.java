@@ -26,6 +26,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
@@ -38,11 +42,14 @@ import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 25/03/16.
  */
 public class StepTwo extends BaseFragment implements EventChangeListener {
+
+    private final String TAG = StepTwo.class.getSimpleName();
 
     private YonaFontNumberTextView mobileNumber, countryCode;
     private YonaFontEditTextView nickName;
@@ -94,7 +101,22 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
         appbar = (AppBarLayout) view.findViewById(R.id.appbar);
         mobileErrorTextview = (YonaFontTextView) view.findViewById(R.id.mobile_error_text);
 
-        countryCode.setText(R.string.country_code);
+        if(activity.getDeepLinkUserInfo() != null && activity.getDeepLinkUserInfo().getMobileNumber() != null) {
+
+            String number = activity.getDeepLinkUserInfo().getMobileNumber();
+            try {
+                Phonenumber.PhoneNumber numberProto = PhoneNumberUtil.getInstance().parse(number, "");
+                String ccode = "+"+numberProto.getCountryCode(); // phone must begin with '+'
+                countryCode.setText(ccode);
+                mobileNumber.setText(number.substring(ccode.length(), number.length()));
+
+            } catch (NumberParseException e) {
+                Logger.loge(TAG, "Exception", e);
+            }
+        } else {
+            countryCode.setText(R.string.country_code);
+        }
+
         mobileNumber.requestFocus();
         activity.showKeyboard(mobileNumber);
         mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getActivity(), mobileErrorTextview));

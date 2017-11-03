@@ -28,4 +28,6 @@ public interface ServerErrorCode {
      * As per comment on: http://wiki.yona.nu/display/DEV/Flow+-+Unsubscribe?focusedCommentId=14843985#comment-14843985
      */
     String USER_NOT_FOUND = "error.user.not.found.id";
+
+    String SMS_SENDING_FAIL = "error.sms.sending.failed.httpStatus";
 }

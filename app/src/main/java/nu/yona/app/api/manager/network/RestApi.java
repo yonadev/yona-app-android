@@ -31,6 +31,7 @@ import nu.yona.app.api.model.YonaBuddies;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
+import nu.yona.app.api.model.YonaUser;
 import nu.yona.app.utils.ApiList;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -61,6 +62,16 @@ public interface RestApi {
     @PUT
     Call<User> registerUser(@Url String url, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
                             @Body RegisterUser body);
+
+
+    /**
+     * Gets user.
+     *
+     * @param url          the url
+     * @return the user
+     */
+    @GET
+    Call<YonaUser> readDeepLinkData(@Url String url, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
 
     /**
      * Update register user call.

@@ -23,6 +23,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.YonaUser;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
@@ -73,6 +74,8 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
                 doBack();
             }
         });
+
+        readDeepLinkData(getIntent().getExtras().getString(AppConstant.DEEP_LINK));
     }
 
     @Override
@@ -219,16 +222,55 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
             intent.putExtras(bundle);
         }
         startActivity(intent);
-        finish();
     }
 
     private void showError(Object errorMessage) {
         ErrorMessage message = (ErrorMessage) errorMessage;
         showLoadingView(false, null);
-        if (message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR) || message.getCode().equalsIgnoreCase(ServerErrorCode.ADD_BUDDY_USER_EXIST_ERROR))) {
+        if (message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)
+                || message.getCode().equalsIgnoreCase(ServerErrorCode.ADD_BUDDY_USER_EXIST_ERROR))) {
             showAlertForReRegisteruser(message.getMessage());
-        } else {
+        } /*else if(message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.SMS_SENDING_FAIL))) {
             Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+        }*/ else {
+            Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    // Object will be read by @StepTwo to display phone number read from deep link.
+    private YonaUser deepLinkUserInfo = null;
+    public YonaUser getDeepLinkUserInfo() {
+        return deepLinkUserInfo;
+    }
+
+    /**
+     * Following will request to read Deep link Data for requested URL.
+     * @param url request URL.
+     */
+    private void readDeepLinkData(String url) {
+        if(url == null) {
+            return;
+        }
+
+        showLoadingView(true, null);
+        if (AppConstant.URL != null) {
+
+            APIManager.getInstance().getAuthenticateManager().readDeepLinkUserInfo(url, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    showLoadingView(false, null);
+
+                    if(result != null) {
+                        deepLinkUserInfo = (YonaUser) result;
+                        stepOne.onDeepLinkDataReceived(deepLinkUserInfo);
+                    }
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    showError(errorMessage);
+                }
+            });
         }
     }
 }

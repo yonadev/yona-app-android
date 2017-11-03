@@ -1,3 +1,7 @@
 <resources>
     <string name="server_url">http://85.222.227.142</string>
+    <string name="http_scheme">http</string>
+    <string name="https_scheme">https</string>
+    <string name="host_name">*.dev.yona.nu</string>
+    <string name="prefix">/users/</string>
 </resources>

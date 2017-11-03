@@ -119,4 +119,6 @@ public interface AuthenticateManager {
     void getUserFromServer();
 
     void registerUser(String url, RegisterUser user, final DataLoadListener listener);
+
+    void readDeepLinkUserInfo(String url, final DataLoadListener listener);
 }
