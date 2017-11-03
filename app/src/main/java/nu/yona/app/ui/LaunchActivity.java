@@ -43,6 +43,7 @@ public class LaunchActivity extends BaseActivity {
         bundle = new Bundle();
         if (getIntent() != null) {
             if (getIntent().getDataString() != null) {
+                bundle.putString(AppConstant.URL, getIntent().getDataString());
                 bundle.putString(AppConstant.DEEP_LINK, getIntent().getDataString());
                 startNewActivity(bundle, SignupActivity.class);
                 // and it will not launch tour for first time user and so can be marked true.

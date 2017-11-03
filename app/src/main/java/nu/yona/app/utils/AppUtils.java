@@ -589,7 +589,7 @@ public class AppUtils {
             System.out.println ("Days: " + dayDuration);
             Logger.logi(TAG, "Days: " + dayDuration);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Logger.loge(TAG, "Exception", e);
         }
 
         return dayDuration;

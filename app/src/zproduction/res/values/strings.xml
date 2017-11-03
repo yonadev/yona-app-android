@@ -3,5 +3,5 @@
     <string name="http_scheme">https</string>
     <string name="https_scheme">https</string>
     <string name="host_name">*.prd.yona.nu</string>
-    <string name="prefix">/abc/</string>
+    <string name="prefix">/users/</string>
 </resources>

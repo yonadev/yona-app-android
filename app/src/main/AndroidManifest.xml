@@ -53,7 +53,7 @@
 
                 <data
                     android:host="@string/host_name"
-                    android:pathPrefix="/users/"
+                    android:pathPrefix="@string/prefix"
                     android:scheme="@string/http_scheme" />
                 <data android:scheme="@string/https_scheme" />
 
