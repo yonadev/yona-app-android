@@ -176,7 +176,7 @@ public class DateUtility {
     public static String getFormattedRelativeDateDifference(String requestedDate)  {
         String formattedString = "";
 
-        if(requestedDate != null && requestedDate.length() == 0) {
+        if(requestedDate != null && requestedDate.length() != 0) {
 
             try {
                 Date date1 = SDF_YYYY_MM_DD.parse(requestedDate);
@@ -190,7 +190,6 @@ public class DateUtility {
                 Date todayDate = calendar.getTime();
 
                 long dayDifference = dayDifferenceFromToday(date1, todayDate);
-
 
                 if (dayDifference == 0) { // Today
                     formattedString = YonaApplication.getAppContext().getResources().getString(R.string.last_seen_status_today);
