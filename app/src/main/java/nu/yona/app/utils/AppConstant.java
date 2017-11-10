@@ -52,7 +52,7 @@ public interface AppConstant {
     /**
      * The constant MOBILE_NUMBER_LENGTH.
      */
-    int MOBILE_NUMBER_LENGTH = 12;
+    int MOBILE_NUMBER_LENGTH = 9;
     /**
      * The constant OTP_LENGTH.
      */

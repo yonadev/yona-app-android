@@ -29,6 +29,8 @@ import nu.yona.app.YonaApplication;
  */
 public class DateUtility {
 
+    private final static String TAG = DateUtility.class.getSimpleName();
+
     private static final int M_NO_OF_DAY_PER_WEEK = 7;
     /**
      * The constant DAY_FORMAT.
@@ -202,6 +204,7 @@ public class DateUtility {
                     formattedString = YonaApplication.getAppContext().getResources().getString(R.string.last_seen_status_back_week, formattedString);
                 }
             } catch (ParseException e) {
+                Logger.loge(TAG, "Exception", e);
                 e.printStackTrace();
             }
         }

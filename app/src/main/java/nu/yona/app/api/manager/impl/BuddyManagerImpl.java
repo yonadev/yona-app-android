@@ -27,6 +27,7 @@ import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -74,7 +75,7 @@ public class BuddyManagerImpl implements BuddyManager {
             return false;
         }
         String phonenumber = mobileNumber.replace(" ", "");
-        return android.util.Patterns.PHONE.matcher(phonenumber).matches() && phonenumber.length() >= 9;
+        return android.util.Patterns.PHONE.matcher(phonenumber).matches() && phonenumber.length() >= AppConstant.MOBILE_NUMBER_LENGTH;
     }
 
     /**
