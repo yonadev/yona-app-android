@@ -41,15 +41,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStore;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import de.blinkt.openvpn.LaunchVPN;
 import de.blinkt.openvpn.VpnProfile;
@@ -63,6 +58,7 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.service.ActivityMonitorService;
+import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.timepicker.time.Timepoint;
@@ -576,25 +572,6 @@ public class AppUtils {
         return heightDiff > estimatedKeyboardHeight;
     }
 
-    private final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd");
-
-    public long whatIsDifferenceWithToday(String requestedDate) {
-        long dayDuration = 0l;
-
-        try {
-            Date date1 = SDF_YYYY_MM_DD.parse(requestedDate);
-            Date date2 = Calendar.getInstance().getTime();
-            long diff = date2.getTime() - date1.getTime();
-            dayDuration = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            System.out.println ("Days: " + dayDuration);
-            Logger.logi(TAG, "Days: " + dayDuration);
-        } catch (ParseException e) {
-            Logger.loge(TAG, "Exception", e);
-        }
-
-        return dayDuration;
-    }
-
     /**
      * Check for network availability.
      * @param context requested context object.
@@ -607,6 +584,26 @@ public class AppUtils {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
+    }
 
+    /**
+     * It convert requested @{@link StatusEnum} to Local based string.
+     * @return Local based string for current @{@link StatusEnum}.
+     * Using by @{@link nu.yona.app.api.model.YonaBuddy} object.
+     */
+    public static String getSendingStatusToDisplay(String sendingStatus) {
+        if(sendingStatus != null) {
+            if (sendingStatus.equals(StatusEnum.NOT_REQUESTED.getStatus())) {
+                return YonaApplication.getAppContext().getResources().getString(R.string.not_requested);
+            } else if (sendingStatus.equals(StatusEnum.REQUESTED.getStatus())) {
+                return YonaApplication.getAppContext().getResources().getString(R.string.requested);
+            } else if (sendingStatus.equals(StatusEnum.ACCEPTED.getStatus())) {
+                return YonaApplication.getAppContext().getResources().getString(R.string.accepted);
+            } else if (sendingStatus.equals(StatusEnum.REJECTED.getStatus())) {
+                return YonaApplication.getAppContext().getResources().getString(R.string.rejected);
+            }
+        }
+
+        return StatusEnum.NOT_REQUESTED.getStatus(); //Considered as default.
     }
 }

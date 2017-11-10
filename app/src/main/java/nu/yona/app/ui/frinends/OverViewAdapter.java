@@ -76,11 +76,15 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
             if (yonaObject.getEmbedded() != null) {
                 if (yonaObject.getEmbedded().getYonaUser() != null) {
 
+                    // TODO: How about other status, NOT_REQUESTED, REJECTED. We only using single else for rest of case.
                     if (StatusEnum.getStatusEnum(yonaObject.getReceivingStatus()) == StatusEnum.ACCEPTED) {
-                        holder.txtFooterMsg.setText(yonaObject.getNickname());
+                        String displayDate = yonaObject.getLastMonitoredActivityDateToDisplay();
+                        holder.txtFooterMsg.setText(displayDate != null && !displayDate.isEmpty() ?
+                                yonaObject.getLastMonitoredActivityDateToDisplay() : context.getString(R.string.last_seen_never_seen_online));
                     } else {
                         holder.txtFooterMsg.setText(context.getString(R.string.not_accepted_yet));
                     }
+
                     if (username.length() > 0) {
                         holder.profileIconTxt.setVisibility(View.VISIBLE);
                         holder.profileIconTxt.setText(username.substring(0, 1).toUpperCase());
@@ -127,7 +131,7 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
     public void onBindHeaderViewHolder(StickyHeaderHolder holder, int position) {
         Object yonaObject = getItem(position);
         if (yonaObject != null) {
-            holder.getHeaderText().setText(((YonaBuddy) yonaObject).getSendingStatus());
+            holder.getHeaderText().setText(((YonaBuddy) yonaObject).getSendingStatusToDisplay());
         }
     }
 

@@ -46,6 +46,7 @@ import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 27/04/16.
@@ -187,6 +188,11 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         });
     }
 
+    /**
+     * Mobile number validation referenced here in ticket APPDEV-1055.
+     * http://jira.yona.nu/browse/APPDEV-1055?focusedCommentId=13497&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-13497
+     * @return true if filed validation true.
+     */
     private boolean validateFields() {
         if (!APIManager.getInstance().getBuddyManager().validateText(firstName.getText().toString())) {
             updateErrorView(firstNameLayout, getString(R.string.enterfirstnamevalidation), firstName);
@@ -197,12 +203,30 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
         } else if (!APIManager.getInstance().getBuddyManager().validateEmail(email.getText().toString())) {
             updateErrorView(emailLayout, getString(R.string.enteremailvalidation), email);
             return false;
-        } else if (!APIManager.getInstance().getBuddyManager().validateMobileNumber(mobileNumber.getText().toString())) {
+        } else if (!APIManager.getInstance().getBuddyManager().validateMobileNumber(mobileNumber.getText().toString().trim())) {
             updateErrorView(mobileNumberLayout, getString(R.string.enternumbervalidation), mobileNumber);
             return false;
+        } else if (APIManager.getInstance().getBuddyManager().validateMobileNumber(mobileNumber.getText().toString().trim())) {
+
+            String number = mobileNumber.getText().toString().trim();
+            if(number.substring(0, 2).equals(START_06) || number.substring(0, 1).equals(START_6)) {
+                return true;
+            } else if(number.substring(0, 1).equals(START_PLUS)) {
+                return true;
+            } else {
+                updateErrorView(mobileNumberLayout, getString(R.string.entercountrycode), mobileNumber);
+                return false;
+            }
         }
+
         return true;
     }
+
+    private final String START_06 = "06";
+    private final String START_6 = "6";
+    private final String START_PLUS = "+";
+    private final String START_31 = "+31";
+    private final String START_0 = "0";
 
     private void updateErrorView(final TextInputLayout mInputLayout, final String mErrorMsg, final YonaFontEditTextView mEditText) {
         mInputLayout.setErrorEnabled(true);
@@ -223,7 +247,15 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
     private void addFriend() {
         ((YonaActivity) getActivity()).showLoadingView(true, null);
         YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.ADD_FRIEND, getString(R.string.invitefriend));
-        APIManager.getInstance().getBuddyManager().addBuddy(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), mobileNumber.getText().toString(), new DataLoadListener() {
+        String number = mobileNumber.getText().toString();
+        if(number.substring(0, 2).equals(START_06)  || number.substring(0, 1).equals(START_6)) {
+            // ignore if 0 added as prefix.
+            number = number.substring(0, 1).equals(START_0) ? START_31 + number.substring(1, number.length()) : START_31 + number;
+        }
+
+        Logger.logi("Mobile_validation", number);
+
+        APIManager.getInstance().getBuddyManager().addBuddy(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), number, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 YonaActivity.getActivity().showLoadingView(false, null);
