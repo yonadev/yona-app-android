@@ -36,6 +36,10 @@ public enum NotificationEnum {
      */
     GOALCHANGEMESSAGE("GoalChangeMessage"),
     /**
+     * BuddyInfoChangeMessage notification enum.
+     */
+    BUDDYINFOCHANGEMESSAGE("BuddyInfoChangeMessage"),
+    /**
      * Disclosurerequestmessage notification enum.
      */
     DISCLOSUREREQUESTMESSAGE("DisclosureRequestMessage"),

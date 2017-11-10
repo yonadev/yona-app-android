@@ -15,6 +15,10 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import nu.yona.app.enums.StatusEnum;
+import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.DateUtility;
+
 /**
  * The type Yona buddy.
  */
@@ -86,6 +90,14 @@ public class YonaBuddy extends BaseEntity {
     }
 
     /**
+     * It convert requested @{@link StatusEnum} to Local based string.
+     * @return Local based string for current @{@link StatusEnum}.
+     */
+    public String getSendingStatusToDisplay() {
+        return AppUtils.getSendingStatusToDisplay(sendingStatus);
+    }
+
+    /**
      * Sets sending status.
      *
      * @param sendingStatus The sendingStatus
@@ -136,6 +148,14 @@ public class YonaBuddy extends BaseEntity {
 
     public void setLastMonitoredActivityDate(String lastMonitoredActivityDate) {
         this.lastMonitoredActivityDate = lastMonitoredActivityDate;
+    }
+
+    /**
+     * Following used to read formatted date string for @lastMonitoredActivityDate
+     * @return formatted date string.
+     */
+    public String getLastMonitoredActivityDateToDisplay() {
+        return DateUtility.getFormattedRelativeDateDifference(lastMonitoredActivityDate);
     }
 
     @Override

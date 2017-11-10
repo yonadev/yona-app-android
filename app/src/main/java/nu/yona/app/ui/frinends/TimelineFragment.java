@@ -205,8 +205,10 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
             mDayTimelineStickyAdapter.notifyDataSetChange(setHeaderListView());
             YonaActivity.getActivity().showLoadingView(false, null);
         } else {
-            YonaActivity.getActivity().showLoadingView(false, null);
-            YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_friend_text)));
+            if(isAdded()) {
+                YonaActivity.getActivity().showLoadingView(false, null);
+                YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_friend_text)));
+            }
         }
     }
 

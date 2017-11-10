@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +28,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import nu.yona.app.BuildConfig;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
@@ -145,7 +143,16 @@ public class NotificationFragment extends BaseFragment {
                         mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
                     }
                     YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, NotificationEnum.GOALCHANGEMESSAGE.getNotificationType());
-                }
+                }  else if (yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.BUDDYCONNECTREQUESTMESSAGE) {
+                    if(yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.REQUESTED) {
+                        //self.performSegueWithIdentifier(R.segue.notificationsViewController.showAcceptFriend, sender: self)
+                        return;
+                    }
+
+                    if(yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.ACCEPTED) {
+                        return;
+                    }
+                }  else if (yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.BUDDYINFOCHANGEMESSAGE) {}
                 updateStatusAsRead(yonaMessage);
                 if (mMessageIntent != null) {
                     mMessageIntent.putExtra(AppConstant.YONA_MESSAGE, yonaMessage);

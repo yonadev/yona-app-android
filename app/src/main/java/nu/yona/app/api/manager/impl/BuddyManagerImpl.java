@@ -75,7 +75,7 @@ public class BuddyManagerImpl implements BuddyManager {
             return false;
         }
         String phonenumber = mobileNumber.replace(" ", "");
-        return android.util.Patterns.PHONE.matcher(phonenumber).matches();
+        return android.util.Patterns.PHONE.matcher(phonenumber).matches() && phonenumber.length() >= AppConstant.MOBILE_NUMBER_LENGTH;
     }
 
     /**

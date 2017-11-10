@@ -46,6 +46,7 @@
     <string name="enternicknamevalidation">You need to enter a nick name</string>
     <string name="enterlastnamevalidation">You need to enter a last name</string>
     <string name="enternumbervalidation">Number should be 9 digits</string>
+    <string name="entercountrycode">Please use international number notation,\ne.g. for NL +31</string>
     <string name="loading">Loading</string>
     <string name="ok">OK</string>
     <string name="passcodetitle">You are not alone</string>
@@ -183,7 +184,7 @@
     <string name="send">SEND</string>
     <string name="reply">Reply</string>
     <string name="useralreadyregister">User already register with this number.</string>
-    <string name="file_write_permission">Allow File Write Permission</string>
+    <string name="file_write_permission">Yona needs to write a file on your device.</string>
     <string name="file_write_permission_detail">Yona wants to write some files on file system, you will redirect on setting screen, please click on "Permission" and "ON" Storage permission.</string>
     <string name="contact_permission">Allow contact read Permission</string>
     <string name="contact_permission_detail">Yona wants to read contacts, you will redirect on setting screen, please click on "Permission" and "ON" Contact permission.</string>
@@ -203,4 +204,15 @@
     <string name="message_from_yona">Message from Yona</string>
     <string name="yona_administrator">Yona administrator</string>
     <string name="link">Link</string>
+
+    <string name="not_requested">NOT REQUESTED</string>
+    <string name="requested">REQUESTED</string>
+    <string name="accepted">ACCEPTED</string>
+    <string name="rejected">REJECTED</string>
+
+    <string name="last_seen_status_today">Last seen Today</string>
+    <string name="last_seen_status_yesterday">Last seen Yesterday</string>
+    <string name="last_seen_status_in_week">Last seen %1$s days ago</string>
+    <string name="last_seen_status_back_week">Last seen on %1$s</string> <!--February 15, 2017-->
+    <string name="last_seen_never_seen_online">Never seen online</string>
 </resources>

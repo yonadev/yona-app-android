@@ -107,7 +107,8 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/mobile_number_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/text_item_height"
+            android:minHeight="@dimen/text_item_height"
+            android:layout_height="wrap_content"
             android:background="@drawable/item_gradient"
             android:paddingBottom="@dimen/ten"
             android:paddingLeft="@dimen/signup_profile_left_right_padding"

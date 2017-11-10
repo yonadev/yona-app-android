@@ -29,6 +29,8 @@ import nu.yona.app.YonaApplication;
  */
 public class DateUtility {
 
+    private final static String TAG = DateUtility.class.getSimpleName();
+
     private static final int M_NO_OF_DAY_PER_WEEK = 7;
     /**
      * The constant DAY_FORMAT.
@@ -151,6 +153,63 @@ public class DateUtility {
 
         return listOfdates;
 
+    }
+
+    public final static SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+    /**
+     * Following wil calculate day difference between two date.
+     * From considered as today.
+     *
+     * Trick: While considering day difference don't forgot to rest 0 rest of unit to 0,
+     * include HOUR_OF_DAY, MINUTE, SECOND, MILLISECOND.
+     */
+    private static long dayDifferenceFromToday(Date date1, Date date2) {
+        return TimeUnit.DAYS.convert(date2.getTime() - date1.getTime(), TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Following read formatted day difference from today date.
+     * @param requestedDate requested date.
+     * @return formatted date string.
+     */
+    public static String getFormattedRelativeDateDifference(String requestedDate)  {
+        String formattedString = "";
+
+        if(requestedDate != null && requestedDate.length() == 0) {
+
+            try {
+                Date date1 = SDF_YYYY_MM_DD.parse(requestedDate);
+                Calendar calendar = Calendar.getInstance(Locale.getDefault());
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+
+                calendar.setTime(calendar.getTime());
+                Date todayDate = calendar.getTime();
+
+                long dayDifference = dayDifferenceFromToday(date1, todayDate);
+
+
+                if (dayDifference == 0) { // Today
+                    formattedString = YonaApplication.getAppContext().getResources().getString(R.string.last_seen_status_today);
+                } else if (dayDifference == 1) { // Yesterday
+                    formattedString = YonaApplication.getAppContext().getResources().getString(R.string.last_seen_status_yesterday);
+                } else if (dayDifference > 1 && dayDifference <= 7) { // Within week
+                    formattedString = YonaApplication.getAppContext().getResources().getString(R.string.last_seen_status_in_week, dayDifference + "");
+                } else {
+                    calendar.setTime(date1);
+                    formattedString = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(calendar.getTime());
+                    formattedString = YonaApplication.getAppContext().getResources().getString(R.string.last_seen_status_back_week, formattedString);
+                }
+            } catch (ParseException e) {
+                Logger.loge(TAG, "Exception", e);
+                e.printStackTrace();
+            }
+        }
+
+        return formattedString;
     }
 
 }

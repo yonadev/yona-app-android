@@ -70,6 +70,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
                 holder.swipeLayout.setRightSwipeEnabled(false);
             }
             if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.SYSTEM_MESSAGE) {
+                holder.img_avtar.setVisibility(View.GONE);
                 if (!TextUtils.isEmpty(yonaObject.getMessage())) {
                     holder.txtFooterMsg.setText(yonaObject.getMessage());
                 }

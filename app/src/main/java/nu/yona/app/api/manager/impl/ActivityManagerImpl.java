@@ -818,7 +818,8 @@ public class ActivityManagerImpl implements ActivityManager {
                             AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
                             Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
                         }
-                        if (activity.getYonaGoal() != null && activity.getYonaGoal() != null && !activity.getYonaGoal().isHistoryItem()) {
+                        // TODO: History check need to ve verify. Concern Issue: http://jira.yona.nu/browse/APPDEV-999.
+                        if (activity.getYonaGoal() != null && activity.getYonaGoal() != null/* && !activity.getYonaGoal().isHistoryItem()*/) {
                             updatedOverviewDayActivities.add(generateTimeZoneSpread(activity));
                         }
                     }
