@@ -207,21 +207,25 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
             updateErrorView(mobileNumberLayout, getString(R.string.enternumbervalidation), mobileNumber);
             return false;
         } else if (APIManager.getInstance().getBuddyManager().validateMobileNumber(mobileNumber.getText().toString().trim())) {
-
             String number = mobileNumber.getText().toString().trim();
-            if(number.substring(0, 2).equals(START_06) || number.substring(0, 1).equals(START_6)) {
-                return true;
-            } else if(number.substring(0, 1).equals(START_PLUS)) {
-                return true;
-            } else {
+
+            if(number.startsWith(NUMBER_VALIDATION_START_PLUS_0)) {
                 updateErrorView(mobileNumberLayout, getString(R.string.entercountrycode), mobileNumber);
                 return false;
             }
+
+            if(number.substring(0, 2).equals(START_06) || number.substring(0, 1).equals(START_6) || number.substring(0, 1).equals(START_PLUS)) {
+                return true;
+            }
+
+            updateErrorView(mobileNumberLayout, getString(R.string.entercountrycode), mobileNumber);
+            return false;
         }
 
         return true;
     }
 
+    private final String NUMBER_VALIDATION_START_PLUS_0 = "+0";
     private final String START_06 = "06";
     private final String START_6 = "6";
     private final String START_PLUS = "+";
