@@ -63,6 +63,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 06/06/16.
@@ -264,7 +265,8 @@ public class ActivityManagerImpl implements ActivityManager {
                     YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, new DataLoadListener() {
                         @Override
                         public void onDataLoad(Object result) {
-                            //on success nothing to do, as it is posted on server.
+                            //on success nothing to do, as it is posted on server. #JIRA_1022
+                            Logger.toast(mContext, "History data submitted successfully");
                             if (fromDB) {
                                 activityTrackerDAO.clearActivities();
                             }
@@ -273,6 +275,7 @@ public class ActivityManagerImpl implements ActivityManager {
                         @Override
                         public void onError(Object errorMessage) {
                             //on failure, we need to store data in database to resend next time.
+                            Logger.toast(mContext, "History data submission failed");
                             if (!fromDB) {
                                 activityTrackerDAO.saveActivities(activity.getActivities());
                             }

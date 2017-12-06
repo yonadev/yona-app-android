@@ -415,4 +415,7 @@
     <string name="cancel">cancel</string>
     <string name="delete">Delete</string>
     <string name="yona_administrator">Yona administrator</string>
+
+    <string name="test_vpn_restart_confirmation_title">VPN Connection.</string>
+    <string name="test_vpn_restart_confirmation">VPN disconnect !! Please connect it again.</string>
 </resources>
