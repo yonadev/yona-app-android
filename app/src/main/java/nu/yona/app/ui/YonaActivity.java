@@ -60,6 +60,7 @@ import java.util.List;
 
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.activities.ConfigConverter;
+import nu.yona.app.BuildConfig;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.db.DatabaseHelper;
@@ -94,6 +95,7 @@ import nu.yona.app.ui.settings.PrivacyFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -1279,13 +1281,50 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
                     checkFileWritePermission();
                 } else {
-                    isUserFromOnCreate = true;
-                    AppUtils.startVPN(YonaActivity.this, false);
-                    isUserFromPinScreenAlert = false;
-                    lockScreen();
+
+                    // #JIRA-1022
+                    if(BuildConfig.DEBUG) {
+                        vpnStartConfirmation();
+                    } else {
+                        isUserFromOnCreate = true;
+                        AppUtils.startVPN(YonaActivity.this, false);
+                        isUserFromPinScreenAlert = false;
+                        lockScreen();
+                    }
                 }
             }
         }, AppConstant.ONE_SECOND);
+    }
+
+
+    /**
+     * #JIRA-1022
+     */
+    void vpnStartConfirmation() {
+        android.app.AlertDialog.Builder d = new android.app.AlertDialog.Builder(this);
+        d.setTitle(de.blinkt.openvpn.R.string.test_vpn_restart_confirmation_title);
+        d.setMessage(de.blinkt.openvpn.R.string.test_vpn_restart_confirmation);
+        d.setCancelable(false);
+        d.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Logger.logi("Yona", "START");
+                isUserFromOnCreate = true;
+                AppUtils.startVPN(YonaActivity.this, false);
+                isUserFromPinScreenAlert = false;
+                lockScreen();
+
+            }
+        });
+
+        d.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        d.show();
     }
 
     private void lockScreen() {

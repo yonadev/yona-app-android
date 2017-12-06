@@ -1,6 +1,8 @@
 package nu.yona.app.utils;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import nu.yona.app.BuildConfig;
 
@@ -38,6 +40,12 @@ public class Logger {
     public static void printStackTrace(Exception e) {
         if(BuildConfig.DEBUG) {
             e.printStackTrace();
+        }
+    }
+
+    public static void toast(Context context, String message) {
+        if(BuildConfig.DEBUG) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
     }
 }
