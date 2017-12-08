@@ -1266,10 +1266,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         });
         builder.setCancelable(false);
         builder.create().show();
-
-
     }
 
+    private void checkVPN() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -1404,7 +1403,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 }
             }
         }.execute();
-
     }
 
     private void checkFlow() {
