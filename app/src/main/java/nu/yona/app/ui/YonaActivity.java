@@ -60,7 +60,6 @@ import java.util.List;
 
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.activities.ConfigConverter;
-import nu.yona.app.BuildConfig;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.db.DatabaseHelper;
@@ -1271,26 +1270,26 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
     }
 
-    private void checkVPN() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.e("onPause", "Check VPN");
                 isToDisplayLogin = false;
                 skipVerification = true;
                 if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
                     checkFileWritePermission();
                 } else {
 
+                    vpnStartConfirmation();
+
                     // #JIRA-1022
-                    if(BuildConfig.DEBUG) {
+                    /*if(BuildConfig.DEBUG) {
                         vpnStartConfirmation();
                     } else {
                         isUserFromOnCreate = true;
                         AppUtils.startVPN(YonaActivity.this, false);
                         isUserFromPinScreenAlert = false;
                         lockScreen();
-                    }
+                    }*/
                 }
             }
         }, AppConstant.ONE_SECOND);
