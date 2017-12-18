@@ -414,11 +414,16 @@ public class AppUtils {
         }
     }
 
+    public static boolean isVPNConnected(Context context) {
+        String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
+        VpnProfile profile = ProfileManager.get(context, profileUUID);
+        return (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile);
+    }
+
     public static Intent startVPN(Context context, boolean returnIntent) {
         String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
         VpnProfile profile = ProfileManager.get(context, profileUUID);
         User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-
 
         if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null) {
             profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";

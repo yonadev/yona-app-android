@@ -147,6 +147,11 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             isToDisplayLogin = false;
         }
 
+        // TEST_1022
+        if(!AppUtils.isVPNConnected(this)) {
+            Logger.toast(this, "Data can not be recorded as VPN is off.");
+        }
+
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         setupTabs();
 
@@ -1278,17 +1283,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     checkFileWritePermission();
                 } else {
 
-                    vpnStartConfirmation();
-
-                    // #JIRA-1022
-                    /*if(BuildConfig.DEBUG) {
+                    if(!AppUtils.isVPNConnected(YonaActivity.this))
                         vpnStartConfirmation();
-                    } else {
-                        isUserFromOnCreate = true;
-                        AppUtils.startVPN(YonaActivity.this, false);
-                        isUserFromPinScreenAlert = false;
-                        lockScreen();
-                    }*/
+
+                    /*isUserFromOnCreate = true;
+                    AppUtils.startVPN(YonaActivity.this, false);
+                    isUserFromPinScreenAlert = false;
+                    lockScreen();*/
+
                 }
             }
         }, AppConstant.ONE_SECOND);
@@ -1311,7 +1313,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 AppUtils.startVPN(YonaActivity.this, false);
                 isUserFromPinScreenAlert = false;
                 lockScreen();
-
             }
         });
 
