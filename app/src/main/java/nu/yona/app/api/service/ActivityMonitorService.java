@@ -21,7 +21,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -152,7 +151,9 @@ public class ActivityMonitorService extends Service {
 
     private void updateOnServer(String pkgname) {
         if (previousAppName != null && !pkgname.equals("NULL") && startTime != null && endTime != null && startTime.before(endTime)) {
-            APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
+            if(AppUtils.isVPNConnected(this)) {
+                APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
+            }
         }
     }
 
