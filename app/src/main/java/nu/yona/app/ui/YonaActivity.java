@@ -51,6 +51,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -148,8 +149,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
 
         // TEST_1022
-        if(!AppUtils.isVPNConnected(this)) {
-            Logger.toast(this, "Data can not be recorded as VPN is off.");
+        if(!AppUtils.isVPNConnected(this)) { // TODO: Need to remove before final production.
+            Toast.makeText(this, "Data can not be recorded as VPN is off.", Toast.LENGTH_SHORT).show();
         }
 
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
