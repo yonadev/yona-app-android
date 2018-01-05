@@ -43,7 +43,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.transition.ChangeBounds;
 import android.transition.Slide;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -150,7 +149,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
         // TEST_1022
         if(!AppUtils.isVPNConnected(this)) { // TODO: Need to remove before final production.
-            Toast.makeText(this, "Data can not be recorded as VPN is off.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "VPN Data can not be recorded as VPN is off.", Toast.LENGTH_LONG).show();
         }
 
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -360,7 +359,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         }
                     });
                 } catch (Exception e) {
-                    Log.e(YonaActivity.class.getSimpleName(), e.getMessage());
+                    Logger.loge(YonaActivity.class.getSimpleName(), e.getMessage());
                 }
             } else {
                 Snackbar.make(findViewById(android.R.id.content), errorMessage.getMessage(), Snackbar.LENGTH_LONG).show();
@@ -955,7 +954,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
             super.onBackPressed();
         } catch (Exception e) {
-            Log.e(YonaActivity.class.getSimpleName(), e.getMessage());
+            Logger.loge(YonaActivity.class.getSimpleName(), e.getMessage());
         }
     }
 
@@ -1183,7 +1182,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
-        Log.e(YonaActivity.class.getSimpleName(), "onRequestPermissionsResult");
+        Logger.loge(YonaActivity.class.getSimpleName(), "onRequestPermissionsResult");
         isToDisplayLogin = false;
         // Make sure it's our original READ_CONTACTS request
         if (requestCode == READ_EXTERNAL_STORAGE_REQUEST) {

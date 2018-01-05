@@ -12,7 +12,6 @@ package nu.yona.app.api.manager.dao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +77,6 @@ public class ActivityTrackerDAO extends BaseDAO {
                 c.close();
             }
         }
-        Log.e("Activity LIst", "Activity List size:" + activityList.size());
         return activityList;
     }
 

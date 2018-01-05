@@ -13,7 +13,6 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 
 import nu.yona.timepicker.R;
@@ -46,7 +45,6 @@ public class CircleView extends View {
 
     public void initialize(Context context, TimePickerController controller) {
         if (mIsInitialized) {
-            Log.e(TAG, "CircleView may only be initialized once.");
             return;
         }
 

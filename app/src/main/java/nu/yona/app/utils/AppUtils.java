@@ -75,7 +75,7 @@ public class AppUtils {
     private static boolean submitPressed;
     private static Intent activityMonitorIntent;
     private static ScheduledExecutorService scheduler;
-    private static YonaReceiver receiver;
+    private static YonaReceiver receiver = new YonaReceiver();
     private static int trialCertificateCount = 0, trialVPNCount = 0;
 
     private static final String TAG = "AppUtils";
@@ -193,14 +193,15 @@ public class AppUtils {
      * @param context the context
      */
     public static void registerReceiver(Context context) {
-        loge(TAG, "Register REceiver from apputil 187");
-        receiver = new YonaReceiver();
+        loge(TAG, "Register Receiver");
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
-        filter.addAction("com.yona.app.RESTART_DEVICE");
-        filter.addAction("com.yona.app.RESTART_VPN");
+        filter.addAction(AppConstant.RESTART_DEVICE);
+        filter.addAction(AppConstant.RESTART_VPN);
+
         context.registerReceiver(receiver, filter);
     }
 

@@ -8,13 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.util.Log;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 23/03/16.
@@ -29,12 +29,12 @@ public class YonaReceiver extends BroadcastReceiver {
         switch (intent.getAction()) {
             case Intent.ACTION_BOOT_COMPLETED:
             case Intent.ACTION_SCREEN_ON:
-                Log.e("Screen On", "Screen On");
+                Logger.loge("Screen On", "Screen On");
                 startService(context);
                 AppUtils.startVPN(context, false);
                 break;
             case Intent.ACTION_SCREEN_OFF:
-                Log.e("Screen Off", "Screen Off");
+                Logger.loge("SEND_Screen Off", "Screen Off");
                 AppUtils.setNullScheduler();
                 AppUtils.sendLogToServer(AppConstant.ONE_SECOND);
                 AppUtils.stopService(context);
@@ -43,7 +43,7 @@ public class YonaReceiver extends BroadcastReceiver {
                 YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_DEVICE_RESTART_REQUIRE, null);
                 break;
             case AppConstant.RESTART_VPN:
-                Log.e("Show restart VPN calll", "Show restart vpn call......");
+                Logger.loge("Show restart VPN calll", "Show restart vpn call");
                 showRestartVPN(mContext.getString(R.string.vpn_disconnected));
                 break;
             default:
@@ -81,7 +81,7 @@ public class YonaReceiver extends BroadcastReceiver {
             NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
             notificationManager.notify(0, notification);
         } catch (Exception e) {
-            Log.e(YonaReceiver.class.getSimpleName(), e.getMessage());
+            Logger.loge(YonaReceiver.class.getSimpleName(), e.getMessage());
         }
     }
 }
