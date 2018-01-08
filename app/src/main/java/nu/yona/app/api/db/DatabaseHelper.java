@@ -13,7 +13,6 @@ package nu.yona.app.api.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
@@ -75,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public void deleteAllData() {
         try {
-            Log.e(DatabaseHelper.class.getSimpleName(), "Delete all data");
+            Logger.loge(DatabaseHelper.class.getSimpleName(), "Delete all data");
             mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_USER_DATA);
             mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_ACTIVITY_CATEGORIES);
             mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_GOAL);

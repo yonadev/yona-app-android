@@ -22,7 +22,6 @@ package nu.yona.app.security;
 
 import android.os.Build;
 import android.os.Process;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -38,6 +37,8 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.SecureRandomSpi;
 import java.security.Security;
+
+import nu.yona.app.utils.Logger;
 
 /**
  * Fixes for the output of the default PRNG having low entropy.
@@ -282,7 +283,7 @@ public final class PRNGFixes {
             } catch (IOException e) {
                 // On a small fraction of devices /dev/urandom is not writable.
                 // Log and ignore.
-                Log.w(PRNGFixes.class.getSimpleName(),
+                Logger.loge(PRNGFixes.class.getSimpleName(),
                         "Failed to mix seed into " + URANDOM_FILE);
             } finally {
                 mSeeded = true;

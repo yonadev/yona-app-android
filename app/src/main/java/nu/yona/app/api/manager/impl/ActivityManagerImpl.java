@@ -12,7 +12,6 @@ package nu.yona.app.api.manager.impl;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -64,6 +63,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 06/06/16.
@@ -258,31 +258,41 @@ public class ActivityManagerImpl implements ActivityManager {
         }
     }
 
+    private boolean isSyncAPICallDone = true;
     private void postActivityOnServer(final AppActivity activity, final boolean fromDB) {
-        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-        if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref())) {
-            activityNetwork.postAppActivity(user.getLinks().getYonaAppActivity().getHref(),
-                    YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, new DataLoadListener() {
-                        @Override
-                        public void onDataLoad(Object result) {
-                            //on success nothing to do, as it is posted on server. #JIRA_1022
-                            // TODO: Need to remove before final production.
-                            Toast.makeText(mContext, "History data submitted successfully", Toast.LENGTH_SHORT).show();
-                            if (fromDB) {
-                                activityTrackerDAO.clearActivities();
-                            }
-                        }
+        Logger.logi("postActivityOnServer", "isSyncAPICallDone: " + isSyncAPICallDone);
 
-                        @Override
-                        public void onError(Object errorMessage) {
-                            //on failure, we need to store data in database to resend next time.
-                            // TODO: Need to remove before final production.
-                            Toast.makeText(mContext, "History data submission failed", Toast.LENGTH_SHORT).show();
-                            if (!fromDB) {
-                                activityTrackerDAO.saveActivities(activity.getActivities());
+        if(isSyncAPICallDone) {
+            isSyncAPICallDone = false;
+            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref())) {
+                activityNetwork.postAppActivity(user.getLinks().getYonaAppActivity().getHref(),
+                        YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, new DataLoadListener() {
+                            @Override
+                            public void onDataLoad(Object result) {
+                                //on success nothing to do, as it is posted on server. #JIRA_1022
+                                // TODO: Need to remove before final production.
+                                Toast.makeText(mContext, "History data submitted successfully", Toast.LENGTH_SHORT).show();
+                                if (fromDB) {
+                                    activityTrackerDAO.clearActivities();
+                                }
+
+                                isSyncAPICallDone = true;
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onError(Object errorMessage) {
+                                //on failure, we need to store data in database to resend next time.
+                                // TODO: Need to remove before final production.
+                                Toast.makeText(mContext, "History data submission failed", Toast.LENGTH_SHORT).show();
+                                if (!fromDB) {
+                                    activityTrackerDAO.saveActivities(activity.getActivities());
+                                }
+
+                                isSyncAPICallDone = true;
+                            }
+                        });
+            }
         }
     }
 
@@ -821,7 +831,7 @@ public class ActivityManagerImpl implements ActivityManager {
                             activity.setStickyTitle(DateUtility.getRelativeDate(futureCalendar));
                         } catch (Exception e) {
                             AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-                            Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+                            Logger.loge(NotificationManagerImpl.class.getName(), "DateFormat " + e);
                         }
                         // TODO: History check need to ve verify. Concern Issue: http://jira.yona.nu/browse/APPDEV-999.
                         if (activity.getYonaGoal() != null && activity.getYonaGoal() != null/* && !activity.getYonaGoal().isHistoryItem()*/) {
@@ -1146,7 +1156,7 @@ public class ActivityManagerImpl implements ActivityManager {
             futureCalendar.setTime(sdf.parse(createdTime));
             activity.setStickyTitle(DateUtility.getRelativeDate(futureCalendar));
         } catch (Exception e) {
-            Log.e(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+            Logger.loge(NotificationManagerImpl.class.getName(), "DateFormat " + e);
         }
         listener.onDataLoad(generateTimeZoneSpread(activity));
     }

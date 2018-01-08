@@ -12,7 +12,6 @@ package nu.yona.app.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -73,7 +72,7 @@ public class DownloadFileFromURL {
                     output.close();
                     input.close();
                 } catch (Exception e) {
-                    Log.e(DownloadFileFromURL.class.getSimpleName(), e.toString());
+                    Logger.loge(DownloadFileFromURL.class.getSimpleName(), e.toString());
                 } finally
 
                 {
@@ -86,7 +85,7 @@ public class DownloadFileFromURL {
                             input.close();
                         }
                     } catch (Exception e) {
-                        Log.e(DownloadFileFromURL.class.getSimpleName(), e.toString());
+                        Logger.loge(DownloadFileFromURL.class.getSimpleName(), e.toString());
                     }
                 }
 
@@ -103,7 +102,7 @@ public class DownloadFileFromURL {
                         listener.onError(path);
                     }
                 } catch (Exception e) {
-                    Log.e(DownloadFileFromURL.class.getSimpleName(), e.toString());
+                    Logger.loge(DownloadFileFromURL.class.getSimpleName(), e.toString());
                 }
                 //super.onPostExecute(path);
             }

@@ -13,7 +13,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.StrictMode;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -100,7 +99,7 @@ public class YonaApplication extends Application {
                 tracker.setAppVersion(pInfo.versionName + mContext.getString(R.string.space) + pInfo.versionCode);
                 tracker.send(new HitBuilders.ScreenViewBuilder().build());
             } catch (PackageManager.NameNotFoundException e) {
-                Log.e(YonaApplication.class.getSimpleName(), e.getMessage());
+                nu.yona.app.utils.Logger.loge(YonaApplication.class.getSimpleName(), e.getMessage());
             }
 
             GoogleAnalytics.getInstance(mContext).getLogger()

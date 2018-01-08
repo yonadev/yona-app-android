@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -23,6 +22,7 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.Categorizable;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.customview.CustomProgressDialog;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 18/03/16.
@@ -58,7 +58,7 @@ public class BaseActivity extends AppCompatActivity implements Categorizable {
                 progressDialog = null;
             }
         } catch (Exception e) {
-            Log.e(BaseActivity.class.getSimpleName(), e.getMessage());
+            Logger.loge(BaseActivity.class.getSimpleName(), e.getMessage());
         }
     }
 

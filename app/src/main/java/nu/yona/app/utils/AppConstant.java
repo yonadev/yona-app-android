@@ -294,6 +294,5 @@ public interface AppConstant {
     String YONA_FOLDER = "yonaFolder";
 
     String RESTART_VPN = "com.yona.app.RESTART_VPN";
-
     String RESTART_DEVICE = "com.yona.app.RESTART_DEVICE";
 }

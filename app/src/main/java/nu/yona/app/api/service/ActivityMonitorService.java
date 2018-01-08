@@ -33,6 +33,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -41,7 +42,6 @@ public class ActivityMonitorService extends Service {
 
     private static String currentApp;
     private final Stopwatch stopWatch = new Stopwatch();
-    private ActivityMonitorService self;
     private String previousAppName;
     private PowerManager powerManager;
     private Date startTime, endTime;
@@ -78,7 +78,6 @@ public class ActivityMonitorService extends Service {
         super.onCreate();
         restartReceiver();
         powerManager = ((PowerManager) YonaApplication.getAppContext().getSystemService(Context.POWER_SERVICE));
-        self = this;
     }
 
     private void restartReceiver() {
@@ -131,7 +130,7 @@ public class ActivityMonitorService extends Service {
             updateOnServer(previousAppName);
             return;
         }
-        final String apppackagename = printForegroundTask(self);
+        final String apppackagename = printForegroundTask(this);
         if (stopWatch.isStarted()) {
             if (!previousAppName.equalsIgnoreCase(apppackagename)) {
                 endTime = new Date();
@@ -150,10 +149,9 @@ public class ActivityMonitorService extends Service {
     }
 
     private void updateOnServer(String pkgname) {
+        Logger.logi("updateOnServer", "pck: " + pkgname);
         if (previousAppName != null && !pkgname.equals("NULL") && startTime != null && endTime != null && startTime.before(endTime)) {
-            if(AppUtils.isVPNConnected(this)) {
-                APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
-            }
+            APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
         }
     }
 
