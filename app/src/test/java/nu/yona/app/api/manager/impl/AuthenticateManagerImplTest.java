@@ -20,6 +20,7 @@ import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -28,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 public class AuthenticateManagerImplTest {
 
     private final String password = "12423423234234324234";
-    private AuthenticateManager manager;
+    private AuthenticateManagerImpl manager;
 
     @Before
     public void setUp() throws Exception {
@@ -69,5 +70,26 @@ public class AuthenticateManagerImplTest {
                 System.out.println(errorMessage.toString());
             }
         });
+    }
+
+    @Test
+    public void formatPhoneNumber_keepsCorrectNumber() {
+        String input = "+31612345678";
+        String expected = "+31612345678";
+        assertEquals(expected, manager.formatMobileNumber(input));
+    }
+
+    @Test
+    public void formatPhoneNumber_fixesLeadingZeroInDutchNumber() {
+        String input = "+310612345678";
+        String expected = "+31612345678";
+        assertEquals(expected, manager.formatMobileNumber(input));
+    }
+
+    @Test
+    public void formatPhoneNumber_removesSpaces() {
+        String input = "+316123 456 78";
+        String expected = "+31612345678";
+        assertEquals(expected, manager.formatMobileNumber(input));
     }
 }

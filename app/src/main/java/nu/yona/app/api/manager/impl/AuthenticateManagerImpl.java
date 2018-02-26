@@ -34,6 +34,9 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class AuthenticateManagerImpl implements AuthenticateManager {
 
+    private static final String DUTCH_COUNTRY_CODE = "+31";
+    private static final int ACCEPTED_PHONE_NUMBER_LENGTH = 9;
+    private final String UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX = "[^123456789+]";
     private final AuthenticateDAO authenticateDao;
     private final AuthenticateNetworkImpl authNetwork;
     private final Context mContext;
@@ -57,6 +60,20 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     public boolean validateText(String string) {
         // do validation for first name and last name
         return !TextUtils.isEmpty(string);
+    }
+
+    /**
+     * @param number user's mobile number
+     * @return formatted mobile number
+     */
+    public String formatMobileNumber(String number) {
+        String result = number;
+        result = removeUnwantedCharacters(result);
+        return DUTCH_COUNTRY_CODE.concat(result.substring(result.length() - ACCEPTED_PHONE_NUMBER_LENGTH));
+    }
+
+    private String removeUnwantedCharacters(String number) {
+        return number.replaceAll(UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX, "");
     }
 
     /**
