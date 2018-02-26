@@ -27,6 +27,7 @@ import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.MobileNumberFormatter;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -34,9 +35,6 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class AuthenticateManagerImpl implements AuthenticateManager {
 
-    private static final String DUTCH_COUNTRY_CODE = "+31";
-    private static final int ACCEPTED_PHONE_NUMBER_LENGTH = 9;
-    private final String UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX = "[^123456789+]";
     private final AuthenticateDAO authenticateDao;
     private final AuthenticateNetworkImpl authNetwork;
     private final Context mContext;
@@ -67,12 +65,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      * @return formatted mobile number
      */
     public String formatMobileNumber(String number) {
-        String cleanNumber = removeUnwantedCharacters(number);
-        return DUTCH_COUNTRY_CODE.concat(cleanNumber.substring(cleanNumber.length() - ACCEPTED_PHONE_NUMBER_LENGTH));
-    }
-
-    private String removeUnwantedCharacters(String number) {
-        return number.replaceAll(UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX, "");
+        return MobileNumberFormatter.formatMobileNumber(number);
     }
 
     /**
