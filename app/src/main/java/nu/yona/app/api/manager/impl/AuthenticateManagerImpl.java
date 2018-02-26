@@ -67,9 +67,8 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      * @return formatted mobile number
      */
     public String formatMobileNumber(String number) {
-        String result = number;
-        result = removeUnwantedCharacters(result);
-        return DUTCH_COUNTRY_CODE.concat(result.substring(result.length() - ACCEPTED_PHONE_NUMBER_LENGTH));
+        String cleanNumber = removeUnwantedCharacters(number);
+        return DUTCH_COUNTRY_CODE.concat(cleanNumber.substring(cleanNumber.length() - ACCEPTED_PHONE_NUMBER_LENGTH));
     }
 
     private String removeUnwantedCharacters(String number) {
