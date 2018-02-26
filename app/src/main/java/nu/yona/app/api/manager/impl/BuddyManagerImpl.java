@@ -35,6 +35,11 @@ import nu.yona.app.utils.AppUtils;
  */
 public class BuddyManagerImpl implements BuddyManager {
 
+    private static final String DUTCH_COUNTRY_CODE = "+31";
+    private static final int ACCEPTED_PHONE_NUMBER_LENGTH = 9;
+    private final String UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX = "[^123456789+]";
+    private final String COUNTRY_CODE_PREFIX = "+";
+
     private final BuddyNetworkImpl buddyNetwork;
     private final Context mContext;
 
@@ -49,7 +54,7 @@ public class BuddyManagerImpl implements BuddyManager {
     }
 
     /**
-     * Validate user's first and last name
+     * Validate user's first and last namet
      *
      * @return true if first name and last name are correct.
      */
@@ -62,6 +67,32 @@ public class BuddyManagerImpl implements BuddyManager {
     @Override
     public boolean validateEmail(String email) {
         return !TextUtils.isEmpty(toString()) && (Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")).matcher(email).matches();
+    }
+
+    /**
+     * @param number user's mobile number
+     * @return formatted mobile number
+     */
+    public String formatMobileNumber(String number) {
+        String result = number;
+        result = removeUnwantedCharacters(result);
+        if (result.startsWith(COUNTRY_CODE_PREFIX)) {
+            if (result.startsWith(DUTCH_COUNTRY_CODE)) { // Dutch Number
+                result = formatDutchNumber(result);
+            }
+        } else { //Treat it as a dutch Number
+            result = formatDutchNumber(result);
+
+        }
+        return result;
+    }
+
+    private String formatDutchNumber(String number) {
+        return DUTCH_COUNTRY_CODE.concat(number.substring(number.length() - ACCEPTED_PHONE_NUMBER_LENGTH));
+    }
+
+    private String removeUnwantedCharacters(String number) {
+        return number.replaceAll(UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX, "");
     }
 
     /**

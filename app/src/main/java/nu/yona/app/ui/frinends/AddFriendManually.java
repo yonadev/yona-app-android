@@ -251,11 +251,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
     private void addFriend() {
         ((YonaActivity) getActivity()).showLoadingView(true, null);
         YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.ADD_FRIEND, getString(R.string.invitefriend));
-        String number = mobileNumber.getText().toString();
-        if(number.substring(0, 2).equals(START_06)  || number.substring(0, 1).equals(START_6)) {
-            // ignore if 0 added as prefix.
-            number = number.substring(0, 1).equals(START_0) ? START_31 + number.substring(1, number.length()) : START_31 + number;
-        }
+        String number = APIManager.getInstance().getBuddyManager().formatMobileNumber(mobileNumber.getText().toString());
 
         Logger.logi("Mobile_validation", number);
 
