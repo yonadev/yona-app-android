@@ -65,7 +65,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      * @return formatted mobile number
      */
     public String formatMobileNumber(String number) {
-        return MobileNumberFormatter.formatMobileNumber(number);
+        return MobileNumberFormatter.formatDutchAndInternationalNumber(number);
     }
 
     /**
