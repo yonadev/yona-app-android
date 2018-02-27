@@ -27,6 +27,7 @@ import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.MobileNumberFormatter;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -57,6 +58,14 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
     public boolean validateText(String string) {
         // do validation for first name and last name
         return !TextUtils.isEmpty(string);
+    }
+
+    /**
+     * @param number user's mobile number
+     * @return formatted mobile number
+     */
+    public String formatMobileNumber(String number) {
+        return MobileNumberFormatter.formatMobileNumber(number);
     }
 
     /**

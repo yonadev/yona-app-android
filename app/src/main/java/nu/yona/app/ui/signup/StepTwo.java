@@ -170,10 +170,10 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
 
     private void goToNext() {
         String number = countryCode.getText().toString() + mobileNumber.getText().toString();
-        String phonenumber = number.replace(" ", "");
-        if (validateMobileNumber(phonenumber) && validateNickName()) {
+        String formattedNumber = APIManager.getInstance().getAuthenticateManager().formatMobileNumber(number);
+        if (validateMobileNumber(formattedNumber) && validateNickName()) {
             YonaAnalytics.createTapEvent(getString(R.string.next));
-            YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setMobileNumber(phonenumber);
+            YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setMobileNumber(formattedNumber);
             YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setNickName(nickName.getText().toString());
             YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT, null);
         }
