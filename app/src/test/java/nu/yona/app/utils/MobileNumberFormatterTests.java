@@ -23,8 +23,8 @@ public class MobileNumberFormatterTests {
 
     @Test
     public void formatPhoneNumber_removesSpaces() {
-        String input = "+316123 456 78";
-        String expected = "+31612345678";
+        String input = "+316012 345 67";
+        String expected = "+31601234567";
         assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
     }
 

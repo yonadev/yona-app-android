@@ -4,7 +4,7 @@ public class MobileNumberFormatter {
 
     private static final String DUTCH_COUNTRY_CODE = "+31";
     private static final int ACCEPTED_PHONE_NUMBER_LENGTH = 9;
-    private static final String UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX = "[^123456789+]";
+    private static final String UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX = "[^0123456789+]";
     private static final String NON_DUTCH_INTERNATIONAL_NUMBER_PREFIX_REGEX = "\\+(?!31).*";
 
     /**
