@@ -47,9 +47,9 @@ import nu.yona.app.utils.Logger;
 /**
  * Created by kinnarvasa on 25/03/16.
  */
-public class StepTwo extends BaseFragment implements EventChangeListener {
+public class StepTwoFragment extends BaseFragment implements EventChangeListener {
 
-    private final String TAG = StepTwo.class.getSimpleName();
+    private final String TAG = StepTwoFragment.class.getSimpleName();
 
     private YonaFontNumberTextView mobileNumber, countryCode;
     private YonaFontEditTextView nickName;

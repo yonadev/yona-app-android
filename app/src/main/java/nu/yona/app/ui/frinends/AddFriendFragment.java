@@ -51,7 +51,7 @@ public class AddFriendFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new AddFriendManually(), getString(R.string.addfriendmanually));
+        adapter.addFragment(new AddFriendManuallyFragment(), getString(R.string.addfriendmanually));
         adapter.addFragment(new AddFriendContacts(), getString(R.string.addfriendcontacts));
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

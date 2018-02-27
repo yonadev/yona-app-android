@@ -40,7 +40,7 @@ import nu.yona.app.utils.AppConstant;
 public class SignupActivity extends BaseActivity implements EventChangeListener {
 
     private StepOne stepOne;
-    private StepTwo stepTwo;
+    private StepTwoFragment stepTwoFragment;
     private int SIGNUP_STEP = 0;
     private YonaFontButton prevButton;
 
@@ -50,7 +50,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         setContentView(R.layout.signup_layout);
 
         stepOne = new StepOne();
-        stepTwo = new StepTwo();
+        stepTwoFragment = new StepTwoFragment();
 
         YonaFontButton nextButton = (YonaFontButton) findViewById(R.id.next);
         prevButton = (YonaFontButton) findViewById(R.id.previous);
@@ -117,7 +117,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         SIGNUP_STEP = 1;
         prevButton.setVisibility(View.VISIBLE);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, stepTwo);
+        fragmentTransaction.replace(R.id.fragment_container, stepTwoFragment);
         fragmentTransaction.commit();
     }
 
@@ -237,7 +237,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         }
     }
 
-    // Object will be read by @StepTwo to display phone number read from deep link.
+    // Object will be read by @StepTwoFragment to display phone number read from deep link.
     private YonaUser deepLinkUserInfo = null;
     public YonaUser getDeepLinkUserInfo() {
         return deepLinkUserInfo;
