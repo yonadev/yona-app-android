@@ -66,14 +66,6 @@ public class BuddyManagerImpl implements BuddyManager {
     }
 
     /**
-     * @param number user's mobile number
-     * @return formatted mobile number
-     */
-    public String formatMobileNumber(String number) {
-        return MobileNumberFormatter.formatDutchAndInternationalNumber(number);
-    }
-
-    /**
      * @param mobileNumber
      * @return true if number is in expected format
      */

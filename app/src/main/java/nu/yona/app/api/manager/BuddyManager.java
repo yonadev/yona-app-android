@@ -27,12 +27,6 @@ public interface BuddyManager {
     boolean validateText(String string);
 
     /**
-     * @param number user's mobile number
-     * @return formatted mobile number
-     */
-    String formatMobileNumber(String number);
-
-    /**
      * Validate email boolean.
      *
      * @param email the email

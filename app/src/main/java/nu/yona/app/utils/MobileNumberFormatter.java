@@ -1,8 +1,5 @@
 package nu.yona.app.utils;
 
-
-import java.util.regex.Pattern;
-
 public class MobileNumberFormatter {
 
     private static final String DUTCH_COUNTRY_CODE = "+31";
@@ -16,9 +13,7 @@ public class MobileNumberFormatter {
      */
     public static String formatDutchAndInternationalNumber(String number) {
         String cleanNumber = removeUnwantedCharacters(number);
-        if (cleanNumber.matches(NON_DUTCH_INTERNATIONAL_NUMBER_PREFIX_REGEX)) { //
-            // non-dutch international number - do nothing
-        } else {
+        if (!cleanNumber.matches(NON_DUTCH_INTERNATIONAL_NUMBER_PREFIX_REGEX)) {
             cleanNumber = formatDutchNumber(cleanNumber);
         }
         return cleanNumber;
