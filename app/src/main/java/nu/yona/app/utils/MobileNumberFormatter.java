@@ -9,7 +9,6 @@ public class MobileNumberFormatter {
     private static final int ACCEPTED_PHONE_NUMBER_LENGTH = 9;
     private static final String UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX = "[^123456789+]";
     private static final String NON_DUTCH_INTERNATIONAL_NUMBER_PREFIX_REGEX = "\\+(?!31).*";
-    private static final String COUNTRY_CODE_PREFIX = "+";
 
     /**
      * @param number user's mobile number
@@ -22,13 +21,6 @@ public class MobileNumberFormatter {
         } else {
             cleanNumber = formatDutchNumber(cleanNumber);
         }
-//        if (cleanNumber.startsWith(COUNTRY_CODE_PREFIX)) {
-//            if (cleanNumber.startsWith(DUTCH_COUNTRY_CODE)) { // Dutch Number
-//                cleanNumber = formatDutchNumber(cleanNumber);
-//            }
-//        } else { //Treat it as a dutch Number
-//            cleanNumber = formatDutchNumber(cleanNumber);
-//        }
         return cleanNumber;
     }
 

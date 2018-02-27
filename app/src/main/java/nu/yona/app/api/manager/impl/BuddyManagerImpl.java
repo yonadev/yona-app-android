@@ -50,7 +50,7 @@ public class BuddyManagerImpl implements BuddyManager {
     }
 
     /**
-     * Validate user's first and last namet
+     * Validate user's first and last name
      *
      * @return true if first name and last name are correct.
      */

@@ -29,21 +29,21 @@ public class MobileNumberFormatterTests {
     }
 
     @Test
-    public void formatPhoneNumber_addsCountryCodeToLeadingSix() {
+    public void formatPhoneNumber_addsDutchCountryCodeToLeadingSix() {
         String input = "612345678";
         String expected = "+31612345678";
         assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
     }
 
     @Test
-    public void formatPhoneNumber_addsCountryCodeToLeadingZeroSix() {
+    public void formatPhoneNumber_addsDutchCountryCodeToLeadingZeroSixAndRemovesZero() {
         String input = "0612345678";
         String expected = "+31612345678";
         assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
     }
 
     @Test
-    public void formatPhoneNumber_removesSpacesAndAddsCountryCode() {
+    public void formatPhoneNumber_removesSpacesAndAddsDutchCountryCode() {
         String input = "6123 4567 8";
         String expected = "+31612345678";
         assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
