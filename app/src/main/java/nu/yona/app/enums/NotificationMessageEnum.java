@@ -51,6 +51,11 @@ public enum NotificationMessageEnum {
     BUDDY_DISCONNECT_MESSAGE_USER_REMOVED_BUDDY(NotificationEnum.BUDDYDISCONNECTMESSAGE, StatusEnum.USER_REMOVED_BUDDY, getString(R.string.removebuddy), 0),
 
     /**
+     * The information of The Buddy has changed
+     */
+    BUDDY_INFO_CHANGED(NotificationEnum.BUDDYINFOCHANGEMESSAGE, StatusEnum.NONE, getString(R.string.message_buddy_information_changed), 0), // should probably not be changed
+
+    /**
      * Disclosurerequestmessage enum disclosure requested notification message enum.
      */
     DISCLOSUREREQUESTMESSAGE_ENUM_DISCLOSURE_REQUESTED(NotificationEnum.DISCLOSUREREQUESTMESSAGE, StatusEnum.DISCLOSURE_REQUESTED, "DISCLOSURE_REQUESTED", 0),

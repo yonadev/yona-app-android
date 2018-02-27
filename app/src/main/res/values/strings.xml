@@ -215,4 +215,5 @@
     <string name="last_seen_status_in_week">Last seen %1$s days ago</string>
     <string name="last_seen_status_back_week">Last seen on %1$s</string> <!--February 15, 2017-->
     <string name="last_seen_never_seen_online">Never seen online</string>
+    <string name="message_buddy_information_changed">Friend profile updated</string>
 </resources>
