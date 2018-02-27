@@ -25,7 +25,7 @@ import nu.yona.app.customview.YonaFontEditTextView;
 /**
  * Created by kinnarvasa on 31/03/16.
  */
-public class StepTwoTest extends YonaTestCase {
+public class StepTwoFragmentTest extends YonaTestCase {
 
     private SignupActivity activity;
     private YonaFontEditTextView mobileNumber;
@@ -37,10 +37,10 @@ public class StepTwoTest extends YonaTestCase {
                 .start()
                 .resume()
                 .get();
-        StepTwo stepTwo = new StepTwo();
+        StepTwoFragment stepTwoFragment = new StepTwoFragment();
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(stepTwo, null);
+        fragmentTransaction.add(stepTwoFragment, null);
         fragmentTransaction.commit();
         mobileNumber = (YonaFontEditTextView) activity.findViewById(R.id.mobile_number);
     }

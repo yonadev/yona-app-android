@@ -28,12 +28,6 @@ public interface AuthenticateManager {
     boolean validateText(String string);
 
     /**
-     * @param number user's mobile number
-     * @return formatted mobile number
-     */
-    String formatMobileNumber(String number);
-
-    /**
      * Validate mobile number boolean.
      *
      * @param mobileNumber the mobile number

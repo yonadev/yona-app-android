@@ -43,13 +43,14 @@ import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.utils.Logger;
+import nu.yona.app.utils.MobileNumberFormatter;
 
 /**
  * Created by kinnarvasa on 25/03/16.
  */
-public class StepTwo extends BaseFragment implements EventChangeListener {
+public class StepTwoFragment extends BaseFragment implements EventChangeListener {
 
-    private final String TAG = StepTwo.class.getSimpleName();
+    private final String TAG = StepTwoFragment.class.getSimpleName();
 
     private YonaFontNumberTextView mobileNumber, countryCode;
     private YonaFontEditTextView nickName;
@@ -170,7 +171,7 @@ public class StepTwo extends BaseFragment implements EventChangeListener {
 
     private void goToNext() {
         String number = countryCode.getText().toString() + mobileNumber.getText().toString();
-        String formattedNumber = APIManager.getInstance().getAuthenticateManager().formatMobileNumber(number);
+        String formattedNumber = MobileNumberFormatter.formatDutchAndInternationalNumber(number);
         if (validateMobileNumber(formattedNumber) && validateNickName()) {
             YonaAnalytics.createTapEvent(getString(R.string.next));
             YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setMobileNumber(formattedNumber);

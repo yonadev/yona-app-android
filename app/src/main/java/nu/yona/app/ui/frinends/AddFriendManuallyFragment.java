@@ -47,11 +47,12 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.Logger;
+import nu.yona.app.utils.MobileNumberFormatter;
 
 /**
  * Created by kinnarvasa on 27/04/16.
  */
-public class AddFriendManually extends BaseFragment implements EventChangeListener {
+public class AddFriendManuallyFragment extends BaseFragment implements EventChangeListener {
     private YonaFontEditTextView firstName, lastName, email;
     private YonaFontNumberTextView mobileNumber;
     private TextInputLayout firstNameLayout, lastNameLayout, emailLayout, mobileNumberLayout;
@@ -251,11 +252,7 @@ public class AddFriendManually extends BaseFragment implements EventChangeListen
     private void addFriend() {
         ((YonaActivity) getActivity()).showLoadingView(true, null);
         YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.ADD_FRIEND, getString(R.string.invitefriend));
-        String number = mobileNumber.getText().toString();
-        if(number.substring(0, 2).equals(START_06)  || number.substring(0, 1).equals(START_6)) {
-            // ignore if 0 added as prefix.
-            number = number.substring(0, 1).equals(START_0) ? START_31 + number.substring(1, number.length()) : START_31 + number;
-        }
+        String number = MobileNumberFormatter.formatDutchAndInternationalNumber(mobileNumber.getText().toString());
 
         Logger.logi("Mobile_validation", number);
 

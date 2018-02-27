@@ -165,7 +165,7 @@ class BaseImpl {
                 Converter<ResponseBody, ErrorMessage> errorConverter =
                         getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
                 ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
-                if (errorMessage != null && errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND)) {
+                if (errorMessage != null && ServerErrorCode.USER_NOT_FOUND.equals(errorMessage.getCode())) {
                     reinitializeRetrofit();
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, errorMessage);
                 } else {
