@@ -26,6 +26,9 @@ out/
 # Local configuration file (sdk path, etc)
 local.properties
 
+# Gradle configuration file
+gradle.properties
+
 # Android Studio
 .idea
 /project.properties
