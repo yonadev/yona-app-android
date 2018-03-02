@@ -177,4 +177,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true;
     }
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
 }

@@ -38,7 +38,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.transition.ChangeBounds;
@@ -52,9 +51,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -415,21 +415,16 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
+            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    loadPickedImage(result.getUri());
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError(); // todo handle error
+                }
             case PICK_CONTACT:
                 if (resultCode == RESULT_OK) {
                     showContactDetails(data);
-                }
-                isToDisplayLogin = false;
-                break;
-            case PICK_IMAGE:
-                if (resultCode == RESULT_OK) {
-                    loadPickedImage(data);
-                }
-                isToDisplayLogin = false;
-                break;
-            case PICK_CAMERA:
-                if (resultCode == RESULT_OK) {
-                    loadCaptureImage(data);
                 }
                 isToDisplayLogin = false;
                 break;
@@ -482,70 +477,28 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
-    private void loadCaptureImage(final Intent data) {
-        new AsyncTask<Void, Void, Object>() {
-
-            @Override
-            protected Object doInBackground(Void... params) {
-                try {
-                    Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-                    File destination = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
-                    FileOutputStream fo;
-                    destination.createNewFile();
-                    fo = new FileOutputStream(destination);
-                    fo.write(bytes.toByteArray());
-                    fo.close();
-                    return thumbnail;
-                } catch (Exception e) {
-                    AppUtils.throwException(YonaApplication.class.getSimpleName(), e, Thread.currentThread(), null);
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RECEIVED_PHOTO, o);
-            }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-    }
-
-    private void loadPickedImage(final Intent data) {
+    private void loadPickedImage(final Uri uri) {
         try {
-            Uri selectedImageUri = data.getData();
-            String[] projection = {MediaStore.MediaColumns.DATA};
-            CursorLoader cursorLoader = new CursorLoader(YonaActivity.this, selectedImageUri, projection, null, null, null);
-            Cursor cursor = cursorLoader.loadInBackground();
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            cursor.moveToFirst();
-            final String selectedImagePath = cursor.getString(column_index);
-            cursor.close();
-            new AsyncTask<Void, Void, Object>() {
+            new AsyncTask<Uri, Void, Bitmap>() {
 
                 @Override
-                protected Object doInBackground(Void... params) {
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = true;
-                    BitmapFactory.decodeFile(selectedImagePath, options);
-                    final int REQUIRED_SIZE = 200;
-                    int scale = 1;
-                    while (options.outWidth / scale / 2 >= REQUIRED_SIZE && options.outHeight / scale / 2 >= REQUIRED_SIZE) {
-                        scale *= 2;
+                protected Bitmap doInBackground(Uri... params) {
+                    try {
+                        return MediaStore.Images.Media.getBitmap(getContentResolver(), params[0]);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        cancel(true);
+                        return null;
                     }
-                    options.inSampleSize = scale;
-                    options.inJustDecodeBounds = false;
-                    return BitmapFactory.decodeFile(selectedImagePath, options);
                 }
 
                 @Override
-                protected void onPostExecute(Object o) {
-                    super.onPostExecute(o);
-                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RECEIVED_PHOTO, (Bitmap) o);
+                protected void onPostExecute(Bitmap bitmap) {
+                    if (bitmap!= null) {
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RECEIVED_PHOTO, bitmap);
+                    }
                 }
-            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, uri);
         } catch (Exception e) {
             AppUtils.throwException(YonaApplication.class.getSimpleName(), e, Thread.currentThread(), null);
         }
@@ -1015,20 +968,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
      * Choose image.
      */
     public void chooseImage() {
-        final CharSequence[] items = {getString(R.string.profile_take_photo), getString(R.string.profile_choose_from_library)};
-        AlertDialog.Builder builder = new AlertDialog.Builder(YonaActivity.this);
-        builder.setTitle(getString(R.string.profile_choose_photo));
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals(getString(R.string.profile_take_photo))) {
-                    openCamera();
-                } else if (items[item].equals(getString(R.string.profile_choose_from_library))) {
-                    openCaptureImage();
-                }
-            }
-        });
-        builder.show();
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this);
     }
 
     private void showContactDetails(final Intent data) {
