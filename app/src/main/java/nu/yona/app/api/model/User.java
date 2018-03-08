@@ -214,7 +214,7 @@ public class User extends BaseEntity {
         this.nickname = nickname;
     }
 
-    /**api
+    /**
      * Gets devices.
      *
      * @return The devices

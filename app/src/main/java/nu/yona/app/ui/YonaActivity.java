@@ -421,9 +421,14 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
                     //show dialog ?
-                    uploadUserPhoto(compressFile(result));
+                    File image = compressFile(result);
+                    if (image != null) {
+                        uploadUserPhoto(image);
+                    } else {
+                        showError(new ErrorMessage(getString(R.string.somethingwentwrong)));
+                    }
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    showError(new ErrorMessage(result.getError().getMessage()));
+                    showError(new ErrorMessage(getString(R.string.somethingwentwrong)));
                 }
             case PICK_CONTACT:
                 if (resultCode == RESULT_OK) {
@@ -467,9 +472,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             FileOutputStream fos = new FileOutputStream(file);
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            return null;
         }
-
         return file;
     }
 

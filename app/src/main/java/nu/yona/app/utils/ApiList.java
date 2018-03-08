@@ -36,5 +36,4 @@ public interface ApiList {
      */
     String PRIVACY_PAGE = "http://www.yona.nu/app/privacy";
 
-    String PHOTO = "/photo";
 }

@@ -64,7 +64,6 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     }
 
     public void uploadUserPhoto(String url, String password, File file, final DataLoadListener listener) {
-        try {
             RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
             getRestApi().uploadUserPhoto(url, password, body).enqueue(new Callback<ProfilePhoto>() {
@@ -83,9 +82,6 @@ public class AuthenticateNetworkImpl extends BaseImpl {
                     onError(t, listener);
                 }
             });
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
     }
 
     public void readDeepLinkData(String url, DataLoadListener listener) {
