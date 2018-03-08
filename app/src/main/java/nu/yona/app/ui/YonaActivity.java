@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -54,7 +53,10 @@ import android.widget.Toast;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -418,9 +420,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
-                    loadPickedImage(result.getUri());
+                    //show dialog ?
+                    uploadUserPhoto(compressFile(result));
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    Exception error = result.getError(); // todo handle error
+                    showError(new ErrorMessage(result.getError().getMessage()));
                 }
             case PICK_CONTACT:
                 if (resultCode == RESULT_OK) {
@@ -455,6 +458,40 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
         }
     }
 
+    private File compressFile(CropImage.ActivityResult result) {
+        File file = new File(getFilesDir(), "prof_pic_" + System.currentTimeMillis() + ".jpeg|");
+        try {
+            FileInputStream fis = new FileInputStream(result.getUri().getPath());
+            Bitmap imageBitmap = BitmapFactory.decodeStream(fis);
+            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 90, 90, false);
+            FileOutputStream fos = new FileOutputStream(file);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+
+        return file;
+    }
+
+    private void uploadUserPhoto(final File file) {
+        APIManager.getInstance().getAuthenticateManager().uploadUserPhoto(
+                YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getEditUserPhoto().getHref(),
+                YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
+                file,
+                new DataLoadListener() {
+                    @Override
+                    public void onDataLoad(Object result) {
+                        // delete the local copy
+                        file.delete();
+                    }
+
+                    @Override
+                    public void onError(Object errorMessage) {
+
+                    }
+                });
+    }
+
     private void showInstallAlert(final byte[] keystore) {
         if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, null) != null) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -474,33 +511,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             builder.create().show();
         } else {
             checkVPN();
-        }
-    }
-
-    private void loadPickedImage(final Uri uri) {
-        try {
-            new AsyncTask<Uri, Void, Bitmap>() {
-
-                @Override
-                protected Bitmap doInBackground(Uri... params) {
-                    try {
-                        return MediaStore.Images.Media.getBitmap(getContentResolver(), params[0]);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        cancel(true);
-                        return null;
-                    }
-                }
-
-                @Override
-                protected void onPostExecute(Bitmap bitmap) {
-                    if (bitmap!= null) {
-                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RECEIVED_PHOTO, bitmap);
-                    }
-                }
-            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, uri);
-        } catch (Exception e) {
-            AppUtils.throwException(YonaApplication.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 

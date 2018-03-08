@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
@@ -206,7 +208,11 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
             }
             nickName.setText(!TextUtils.isEmpty(yonaBuddy.getNickname()) ? yonaBuddy.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
         }
-        //TODO if server provide profile picture, pass bitmap of that else pass null
+        if (user.getLinks().getUserPhoto() != null) {
+            Picasso.with(getContext()).load(user.getLinks().getUserPhoto().getHref()).into(profileImageView);
+            profileImageView.setVisibility(View.VISIBLE);
+            profileImageTxt.setVisibility(View.GONE);
+        }
         profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), yonaHeaderTheme.getHeadercolor()));
         tabLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), yonaHeaderTheme.getHeadercolor()));
         if (yonaHeaderTheme != null && (yonaHeaderTheme.isBuddyFlow() || yonaMessage != null)) {

@@ -67,7 +67,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     private View.OnClickListener changeProfileImageClickListener;
     private TextWatcher textWatcher;
     private String oldUserNumber;
-    private RegisterUser user;
+    private RegisterUser registerUser;
     private View.OnFocusChangeListener onFocusChangeListener;
     private boolean isAdding;
     private YonaFontTextView profileImageTxt;
@@ -203,7 +203,6 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
         profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileIcon);
         updateProfileImage = (ImageView) view.findViewById(R.id.updateProfileImage);
-        //TODO following 2 lines are disable until server implements Image upload feature.
         profileEditMode();
     }
 
@@ -303,14 +302,14 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
     private void updateUserProfile() {
         if (getActivity() != null) {
-            user = new RegisterUser();
-            user.setFirstName(firstName.getText().toString());
-            user.setLastName(lastName.getText().toString());
-            user.setNickName(nickName.getText().toString());
+            registerUser = new RegisterUser();
+            registerUser.setFirstName(firstName.getText().toString());
+            registerUser.setLastName(lastName.getText().toString());
+            registerUser.setNickName(nickName.getText().toString());
             String number = mobileNumber.getText().toString();
-            user.setMobileNumber(number.replace(" ", ""));
+            registerUser.setMobileNumber(number.replace(" ", ""));
             YonaActivity.getActivity().showLoadingView(true, null);
-            APIManager.getInstance().getAuthenticateManager().registerUser(user, true, new DataLoadListener() {
+            APIManager.getInstance().getAuthenticateManager().registerUser(registerUser, true, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     YonaActivity.getActivity().showLoadingView(false, null);

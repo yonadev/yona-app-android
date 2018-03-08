@@ -10,16 +10,21 @@
 
 package nu.yona.app.api.manager.network;
 
+import java.io.File;
 import java.util.Locale;
 
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.PinResetDelay;
+import nu.yona.app.api.model.ProfilePhoto;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaUser;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,16 +39,16 @@ public class AuthenticateNetworkImpl extends BaseImpl {
      *
      * @param url        the url
      * @param password   the password
-     * @param object     the object
+     * @param registerUser     the registerUser
      * @param isEditMode the is edit mode
      * @param listener   the listener
      */
-    public void registerUser(String url, String password, RegisterUser object, boolean isEditMode, final DataLoadListener listener) {
+    public void registerUser(String url, String password, RegisterUser registerUser, boolean isEditMode, final DataLoadListener listener) {
         try {
             if (!isEditMode) {
-                getRestApi().registerUser(Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
+                getRestApi().registerUser(Locale.getDefault().toString().replace('_', '-'), registerUser).enqueue(getUserCallBack(listener));
             } else {
-                getRestApi().updateRegisterUser(url, password, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
+                getRestApi().updateRegisterUser(url, password, Locale.getDefault().toString().replace('_', '-'), registerUser).enqueue(getUserCallBack(listener));
             }
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
@@ -53,6 +58,31 @@ public class AuthenticateNetworkImpl extends BaseImpl {
     public void registerUser(String url, RegisterUser object, DataLoadListener listener) {
         try {
             getRestApi().registerUser(url, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    public void uploadUserPhoto(String url, String password, File file, final DataLoadListener listener) {
+        try {
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+            getRestApi().uploadUserPhoto(url, password, body).enqueue(new Callback<ProfilePhoto>() {
+                @Override
+                public void onResponse(Call<ProfilePhoto> call, Response<ProfilePhoto> response) {
+                    // network request successful
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        onError(response, listener);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ProfilePhoto> call, Throwable t) {
+                    onError(t, listener);
+                }
+            });
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -223,7 +253,6 @@ public class AuthenticateNetworkImpl extends BaseImpl {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
-
 
     private Callback<User> getUserCallBack(final DataLoadListener listener) {
         return new Callback<User>() {
