@@ -9,6 +9,7 @@
   -->
 
 <resources>
+    <bool name="enableCrashlytics">false</bool>
     <bool name="developerMode">true</bool>
     <bool name="allowEnvironmentSwitch">true</bool>
 </resources>

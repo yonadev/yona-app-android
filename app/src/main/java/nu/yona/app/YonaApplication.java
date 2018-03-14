@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.StrictMode;
 import android.text.TextUtils;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Logger;
@@ -21,6 +22,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Locale;
 
+import io.fabric.sdk.android.Fabric;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
@@ -56,9 +58,16 @@ public class YonaApplication extends Application {
     public void onCreate() {
         enableStickMode();
         super.onCreate();
+        enableCrashlytics();
         mContext = this;
         eventChangeManager = new EventChangeManager();
         Foreground.init(this);
+    }
+
+    private void enableCrashlytics() {
+        if (getResources().getBoolean(R.bool.enableCrashlytics)) {
+            Fabric.with(this, new Crashlytics());
+        }
     }
 
     private void enableStickMode() {
