@@ -119,6 +119,11 @@
                 <action android:name="nu.yona.app.RESTART_VPN" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c46b19aa77d90f1f8d44e4c5e8b5a3694e77894e" />
+
     </application>
 
 </manifest>
