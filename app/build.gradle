@@ -21,6 +21,10 @@ android {
         }
     }
 
+    dexOptions{
+        jumboMode = true
+    }
+
     sourceSets {
         app {
             assets.srcDirs = ['src/main/assets']
@@ -176,7 +180,7 @@ dependencies {
     compile 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
 
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
-        transitive = true;
+        transitive = true
     }
     compile 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
 }
