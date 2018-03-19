@@ -14,6 +14,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import java.io.File;
+
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
@@ -22,9 +24,11 @@ import nu.yona.app.api.manager.dao.AuthenticateDAO;
 import nu.yona.app.api.manager.network.AuthenticateNetworkImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.OTPVerficationCode;
+import nu.yona.app.api.model.ProfilePhoto;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.MobileNumberFormatter;
@@ -119,6 +123,30 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
             }
         });
     }
+
+    @Override
+    public void uploadUserPhoto(String url, String password, File file, final DataLoadListener listener) {
+        authNetwork.uploadUserPhoto(url, password, file, new DataLoadListener() {
+            @Override
+            public void onDataLoad(Object result) {
+                if (result != null && result instanceof ProfilePhoto) {
+                    //network request successful - save the user photo into the user object in memory and db
+                    getUser().getLinks().setUserPhoto(((ProfilePhoto) result).getLinks().getUserPhoto());
+                    updateDataForRegisterUser(getUser(), listener);
+                }
+            }
+
+            @Override
+            public void onError(Object errorMessage) {
+                if (errorMessage instanceof ErrorMessage) {
+                    listener.onError(errorMessage);
+                } else {
+                    listener.onError(new ErrorMessage(errorMessage.toString() != null ? errorMessage.toString() : ""));
+                }
+            }
+        });
+    }
+
 
     @Override
     public void readDeepLinkUserInfo(String url, final DataLoadListener listener) {

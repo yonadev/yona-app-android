@@ -125,10 +125,15 @@ public class Links extends BaseEntity {
     @SerializedName("yona:markUnread")
     @Expose
     private Href markUnRead;
-
     @Expose
     @SerializedName("yona:repliedMessage")
     private Href repliedMessage;
+    @Expose
+    @SerializedName("yona:editUserPhoto")
+    private Href editUserPhoto;
+    @Expose
+    @SerializedName("yona:userPhoto")
+    private Href userPhoto;
 
     public Href getRepliedMessage() {
         return this.repliedMessage;
@@ -735,5 +740,21 @@ public class Links extends BaseEntity {
 
     public void setMarkUnRead(Href markUnRead) {
         this.markUnRead = markUnRead;
+    }
+
+    public Href getEditUserPhoto() {
+        return editUserPhoto;
+    }
+
+    public void setEditUserPhoto(Href editUserPhoto) {
+        this.editUserPhoto = editUserPhoto;
+    }
+
+    public Href getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(Href userPhoto) {
+        this.userPhoto = userPhoto;
     }
 }

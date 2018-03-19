@@ -35,4 +35,5 @@ public interface ApiList {
      * The constant PRIVACY_PAGE.
      */
     String PRIVACY_PAGE = "http://www.yona.nu/app/privacy";
+
 }

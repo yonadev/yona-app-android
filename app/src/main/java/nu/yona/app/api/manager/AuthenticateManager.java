@@ -10,6 +10,8 @@
 
 package nu.yona.app.api.manager;
 
+import java.io.File;
+
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
@@ -44,6 +46,7 @@ public interface AuthenticateManager {
      */
     void registerUser(RegisterUser user, boolean isEditMode, DataLoadListener listener);
 
+    void uploadUserPhoto(String url, String password, File file, DataLoadListener listener);
     /**
      * Verify otp.
      *

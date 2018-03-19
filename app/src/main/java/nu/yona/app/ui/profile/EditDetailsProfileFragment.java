@@ -64,10 +64,10 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     private YonaFontNumberTextView mobileNumber;
     private TextInputLayout firstnameLayout, lastNameLayout, nickNameLayout, mobileNumberLayout;
     private ImageView profileImage, updateProfileImage;
-    private View.OnClickListener listener;
+    private View.OnClickListener changeProfileImageClickListener;
     private TextWatcher textWatcher;
     private String oldUserNumber;
-    private RegisterUser user;
+    private RegisterUser registerUser;
     private View.OnFocusChangeListener onFocusChangeListener;
     private boolean isAdding;
     private YonaFontTextView profileImageTxt;
@@ -93,7 +93,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
         setupToolbar(view);
 
-        listener = new View.OnClickListener() {
+        changeProfileImageClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 YonaActivity.getActivity().chooseImage();
@@ -203,11 +203,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         profileImage = (ImageView) view.findViewById(R.id.profileImage);
         profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileIcon);
         updateProfileImage = (ImageView) view.findViewById(R.id.updateProfileImage);
-        //TODO following 2 lines are disable until server implements Image upload feature.
-//        profileImage.setOnClickListener(listener);
-//        updateProfileImage.setOnClickListener(listener);
-        updateProfileImage.setVisibility(View.GONE);
-        profileViewMode();
+        profileEditMode();
     }
 
     @Override
@@ -249,11 +245,11 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
     }
 
-    private void profileViewMode() {
-//        profileImage.setImageDrawable(getImage(null, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
-        profileImageTxt.setVisibility(View.VISIBLE);
+    private void profileEditMode() {
+        profileImage.setOnClickListener(changeProfileImageClickListener);
+        updateProfileImage.setOnClickListener(changeProfileImageClickListener);
         profileImageTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round));
-        profileImageTxt.setText(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName().substring(0, 1) + YonaApplication.getEventChangeManager().getDataState().getUser().getLastName().substring(0, 1));
+
         firstName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName());
         lastName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getLastName());
         nickName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getNickname());
@@ -306,14 +302,14 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
     private void updateUserProfile() {
         if (getActivity() != null) {
-            user = new RegisterUser();
-            user.setFirstName(firstName.getText().toString());
-            user.setLastName(lastName.getText().toString());
-            user.setNickName(nickName.getText().toString());
+            registerUser = new RegisterUser();
+            registerUser.setFirstName(firstName.getText().toString());
+            registerUser.setLastName(lastName.getText().toString());
+            registerUser.setNickName(nickName.getText().toString());
             String number = mobileNumber.getText().toString();
-            user.setMobileNumber(number.replace(" ", ""));
+            registerUser.setMobileNumber(number.replace(" ", ""));
             YonaActivity.getActivity().showLoadingView(true, null);
-            APIManager.getInstance().getAuthenticateManager().registerUser(user, true, new DataLoadListener() {
+            APIManager.getInstance().getAuthenticateManager().registerUser(registerUser, true, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     YonaActivity.getActivity().showLoadingView(false, null);
@@ -341,12 +337,9 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     public void onStateChange(int eventType, final Object object) {
         switch (eventType) {
             case EventChangeManager.EVENT_RECEIVED_PHOTO:
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        profileImage.setImageDrawable(getImage((Bitmap) object, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
-                    }
-                }, AppConstant.TIMER_DELAY_HUNDRED);
+                profileImage.setImageDrawable(getImage((Bitmap) object, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
+                profileImage.setVisibility(View.VISIBLE);
+                updateProfileImage.setVisibility(View.GONE);
                 break;
             default:
                 break;

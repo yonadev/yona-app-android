@@ -24,6 +24,7 @@ import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
+import nu.yona.app.api.model.ProfilePhoto;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.WeekActivity;
@@ -33,13 +34,16 @@ import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.api.model.YonaUser;
 import nu.yona.app.utils.ApiList;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -63,6 +67,9 @@ public interface RestApi {
     Call<User> registerUser(@Url String url, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
                             @Body RegisterUser body);
 
+    @PUT()
+    @Multipart
+    Call<ProfilePhoto> uploadUserPhoto(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Part MultipartBody.Part file);
 
     /**
      * Gets user.
