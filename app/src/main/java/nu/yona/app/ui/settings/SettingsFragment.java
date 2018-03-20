@@ -231,8 +231,8 @@ public class SettingsFragment extends BaseFragment {
                 getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String userCredential = Html.fromHtml("<html> Base URL:" + YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref()
-                                + "<br>" + "Password: " + YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword() + "</html>").toString();
+                        String userCredential = Html.fromHtml("<html> Base URL: " +Uri.encode( YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref())
+                                + "<br><br>" + Uri.encode("Password: " + YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()) + "</html>").toString();
                         showEmailClient(userCredential);
                     }
                 }, new DialogInterface.OnClickListener() {
