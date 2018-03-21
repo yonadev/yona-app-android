@@ -271,8 +271,6 @@ public class ActivityManagerImpl implements ActivityManager {
                             @Override
                             public void onDataLoad(Object result) {
                                 //on success nothing to do, as it is posted on server. #JIRA_1022
-                                // TODO: Need to remove before final production.
-                                Toast.makeText(mContext, "History data submitted successfully", Toast.LENGTH_SHORT).show();
                                 if (fromDB) {
                                     activityTrackerDAO.clearActivities();
                                 }
@@ -283,8 +281,6 @@ public class ActivityManagerImpl implements ActivityManager {
                             @Override
                             public void onError(Object errorMessage) {
                                 //on failure, we need to store data in database to resend next time.
-                                // TODO: Need to remove before final production.
-                                Toast.makeText(mContext, "History data submission failed", Toast.LENGTH_SHORT).show();
                                 if (!fromDB) {
                                     activityTrackerDAO.saveActivities(activity.getActivities());
                                 }
