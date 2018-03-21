@@ -149,11 +149,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             isToDisplayLogin = false;
         }
 
-        // TEST_1022
-        if(!AppUtils.isVPNConnected(this)) { // TODO: Need to remove before final production.
-            Toast.makeText(this, "VPN Data can not be recorded as VPN is off.", Toast.LENGTH_LONG).show();
-        }
-
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         setupTabs();
 
