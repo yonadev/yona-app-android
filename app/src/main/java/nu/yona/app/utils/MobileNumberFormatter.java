@@ -2,8 +2,9 @@ package nu.yona.app.utils;
 
 public class MobileNumberFormatter {
 
+    private static final String INTERNATIONAL_ACCESS_PLUS = "+";
     private static final String DUTCH_COUNTRY_CODE = "+31";
-    private static final int ACCEPTED_PHONE_NUMBER_LENGTH = 9;
+    private static final int MIN_ACCEPTED_PHONE_NUMBER_LENGTH = 9;
     private static final String UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX = "[^0123456789+]";
     private static final String NON_DUTCH_INTERNATIONAL_NUMBER_PREFIX_REGEX = "\\+(?!31).*";
 
@@ -29,7 +30,14 @@ public class MobileNumberFormatter {
     }
 
     private static String formatDutchNumber(String number) {
-        return DUTCH_COUNTRY_CODE.concat(number.substring(number.length() - ACCEPTED_PHONE_NUMBER_LENGTH));
+        String result = number;
+        if (result.length() >= MIN_ACCEPTED_PHONE_NUMBER_LENGTH) {
+            result = number.substring(number.length() - MIN_ACCEPTED_PHONE_NUMBER_LENGTH);
+            if (!result.startsWith(DUTCH_COUNTRY_CODE)) {
+                return DUTCH_COUNTRY_CODE.concat(result.substring(result.length() - MIN_ACCEPTED_PHONE_NUMBER_LENGTH));
+            }
+        }
+        return result;
     }
 
 }
