@@ -55,4 +55,18 @@ public class MobileNumberFormatterTests {
         String expected = "+45612345678";
         assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
     }
+
+    @Test
+    public void formatPhoneNumber_shortNumber() {
+        String input = "+31 456789";
+        String expected = "+31456789";
+        assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
+    }
+
+    @Test
+    public void formatPhoneNumber_veryShortNumber() {
+        String input = "+31 456";
+        String expected = "+31456";
+        assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
+    }
 }
