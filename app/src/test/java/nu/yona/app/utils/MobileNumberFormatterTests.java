@@ -69,4 +69,18 @@ public class MobileNumberFormatterTests {
         String expected = "+31456";
         assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
     }
+
+    @Test
+    public void formatPhoneNumber_onlyCountryCode() {
+        String input = "+31";
+        String expected = "+31";
+        assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
+    }
+
+    @Test
+    public void formatPhoneNumber_empty() {
+        String input = "";
+        String expected = "";
+        assertEquals(expected, MobileNumberFormatter.formatDutchAndInternationalNumber(input));
+    }
 }
