@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 27
@@ -178,9 +177,5 @@ dependencies {
     compile 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
     compile project(path: ':openvpn')
     compile 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
-
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
-        transitive = true
-    }
     compile 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
 }
