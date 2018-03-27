@@ -282,7 +282,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 
     private void setDayDetailTitleAndIcon() {
         if (mYonaHeaderTheme.isBuddyFlow() && yonaBuddy != null) {
-            leftIcon.setVisibility(View.GONE);
+            profileCircleImageView.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
             rightIconProfile.setVisibility(View.VISIBLE);
             if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName())) {
@@ -293,7 +293,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
             profileClickEvent(profileIconTxt);
 
         } else {
-            leftIcon.setVisibility(View.GONE);
+            profileCircleImageView.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
             if (notificationMessage != null && notificationMessage.getLinks() != null && notificationMessage.getLinks().getYonaBuddy() != null) {
                 rightIconProfile.setVisibility(View.VISIBLE);

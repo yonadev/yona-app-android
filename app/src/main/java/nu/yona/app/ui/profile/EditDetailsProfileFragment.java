@@ -13,7 +13,6 @@ package nu.yona.app.ui.profile;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -234,7 +233,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                leftIcon.setVisibility(View.GONE);
+                profileCircleImageView.setVisibility(View.GONE);
                 toolbarTitle.setText(getString(R.string.edit_profile));
                 rightIcon.setVisibility(View.VISIBLE);
                 rightIcon.setImageResource(R.drawable.icn_create);

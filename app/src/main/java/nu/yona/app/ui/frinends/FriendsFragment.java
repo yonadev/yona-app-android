@@ -108,7 +108,7 @@ public class FriendsFragment extends BaseFragment {
     private void setTitleAndIcon() {
         setTabs();
         ((YonaActivity) getActivity()).updateTabIcon(true);
-        leftIcon.setVisibility(View.GONE);
+        profileCircleImageView.setVisibility(View.GONE);
         toolbarTitle.setText(R.string.friends);
         rightIcon.setVisibility(View.VISIBLE);
         rightIcon.setImageDrawable(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.icn_add));

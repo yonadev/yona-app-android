@@ -22,7 +22,6 @@ import android.webkit.WebViewClient;
 
 import nu.yona.app.R;
 import nu.yona.app.analytics.AnalyticsConstant;
-import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.analytics.YonaAnalytics.BackHook;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
@@ -70,7 +69,7 @@ public class PrivacyFragment extends BaseFragment {
     }
 
     private void setTitleAndIcon() {
-        leftIcon.setVisibility(View.GONE);
+        profileCircleImageView.setVisibility(View.GONE);
         toolbarTitle.setText(getString(R.string.privacy));
         rightIcon.setVisibility(View.GONE);
     }

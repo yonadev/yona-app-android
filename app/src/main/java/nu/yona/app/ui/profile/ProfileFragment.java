@@ -21,7 +21,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
@@ -228,7 +227,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void setTitleAndIcon() {
-        leftIcon.setVisibility(View.GONE);
+        profileCircleImageView.setVisibility(View.GONE);
         toolbarTitle.setText(getString(R.string.blank));
         rightIcon.setVisibility(View.GONE);
         viewPager.setCurrentItem(0);

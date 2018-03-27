@@ -20,10 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
+
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
+import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
@@ -68,8 +72,8 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
         if (mYonaHeaderTheme != null) {
             mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
         }
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        viewPager = view.findViewById(R.id.viewPager);
+        tabLayout = view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_DASHBOARD));
@@ -151,10 +155,11 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName())) {
+                User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+                if (user != null && !TextUtils.isEmpty(user.getFirstName())) {
                     if (mYonaHeaderTheme != null) {
                         if (mYonaHeaderTheme.isBuddyFlow()) {
-                            leftIcon.setVisibility(View.GONE);
+                            profileCircleImageView.setVisibility(View.GONE);
                             rightIcon.setVisibility(View.GONE);
                             rightIconProfile.setVisibility(View.VISIBLE);
                             txtNotificationCounter.setVisibility(View.GONE);
@@ -164,10 +169,19 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
                             profileIconTxt.setText(yonaBuddy.getNickname().substring(0, 1).toUpperCase());
                             profileClickEvent(profileIconTxt);
                         } else {
-                            leftIconTxt.setVisibility(View.VISIBLE);
-                            leftIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
-                            leftIconTxt.setText(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname().substring(0, 1).toUpperCase());
-                            profileClickEvent(leftIconTxt);
+                            final Href userPhoto = user.getLinks().getUserPhoto();
+                            if(userPhoto != null) {
+                                Picasso.with(getContext()).load(userPhoto.getHref()).noFade().into(profileCircleImageView);
+                                profileCircleImageView.setVisibility(View.VISIBLE);
+                                initialsImageView.setVisibility(View.GONE);
+                                profileClickEvent(profileCircleImageView);
+                            } else {
+                                profileCircleImageView.setVisibility(View.GONE);
+                                initialsImageView.setVisibility(View.VISIBLE);
+                                initialsImageView.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
+                                initialsImageView.setText(user.getNickname().substring(0, 1).toUpperCase());
+                                profileClickEvent(initialsImageView);
+                            }
 
                             rightIcon.setVisibility(View.VISIBLE);
                             rightIconProfile.setVisibility(View.GONE);

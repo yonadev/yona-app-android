@@ -811,7 +811,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 getSupportFragmentManager().addOnBackStackChangedListener(this);
                 ft.replace(R.id.container, mContent);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mContent instanceof ProfileFragment) {
-                    ImageView ivProfile = (ImageView) oldFragment.getActivity().findViewById(R.id.leftIcon);
+                    View ivProfile = oldFragment.getActivity().findViewById(R.id.leftIcon);
                     ft.addSharedElement(ivProfile, getString(R.string.profile_transition));
                 }
                 ft.commitAllowingStateLoss();

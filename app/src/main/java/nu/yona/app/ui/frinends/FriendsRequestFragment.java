@@ -132,7 +132,7 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
      * update toolbar
      */
     private void setTitleAndIcon() {
-        leftIcon.setVisibility(View.GONE);
+        profileCircleImageView.setVisibility(View.GONE);
         toolbarTitle.setText(getString(R.string.empty_description));
         rightIcon.setVisibility(View.GONE);
     }
