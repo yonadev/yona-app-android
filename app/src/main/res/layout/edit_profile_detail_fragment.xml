@@ -64,20 +64,22 @@
                         android:textColor="@color/white"
                         android:visibility="visible" />
 
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profileImage"
                         android:layout_width="@dimen/profile_image_size"
                         android:layout_height="@dimen/profile_image_size"
                         android:layout_centerInParent="true"
+                        android:alpha="0.5"
                         android:visibility="gone" />
 
                     <ImageView
                         android:id="@+id/updateProfileImage"
                         android:layout_width="@dimen/capture_image_size"
                         android:layout_height="@dimen/capture_image_size"
-                        android:layout_centerInParent="true"
                         android:scaleType="centerInside"
+                        android:layout_centerInParent="true"
                         android:src="@drawable/icn_add_picture" />
+
                 </RelativeLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
 

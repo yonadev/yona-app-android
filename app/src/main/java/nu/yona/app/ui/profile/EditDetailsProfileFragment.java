@@ -34,12 +34,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
@@ -63,7 +67,8 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     private YonaFontEditTextView firstName, lastName, nickName;
     private YonaFontNumberTextView mobileNumber;
     private TextInputLayout firstnameLayout, lastNameLayout, nickNameLayout, mobileNumberLayout;
-    private ImageView profileImage, updateProfileImage;
+    private ImageView updateProfileImage;
+    private CircleImageView profileImage;
     private View.OnClickListener changeProfileImageClickListener;
     private TextWatcher textWatcher;
     private String oldUserNumber;
@@ -107,7 +112,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                isAdding = count == 1 ? true : false;
+                isAdding = count == 1;
                 hideErrorMessages();
             }
 
@@ -139,24 +144,24 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
     private void inflateView(View view) {
 
-        firstnameLayout = (TextInputLayout) view.findViewById(R.id.first_name_layout);
-        lastNameLayout = (TextInputLayout) view.findViewById(R.id.last_name_layout);
-        nickNameLayout = (TextInputLayout) view.findViewById(R.id.nick_name_layout);
-        mobileNumberLayout = (TextInputLayout) view.findViewById(R.id.mobile_number_layout);
+        firstnameLayout = view.findViewById(R.id.first_name_layout);
+        lastNameLayout = view.findViewById(R.id.last_name_layout);
+        nickNameLayout = view.findViewById(R.id.nick_name_layout);
+        mobileNumberLayout = view.findViewById(R.id.mobile_number_layout);
 
-        firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
+        firstName = view.findViewById(R.id.first_name);
         firstName.addTextChangedListener(textWatcher);
         firstName.setOnFocusChangeListener(onFocusChangeListener);
 
-        lastName = (YonaFontEditTextView) view.findViewById(R.id.last_name);
+        lastName = view.findViewById(R.id.last_name);
         lastName.addTextChangedListener(textWatcher);
         lastName.setOnFocusChangeListener(onFocusChangeListener);
 
-        nickName = (YonaFontEditTextView) view.findViewById(R.id.nick_name);
+        nickName = view.findViewById(R.id.nick_name);
         nickName.addTextChangedListener(textWatcher);
         nickName.setOnFocusChangeListener(onFocusChangeListener);
 
-        mobileNumber = (YonaFontNumberTextView) view.findViewById(R.id.mobile_number);
+        mobileNumber = view.findViewById(R.id.mobile_number);
         mobileNumber.requestFocus();
         YonaActivity.getActivity().showKeyboard(mobileNumber);
         mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getActivity(), null));
@@ -200,9 +205,9 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         });
 
 
-        profileImage = (ImageView) view.findViewById(R.id.profileImage);
-        profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileIcon);
-        updateProfileImage = (ImageView) view.findViewById(R.id.updateProfileImage);
+        profileImage = view.findViewById(R.id.profileImage);
+        updateProfileImage = view.findViewById(R.id.updateProfileImage);
+        profileImageTxt = view.findViewById(R.id.profileIcon);
         profileEditMode();
     }
 
@@ -260,6 +265,10 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
         }
         mobileNumber.setText(number);
         firstName.requestFocus();
+        Href userPhoto = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getUserPhoto();
+        if(userPhoto != null) {
+            displayProfileImage(userPhoto.getHref());
+        }
     }
 
     private boolean validateFields() {
@@ -334,16 +343,19 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
     }
 
     @Override
-    public void onStateChange(int eventType, final Object object) {
+    public void onStateChange(int eventType, final Object payload) {
         switch (eventType) {
             case EventChangeManager.EVENT_RECEIVED_PHOTO:
-                profileImage.setImageDrawable(getImage((Bitmap) object, true, R.color.mid_blue, YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName(), YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()));
-                profileImage.setVisibility(View.VISIBLE);
-                updateProfileImage.setVisibility(View.GONE);
+                displayProfileImage((String) payload);
                 break;
             default:
                 break;
         }
+    }
+
+    private void displayProfileImage(String path) {
+        Picasso.with(getContext()).load(path).noFade().into(profileImage);
+        profileImage.setVisibility(View.VISIBLE);
     }
 
     private void showError(Object errorMessage) {
