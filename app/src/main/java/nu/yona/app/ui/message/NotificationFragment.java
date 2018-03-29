@@ -268,7 +268,7 @@ public class NotificationFragment extends BaseFragment {
      */
     private void setTitleAndIcon() {
         ((YonaActivity) getActivity()).updateTabIcon(false);
-        leftIcon.setVisibility(View.GONE);
+        profileCircleImageView.setVisibility(View.GONE);
         toolbarTitle.setText(getString(R.string.message));
         rightIcon.setVisibility(View.GONE);
     }

@@ -47,14 +47,14 @@ public class BaseFragment extends Fragment implements Categorizable {
     /**
      * The Left icon.
      */
-    protected ImageView leftIcon, /**
+    protected ImageView profileCircleImageView, /**
      * The Right icon.
      */
     rightIcon,
 
     rightIconProfile;
 
-    protected YonaFontTextView profileIconTxt, leftIconTxt;
+    protected YonaFontTextView profileIconTxt, initialsImageView;
 
     private PauseResumeHook hook;
 
@@ -81,16 +81,16 @@ public class BaseFragment extends Fragment implements Categorizable {
      * @param view the view
      */
     protected void setupToolbar(View view) {
-        mToolBar = (Toolbar) view.findViewById(R.id.main_toolbar);
-        toolbarTitle = (YonaFontTextView) mToolBar.findViewById(R.id.toolbar_title);
-        leftIcon = (ImageView) mToolBar.findViewById(R.id.leftIcon);
-        rightIcon = (ImageView) mToolBar.findViewById(R.id.rightIcon);
-        rightIconProfile = (ImageView) mToolBar.findViewById(R.id.rightIconProfile);
-        profileIconTxt = (YonaFontTextView) mToolBar.findViewById(R.id.profileToolbarIcon);
-        leftIconTxt = (YonaFontTextView) mToolBar.findViewById(R.id.leftIconTxt);
-        txtNotificationCounter = (YonaFontTextView) mToolBar.findViewById(R.id.txtNotificationCounter);
+        mToolBar = view.findViewById(R.id.main_toolbar);
+        toolbarTitle = mToolBar.findViewById(R.id.toolbar_title);
+        profileCircleImageView = mToolBar.findViewById(R.id.leftIcon);
+        rightIcon = mToolBar.findViewById(R.id.rightIcon);
+        rightIconProfile = mToolBar.findViewById(R.id.rightIconProfile);
+        profileIconTxt = mToolBar.findViewById(R.id.profileToolbarIcon);
+        initialsImageView = mToolBar.findViewById(R.id.leftIconTxt);
+        txtNotificationCounter = mToolBar.findViewById(R.id.txtNotificationCounter);
         if (!(this instanceof DashboardFragment)) {
-            mToolBar.removeView(leftIcon);
+            mToolBar.removeView(profileCircleImageView);
         }
         updateToolBarBackground();
         YonaActivity.getActivity().setSupportActionBar(mToolBar);

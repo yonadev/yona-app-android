@@ -304,7 +304,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
     private void setDayDetailTitleAndIcon() {
 
         if (mYonaHeaderTheme.isBuddyFlow() && yonaBuddy != null) {
-            leftIcon.setVisibility(View.GONE);
+            profileCircleImageView.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
             rightIconProfile.setVisibility(View.VISIBLE);
             if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName())) {
@@ -314,7 +314,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
                 profileClickEvent(profileIconTxt);
             }
         } else {
-            leftIcon.setVisibility(View.GONE);
+            profileCircleImageView.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
             if (mYonaHeaderTheme.isBuddyFlow()) {
                 profileIconTxt.setVisibility(View.VISIBLE);

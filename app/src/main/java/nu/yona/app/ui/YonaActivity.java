@@ -48,7 +48,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -480,6 +479,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 new DataLoadListener() {
                     @Override
                     public void onDataLoad(Object result) {
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RECEIVED_PHOTO, ((User) result).getLinks().getUserPhoto().getHref());
                         // delete the local copy
                         file.delete();
                     }
@@ -811,7 +811,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 getSupportFragmentManager().addOnBackStackChangedListener(this);
                 ft.replace(R.id.container, mContent);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mContent instanceof ProfileFragment) {
-                    ImageView ivProfile = (ImageView) oldFragment.getActivity().findViewById(R.id.leftIcon);
+                    View ivProfile = oldFragment.getActivity().findViewById(R.id.leftIcon);
                     ft.addSharedElement(ivProfile, getString(R.string.profile_transition));
                 }
                 ft.commitAllowingStateLoss();
@@ -979,6 +979,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     public void chooseImage() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setAspectRatio(1,1)
+                .setInitialCropWindowPaddingRatio(0)
                 .start(this);
     }
 

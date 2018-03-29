@@ -331,7 +331,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 
     private void setWeekDetailTitleAndIcon() {
         if (mYonaHeaderTheme.isBuddyFlow() && yonaBuddy != null) {
-            leftIcon.setVisibility(View.GONE);
+            profileCircleImageView.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
             rightIconProfile.setVisibility(View.VISIBLE);
             if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName())) {
@@ -341,7 +341,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
                 profileClickEvent(profileIconTxt);
             }
         } else {
-            leftIcon.setVisibility(View.GONE);
+            profileCircleImageView.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
             if (mYonaHeaderTheme.isBuddyFlow()) {
                 profileIconTxt.setVisibility(View.VISIBLE);

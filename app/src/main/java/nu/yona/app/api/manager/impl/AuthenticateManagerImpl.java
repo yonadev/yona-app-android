@@ -130,9 +130,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
             @Override
             public void onDataLoad(Object result) {
                 if (result != null && result instanceof ProfilePhoto) {
-                    //network request successful - save the user photo into the user object in memory and db
-                    getUser().getLinks().setUserPhoto(((ProfilePhoto) result).getLinks().getUserPhoto());
-                    updateDataForRegisterUser(getUser(), listener);
+                    User newUser = getUser();
+                    newUser.getLinks().setUserPhoto(((ProfilePhoto) result).getLinks().getUserPhoto());
+                    updateDataForRegisterUser(newUser, listener);
                 }
             }
 

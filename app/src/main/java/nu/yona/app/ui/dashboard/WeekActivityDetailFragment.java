@@ -316,7 +316,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 
     private void setDayDetailTitleAndIcon() {
         if (mYonaHeaderTheme.isBuddyFlow() && yonaBuddy != null) {
-            leftIcon.setVisibility(View.GONE);
+            profileCircleImageView.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
             rightIconProfile.setVisibility(View.VISIBLE);
             if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName())) {
@@ -327,7 +327,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             }
 
         } else {
-            leftIcon.setVisibility(View.GONE);
+            profileCircleImageView.setVisibility(View.GONE);
             rightIcon.setVisibility(View.GONE);
             if (mYonaHeaderTheme.isBuddyFlow()) {
                 profileIconTxt.setVisibility(View.VISIBLE);

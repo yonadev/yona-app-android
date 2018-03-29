@@ -21,10 +21,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
@@ -49,7 +49,7 @@ import nu.yona.app.utils.AppConstant;
  */
 public class ProfileFragment extends BaseProfileFragment implements EventChangeListener {
     private final int PROFILE = 0, BADGES = 1;
-    private ImageView profileImageView;
+    private CircleImageView profileImageView;
     private YonaFontTextView name, nickName;
     private ViewPager viewPager;
     private CollapsingToolbarLayout profileTopLayout;
@@ -109,7 +109,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
 
-        profileImageView = (ImageView) view.findViewById(R.id.profileImage);
+        profileImageView = (CircleImageView) view.findViewById(R.id.profileImage);
         profileImageTxt = (YonaFontTextView) view.findViewById(R.id.profileIcon);
         profileTopLayout = (CollapsingToolbarLayout) view.findViewById(R.id.profile_top_layout);
         name = (YonaFontTextView) view.findViewById(R.id.name);
@@ -217,7 +217,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
 
     private void updateProfileImage(String firstName, String lastName) {
         if (user.getLinks().getUserPhoto() != null) {
-            Picasso.with(getContext()).load(user.getLinks().getUserPhoto().getHref()).into(profileImageView);
+            Picasso.with(getContext()).load(user.getLinks().getUserPhoto().getHref()).noFade().into(profileImageView);
             profileImageView.setVisibility(View.VISIBLE);
             profileImageTxt.setVisibility(View.GONE);
         } else {
@@ -227,7 +227,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
     }
 
     private void setTitleAndIcon() {
-        leftIcon.setVisibility(View.GONE);
+        profileCircleImageView.setVisibility(View.GONE);
         toolbarTitle.setText(getString(R.string.blank));
         rightIcon.setVisibility(View.GONE);
         viewPager.setCurrentItem(0);
