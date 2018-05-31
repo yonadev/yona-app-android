@@ -24,6 +24,10 @@ import nu.yona.app.listener.DataLoadListener;
  */
 public interface ActivityManager {
 
+
+    void getDetailOfEachSpreadWithDayActivity(final DayActivity dayActivity,final DataLoadListener listener);
+    void getDetailOfEachWeekSpreadWithWeekActivity(final WeekActivity weekActivity,final DataLoadListener listener);
+
     /**
      * Gets days activity.
      *

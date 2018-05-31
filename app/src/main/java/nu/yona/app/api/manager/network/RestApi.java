@@ -328,6 +328,21 @@ public interface RestApi {
     @DELETE
     Call<Void> deleteBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
 
+
+
+    /********
+     * NOTIFICATION MANAGER
+     *
+     * @param nextUrl      the url
+     * @param password the password
+     * @return the messages
+     */
+    @GET
+    Call<YonaMessages> getNextSetOfMessages(@Url String nextUrl, @Header(NetworkConstant.YONA_PASSWORD) String password,
+                                   @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+                                   @Query("onlyUnreadMessages") boolean isUnreadMessage
+                                            );
+
     /********
      * NOTIFICATION MANAGER
      *
@@ -342,6 +357,20 @@ public interface RestApi {
                                    @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
                                    @Query("onlyUnreadMessages") boolean isUnreadMessage,
                                    @Query("size") int size, @Query("page") int page);
+
+    /********
+     * NOTIFICATION MANAGER
+     *
+     * @param url      the url
+     * @param password the password
+
+     * @return the messages
+     */
+    @GET
+    Call<YonaMessages> getAllMessages(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
+                                   @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+                                   @Query("onlyUnreadMessages") boolean isUnreadMessage
+                                   );
 
     /**
      * Delete message call.
@@ -364,6 +393,17 @@ public interface RestApi {
      */
     @POST
     Call<Void> postMessage(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Body MessageBody body);
+
+    /********
+     * ACTIVITY  @param url the url
+     *
+     * @param nextActivityUrl      the url
+     * @param password the password
+     * @return the daily activity
+     */
+    @GET
+    Call<EmbeddedYonaActivity> getNextActivityWithUrl(@Url String nextActivityUrl, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+
 
     /********
      * ACTIVITY  @param url the url
@@ -413,6 +453,17 @@ public interface RestApi {
      *
      * @param url      the url
      * @param password the password
+     * @return the with buddy activity
+     */
+    @GET
+    Call<EmbeddedYonaActivity> getAllWithBuddyActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+
+
+    /**
+     * Gets with buddy activity.
+     *
+     * @param url      the url
+     * @param password the password
      * @param size     the size
      * @param page     the page
      * @return the with buddy activity
@@ -422,6 +473,10 @@ public interface RestApi {
 
     @GET
     Call<EmbeddedYonaActivity> getComments(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Query("size") int size, @Query("page") int page);
+
+    @GET
+    Call<EmbeddedYonaActivity> getNextSetOfComments(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+
 
     @POST
     Call<YonaMessage> addComment(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Body Message message);

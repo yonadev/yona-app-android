@@ -77,6 +77,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
     private CommentsAdapter commentsAdapter;
     private YonaMessage currentReplayingMsg;
     private ImageView chatBoxImage;
+    private  boolean isDataLoading =false;
 
     private View.OnClickListener messageItemClick = new View.OnClickListener() {
         @Override
@@ -200,6 +201,29 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             }
         });
 
+        if (viewPager != null) {
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+                    if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) {
+                        DayActivity newDayActivityToLoad = dayActivityList.get(position);
+                        getCurrentDayActivityDetails(newDayActivityToLoad);
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        }
+
         YonaApplication.getEventChangeManager().registerListener(this);
         setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_DAY_ACTIVITY_DETAIL_SCREEN));
         return view;
@@ -223,28 +247,36 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
     @Override
     public void onResume() {
         super.onResume();
-        if (activity != null) {
-            setDayActivityDetails();
-        }
-        if (viewPager != null) {
-            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//        if (activity != null) {
+//            setDayActivityDetails();
+//        }
+        getCurrentDayActivityDetails(activity);
 
+    }
+
+    public void getCurrentDayActivityDetails(DayActivity dayActivity){
+        if(!isDataLoading){
+            YonaActivity.getActivity().showLoadingView(true, null);
+            isDataLoading = true;
+            APIManager.getInstance().getActivityManager().getDetailOfEachSpreadWithDayActivity(dayActivity, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    activity = (DayActivity)result;
+                    isDataLoading = false;
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                    setDayActivityDetails();
                 }
 
                 @Override
-                public void onPageSelected(int position) {
-                    fetchComments(position);
-                    updateFlow(position);
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
+                public void onError(Object errorMessage) {
+                    isDataLoading = false;
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
                 }
             });
         }
+
+
     }
 
     private void setDayActivityDetails() {
@@ -264,8 +296,10 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
             int itemIndex = getIndex(activity);
             if (itemIndex >= 0) {
                 customPageAdapter.notifyDataSetChanged(dayActivityList);
-                fetchComments(itemIndex);
-                viewPager.setCurrentItem(itemIndex);
+                 fetchComments(itemIndex);
+                if(itemIndex!= viewPager.getCurrentItem()){
+                    viewPager.setCurrentItem(itemIndex);
+                }
                 updateFlow(itemIndex);
             } else {
                 goBack();

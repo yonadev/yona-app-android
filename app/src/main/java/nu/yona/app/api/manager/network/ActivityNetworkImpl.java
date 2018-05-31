@@ -31,6 +31,22 @@ import retrofit2.Response;
 public class ActivityNetworkImpl extends BaseImpl {
 
     /**
+     * Gets Next days activity.
+     *
+     * @param nextDayActivittUrl          the url
+     * @param yonaPassword the yona password
+     * @param listener     the listener
+     */
+    public void getNextDayActivity(String nextDayActivittUrl, String yonaPassword, DataLoadListener listener) {
+        try {
+            getRestApi().getNextActivityWithUrl(nextDayActivittUrl, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+
+    /**
      * Gets days activity.
      *
      * @param url          the url
@@ -41,7 +57,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      */
     public void getDaysActivity(String url, String yonaPassword, int itemsPerPage, int pageNo, DataLoadListener listener) {
         try {
-            getRestApi().getActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'),itemsPerPage,pageNo).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -57,6 +73,21 @@ public class ActivityNetworkImpl extends BaseImpl {
     public void getDayDetailActivity(String url, String yonaPassword, DataLoadListener listener) {
         try {
             getRestApi().getDayDetailActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getDayDetailActivity(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    /**
+     * Gets Next weeks activity.
+     *
+     * @param nextWeeksActivityUrl         the url
+     * @param password     the password
+     * @param listener     the listener
+     */
+    public void getNextWeeksActivity(String nextWeeksActivityUrl, String password, DataLoadListener listener) {
+        try {
+            getRestApi().getNextActivityWithUrl(nextWeeksActivityUrl, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -122,6 +153,14 @@ public class ActivityNetworkImpl extends BaseImpl {
     public void postAppActivity(String url, String yonaPassword, AppActivity appActivity, DataLoadListener listener) {
         try {
             getRestApi().postAppActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), appActivity).enqueue(getCall(listener));
+        } catch (Exception e) {
+            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+    public void getNextSetOfComments(String url, String yonaPassword, final DataLoadListener listener) {
+        try {
+            getRestApi().getNextSetOfComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

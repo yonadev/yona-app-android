@@ -22,6 +22,8 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
 import nu.yona.app.utils.AppConstant;
 
+import static nu.yona.app.YonaApplication.getEventChangeManager;
+
 /**
  * Created by kinnarvasa on 10/06/16.
  */
@@ -138,10 +140,11 @@ public class DataState {
      * @return the server url
      */
     public String getServerUrl() {
-        if (TextUtils.isEmpty(YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.blank)))) {
-            YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url)).commit();
+        if (TextUtils.isEmpty(getEventChangeManager().getSharedPreference().getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.blank)))) {
+            getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url)).commit();
+            getEventChangeManager().getSharedPreference().getAppPreferences().edit().putString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url)).commit();
         }
-        return YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
+        return YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
     }
 
     /**
@@ -150,7 +153,8 @@ public class DataState {
      * @param serverUrl the server url
      */
     public void setServerUrl(String serverUrl) {
-        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
+        getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
+        getEventChangeManager().getSharedPreference().getAppPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
     }
 
     public RegisterUser getRegisterUser() {

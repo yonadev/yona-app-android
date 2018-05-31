@@ -29,4 +29,20 @@ public interface ActivityCategoryManager {
      * @return the list of activity categories
      */
     ActivityCategories getListOfActivityCategories();
+
+
+    /**
+     * Validates the new environment by requesting the activityCategoryList api. Hence the function is added in this class.
+     *  @param url the new Environment URL entered by user
+     * @param listener the listener
+     * @return the list of activity categories
+     */
+     void validateNewEnvironment(String url,final DataLoadListener listener);
+
+    /**
+     *
+     *
+     *
+     */
+     void updateNetworkAPIHost();
 }

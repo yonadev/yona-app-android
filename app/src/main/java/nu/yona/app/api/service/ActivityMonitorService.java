@@ -85,6 +85,7 @@ public class ActivityMonitorService extends Service {
             YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, false).commit();
             AppUtils.registerReceiver(YonaApplication.getAppContext());
         }
+        AppUtils.registerReceiver(YonaApplication.getAppContext());
     }
 
     @Override

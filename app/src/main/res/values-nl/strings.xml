@@ -214,5 +214,8 @@
     <string name="last_seen_status_back_week">Laatst gezien op %1$s</string> <!--February 15, 2017-->
     <string name="last_seen_never_seen_online">Nooit online gezien</string>
     <string name="message_buddy_information_changed">Vriend profiel bijgewerkt</string>
+    <string name="same_environment_change">You are in the same entered Environment</string>
+    <string name="environment_switch_error">Environment Switch Error. Reverted to :</string>
+    <string name="new_environment_switch_success_msg">You are now in :</string>
 
 </resources>

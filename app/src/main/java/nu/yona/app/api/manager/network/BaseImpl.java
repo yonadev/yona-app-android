@@ -13,6 +13,7 @@ package nu.yona.app.api.manager.network;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
@@ -38,30 +39,45 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by kinnarvasa on 28/03/16.
  */
+
+// TODO: Revisit
 class BaseImpl {
     private final int maxStale = 60 * 60 * 24 * 28; // keep cache for 28 days.
 //    public final String localLanguage = ;
-    private final Interceptor getInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Response response = null;
-            Request request = chain.request();
-            chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
-            if (NetworkUtils.isOnline(YonaApplication.getAppContext())) {
-                chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
-            } else {
-                throw new UnknownHostException();
-            }
-
-            request = request.newBuilder().build();
-            response = chain.proceed(request);
-            return response.newBuilder()
-                    .header("Cache-Control", "public, max-age=" + maxStale)
-                    .build();
+private final Interceptor getInterceptor = new Interceptor() {
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+        Response response = null;
+        Request request = chain.request();
+        chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
+        if (NetworkUtils.isOnline(YonaApplication.getAppContext())) {
+            chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
+        } else {
+            throw new UnknownHostException();
         }
-    };
-    private Retrofit retrofit;
-    private RestApi restApi;
+
+        response = chain.proceed(request);
+        if (response.priorResponse() != null &&
+                response.priorResponse().code() ==
+                        HttpURLConnection.HTTP_MOVED_PERM) {
+
+            throw new UnknownHostException();
+        } else {
+            request = request.newBuilder().build();
+        }
+
+        return response.newBuilder()
+                .header("Cache-Control", "public, max-age=" + maxStale)
+                .build();
+    }
+};
+
+    // Made both variables  below as class variables to make sure all network impl classes are using same host environment serverURL.
+    // If needed in future instead of using class variables we need to store all the impl instances into an array and iterate and update t
+    // host serverURL in all instances when environment switch happens.
+
+    private static Retrofit retrofit;
+    private static RestApi restApi;
 
     /**
      * Gets retrofit.
@@ -77,6 +93,14 @@ class BaseImpl {
                     .build();
         }
         return retrofit;
+    }
+
+    /**
+     * Reinitialize retrofit.
+     */
+    protected void reinitializeAPI() {
+        retrofit = null; // this method is require when user do signout and want to change environment, it should update with new environemnt.
+        restApi = null;
     }
 
     /**
@@ -140,9 +164,9 @@ class BaseImpl {
     void onError(Throwable t, DataLoadListener listener) {
         if (listener != null) {
 
-            if(t instanceof ConnectException || t instanceof SocketTimeoutException) {
+            if (t instanceof ConnectException || t instanceof SocketTimeoutException || t instanceof UnknownHostException) {
                 // If client causing problem.
-                if(!AppUtils.isNetworkAvailable(YonaApplication.getAppContext())) {
+                if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext())) {
                     listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.connectionnotavailable)));
                 } else {
                     listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.server_not_rechable)));
@@ -165,15 +189,19 @@ class BaseImpl {
                 Converter<ResponseBody, ErrorMessage> errorConverter =
                         getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
                 ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
-                if (errorMessage != null && ServerErrorCode.USER_NOT_FOUND.equals(errorMessage.getCode())) {
-                    reinitializeRetrofit();
-                    YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, errorMessage);
-                } else {
-                    listener.onError(errorMessage);
+                if (errorMessage != null && errorMessage.getCode() != null) {
+                    if (errorMessage != null && ServerErrorCode.USER_NOT_FOUND.equals(errorMessage.getCode())) {
+                        reinitializeRetrofit();
+                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, errorMessage);
+                    } else {
+                        listener.onError(errorMessage);
+                    }
                 }
+
             } catch (IOException e) {
                 listener.onError(new ErrorMessage(e.getMessage()));
             }
         }
     }
+
 }

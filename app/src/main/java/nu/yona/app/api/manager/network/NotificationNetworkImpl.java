@@ -25,6 +25,37 @@ import retrofit2.Response;
  */
 public class NotificationNetworkImpl extends BaseImpl {
 
+
+    /**
+     * Gets message.
+     *
+     * @param nextURL          the url
+     * @param yonaPassword the yona password
+     * @param listener     the listener
+     */
+    public void getNextSetOfMessagesFromURL(String nextURL, String yonaPassword, boolean isUnreadStatus, final DataLoadListener listener) {
+        try {
+            getRestApi().getNextSetOfMessages(nextURL, yonaPassword, Locale.getDefault().toString().replace('_', '-'), isUnreadStatus).enqueue(new Callback<YonaMessages>() {
+                @Override
+                public void onResponse(Call<YonaMessages> call, Response<YonaMessages> response) {
+                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
+                        listener.onDataLoad(response.body());
+                    } else {
+                        onError(response, listener);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<YonaMessages> call, Throwable t) {
+                    onError(t, listener);
+                }
+            });
+        } catch (Exception e) {
+            AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
+
     /**
      * Gets message.
      *

@@ -47,4 +47,8 @@ public class ActivityCategoriesNetworkImpl extends BaseImpl {
         });
 
     }
+
+    public void updateNetworkHost(){
+        reinitializeAPI();
+    }
 }

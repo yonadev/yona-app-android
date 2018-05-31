@@ -33,8 +33,10 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.api.manager.impl.NotificationManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
@@ -48,6 +50,7 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 
 /**
@@ -291,31 +294,48 @@ public class NotificationFragment extends BaseFragment {
      * to get the list of user's messages
      */
     private void getUserMessages() {
-        YonaActivity.getActivity().showLoadingView(true, null);
-        APIManager.getInstance().getNotificationManager().getMessage(PAGE_SIZE, currentPage, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-                if (isAdded() && result != null && result instanceof YonaMessages) {
-                    YonaMessages mMessages = (YonaMessages) result;
-                    if (mMessages.getEmbedded() != null && mMessages.getEmbedded().getYonaMessages() != null) {
-                        mYonaMessages = mMessages;
-                        if (mIsLoading) {
-                            mMessageStickyRecyclerAdapter.updateData(mYonaMessages.getEmbedded().getYonaMessages());
-                        } else {
-                            mMessageStickyRecyclerAdapter.notifyDataSetChange(mYonaMessages.getEmbedded().getYonaMessages());
-                        }
-                    }
-                }
-                mIsLoading = false;
+        try {
+            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            String urlForMessageFetch = null;
+
+            if (mYonaMessages == null ){
+                urlForMessageFetch = user.getLinks().getYonaMessages().getHref();
+            }else if (mYonaMessages.getLinks().getNext()!=null){
+                urlForMessageFetch = mYonaMessages.getLinks().getNext().getHref();
+            }else{
+                urlForMessageFetch = mYonaMessages.getLinks().getSelf().getHref();
             }
 
-            @Override
-            public void onError(Object errorMessage) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-                YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
-            }
-        });
+            APIManager.getInstance().getNotificationManager().getMessageWithUrl(urlForMessageFetch,false, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                    if (isAdded() && result != null && result instanceof YonaMessages) {
+                        YonaMessages mMessages = (YonaMessages) result;
+                        if (mMessages.getEmbedded() != null && mMessages.getEmbedded().getYonaMessages() != null) {
+                            mYonaMessages = mMessages;
+                            if (mIsLoading) {
+                                mMessageStickyRecyclerAdapter.updateData(mYonaMessages.getEmbedded().getYonaMessages());
+                            } else {
+                                mMessageStickyRecyclerAdapter.notifyDataSetChange(mYonaMessages.getEmbedded().getYonaMessages());
+                            }
+                        }
+                    }
+                    mIsLoading = false;
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                }
+            },false);
+
+
+        } catch (Exception e) {
+
+        }
+
     }
 
     /**

@@ -77,6 +77,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
     private CommentsAdapter commentsAdapter;
     private YonaMessage currentReplayingMsg;
     private ImageView chatBoxImage;
+    private boolean isDataLoading = false;
 
     private View.OnClickListener itemClickListener = new View.OnClickListener() {
         @Override
@@ -208,6 +209,8 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             }
         });
 
+
+
         view.findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,8 +232,12 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 
             @Override
             public void onPageSelected(int position) {
-                fetchComments(position);
-                updateFlow(position);
+                EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+                if (embeddedYonaActivity != null && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0) {
+                    WeekActivity newWeekActivityToLoad = weekActivityList.get(position);
+                    getCurrentWeekActivityDetails(newWeekActivityToLoad);
+                }
+
             }
 
             @Override
@@ -242,6 +249,9 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
         setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_WEEK_ACTIVITY_DETAIL_SCREEN));
         return view;
     }
+
+
+
 
     private void initalizeCommentControl(View view) {
         commentRecyclerView = (RecyclerView) view.findViewById(R.id.messageList);
@@ -261,34 +271,61 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
     @Override
     public void onResume() {
         super.onResume();
-        weekActivityList = new ArrayList<>();
-        EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
-        if (embeddedYonaActivity != null && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0) {
-
-            for (int i = embeddedYonaActivity.getWeekActivityList().size() - 1; i >= 0; i--) {
-                try {
-                    if (embeddedYonaActivity.getWeekActivityList().get(i).getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref())) {
-                        weekActivityList.add(embeddedYonaActivity.getWeekActivityList().get(i));
-                    }
-                } catch (Exception e) {
-                    AppUtils.throwException(WeekActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
-                }
-            }
-            int itemIndex = getIndex(activity);
-            if (itemIndex >= 0) {
-                customPageAdapter.notifyDataSetChanged(weekActivityList);
-                fetchComments(itemIndex);
-                viewPager.setCurrentItem(itemIndex);
-                updateFlow(itemIndex);
-            } else {
-                goBack();
-            }
-        } else {
-            goBack();
-        }
-        setDayDetailTitleAndIcon();
+       getCurrentWeekActivityDetails(activity);
     }
 
+
+    public void getCurrentWeekActivityDetails(WeekActivity weekActivity){
+
+        YonaActivity.getActivity().showLoadingView(true, null);
+        if (!isDataLoading) {
+            isDataLoading = true;
+            APIManager.getInstance().getActivityManager().getDetailOfEachWeekSpreadWithWeekActivity(weekActivity, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                    isDataLoading = false;
+                    activity = (WeekActivity) result;
+                    weekActivityList = new ArrayList<>();
+                    EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+                    if (embeddedYonaActivity != null && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0) {
+
+                        for (int i = embeddedYonaActivity.getWeekActivityList().size() - 1; i >= 0; i--) {
+                            try {
+                                if (embeddedYonaActivity.getWeekActivityList().get(i).getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref())) {
+                                    weekActivityList.add(embeddedYonaActivity.getWeekActivityList().get(i));
+                                }
+                            } catch (Exception e) {
+                                AppUtils.throwException(WeekActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
+                            }
+                        }
+                        int itemIndex = getIndex(activity);
+                        if (itemIndex >= 0) {
+                            customPageAdapter.notifyDataSetChanged(weekActivityList);
+                            fetchComments(itemIndex);
+                            if(itemIndex!= viewPager.getCurrentItem()){
+                                viewPager.setCurrentItem(itemIndex);
+                            }
+
+                            updateFlow(itemIndex);
+                        } else {
+                            goBack();
+                        }
+                    } else {
+                        goBack();
+                    }
+                    setDayDetailTitleAndIcon();
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    isDataLoading = false;
+                    YonaActivity.getActivity().showLoadingView(false, null);
+                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+                }
+            });
+        }
+    }
 
     private void goBack() {
         new Handler().postDelayed(new Runnable() {

@@ -120,4 +120,29 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
         }
     }
 
+    public void updateNetworkAPIHost(){
+        activityCategoriesNetwork.updateNetworkHost();;
+    }
+
+    public void validateNewEnvironment(String url,final DataLoadListener listener) {
+        try {
+            activityCategoriesNetwork.getActivityCategories(url, new DataLoadListener() {
+                @Override
+                public void onDataLoad(Object result) {
+                    if (listener != null) {
+                        listener.onDataLoad(result);
+                    }
+                }
+
+                @Override
+                public void onError(Object errorMessage) {
+                    if (listener != null) {
+                        listener.onError(errorMessage);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
 }

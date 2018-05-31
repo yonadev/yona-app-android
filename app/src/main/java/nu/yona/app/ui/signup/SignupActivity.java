@@ -225,15 +225,19 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     }
 
     private void showError(Object errorMessage) {
-        ErrorMessage message = (ErrorMessage) errorMessage;
         showLoadingView(false, null);
-        if (message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)
-                || message.getCode().equalsIgnoreCase(ServerErrorCode.ADD_BUDDY_USER_EXIST_ERROR))) {
-            showAlertForReRegisteruser(message.getMessage());
-        } /*else if(message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.SMS_SENDING_FAIL))) {
+        if (errorMessage instanceof ErrorMessage){
+            ErrorMessage message = (ErrorMessage) errorMessage;
+            if (message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)
+                    || message.getCode().equalsIgnoreCase(ServerErrorCode.ADD_BUDDY_USER_EXIST_ERROR))) {
+                showAlertForReRegisteruser(message.getMessage());
+            } /*else if(message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.SMS_SENDING_FAIL))) {
             Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
         }*/ else {
-            Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        }else{
+            Snackbar.make(findViewById(android.R.id.content), (String)errorMessage, Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -243,7 +247,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         return deepLinkUserInfo;
     }
 
-    /**
+    /**q
      * Following will request to read Deep link Data for requested URL.
      * @param url request URL.
      */
