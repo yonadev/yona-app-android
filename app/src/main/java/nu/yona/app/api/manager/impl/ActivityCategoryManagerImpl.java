@@ -120,8 +120,8 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
         }
     }
 
-    public void updateNetworkAPIHost(){
-        activityCategoriesNetwork.updateNetworkHost();;
+    public void updateNetworkAPIEnvironment(){
+        activityCategoriesNetwork.updateNeworkEnvironment();;
     }
 
     public void validateNewEnvironment(String url,final DataLoadListener listener) {

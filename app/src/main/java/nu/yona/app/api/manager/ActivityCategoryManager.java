@@ -40,9 +40,8 @@ public interface ActivityCategoryManager {
      void validateNewEnvironment(String url,final DataLoadListener listener);
 
     /**
-     *
-     *
+     *Updates the network api host with Server url in App user defaults.
      *
      */
-     void updateNetworkAPIHost();
+     void updateNetworkAPIEnvironment();
 }

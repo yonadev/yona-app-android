@@ -144,7 +144,7 @@ public class LaunchActivity extends BaseActivity {
         showLoadingView(true,null);
         final String oldEnvironmentURL = YonaApplication.getEventChangeManager().getDataState().getServerUrl();
         YonaApplication.getEventChangeManager().getDataState().setServerUrl(newEnvironmentURL);
-        APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIHost();// initializes the network manager with the new host url from data state.
+        APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment();// initializes the network manager with the new host url from data state.
         APIManager.getInstance().getActivityCategoryManager().validateNewEnvironment(newEnvironmentURL,new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
@@ -155,7 +155,7 @@ public class LaunchActivity extends BaseActivity {
             @Override
             public void onError(Object errorMessage) {
                 YonaApplication.getEventChangeManager().getDataState().setServerUrl(oldEnvironmentURL);
-                APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIHost(); // reverts the network manager with the old host url from data state.
+                APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(); // reverts the network manager with the old host url from data state.
                 showLoadingView(false,null);
                 Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.environment_switch_error)+ oldEnvironmentURL, Toast.LENGTH_LONG).show();
             }
