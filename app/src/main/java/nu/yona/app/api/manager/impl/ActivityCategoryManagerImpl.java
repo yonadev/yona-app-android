@@ -22,6 +22,7 @@ import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -52,33 +53,13 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
      * @param listener
      */
     @Override
-    public void getActivityCategoriesById(final DataLoadListener listener) {
-        try {
-            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-            if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref())) {
-                activityCategoriesNetwork.getActivityCategories(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref(), new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        updateActivityCategories(result, null);
-                        if (listener != null) {
-                            listener.onDataLoad(result);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Object errorMessage) {
-                        if (listener != null) {
-                            listener.onError(errorMessage);
-                        }
-                    }
-                });
-            } else {
-                if (listener != null) {
-                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
-                }
-            }
-        } catch (Exception e) {
-            AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+    public void getActivityCategoriesById(DataLoadListener listener) {
+        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+        if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref())) {
+            DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> updateActivityCategories(result, null), listener);
+            activityCategoriesNetwork.getActivityCategories(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref(), listenerWrapper);
+        } else if (listener != null) {
+            listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
         }
     }
 
