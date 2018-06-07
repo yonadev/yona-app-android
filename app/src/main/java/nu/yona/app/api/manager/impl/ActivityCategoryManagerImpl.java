@@ -79,7 +79,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
      * @param result
      * @param listener
      */
-    private void updateActivityCategories(Object result, final DataLoadListener listener) {
+    private Object updateActivityCategories(Object result, final DataLoadListener listener) {
         try {
             activityCategoriesDAO.saveActivityCategories(((ActivityCategories) result), new DataLoadListener() {
                 @Override
@@ -99,6 +99,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
         } catch (Exception e) {
             AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
+        return null; // No value to return from here
     }
 
     public void updateNetworkAPIEnvironment(){

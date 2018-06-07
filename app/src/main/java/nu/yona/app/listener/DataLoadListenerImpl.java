@@ -13,7 +13,7 @@ import java.util.Objects;
 public class DataLoadListenerImpl<T, U> implements DataLoadListener<T, U> {
     @FunctionalInterface
     public interface ListenerFunction<T> {
-        void handle(T result);
+        T handle(T result);
     }
     private final ListenerFunction<T> loadHandler;
     private final ListenerFunction<U> errorHandler;
@@ -21,43 +21,52 @@ public class DataLoadListenerImpl<T, U> implements DataLoadListener<T, U> {
 
     public DataLoadListenerImpl(ListenerFunction<T> loadHandler)
     {
-        this(loadHandler, null, null);
+        this(Objects.requireNonNull(loadHandler), null, null);
     }
 
     public DataLoadListenerImpl(ListenerFunction<T> loadHandler, ListenerFunction<U> errorHandler)
     {
-        this(loadHandler, errorHandler, null);
+        this(Objects.requireNonNull(loadHandler), Objects.requireNonNull(errorHandler), null);
     }
 
     public DataLoadListenerImpl(ListenerFunction<T> loadHandler, DataLoadListener<T, U> nextListener)
     {
-        this(loadHandler, null, nextListener);
+        this(Objects.requireNonNull(loadHandler), null, Objects.requireNonNull(nextListener));
+    }
+
+    public DataLoadListenerImpl(DataLoadListener<T, U> nextListener)
+    {
+        this(null, null, Objects.requireNonNull(nextListener));
     }
 
     public DataLoadListenerImpl(ListenerFunction<T> loadHandler, ListenerFunction<U> errorHandler, DataLoadListener<T, U> nextListener)
     {
-        this.loadHandler = Objects.requireNonNull(loadHandler);
+        this.loadHandler = loadHandler;
         this.errorHandler = errorHandler;
         this.nextListener = nextListener;
     }
 
     @Override
     public void onDataLoad(T result) {
-        loadHandler.handle(result);
+        T updatedResult = null;
+        if (loadHandler != null) {
+            updatedResult = loadHandler.handle(result);
+        }
         if (nextListener == null) {
             return;
         }
-        nextListener.onDataLoad(result);
+        nextListener.onDataLoad((updatedResult == null) ? result : updatedResult);
     }
 
     @Override
     public void onError(U errorMessage) {
+        U updatedErrorMessage = null;
         if (errorHandler != null) {
-            errorHandler.handle(errorMessage);
+            updatedErrorMessage = errorHandler.handle(errorMessage);
         }
         if (nextListener == null) {
             return;
         }
-        nextListener.onError(errorMessage);
+        nextListener.onError((updatedErrorMessage == null) ? errorMessage : updatedErrorMessage);
     }
 }
