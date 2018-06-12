@@ -27,6 +27,7 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.login.LoginActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.ui.signup.OTPActivity;
@@ -104,7 +105,6 @@ public class LaunchActivity extends BaseActivity {
      * This method is to run App on different environment as enterd by user.
      */
     private void switchEnvironment() {
-        // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -112,13 +112,12 @@ public class LaunchActivity extends BaseActivity {
 
         final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
         editText.setText(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
-        // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("Entered URL", "Hello, " + editText.getText());
                         if (!(YonaApplication.getEventChangeManager().getDataState().getServerUrl().equals(editText.getText().toString()))){
-                            validateEnteredHost(editText.getText().toString());
+                            validateEnvironment(editText.getText().toString());
                         }else{
                             Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.same_environment_change), Toast.LENGTH_LONG).show();
                         }
@@ -131,36 +130,37 @@ public class LaunchActivity extends BaseActivity {
                                 dialog.cancel();
                             }
                         });
-
-        // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
-
 }
 
 
-
-    void validateEnteredHost(final String newEnvironmentURL) {
+    void validateEnvironment(String newEnvironmentURL) {
         showLoadingView(true,null);
+
+
         final String oldEnvironmentURL = YonaApplication.getEventChangeManager().getDataState().getServerUrl();
-        YonaApplication.getEventChangeManager().getDataState().setServerUrl(newEnvironmentURL);
-        APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment();// initializes the network manager with the new host url from data state.
-        APIManager.getInstance().getActivityCategoryManager().validateNewEnvironment(newEnvironmentURL,new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                showLoadingView(false,null);
-                Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.new_environment_switch_success_msg)+ newEnvironmentURL, Toast.LENGTH_LONG).show();
-            }
+        APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(newEnvironmentURL);// initializes the network manager with the new host url from data state.
+        DataLoadListenerImpl dataLoadListenerImpl=
+                new DataLoadListenerImpl(
 
-            @Override
-            public void onError(Object errorMessage) {
-                YonaApplication.getEventChangeManager().getDataState().setServerUrl(oldEnvironmentURL);
-                APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(); // reverts the network manager with the old host url from data state.
-                showLoadingView(false,null);
-                Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.environment_switch_error)+ oldEnvironmentURL, Toast.LENGTH_LONG).show();
-            }
-        });
+                ((result) -> showEnvironmentSwitchSuccessMessageToUser(newEnvironmentURL,result)), ((result) ->showEnvironmentSwitchFailureMessageToUser(oldEnvironmentURL,result)),null
+        );
+        APIManager.getInstance().getActivityCategoryManager().validateNewEnvironment(dataLoadListenerImpl);
 
+    }
+
+    public Object showEnvironmentSwitchSuccessMessageToUser(String newEnvironmentURL,Object result){
+        showLoadingView(false,null);
+        Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.new_environment_switch_success_msg)+ newEnvironmentURL, Toast.LENGTH_LONG).show();
+        return  null;
+    }
+
+    public Object showEnvironmentSwitchFailureMessageToUser(String oldEnvironmentURL, Object errorMessage){
+        APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(oldEnvironmentURL); // reverts the network manager with the old host url from data state.
+        showLoadingView(false,null);
+        Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.environment_switch_error)+ oldEnvironmentURL, Toast.LENGTH_LONG).show();
+        return  null;
     }
 
     @Override

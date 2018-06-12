@@ -45,9 +45,8 @@ public interface NotificationManager {
          * @param urlForMessagesFetch the items per page
      * @param isUnreadStatus       the page no
      * @param listener     the listener
-     * @param isProcessUpdate
      */
-    void getMessageWithUrl(final String urlForMessagesFetch, final boolean isUnreadStatus, final DataLoadListener listener, final boolean isProcessUpdate);
+    void getMessageWithUrl( String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener);
     /**
      * Post message.
      *

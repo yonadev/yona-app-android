@@ -329,11 +329,9 @@ public class NotificationFragment extends BaseFragment {
                     YonaActivity.getActivity().showLoadingView(false, null);
                     YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
                 }
-            },false);
-
-
-        } catch (Exception e) {
-
+            });
+        }catch (IllegalArgumentException e ) {
+            AppUtils.throwException(NotificationFragment.class.getSimpleName(),e,Thread.currentThread(),null);
         }
 
     }

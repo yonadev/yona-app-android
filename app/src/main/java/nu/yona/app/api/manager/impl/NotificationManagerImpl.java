@@ -14,7 +14,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +39,7 @@ import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
@@ -162,82 +165,40 @@ public class NotificationManagerImpl implements NotificationManager {
         }
     }
 
-
-    public void getMessageWithUrl(final String urlForMessagesFetch, final boolean isUnreadStatus, final DataLoadListener listener, final boolean isProcessUpdate) {
-        try {
-            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-            if (user != null && user.getLinks() != null && user.getLinks().getYonaMessages() != null
-                    && !TextUtils.isEmpty(user.getLinks().getYonaMessages().getHref())) {
-
-                notificationNetwork.getNextSetOfMessagesFromURL(urlForMessagesFetch, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus, new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        if (listener != null) {
-                            if (result instanceof YonaMessages) {
-                                YonaMessages resultYonaMessagesObj = (YonaMessages) result;
-                                if (resultYonaMessagesObj != null && resultYonaMessagesObj.getEmbedded() != null) {
-                                    Embedded embedded = resultYonaMessagesObj.getEmbedded();
-                                    List<YonaMessage> listMessages = embedded.getYonaMessages();
-                                    boolean isAnyProcessed = false;
-                                    SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
-                                    for (YonaMessage message : listMessages) {
-                                        //update enum
-                                        if (message.getStatus() != null) {
-                                            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));
-                                        } else if (message.getDropBuddyReason() != null) {
-                                            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getDropBuddyReason()));
-                                        } else {
-                                            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getChange()));
-                                        }
-                                        if (message.getLinks() != null && message.getLinks().getYonaUser() != null
-                                                && !TextUtils.isEmpty(message.getLinks().getYonaUser().getHref())) {
-                                            if (message.getEmbedded() == null) {
-                                                message.setEmbedded(new Embedded());
-                                            }
-                                            message.getEmbedded().setYonaUser(getYonaUser(message.getLinks().getYonaUser().getHref()));
-                                        }
-                                        String uploadDate = "";
-
-                                        String createdTime = message.getCreationTime();
-                                        try {
-                                            Date date = sdf.parse(createdTime);
-
-                                            Calendar futureCalendar = Calendar.getInstance();
-                                            futureCalendar.setTime(date);
-
-                                            uploadDate = DateUtility.getRelativeDate(futureCalendar);
-                                            message.setStickyTitle(uploadDate);
-                                        } catch (Exception e) {
-                                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-                                        }
-                                        resultYonaMessagesObj.setEmbedded(embedded);
-                                        if (!isProcessUpdate && message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null
-                                                && !TextUtils.isEmpty(message.getLinks().getYonaPreocess().getHref())) {
-                                            isAnyProcessed = true;
-                                            MessageBody body = new MessageBody();
-                                            body.setProperties(new Properties());
-                                            postMessageForProcess(message.getLinks().getYonaPreocess().getHref(), body);
-                                        }
-                                    }
-                                    if (isAnyProcessed) {
-                                        getMessageWithUrl(urlForMessagesFetch, isUnreadStatus, listener, true);
-                                    }
-                                    APIManager.getInstance().getAuthenticateManager().getUserFromServer();
-                                }
-                                listener.onDataLoad(resultYonaMessagesObj);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(Object errorMessage) {
-                        throwError(listener, errorMessage);
-                    }
-                });
-            } else {
-                listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
+    public YonaMessages processYonaMessages(YonaMessages result){
+        YonaMessages resultYonaMessagesObj = (YonaMessages) result;
+        Embedded embedded = resultYonaMessagesObj.getEmbedded();
+        List<YonaMessage> listMessages = embedded.getYonaMessages();
+        SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
+        for (YonaMessage message : listMessages) {
+            String messageEnumType = (message.getStatus() != null)?message.getStatus():(message.getDropBuddyReason()!=null)?message.getDropBuddyReason():message.getChange();
+            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), messageEnumType));
+            if (message.getLinks() != null && message.getLinks().getYonaUser() != null && !TextUtils.isEmpty(message.getLinks().getYonaUser().getHref())) {
+                if (message.getEmbedded() == null) {
+                    message.setEmbedded(new Embedded());
+                }
+                message.getEmbedded().setYonaUser(getYonaUser(message.getLinks().getYonaUser().getHref()));
             }
-        } catch (Exception e) {
+            String uploadDate = "";
+            String createdTime = message.getCreationTime();
+            try {
+                Date date = sdf.parse(createdTime);
+                Calendar futureCalendar = Calendar.getInstance();
+                futureCalendar.setTime(date);
+                uploadDate = DateUtility.getRelativeDate(futureCalendar);
+                message.setStickyTitle(uploadDate);
+            } catch(ParseException parseEx) {
+                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), parseEx, Thread.currentThread(), null);
+            }
+        }
+        return  resultYonaMessagesObj;
+    }
+
+    public void getMessageWithUrl( String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener) {
+        try {
+            DataLoadListenerImpl dataloadListenerImpl =  new DataLoadListenerImpl((result)->processYonaMessages((YonaMessages) result),listener);
+            notificationNetwork.getNextSetOfMessagesFromURL(urlForMessagesFetch, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus,dataloadListenerImpl);
+        } catch (IllegalArgumentException e) {
             AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }

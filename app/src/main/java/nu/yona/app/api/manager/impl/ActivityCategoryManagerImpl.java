@@ -54,13 +54,8 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
      */
     @Override
     public void getActivityCategoriesById(DataLoadListener listener) {
-        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-        if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref())) {
-            DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> updateActivityCategories(result, null), listener);
-            activityCategoriesNetwork.getActivityCategories(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref(), listenerWrapper);
-        } else if (listener != null) {
-            listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
-        }
+        DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> updateActivityCategories(result, listener),null, listener);
+        activityCategoriesNetwork.getActivityCategories(listenerWrapper);
     }
 
     /**
@@ -79,50 +74,23 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
      * @param result
      * @param listener
      */
-    private Object updateActivityCategories(Object result, final DataLoadListener listener) {
+    private Object updateActivityCategories(Object result, DataLoadListener listener) {
         try {
-            activityCategoriesDAO.saveActivityCategories(((ActivityCategories) result), new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    if (listener != null) {
-                        listener.onDataLoad(result);
-                    }
-                }
-
-                @Override
-                public void onError(Object errorMessage) {
-                    if (listener != null) {
-                        listener.onError(errorMessage);
-                    }
-                }
-            });
+            activityCategoriesDAO.saveActivityCategories(((ActivityCategories) result), listener);
         } catch (Exception e) {
             AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
         return null; // No value to return from here
     }
 
-    public void updateNetworkAPIEnvironment(){
+    public void updateNetworkAPIEnvironment(String environmentURL){
+        YonaApplication.getEventChangeManager().getDataState().setServerUrl(environmentURL);
         activityCategoriesNetwork.updateNeworkEnvironment();;
     }
 
-    public void validateNewEnvironment(String url,final DataLoadListener listener) {
+    public void validateNewEnvironment(DataLoadListener listener) {
         try {
-            activityCategoriesNetwork.getActivityCategories(url, new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    if (listener != null) {
-                        listener.onDataLoad(result);
-                    }
-                }
-
-                @Override
-                public void onError(Object errorMessage) {
-                    if (listener != null) {
-                        listener.onError(errorMessage);
-                    }
-                }
-            });
+            activityCategoriesNetwork.getActivityCategories(listener);
         } catch (Exception e) {
             AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

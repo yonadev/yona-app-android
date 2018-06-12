@@ -33,7 +33,7 @@ public class NotificationNetworkImpl extends BaseImpl {
      * @param yonaPassword the yona password
      * @param listener     the listener
      */
-    public void getNextSetOfMessagesFromURL(String nextURL, String yonaPassword, boolean isUnreadStatus, final DataLoadListener listener) {
+    public void getNextSetOfMessagesFromURL(String nextURL, String yonaPassword, boolean isUnreadStatus, DataLoadListener listener) {
         try {
             getRestApi().getNextSetOfMessages(nextURL, yonaPassword, Locale.getDefault().toString().replace('_', '-'), isUnreadStatus).enqueue(new Callback<YonaMessages>() {
                 @Override
