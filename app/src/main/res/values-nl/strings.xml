@@ -214,8 +214,10 @@
     <string name="last_seen_status_back_week">Laatst gezien op %1$s</string> <!--February 15, 2017-->
     <string name="last_seen_never_seen_online">Nooit online gezien</string>
     <string name="message_buddy_information_changed">Vriend profiel bijgewerkt</string>
-    <string name="same_environment_change">You are in the same entered Environment</string>
-    <string name="environment_switch_error">Environment Switch Error. Reverted to :</string>
-    <string name="new_environment_switch_success_msg">You are now in :</string>
+    <string name="same_environment_change">Server URL niet veranderd</string>
+    <string name="environment_switch_error">"Wisselen van server mislukt. Teruggekeerd naar : "</string>
+    <string name="new_environment_switch_success_msg">Je gebruikt nu :</string>
+    <string name="environment_alert_title">Voer de server URL in :</string>
+    <string name="enviroment_input_placeholder">Enter Text Here</string>
 
 </resources>

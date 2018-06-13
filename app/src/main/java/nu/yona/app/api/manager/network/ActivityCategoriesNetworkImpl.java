@@ -32,7 +32,9 @@ public class ActivityCategoriesNetworkImpl extends BaseImpl {
         getRestApi().getActivityCategories(Locale.getDefault().toString().replace('_', '-')).enqueue(new Callback<ActivityCategories>() {
             @Override
             public void onResponse(Call<ActivityCategories> call, Response<ActivityCategories> response) {
-                if(listener ==null)return;
+                if(listener == null) {
+                    return;
+                }
                 if (response.code() < NetworkConstant.RESPONSE_STATUS) {
                     listener.onDataLoad(response.body());
                 } else {
@@ -42,8 +44,9 @@ public class ActivityCategoriesNetworkImpl extends BaseImpl {
 
             @Override
             public void onFailure(Call<ActivityCategories> call, Throwable t) {
-                if(listener !=null);
-                onError(t, listener);
+                if(listener != null) {
+                    onError(t, listener);
+                }
             }
         });
 

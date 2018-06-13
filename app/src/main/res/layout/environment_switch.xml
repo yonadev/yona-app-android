@@ -7,16 +7,17 @@
     android:padding="10dp">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Enter Base URL  below: "
-        android:id="@+id/textView" />
+        android:text="@string/environment_alert_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/edittext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter text here.."
+        android:hint="@string/enviroment_input_placeholder"
+        android:inputType="textUri"
         android:padding="10dp" />
 </LinearLayout>

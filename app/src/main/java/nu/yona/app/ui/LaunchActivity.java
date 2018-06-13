@@ -26,7 +26,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.login.LoginActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
@@ -106,7 +105,7 @@ public class LaunchActivity extends BaseActivity {
      */
     private void switchEnvironment() {
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
+        View promptView = layoutInflater.inflate(R.layout.environment_switch, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
 
@@ -116,9 +115,9 @@ public class LaunchActivity extends BaseActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("Entered URL", "Hello, " + editText.getText());
-                        if (!(YonaApplication.getEventChangeManager().getDataState().getServerUrl().equals(editText.getText().toString()))){
+                        if (!(YonaApplication.getEventChangeManager().getDataState().getServerUrl().equals(editText.getText().toString()))) {
                             validateEnvironment(editText.getText().toString());
-                        }else{
+                        } else {
                             Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.same_environment_change), Toast.LENGTH_LONG).show();
                         }
                         dialog.dismiss();
@@ -132,13 +131,11 @@ public class LaunchActivity extends BaseActivity {
                         });
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
-}
+    }
 
 
     void validateEnvironment(String newEnvironmentURL) {
         showLoadingView(true,null);
-
-
         final String oldEnvironmentURL = YonaApplication.getEventChangeManager().getDataState().getServerUrl();
         APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(newEnvironmentURL);// initializes the network manager with the new host url from data state.
         DataLoadListenerImpl dataLoadListenerImpl=

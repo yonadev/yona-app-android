@@ -165,33 +165,40 @@ public class NotificationManagerImpl implements NotificationManager {
         }
     }
 
-    public YonaMessages processYonaMessages(YonaMessages result){
-        YonaMessages resultYonaMessagesObj = (YonaMessages) result;
-        Embedded embedded = resultYonaMessagesObj.getEmbedded();
-        List<YonaMessage> listMessages = embedded.getYonaMessages();
-        SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
+    public YonaMessages processYonaMessages(YonaMessages resultYonaMessages){
+        List<YonaMessage> listMessages = resultYonaMessages.getEmbedded().getYonaMessages();
         for (YonaMessage message : listMessages) {
-            String messageEnumType = (message.getStatus() != null)?message.getStatus():(message.getDropBuddyReason()!=null)?message.getDropBuddyReason():message.getChange();
-            message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), messageEnumType));
-            if (message.getLinks() != null && message.getLinks().getYonaUser() != null && !TextUtils.isEmpty(message.getLinks().getYonaUser().getHref())) {
-                if (message.getEmbedded() == null) {
-                    message.setEmbedded(new Embedded());
-                }
-                message.getEmbedded().setYonaUser(getYonaUser(message.getLinks().getYonaUser().getHref()));
-            }
-            String uploadDate = "";
-            String createdTime = message.getCreationTime();
-            try {
-                Date date = sdf.parse(createdTime);
-                Calendar futureCalendar = Calendar.getInstance();
-                futureCalendar.setTime(date);
-                uploadDate = DateUtility.getRelativeDate(futureCalendar);
-                message.setStickyTitle(uploadDate);
-            } catch(ParseException parseEx) {
-                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), parseEx, Thread.currentThread(), null);
-            }
+            message = processYonaMessage(message);
         }
-        return  resultYonaMessagesObj;
+        return  resultYonaMessages;
+    }
+
+    public YonaMessage processYonaMessage (YonaMessage message){
+        String messageEnumType = (message.getStatus() != null)?message.getStatus():(message.getDropBuddyReason()!=null)?message.getDropBuddyReason():message.getChange();
+        message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), messageEnumType));
+        if (message.getLinks() != null && message.getLinks().getYonaUser() != null && !TextUtils.isEmpty(message.getLinks().getYonaUser().getHref())) {
+            if (message.getEmbedded() == null) {
+                message.setEmbedded(new Embedded());
+            }
+            message.getEmbedded().setYonaUser(getYonaUser(message.getLinks().getYonaUser().getHref()));
+        }
+        String createdTime = message.getCreationTime();
+        message.setStickyTitle(getFormattedDateString(createdTime,AppConstant.YONA_LONG_DATE_FORMAT));
+        return  message;
+    }
+
+    public String getFormattedDateString (String dateString, String dateFormatString){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(dateFormatString, Locale.getDefault());
+            Date date = sdf.parse(dateString);
+            Calendar futureCalendar = Calendar.getInstance();
+            futureCalendar.setTime(date);
+            String uploadDate = DateUtility.getRelativeDate(futureCalendar);
+            return uploadDate;
+        }catch(ParseException parseEx) {
+            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), parseEx, Thread.currentThread(), null);
+        }
+        return null;
     }
 
     public void getMessageWithUrl( String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener) {
