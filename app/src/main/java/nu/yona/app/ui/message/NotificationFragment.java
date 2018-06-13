@@ -46,6 +46,7 @@ import nu.yona.app.enums.NotificationEnum;
 import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
@@ -305,35 +306,36 @@ public class NotificationFragment extends BaseFragment {
             }else{
                 urlForMessageFetch = mYonaMessages.getLinks().getSelf().getHref();
             }
-
-            APIManager.getInstance().getNotificationManager().getMessageWithUrl(urlForMessageFetch,false, new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    YonaActivity.getActivity().showLoadingView(false, null);
-                    if (isAdded() && result != null && result instanceof YonaMessages) {
-                        YonaMessages mMessages = (YonaMessages) result;
-                        if (mMessages.getEmbedded() != null && mMessages.getEmbedded().getYonaMessages() != null) {
-                            mYonaMessages = mMessages;
-                            if (mIsLoading) {
-                                mMessageStickyRecyclerAdapter.updateData(mYonaMessages.getEmbedded().getYonaMessages());
-                            } else {
-                                mMessageStickyRecyclerAdapter.notifyDataSetChange(mYonaMessages.getEmbedded().getYonaMessages());
-                            }
-                        }
-                    }
-                    mIsLoading = false;
-                }
-
-                @Override
-                public void onError(Object errorMessage) {
-                    YonaActivity.getActivity().showLoadingView(false, null);
-                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
-                }
-            });
+            DataLoadListenerImpl dataLoadListenerImpl =  new DataLoadListenerImpl(((result) -> handleYonaMessagesFetchSuccess((YonaMessages) result)), ((result) ->handleYonaMessagesFetchFailure(result)),null);
+            APIManager.getInstance().getNotificationManager().getMessageWithUrl(urlForMessageFetch,false, dataLoadListenerImpl);
         }catch (IllegalArgumentException e ) {
             AppUtils.throwException(NotificationFragment.class.getSimpleName(),e,Thread.currentThread(),null);
         }
 
+    }
+
+    private Object handleYonaMessagesFetchSuccess(YonaMessages result){
+        YonaActivity.getActivity().showLoadingView(false, null);
+        if (isAdded() && result != null && result instanceof YonaMessages) {
+            YonaMessages mMessages = (YonaMessages) result;
+            if (mMessages.getEmbedded() != null && mMessages.getEmbedded().getYonaMessages() != null) {
+                mYonaMessages = mMessages;
+                if (mIsLoading) {
+                    mMessageStickyRecyclerAdapter.updateData(mYonaMessages.getEmbedded().getYonaMessages());
+                } else {
+                    mMessageStickyRecyclerAdapter.notifyDataSetChange(mYonaMessages.getEmbedded().getYonaMessages());
+                }
+            }
+        }
+        mIsLoading = false;
+       return null;
+    }
+
+
+    private Object handleYonaMessagesFetchFailure(Object errorMessage){
+        YonaActivity.getActivity().showLoadingView(false, null);
+        YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+        return  null;
     }
 
     /**

@@ -66,6 +66,7 @@ import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.enums.WeekDayEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
@@ -115,43 +116,33 @@ public class ActivityManagerImpl implements ActivityManager {
 
     public void getDetailOfEachSpreadWithDayActivity(final DayActivity dayActivity,final DataLoadListener listener){
         if (dayActivity.getTimeZoneSpread() == null || (dayActivity.getTimeZoneSpread() != null && dayActivity.getTimeZoneSpread().size() == 0) || dayActivity.getChartTypeEnum() == ChartTypeEnum.TIME_FRAME_CONTROL) {
-            APIManager.getInstance().getActivityManager().getDayDetailActivity(dayActivity.getLinks().getYonaDayDetails().getHref(), new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    if (result instanceof DayActivity) {
-                        try {
-                            DayActivity resultActivity = generateTimeZoneSpread((DayActivity) result);
-                            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
-                                List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
-                                for (int i = 0; i < dayActivityList.size(); i++) {
-                                    try {
-                                        if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
-                                            dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
-                                            YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().set(i, updateLinks(dayActivityList.get(i), resultActivity));
-                                            break;
-                                        }
-                                    } catch (Exception e) {
-                                        AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-                                    }
-                                }
-                            }
-                            listener.onDataLoad(resultActivity);
-                        } catch (Exception e) {
-                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(Object errorMessage) {
-                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
-                }
-            });
+            DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(((result) -> handleDayActivityDetailsFetchSuccess((DayActivity) result)), null,listener);
+            APIManager.getInstance().getActivityManager().getDayDetailActivity(dayActivity.getLinks().getYonaDayDetails().getHref(), dataLoadListenerImpl);
         }else{
             listener.onDataLoad(dayActivity);
         }
-
     }
+
+    public Object handleDayActivityDetailsFetchSuccess(DayActivity dayActivity) {
+        try {
+            DayActivity resultActivity = generateTimeZoneSpread((DayActivity) dayActivity);
+            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
+                List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
+                for (int i = 0; i < dayActivityList.size(); i++) {
+                    if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
+                        dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                        YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().set(i, updateLinks(dayActivityList.get(i), resultActivity));
+                        break;
+                    }
+                }
+            }
+        } catch (NullPointerException e) {
+            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
+        return null;
+    }
+
+
 //TODO: Plan to remove the function below after few iterations in beta testing
 //     private void getDetailOfEachSpread() {
 //        List<DayActivity> dayActivities = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();

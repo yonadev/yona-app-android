@@ -136,13 +136,10 @@ public class LaunchActivity extends BaseActivity {
 
     void validateEnvironment(String newEnvironmentURL) {
         showLoadingView(true,null);
-        final String oldEnvironmentURL = YonaApplication.getEventChangeManager().getDataState().getServerUrl();
+        String oldEnvironmentURL = YonaApplication.getEventChangeManager().getDataState().getServerUrl();
         APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(newEnvironmentURL);// initializes the network manager with the new host url from data state.
-        DataLoadListenerImpl dataLoadListenerImpl=
-                new DataLoadListenerImpl(
-
-                ((result) -> showEnvironmentSwitchSuccessMessageToUser(newEnvironmentURL,result)), ((result) ->showEnvironmentSwitchFailureMessageToUser(oldEnvironmentURL,result)),null
-        );
+        DataLoadListenerImpl dataLoadListenerImpl= new DataLoadListenerImpl(((result) -> showEnvironmentSwitchSuccessMessageToUser(newEnvironmentURL,result)),
+                        ((result) ->showEnvironmentSwitchFailureMessageToUser(oldEnvironmentURL,result)),null);
         APIManager.getInstance().getActivityCategoryManager().validateNewEnvironment(dataLoadListenerImpl);
 
     }
