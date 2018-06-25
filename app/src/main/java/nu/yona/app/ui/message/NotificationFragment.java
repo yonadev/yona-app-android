@@ -59,7 +59,6 @@ import nu.yona.app.utils.Logger;
  */
 public class NotificationFragment extends BaseFragment {
 
-    private static final int PAGE_SIZE = 20;
     private RecyclerView mMessageRecyclerView;
     private MessageStickyRecyclerAdapter mMessageStickyRecyclerAdapter;
     private YonaMessages mYonaMessages;
@@ -235,9 +234,8 @@ public class NotificationFragment extends BaseFragment {
      * load more items
      */
     private void loadMoreItems() {
-        mIsLoading = true;
         currentPage += 1;
-        getUserMessages();
+        getUserMessages(true);
     }
 
     @Nullable
@@ -283,35 +281,40 @@ public class NotificationFragment extends BaseFragment {
     private void refreshAdapter() {
         mMessageStickyRecyclerAdapter.clear();
         currentPage = 0;
-        getUserMessages();
-        YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
+        getUserMessages(false);
+        //YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
     }
 
     private void getUser() {
         APIManager.getInstance().getAuthenticateManager().getUserFromServer();
     }
 
+    private Href getURLToFetchMessages(boolean loadMore){
+        Href urlForMessageFetch = null;
+        if (mYonaMessages == null ){
+            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            urlForMessageFetch = user.getLinks().getYonaMessages();
+        }else if (mYonaMessages.getLinks().getNext()!=null && loadMore){
+            urlForMessageFetch = mYonaMessages.getLinks().getNext();
+        }else{
+            urlForMessageFetch = mYonaMessages.getLinks().getFirst();
+        }
+        return  urlForMessageFetch;
+    }
+
+
     /**
      * to get the list of user's messages
      */
-    private void getUserMessages() {
+    private void getUserMessages(boolean loadMore) {
         try {
-            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-            String urlForMessageFetch = null;
-
-            if (mYonaMessages == null ){
-                urlForMessageFetch = user.getLinks().getYonaMessages().getHref();
-            }else if (mYonaMessages.getLinks().getNext()!=null){
-                urlForMessageFetch = mYonaMessages.getLinks().getNext().getHref();
-            }else{
-                urlForMessageFetch = mYonaMessages.getLinks().getSelf().getHref();
-            }
+            mIsLoading=true;
+            String urlForMessageFetch = getURLToFetchMessages(loadMore).getHref();
             DataLoadListenerImpl dataLoadListenerImpl =  new DataLoadListenerImpl(((result) -> handleYonaMessagesFetchSuccess((YonaMessages) result)), ((result) ->handleYonaMessagesFetchFailure(result)),null);
             APIManager.getInstance().getNotificationManager().getMessageWithUrl(urlForMessageFetch,false, dataLoadListenerImpl);
         }catch (IllegalArgumentException e ) {
             AppUtils.throwException(NotificationFragment.class.getSimpleName(),e,Thread.currentThread(),null);
         }
-
     }
 
     private Object handleYonaMessagesFetchSuccess(YonaMessages result){
@@ -335,6 +338,7 @@ public class NotificationFragment extends BaseFragment {
     private Object handleYonaMessagesFetchFailure(Object errorMessage){
         YonaActivity.getActivity().showLoadingView(false, null);
         YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+        mIsLoading = false;
         return  null;
     }
 

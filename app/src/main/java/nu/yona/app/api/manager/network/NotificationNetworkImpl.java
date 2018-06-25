@@ -120,7 +120,7 @@ public class NotificationNetworkImpl extends BaseImpl {
 
     public void getComments(String url, String password, final int itemsPerPage, final int pageNo, DataLoadListener listener) {
         try {
-            getRestApi().getComments(url, password, Locale.getDefault().toString().replace('_', '-'), itemsPerPage, pageNo).enqueue(getCall(listener));
+            getRestApi().getComments(url, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
             AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

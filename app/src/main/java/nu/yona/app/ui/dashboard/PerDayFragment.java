@@ -194,6 +194,20 @@ public class PerDayFragment extends BaseFragment {
         getDayActivity(true);
     }
 
+
+    private Href getURLToFetchDayActivityOverViews(EmbeddedYonaActivity embeddedYonaActivity,boolean loadMore){
+        Href urlToFetchDayActivitiyOverviews = null;
+        if (embeddedYonaActivity !=null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null && loadMore){
+            urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getNext();
+        }else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null){
+            urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getSelf();
+        }else{
+            urlToFetchDayActivitiyOverviews =  mYonaHeaderTheme.getDayActivityUrl();
+        }
+        return urlToFetchDayActivitiyOverviews;
+    }
+
+
     /**
      * to get the list of user's messages
      */
@@ -202,14 +216,7 @@ public class PerDayFragment extends BaseFragment {
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
                 || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
             YonaActivity.getActivity().showLoadingView(true, null);
-           Href urlToFetchDayActivitiyOverviews = null;
-            if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null){
-                urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getNext();
-            }else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null){
-                urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getSelf();
-            }else{
-                urlToFetchDayActivitiyOverviews =  mYonaHeaderTheme.getDayActivityUrl();
-            }
+           Href urlToFetchDayActivitiyOverviews = getURLToFetchDayActivityOverViews(embeddedYonaActivity,loadMore);
             APIManager.getInstance().getActivityManager().getDaysActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), urlToFetchDayActivitiyOverviews, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
@@ -217,7 +224,6 @@ public class PerDayFragment extends BaseFragment {
                     showData();
                     mIsLoading = false;
                 }
-
                 @Override
                 public void onError(Object errorMessage) {
                     isDataLoading = false;

@@ -15,6 +15,8 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 import nu.yona.app.enums.NotificationMessageEnum;
 
 /**
@@ -76,6 +78,19 @@ public class YonaMessage extends BaseEntity {
     @SerializedName("threadHeadMessageID")
     @Expose
     private String threadMessageId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        YonaMessage that = (YonaMessage) o;
+        return Objects.equals(creationTime, that.creationTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(creationTime);
+    }
 
     /**
      * Gets creation time.

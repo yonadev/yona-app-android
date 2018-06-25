@@ -166,6 +166,19 @@ public class PerWeekFragment extends BaseFragment {
         getWeekActivity(true);
     }
 
+
+    private Href getURLToFetchWeekActivityOverViews(EmbeddedYonaActivity embeddedYonaActivity,boolean loadMore){
+        Href urlToFetchDayActivitiyOverviews = null;
+        if (embeddedYonaActivity !=null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null && loadMore){
+            urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getNext();
+        }else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null){
+            urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getSelf();
+        }else{
+            urlToFetchDayActivitiyOverviews =  mYonaHeaderTheme.getWeekActivityUrl();
+        }
+        return urlToFetchDayActivitiyOverviews;
+    }
+
     /**
      * to get the list of user's messages
      */
@@ -174,21 +187,13 @@ public class PerWeekFragment extends BaseFragment {
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
                 || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
             YonaActivity.getActivity().showLoadingView(true, null);
-            Href urlToFetchWeekActivitiyOverviews = null;
-            if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null){
-                urlToFetchWeekActivitiyOverviews = embeddedYonaActivity.getLinks().getNext();
-            }else if(embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null){
-                urlToFetchWeekActivitiyOverviews = embeddedYonaActivity.getLinks().getSelf();
-            }else{
-                urlToFetchWeekActivitiyOverviews =  mYonaHeaderTheme.getWeekActivityUrl();
-            }
+            Href urlToFetchWeekActivitiyOverviews = getURLToFetchWeekActivityOverViews(embeddedYonaActivity,loadMore);
             APIManager.getInstance().getActivityManager().getWeeksActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), urlToFetchWeekActivitiyOverviews, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     showData();
                     mIsLoading = false;
                 }
-
                 @Override
                 public void onError(Object errorMessage) {
                     YonaActivity.getActivity().showLoadingView(false, null);

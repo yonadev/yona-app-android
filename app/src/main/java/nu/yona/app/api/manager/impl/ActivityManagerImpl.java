@@ -95,6 +95,11 @@ public class ActivityManagerImpl implements ActivityManager {
         mContext = context;
     }
 
+    /**
+     *
+     * Day Acvitiy Processing ***********
+     */
+
     @Override
     public void getDaysActivity(boolean loadMore, boolean isBuddyFlow, Href url, DataLoadListener listener) {
         EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
@@ -103,7 +108,6 @@ public class ActivityManagerImpl implements ActivityManager {
                 || embeddedYonaActivity.getDayActivityList().size() == 0) {
             int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
                     && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
-            //User user = YonaApplication.getEventChangeManager().getDataState().getUser();
             if (url != null && !TextUtils.isEmpty(url.getHref())) {
                 getDailyActivity(url.getHref(), isBuddyFlow, AppConstant.PAGE_SIZE, pageNo, listener);
             } else {
@@ -113,158 +117,6 @@ public class ActivityManagerImpl implements ActivityManager {
             listener.onDataLoad(YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList());
         }
     }
-
-
-    public void getDetailOfEachSpreadWithDayActivity(final DayActivity dayActivity,final DataLoadListener listener){
-        if (dayActivity.getTimeZoneSpread() == null || (dayActivity.getTimeZoneSpread() != null && dayActivity.getTimeZoneSpread().size() == 0) || dayActivity.getChartTypeEnum() == ChartTypeEnum.TIME_FRAME_CONTROL) {
-            DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(((result) -> handleDayActivityDetailsFetchSuccess((DayActivity) result)), null,listener);
-            APIManager.getInstance().getActivityManager().getDayDetailActivity(dayActivity.getLinks().getYonaDayDetails().getHref(), dataLoadListenerImpl);
-        }else{
-            listener.onDataLoad(dayActivity);
-        }
-    }
-
-    public Object handleDayActivityDetailsFetchSuccess(DayActivity dayActivity) {
-        try {
-            DayActivity resultActivity = generateTimeZoneSpread((DayActivity) dayActivity);
-            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
-                List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
-                for (int i = 0; i < dayActivityList.size(); i++) {
-                    if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
-                        dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
-                        YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().set(i, updateLinks(dayActivityList.get(i), resultActivity));
-                        break;
-                    }
-                }
-            }
-        } catch (NullPointerException e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-        return null;
-    }
-
-
-//TODO: Plan to remove the function below after few iterations in beta testing
-//     private void getDetailOfEachSpread() {
-//        List<DayActivity> dayActivities = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
-//        for (final DayActivity dayActivity : dayActivities) {
-//            if (dayActivity.getTimeZoneSpread() == null || (dayActivity.getTimeZoneSpread() != null && dayActivity.getTimeZoneSpread().size() == 0) || dayActivity.getChartTypeEnum() == ChartTypeEnum.TIME_FRAME_CONTROL) {
-//                APIManager.getInstance().getActivityManager().getDayDetailActivity(dayActivity.getLinks().getYonaDayDetails().getHref(), new DataLoadListener() {
-//                    @Override
-//                    public void onDataLoad(Object result) {
-//                        if (result instanceof DayActivity) {
-//                            try {
-//                                DayActivity resultActivity = generateTimeZoneSpread((DayActivity) result);
-//                                if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
-//                                    List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
-//                                    for (int i = 0; i < dayActivityList.size(); i++) {
-//                                        try {
-//                                            if (dayActivityList.get(i).getLinks().getYonaDayDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
-//                                                dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
-//                                                YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().set(i, updateLinks(dayActivityList.get(i), resultActivity));
-//                                                break;
-//                                            }
-//                                        } catch (Exception e) {
-//                                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-//                                        }
-//                                    }
-//                                }
-//                            } catch (Exception e) {
-//                                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Object errorMessage) {
-//
-//                    }
-//                });
-//            }
-//        }
-//    }
-
-    public void getDetailOfEachWeekSpreadWithWeekActivity(final WeekActivity weekActivity,final DataLoadListener listener){
-        if (weekActivity.getTimeZoneSpread() == null || (weekActivity.getTimeZoneSpread() != null && weekActivity.getTimeZoneSpread().size() == 0)) {
-            APIManager.getInstance().getActivityManager().getWeeksDetailActivity(weekActivity.getLinks().getWeekDetails().getHref(), new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    if (result instanceof WeekActivity) {
-                        try {
-                            WeekActivity resultActivity = generateTimeZoneSpread((WeekActivity) result);
-                            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() != null) {
-                                List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
-                                for (int i = 0; i < weekActivityList.size(); i++) {
-                                    try {
-                                        if (weekActivityList.get(i).getLinks().getWeekDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
-                                            weekActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
-                                            weekActivityList.set(i, updateLinks(weekActivityList.get(i), resultActivity));
-                                            weekActivityList.get(i).setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
-                                            break;
-                                        }
-                                    } catch (Exception e) {
-                                        AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-                                    }
-                                }
-                            }
-                            listener.onDataLoad(resultActivity);
-                        } catch (Exception e) {
-                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(Object errorMessage) {
-                    //if error, we don't worry for now.
-                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
-                }
-            });
-        }else{
-            listener.onDataLoad(weekActivity);
-        }
-    }
-
-//TODO: Plan to remove the function below after few iterations in beta testing
-//    private void getDetailOfEachWeekSpread() {
-//        List<WeekActivity> weekActivities = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
-//        for (final WeekActivity weekActivity : weekActivities) {
-//            if (weekActivity.getTimeZoneSpread() == null || (weekActivity.getTimeZoneSpread() != null && weekActivity.getTimeZoneSpread().size() == 0)) {
-//                APIManager.getInstance().getActivityManager().getWeeksDetailActivity(weekActivity.getLinks().getWeekDetails().getHref(), new DataLoadListener() {
-//                    @Override
-//                    public void onDataLoad(Object result) {
-//                        if (result instanceof WeekActivity) {
-//                            try {
-//                                WeekActivity resultActivity = generateTimeZoneSpread((WeekActivity) result);
-//                                if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() != null) {
-//                                    List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
-//                                    for (int i = 0; i < weekActivityList.size(); i++) {
-//                                        try {
-//                                            if (weekActivityList.get(i).getLinks().getWeekDetails().getHref().equals(resultActivity.getLinks().getSelf().getHref())) {
-//                                                weekActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
-//                                                weekActivityList.set(i, updateLinks(weekActivityList.get(i), resultActivity));
-//                                                weekActivityList.get(i).setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
-//                                                break;
-//                                            }
-//                                        } catch (Exception e) {
-//                                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-//                                        }
-//                                    }
-//                                }
-//                            } catch (Exception e) {
-//                                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Object errorMessage) {
-//                        //if error, we don't worry for now.
-//                    }
-//                });
-//            }
-//        }
-//    }
 
     @Override
     public void getDayDetailActivity(String url, final DataLoadListener listener) {
@@ -292,6 +144,57 @@ public class ActivityManagerImpl implements ActivityManager {
             AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
+
+    public void getDetailOfEachSpreadWithDayActivity(final DayActivity dayActivity,final DataLoadListener listener){
+        if (validateDayAcvitiyTimeZoneSpread(dayActivity)) {
+            DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(((result) -> handleDayActivityDetailsFetchSuccess((DayActivity) result)), null,listener);
+            APIManager.getInstance().getActivityManager().getDayDetailActivity(dayActivity.getLinks().getYonaDayDetails().getHref(), dataLoadListenerImpl);
+        }else{
+            listener.onDataLoad(dayActivity);
+        }
+    }
+
+    public boolean validateDayAcvitiyTimeZoneSpread(DayActivity dayActivity){
+        if(dayActivity.getTimeZoneSpread() == null
+                ||    (dayActivity.getTimeZoneSpread() != null  && dayActivity.getTimeZoneSpread().size() == 0)
+                ||    dayActivity.getChartTypeEnum() == ChartTypeEnum.TIME_FRAME_CONTROL) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean compareDayAcvitiiesDayDetailsHrefs(DayActivity leftSideDayActivity, DayActivity rightSideDayActivity){
+        if (leftSideDayActivity.getLinks().getYonaDayDetails().getHref().equals(rightSideDayActivity.getLinks().getSelf().getHref())){
+            return true;
+        }
+        return false;
+    }
+
+    public Object handleDayActivityDetailsFetchSuccess(DayActivity dayActivity) {
+        try {
+            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() == null) {
+               return null;
+            }
+            DayActivity resultActivity = generateTimeZoneSpread((DayActivity) dayActivity);
+            List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
+            for (int i = 0; i < dayActivityList.size(); i++) {
+                if (compareDayAcvitiiesDayDetailsHrefs(dayActivityList.get(i),resultActivity)){
+                    dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                    YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().set(i, updateLinks(dayActivityList.get(i), resultActivity));
+                    break;
+                }
+            }
+        } catch (NullPointerException e) {
+            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
+        return null;
+    }
+
+
+    /**
+     *
+     * week Acvitiy Processing ***********
+     */
 
     @Override
     public void getWeeksActivity(boolean loadMore, boolean isBuddyFlow, Href href, DataLoadListener listener) {
@@ -331,6 +234,56 @@ public class ActivityManagerImpl implements ActivityManager {
         });
     }
 
+    public void getDetailOfEachWeekSpreadWithWeekActivity(WeekActivity weekActivity,DataLoadListener listener){
+        if (validateWeekAcvitiyTimeZoneSpread(weekActivity)) {
+            DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(((result) -> handleWeekActivityDetailsFetchSuccess((WeekActivity) result)), null,listener);
+            APIManager.getInstance().getActivityManager().getWeeksDetailActivity(weekActivity.getLinks().getWeekDetails().getHref(), dataLoadListenerImpl);
+        }else{
+            listener.onDataLoad(weekActivity);
+        }
+    }
+
+    public boolean validateWeekAcvitiyTimeZoneSpread(WeekActivity weekActivity){
+        if(weekActivity.getTimeZoneSpread() == null
+                ||    (weekActivity.getTimeZoneSpread() != null  && weekActivity.getTimeZoneSpread().size() == 0)
+                ||    weekActivity.getChartTypeEnum() == ChartTypeEnum.TIME_FRAME_CONTROL) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean compareWeekAcvitiiesDayDetailsHrefs(WeekActivity leftSideWeekActivity, WeekActivity rightSideWeekActivity){
+        if (leftSideWeekActivity.getLinks().getWeekDetails().getHref().equals(rightSideWeekActivity.getLinks().getSelf().getHref())){
+            return true;
+        }
+        return false;
+    }
+
+    public Object handleWeekActivityDetailsFetchSuccess(WeekActivity weekActivity) {
+        try{
+            if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() == null) {
+                return null;
+            }
+            WeekActivity resultActivity = generateTimeZoneSpread((WeekActivity) weekActivity);
+            List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
+            for (int i = 0; i < weekActivityList.size(); i++) {
+                if (compareWeekAcvitiiesDayDetailsHrefs(weekActivityList.get(i),resultActivity)) {
+                    weekActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
+                    weekActivityList.set(i, updateLinks(weekActivityList.get(i), resultActivity));
+                    weekActivityList.get(i).setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
+                    break;
+                }
+            }
+        }catch (NullPointerException e){
+            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+        }
+        return null;
+    }
+
+    /**
+     *
+     * Save User app acvitiy to local db
+     */
     public void postActivityToDB(String applicationName, Date startDate, Date endDate) {
         try {
             activityTrackerDAO.saveActivities(getAppActivity(applicationName, startDate, endDate));
@@ -374,8 +327,6 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     public void postAllDBActivities() {
-       // notifyWithMsg("postAllDBActivities",YonaApplication.getAppContext(),YonaReceiver.class);
-
         List<Activity> activityList = activityTrackerDAO.getActivities();
         if (activityList != null && activityList.size() > 0) {
             AppActivity appActivity = new AppActivity();
@@ -386,33 +337,10 @@ public class ActivityManagerImpl implements ActivityManager {
 
     }
 
-    // TODO: Revisit -- Can remove below code after proper testing
-    private void notifyWithMsg(final String message, Context c, Class className) {
-        try {
-            Intent restartServiceIntent = new Intent(YonaApplication.getAppContext(), className);
-            PendingIntent pIntent = PendingIntent.getActivity(c, (int)0, restartServiceIntent, 0);
-
-            Notification notification = new Notification.Builder(c).setContentTitle(c.getString(R.string.appname))
-                    .setContentText(message)
-                    .setTicker(c.getString(R.string.appname))
-                    .setWhen(0)
-                    .setVibrate(new long[]{1, 1, 1})
-                    .setDefaults(Notification.DEFAULT_SOUND)
-                    .setStyle(new Notification.BigTextStyle().bigText(message))
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setLargeIcon(BitmapFactory.decodeResource(c.getResources(), R.mipmap.ic_launcher))
-                    .setContentIntent(pIntent)
-                    .setAutoCancel(true)
-                    .build();
-
-            notification.flags |= Notification.FLAG_NO_CLEAR;
-
-            NotificationManager notificationManager = (NotificationManager) c.getSystemService(c.NOTIFICATION_SERVICE);
-            notificationManager.notify(0, notification);
-        } catch (Exception e) {
-            Logger.loge(YonaReceiver.class.getSimpleName(), e.getMessage());
-        }
-    }
+    /**
+     *
+     * Buddy Acvitiy Processing ***********
+     */
 
     public void getWithBuddyActivity(boolean loadMore, final DataLoadListener listener) {
         EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
@@ -452,23 +380,20 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     public void getCommentsForWeek(List<WeekActivity> weekActivityList, int position, final DataLoadListener listener) {
-        int pageNo = 0;
         if (weekActivityList != null && weekActivityList.size() > 0) {
             WeekActivity weekActivity = weekActivityList.get(position);
-            if (weekActivity != null) {
-                if (weekActivity.getComments() != null && weekActivity.getComments().getPage() != null) {
-                    if (weekActivity.getComments().getPage().getNumber() + 1 == weekActivity.getComments().getPage().getTotalPages()) {
-                        listener.onDataLoad(weekActivityList);
-                    } else if (weekActivity.getComments().getEmbedded() != null) {
-                        pageNo = weekActivity.getComments().getPage().getNumber() + 1;
-                        getCommentsFromServerForWeek(weekActivityList, weekActivity, pageNo, listener);
-                    } else {
-                        getCommentsFromServerForWeek(weekActivityList, weekActivity, pageNo, listener);
-                    }
-                } else {
-                    getCommentsFromServerForWeek(weekActivityList, weekActivity, pageNo, listener);
-                }
+            String urlToFetchComments;
+            if (weekActivity.getComments() == null) {
+                // No comments loaded yet
+                urlToFetchComments = weekActivity.getLinks().getYonaMessages().getHref();
+            } else if (weekActivity.getComments().getLinks().getNext() == null) {
+                // No more comments
+                return;
+            } else {
+                urlToFetchComments = weekActivity.getComments().getLinks().getNext().getHref();
             }
+
+            getCommentsFromServerForWeek(weekActivityList, weekActivity, urlToFetchComments, listener);
         }
     }
 
@@ -548,17 +473,10 @@ public class ActivityManagerImpl implements ActivityManager {
         });
     }
 
-    private void getCommentsFromServerForWeek(final List<WeekActivity> weekActivityList, final WeekActivity weekActivity, int pageNo, final DataLoadListener listener) {
+    private void getCommentsFromServerForWeek(final List<WeekActivity> weekActivityList, final WeekActivity weekActivity, String urlToFetchComments, final DataLoadListener listener) {
         if (weekActivity.getLinks() != null && weekActivity.getLinks().getYonaMessages() != null && !TextUtils.isEmpty(weekActivity.getLinks().getYonaMessages().getHref())) {
 
-            String urlToFetchComments = null;
-            if (weekActivity.getComments() != null && weekActivity.getComments().getLinks() != null && weekActivity.getComments().getLinks().getNext() != null) {
-                urlToFetchComments = weekActivity.getComments().getLinks().getNext().getHref();
-            }else{
-                urlToFetchComments = weekActivity.getLinks().getYonaMessages().getHref();
-            }
-
-            activityNetwork.getComments(urlToFetchComments, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), pageNo, AppConstant.PAGE_SIZE, new DataLoadListener() {
+            activityNetwork.getComments(urlToFetchComments, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     if (result instanceof EmbeddedYonaActivity) {
@@ -571,14 +489,6 @@ public class ActivityManagerImpl implements ActivityManager {
                             }
                             if (weekActivity.getComments().getEmbedded().getYonaMessages() == null) {
                                 weekActivity.getComments().getEmbedded().setYonaMessages(new ArrayList<YonaMessage>());
-                            }
-                            if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
-                                weekActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
-                                weekActivity.getComments().setPage(embeddedYonaActivity.getPage());
-                            }
-                            if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
-                                weekActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
-                                weekActivity.getComments().setPage(embeddedYonaActivity.getPage());
                             }
                             if (embeddedYonaActivity.getEmbedded() != null && embeddedYonaActivity.getEmbedded().getYonaMessages() != null) {
                                 weekActivity.getComments().getEmbedded().getYonaMessages().addAll(embeddedYonaActivity.getEmbedded().getYonaMessages());
@@ -611,7 +521,7 @@ public class ActivityManagerImpl implements ActivityManager {
             }else{
                 urlToFetchComments = dayActivity.getLinks().getYonaMessages().getHref();
             }
-            activityNetwork.getNextSetOfComments(urlToFetchComments, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),  new DataLoadListener() {
+            activityNetwork.getComments(urlToFetchComments, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),  new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     if (result instanceof EmbeddedYonaActivity) {
@@ -951,17 +861,7 @@ public class ActivityManagerImpl implements ActivityManager {
                     List<DayActivity> updatedOverviewDayActivities = new ArrayList<>();
                     for (DayActivity activity : overviewDayActivities) {
                         activity.setYonaGoal(getYonaGoal(isBuddyFlow, activity.getLinks().getYonaGoal()));
-                        if (activity.getYonaGoal() != null) {
-                            if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.BUDGET_GOAL) {
-                                if (activity.getYonaGoal().getMaxDurationMinutes() == 0) {
-                                    activity.setChartTypeEnum(ChartTypeEnum.NOGO_CONTROL);
-                                } else {
-                                    activity.setChartTypeEnum(ChartTypeEnum.TIME_BUCKET_CONTROL);
-                                }
-                            } else if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.TIME_ZONE_GOAL) {
-                                activity.setChartTypeEnum(ChartTypeEnum.TIME_FRAME_CONTROL);
-                            }
-                        }
+                        setActivityChartEnumType(activity);
                         String createdTime = overview.getDate();
                         try {
                             Calendar futureCalendar = Calendar.getInstance();
@@ -991,7 +891,6 @@ public class ActivityManagerImpl implements ActivityManager {
             if (embeddedYonaActivity.getLinks() != null) {
                 YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().setLinks(embeddedYonaActivity.getLinks());
             }
-             //getDetailOfEachSpread();
             listener.onDataLoad(embeddedYonaActivity);
         } else {
             listener.onError(new ErrorMessage(mContext.getString(R.string.no_data_found)));
@@ -1220,17 +1119,7 @@ public class ActivityManagerImpl implements ActivityManager {
     private DayActivity processEachDayActivityDetails(DayActivity dayActivity,String createdTime){
         try {
             dayActivity.setYonaGoal(getYonaGoal(dayActivity.getLinks().getYonaUser() != null ? false : true, dayActivity.getLinks().getYonaGoal()));
-            if (dayActivity.getYonaGoal() != null) {
-                if (GoalsEnum.fromName(dayActivity.getYonaGoal().getType()) == GoalsEnum.BUDGET_GOAL) {
-                    if (dayActivity.getYonaGoal().getMaxDurationMinutes() == 0) {
-                        dayActivity.setChartTypeEnum(ChartTypeEnum.NOGO_CONTROL);
-                    } else {
-                        dayActivity.setChartTypeEnum(ChartTypeEnum.TIME_BUCKET_CONTROL);
-                    }
-                } else if (GoalsEnum.fromName(dayActivity.getYonaGoal().getType()) == GoalsEnum.TIME_ZONE_GOAL) {
-                    dayActivity.setChartTypeEnum(ChartTypeEnum.TIME_FRAME_CONTROL);
-                }
-            }
+            setActivityChartEnumType(dayActivity);
             Calendar futureCalendar = Calendar.getInstance();
             futureCalendar.setTime(sdf.parse(createdTime));
             dayActivity.setStickyTitle(DateUtility.getRelativeDate(futureCalendar));
@@ -1242,14 +1131,14 @@ public class ActivityManagerImpl implements ActivityManager {
     }
 
     private  List<DayActivity> getListOfProcessedDayAcvities( YonaDayActivityOverview dayActivityOverview){
-        List<DayActivity> currentDayAcvities = dayActivityOverview.getDayActivities();
+        List<DayActivity> currentDayActivities = dayActivityOverview.getDayActivities();
         List<DayActivity> updatedDayActivities = new ArrayList<>();
-        for (DayActivity activities : currentDayAcvities) {
-            if (activities != null && activities.getDayActivitiesForUsers() != null) {
-                for (DayActivity activity : activities.getDayActivitiesForUsers()) {
-                    activity = processEachDayActivityDetails(activity,dayActivityOverview.getDate());
-                    if (activity.getYonaGoal() != null && !activity.getYonaGoal().isHistoryItem()) {
-                        updatedDayActivities.add(generateTimeZoneSpread(activity));
+        for (DayActivity activity: currentDayActivities) {
+            if (activity.getDayActivitiesForUsers() != null) {
+                for (DayActivity buddyActivity : activity.getDayActivitiesForUsers()) {
+                    buddyActivity = processEachDayActivityDetails(buddyActivity,dayActivityOverview.getDate());
+                    if (!buddyActivity.getYonaGoal().isHistoryItem()) {
+                        updatedDayActivities.add(generateTimeZoneSpread(buddyActivity));
                     }
                 }
             }
@@ -1298,20 +1187,26 @@ public class ActivityManagerImpl implements ActivityManager {
         }
     }
 
+    public DayActivity setActivityChartEnumType(DayActivity dayActivity){
+        switch (GoalsEnum.fromName(dayActivity.getYonaGoal().getType())) {
+            case BUDGET_GOAL:
+                dayActivity.setChartTypeEnum((dayActivity.getYonaGoal().getMaxDurationMinutes() == 0)
+                        ? ChartTypeEnum.NOGO_CONTROL : ChartTypeEnum.TIME_BUCKET_CONTROL);
+                break;
+            case TIME_ZONE_GOAL:
+                dayActivity.setChartTypeEnum(ChartTypeEnum.TIME_FRAME_CONTROL);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown goal type");
+        }
+        return  dayActivity;
+    }
+
+
     private void updateDayActivity(DayActivity activity, DataLoadListener listener) {
         YonaGoal currentYonaGoal = findYonaGoal(activity.getLinks().getYonaGoal()) != null ? findYonaGoal(activity.getLinks().getYonaGoal()) : findYonaBuddyGoal(activity.getLinks().getYonaGoal());
         activity.setYonaGoal(currentYonaGoal);
-        if (activity.getYonaGoal() != null) {
-            if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.BUDGET_GOAL) {
-                if (activity.getYonaGoal().getMaxDurationMinutes() == 0) {
-                    activity.setChartTypeEnum(ChartTypeEnum.NOGO_CONTROL);
-                } else {
-                    activity.setChartTypeEnum(ChartTypeEnum.TIME_BUCKET_CONTROL);
-                }
-            } else if (GoalsEnum.fromName(activity.getYonaGoal().getType()) == GoalsEnum.TIME_ZONE_GOAL) {
-                activity.setChartTypeEnum(ChartTypeEnum.TIME_FRAME_CONTROL);
-            }
-        }
+        setActivityChartEnumType(activity);
         String createdTime = activity.getDate();
         try {
             Calendar futureCalendar = Calendar.getInstance();

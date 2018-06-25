@@ -158,17 +158,17 @@ public class ActivityNetworkImpl extends BaseImpl {
         }
     }
 
-    public void getNextSetOfComments(String url, String yonaPassword, final DataLoadListener listener) {
-        try {
-            getRestApi().getNextSetOfComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+//    public void getNextSetOfComments(String url, String yonaPassword, final DataLoadListener listener) {
+//        try {
+//            getRestApi().getComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
+//        } catch (Exception e) {
+//            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+//        }
+//    }
 
-    public void getComments(String url, String yonaPassword, int pageNo, int itemPerPage, final DataLoadListener listener) {
+    public void getComments(String url, String yonaPassword, final DataLoadListener listener) {
         try {
-            getRestApi().getComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
