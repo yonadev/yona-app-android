@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -33,7 +33,6 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.api.manager.impl.NotificationManagerImpl;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.User;
@@ -311,7 +310,7 @@ public class NotificationFragment extends BaseFragment {
             mIsLoading=true;
             String urlForMessageFetch = getURLToFetchMessages(loadMore).getHref();
             DataLoadListenerImpl dataLoadListenerImpl =  new DataLoadListenerImpl(((result) -> handleYonaMessagesFetchSuccess((YonaMessages) result)), ((result) ->handleYonaMessagesFetchFailure(result)),null);
-            APIManager.getInstance().getNotificationManager().getMessageWithUrl(urlForMessageFetch,false, dataLoadListenerImpl);
+            APIManager.getInstance().getNotificationManager().getMessages(urlForMessageFetch,false, dataLoadListenerImpl);
         }catch (IllegalArgumentException e ) {
             AppUtils.throwException(NotificationFragment.class.getSimpleName(),e,Thread.currentThread(),null);
         }

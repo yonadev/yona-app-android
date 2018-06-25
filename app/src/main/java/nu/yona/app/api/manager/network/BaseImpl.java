@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -190,7 +190,7 @@ private final Interceptor getInterceptor = new Interceptor() {
                         getRetrofit().responseBodyConverter(ErrorMessage.class, new Annotation[0]);
                 ErrorMessage errorMessage = errorConverter.convert(response.errorBody());
                 if (errorMessage != null && errorMessage.getCode() != null) {
-                    if (errorMessage != null && ServerErrorCode.USER_NOT_FOUND.equals(errorMessage.getCode())) {
+                    if (ServerErrorCode.USER_NOT_FOUND.equals(errorMessage.getCode())) {
                         reinitializeRetrofit();
                         YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, errorMessage);
                     } else {

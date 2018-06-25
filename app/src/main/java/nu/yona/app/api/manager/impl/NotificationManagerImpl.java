@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -201,7 +201,7 @@ public class NotificationManagerImpl implements NotificationManager {
         return null;
     }
 
-    public void getMessageWithUrl( String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener) {
+    public void getMessages(String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener) {
         try {
             DataLoadListenerImpl dataloadListenerImpl =  new DataLoadListenerImpl((result)->processYonaMessages((YonaMessages) result),listener);
             notificationNetwork.getNextSetOfMessagesFromURL(urlForMessagesFetch, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus,dataloadListenerImpl);

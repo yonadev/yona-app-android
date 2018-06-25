@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,6 +10,7 @@
 
 package nu.yona.app.state;
 
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import nu.yona.app.R;
@@ -140,11 +141,10 @@ public class DataState {
      * @return the server url
      */
     public String getServerUrl() {
-        if (TextUtils.isEmpty(getEventChangeManager().getSharedPreference().getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.blank)))) {
-            getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url)).commit();
-            getEventChangeManager().getSharedPreference().getAppPreferences().edit().putString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url)).commit();
+        if (TextUtils.isEmpty(getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.blank)))) {
+            setServerUrl(YonaApplication.getAppContext().getString(R.string.server_url));
         }
-        return YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
+        return getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
     }
 
     /**
@@ -153,8 +153,16 @@ public class DataState {
      * @param serverUrl the server url
      */
     public void setServerUrl(String serverUrl) {
-        getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
-        getEventChangeManager().getSharedPreference().getAppPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
+        getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
+        getAppPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
+    }
+
+    private SharedPreferences getUserPreferences() {
+        return getEventChangeManager().getSharedPreference().getUserPreferences();
+    }
+
+    private SharedPreferences getAppPreferences() {
+        return getEventChangeManager().getSharedPreference().getAppPreferences();
     }
 
     public RegisterUser getRegisterUser() {

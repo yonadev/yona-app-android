@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -211,8 +211,6 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             }
         });
 
-
-
         view.findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,9 +250,6 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
         return view;
     }
 
-
-
-
     private void initalizeCommentControl(View view) {
         commentRecyclerView = (RecyclerView) view.findViewById(R.id.messageList);
         mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
@@ -275,7 +270,6 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
         super.onResume();
        getCurrentWeekActivityDetails(activity);
     }
-
 
     public void getCurrentWeekActivityDetails(WeekActivity weekActivity){
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -35,7 +35,7 @@ public class NotificationNetworkImpl extends BaseImpl {
      */
     public void getNextSetOfMessagesFromURL(String nextURL, String yonaPassword, boolean isUnreadStatus, DataLoadListener listener) {
         try {
-            getRestApi().getNextSetOfMessages(nextURL, yonaPassword, Locale.getDefault().toString().replace('_', '-'), isUnreadStatus).enqueue(new Callback<YonaMessages>() {
+            getRestApi().getMessages(nextURL, yonaPassword, Locale.getDefault().toString().replace('_', '-'), isUnreadStatus).enqueue(new Callback<YonaMessages>() {
                 @Override
                 public void onResponse(Call<YonaMessages> call, Response<YonaMessages> response) {
                     if (response.code() < NetworkConstant.RESPONSE_STATUS) {

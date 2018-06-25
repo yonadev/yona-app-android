@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -39,25 +39,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      */
     public void getNextDayActivity(String nextDayActivittUrl, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().getNextActivityWithUrl(nextDayActivittUrl, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
-
-
-    /**
-     * Gets days activity.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
-     * @param listener     the listener
-     */
-    public void getDaysActivity(String url, String yonaPassword, int itemsPerPage, int pageNo, DataLoadListener listener) {
-        try {
-            getRestApi().getActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'),itemsPerPage,pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getActivities(nextDayActivittUrl, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -87,24 +69,7 @@ public class ActivityNetworkImpl extends BaseImpl {
      */
     public void getNextWeeksActivity(String nextWeeksActivityUrl, String password, DataLoadListener listener) {
         try {
-            getRestApi().getNextActivityWithUrl(nextWeeksActivityUrl, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
-
-    /**
-     * Gets weeks activity.
-     *
-     * @param url          the url
-     * @param password     the password
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
-     * @param listener     the listener
-     */
-    public void getWeeksActivity(String url, String password, int itemsPerPage, int pageNo, DataLoadListener listener) {
-        try {
-            getRestApi().getActivity(url, password, Locale.getDefault().toString().replace('_', '-'), itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getActivities(nextWeeksActivityUrl, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -157,14 +122,6 @@ public class ActivityNetworkImpl extends BaseImpl {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
-
-//    public void getNextSetOfComments(String url, String yonaPassword, final DataLoadListener listener) {
-//        try {
-//            getRestApi().getComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
-//        } catch (Exception e) {
-//            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-//        }
-//    }
 
     public void getComments(String url, String yonaPassword, final DataLoadListener listener) {
         try {

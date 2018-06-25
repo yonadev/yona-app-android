@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -231,9 +231,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
             if (message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)
                     || message.getCode().equalsIgnoreCase(ServerErrorCode.ADD_BUDDY_USER_EXIST_ERROR))) {
                 showAlertForReRegisteruser(message.getMessage());
-            } /*else if(message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.SMS_SENDING_FAIL))) {
-            Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
-        }*/ else {
+            } else {
                 Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         }else{
