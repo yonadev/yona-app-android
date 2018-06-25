@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -245,7 +245,7 @@ public class SettingsFragment extends BaseFragment {
 
     private void showEmailClient(String userCredential) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri data = Uri.parse("mailto:app@yona.nu?subject=Yona" + "&body=" + userCredential);
+        Uri data = Uri.parse("mailto:support@yona.nu?subject=Yona" + "&body=" + userCredential);
         intent.setData(data);
         startActivity(intent);
     }
