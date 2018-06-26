@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -31,17 +31,15 @@ import retrofit2.Response;
 public class ActivityNetworkImpl extends BaseImpl {
 
     /**
-     * Gets days activity.
+     * Gets Next days activity.
      *
-     * @param url          the url
+     * @param nextDayActivittUrl          the url
      * @param yonaPassword the yona password
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
      * @param listener     the listener
      */
-    public void getDaysActivity(String url, String yonaPassword, int itemsPerPage, int pageNo, DataLoadListener listener) {
+    public void getNextDayActivity(String nextDayActivittUrl, String yonaPassword, DataLoadListener listener) {
         try {
-            getRestApi().getActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getActivities(nextDayActivittUrl, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -63,17 +61,15 @@ public class ActivityNetworkImpl extends BaseImpl {
     }
 
     /**
-     * Gets weeks activity.
+     * Gets Next weeks activity.
      *
-     * @param url          the url
+     * @param nextWeeksActivityUrl         the url
      * @param password     the password
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
      * @param listener     the listener
      */
-    public void getWeeksActivity(String url, String password, int itemsPerPage, int pageNo, DataLoadListener listener) {
+    public void getNextWeeksActivity(String nextWeeksActivityUrl, String password, DataLoadListener listener) {
         try {
-            getRestApi().getActivity(url, password, Locale.getDefault().toString().replace('_', '-'), itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getActivities(nextWeeksActivityUrl, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
@@ -127,9 +123,9 @@ public class ActivityNetworkImpl extends BaseImpl {
         }
     }
 
-    public void getComments(String url, String yonaPassword, int pageNo, int itemPerPage, final DataLoadListener listener) {
+    public void getComments(String url, String yonaPassword, final DataLoadListener listener) {
         try {
-            getRestApi().getComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+            getRestApi().getComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
             AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

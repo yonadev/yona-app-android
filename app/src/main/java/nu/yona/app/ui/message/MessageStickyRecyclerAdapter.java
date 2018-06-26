@@ -17,7 +17,10 @@ import android.view.ViewGroup;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import nu.yona.app.R;
 import nu.yona.app.api.model.YonaMessage;
@@ -61,7 +64,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 
         if (yonaObject != null) {
             if (yonaObject.getNotificationMessageEnum() != null && !TextUtils.isEmpty(yonaObject.getNotificationMessageEnum().getUserMessage())) {
-                holder.txtTitleMsg.setText(yonaObject.getNotificationMessageEnum().getUserMessage());
+                holder.txtTitleMsg.setText(yonaObject.getMessage());
                 holder.img_status.setImageResource(yonaObject.getNotificationMessageEnum().getImageId());
             }
             if (yonaObject.getLinks() != null && yonaObject.getLinks().getEdit() != null) {
@@ -144,7 +147,9 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
      * @param yonaMessages the yona messages
      */
     public void updateData(final List<YonaMessage> yonaMessages) {
-        listYonaMessage.addAll(yonaMessages);
+        Set<YonaMessage> unique = new LinkedHashSet<YonaMessage>(listYonaMessage);
+        unique.addAll(yonaMessages);
+        listYonaMessage = new ArrayList<YonaMessage>(unique);
         notifyDataSetChanged();
     }
 

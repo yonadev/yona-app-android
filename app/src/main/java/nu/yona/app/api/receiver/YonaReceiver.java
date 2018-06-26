@@ -11,6 +11,7 @@ import android.os.Build;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
+import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
@@ -28,6 +29,8 @@ public class YonaReceiver extends BroadcastReceiver {
         this.mContext = context;
         switch (intent.getAction()) {
             case Intent.ACTION_BOOT_COMPLETED:
+                Logger.loge("ACTION_BOOT_COMPLETED On", "ACTION_BOOT_COMPLETED On");
+                startService(context);
             case Intent.ACTION_SCREEN_ON:
                 Logger.loge("Screen On", "Screen On");
                 startService(context);

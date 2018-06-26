@@ -19,6 +19,10 @@ public interface PreferenceConstant {
      */
     String USER_PREFERENCE_KEY = "userPreferenceKey";
     /**
+     * The constant APP_PREFERENCE_KEY.
+     */
+    String APP_PREFERENCE_KEY = "appPreferenceKey";
+    /**
      * The constant YONA_PASSWORD.
      */
     String YONA_DATA = "yonaPassword";

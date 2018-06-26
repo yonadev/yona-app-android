@@ -145,6 +145,9 @@ public class DayActivity extends BaseEntity {
      * @return The totalActivityDurationMinutes
      */
     public Integer getTotalActivityDurationMinutes() {
+        if(totalActivityDurationMinutes==null){
+            return 0;
+        }
         return totalActivityDurationMinutes;
     }
 
@@ -181,6 +184,9 @@ public class DayActivity extends BaseEntity {
      * @return The totalMinutesBeyondGoal
      */
     public Integer getTotalMinutesBeyondGoal() {
+        if(totalMinutesBeyondGoal==null){
+            return 0;
+        }
         return totalMinutesBeyondGoal;
     }
 

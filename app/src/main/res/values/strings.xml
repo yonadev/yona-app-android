@@ -216,4 +216,9 @@
     <string name="last_seen_status_back_week">Last seen on %1$s</string> <!--February 15, 2017-->
     <string name="last_seen_never_seen_online">Never seen online</string>
     <string name="message_buddy_information_changed">Friend profile updated</string>
+    <string name="same_environment_change">Server URL not changed</string>
+    <string name="environment_switch_error">Failed to switch server. Reverted to :</string>
+    <string name="new_environment_switch_success_msg">You are now using :</string>
+    <string name="environment_alert_title">Enter server URL :</string>
+    <string name="enviroment_input_placeholder">Enter Text Here</string>
 </resources>

@@ -85,7 +85,7 @@ import nu.yona.app.ui.dashboard.WeekActivityDetailFragment;
 import nu.yona.app.ui.frinends.AddFriendFragment;
 import nu.yona.app.ui.frinends.FriendsFragment;
 import nu.yona.app.ui.frinends.FriendsRequestFragment;
-import nu.yona.app.ui.frinends.SingleDayActivityDetailFragment;
+import nu.yona.app.ui.dashboard.SingleDayActivityDetailFragment;
 import nu.yona.app.ui.message.AdminNotificationFragment;
 import nu.yona.app.ui.message.NotificationFragment;
 import nu.yona.app.ui.pincode.PinActivity;
@@ -743,7 +743,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         addToBackstack = true;
                         break;
                     case ACTION_SINGLE_WEEK_DETAIL_VIEW:
-                        if (mContent instanceof WeekActivityDetailFragment) {
+                        if (mContent instanceof SingleWeekDayActivityDetailFragment) {
                             return;
                         }
                         mContent = new SingleWeekDayActivityDetailFragment();

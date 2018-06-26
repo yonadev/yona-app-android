@@ -29,4 +29,18 @@ public interface ActivityCategoryManager {
      * @return the list of activity categories
      */
     ActivityCategories getListOfActivityCategories();
+
+
+    /**
+     * Validates the new environment by requesting the activityCategoryList api. Hence the function is added in this class.
+     * @param listener the listener
+     * @return the list of activity categories
+     */
+     void validateNewEnvironment( DataLoadListener listener);
+
+    /**
+     *Updates the network api host with Server url in App user defaults.
+     *
+     */
+     void updateNetworkAPIEnvironment(String environmentURL);
 }

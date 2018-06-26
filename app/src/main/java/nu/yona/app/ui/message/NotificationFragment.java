@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -35,6 +35,7 @@ import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
@@ -44,10 +45,12 @@ import nu.yona.app.enums.NotificationEnum;
 import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 
 /**
@@ -55,7 +58,6 @@ import nu.yona.app.utils.Logger;
  */
 public class NotificationFragment extends BaseFragment {
 
-    private static final int PAGE_SIZE = 20;
     private RecyclerView mMessageRecyclerView;
     private MessageStickyRecyclerAdapter mMessageStickyRecyclerAdapter;
     private YonaMessages mYonaMessages;
@@ -231,9 +233,8 @@ public class NotificationFragment extends BaseFragment {
      * load more items
      */
     private void loadMoreItems() {
-        mIsLoading = true;
         currentPage += 1;
-        getUserMessages();
+        getUserMessages(true);
     }
 
     @Nullable
@@ -279,43 +280,65 @@ public class NotificationFragment extends BaseFragment {
     private void refreshAdapter() {
         mMessageStickyRecyclerAdapter.clear();
         currentPage = 0;
-        getUserMessages();
-        YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
+        getUserMessages(false);
+        //YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
     }
 
     private void getUser() {
         APIManager.getInstance().getAuthenticateManager().getUserFromServer();
     }
 
+    private Href getURLToFetchMessages(boolean loadMore){
+        Href urlForMessageFetch = null;
+        if (mYonaMessages == null ){
+            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+            urlForMessageFetch = user.getLinks().getYonaMessages();
+        }else if (mYonaMessages.getLinks().getNext()!=null && loadMore){
+            urlForMessageFetch = mYonaMessages.getLinks().getNext();
+        }else{
+            urlForMessageFetch = mYonaMessages.getLinks().getFirst();
+        }
+        return  urlForMessageFetch;
+    }
+
+
     /**
      * to get the list of user's messages
      */
-    private void getUserMessages() {
-        YonaActivity.getActivity().showLoadingView(true, null);
-        APIManager.getInstance().getNotificationManager().getMessage(PAGE_SIZE, currentPage, new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-                if (isAdded() && result != null && result instanceof YonaMessages) {
-                    YonaMessages mMessages = (YonaMessages) result;
-                    if (mMessages.getEmbedded() != null && mMessages.getEmbedded().getYonaMessages() != null) {
-                        mYonaMessages = mMessages;
-                        if (mIsLoading) {
-                            mMessageStickyRecyclerAdapter.updateData(mYonaMessages.getEmbedded().getYonaMessages());
-                        } else {
-                            mMessageStickyRecyclerAdapter.notifyDataSetChange(mYonaMessages.getEmbedded().getYonaMessages());
-                        }
-                    }
-                }
-                mIsLoading = false;
-            }
+    private void getUserMessages(boolean loadMore) {
+        try {
+            mIsLoading=true;
+            String urlForMessageFetch = getURLToFetchMessages(loadMore).getHref();
+            DataLoadListenerImpl dataLoadListenerImpl =  new DataLoadListenerImpl(((result) -> handleYonaMessagesFetchSuccess((YonaMessages) result)), ((result) ->handleYonaMessagesFetchFailure(result)),null);
+            APIManager.getInstance().getNotificationManager().getMessages(urlForMessageFetch,false, dataLoadListenerImpl);
+        }catch (IllegalArgumentException e ) {
+            AppUtils.throwException(NotificationFragment.class.getSimpleName(),e,Thread.currentThread(),null);
+        }
+    }
 
-            @Override
-            public void onError(Object errorMessage) {
-                YonaActivity.getActivity().showLoadingView(false, null);
-                YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+    private Object handleYonaMessagesFetchSuccess(YonaMessages result){
+        YonaActivity.getActivity().showLoadingView(false, null);
+        if (isAdded() && result != null && result instanceof YonaMessages) {
+            YonaMessages mMessages = (YonaMessages) result;
+            if (mMessages.getEmbedded() != null && mMessages.getEmbedded().getYonaMessages() != null) {
+                mYonaMessages = mMessages;
+                if (mIsLoading) {
+                    mMessageStickyRecyclerAdapter.updateData(mYonaMessages.getEmbedded().getYonaMessages());
+                } else {
+                    mMessageStickyRecyclerAdapter.notifyDataSetChange(mYonaMessages.getEmbedded().getYonaMessages());
+                }
             }
-        });
+        }
+        mIsLoading = false;
+       return null;
+    }
+
+
+    private Object handleYonaMessagesFetchFailure(Object errorMessage){
+        YonaActivity.getActivity().showLoadingView(false, null);
+        YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+        mIsLoading = false;
+        return  null;
     }
 
     /**

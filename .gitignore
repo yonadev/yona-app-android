@@ -32,3 +32,6 @@ gradle.properties
 # Android Studio
 .idea
 /project.properties
+
+# VIM temp files
+*.sw*

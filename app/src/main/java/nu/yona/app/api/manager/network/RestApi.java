@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -60,11 +60,11 @@ public interface RestApi {
      * @return the call
      */
     @POST(ApiList.USER)
-    Call<User> registerUser(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<User> registerUser(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                             @Body RegisterUser body);
 
     @PUT
-    Call<User> registerUser(@Url String url, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<User> registerUser(@Url String url, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                             @Body RegisterUser body);
 
     @PUT()
@@ -78,7 +78,7 @@ public interface RestApi {
      * @return the user
      */
     @GET
-    Call<YonaUser> readDeepLinkData(@Url String url, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<YonaUser> readDeepLinkData(@Url String url, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Update register user call.
@@ -89,7 +89,7 @@ public interface RestApi {
      * @return the call
      */
     @PUT
-    Call<User> updateRegisterUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<User> updateRegisterUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                                   @Body RegisterUser body);
 
     /**
@@ -100,7 +100,7 @@ public interface RestApi {
      * @return the call
      */
     @POST(ApiList.USER)
-    Call<User> overrideRegisterUser(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<User> overrideRegisterUser(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                                     @Query("overwriteUserConfirmationCode") String otp,
                                     @Body RegisterUser body);
 
@@ -112,7 +112,7 @@ public interface RestApi {
      * @return the user
      */
     @GET
-    Call<User> getUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<User> getUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Verify mobile number call.
@@ -124,7 +124,7 @@ public interface RestApi {
      */
     @POST
     Call<User> verifyMobileNumber(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
-                                  @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+                                  @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                                   @Body OTPVerficationCode code);
 
     /**
@@ -135,7 +135,7 @@ public interface RestApi {
      * @return the call
      */
     @POST
-    Call<Void> resendOTP(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<Void> resendOTP(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Request user override call.
@@ -144,7 +144,7 @@ public interface RestApi {
      * @return the call
      */
     @POST(ApiList.ADMIN_OVERRIDE_USER)
-    Call<Void> requestUserOverride(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Query("mobileNumber") String number);
+    Call<Void> requestUserOverride(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Query("mobileNumber") String number);
 
     /**
      * Delete user call.
@@ -154,7 +154,7 @@ public interface RestApi {
      * @return the call
      */
     @DELETE
-    Call<Void> deleteUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<Void> deleteUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /********
      * RESET PIN
@@ -164,7 +164,7 @@ public interface RestApi {
      * @return the call
      */
     @POST
-    Call<PinResetDelay> requestPinReset(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<PinResetDelay> requestPinReset(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Verify pin call.
@@ -175,7 +175,7 @@ public interface RestApi {
      * @return the call
      */
     @POST
-    Call<Void> verifyPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Body OTPVerficationCode code);
+    Call<Void> verifyPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Body OTPVerficationCode code);
 
     /**
      * Clear pin call.
@@ -185,7 +185,7 @@ public interface RestApi {
      * @return the call
      */
     @POST
-    Call<Void> clearPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<Void> clearPin(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /********
      * DEVICE
@@ -197,7 +197,7 @@ public interface RestApi {
      */
     @PUT
     Call<Void> addDevice(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
-                         @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+                         @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                          @Body NewDeviceRequest newDeviceRequest);
 
     /**
@@ -208,7 +208,7 @@ public interface RestApi {
      * @return the call
      */
     @DELETE
-    Call<Void> deleteDevice(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<Void> deleteDevice(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Check device call.
@@ -218,7 +218,7 @@ public interface RestApi {
      * @return the call
      */
     @GET(ApiList.NEW_DEVICE_REQUEST)
-    Call<NewDevice> checkDevice(@Path("mobileNumber") String mobileNumber, @Header(NetworkConstant.YONA_NEW_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<NewDevice> checkDevice(@Path("mobileNumber") String mobileNumber, @Header(NetworkConstant.YONA_NEW_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /********
      * ActivityCategory
@@ -226,7 +226,7 @@ public interface RestApi {
      * @return the activity categories
      */
     @GET(ApiList.ACTIVITY_CATEGORIES)
-    Call<ActivityCategories> getActivityCategories(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<ActivityCategories> getActivityCategories(@Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /********
      * GOALS
@@ -236,7 +236,7 @@ public interface RestApi {
      * @return the user goals
      */
     @GET
-    Call<Goals> getUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<Goals> getUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Put user goals call.
@@ -247,7 +247,7 @@ public interface RestApi {
      * @return the call
      */
     @POST
-    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Body PostBudgetYonaGoal postBudgetYonaGoal);
+    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Body PostBudgetYonaGoal postBudgetYonaGoal);
 
     /**
      * Put user goals call.
@@ -258,7 +258,7 @@ public interface RestApi {
      * @return the call
      */
     @POST
-    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Body PostTimeZoneYonaGoal postTimeZoneYonaGoal);
+    Call<Goals> putUserGoals(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Body PostTimeZoneYonaGoal postTimeZoneYonaGoal);
 
     /**
      * Delete user goal call.
@@ -268,7 +268,7 @@ public interface RestApi {
      * @return the call
      */
     @DELETE
-    Call<Void> deleteUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<Void> deleteUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Update user goal call.
@@ -280,7 +280,7 @@ public interface RestApi {
      * @return the call
      */
     @PUT
-    Call<Goals> updateUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<Goals> updateUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                                @Query("message") String message, @Body PostBudgetYonaGoal postBudgetYonaGoal);
 
     /**
@@ -293,7 +293,7 @@ public interface RestApi {
      * @return the call
      */
     @PUT
-    Call<Goals> updateUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<Goals> updateUserGoal(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                                @Query("message") String message, @Body PostTimeZoneYonaGoal postTimeZoneYonaGoal);
 
     /********
@@ -305,7 +305,7 @@ public interface RestApi {
      * @return the call
      */
     @POST
-    Call<YonaBuddy> addBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+    Call<YonaBuddy> addBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                              @Body AddBuddy buddy);
 
     /**
@@ -316,7 +316,7 @@ public interface RestApi {
      * @return the buddy
      */
     @GET
-    Call<YonaBuddies> getBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<YonaBuddies> getBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Delete buddy call.
@@ -326,7 +326,21 @@ public interface RestApi {
      * @return the call
      */
     @DELETE
-    Call<Void> deleteBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<Void> deleteBuddy(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
+
+
+
+    /********
+     * NOTIFICATION MANAGER
+     *
+     * @param nextUrl      the url
+     * @param password the password
+     * @return the messages
+     */
+    @GET
+    Call<YonaMessages> getMessages(@Url String nextUrl, @Header(NetworkConstant.YONA_PASSWORD) String password,
+                                   @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
+                                   @Query("onlyUnreadMessages") boolean isUnreadMessage);
 
     /********
      * NOTIFICATION MANAGER
@@ -339,7 +353,7 @@ public interface RestApi {
      */
     @GET
     Call<YonaMessages> getMessages(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
-                                   @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage,
+                                   @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage,
                                    @Query("onlyUnreadMessages") boolean isUnreadMessage,
                                    @Query("size") int size, @Query("page") int page);
 
@@ -351,7 +365,7 @@ public interface RestApi {
      * @return the call
      */
     @DELETE
-    Call<Void> deleteMessage(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<Void> deleteMessage(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
 
     /**
@@ -363,19 +377,17 @@ public interface RestApi {
      * @return the call
      */
     @POST
-    Call<Void> postMessage(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Body MessageBody body);
+    Call<Void> postMessage(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Body MessageBody body);
 
     /********
      * ACTIVITY  @param url the url
      *
-     * @param url      the url
+     * @param nextActivityUrl      the url
      * @param password the password
-     * @param size     the size
-     * @param page     the page
      * @return the daily activity
      */
     @GET
-    Call<EmbeddedYonaActivity> getActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Query("size") int size, @Query("page") int page);
+    Call<EmbeddedYonaActivity> getActivities(@Url String nextActivityUrl, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Gets day detail activity.
@@ -385,7 +397,7 @@ public interface RestApi {
      * @return the day detail activity
      */
     @GET
-    Call<DayActivity> getDayDetailActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<DayActivity> getDayDetailActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /**
      * Gets week detail activity.
@@ -395,7 +407,7 @@ public interface RestApi {
      * @return the week detail activity
      */
     @GET
-    Call<WeekActivity> getWeekDetailActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage);
+    Call<WeekActivity> getWeekDetailActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
 
     /********
      * APP ACTIVITY
@@ -406,7 +418,7 @@ public interface RestApi {
      * @return the call
      */
     @POST
-    Call<Void> postAppActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Body AppActivity activity);
+    Call<Void> postAppActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Body AppActivity activity);
 
     /**
      * Gets with buddy activity.
@@ -418,14 +430,15 @@ public interface RestApi {
      * @return the with buddy activity
      */
     @GET
-    Call<EmbeddedYonaActivity> getWithBuddyActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Query("size") int size, @Query("page") int page);
+    Call<EmbeddedYonaActivity> getWithBuddyActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Query("size") int size, @Query("page") int page);
 
     @GET
-    Call<EmbeddedYonaActivity> getComments(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Query("size") int size, @Query("page") int page);
+    Call<EmbeddedYonaActivity> getComments(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage);
+
 
     @POST
-    Call<YonaMessage> addComment(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Body Message message);
+    Call<YonaMessage> addComment(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Body Message message);
 
     @POST
-    Call<YonaMessage> replyComment(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanaguage, @Body MessageBody messageBody);
+    Call<YonaMessage> replyComment(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Body MessageBody messageBody);
 }

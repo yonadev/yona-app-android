@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -22,6 +22,7 @@ import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -52,34 +53,9 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
      * @param listener
      */
     @Override
-    public void getActivityCategoriesById(final DataLoadListener listener) {
-        try {
-            User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-            if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref())) {
-                activityCategoriesNetwork.getActivityCategories(authenticateDao.getUser().getLinks().getYonaAppActivity().getHref(), new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        updateActivityCategories(result, null);
-                        if (listener != null) {
-                            listener.onDataLoad(result);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Object errorMessage) {
-                        if (listener != null) {
-                            listener.onError(errorMessage);
-                        }
-                    }
-                });
-            } else {
-                if (listener != null) {
-                    listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
-                }
-            }
-        } catch (Exception e) {
-            AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
+    public void getActivityCategoriesById(DataLoadListener listener) {
+        DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> updateActivityCategories(result, listener),null, listener);
+        activityCategoriesNetwork.getActivityCategories(listenerWrapper);
     }
 
     /**
@@ -98,26 +74,25 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
      * @param result
      * @param listener
      */
-    private void updateActivityCategories(Object result, final DataLoadListener listener) {
+    private Object updateActivityCategories(Object result, DataLoadListener listener) {
         try {
-            activityCategoriesDAO.saveActivityCategories(((ActivityCategories) result), new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    if (listener != null) {
-                        listener.onDataLoad(result);
-                    }
-                }
+            activityCategoriesDAO.saveActivityCategories(((ActivityCategories) result), listener);
+        } catch (Exception e) {
+            AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+        return null; // No value to return from here
+    }
 
-                @Override
-                public void onError(Object errorMessage) {
-                    if (listener != null) {
-                        listener.onError(errorMessage);
-                    }
-                }
-            });
+    public void updateNetworkAPIEnvironment(String environmentURL){
+        YonaApplication.getEventChangeManager().getDataState().setServerUrl(environmentURL);
+        activityCategoriesNetwork.updateNeworkEnvironment();
+    }
+
+    public void validateNewEnvironment(DataLoadListener listener) {
+        try {
+            activityCategoriesNetwork.getActivityCategories(listener);
         } catch (Exception e) {
             AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
-
 }

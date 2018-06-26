@@ -72,8 +72,8 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
         if (mYonaHeaderTheme != null) {
             mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
         }
-        viewPager = view.findViewById(R.id.viewPager);
-        tabLayout = view.findViewById(R.id.tabs);
+        viewPager = (ViewPager)view.findViewById(R.id.viewPager);
+        tabLayout = (TabLayout)view.findViewById(R.id.tabs);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_DASHBOARD));

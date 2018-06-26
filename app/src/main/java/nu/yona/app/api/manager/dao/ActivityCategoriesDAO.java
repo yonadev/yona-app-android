@@ -52,7 +52,9 @@ public class ActivityCategoriesDAO extends BaseDAO {
             } else {
                 update(DBConstant.TBL_ACTIVITY_CATEGORIES, values, DBConstant.ID + " = ?", ID);
             }
-            listener.onDataLoad(activityCategories);
+            if(listener!=null) {
+                listener.onDataLoad(activityCategories);
+            }
         } catch (Exception e) {
             AppUtils.throwException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), listener);
         }

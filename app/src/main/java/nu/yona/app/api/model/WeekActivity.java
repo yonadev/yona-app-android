@@ -125,6 +125,9 @@ public class WeekActivity extends BaseEntity {
      * @return The totalActivityDurationMinutes
      */
     public Integer getTotalActivityDurationMinutes() {
+        if(totalActivityDurationMinutes==null){
+            return 0;
+        }
         return totalActivityDurationMinutes;
     }
 

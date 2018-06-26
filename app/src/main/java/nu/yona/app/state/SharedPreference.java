@@ -32,6 +32,7 @@ import nu.yona.app.utils.PreferenceConstant;
 
 public class SharedPreference {
     private SharedPreferences userPreferences;
+    private SharedPreferences appPreferences;
     private String yonaPwd = null;
 
 
@@ -46,6 +47,19 @@ public class SharedPreference {
         }
         return userPreferences;
     }
+
+    /**
+     * Gets user preferences.
+     *
+     * @return the user preferences
+     */
+    public synchronized SharedPreferences getAppPreferences() {
+        if (appPreferences == null) {
+            appPreferences = YonaApplication.getAppContext().getSharedPreferences(PreferenceConstant.APP_PREFERENCE_KEY, Context.MODE_PRIVATE);
+        }
+        return appPreferences;
+    }
+
 
     /**
      * Gets yona password.

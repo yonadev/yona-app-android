@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
+	flavorDimensions 'default'
     defaultConfig {
         applicationId "nu.yona.app"
         minSdkVersion 19
@@ -25,7 +26,7 @@ android {
     }
 
     sourceSets {
-        app {
+        main {
             assets.srcDirs = ['src/main/assets']
         }
     }
@@ -36,31 +37,14 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     packagingOptions {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
-    }
-
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def apk = output.outputFile
-            def appName = getAppName()
-            def branch = getBranch().replaceAll(/\//, "-")
-            def versionString = getVersionString()
-            def buildNumber = getBuildNumber()
-            def apkName = appName + '-' + branch + '-' + versionString + '.' + buildNumber
-
-            if (variant.buildType.name == "release")
-                apkName += "-RELEASE"
-
-            output.outputFile = new File(apk.parent, apkName + '.apk')
-            output.packageApplication.outputFile = new File(apk.parent, apkName + '.apk')
-        }
     }
 
     productFlavors {
@@ -150,33 +134,33 @@ def getBranch() {
 }
 
 dependencies {
-    compile project(':libTimepicker')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile files('libs/commons-codec-1.10.jar')
-    compile files('libs/commons-io-2.4.jar')
-    compile files('libs/commons-lang3-3.4.jar')
+    implementation project(':libTimepicker')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation files('libs/commons-codec-1.10.jar')
+    implementation files('libs/commons-io-2.4.jar')
+    implementation files('libs/commons-lang3-3.4.jar')
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.0'
 
-    compile 'com.android.support:design:27.1.0'
-    compile 'com.android.support:recyclerview-v7:27.1.0'
-    compile 'com.android.support:cardview-v7:27.1.0'
-    compile 'com.android.support:appcompat-v7:27.1.0'
-    compile 'com.google.android.gms:play-services-analytics:9.2.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.0'
+    implementation 'com.android.support:cardview-v7:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.google.android.gms:play-services-analytics:9.2.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.google.code.gson:gson:2.4'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0'
-    compile 'joda-time:joda-time:2.9.3'
+    implementation 'com.squareup.retrofit2:retrofit:2.0.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
+    implementation 'com.google.code.gson:gson:2.4'
+    implementation 'com.squareup.retrofit2:converter-gson:2.0.0'
+    implementation 'joda-time:joda-time:2.9.3'
     //using for swipe layout on recyclerview
-    compile 'com.daimajia.swipelayout:library:1.2.0@aar'
+    implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
     //using for sticky header recyclerview
-    compile 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
-    compile project(path: ':openvpn')
-    compile 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
-    compile 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
+    implementation project(path: ':openvpn')
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }

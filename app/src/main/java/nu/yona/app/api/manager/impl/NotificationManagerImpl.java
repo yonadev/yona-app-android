@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -14,7 +14,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +29,7 @@ import nu.yona.app.api.manager.NotificationManager;
 import nu.yona.app.api.manager.network.NotificationNetworkImpl;
 import nu.yona.app.api.model.Embedded;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Message;
 import nu.yona.app.api.model.MessageBody;
 import nu.yona.app.api.model.Properties;
 import nu.yona.app.api.model.RegisterUser;
@@ -36,6 +39,7 @@ import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
@@ -160,6 +164,52 @@ public class NotificationManagerImpl implements NotificationManager {
             AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
+
+    public YonaMessages processYonaMessages(YonaMessages resultYonaMessages){
+        List<YonaMessage> listMessages = resultYonaMessages.getEmbedded().getYonaMessages();
+        for (YonaMessage message : listMessages) {
+            message = processYonaMessage(message);
+        }
+        return  resultYonaMessages;
+    }
+
+    public YonaMessage processYonaMessage (YonaMessage message){
+        String messageEnumType = (message.getStatus() != null)?message.getStatus():(message.getDropBuddyReason()!=null)?message.getDropBuddyReason():message.getChange();
+        message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), messageEnumType));
+        if (message.getLinks() != null && message.getLinks().getYonaUser() != null && !TextUtils.isEmpty(message.getLinks().getYonaUser().getHref())) {
+            if (message.getEmbedded() == null) {
+                message.setEmbedded(new Embedded());
+            }
+            message.getEmbedded().setYonaUser(getYonaUser(message.getLinks().getYonaUser().getHref()));
+        }
+        String createdTime = message.getCreationTime();
+        message.setStickyTitle(getFormattedDateString(createdTime,AppConstant.YONA_LONG_DATE_FORMAT));
+        return  message;
+    }
+
+    public String getFormattedDateString (String dateString, String dateFormatString){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(dateFormatString, Locale.getDefault());
+            Date date = sdf.parse(dateString);
+            Calendar futureCalendar = Calendar.getInstance();
+            futureCalendar.setTime(date);
+            String uploadDate = DateUtility.getRelativeDate(futureCalendar);
+            return uploadDate;
+        }catch(ParseException parseEx) {
+            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), parseEx, Thread.currentThread(), null);
+        }
+        return null;
+    }
+
+    public void getMessages(String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener) {
+        try {
+            DataLoadListenerImpl dataloadListenerImpl =  new DataLoadListenerImpl((result)->processYonaMessages((YonaMessages) result),listener);
+            notificationNetwork.getNextSetOfMessagesFromURL(urlForMessagesFetch, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus,dataloadListenerImpl);
+        } catch (IllegalArgumentException e) {
+            AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+        }
+    }
+
 
     private RegisterUser getYonaUser(String href) {
         User user = YonaApplication.getEventChangeManager().getDataState().getUser();

@@ -29,6 +29,7 @@ import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
@@ -165,6 +166,19 @@ public class PerWeekFragment extends BaseFragment {
         getWeekActivity(true);
     }
 
+
+    private Href getURLToFetchWeekActivityOverViews(EmbeddedYonaActivity embeddedYonaActivity,boolean loadMore){
+        Href urlToFetchDayActivitiyOverviews = null;
+        if (embeddedYonaActivity !=null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null && loadMore){
+            urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getNext();
+        }else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null){
+            urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getSelf();
+        }else{
+            urlToFetchDayActivitiyOverviews =  mYonaHeaderTheme.getWeekActivityUrl();
+        }
+        return urlToFetchDayActivitiyOverviews;
+    }
+
     /**
      * to get the list of user's messages
      */
@@ -173,13 +187,13 @@ public class PerWeekFragment extends BaseFragment {
         if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
                 || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
             YonaActivity.getActivity().showLoadingView(true, null);
-            APIManager.getInstance().getActivityManager().getWeeksActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), mYonaHeaderTheme.getWeekActivityUrl(), new DataLoadListener() {
+            Href urlToFetchWeekActivitiyOverviews = getURLToFetchWeekActivityOverViews(embeddedYonaActivity,loadMore);
+            APIManager.getInstance().getActivityManager().getWeeksActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), urlToFetchWeekActivitiyOverviews, new DataLoadListener() {
                 @Override
                 public void onDataLoad(Object result) {
                     showData();
                     mIsLoading = false;
                 }
-
                 @Override
                 public void onError(Object errorMessage) {
                     YonaActivity.getActivity().showLoadingView(false, null);
@@ -221,6 +235,7 @@ public class PerWeekFragment extends BaseFragment {
     }
 
     private void openDetailPage(WeekActivity activity) {
+        showData();  mIsLoading = false;
         YonaAnalytics.createTapEventWithCategory(getString(R.string.perweek), activity.getYonaGoal().getActivityCategoryName().toUpperCase());
         Intent intent = new Intent(IntentEnum.ACTION_WEEK_DETAIL_VIEW.getActionString());
         intent.putExtra(AppConstant.OBJECT, activity);
@@ -229,5 +244,6 @@ public class PerWeekFragment extends BaseFragment {
         mYonaHeaderTheme.setHeader_title(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
         intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
         YonaActivity.getActivity().replaceFragment(intent);
+
     }
 }

@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package nu.yona.app.ui.frinends;
+package nu.yona.app.ui.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,7 +49,6 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.comment.CommentsAdapter;
-import nu.yona.app.ui.dashboard.CustomPageAdapter;
 import nu.yona.app.utils.AppConstant;
 
 /**
@@ -307,6 +306,9 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
                 toolbarTitle.setText(categoryName != null ? categoryName.toUpperCase() : "");
                 toolbarTitle.setVisibility(View.VISIBLE);
             }
+        }
+        if (activity != null && activity.getYonaGoal() != null && !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName())) {
+            toolbarTitle.setText(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
         }
     }
 

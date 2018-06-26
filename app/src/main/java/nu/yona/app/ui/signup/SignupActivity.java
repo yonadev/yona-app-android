@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -225,15 +225,17 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
     }
 
     private void showError(Object errorMessage) {
-        ErrorMessage message = (ErrorMessage) errorMessage;
         showLoadingView(false, null);
-        if (message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)
-                || message.getCode().equalsIgnoreCase(ServerErrorCode.ADD_BUDDY_USER_EXIST_ERROR))) {
-            showAlertForReRegisteruser(message.getMessage());
-        } /*else if(message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.SMS_SENDING_FAIL))) {
-            Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
-        }*/ else {
-            Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+        if (errorMessage instanceof ErrorMessage){
+            ErrorMessage message = (ErrorMessage) errorMessage;
+            if (message.getCode() != null && (message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)
+                    || message.getCode().equalsIgnoreCase(ServerErrorCode.ADD_BUDDY_USER_EXIST_ERROR))) {
+                showAlertForReRegisteruser(message.getMessage());
+            } else {
+                Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        }else{
+            Snackbar.make(findViewById(android.R.id.content), (String)errorMessage, Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -243,7 +245,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener 
         return deepLinkUserInfo;
     }
 
-    /**
+    /**q
      * Following will request to read Deep link Data for requested URL.
      * @param url request URL.
      */

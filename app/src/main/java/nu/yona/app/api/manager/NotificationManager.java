@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -38,6 +38,15 @@ public interface NotificationManager {
 
     void getMessage(final int itemsPerPage, final int pageNo, boolean isUnreadStatus, final DataLoadListener listener);
 
+
+    /**
+     * Gets a page of messages.
+     *
+     * @param urlForMessagesFetch the items per page
+     * @param isUnreadStatus Whether to fetch only unread messages
+     * @param listener     the listener
+     */
+    void getMessages(String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener);
     /**
      * Post message.
      *

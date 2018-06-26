@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ *  Copyright (c) 2016, 2018 Stichting Yona Foundation
  *
  *  This Source Code Form is subject to the terms of the Mozilla Public
  *  License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -42,10 +42,12 @@ import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
+import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.customview.YonaFontEditTextViewGeneral;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
@@ -77,6 +79,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
     private CommentsAdapter commentsAdapter;
     private YonaMessage currentReplayingMsg;
     private ImageView chatBoxImage;
+    private boolean isDataLoading = false;
 
     private View.OnClickListener itemClickListener = new View.OnClickListener() {
         @Override
@@ -229,8 +232,12 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 
             @Override
             public void onPageSelected(int position) {
-                fetchComments(position);
-                updateFlow(position);
+                EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+                if (embeddedYonaActivity != null && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0) {
+                    WeekActivity newWeekActivityToLoad = weekActivityList.get(position);
+                    getCurrentWeekActivityDetails(newWeekActivityToLoad);
+                }
+
             }
 
             @Override
@@ -261,32 +268,58 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
     @Override
     public void onResume() {
         super.onResume();
-        weekActivityList = new ArrayList<>();
-        EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
-        if (embeddedYonaActivity != null && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0) {
+       getCurrentWeekActivityDetails(activity);
+    }
 
-            for (int i = embeddedYonaActivity.getWeekActivityList().size() - 1; i >= 0; i--) {
-                try {
+    public void getCurrentWeekActivityDetails(WeekActivity weekActivity){
+
+        YonaActivity.getActivity().showLoadingView(true, null);
+        if (!isDataLoading) {
+            isDataLoading = true;
+            DataLoadListenerImpl dataLoadListenerImpl =  new DataLoadListenerImpl(((result) -> handleWeekActivityDetailsFetchSuccess((WeekActivity) result)), ((result) ->handleWeekActivityDetailsFetchFailure(result)),null);
+            APIManager.getInstance().getActivityManager().getDetailOfEachWeekSpreadWithWeekActivity(weekActivity, dataLoadListenerImpl);
+        }
+    }
+
+    private  Object handleWeekActivityDetailsFetchSuccess(WeekActivity result) {
+        try {
+            YonaActivity.getActivity().showLoadingView(false, null);
+            isDataLoading = false;
+            activity = (WeekActivity) result;
+            weekActivityList = new ArrayList<>();
+            EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+            if (embeddedYonaActivity != null && embeddedYonaActivity.getWeekActivityList() != null && embeddedYonaActivity.getWeekActivityList().size() > 0) {
+                for (int i = embeddedYonaActivity.getWeekActivityList().size() - 1; i >= 0; i--) {
                     if (embeddedYonaActivity.getWeekActivityList().get(i).getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref())) {
                         weekActivityList.add(embeddedYonaActivity.getWeekActivityList().get(i));
                     }
-                } catch (Exception e) {
-                    AppUtils.throwException(WeekActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
                 }
-            }
-            int itemIndex = getIndex(activity);
-            if (itemIndex >= 0) {
-                customPageAdapter.notifyDataSetChanged(weekActivityList);
-                fetchComments(itemIndex);
-                viewPager.setCurrentItem(itemIndex);
-                updateFlow(itemIndex);
+                int itemIndex = getIndex(activity);
+                if (itemIndex >= 0) {
+                    customPageAdapter.notifyDataSetChanged(weekActivityList);
+                    fetchComments(itemIndex);
+                    if (itemIndex != viewPager.getCurrentItem()) {
+                        viewPager.setCurrentItem(itemIndex);
+                    }
+                    updateFlow(itemIndex);
+                } else {
+                    goBack();
+                }
             } else {
                 goBack();
             }
-        } else {
-            goBack();
+            setDayDetailTitleAndIcon();
+        } catch (NullPointerException e) {
+            AppUtils.throwException(WeekActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
         }
-        setDayDetailTitleAndIcon();
+        return null;
+    }
+
+    private  Object handleWeekActivityDetailsFetchFailure(Object errorMessage){
+        isDataLoading = false;
+        YonaActivity.getActivity().showLoadingView(false, null);
+        YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+        return  null;
     }
 
 
