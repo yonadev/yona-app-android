@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('checkout') {
       steps {
-        git(branch: 'Jenkinstest', credentialsId: 'git yona', url: 'https://Sivateja-CMI@bitbucket.org/yona-cmi/yona-app-android-cmi.git', changelog: true)
+        git(branch: 'Jenkinstest', credentialsId: 'git yona', url: 'https://github.com/yonadev/yona-app-android.git', changelog: true)
       }
     }
     stage('gradle step') {
