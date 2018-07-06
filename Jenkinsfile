@@ -13,7 +13,7 @@ pipeline {
     }
     stage('gradle step') {
       steps {
-        sh 'cd $ANDROID_HOME/tools ls  yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses'
+        sh 'cd $ANDROID_HOME/tools ls'
         script {
           echo sh(script: 'env|sort', returnStdout: true)
         }
