@@ -13,10 +13,8 @@ pipeline {
     }
     stage('gradle step') {
       steps {
-        sh '''cd $ANDROID_HOME
-ls
-cd platforms
-ls cd tools ls'''
+        sh '''cd $ANDROID_HOME/platforms/tools
+  ls'''
         script {
           echo sh(script: 'env|sort', returnStdout: true)
         }
