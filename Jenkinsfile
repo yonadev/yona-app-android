@@ -14,12 +14,11 @@ pipeline {
     stage('gradle step') {
       steps {
         sh '''cd /opt/android/android-sdk-linux
- ls'''
+ ls cd platforms ls'''
         script {
           echo sh(script: 'env|sort', returnStdout: true)
         }
         
-        sh './gradlew app:assembleDebug'
       }
     }
     stage('Build') {
