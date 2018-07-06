@@ -17,7 +17,7 @@ pipeline {
           echo sh(script: 'env|sort', returnStdout: true)
         }
         
-        sh './gradlew app:assembleDebug'
+        sh './gradlew -Dorg.gradle.jvmargs=-Xmx1536m app:assembleDebug'
       }
     }
     stage('Build') {
