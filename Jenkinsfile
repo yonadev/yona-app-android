@@ -13,7 +13,8 @@ pipeline {
     }
     stage('gradle step') {
       steps {
-        sh 'cd $ANDROID_HOME ls'
+        sh '''cd /opt/android/android-sdk-linux
+ ls'''
         script {
           echo sh(script: 'env|sort', returnStdout: true)
         }
