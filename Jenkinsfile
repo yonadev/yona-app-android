@@ -16,12 +16,11 @@ pipeline {
         sh '''cd $ANDROID_HOME
 ls
 cd platforms
-ls'''
+ls cd tools ls'''
         script {
           echo sh(script: 'env|sort', returnStdout: true)
         }
         
-        sh './gradlew app:assembleDebug'
       }
     }
     stage('Build') {
