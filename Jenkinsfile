@@ -13,7 +13,7 @@ pipeline {
     }
     stage('gradle step') {
       steps {
-        sh 'cd $ANDROID_HOME/tools android update sdk --no-ui --all --filter platform-tools,android-27,extra-android-m2repository'
+        sh 'cd $ANDROID_HOME/tools ls '
         script {
           echo sh(script: 'env|sort', returnStdout: true)
         }
