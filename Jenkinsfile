@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        archiveArtifacts(artifacts: 'app/build/outputs/apk/*.apk', allowEmptyArchive: true)
+        archiveArtifacts(artifacts: 'app/build/outputs/apk/**/*.apk', allowEmptyArchive: false)
       }
     }
   }
