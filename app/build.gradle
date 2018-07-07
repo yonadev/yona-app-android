@@ -8,7 +8,7 @@ android {
         applicationId "nu.yona.app"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode System.env.BUILD_NUMBER
+        versionCode System.env.BUILD_NUMBER as Integer
         versionName "1.1.$System.env.BUILD_NUMBER"
     }
     buildTypes {
