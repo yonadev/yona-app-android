@@ -1,4 +1,4 @@
-# Yona [You Are Not Alone]
+# Yona
 
 ## Application definition statement
 
@@ -13,11 +13,6 @@ Main concept of Yona is to know user how much time they are utilizing on mobile 
 * [Hockey-Development](https://rink.hockeyapp.net/manage/apps/308021)
 * [Hockey-Acceptance](https://rink.hockeyapp.net/manage/apps/366916)
 * [Server source code](https://github.com/yonadev/yona-server)
-
-## People
-
-* Project manager: Yvonne Dieks <ydieks@mobiquityinc.com>
-* Tech lead: Kinnar Vasa <kvasa@mobiquityinc.com>
 
 ## Prerequisites
 
