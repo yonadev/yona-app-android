@@ -17,6 +17,10 @@ pipeline {
           echo sh(script: 'env|sort', returnStdout: true)
         }
         
+        sh 'ls -l /opt/android/android-sdk-linux'
+        sh 'ls -l /opt/android/android-sdk-linux/tools'
+        sh 'ls -l /opt/android/android-sdk-linux/tools/bin'
+        sh 'ls -l /opt/android/android-sdk-linux/tools/bin/sdkmanager'
         sh '${ANDROID_HOME}/tools/bin/sdkmanager --licenses'
         sh './gradlew -Dorg.gradle.jvmargs=-Xmx1536m app:assembleDebug --scan'
       }
