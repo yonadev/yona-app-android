@@ -14,7 +14,7 @@ pipeline {
     stage('gradle step') {
       steps {
         sh 'android list sdk -e -a'
-        sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter platform-tools,android-27,extra-android-m2repository'
+        sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter platform-tools,android-27,build-tools-27.0.3,extra-android-m2repository'
         sh 'android list sdk -e -a'
         sh 'ls -l ${ANDROID_HOME}/tools'
         sh './gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx1536m app:assembleDebug --scan'
