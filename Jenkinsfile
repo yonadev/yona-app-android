@@ -7,6 +7,9 @@ pipeline {
   }
   stages {
     stage('Build') {
+      environment {
+        GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
+      }
       steps {
         checkout scm
         sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter build-tools-27.0.3'
