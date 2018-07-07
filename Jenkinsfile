@@ -17,7 +17,8 @@ pipeline {
           echo sh(script: 'env|sort', returnStdout: true)
         }
         
-        sh '${ANDROID_HOME}/tools/android --licenses'
+        sh '${ANDROID_HOME}/tools/android update sdk --no-ui --all --filter platform-tools,android-25,extra-android-m2repository'
+        sh 'ls -l ${ANDROID_HOME}/tools'
         sh './gradlew -Dorg.gradle.jvmargs=-Xmx1536m app:assembleDebug --scan'
       }
     }
