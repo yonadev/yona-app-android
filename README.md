@@ -22,7 +22,7 @@ The Yona app enables the user define challenges on mobile device usage and then 
 
 ## Environment setup
 
-Checkout and run!
+Checkout and run
 
 ## Schemes, targets and build flags
 
