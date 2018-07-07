@@ -17,8 +17,8 @@ The Yona app enables the user define challenges on mobile device usage and then 
 ## Prerequisites
 
 - Android versions supported `4.4+`
-- Build with SDK `23.0.1`
-- Works on `Android Device`
+- Build with SDK `27.0.2`
+- Works on Android devices
 
 ## Environment setup
 
