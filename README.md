@@ -2,7 +2,7 @@
 
 ## Application definition statement
 
-Main concept of Yona is to know user how much time they are utilizing on mobile device like multimedia, social, etc categories daily.
+The Yona app enables the user define challenges on mobile device usage and then work on meeting these challenges together with friends.
 
 ## References
 
