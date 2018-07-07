@@ -12,12 +12,7 @@ pipeline {
       }
     }
     stage('gradle step') {
-      steps {
-        script {
-          echo sh(script: 'env|sort', returnStdout: true)
-        }
-        
-        sh 'echo \"y\" | ${ANDROID_HOME}/tools/android update sdk --no-ui --all --filter platform-tools,android-25,extra-android-m2repository'
+        sh 'echo \"y\" | ${ANDROID_HOME}/tools/android update sdk --no-ui --all --filter platform-tools,android-27,extra-android-m2repository'
         sh './gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx1536m app:assembleDebug --scan'
       }
     }
