@@ -14,7 +14,7 @@ pipeline {
     stage('gradle step') {
       steps {
         sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter build-tools-27.0.3'
-        sh './gradlew app:assemble'
+        sh './gradlew app:assembleDebug'
       }
     }
     stage('Build') {
