@@ -1,4 +1,4 @@
-# Yona [You Are Not Alone]
+# Yona Android app
 
 ## Application definition statement
 
