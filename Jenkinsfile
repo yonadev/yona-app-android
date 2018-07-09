@@ -12,11 +12,11 @@ pipeline {
       }
       steps {
         checkout scm
-        sh 'echo "y" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter build-tools-27.0.3'
+        sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter build-tools-27.0.3'
         sh './gradlew app:assembleDebug'
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
-        archiveArtifacts 'app/build/outputs/apk/**/*.apk'
+        archiveArtifacts(artifacts: 'app/build/outputs/apk/**/*.apk', allowEmptyArchive: false)
       }
     }
   }
