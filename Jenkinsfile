@@ -17,7 +17,7 @@ pipeline {
         sh 'git add app/${BRANCH_NAME}.version.properties'
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER"'
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
-        sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
+        sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
         archiveArtifacts(artifacts: 'app/build/outputs/apk/**/*.apk', allowEmptyArchive: false)
       }
     }
