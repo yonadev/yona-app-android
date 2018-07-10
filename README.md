@@ -1,8 +1,8 @@
-# Yona Android app
+# Yona
 
 ## Application definition statement
 
-Main concept of Yona is to know user how much time they are utilizing on mobile device like multimedia, social, etc categories daily.
+The Yona app enables the user define challenges on mobile device usage and then work on meeting these challenges together with friends.
 
 ## References
 
@@ -14,20 +14,15 @@ Main concept of Yona is to know user how much time they are utilizing on mobile 
 * [Hockey-Acceptance](https://rink.hockeyapp.net/manage/apps/366916)
 * [Server source code](https://github.com/yonadev/yona-server)
 
-## People
-
-* Project manager: Yvonne Dieks <ydieks@mobiquityinc.com>
-* Tech lead: Kinnar Vasa <kvasa@mobiquityinc.com>
-
 ## Prerequisites
 
 - Android versions supported `4.4+`
-- Build with SDK `23.0.1`
-- Works on `Android Device`
+- Build with SDK `27.0.2`
+- Works on Android devices
 
 ## Environment setup
 
-Checkout and run!
+Checkout and run
 
 ## Schemes, targets and build flags
 
