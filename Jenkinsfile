@@ -14,6 +14,7 @@ pipeline {
         checkout scm
         sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
         sh './gradlew app:assembleDebug'
+        sh 'git checkout $BRANCH_NAME'
         sh 'git add app/${BRANCH_NAME}.version.properties'
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER"'
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
