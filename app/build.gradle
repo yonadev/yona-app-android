@@ -1,15 +1,33 @@
 apply plugin: 'com.android.application'
 
 android {
+    def branchVersionCode = 0
+	if (System.env.BRANCH_NAME) {
+        def versionPropsFile = file("${System.env.BRANCH_NAME}.version.properties")
+        def Properties versionProps = new Properties()
+
+        if (versionPropsFile.canRead()) {
+            versionProps.load(new FileInputStream(versionPropsFile))
+        }
+        else {
+            versionProps['VERSION_CODE']='0'
+        }
+
+        branchVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
+
+        versionProps['VERSION_CODE']=branchVersionCode.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+	}
+
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
-	flavorDimensions 'default'
+    flavorDimensions 'default'
     defaultConfig {
         applicationId "nu.yona.app"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 30
-        versionName "1.0.8"
+        versionCode branchVersionCode
+        versionName "1.1 build $System.env.BUILD_NUMBER" + (System.env.BRANCH_NAME == "master" ? "" : " ($System.env.BRANCH_NAME)")
     }
     buildTypes {
         release {
