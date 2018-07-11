@@ -9,21 +9,12 @@ pipeline {
     booleanParam(defaultValue: true, description: 'Execute pipeline?', name: 'shouldBuild')
   }
   stages {
-    stage('Check out') {
-      steps {
-        checkout scm
-        result = sh (script: "git log -1 | grep '.*\\[ci skip\\].*'", returnStatus: true) 
-        if (result == 0) {
-          shouldBuild = false
-        }
-      }
-    }
     stage('Build') {
       environment {
         GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
       }
       when {
-        expression { shouldBuild }
+        not changelog '.*\\[ci skip\\].*'
       }
       steps {
         sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
