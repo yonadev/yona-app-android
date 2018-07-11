@@ -13,7 +13,7 @@ pipeline {
       when {
         expression {
           result = sh (script: "git log -1 | grep '.*\\[ci skip\\].*'", returnStatus: true) // Check if commit message contains skip ci label
-          result == 0 // Evaluate the result
+          result != 0 // Evaluate the result
         }
       }
       steps {
