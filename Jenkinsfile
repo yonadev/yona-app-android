@@ -10,8 +10,11 @@ pipeline {
       environment {
         GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
       }
-      when not {
-        changelog '.*\\[ci skip\\].*'
+      when {
+        expression {
+          result = sh (script: "git log -1 | grep '.*\\[ci skip\\].*'", returnStatus: true) # Check if commit message contains skip ci label
+          result == 0 # Evaluate the result
+        }
       }
       steps {
         sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
