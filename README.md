@@ -7,7 +7,7 @@ The Yona app enables the user define challenges on mobile device usage and then 
 ## References
 
 * [Architecture](Architecture.md)
-* [Jira](http://jira.yona.nu/secure/RapidBoard.jspa?projectKey=APPDEV&useStoredSettings=true&rapidView=6)
+* [Jira](https://jira.yona.nu/secure/RapidBoard.jspa?rapidView=9&view=detail)
 * [Jenkins-Development](https://jenkins-mobile.eu.mobproto.com/job/Yona/)
 * [Jenkins-Acceptance](https://jenkins-mobile.eu.mobproto.com/job/Yona-ACC/)
 * [Hockey-Development](https://rink.hockeyapp.net/manage/apps/308021)
