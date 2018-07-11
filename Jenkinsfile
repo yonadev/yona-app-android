@@ -5,20 +5,35 @@ pipeline {
     }
     
   }
+  parameters {
+    booleanParam(defaultValue: true, description: 'Execute pipeline?', name: 'shouldBuild')
+  }
   stages {
+    stage('Check out') {
+      steps {
+        checkout scm
+        result = sh (script: "git log -1 | grep '.*\\[ci skip\\].*'", returnStatus: true) 
+        if (result == 0) {
+          shouldBuild = false
+        }
+      }
+    }
     stage('Build') {
       environment {
         GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
       }
+      when {
+        expression { shouldBuild }
+      }
       steps {
-        checkout scm
         sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
         sh './gradlew app:assembleDebug'
         sh 'git checkout $BRANCH_NAME'
         sh 'git add app/${BRANCH_NAME}.version.properties'
-        sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER"'
-        sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
+        sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
+        sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
+        sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
         archiveArtifacts(artifacts: 'app/build/outputs/apk/**/*.apk', allowEmptyArchive: false)
       }
     }
