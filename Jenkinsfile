@@ -12,7 +12,7 @@ pipeline {
     stage('Check out') {
       steps {
         checkout scm
-        result = sh (script: "git log -1 | grep '.*\\[ci skip\\].*'", returnStatus: true) 
+        def result = sh (script: "git log -1 | grep '.*\\[ci skip\\].*'", returnStatus: true) 
         if (result == 0) {
           shouldBuild = false
         }
