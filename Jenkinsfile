@@ -19,7 +19,6 @@ pipeline {
       steps {
         sh 'echo \"y\" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
         sh './gradlew app:assembleDebug'
-        sh 'git checkout $BRANCH_NAME'
         sh 'git add app/${BRANCH_NAME}.version.properties'
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
