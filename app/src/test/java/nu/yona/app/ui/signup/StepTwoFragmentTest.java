@@ -10,14 +10,9 @@
 
 package nu.yona.app.ui.signup;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.robolectric.Robolectric;
 
-import nu.yona.app.R;
 import nu.yona.app.YonaTestCase;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
@@ -32,22 +27,24 @@ public class StepTwoFragmentTest extends YonaTestCase {
 
     @Before
     public void setup() {
-        activity = Robolectric.buildActivity(SignupActivity.class)
+
+        /*activity = Robolectric.buildActivity(SignupActivity.class, intent)
                 .create()
                 .start()
                 .resume()
                 .get();
+
         StepTwoFragment stepTwoFragment = new StepTwoFragment();
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(stepTwoFragment, null);
-        fragmentTransaction.commit();
-        mobileNumber = (YonaFontEditTextView) activity.findViewById(R.id.mobile_number);
+        fragmentTransaction.commit();*/
+       // mobileNumber = (YonaFontEditTextView) activity.findViewById(R.id.mobileNumber);
     }
 
     @Test
     public void validateMobileNumber() {
-        mobileNumber.setText("+31123456789");
-        assertTrue(APIManager.getInstance().getAuthenticateManager().validateMobileNumber(mobileNumber.getText().toString()));
+        String mobileNumber = "+31123456789";
+        assertTrue(APIManager.getInstance().getAuthenticateManager().validateMobileNumber(mobileNumber));
     }
 }

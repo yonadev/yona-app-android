@@ -10,51 +10,37 @@
 
 package nu.yona.app.ui.signup;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.robolectric.Robolectric;
-
-import nu.yona.app.R;
 import nu.yona.app.YonaTestCase;
 import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.customview.YonaFontEditTextView;
+
 
 /**
  * Created by kinnarvasa on 31/03/16.
  */
 public class StepOneTest extends YonaTestCase {
 
-    private SignupActivity activity;
-    private YonaFontEditTextView firstName, lastName;
+    private StepOne stepOneFragment;
+    private String name;
+
 
     @Before
     public void setup() {
-        activity = Robolectric.buildActivity(SignupActivity.class)
-                .create()
-                .start()
-                .resume()
-                .get();
-        StepOne stepOne = new StepOne();
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(stepOne, null);
-        fragmentTransaction.commit();
-        firstName = (YonaFontEditTextView) activity.findViewById(R.id.first_name);
-        lastName = (YonaFontEditTextView) activity.findViewById(R.id.last_name);
+           stepOneFragment = new StepOne();
     }
 
     @Test
     public void validateFirstName() {
-        firstName.setText("Kinnar");
-        assertTrue(APIManager.getInstance().getAuthenticateManager().validateText(firstName.getText().toString()));
+        assertNotNull(stepOneFragment);
+        name = "madhu";
+        assertTrue(APIManager.getInstance().getAuthenticateManager().validateText(name));
     }
 
     @Test
     public void validateLastName() {
-        lastName.setText("Vasa");
-        assertTrue(APIManager.getInstance().getAuthenticateManager().validateText(lastName.getText().toString()));
+        name = "vardan";
+        assertTrue(APIManager.getInstance().getAuthenticateManager().validateText(name));
     }
+
 }

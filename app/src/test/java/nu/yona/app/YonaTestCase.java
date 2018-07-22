@@ -12,6 +12,7 @@ package nu.yona.app;
 
 import android.test.AndroidTestCase;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
@@ -23,5 +24,7 @@ import nu.yona.app.support.YonaRunner;
 
 @Config(constants = BuildConfig.class, sdk = 21)
 @RunWith(YonaRunner.class)
+@Ignore
 public class YonaTestCase extends AndroidTestCase {
+
 }

@@ -11,7 +11,7 @@
 package nu.yona.app.support;
 
 import org.junit.runners.model.InitializationError;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.manifest.AndroidManifest;
 import org.robolectric.res.FileFsFile;
@@ -20,7 +20,7 @@ import org.robolectric.res.FsFile;
 /**
  * Created by kinnarvasa on 30/03/16.
  */
-public class YonaRunner extends RobolectricGradleTestRunner {
+public class YonaRunner extends RobolectricTestRunner {
     private static final int MAX_SDK_SUPPORTED_BY_ROBOLECTRIC = 23;
 
     public YonaRunner(Class<?> testClass) throws InitializationError {

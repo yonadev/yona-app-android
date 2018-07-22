@@ -10,9 +10,9 @@
 
 package nu.yona.app;
 
-import android.content.pm.PackageInfo;
 import android.test.ApplicationTestCase;
 import android.test.MoreAsserts;
+
 
 /**
  * Created by kinnarvasa on 30/03/16.
@@ -32,8 +32,10 @@ public class YonaApplicationTest extends ApplicationTestCase<YonaApplication> {
     }
 
     public void testCorrectVersion() throws Exception {
-        PackageInfo info = yonaApplication.getPackageManager().getPackageInfo(yonaApplication.getPackageName(), 0);
-        assertNotNull(info);
-        MoreAsserts.assertMatchesRegex("\\d\\.\\d", info.versionName);
+        String versionName = BuildConfig.VERSION_NAME;
+        //PackageInfo info = yonaApplication.getPackageManager().getPackageInfo(yonaApplication.getPackageName(), 0);
+        //assertNotNull(info);
+        MoreAsserts.assertMatchesRegex("\\d\\.\\d", versionName);
     }
+
 }

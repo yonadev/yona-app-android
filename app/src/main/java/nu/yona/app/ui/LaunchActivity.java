@@ -21,6 +21,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
@@ -133,6 +137,23 @@ public class LaunchActivity extends BaseActivity {
         alert.show();
     }
 
+    boolean validateUrl(String enteredURL){
+
+        if(enteredURL.isEmpty()){
+            return false;
+        }
+        else{
+            try{
+                new URL(enteredURL).toURI();
+                return true;
+            }catch (URISyntaxException e){
+                return false;
+            }catch (MalformedURLException e){
+                return false;
+            }
+        }
+
+    }
 
     void validateEnvironment(String newEnvironmentURL) {
         showLoadingView(true,null);
