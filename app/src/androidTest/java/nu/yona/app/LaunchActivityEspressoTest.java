@@ -29,38 +29,26 @@ public class LaunchActivityEspressoTest {
 
     @Test
     public void testWhetherDialogOpened(){
-
         onView(withId(R.id.environmentSwitch)).perform(longClick());
-
         // @param UI_TEST_TIMEOUT is dependent on number of tests runned, increase it accordingly.
-
         IdlingPolicies.setMasterPolicyTimeout(UI_TEST_TIMEOUT, TimeUnit.MILLISECONDS);
         IdlingPolicies.setIdlingResourceTimeout(UI_TEST_TIMEOUT, TimeUnit.MILLISECONDS);
-
         IdlingResource idlingResource = new IdlingResource() {
             @Override
             public String getName() {
                 return IdlingResource.class.getName();
             }
-
             @Override
             public boolean isIdleNow() {
                 return true;
             }
-
             @Override
             public void registerIdleTransitionCallback(ResourceCallback callback) {
-
             }
         };
         IdlingRegistry.getInstance().register(idlingResource);
-
-
         onView(withText(R.string.environment_alert_title)).check(matches(isDisplayed()));
-
         IdlingRegistry.getInstance().unregister(idlingResource);
-
-
     }
 
 }

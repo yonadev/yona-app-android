@@ -39,18 +39,16 @@ public class AuthenticateManagerImplTest {
     @Test
     public void checkRegisterUser() {
         RegisterUser registerUser = new RegisterUser();
-        registerUser.setFirstName("Kinnar");
-        registerUser.setLastName("Vasa");
-        registerUser.setMobileNumber("+31873449748");
-        registerUser.setNickName("Kinnar");
-
+        registerUser.setFirstName("Siva");
+        registerUser.setLastName("Teja");
+        registerUser.setMobileNumber("+919686270640");
+        registerUser.setNickName("Siva");
         manager.registerUser(registerUser, true, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 validateMobileNumber(password, ((User) result).getMobileNumberConfirmationCode());
                 assertTrue(result instanceof User);
             }
-
             @Override
             public void onError(Object errorMessage) {
                 assertTrue(errorMessage instanceof ErrorMessage);
@@ -64,7 +62,6 @@ public class AuthenticateManagerImplTest {
             public void onDataLoad(Object result) {
                 System.out.println(result.toString());
             }
-
             @Override
             public void onError(Object errorMessage) {
                 System.out.println(errorMessage.toString());
