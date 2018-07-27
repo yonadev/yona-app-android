@@ -47,42 +47,45 @@ public class StepOneTest extends YonaTestCase {
 
     @Before
     public void setup() {
-        String uri = YonaApplication.getAppContext().getString(R.string.server_url);
-        Intent intent = new Intent(Intent.ACTION_VIEW).putExtra(AppConstant.DEEP_LINK, uri);
-        activity = Robolectric.buildActivity(SignupActivity.class, intent)
-                .create()
-                .start()
-                .resume()
-                .get();
-
-        StepOne stepOne = new StepOne();
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(stepOne, null);
-        fragmentTransaction.commit();
-        view = stepOne.getView();
-        firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
+        if(activity == null){
+            String uri = YonaApplication.getAppContext().getString(R.string.server_url);
+            Intent intent = new Intent(Intent.ACTION_VIEW).putExtra(AppConstant.DEEP_LINK, uri);
+            activity = Robolectric.buildActivity(SignupActivity.class, intent)
+                    .create()
+                    .start()
+                    .resume()
+                    .get();
+        }
+        if(view == null){
+            StepOne stepOne = new StepOne();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(stepOne, null);
+            fragmentTransaction.commit();
+            view = stepOne.getView();
+            firstName = (YonaFontEditTextView) view.findViewById(R.id.first_name);
+        }
         if(authenticateManager == null){
-            authenticateManager =  APIManager.getInstance().getAuthenticateManager().validateText(null)
+            authenticateManager =  APIManager.getInstance().getAuthenticateManager();
         }
     }
 
     @Test
     public void validateFirstName(){
         firstName.setText("Kinnar");
-        assertTrue(APIManager.getInstance().getAuthenticateManager().validateText(firstName.getText().toString()));
+        assertTrue(authenticateManager.validateText(firstName.getText().toString()));
     }
 
     @Test
     public void validateEmptyFirstName() {
         firstName.setText("");
-        assertFalse(APIManager.getInstance().getAuthenticateManager().validateText(firstName.getText().toString()));
+        assertFalse(authenticateManager.validateText(firstName.getText().toString()));
     }
 
     @Test
     public void validateNullFirstName() {
         firstName.setText("");
-        assertNotNull(APIManager.getInstance().getAuthenticateManager().validateText(null));
+        assertNotNull(authenticateManager.validateText(null));
     }
 
     @After
