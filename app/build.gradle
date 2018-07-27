@@ -163,11 +163,9 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.8'
-    testCompile 'org.robolectric:shadows-support-v4:3.0'
-
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    testImplementation 'org.robolectric:shadows-support-v4:3.0'
 
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.android.support:recyclerview-v7:27.1.0'

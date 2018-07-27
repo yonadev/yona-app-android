@@ -10,32 +10,35 @@
 
 package nu.yona.app;
 
+import android.app.Application;
+import android.app.Instrumentation;
+import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.test.ApplicationTestCase;
 import android.test.MoreAsserts;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.robolectric.RuntimeEnvironment;
+
+import static junit.framework.Assert.assertNotNull;
 
 
 /**
  * Created by kinnarvasa on 30/03/16.
  */
-public class YonaApplicationTest extends ApplicationTestCase<YonaApplication> {
+public class YonaApplicationTest extends YonaTestCase{
     private YonaApplication yonaApplication;
 
-    public YonaApplicationTest() {
-        super(YonaApplication.class);
+    @Before
+    public  void setUp() throws Exception {
+        yonaApplication = (YonaApplication) RuntimeEnvironment.application;
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        createApplication();
-        yonaApplication = getApplication();
-
-    }
-
+    @Test
     public void testCorrectVersion() throws Exception {
-        String versionName = BuildConfig.VERSION_NAME;
-        //PackageInfo info = yonaApplication.getPackageManager().getPackageInfo(yonaApplication.getPackageName(), 0);
-        //assertNotNull(info);
-        MoreAsserts.assertMatchesRegex("\\d\\.\\d", versionName);
+        PackageInfo info = yonaApplication.getPackageManager().getPackageInfo(yonaApplication.getPackageName(), 0);
+        assertNotNull(info);
+        MoreAsserts.assertMatchesRegex("\\d\\.\\d", info.versionName);
     }
-
 }
