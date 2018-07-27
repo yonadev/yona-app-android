@@ -28,7 +28,7 @@ pipeline {
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
         archiveArtifacts 'app/build/outputs/apk/**/*.apk'
-        publishHTML([     allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'tests', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: 'testReport'  ])
+        publishHTML(allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'app/build/reports/tests/*', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: 'testReport')
       }
     }
   }
