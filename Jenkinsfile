@@ -18,8 +18,7 @@ pipeline {
         GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
       }
       steps {
-        archiveArtifacts '**/*.html'
-        publishHTML(allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'app/build/reports/tests/*', reportFiles: 'index.html', reportName: 'YonaAndroidTestReport', reportTitles: 'testReport')
+        archiveArtifacts '*/reports/**/*.html'
       }
     }
   }
