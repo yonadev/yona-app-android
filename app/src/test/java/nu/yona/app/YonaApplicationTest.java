@@ -14,12 +14,17 @@ import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.test.ApplicationTestCase;
 import android.test.MoreAsserts;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
+
+import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.Links;
+import nu.yona.app.api.model.User;
+import nu.yona.app.state.EventChangeManager;
 
 import static junit.framework.Assert.assertNotNull;
 
@@ -32,7 +37,21 @@ public class YonaApplicationTest extends YonaTestCase{
 
     @Before
     public  void setUp() throws Exception {
+        prepareMockedSetupForApplication();
+    }
+
+    public void prepareMockedSetupForApplication(){
         yonaApplication = (YonaApplication) RuntimeEnvironment.application;
+        User user = new User();
+        user.setNickname("Mocked User");
+        Href userSelfHref = new Href();
+        userSelfHref.setHref("Url");
+        Links links = new Links();
+        links.setSelf(userSelfHref);
+        user.setLinks(links);
+        user.setMobileNumberConfirmationCode("4444");
+        yonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword("testYonaPwd");
+        yonaApplication.getEventChangeManager().getDataState().setUser(user);
     }
 
     @Test
@@ -41,4 +60,11 @@ public class YonaApplicationTest extends YonaTestCase{
         assertNotNull(info);
         MoreAsserts.assertMatchesRegex("\\d\\.\\d", info.versionName);
     }
+
+    @After
+    public void tearDown() {
+        yonaApplication = null;
+    }
+
+
 }
