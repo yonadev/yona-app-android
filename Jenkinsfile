@@ -19,9 +19,16 @@ pipeline {
       }
       steps {
         sh 'echo "y" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
-        sh './gradlew app:assembleRelease'
-        sh './gradlew testZproductionReleaseUnitTest'
-        publishHTML(allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'app/build/reports/tests/testZproductionReleaseUnitTest/', reportFiles: 'index.html', reportName: 'YonaAndroidTestReport', reportTitles: 'testReport')
+        sh './gradlew app:assembleDebug'
+        sh './gradlew testZproductionDebugUnitTest'
+        sh 'git checkout $BRANCH_NAME'
+        sh 'git add app/${BRANCH_NAME}.version.properties'
+        sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
+        sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
+        sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
+        sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
+        archiveArtifacts 'app/build/outputs/apk/**/*.apk'
+        publishHTML(allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'app/build/reports/tests/testZproductionDebugUnitTest/', reportFiles: 'index.html', reportName: 'YonaTestReport', reportTitles: 'testReport')
       }
     }
   }
