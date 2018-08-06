@@ -37,21 +37,7 @@ public class YonaApplicationTest extends YonaTestCase{
 
     @Before
     public  void setUp() throws Exception {
-        prepareMockedSetupForApplication();
-    }
-
-    public void prepareMockedSetupForApplication(){
         yonaApplication = (YonaApplication) RuntimeEnvironment.application;
-        User user = new User();
-        user.setNickname("Mocked User");
-        Href userSelfHref = new Href();
-        userSelfHref.setHref("Url");
-        Links links = new Links();
-        links.setSelf(userSelfHref);
-        user.setLinks(links);
-        user.setMobileNumberConfirmationCode("4444");
-        yonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword("testYonaPwd");
-        yonaApplication.getEventChangeManager().getDataState().setUser(user);
     }
 
     @Test

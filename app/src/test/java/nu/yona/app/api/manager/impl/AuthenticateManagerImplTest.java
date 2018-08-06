@@ -51,8 +51,6 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
 
     private String correctMobileNumber = "+919686270640";
     private String wrongMobileNumber = "+9999211";
-
-
     private OTPVerficationCode correctOtpCode = new OTPVerficationCode("1234");
     private OTPVerficationCode wrongOtpCode = new OTPVerficationCode("1111");
     private String nullOtpCode = null;
