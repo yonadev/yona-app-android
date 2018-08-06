@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    def branchVersionCode = 0
+    def versionCode = 0
 	if (System.env.BRANCH_NAME) {
         def versionPropsFile = file("version.properties")
         def Properties versionProps = new Properties()
