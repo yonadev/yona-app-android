@@ -128,8 +128,7 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     }
 
     private void setUpApplicationTestData(){
-        YonaApplication yonaApplication;
-        yonaApplication = (YonaApplication) RuntimeEnvironment.application;
+        YonaApplication yonaApplication = (YonaApplication) RuntimeEnvironment.application;
         yonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
         yonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword("AES:128:hiQK2AjU4YE8tEuJlUy+Ug==");
         yonaApplication.getEventChangeManager().getDataState().setUser(getMockedUser());
@@ -218,7 +217,7 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
 
 
     private void handleUpdateDataResponse(Object[] responseArguments){
-        DataLoadListener listenerArg = (DataLoadListener)responseArguments[2];
+        DataLoadListener listenerArg = (DataLoadListener)responseArguments[1];
         if(listenerArg != null ){
             listenerArg.onDataLoad(getMockedUser());
         }else{

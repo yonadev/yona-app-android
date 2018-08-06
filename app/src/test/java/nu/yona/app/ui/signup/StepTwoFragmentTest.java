@@ -51,7 +51,7 @@ public class StepTwoFragmentTest extends YonaTestCase {
         activity = Robolectric.buildActivity(SignupActivity.class, intent)
                 .create()
                 .start()
-                .resume()
+                .visible()
                 .get();
         stepTwoFragment = new StepTwoFragment();
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
