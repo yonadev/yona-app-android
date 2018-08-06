@@ -52,8 +52,21 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     private String correctMobileNumber = "+919686270640";
     private String wrongMobileNumber = "+9999211";
 
+
     private OTPVerficationCode correctOtpCode = new OTPVerficationCode("1234");
     private OTPVerficationCode wrongOtpCode = new OTPVerficationCode("1111");
+    private String nullOtpCode = null;
+
+    private DataLoadListener genericResponseListener = new DataLoadListener() {
+        @Override
+        public void onDataLoad(Object result) {
+            assertTrue(result instanceof User);
+        }
+        @Override
+        public void onError(Object errorMessage) {
+            assertTrue(errorMessage instanceof  ErrorMessage);
+        }
+    };
 
 
     @Before
@@ -88,33 +101,19 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
         validateMobileNumber(wrongOtpCode.getCode());
     }
 
+
+    @Test
+    public void verifyUserPassCodeWithNullCode() {
+        validateMobileNumber(nullOtpCode);
+    }
+
     private void verifyUserRegistration(){
-        DataLoadListener userRegListener = new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                assertTrue(result instanceof User);
-            }
-            @Override
-            public void onError(Object errorMessage) {
-                assertTrue(errorMessage instanceof  ErrorMessage);
-            }
-        };
-        manager.registerUser(registerUser, true, userRegListener);
+        manager.registerUser(registerUser, true, genericResponseListener);
     }
 
 
     private void validateMobileNumber( String code) {
-        DataLoadListener otpListenerWrapper = new DataLoadListener() {
-            @Override
-            public void onDataLoad(Object result) {
-                assertTrue(result instanceof User);
-            }
-            @Override
-            public void onError(Object errorMessage) {
-                assertTrue(errorMessage instanceof  ErrorMessage);
-            }
-        };
-        manager.verifyOTP(code, otpListenerWrapper);
+        manager.verifyOTP(code, genericResponseListener);
     }
 
     private User getMockedUser(){
@@ -152,7 +151,6 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     }
 
     private void handleUserRegResponse(Object[] responseArguments){
-        Log.d(TAG, "handleUserRegResponse: ");
         DataLoadListener listenerArg = (DataLoadListener)responseArguments[4];
         RegisterUser regUserfromResponse = (RegisterUser)responseArguments[2];
         String regUserMobileNumFromReponse = (String)regUserfromResponse.getMobileNumber();
@@ -167,12 +165,10 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
             }
         }else{
             assertFalse(false);
-            Log.d("Error","No Listener Found in the args");
         }
     }
 
     private void handleVerifyMobileResponse(Object[] responseArguments){
-        Log.d(TAG, "handleVerifyMobileResponse: ");
         DataLoadListener listenerArg = (DataLoadListener)responseArguments[3];
         OTPVerficationCode otpFromresponse = (OTPVerficationCode)responseArguments[2];
         String otpFromresponseCode = (String)otpFromresponse.getCode();
@@ -187,18 +183,15 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
             }
         }else{
             assertFalse(false);
-            Log.d("Error","No Listener Found in the args");
         }
     }
 
     private void handleGetUserResponse(Object[] responseArguments){
-        Log.d(TAG, "handleVerifyMobileResponse: ");
         DataLoadListener listenerArg = (DataLoadListener)responseArguments[2];
         if(listenerArg != null ){
             listenerArg.onDataLoad(getMockedUser());
         }else{
             assertFalse(false);
-            Log.d("Error","No Listener Found in the args");
         }
     }
 
@@ -225,21 +218,19 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
                 ArgumentMatchers.any(DataLoadListener.class));
     }
 
+
+    private void handleUpdateDataResponse(Object[] responseArguments){
+        DataLoadListener listenerArg = (DataLoadListener)responseArguments[2];
+        if(listenerArg != null ){
+            listenerArg.onDataLoad(getMockedUser());
+        }else{
+            assertFalse(false);
+        }
+    }
+
     private void setUpMockedAuthNetworkDaoMethods() {
         Mockito.doAnswer((Answer) invocation -> {
-            DataLoadListener listenerArg = null;
-            for (Object arg : invocation.getArguments()) {
-                if (arg instanceof DataLoadListener) {
-                    listenerArg = (DataLoadListener) arg;
-                    break;
-                }
-            }
-            if(listenerArg != null){
-                listenerArg.onDataLoad(getMockedUser());
-            }else{
-                assertFalse(false);
-                Log.d("Error","No Listener Found in the args");
-            }
+            handleUpdateDataResponse(invocation.getArguments());
             return null;
         }).when(authenticateDAOMock).updateDataForRegisterUser(ArgumentMatchers.any(Object.class),
                 ArgumentMatchers.any(DataLoadListener.class));
