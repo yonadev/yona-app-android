@@ -27,6 +27,14 @@ pipeline {
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
         archiveArtifacts 'app/build/outputs/apk/**/*.apk'
       }
+      post {
+        success {
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} succeeded"
+        }
+        failure {
+          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
+        }
+      }
     }
   }
 }
