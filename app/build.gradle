@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
-    def branchVersionCode = 0
+    def newVersionCode = 0
 	if (System.env.BRANCH_NAME) {
-        def versionPropsFile = file("${System.env.BRANCH_NAME}.version.properties")
+        def versionPropsFile = file("version.properties")
         def Properties versionProps = new Properties()
 
         if (versionPropsFile.canRead()) {
@@ -13,9 +13,9 @@ android {
             versionProps['VERSION_CODE']='0'
         }
 
-        branchVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
+        newVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
 
-        versionProps['VERSION_CODE']=branchVersionCode.toString()
+        versionProps['VERSION_CODE']=newVersionCode.toString()
         versionProps.store(versionPropsFile.newWriter(), null)
 	}
 
@@ -26,7 +26,7 @@ android {
         applicationId "nu.yona.app"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode branchVersionCode
+        versionCode newVersionCode
         versionName "1.1 build $System.env.BUILD_NUMBER" + (System.env.BRANCH_NAME == "master" ? "" : " ($System.env.BRANCH_NAME)")
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -102,8 +102,6 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    android.defaultConfig.versionName = getVersionString()
-    android.defaultConfig.versionCode = Integer.valueOf(getBuildNumber())
 
     lintOptions {
         abortOnError false
