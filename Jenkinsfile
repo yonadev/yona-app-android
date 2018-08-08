@@ -19,7 +19,7 @@ pipeline {
       }
       steps {
         sh 'echo "y" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
-        sh './gradlew clean testZAcceptanceDebugUnitTest --info'
+        sh './gradlew clean testZacceptanceDebugUnitTest'
         sh './gradlew app:assembleDebug'
         sh 'git add app/version.properties'
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
@@ -30,7 +30,7 @@ pipeline {
       }
       post {
         always {
-          publishHTML(allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'app/build/reports/tests/testZAcceptanceDebugUnitTest/', reportFiles: 'index.html', reportName: 'YonaTestReport', reportTitles: 'testReport')  
+          publishHTML(allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'app/build/reports/tests/testZacceptanceDebugUnitTest/', reportFiles: 'index.html', reportName: 'YonaTestReport', reportTitles: 'testReport')  
         }  
         success {
           slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} succeeded"
