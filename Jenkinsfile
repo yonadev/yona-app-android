@@ -19,7 +19,7 @@ pipeline {
       }
       steps {
         sh 'echo "y" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
-        sh './gradlew clean testZAcceptanceDebugUnitTest --debug'
+        sh './gradlew clean testZAcceptanceDebugUnitTest --info'
         sh './gradlew app:assembleDebug'
         sh 'git add app/version.properties'
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
