@@ -91,18 +91,18 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
 
     @Test
     public void verifyUserPassCodeWithCorrectCode() {
-        validateMobileNumber(correctOtpCode.getCode());
+        confirmMobileNumberWithOtp(correctOtpCode.getCode());
     }
 
     @Test
     public void verifyUserPassCodeWithWrongCode() {
-        validateMobileNumber(wrongOtpCode.getCode());
+        confirmMobileNumberWithOtp(wrongOtpCode.getCode());
     }
 
 
     @Test
     public void verifyUserPassCodeWithNullCode() {
-        validateMobileNumber(nullOtpCode);
+        confirmMobileNumberWithOtp(nullOtpCode);
     }
 
     private void verifyUserRegistration(){
@@ -110,7 +110,7 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     }
 
 
-    private void validateMobileNumber( String code) {
+    private void confirmMobileNumberWithOtp( String code) {
         manager.verifyOTP(code, genericResponseListener);
     }
 
@@ -147,79 +147,61 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
         manager.setAuthenticateDao(authenticateDAOMock);
     }
 
-    private void handleUserRegResponse(Object[] responseArguments){
-        DataLoadListener listenerArg = (DataLoadListener)responseArguments[4];
-        RegisterUser regUserfromResponse = (RegisterUser)responseArguments[2];
+    private void handleUserRegResponse(String url, String password, RegisterUser regUserfromResponse, boolean isEditMode, final DataLoadListener listener){
         String regUserMobileNumFromReponse = (String)regUserfromResponse.getMobileNumber();
-        if(listenerArg != null && regUserMobileNumFromReponse!=null){
-            if(regUserMobileNumFromReponse.equals(correctMobileNumber)){
-                listenerArg.onDataLoad(getMockedUser());
-            }else{
-                ErrorMessage errorMessage = new ErrorMessage();
-                errorMessage.setMessage("Invalid Mobile Number");
-                errorMessage.setCode("400");
-                listenerArg.onError(errorMessage);
-            }
+        if(regUserMobileNumFromReponse.equals(correctMobileNumber)){
+            listener.onDataLoad(getMockedUser());
         }else{
-            assertFalse(false);
+            ErrorMessage errorMessage = new ErrorMessage();
+            errorMessage.setMessage("Invalid Mobile Number");
+            errorMessage.setCode("400");
+            listener.onError(errorMessage);
         }
     }
 
-    private void handleVerifyMobileResponse(Object[] responseArguments){
-        DataLoadListener listenerArg = (DataLoadListener)responseArguments[3];
-        OTPVerficationCode otpFromresponse = (OTPVerficationCode)responseArguments[2];
-        String otpFromresponseCode = (String)otpFromresponse.getCode();
-        if(listenerArg != null && otpFromresponseCode!=null){
-            if(otpFromresponseCode.equals(correctOtpCode.getCode())){
-                listenerArg.onDataLoad(getMockedUser());
-            }else{
-                ErrorMessage errorMessage = new ErrorMessage();
-                errorMessage.setMessage("Invalid Pass Code");
-                errorMessage.setCode("400");
-                listenerArg.onError(errorMessage);
-            }
-        }else{
-            assertFalse(false);
+    private void handleVerifyMobileResponse(String password, String url, OTPVerficationCode otpFromresponse, final DataLoadListener listener ) {
+        String otpFromresponseCode = (String) otpFromresponse.getCode();
+        if (otpFromresponseCode.equals(correctOtpCode.getCode())) {
+            listener.onDataLoad(getMockedUser());
+        } else {
+            ErrorMessage errorMessage = new ErrorMessage();
+            errorMessage.setMessage("Invalid Pass Code");
+            errorMessage.setCode("400");
+            listener.onError(errorMessage);
         }
     }
 
-    private void handleGetUserResponse(Object[] responseArguments){
-        DataLoadListener listenerArg = (DataLoadListener)responseArguments[2];
-        if(listenerArg != null ){
-            listenerArg.onDataLoad(getMockedUser());
-        }else{
-            assertFalse(false);
-        }
+    private void handleGetUserResponse(String url, String yonaPassword ,DataLoadListener listener){
+        listener.onDataLoad(getMockedUser());
     }
 
 
     private void setUpMockedAuthNetworkImplMethods(){
         Mockito.doAnswer((Answer) invocation -> {
-            handleUserRegResponse(invocation.getArguments());
+            handleUserRegResponse(invocation.getArgument(0),invocation.getArgument(1),invocation.getArgument(2),invocation.getArgument(3),invocation.getArgument(4));
             return null;
         }).when(authenticateNetworkImplMock).registerUser(ArgumentMatchers.any(String.class),
                 ArgumentMatchers.any(String.class),ArgumentMatchers.any(RegisterUser.class),
                 ArgumentMatchers.any(Boolean.class), ArgumentMatchers.any(DataLoadListener.class));
 
         Mockito.doAnswer((Answer) invocation -> {
-            handleVerifyMobileResponse(invocation.getArguments());
+            handleVerifyMobileResponse(invocation.getArgument(0),invocation.getArgument(1),invocation.getArgument(2),invocation.getArgument(3));
             return null;
         }).when(authenticateNetworkImplMock).verifyMobileNumber(ArgumentMatchers.any(String.class),
                 ArgumentMatchers.any(String.class), ArgumentMatchers.any(OTPVerficationCode.class),
                 ArgumentMatchers.any(DataLoadListener.class));
 
         Mockito.doAnswer((Answer) invocation -> {
-            handleGetUserResponse(invocation.getArguments());
+            handleGetUserResponse( invocation.getArgument(0), invocation.getArgument(1), invocation.getArgument(2));
             return null;
         }).when(authenticateNetworkImplMock).getUser(ArgumentMatchers.any(String.class), ArgumentMatchers.any(String.class),
                 ArgumentMatchers.any(DataLoadListener.class));
     }
 
 
-    private void handleUpdateDataResponse(Object[] responseArguments){
-        DataLoadListener listenerArg = (DataLoadListener)responseArguments[1];
-        if(listenerArg != null ){
-            listenerArg.onDataLoad(getMockedUser());
+    private void handleUpdateDataResponse(Object result, DataLoadListener listener){
+        if(listener != null ){
+            listener.onDataLoad(getMockedUser());
         }else{
             assertFalse(false);
         }
@@ -227,13 +209,11 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
 
     private void setUpMockedAuthNetworkDaoMethods() {
         Mockito.doAnswer((Answer) invocation -> {
-            handleUpdateDataResponse(invocation.getArguments());
+            handleUpdateDataResponse(invocation.getArgument(0),invocation.getArgument(1));
             return null;
         }).when(authenticateDAOMock).updateDataForRegisterUser(ArgumentMatchers.any(Object.class),
                 ArgumentMatchers.any(DataLoadListener.class));
 
         Mockito.when(authenticateDAOMock.getUser()).thenReturn(getMockedUser());
     }
-
-
 }
