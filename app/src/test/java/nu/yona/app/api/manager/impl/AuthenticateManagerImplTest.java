@@ -13,12 +13,9 @@ package nu.yona.app.api.manager.impl;
 import android.util.Log;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
@@ -41,14 +38,12 @@ import nu.yona.app.listener.DataLoadListenerImpl;
 
 import static com.google.android.gms.internal.zzs.TAG;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 
-/**
- * Created by kinnarvasa on 02/04/16.
- */
 public class AuthenticateManagerImplTest extends YonaTestCase {
     private AuthenticateManagerImpl manager;
     private AuthenticateNetworkImpl authenticateNetworkImplMock;
@@ -59,28 +54,28 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     private String wrongMobileNumber = "+9999211";
     private OTPVerficationCode correctOtpCode = new OTPVerficationCode("1234");
     private OTPVerficationCode wrongOtpCode = new OTPVerficationCode("1111");
-    private String nullOtpCode = null;
+    private String nullOtpCode;
     DatabaseHelper dbhelper = DatabaseHelper.getInstance(RuntimeEnvironment.application);
 
-    private Object testCaseResult = null;
+    private Object dataLoadResult;
+    private Object dataLoadError;
 
     private String nullOtpFailureMessage = YonaApplication.getAppContext().getString(R.string.error_message);
 
     private DataLoadListener genericResponseListener = new DataLoadListener() {
         @Override
         public void onDataLoad(Object result) {
-            testCaseResult = result;
+            dataLoadResult = result;
         }
         @Override
         public void onError(Object errorMessage) {
-            testCaseResult = errorMessage;
+            dataLoadError = errorMessage;
         }
     };
 
 
     @Before
     public void setUp() throws Exception {
-        testCaseResult = null;
         setUpApplicationTestData();
         setUpRegisterUser();
         manager = new AuthenticateManagerImpl(YonaApplication.getAppContext());
@@ -92,21 +87,24 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     @Test
     public void verifyUserPassCodeWithCorrectCode() {
         confirmMobileNumberWithOtp(correctOtpCode.getCode());
-        Assert.assertThat(testCaseResult, instanceOf(User.class));
+        assertThat(dataLoadResult, instanceOf(User.class));
+        assertThat(dataLoadError, is(nullValue()));
     }
 
     @Test
     public void verifyUserRegistrationWithProperData() {
         registerUser.setMobileNumber(correctMobileNumber);
         verifyUserRegistration();
-        Assert.assertThat(testCaseResult, instanceOf(User.class));
+        assertThat(dataLoadResult, instanceOf(User.class));
+        assertThat(dataLoadError, is(nullValue()));
     }
 
     @Test
     public void verifyUserRegistrationWithInvalidData() {
         registerUser.setMobileNumber(wrongMobileNumber);
         verifyUserRegistration();
-        Assert.assertThat(testCaseResult, instanceOf(ErrorMessage.class));
+        assertThat(dataLoadResult, is(nullValue()));
+        assertThat(dataLoadError, instanceOf(ErrorMessage.class));
     }
 
 
@@ -114,15 +112,16 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     @Test
     public void verifyUserPassCodeWithWrongCode() {
         confirmMobileNumberWithOtp(wrongOtpCode.getCode());
-        Assert.assertThat(testCaseResult, instanceOf(ErrorMessage.class));
+        assertThat(dataLoadResult, is(nullValue()));
+        assertThat(dataLoadError, instanceOf(ErrorMessage.class));
     }
 
 
     @Test
     public void verifyUserPassCodeWithNullCode() {
         confirmMobileNumberWithOtp(nullOtpCode);
-        Assert.assertThat(testCaseResult, instanceOf(String.class));
-        Assert.assertEquals(nullOtpFailureMessage,testCaseResult);
+        assertThat(dataLoadResult, is(nullValue()));
+        assertThat(dataLoadError, equalTo(nullOtpFailureMessage));
     }
 
     private void verifyUserRegistration(){
