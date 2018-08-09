@@ -28,6 +28,8 @@ android {
         targetSdkVersion 23
         versionCode newVersionCode
         versionName "1.1 build $System.env.BUILD_NUMBER" + (System.env.BRANCH_NAME == "master" ? "" : " ($System.env.BRANCH_NAME)")
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -52,6 +54,7 @@ android {
     testOptions {
         //this keeps junit (without robolectric) from failing when calling Log.<whatever> or TextUtils.<whatever>
         unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources = true
     }
 
     compileOptions {
@@ -157,7 +160,12 @@ dependencies {
     implementation files('libs/commons-lang3-3.4.jar')
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:3.0'
+    testImplementation 'org.robolectric:robolectric:3.8'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    testImplementation 'org.robolectric:shadows-support-v4:3.0'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
+
 
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.android.support:recyclerview-v7:27.1.0'

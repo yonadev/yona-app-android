@@ -39,11 +39,29 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class AuthenticateManagerImpl implements AuthenticateManager {
 
-    private final AuthenticateDAO authenticateDao;
-    private final AuthenticateNetworkImpl authNetwork;
+    private AuthenticateDAO authenticateDao;
     private final Context mContext;
+    private AuthenticateNetworkImpl authNetwork;
+
+
+    public AuthenticateDAO getAuthenticateDao() {
+        return authenticateDao;
+    }
+
+    public void setAuthenticateDao(AuthenticateDAO authenticateDao) {
+        this.authenticateDao = authenticateDao;
+    }
+
+    public AuthenticateNetworkImpl getAuthNetwork() {
+        return authNetwork;
+    }
+
+    public void setAuthNetwork(AuthenticateNetworkImpl authNetwork) {
+        this.authNetwork = authNetwork;
+    }
 
     /**
+     *
      * Instantiates a new Authenticate manager.
      *
      * @param context the context
