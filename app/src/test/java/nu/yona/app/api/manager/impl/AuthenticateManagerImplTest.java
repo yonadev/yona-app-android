@@ -12,6 +12,8 @@ package nu.yona.app.api.manager.impl;
 
 import android.util.Log;
 
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,8 +23,10 @@ import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
 
+import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.YonaTestCase;
+import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.AuthenticateManager;
 import nu.yona.app.api.manager.dao.AuthenticateDAO;
 import nu.yona.app.api.manager.network.AuthenticateNetworkImpl;
@@ -36,7 +40,9 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoadListenerImpl;
 
 import static com.google.android.gms.internal.zzs.TAG;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 
@@ -54,21 +60,27 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     private OTPVerficationCode correctOtpCode = new OTPVerficationCode("1234");
     private OTPVerficationCode wrongOtpCode = new OTPVerficationCode("1111");
     private String nullOtpCode = null;
+    DatabaseHelper dbhelper = DatabaseHelper.getInstance(RuntimeEnvironment.application);
+
+    private Object testCaseResult = null;
+
+    private String nullOtpFailureMessage = YonaApplication.getAppContext().getString(R.string.error_message);
 
     private DataLoadListener genericResponseListener = new DataLoadListener() {
         @Override
         public void onDataLoad(Object result) {
-            assertTrue(result instanceof User);
+            testCaseResult = result;
         }
         @Override
         public void onError(Object errorMessage) {
-            assertTrue(errorMessage instanceof  ErrorMessage);
+            testCaseResult = errorMessage;
         }
     };
 
 
     @Before
     public void setUp() throws Exception {
+        testCaseResult = null;
         setUpApplicationTestData();
         setUpRegisterUser();
         manager = new AuthenticateManagerImpl(YonaApplication.getAppContext());
@@ -78,31 +90,39 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     }
 
     @Test
+    public void verifyUserPassCodeWithCorrectCode() {
+        confirmMobileNumberWithOtp(correctOtpCode.getCode());
+        Assert.assertThat(testCaseResult, instanceOf(User.class));
+    }
+
+    @Test
     public void verifyUserRegistrationWithProperData() {
         registerUser.setMobileNumber(correctMobileNumber);
         verifyUserRegistration();
+        Assert.assertThat(testCaseResult, instanceOf(User.class));
     }
 
     @Test
     public void verifyUserRegistrationWithInvalidData() {
         registerUser.setMobileNumber(wrongMobileNumber);
         verifyUserRegistration();
+        Assert.assertThat(testCaseResult, instanceOf(ErrorMessage.class));
     }
 
-    @Test
-    public void verifyUserPassCodeWithCorrectCode() {
-        confirmMobileNumberWithOtp(correctOtpCode.getCode());
-    }
+
 
     @Test
     public void verifyUserPassCodeWithWrongCode() {
         confirmMobileNumberWithOtp(wrongOtpCode.getCode());
+        Assert.assertThat(testCaseResult, instanceOf(ErrorMessage.class));
     }
 
 
     @Test
     public void verifyUserPassCodeWithNullCode() {
         confirmMobileNumberWithOtp(nullOtpCode);
+        Assert.assertThat(testCaseResult, instanceOf(String.class));
+        Assert.assertEquals(nullOtpFailureMessage,testCaseResult);
     }
 
     private void verifyUserRegistration(){
@@ -215,5 +235,10 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
                 ArgumentMatchers.any(DataLoadListener.class));
 
         Mockito.when(authenticateDAOMock.getUser()).thenReturn(getMockedUser());
+    }
+
+    @After
+    public void tearDown() {
+        dbhelper.close();
     }
 }
