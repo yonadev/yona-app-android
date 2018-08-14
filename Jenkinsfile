@@ -1,12 +1,13 @@
 pipeline {
-  agent {
-    node {
-      label 'android-f25'
-    }
-    
-  }
+  agent none
   stages {
     stage('Build') {
+      agent {
+        docker {
+          label 'yona'
+          image 'unitedclassifiedsapps/gitlab-ci-android-fastlane'
+        }
+      }
       when {
         not { changelog '.*\\[ci skip\\].*' }
       }
