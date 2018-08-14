@@ -23,12 +23,14 @@ platform :android do
 
   desc "Submit a new Beta Build to Crashlytics Beta"
   lane :beta do
-    upload_to_play_store(track: 'beta')
+    # upload_to_play_store(track: 'beta')
+    google_play_track_version_codes(track: production)
+    google_play_track_version_codes(track: beta)
   end
 
   desc "Deploy a new version to the Google Play"
   lane :production do
     gradle(gradle_path: "../gradlew", task: "clean assembleRelease")
-    upload_to_play_store
+    #upload_to_play_store
   end
 end
