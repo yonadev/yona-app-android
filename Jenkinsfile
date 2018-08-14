@@ -1,13 +1,12 @@
 pipeline {
-  agent none
+  agent {
+    docker {
+      label 'yona'
+      image 'unitedclassifiedsapps/gitlab-ci-android-fastlane:1.0.5'
+    }
+  }
   stages {
     stage('Build') {
-      agent {
-        docker {
-          label 'yona'
-          image 'unitedclassifiedsapps/gitlab-ci-android-fastlane'
-        }
-      }
       when {
         not { changelog '.*\\[ci skip\\].*' }
       }
@@ -33,6 +32,37 @@ pipeline {
         }
         failure {
           slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
+        }
+      }
+    }
+    stage('Decide deploy as beta on Google Play') {
+      when {
+        not { changelog '.*\\[ci skip\\].*' }
+      }
+      steps {
+        checkpoint 'Build and tests done'
+        script {
+          env.DEPLOY_AS_BETA = input message: 'User input required',
+              submitter: 'authenticated',
+              parameters: [choice(name: 'Deploy to as beta to Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy this build as beta to Google Play')]
+        }
+      }
+    }
+    stage('Publish as beta') {
+      when {
+        environment name: 'DEPLOY_AS_BETA', value: 'yes'
+      }
+      steps {
+        dir(path: 'app') {
+          sh 'bundle exec fastlane beta'
+        }
+      }
+      post {
+        success {
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully published as beta on Google Play"
+        }
+        failure {
+          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to publish as beta on Google Play"
         }
       }
     }
