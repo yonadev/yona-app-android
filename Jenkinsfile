@@ -54,7 +54,7 @@ pipeline {
       }
       steps {
         withCredentials(bindings: [string(credentialsId: 'GoogleJsonKeyData', variable: 'SUPPLY_JSON_KEY_DATA')]) {
-          sh 'cd app && bundle exec fastlane beta'
+          sh 'cd app && fastlane beta'
         }
       }
       post {
