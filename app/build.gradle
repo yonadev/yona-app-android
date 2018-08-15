@@ -88,10 +88,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(System.getenv('YONA_KEYSTORE') + '/yona.jks')
-            storePassword System.getenv('YONA_KEYSTORE_PASS')
-            keyAlias System.getenv('YONA_KEYSTORE_ALIAS')
-            keyPassword System.getenv('YONA_ALIAS_PASS')
+            storeFile file(System.getenv('YONA_KEYSTORE_PATH'))
+            storePassword System.getenv('YONA_KEYSTORE_PASSWORD')
+            keyAlias 'yona'
+            keyPassword System.getenv('YONA_KEY_PASSWORD')
         }
     }
 

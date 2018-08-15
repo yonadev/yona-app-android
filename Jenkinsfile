@@ -15,8 +15,11 @@ pipeline {
       }
       steps {
         sh './gradlew clean testZacceptanceDebugUnitTest'
-        sh './gradlew app:assembleDebug'
-        sh './gradlew app:assemble'
+        withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
+            string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
+            string(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH')]) {
+          sh './gradlew app:assemble'
+        }
         sh 'find . -name *.apk -print'
         sh 'git add app/version.properties'
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
