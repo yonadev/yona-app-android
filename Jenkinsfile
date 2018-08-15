@@ -16,7 +16,7 @@ pipeline {
       steps {
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
             string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
-            string(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH')]) {
+            file(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH')]) {
           sh './gradlew clean testZacceptanceDebugUnitTest app:assemble'
         }
         sh 'find . -name *.apk -print'
