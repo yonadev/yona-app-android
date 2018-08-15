@@ -16,6 +16,8 @@ pipeline {
       steps {
         sh './gradlew clean testZacceptanceDebugUnitTest'
         sh './gradlew app:assembleDebug'
+        sh './gradlew app:assemble'
+        sh 'find . -name *.apk -print'
         sh 'git add app/version.properties'
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
