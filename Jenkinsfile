@@ -14,11 +14,10 @@ pipeline {
         GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
       }
       steps {
-        sh './gradlew clean testZacceptanceDebugUnitTest'
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
             string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
             string(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH')]) {
-          sh './gradlew app:assemble'
+          sh './gradlew clean testZacceptanceDebugUnitTest app:assemble'
         }
         sh 'find . -name *.apk -print'
         sh 'git add app/version.properties'
