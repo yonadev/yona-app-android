@@ -23,7 +23,7 @@ platform :android do
 
   desc "Submit a new Beta Build to Crashlytics Beta"
   lane :beta do
-    upload_to_play_store(track: 'alpha', apk: 'build/outputs/apk/zproduction/debug/app-zproduction-debug.apk')
+    upload_to_play_store(track: 'alpha', apk: 'build/outputs/apk/zproduction/release/app-zproduction-release.apk')
     UI.message("Promoted version code (alpha): #{google_play_track_version_codes(track: "alpha")}")
     # UI.message("Promoted version code (production): #{google_play_track_version_codes}")
     # UI.message("Promoted version code (beta): #{google_play_track_version_codes(track: "beta")}")
