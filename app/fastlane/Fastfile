@@ -24,8 +24,8 @@ platform :android do
   desc "Submit a new Beta Build to Crashlytics Beta"
   lane :beta do
     # upload_to_play_store(track: 'beta')
-    google_play_track_version_codes(track: beta)
-    sh("echo Production version: #{versions[0]}")
+    UI.message("Promoted version code (production): #{google_play_track_version_codes}")
+    UI.message("Promoted version code (beta): #{google_play_track_version_codes(track: "beta")}")
   end
 
   #desc "Deploy a new version to the Google Play"
