@@ -53,8 +53,9 @@ pipeline {
         environment name: 'DEPLOY_AS_BETA', value: 'yes'
       }
       steps {
+        sh 'cd app && bundle install'
         withCredentials(bindings: [string(credentialsId: 'GoogleJsonKeyData', variable: 'SUPPLY_JSON_KEY_DATA')]) {
-          sh 'cd app && fastlane beta'
+          sh 'cd app && bundle exec fastlane beta'
         }
       }
       post {
