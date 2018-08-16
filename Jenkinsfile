@@ -17,7 +17,7 @@ pipeline {
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
             string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
             file(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH')]) {
-          sh './gradlew clean testZacceptanceDebugUnitTest app:assemble'
+          sh './gradlew clean testDevelopmentDebugUnitTest app:assemble'
         }
         sh 'find . -name *.apk -print'
         sh 'git add app/version.properties'
