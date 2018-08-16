@@ -26,13 +26,17 @@ pipeline {
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
         archiveArtifacts 'app/build/outputs/apk/**/*.apk'
+        sh 'cd app && bundle install'
+        withCredentials(bindings: [string(credentialsId: 'GoogleJsonKeyData', variable: 'SUPPLY_JSON_KEY_DATA')]) {
+          sh 'cd app && bundle exec fastlane --verbose alpha'
+        }
       }
       post {
         always {
           junit '**/build/test-results/*/*.xml'
         }  
         success {
-          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} succeeded"
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully uploaded to Google Play"
         }
         failure {
           slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
@@ -41,14 +45,20 @@ pipeline {
     }
     stage('Decide deploy as beta on Google Play') {
       when {
-        not { changelog '.*\\[ci skip\\].*' }
+        allOf {
+          not { changelog '.*\\[ci skip\\].*' }
+          allOf {
+            branch 'develop'
+            branch 'master'
+          }
+        }
       }
       steps {
         checkpoint 'Build and tests done'
         script {
           env.DEPLOY_AS_BETA = input message: 'User input required',
               submitter: 'authenticated',
-              parameters: [choice(name: 'Deploy to as beta to Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy this build as beta to Google Play')]
+              parameters: [choice(name: 'Promote to beta on Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to promote this to beta on Google Play')]
         }
       }
     }
@@ -64,10 +74,10 @@ pipeline {
       }
       post {
         success {
-          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully published as beta on Google Play"
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully promoted to beta on Google Play"
         }
         failure {
-          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to publish as beta on Google Play"
+          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to promote to beta on Google Play"
         }
       }
     }

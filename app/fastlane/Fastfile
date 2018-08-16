@@ -21,17 +21,32 @@ platform :android do
     gradle(gradle_path: "../gradlew", task: "test")
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    upload_to_play_store(track: 'alpha', apk: 'build/outputs/apk/zproduction/release/app-zproduction-release.apk')
-    UI.message("Promoted version code (alpha): #{google_play_track_version_codes(track: "alpha")}")
-    # UI.message("Promoted version code (production): #{google_play_track_version_codes}")
-    # UI.message("Promoted version code (beta): #{google_play_track_version_codes(track: "beta")}")
+  desc "Submit a new Alpha build to Google Play"
+  lane :alpha do
+    # supply( upload_to_play_store(track: 'alpha', apk: 'build/outputs/apk/zproduction/release/app-zproduction-release.apk')
   end
 
-  #desc "Deploy a new version to the Google Play"
-  #lane :production do
-    #gradle(gradle_path: "../gradlew", task: "clean assembleRelease")
-    #upload_to_play_store
-  #end
+  desc "Promote the Alpha build to Beta on Google Play"
+  lane :beta do
+    supply(
+           track: "alpha",
+           track_promote_to: "beta",
+           skip_upload_apk: true,
+           skip_upload_metadata: true,
+           skip_upload_images: true,
+           skip_upload_screenshots: true,
+          )
+  end
+
+  desc "Promote the Beta build to production on Google Play"
+  lane :production do
+    #supply(
+    #       track: "beta",
+    #       track_promote_to: "production",
+    #       skip_upload_apk: true,
+    #       skip_upload_metadata: true,
+    #       skip_upload_images: true,
+    #       skip_upload_screenshots: true,
+    #      )
+  end
 end
