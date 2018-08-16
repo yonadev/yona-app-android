@@ -36,10 +36,36 @@ pipeline {
           junit '**/build/test-results/*/*.xml'
         }  
         success {
-          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully uploaded to Google Play"
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} completed successfully"
         }
         failure {
           slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
+        }
+      }
+    }
+    stage('Upload to Google Play') {
+      when {
+        allOf {
+          not { changelog '.*\\[ci skip\\].*' }
+          allOf {
+            branch 'develop'
+            branch 'master'
+            branch 'appdev-1152-fastlane-deployment'
+          }
+        }
+      }
+      steps {
+        sh 'cd app && bundle install'
+        withCredentials(bindings: [string(credentialsId: 'GoogleJsonKeyData', variable: 'SUPPLY_JSON_KEY_DATA')]) {
+          sh 'cd app && bundle exec fastlane --verbose alpha'
+        }
+      }
+      post {
+        success {
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully uploaded to Google Play"
+        }
+        failure {
+          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to upload to Google Play"
         }
       }
     }
@@ -50,11 +76,12 @@ pipeline {
           allOf {
             branch 'develop'
             branch 'master'
+            branch 'appdev-1152-fastlane-deployment'
           }
         }
       }
       steps {
-        checkpoint 'Build and tests done'
+        checkpoint 'APK uploaded to Google Play'
         script {
           env.DEPLOY_AS_BETA = input message: 'User input required',
               submitter: 'authenticated',
