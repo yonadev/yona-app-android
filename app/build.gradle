@@ -70,10 +70,10 @@ android {
 
     productFlavors {
         //build flavors:
-        zdevelopment {
+        development {
             // this is for developer testing, not send crash report on hocky app
         }
-        zproduction {
+        production {
             //do nothing here, just merge in custom res
         }
 
