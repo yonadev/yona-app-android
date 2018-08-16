@@ -47,7 +47,7 @@ pipeline {
       when {
         allOf {
           not { changelog '.*\\[ci skip\\].*' }
-          allOf {
+          anyOf {
             branch 'develop'
             branch 'master'
             branch 'appdev-1152-fastlane-deployment'
@@ -73,7 +73,7 @@ pipeline {
       when {
         allOf {
           not { changelog '.*\\[ci skip\\].*' }
-          allOf {
+          anyOf {
             branch 'develop'
             branch 'master'
             branch 'appdev-1152-fastlane-deployment'
