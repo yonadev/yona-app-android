@@ -6,23 +6,32 @@ repositories {
 }
 
 android {
+    def Properties fabricProps = new Properties()
+    def propFile = file('fabric.properties')   //pay attention to the path
+    if (propFile.canRead()){
+        fabricProps.load(new FileInputStream(propFile))
+        if (!(fabricProps!=null && fabricProps.containsKey('apiKey') && fabricProps.containsKey('apiSecret'))) {
+            throw new StopExecutionException("fabric keys does not exist")
+        }
+    }
+
     def newVersionCode = 0
 	if (System.env.BRANCH_NAME) {
         def versionPropsFile = file("version.properties")
         def Properties versionProps = new Properties()
-
         if (versionPropsFile.canRead()) {
             versionProps.load(new FileInputStream(versionPropsFile))
         }
         else {
             versionProps['VERSION_CODE']='0'
         }
-
         newVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
-
         versionProps['VERSION_CODE']=newVersionCode.toString()
         versionProps.store(versionPropsFile.newWriter(), null)
 	}
+
+
+
 
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
