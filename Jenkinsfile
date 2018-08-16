@@ -14,15 +14,18 @@ pipeline {
         GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
       }
       steps {
-        sh 'echo "y" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
-        sh './gradlew clean testZacceptanceDebugUnitTest'
-        sh './gradlew app:assembleDebug'
-        sh 'git add app/version.properties'
-        sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
-        sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
-        sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
-        sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
-        archiveArtifacts 'app/build/outputs/apk/**/*.apk'
+        withCredentials(bindings: [string(credentialsId: 'FabricApiKey', variable: 'FABRIC_API_KEY'), string(credentialsId: 'FabricBuildSecret', variable: 'FABRIC_BUILD_SECRET')]) {
+          writeFile file: "app/fabric.properties", text: "apiSecret="+"$FABRIC_BUILD_SECRET"+"\n"+"apiKey="+"$FABRIC_API_KEY"
+          sh 'echo "y" | ${ANDROID_HOME}/tools/android --verbose update sdk --no-ui --all --filter android-27,build-tools-27.0.3'
+          sh './gradlew clean testZacceptanceDebugUnitTest'
+          sh './gradlew app:assembleDebug'
+          sh 'git add app/version.properties'
+          sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
+          sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
+          sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
+          sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
+          archiveArtifacts 'app/build/outputs/apk/**/*.apk'
+        }
       }
       post {
         always {

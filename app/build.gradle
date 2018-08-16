@@ -1,4 +1,9 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
 
 android {
     def newVersionCode = 0
@@ -185,6 +190,10 @@ dependencies {
     implementation 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
     implementation project(path: ':openvpn')
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
+
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
+        transitive = true;
+    }
 }
