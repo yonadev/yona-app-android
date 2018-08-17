@@ -14,6 +14,17 @@ pipeline {
         GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
       }
       steps {
+        script {
+					def releaseNotes = input message: 'User input required',
+							submitter: 'authenticated',
+							parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Enter the English release notes', name: 'en-US'],
+								[$class: 'TextParameterDefinition', defaultValue: '', description: 'Enter the Dutch release notes', name: 'nl-NL']]
+					env.EN_RELEASE_NOTES = releaseNotes['en-US']
+					env.NL_RELEASE_NOTES = releaseNotes['nl-NL']
+				}
+				echo "English release notes: ${env.EN_RELEASE_NOTES}"
+				echo "Dutch release notes: ${env.NL_RELEASE_NOTES}"
+				/*
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
             string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
             file(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH'),
@@ -29,7 +40,9 @@ pipeline {
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
         archiveArtifacts 'app/build/outputs/apk/**/*.apk'
+				*/
       }
+			/*
       post {
         always {
           junit '**/build/test-results/*/*.xml'
@@ -41,7 +54,9 @@ pipeline {
           slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
         }
       }
+			*/
     }
+		/*
     stage('Upload to Google Play') {
       when {
         allOf {
@@ -49,11 +64,19 @@ pipeline {
           anyOf {
             branch 'develop'
             branch 'master'
-            branch 'appdev-1152-fastlane-deployment'
+            branch 'feature/appdev-1155-collect-recent-changes'
           }
         }
       }
       steps {
+        script {
+					def releaseNotes = input message: 'User input required',
+							submitter: 'authenticated',
+							parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Enter the English release notes', name: 'en-US'],
+								[$class: 'TextParameterDefinition', defaultValue: '', description: 'Enter the Dutch release notes', name: 'nl-NL']]
+					env.EN_RELEASE_NOTES = releaseNotes['en-US']
+					env.NL_RELEASE_NOTES = releaseNotes['nl-NL']
+				}
         sh 'cd app && bundle install'
         withCredentials(bindings: [string(credentialsId: 'GoogleJsonKeyData', variable: 'SUPPLY_JSON_KEY_DATA')]) {
           sh 'cd app && bundle exec fastlane --verbose alpha'
@@ -68,14 +91,12 @@ pipeline {
         }
       }
     }
-    stage('Decide deploy as beta on Google Play') {
+    stage('Decide deploy promote to beta') {
       when {
         allOf {
           not { changelog '.*\\[ci skip\\].*' }
           anyOf {
-            branch 'develop'
             branch 'master'
-            branch 'appdev-1152-fastlane-deployment'
           }
         }
       }
@@ -88,7 +109,7 @@ pipeline {
         }
       }
     }
-    stage('Publish as beta') {
+    stage('Promote to beta') {
       when {
         environment name: 'DEPLOY_AS_BETA', value: 'yes'
       }
@@ -107,5 +128,6 @@ pipeline {
         }
       }
     }
+		*/
   }
 }
