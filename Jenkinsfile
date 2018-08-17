@@ -42,19 +42,17 @@ pipeline {
 				*/
         //archiveArtifacts 'app/build/outputs/apk/**/*.apk'
       }
-			/*
-      post {
-        always {
-          junit '**/build/test-results/*/*.xml'
-        }  
-        success {
-          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} completed successfully"
-        }
-        failure {
-          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
-        }
-      }
-			*/
+      //post {
+      //  always {
+      //    junit '**/build/test-results/*/*.xml'
+      //  }  
+      //  success {
+      //    slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} completed successfully"
+      //  }
+      //  failure {
+      //    slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
+      //  }
+      //}
     }
 		/*
     stage('Upload to Google Play') {
