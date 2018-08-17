@@ -1,0 +1,8 @@
+This build has following update:
+#Fixes:
+APPDEV-1089: Link in email Friend invoite not working with 06 number	
+APPDEV-1088:  Mobile number formatting at registration
+APPDEV-588: Change Nickname - Notification has strange label	
+
+#Add-on:
+APPDEV-1091: Android - User should be able to crop profile picture

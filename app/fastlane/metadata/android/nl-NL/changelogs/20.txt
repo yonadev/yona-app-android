@@ -1,0 +1,3 @@
+Issue fix related following:
+#1 System Notification without NoGo icon.
+#2 Text update based on local.

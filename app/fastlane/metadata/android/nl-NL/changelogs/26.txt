@@ -1,0 +1,3 @@
+This build have explicit Confirmation dialog before to start VPN service. This will be behave same even if user choose to disconnect VPN manually from Device Setting. Find more information from issue ticket.
+
+Please note: To test issue we have added debug implementation and that should be remove before to market release.
