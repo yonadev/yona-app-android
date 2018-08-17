@@ -7,7 +7,7 @@ repositories {
 
 android {
     def disableCrashlytics = System.env.BRANCH_NAME == null
-    disableCrashlytics || assertValidFabricProperties(disableCrashlytics)
+    disableCrashlytics || assertValidFabricProperties()
 
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
