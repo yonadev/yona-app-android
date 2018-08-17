@@ -23,12 +23,12 @@ pipeline {
               parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
           def versionProps = readProperties file: versionPropsFileName
           def versionCode = versionProps['VERSION_CODE']
-          writeFile file: "app\fastlane\metadata\android\nl-NL\changelogs\${versionCode}.txt", text: "${nlReleaseNotes}"
-          writeFile file: "app\fastlane\metadata\android\en-US\changelogs\${versionCode}.txt", text: "${enReleaseNotes}"
-          sh "git add app\fastlane\metadata\android\nl-NL\changelogs\${versionCode}.txt"
-          sh "git add app\fastlane\metadata\android\en-US\changelogs\${versionCode}.txt"
-          sh "cat app\fastlane\metadata\android\nl-NL\changelogs\${versionCode}.txt"
-          sh "cat app\fastlane\metadata\android\en-US\changelogs\${versionCode}.txt"
+          writeFile file: "app/fastlane/metadata/android/nl-NL/changelogs/${versionCode}.txt", text: "${nlReleaseNotes}"
+          writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt", text: "${enReleaseNotes}"
+          sh "git add app/fastlane/metadata/android/nl-NL/changelogs/${versionCode}.txt"
+          sh "git add app/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt"
+          sh "cat app/fastlane/metadata/android/nl-NL/changelogs/${versionCode}.txt"
+          sh "cat app/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt"
         }
         /*
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
