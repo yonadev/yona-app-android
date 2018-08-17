@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,6 +39,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import io.fabric.sdk.android.Fabric;
+import nu.yona.app.BuildConfig;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
@@ -53,9 +55,6 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
-/**Ø
- * Created by kinnarvasa on 25/03/16.
- */
 public class LaunchActivity extends BaseActivity {
     private Bundle bundle;
     private SharedPreferences sharedUserPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
@@ -70,7 +69,11 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void initializeCrashlytics(){
-        Fabric.with(this, new Crashlytics());
+		// Set up Crashlytics, disabled for debug builds
+		Crashlytics crashlyticsKit = new Crashlytics.Builder()
+			.core(new CrashlyticsCore.Builder().disabled(BuildConfig.DISABLE_CRASHLYTICS).build())
+			.build();
+        Fabric.with(this, crashlyticsKit);
     }
 
     private void setUpApplicationInitialView(){
