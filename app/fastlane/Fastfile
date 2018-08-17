@@ -23,7 +23,7 @@ platform :android do
 
   desc "Submit a new Alpha build to Google Play"
   lane :alpha do
-    supply (upload_to_play_store(track: 'alpha', apk: 'build/outputs/apk/production/release/app-production-release.apk'))
+    upload_to_play_store(track: 'alpha', apk: 'build/outputs/apk/production/release/app-production-release.apk')
   end
 
   desc "Promote the Alpha build to Beta on Google Play"
