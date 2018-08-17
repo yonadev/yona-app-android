@@ -26,10 +26,6 @@ pipeline {
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
         archiveArtifacts 'app/build/outputs/apk/**/*.apk'
-        sh 'cd app && bundle install'
-        withCredentials(bindings: [string(credentialsId: 'GoogleJsonKeyData', variable: 'SUPPLY_JSON_KEY_DATA')]) {
-          sh 'cd app && bundle exec fastlane --verbose alpha'
-        }
       }
       post {
         always {
