@@ -6,7 +6,7 @@ repositories {
 }
 
 android {
-	def disableCrashlytics = System.env.BRANCH_NAME == null
+    def disableCrashlytics = System.env.BRANCH_NAME == null
     disableCrashlytics || assertValidFabricProperties(disableCrashlytics)
 
     compileSdkVersion 27
@@ -28,13 +28,13 @@ android {
             }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-			buildConfigField("boolean", "DISABLE_CRASHLYTICS", "${disableCrashlytics}")
-			ext.enableCrashlytics = !disableCrashlytics
+            buildConfigField("boolean", "DISABLE_CRASHLYTICS", "${disableCrashlytics}")
+            ext.enableCrashlytics = !disableCrashlytics
         }
-		debug {
-			buildConfigField("boolean", "DISABLE_CRASHLYTICS", "${disableCrashlytics}")
-			ext.enableCrashlytics = !disableCrashlytics
-		}
+        debug {
+            buildConfigField("boolean", "DISABLE_CRASHLYTICS", "${disableCrashlytics}")
+            ext.enableCrashlytics = !disableCrashlytics
+        }
     }
 
     dexOptions{

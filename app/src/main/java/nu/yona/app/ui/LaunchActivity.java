@@ -69,10 +69,10 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void initializeCrashlytics(){
-		// Set up Crashlytics, disabled for debug builds
-		Crashlytics crashlyticsKit = new Crashlytics.Builder()
-			.core(new CrashlyticsCore.Builder().disabled(BuildConfig.DISABLE_CRASHLYTICS).build())
-			.build();
+        // Set up Crashlytics, disabled for debug builds
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+            .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DISABLE_CRASHLYTICS).build())
+            .build();
         Fabric.with(this, crashlyticsKit);
     }
 
