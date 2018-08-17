@@ -21,7 +21,7 @@ pipeline {
           def nlReleaseNotes = input message: 'User input required',
               submitter: 'authenticated',
               parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
-          def versionProps = readProperties file: versionPropsFileName
+          def versionProps = readProperties file: "version.properties"
           def versionCode = versionProps['VERSION_CODE']
           writeFile file: "app/fastlane/metadata/android/nl-NL/changelogs/${versionCode}.txt", text: "${nlReleaseNotes}"
           writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt", text: "${enReleaseNotes}"
