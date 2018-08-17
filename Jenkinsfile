@@ -17,8 +17,8 @@ pipeline {
         script {
 					def releaseNotes = input message: 'User input required',
 							submitter: 'authenticated',
-							parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English", id: 'en-US'],
-								[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch", id: 'nl-NL']]
+							parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English', id: 'en-US'],
+								[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch', id: 'nl-NL']]
 					env.EN_RELEASE_NOTES = releaseNotes['en-US']
 					env.NL_RELEASE_NOTES = releaseNotes['nl-NL']
 				}
@@ -70,8 +70,8 @@ pipeline {
         script {
 					def releaseNotes = input message: 'User input required',
 							submitter: 'authenticated',
-							parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English", id: 'en-US'],
-								[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch", id: 'nl-NL']]
+							parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English', id: 'en-US'],
+								[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch', id: 'nl-NL']]
 					env.EN_RELEASE_NOTES = releaseNotes['en-US']
 					env.NL_RELEASE_NOTES = releaseNotes['nl-NL']
 				}
