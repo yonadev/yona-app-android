@@ -15,16 +15,22 @@ pipeline {
       }
       steps {
         script {
-					env.EN_RELEASE_NOTES = input message: 'User input required',
-							submitter: 'authenticated',
-							parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English']]
-					env.NL_RELEASE_NOTES = input message: 'User input required',
-							submitter: 'authenticated',
-							parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
-				}
-				echo "English release notes: ${env.EN_RELEASE_NOTES}"
-				echo "Dutch release notes: ${env.NL_RELEASE_NOTES}"
-				/*
+          def enReleaseNotes = input message: 'User input required',
+              submitter: 'authenticated',
+              parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English']]
+          def nlReleaseNotes = input message: 'User input required',
+              submitter: 'authenticated',
+              parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
+          def versionProps = readProperties file: versionPropsFileName
+          def versionCode = versionProps['VERSION_CODE']
+          writeFile file: "app\fastlane\metadata\android\nl-NL\changelogs\${versionCode}.txt", text: "${nlReleaseNotes}"
+          writeFile file: "app\fastlane\metadata\android\en-US\changelogs\${versionCode}.txt", text: "${enReleaseNotes}"
+          sh "git add app\fastlane\metadata\android\nl-NL\changelogs\${versionCode}.txt"
+          sh "git add app\fastlane\metadata\android\en-US\changelogs\${versionCode}.txt"
+          sh "cat app\fastlane\metadata\android\nl-NL\changelogs\${versionCode}.txt"
+          sh "cat app\fastlane\metadata\android\en-US\changelogs\${versionCode}.txt"
+        }
+        /*
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
             string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
             file(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH'),
@@ -39,7 +45,7 @@ pipeline {
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
-				*/
+        */
         //archiveArtifacts 'app/build/outputs/apk/**/*.apk'
       }
       //post {
@@ -54,7 +60,7 @@ pipeline {
       //  }
       //}
     }
-		/*
+    /*
     stage('Upload to Google Play') {
       when {
         allOf {
@@ -68,13 +74,13 @@ pipeline {
       }
       steps {
         script {
-					def releaseNotes = input message: 'User input required',
-							submitter: 'authenticated',
-							parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English', id: 'en-US'],
-								[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch', id: 'nl-NL']]
-					env.EN_RELEASE_NOTES = releaseNotes['en-US']
-					env.NL_RELEASE_NOTES = releaseNotes['nl-NL']
-				}
+          def releaseNotes = input message: 'User input required',
+              submitter: 'authenticated',
+              parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English', id: 'en-US'],
+                [$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch', id: 'nl-NL']]
+          env.EN_RELEASE_NOTES = releaseNotes['en-US']
+          env.NL_RELEASE_NOTES = releaseNotes['nl-NL']
+        }
         sh 'cd app && bundle install'
         withCredentials(bindings: [string(credentialsId: 'GoogleJsonKeyData', variable: 'SUPPLY_JSON_KEY_DATA')]) {
           sh 'cd app && bundle exec fastlane --verbose alpha'
@@ -126,6 +132,6 @@ pipeline {
         }
       }
     }
-		*/
+    */
   }
 }
