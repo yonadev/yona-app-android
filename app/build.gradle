@@ -10,7 +10,7 @@ android {
     def propFile = file('fabric.properties')   //pay attention to the path
     if (propFile.canRead()){
         fabricProps.load(new FileInputStream(propFile))
-        if (!(fabricProps!=null && fabricProps.containsKey('apiKey') && fabricProps.containsKey('apiSecret'))) {
+        if (fabricProps == null || !fabricProps.containsKey('apiKey') || !fabricProps.containsKey('apiSecret')) {
             throw new StopExecutionException("fabric keys does not exist")
         }
     }
@@ -29,9 +29,6 @@ android {
         versionProps['VERSION_CODE']=newVersionCode.toString()
         versionProps.store(versionPropsFile.newWriter(), null)
 	}
-
-
-
 
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -133,7 +130,6 @@ def getAppName() {
 
 def getBuildNumber() {
     def buildNumber
-
     if ('BUILD_NUMBER' in project.ext.properties) {
         buildNumber = project.ext.properties['BUILD_NUMBER']
     } else {
@@ -144,7 +140,6 @@ def getBuildNumber() {
 
 def getVersionString() {
     def versionString
-
     if ('VERSION_STRING' in project.ext.properties) {
         versionString = project.ext.properties['VERSION_STRING']
     } else {
@@ -156,13 +151,11 @@ def getVersionString() {
 
 def getBranch() {
     def branch
-
     if ('BRANCH' in project.ext.properties) {
         branch = project.ext.properties['BRANCH']
     } else {
         branch = "develop"
     }
-
     return branch
 }
 
@@ -172,22 +165,18 @@ dependencies {
     implementation files('libs/commons-codec-1.10.jar')
     implementation files('libs/commons-io-2.4.jar')
     implementation files('libs/commons-lang3-3.4.jar')
-
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.8'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     testImplementation 'org.robolectric:shadows-support-v4:3.0'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
-
-
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.android.support:recyclerview-v7:27.1.0'
     implementation 'com.android.support:cardview-v7:27.1.0'
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.google.android.gms:play-services-analytics:9.2.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
-
     implementation 'com.squareup.retrofit2:retrofit:2.0.2'
     implementation 'com.squareup.okhttp3:okhttp:3.2.0'
     implementation 'com.google.code.gson:gson:2.4'
@@ -199,7 +188,6 @@ dependencies {
     implementation 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
     implementation project(path: ':openvpn')
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
-
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
