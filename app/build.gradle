@@ -125,10 +125,12 @@ def getNextVersionCode() {
         versionProps['VERSION_CODE']='0'
     }
 
-    newVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
+    def newVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
 
     versionProps['VERSION_CODE']=newVersionCode.toString()
     versionProps.store(versionPropsFile.newWriter(), null)
+
+	return newVersionCode
 }
 
 dependencies {
