@@ -39,8 +39,8 @@ pipeline {
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
-        archiveArtifacts 'app/build/outputs/apk/**/*.apk'
 				*/
+        //archiveArtifacts 'app/build/outputs/apk/**/*.apk'
       }
 			/*
       post {
