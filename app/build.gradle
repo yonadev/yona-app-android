@@ -16,7 +16,7 @@ android {
         applicationId "nu.yona.app"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode determineVersionCode()
+        versionCode getNextVersionCode()
         versionName "1.1 build $System.env.BUILD_NUMBER" + (System.env.BRANCH_NAME == "master" ? "" : " ($System.env.BRANCH_NAME)")
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -110,7 +110,7 @@ def assertValidFabricProperties() {
     }
 }
 
-def determineVersionCode() {
+def getNextVersionCode() {
     if (!System.env.BRANCH_NAME) {
         return 0;
     }
