@@ -81,7 +81,7 @@ android {
         release {
             storeFile file(System.getenv('YONA_KEYSTORE_PATH'))
             storePassword System.getenv('YONA_KEYSTORE_PASSWORD')
-            keyAlias 'yona'
+            keyAlias 'Yona'
             keyPassword System.getenv('YONA_KEY_PASSWORD')
         }
     }
