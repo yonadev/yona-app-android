@@ -80,29 +80,20 @@ android {
     }
 
     productFlavors {
-        //build flavors:
-        zdevelopment {
-            // this is for developer testing, not send crash report on hocky app
+        development {
+            // this is for developer testing, do not send crash reports
         }
-        zdev {
-            //do nothing here, just merge in custom res - use this for QA Testing
-        }
-        zproduction {
-            //do nothing here, just merge in custom res
-        }
-        zacceptance {
-            //do nothing here, just merge in custom res
-        }
-        zuat {
+        production {
+            // do nothing here, just merge in custom res
         }
     }
 
     signingConfigs {
         release {
-            storeFile file(System.getenv('YONA_KEYSTORE') + '/yona.jks')
-            storePassword System.getenv('YONA_KEYSTORE_PASS')
-            keyAlias System.getenv('YONA_KEYSTORE_ALIAS')
-            keyPassword System.getenv('YONA_ALIAS_PASS')
+            storeFile file(System.getenv('YONA_KEYSTORE_PATH'))
+            storePassword System.getenv('YONA_KEYSTORE_PASSWORD')
+            keyAlias 'Yona'
+            keyPassword System.getenv('YONA_KEY_PASSWORD')
         }
     }
 
