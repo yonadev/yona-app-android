@@ -10,7 +10,9 @@
 
 package nu.yona.app.ui;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -21,10 +23,23 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import io.fabric.sdk.android.Fabric;
+import nu.yona.app.BuildConfig;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
@@ -37,17 +52,31 @@ import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
 import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
-/**
- * Created by kinnarvasa on 25/03/16.
- */
 public class LaunchActivity extends BaseActivity {
     private Bundle bundle;
-
+    private SharedPreferences sharedUserPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeCrashlytics();
+        setUpApplicationInitialView();
+        navigateToValidActivity();
+        setListeners();
+        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
+    }
+
+    private void initializeCrashlytics(){
+        // Set up Crashlytics, disabled for debug builds
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+            .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DISABLE_CRASHLYTICS).build())
+            .build();
+        Fabric.with(this, crashlyticsKit);
+    }
+
+    private void setUpApplicationInitialView(){
         setContentView(R.layout.launch_layout);
         bundle = new Bundle();
         if (getIntent() != null) {
@@ -56,42 +85,45 @@ public class LaunchActivity extends BaseActivity {
                 bundle.putString(AppConstant.DEEP_LINK, getIntent().getDataString());
                 startNewActivity(bundle, SignupActivity.class);
                 // and it will not launch tour for first time user and so can be marked true.
-                YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
+                sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
                 return;
             } else if (getIntent().getExtras() != null) {
                 bundle = getIntent().getExtras();
             }
         }
+    }
 
-        if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false)) {
+    private void navigateToValidActivity(){
+        if (!sharedUserPreferences.getBoolean(PreferenceConstant.STEP_TOUR, false)) {
             startNewActivity(bundle, YonaCarrouselActivity.class);
-        } else if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
+        } else if (!sharedUserPreferences.getBoolean(PreferenceConstant.STEP_REGISTER, false)) {
             // We will skip here to load same activity
-        } else if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)
-                && !YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false)) {
+        } else if (sharedUserPreferences.getBoolean(PreferenceConstant.STEP_REGISTER, false)
+                && !sharedUserPreferences.getBoolean(PreferenceConstant.STEP_OTP, false)) {
             startNewActivity(bundle, OTPActivity.class);
-        } else if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
+        } else if (!sharedUserPreferences.getBoolean(PreferenceConstant.STEP_PASSCODE, false)) {
             bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_grape);
             bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(LaunchActivity.this, R.color.grape));
             startNewActivity(bundle, PasscodeActivity.class);
-        } else if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))) {
+        } else if (!TextUtils.isEmpty(sharedUserPreferences.getString(PreferenceConstant.YONA_PASSCODE, ""))) {
             startNewActivity(bundle, YonaActivity.class);
         }
+    }
 
+
+    private void setListeners(){
         findViewById(R.id.join).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startNewActivity(bundle, SignupActivity.class);
             }
         });
-
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startNewActivity(LoginActivity.class);
             }
         });
-
         findViewById(R.id.environmentSwitch).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -101,7 +133,6 @@ public class LaunchActivity extends BaseActivity {
                 return true;
             }
         });
-        YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
     }
 
     /**
@@ -112,7 +143,6 @@ public class LaunchActivity extends BaseActivity {
         View promptView = layoutInflater.inflate(R.layout.environment_switch, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
-
         final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
         editText.setText(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
         alertDialogBuilder.setCancelable(false)

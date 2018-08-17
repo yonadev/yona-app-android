@@ -16,10 +16,13 @@ pipeline {
       steps {
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
             string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
-            file(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH')]) {
+            file(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH'),
+            string(credentialsId: 'FabricApiKey', variable: 'FABRIC_API_KEY'),
+            string(credentialsId: 'FabricBuildSecret', variable: 'FABRIC_BUILD_SECRET')]) {
+          writeFile file: "app/fabric.properties", text: "apiSecret="+"$FABRIC_BUILD_SECRET"+"\n"+"apiKey="+"$FABRIC_API_KEY"
           sh './gradlew clean testDevelopmentDebugUnitTest app:assemble'
+          sh 'rm app/fabric.properties'
         }
-        sh 'find . -name *.apk -print'
         sh 'git add app/version.properties'
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'

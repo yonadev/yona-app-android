@@ -1,23 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
 
 android {
-    def newVersionCode = 0
-	if (System.env.BRANCH_NAME) {
-        def versionPropsFile = file("version.properties")
-        def Properties versionProps = new Properties()
-
-        if (versionPropsFile.canRead()) {
-            versionProps.load(new FileInputStream(versionPropsFile))
-        }
-        else {
-            versionProps['VERSION_CODE']='0'
-        }
-
-        newVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
-
-        versionProps['VERSION_CODE']=newVersionCode.toString()
-        versionProps.store(versionPropsFile.newWriter(), null)
-	}
+    def disableCrashlytics = System.env.BRANCH_NAME == null
+    disableCrashlytics || assertValidFabricProperties()
 
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -26,7 +16,7 @@ android {
         applicationId "nu.yona.app"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode newVersionCode
+        versionCode getNextVersionCode()
         versionName "1.1 build $System.env.BUILD_NUMBER" + (System.env.BRANCH_NAME == "master" ? "" : " ($System.env.BRANCH_NAME)")
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -38,6 +28,12 @@ android {
             }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "DISABLE_CRASHLYTICS", "${disableCrashlytics}")
+            ext.enableCrashlytics = !disableCrashlytics
+        }
+        debug {
+            buildConfigField("boolean", "DISABLE_CRASHLYTICS", "${disableCrashlytics}")
+            ext.enableCrashlytics = !disableCrashlytics
         }
     }
 
@@ -78,11 +74,13 @@ android {
     }
 
     signingConfigs {
-        release {
-            storeFile file(System.getenv('YONA_KEYSTORE_PATH'))
-            storePassword System.getenv('YONA_KEYSTORE_PASSWORD')
-            keyAlias 'Yona'
-            keyPassword System.getenv('YONA_KEY_PASSWORD')
+        if (System.env.BRANCH_NAME) {
+            release {
+                storeFile file(System.getenv('YONA_KEYSTORE_PATH'))
+                storePassword System.getenv('YONA_KEYSTORE_PASSWORD')
+                keyAlias 'Yona'
+                keyPassword System.getenv('YONA_KEY_PASSWORD')
+            }
         }
     }
 
@@ -90,7 +88,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            if (System.env.BRANCH_NAME) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
@@ -99,48 +99,36 @@ android {
     }
 }
 
-def getAppName() {
-    def appName
-    if ('APP_NAME' in project.ext.properties) {
-        appName = project.ext.properties['APP_NAME']
-    } else {
-        appName = "Yona"
+def assertValidFabricProperties() {
+    def Properties fabricProps = new Properties()
+    def propFile = file('fabric.properties')   //pay attention to the path
+    if (propFile.canRead()){
+        fabricProps.load(new FileInputStream(propFile))
+    }
+    if (!fabricProps.containsKey('apiKey') || !fabricProps.containsKey('apiSecret')) {
+        throw new StopExecutionException("Invalid or missing fabric.properties file")
     }
 }
 
-def getBuildNumber() {
-    def buildNumber
-
-    if ('BUILD_NUMBER' in project.ext.properties) {
-        buildNumber = project.ext.properties['BUILD_NUMBER']
-    } else {
-        buildNumber = "13"
-    }
-    return buildNumber
-}
-
-def getVersionString() {
-    def versionString
-
-    if ('VERSION_STRING' in project.ext.properties) {
-        versionString = project.ext.properties['VERSION_STRING']
-    } else {
-        versionString = android.defaultConfig.versionName ?: "0.0.1"
-    }
-    return versionString
-}
-
-
-def getBranch() {
-    def branch
-
-    if ('BRANCH' in project.ext.properties) {
-        branch = project.ext.properties['BRANCH']
-    } else {
-        branch = "develop"
+def getNextVersionCode() {
+    if (!System.env.BRANCH_NAME) {
+        return 0;
     }
 
-    return branch
+    def versionPropsFile = file("version.properties")
+    def Properties versionProps = new Properties()
+
+    if (versionPropsFile.canRead()) {
+        versionProps.load(new FileInputStream(versionPropsFile))
+    }
+    else {
+        versionProps['VERSION_CODE']='0'
+    }
+
+    newVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
+
+    versionProps['VERSION_CODE']=newVersionCode.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
 }
 
 dependencies {
@@ -149,22 +137,18 @@ dependencies {
     implementation files('libs/commons-codec-1.10.jar')
     implementation files('libs/commons-io-2.4.jar')
     implementation files('libs/commons-lang3-3.4.jar')
-
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.8'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     testImplementation 'org.robolectric:shadows-support-v4:3.0'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
-
-
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.android.support:recyclerview-v7:27.1.0'
     implementation 'com.android.support:cardview-v7:27.1.0'
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.google.android.gms:play-services-analytics:9.2.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
-
     implementation 'com.squareup.retrofit2:retrofit:2.0.2'
     implementation 'com.squareup.okhttp3:okhttp:3.2.0'
     implementation 'com.google.code.gson:gson:2.4'
@@ -178,4 +162,7 @@ dependencies {
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
+        transitive = true;
+    }
 }
