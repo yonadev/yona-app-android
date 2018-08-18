@@ -22,7 +22,7 @@ pipeline {
               submitter: 'authenticated',
               parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
 
-          def versionPropsFileName = "version.properties"
+          def versionPropsFileName = "app/version.properties"
           def versionProps = readProperties file: versionPropsFileName
           env.NEW_VERSION_CODE = versionProps['VERSION_CODE'].toInteger() + 1
           versionProps['VERSION_CODE']=env.NEW_VERSION_CODE
@@ -31,7 +31,7 @@ pipeline {
             it.collect { "$it.key=$it.value" } join "\n"
           }
           versionPropsString += toKeyValue(versionProps)
-          writeFile file: "version.properties", text: versionPropsString
+          writeFile file: versionPropsFileName, text: versionPropsString
 
           writeFile file: "app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${nlReleaseNotes}"
           writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${enReleaseNotes}"
