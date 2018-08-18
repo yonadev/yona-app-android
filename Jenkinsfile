@@ -74,7 +74,6 @@ pipeline {
           anyOf {
             branch 'develop'
             branch 'master'
-   //         branch 'feature/appdev-1155-collect-recent-changes'
           }
         }
       }
