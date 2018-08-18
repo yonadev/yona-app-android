@@ -1,0 +1,2 @@
+* Several performance optimizations
+* Support email address corrected

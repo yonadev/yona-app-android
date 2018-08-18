@@ -1,0 +1,2 @@
+* Verschillende performanceverbeteringen
+* Support e-mailadres gecorrigeerd
