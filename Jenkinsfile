@@ -18,9 +18,11 @@ pipeline {
           def enReleaseNotes = input message: 'User input required',
               submitter: 'authenticated',
               parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English']]
+          enReleaseNotes.length() >= 500 && error("Release notes can be at most 500 characters")
           def nlReleaseNotes = input message: 'User input required',
               submitter: 'authenticated',
               parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
+          nlReleaseNotes.length() >= 500 && error("Release notes can be at most 500 characters")
 
           def versionPropsFileName = "app/version.properties"
           def versionProps = readProperties file: versionPropsFileName
