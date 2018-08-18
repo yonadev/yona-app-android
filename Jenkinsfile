@@ -14,6 +14,31 @@ pipeline {
         GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
       }
       steps {
+        script {
+          def enReleaseNotes = input message: 'User input required',
+              submitter: 'authenticated',
+              parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English']]
+          enReleaseNotes.length() >= 500 && error("Release notes can be at most 500 characters")
+          def nlReleaseNotes = input message: 'User input required',
+              submitter: 'authenticated',
+              parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
+          nlReleaseNotes.length() >= 500 && error("Release notes can be at most 500 characters")
+
+          def versionPropsFileName = "app/version.properties"
+          def versionProps = readProperties file: versionPropsFileName
+          env.NEW_VERSION_CODE = versionProps['VERSION_CODE'].toInteger() + 1
+          versionProps['VERSION_CODE']=env.NEW_VERSION_CODE
+          def versionPropsString = "#" + new Date() + "\n";
+          def toKeyValue = {
+            it.collect { "$it.key=$it.value" } join "\n"
+          }
+          versionPropsString += toKeyValue(versionProps)
+          writeFile file: versionPropsFileName, text: versionPropsString
+
+          writeFile file: "app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${nlReleaseNotes}"
+          writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${enReleaseNotes}"
+        }
+
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
             string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
             file(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH'),
@@ -24,6 +49,8 @@ pipeline {
           sh 'rm app/fabric.properties'
         }
         sh 'git add app/version.properties'
+        sh "git add app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt"
+        sh "git add app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt"
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
@@ -49,7 +76,6 @@ pipeline {
           anyOf {
             branch 'develop'
             branch 'master'
-            branch 'appdev-1152-fastlane-deployment'
           }
         }
       }
@@ -68,14 +94,12 @@ pipeline {
         }
       }
     }
-    stage('Decide deploy as beta on Google Play') {
+    stage('Decide deploy promote to beta') {
       when {
         allOf {
           not { changelog '.*\\[ci skip\\].*' }
           anyOf {
-            branch 'develop'
             branch 'master'
-            branch 'appdev-1152-fastlane-deployment'
           }
         }
       }
@@ -88,7 +112,7 @@ pipeline {
         }
       }
     }
-    stage('Publish as beta') {
+    stage('Promote to beta') {
       when {
         environment name: 'DEPLOY_AS_BETA', value: 'yes'
       }
