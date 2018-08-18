@@ -16,7 +16,7 @@ android {
         applicationId "nu.yona.app"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode getNextVersionCode()
+        versionCode getVersionCode()
         versionName "1.1 build $System.env.BUILD_NUMBER" + (System.env.BRANCH_NAME == "master" ? "" : " ($System.env.BRANCH_NAME)")
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -110,27 +110,13 @@ def assertValidFabricProperties() {
     }
 }
 
-def getNextVersionCode() {
-    if (!System.env.BRANCH_NAME) {
-        return 0;
-    }
-
+int getVersionCode() {
     def versionPropsFile = file("version.properties")
     def Properties versionProps = new Properties()
 
-    if (versionPropsFile.canRead()) {
-        versionProps.load(new FileInputStream(versionPropsFile))
-    }
-    else {
-        versionProps['VERSION_CODE']='0'
-    }
+	versionProps.load(new FileInputStream(versionPropsFile))
 
-    def newVersionCode = versionProps['VERSION_CODE'].toInteger() + 1
-
-    versionProps['VERSION_CODE']=newVersionCode.toString()
-    versionProps.store(versionPropsFile.newWriter(), null)
-
-	return newVersionCode
+    return versionProps['VERSION_CODE'].toInteger() + 1
 }
 
 dependencies {

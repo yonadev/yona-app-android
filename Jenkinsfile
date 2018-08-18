@@ -21,17 +21,22 @@ pipeline {
           def nlReleaseNotes = input message: 'User input required',
               submitter: 'authenticated',
               parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
-          def versionProps = readProperties file: "app/version.properties"
-          def versionCode = versionProps['VERSION_CODE']
-          writeFile file: "app/fastlane/metadata/android/nl-NL/changelogs/${versionCode}.txt", text: "${nlReleaseNotes}"
-          writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt", text: "${enReleaseNotes}"
-          sh "git add app/fastlane/metadata/android/nl-NL/changelogs/${versionCode}.txt"
-          sh "git add app/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt"
-          sh "cat app/fastlane/metadata/android/nl-NL/changelogs/${versionCode}.txt"
-          sh "cat app/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt"
-          sh 'git commit -m "Commit release notes"'
+
+          def versionPropsFileName = "version.properties"
+          def versionProps = readProperties file: versionPropsFileName
+          env.NEW_VERSION_CODE = versionProps['VERSION_CODE'].toInteger() + 1
+          versionProps['VERSION_CODE']=env.NEW_VERSION_CODE
+          def versionPropsString = "#" + new Date() + "\n";
+          def toKeyValue = {
+            it.collect { "$it.key=$it.value" } join "\n"
+          }
+          versionPropsString += toKeyValue(versionProps)
+          writeFile file: "version.properties", text: versionPropsString
+
+          writeFile file: "app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${nlReleaseNotes}"
+          writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${enReleaseNotes}"
         }
-        /*
+
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
             string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
             file(credentialsId: 'AndroidKeystore', variable: 'YONA_KEYSTORE_PATH'),
@@ -42,26 +47,26 @@ pipeline {
           sh 'rm app/fabric.properties'
         }
         sh 'git add app/version.properties'
+        sh "git add app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt"
+        sh "git add app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt"
         sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
-        */
-        //archiveArtifacts 'app/build/outputs/apk/**/*.apk'
+        archiveArtifacts 'app/build/outputs/apk/**/*.apk'
       }
-      //post {
-      //  always {
-      //    junit '**/build/test-results/*/*.xml'
-      //  }  
-      //  success {
-      //    slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} completed successfully"
-      //  }
-      //  failure {
-      //    slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
-      //  }
-      //}
+      post {
+        always {
+          junit '**/build/test-results/*/*.xml'
+        }  
+        success {
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} completed successfully"
+        }
+        failure {
+          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
+        }
+      }
     }
-    /*
     stage('Upload to Google Play') {
       when {
         allOf {
@@ -69,19 +74,12 @@ pipeline {
           anyOf {
             branch 'develop'
             branch 'master'
-            branch 'feature/appdev-1155-collect-recent-changes'
+   //         branch 'feature/appdev-1155-collect-recent-changes'
           }
         }
       }
       steps {
         script {
-          def releaseNotes = input message: 'User input required',
-              submitter: 'authenticated',
-              parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the English release notes', name: 'English', id: 'en-US'],
-                [$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch', id: 'nl-NL']]
-          env.EN_RELEASE_NOTES = releaseNotes['en-US']
-          env.NL_RELEASE_NOTES = releaseNotes['nl-NL']
-        }
         sh 'cd app && bundle install'
         withCredentials(bindings: [string(credentialsId: 'GoogleJsonKeyData', variable: 'SUPPLY_JSON_KEY_DATA')]) {
           sh 'cd app && bundle exec fastlane --verbose alpha'
@@ -133,6 +131,5 @@ pipeline {
         }
       }
     }
-    */
   }
 }
