@@ -1,0 +1,1 @@
+APPDEV-1069 implemented. To switch to a different server, do a long-press on the Yona logo on the start screen of the app.
