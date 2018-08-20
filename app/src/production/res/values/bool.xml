@@ -10,5 +10,4 @@
 
 <resources>
     <bool name="developerMode">false</bool>
-    <bool name="allowEnvironmentSwitch">false</bool>
 </resources>

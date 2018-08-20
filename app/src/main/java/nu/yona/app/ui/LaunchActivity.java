@@ -127,9 +127,7 @@ public class LaunchActivity extends BaseActivity {
         findViewById(R.id.environmentSwitch).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (getResources().getBoolean(R.bool.allowEnvironmentSwitch)) {
-                    switchEnvironment();
-                }
+                switchEnvironment();
                 return true;
             }
         });
