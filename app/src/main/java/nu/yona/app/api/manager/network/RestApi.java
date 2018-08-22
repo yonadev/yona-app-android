@@ -13,6 +13,7 @@ package nu.yona.app.api.manager.network;
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.AddBuddy;
 import nu.yona.app.api.model.AppActivity;
+import nu.yona.app.api.model.AppMetaInfo;
 import nu.yona.app.api.model.DayActivity;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.Goals;
@@ -419,6 +420,18 @@ public interface RestApi {
      */
     @POST
     Call<Void> postAppActivity(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Body AppActivity activity);
+
+    /********
+     * APP OPEN EVENT
+     *
+     * @param url      the url
+     * @param password the password
+     * @param appMetaInfo the activity
+     * @return the call
+     */
+    @POST
+    Call<Void> postOpenAppEvent(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password, @Header(NetworkConstant.ACCEPT_LAUNGUAGE) String acceptLanguage, @Body AppMetaInfo appMetaInfo);
+
 
     /**
      * Gets with buddy activity.

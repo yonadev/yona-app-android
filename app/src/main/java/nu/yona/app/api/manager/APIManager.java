@@ -20,6 +20,8 @@ import nu.yona.app.api.manager.impl.DeviceManagerImpl;
 import nu.yona.app.api.manager.impl.GoalManagerImpl;
 import nu.yona.app.api.manager.impl.NotificationManagerImpl;
 import nu.yona.app.api.manager.impl.PasscodeManagerImpl;
+import nu.yona.app.api.manager.impl.YonaManagerImpl;
+import nu.yona.app.listener.DataLoadListenerImpl;
 
 /**
  * Created by kinnarvasa on 05/05/16.
@@ -36,6 +38,7 @@ public class APIManager {
     private ChallengesManager challengesManager;
     private NotificationManager notificationManager;
     private ActivityManager activityManager;
+    private YonaManager yonaManager;
 
     /**
      * Gets instance.
@@ -155,6 +158,18 @@ public class APIManager {
             activityManager = new ActivityManagerImpl(YonaApplication.getAppContext());
         }
         return this.activityManager;
+    }
+
+    /**
+     * Gets yona manager.
+     *
+     * @return the activity manager
+     */
+    public YonaManager getYonaManager() {
+        if (yonaManager == null) {
+            yonaManager = new YonaManagerImpl(YonaApplication.getAppContext());
+        }
+        return this.yonaManager;
     }
 
     /**

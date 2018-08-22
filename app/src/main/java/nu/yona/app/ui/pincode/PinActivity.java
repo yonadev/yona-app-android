@@ -8,12 +8,14 @@
 
 package nu.yona.app.ui.pincode;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.View;
@@ -26,8 +28,10 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.signup.OTPActivity;
@@ -92,7 +96,8 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
             case EventChangeManager.EVENT_PASSCODE_STEP_TWO:
                 String passcode = (String) object;
                 if (APIManager.getInstance().getPasscodeManager().validatePasscode(passcode)) {
-                    showChallengesScreen();
+                    postOpenAppEvent();
+                    //showChallengesScreen();
                 } else if (APIManager.getInstance().getPasscodeManager().isWrongCounterReached()) {
                     passcode_error.setVisibility(View.GONE);
                     YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
@@ -116,6 +121,45 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
                 break;
         }
 
+    }
+
+    private void postOpenAppEvent(){
+        Href yonaPostOpenAppEventHref = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaPostOpenAppEvent();
+        if(yonaPostOpenAppEventHref!=null){
+            String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
+            DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result),(error) -> handlePostAppEventFailure(error), null);
+            String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();
+            APIManager.getInstance().getYonaManager().postOpenAppEvent(postAppOpenEventURL,yonaPassword ,listenerWrapper);
+        }else{
+            handlePostAppEventFailure(new ErrorMessage(getString(R.string.post_app_open_event_failure)));
+        }
+
+    }
+
+    private Object handlePostAppEventSuccess(Object result){
+        showChallengesScreen();
+        return null;
+    }
+
+    private Object handlePostAppEventFailure(Object errorMessage){
+        String errorMessageStr = "";
+        if(errorMessage instanceof ErrorMessage){
+            errorMessageStr = ((ErrorMessage) errorMessage).getMessage();
+        }else{
+            errorMessageStr = (String) errorMessage;
+        }
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.generic_alert_title));
+        builder.setMessage(errorMessageStr);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showChallengesScreen();
+            }
+        });
+        builder.setCancelable(false);
+        builder.create().show();
+        return null;
     }
 
     private void showChallengesScreen() {

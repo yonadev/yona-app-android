@@ -32,6 +32,9 @@ public class Links extends BaseEntity {
     @SerializedName("yona:activityCategory")
     @Expose
     private Href yonaActivityCategory;
+    @SerializedName("yona:postOpenAppEvent")
+    @Expose
+    private Href yonaPostOpenAppEvent;
     @SerializedName("yona:messages")
     @Expose
     private Href yonaMessages;
@@ -180,6 +183,24 @@ public class Links extends BaseEntity {
     }
 
     /**
+     * Gets yona open app event.
+     *
+     * @return the yona yona post open app event url
+     */
+    public Href getYonaPostOpenAppEvent() {
+        return yonaPostOpenAppEvent;
+    }
+
+    /**
+     * Sets yona post open app event url.
+     *
+     * @param yonaPostOpenAppEvent the yona post open app event
+     */
+    public void setYonaPostOpenAppEvent(Href yonaPostOpenAppEvent) {
+        this.yonaPostOpenAppEvent = yonaPostOpenAppEvent;
+    }
+
+    /**
      * Gets yona messages.
      *
      * @return the yona messages
@@ -196,6 +217,7 @@ public class Links extends BaseEntity {
     public void setYonaMessages(Href yonaMessages) {
         this.yonaMessages = yonaMessages;
     }
+
 
     /**
      * Gets yona daily activity reports.

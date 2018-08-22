@@ -24,6 +24,7 @@ import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.utils.NetworkUtils;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppUtils;
 import okhttp3.Interceptor;
@@ -138,6 +139,30 @@ private final Interceptor getInterceptor = new Interceptor() {
      * @return the call
      */
     Callback getCall(final DataLoadListener listener) {
+        return new Callback() {
+            @Override
+            public void onResponse(retrofit2.Call call, retrofit2.Response response) {
+                if (response.code() < NetworkConstant.RESPONSE_STATUS && listener != null) {
+                    listener.onDataLoad(response.body());
+                } else {
+                    onError(response, listener);
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call call, Throwable t) {
+                onError(t, listener);
+            }
+        };
+    }
+
+    /**
+     * Gets call.
+     *
+     * @param listener the listener
+     * @return the call
+     */
+    Callback getCall(final DataLoadListenerImpl listener) {
         return new Callback() {
             @Override
             public void onResponse(retrofit2.Call call, retrofit2.Response response) {

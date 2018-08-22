@@ -219,5 +219,7 @@
     <string name="new_environment_switch_success_msg">Je gebruikt nu :</string>
     <string name="environment_alert_title">Voer de server URL in :</string>
     <string name="enviroment_input_placeholder">Enter Text Here</string>
+    <string name="generic_alert_title">Alarm</string>
+    <string name="operating_system">ANDROID</string>
 
 </resources>
