@@ -167,7 +167,7 @@ public class APIManager {
      */
     public YonaManager getYonaManager() {
         if (yonaManager == null) {
-            yonaManager = new YonaManagerImpl(YonaApplication.getAppContext());
+            yonaManager = new YonaManagerImpl();
         }
         return this.yonaManager;
     }

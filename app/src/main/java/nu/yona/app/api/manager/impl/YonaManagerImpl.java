@@ -10,7 +10,6 @@
 
 package nu.yona.app.api.manager.impl;
 
-import android.content.Context;
 import nu.yona.app.api.manager.YonaManager;
 import nu.yona.app.api.manager.network.AppNetworkImpl;
 import nu.yona.app.listener.DataLoadListener;
@@ -21,14 +20,13 @@ import nu.yona.app.listener.DataLoadListenerImpl;
  */
 public class YonaManagerImpl implements YonaManager {
 
-    private final AppNetworkImpl appNetworkImpl;
+    private AppNetworkImpl appNetworkImpl;
 
     /**
      * Instantiates a new Activity manager.
      *
-     * @param context the context
      */
-    public  YonaManagerImpl(Context context) {
+    public  YonaManagerImpl() {
         appNetworkImpl = new AppNetworkImpl();
     }
 

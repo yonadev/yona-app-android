@@ -125,15 +125,10 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 
     private void postOpenAppEvent(){
         Href yonaPostOpenAppEventHref = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaPostOpenAppEvent();
-        if(yonaPostOpenAppEventHref!=null){
-            String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
-            DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result),(error) -> handlePostAppEventFailure(error), null);
-            String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();
-            APIManager.getInstance().getYonaManager().postOpenAppEvent(postAppOpenEventURL,yonaPassword ,listenerWrapper);
-        }else{
-            handlePostAppEventFailure(new ErrorMessage(getString(R.string.post_app_open_event_failure)));
-        }
-
+        String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
+        DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result),(error) -> handlePostAppEventFailure(error), null);
+        String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();
+        APIManager.getInstance().getYonaManager().postOpenAppEvent(postAppOpenEventURL,yonaPassword ,listenerWrapper);
     }
 
     private Object handlePostAppEventSuccess(Object result){
