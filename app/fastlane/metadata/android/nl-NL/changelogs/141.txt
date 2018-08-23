@@ -1,0 +1,3 @@
+APPDEV-1139 De app informeert de server wanneer de app geopend wordt.
+
+Dit wordt gedaan voor gebruiksstatistieken en om te controleren of de app up-to-date is voor de huidige server versie.
