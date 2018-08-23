@@ -20,18 +20,29 @@ public class AppMetaInfo {
 
     @SerializedName("operatingSystem")
     @Expose
-    private String operatingSystem = YonaApplication.getAppContext().getString(R.string.operating_system);
+    private String operatingSystem;
 
     @SerializedName("appVersion")
     @Expose
-    private String appVersion  =  BuildConfig.VERSION_NAME;
+    private String appVersion ;
 
     @SerializedName("appVersionCode")
     @Expose
-    private Integer appVersionCode = BuildConfig.VERSION_CODE;
+    private int appVersionCode;
 
+    private static final AppMetaInfo theInstance = new AppMetaInfo ("ANDROID", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
 
-    public Integer getAppVersionCode() {
+    private AppMetaInfo (String operatingSystem, String appVersion, int appVersionCode){
+        this.operatingSystem = operatingSystem;
+        this.appVersion = appVersion;
+        this.appVersionCode = appVersionCode;
+    }
+
+    public static AppMetaInfo getInstance(){
+        return theInstance;
+    }
+
+    public int getAppVersionCode() {
         return appVersionCode;
     }
 
@@ -42,5 +53,6 @@ public class AppMetaInfo {
     public String getOperatingSystem() {
         return operatingSystem;
     }
+
 
 }

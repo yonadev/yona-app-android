@@ -85,8 +85,8 @@ public class SettingsFragment extends BaseFragment {
                 }
             }
         });
-        AppMetaInfo appMetaInfo = new AppMetaInfo();
-        if(appMetaInfo.getAppVersionCode() != null){
+        AppMetaInfo appMetaInfo = AppMetaInfo.getInstance();
+        if(appMetaInfo.getAppVersionCode() != 0){
             ((TextView) view.findViewById(R.id.label_version)).setText(getString(R.string.version) + appMetaInfo.getAppVersion() + getString(R.string.space) + appMetaInfo.getAppVersionCode());
         }else{
             ((TextView) view.findViewById(R.id.label_version)).setText(getString(R.string.version) + "NA" + getString(R.string.space) + "NA");

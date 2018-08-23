@@ -162,7 +162,7 @@ private final Interceptor getInterceptor = new Interceptor() {
      * @param listener the listener
      * @return the call
      */
-    Callback getCall(final DataLoadListenerImpl listener) {
+    Callback createCallBack(final DataLoadListenerImpl listener) {
         return new Callback() {
             @Override
             public void onResponse(retrofit2.Call call, retrofit2.Response response) {

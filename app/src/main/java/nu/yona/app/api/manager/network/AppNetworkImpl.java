@@ -15,7 +15,7 @@ public class AppNetworkImpl extends BaseImpl {
      * @param listener       the listener
      */
     public void postYonaOpenAppEvent(String url, String yonaPassword, DataLoadListenerImpl listener) {
-        AppMetaInfo appMetaInfo = new AppMetaInfo();
-        getRestApi().postOpenAppEvent(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'),appMetaInfo).enqueue(getCall(listener));
+        AppMetaInfo appMetaInfo = AppMetaInfo.getInstance();
+        getRestApi().postOpenAppEvent(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'),appMetaInfo).enqueue(createCallBack(listener));
     }
 }

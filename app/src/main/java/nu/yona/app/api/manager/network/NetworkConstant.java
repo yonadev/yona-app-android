@@ -20,9 +20,9 @@ public interface NetworkConstant {
      */
     String YONA_PASSWORD = "Yona-Password";
     /**
-     * The constant ACCEPT_LAUNGUAGE.
+     * The constant ACCEPT_LANGUAGE.
      */
-    String ACCEPT_LAUNGUAGE = "Accept-Language";
+    String ACCEPT_LANGUAGE = "Accept-Language";
     /**
      * The constant CONTENT_TYPE.
      */
