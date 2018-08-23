@@ -11,6 +11,7 @@
 package nu.yona.app.ui.signup;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -32,6 +33,7 @@ import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.state.SharedPreference;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.pincode.BasePasscodeActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
@@ -45,6 +47,7 @@ import nu.yona.app.utils.PreferenceConstant;
  */
 public class OTPActivity extends BasePasscodeActivity implements EventChangeListener {
 
+    private SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
     private PasscodeFragment otpFragment;
     private RegisterUser user;
 
@@ -64,7 +67,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
     @Override
     public void onResume() {
         super.onResume();
-        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0) > new Date().getTime()) {
+        if (userPreferences.getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0) > new Date().getTime()) {
             showTimer();
         } else {
             hideTimer();
@@ -136,12 +139,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
                 AppUtils.downloadVPNProfile();
                 getActivityCategories();
                 showLoadingView(false, null);
-                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {
-                    YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, true).apply();
-                    showProfileScreen();
-                } else {
-                    showPasscodeScreen();
-                }
+                navigateToNextScreen();
             }
 
             @Override
@@ -200,5 +198,20 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
         intent.putExtra(AppConstant.FROM_LOGIN, true);
         ActivityCompat.startActivity(this, intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
         finish();
+    }
+
+    @Override
+    protected void navigateToNextScreen(){
+        if (userPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {
+            userPreferences.edit().putBoolean(PreferenceConstant.STEP_OTP, true).apply();
+            showProfileScreen();
+        } else {
+            showPasscodeScreen();
+        }
+    }
+
+    @Override
+    protected Object handlePostAppEventSuccess(Object result){
+        throw new UnsupportedOperationException("Implementation is delegated to PasscodeActivity and PinActivity");
     }
 }

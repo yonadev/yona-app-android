@@ -167,7 +167,6 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
      * @param code
      */
     private void validatePasscode(String code) {
-
         if (APIManager.getInstance().getPasscodeManager().validateTwoPasscode(first_passcode, code)) {
             postOpenAppEvent();
         } else {
@@ -180,50 +179,21 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcodetryagain));
                 }
             }, AppConstant.TIMER_DELAY);
-
         }
-
     }
 
-    private void postOpenAppEvent(){
-        Href yonaPostOpenAppEventHref = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaPostOpenAppEvent();
-        String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
-        DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result),(error) -> handlePostAppEventFailure(error), null);
-        String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();
-        APIManager.getInstance().getYonaManager().postOpenAppEvent(postAppOpenEventURL,yonaPassword ,listenerWrapper);
-    }
-
-    private Object handlePostAppEventSuccess(Object result){
+    @Override
+    protected Object handlePostAppEventSuccess(Object result){
         if (isFromSettings) {
             finish();
         } else {
-            showChallengesScreen();
+            navigateToNextScreen();
         }
         return null;
     }
 
-    private Object handlePostAppEventFailure(Object errorMessage){
-        String errorMessageStr = "";
-        if(errorMessage instanceof ErrorMessage){
-            errorMessageStr = ((ErrorMessage) errorMessage).getMessage();
-        }else{
-            errorMessageStr = (String) errorMessage;
-        }
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.generic_alert_title));
-        builder.setMessage(errorMessageStr);
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                showChallengesScreen();
-            }
-        });
-        builder.setCancelable(false);
-        builder.create().show();
-        return null;
-    }
-
-    private void showChallengesScreen() {
+    @Override
+    protected void navigateToNextScreen() {
         Intent intent = new Intent(PasscodeActivity.this, YonaActivity.class);
         intent.putExtra(AppConstant.FROM_LOGIN, true);
         ActivityCompat.startActivity(this, intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
@@ -235,7 +205,6 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
         }, AppConstant.TIMER_DELAY);
 
     }
-
 
 }
 

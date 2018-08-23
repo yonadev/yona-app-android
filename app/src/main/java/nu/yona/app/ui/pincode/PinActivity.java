@@ -97,7 +97,6 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
                 String passcode = (String) object;
                 if (APIManager.getInstance().getPasscodeManager().validatePasscode(passcode)) {
                     postOpenAppEvent();
-                    //showChallengesScreen();
                 } else if (APIManager.getInstance().getPasscodeManager().isWrongCounterReached()) {
                     passcode_error.setVisibility(View.GONE);
                     YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
@@ -123,41 +122,14 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 
     }
 
-    private void postOpenAppEvent(){
-        Href yonaPostOpenAppEventHref = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaPostOpenAppEvent();
-        String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
-        DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result),(error) -> handlePostAppEventFailure(error), null);
-        String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();
-        APIManager.getInstance().getYonaManager().postOpenAppEvent(postAppOpenEventURL,yonaPassword ,listenerWrapper);
-    }
-
-    private Object handlePostAppEventSuccess(Object result){
-        showChallengesScreen();
+    @Override
+    protected Object handlePostAppEventSuccess(Object result){
+        navigateToNextScreen();
         return null;
     }
 
-    private Object handlePostAppEventFailure(Object errorMessage){
-        String errorMessageStr = "";
-        if(errorMessage instanceof ErrorMessage){
-            errorMessageStr = ((ErrorMessage) errorMessage).getMessage();
-        }else{
-            errorMessageStr = (String) errorMessage;
-        }
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.generic_alert_title));
-        builder.setMessage(errorMessageStr);
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                showChallengesScreen();
-            }
-        });
-        builder.setCancelable(false);
-        builder.create().show();
-        return null;
-    }
-
-    private void showChallengesScreen() {
+    @Override
+    protected void navigateToNextScreen() {
         if (!TextUtils.isEmpty(screenType) && screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
             updatePin();
         }
