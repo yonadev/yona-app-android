@@ -221,4 +221,5 @@
     <string name="new_environment_switch_success_msg">You are now using :</string>
     <string name="environment_alert_title">Enter server URL :</string>
     <string name="enviroment_input_placeholder">Enter Text Here</string>
+    <string name="generic_alert_title">Alert</string>
 </resources>

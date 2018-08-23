@@ -8,9 +8,14 @@
 
 package nu.yona.app.ui.pincode;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -30,17 +35,22 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
+import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Href;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontTextView;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by bhargavsuthar on 03/06/16.
  */
-public class BasePasscodeActivity extends BaseActivity implements View.OnClickListener {
+public abstract class BasePasscodeActivity extends BaseActivity implements View.OnClickListener {
 
 
     /**
@@ -486,4 +496,37 @@ public class BasePasscodeActivity extends BaseActivity implements View.OnClickLi
             secondText.setText("" + seconds);
         }
     }
+
+    protected void postOpenAppEvent(){
+        Href yonaPostOpenAppEventHref = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaPostOpenAppEvent();
+        String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
+        DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result),(error) -> handlePostAppEventFailure(error), null);
+        String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();
+        APIManager.getInstance().getYonaManager().postOpenAppEvent(postAppOpenEventURL,yonaPassword ,listenerWrapper);
+    }
+
+    protected abstract Object handlePostAppEventSuccess(Object result);
+
+    private Object handlePostAppEventFailure(Object errorMessage){
+        String errorMessageStr = "";
+        if(errorMessage instanceof ErrorMessage){
+            errorMessageStr = ((ErrorMessage) errorMessage).getMessage();
+        }else{
+            errorMessageStr = (String) errorMessage;
+        }
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.generic_alert_title));
+        builder.setMessage(errorMessageStr);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                navigateToNextScreen();
+            }
+        });
+        builder.setCancelable(false);
+        builder.create().show();
+        return null;
+    }
+
+    protected abstract void navigateToNextScreen() ;
 }

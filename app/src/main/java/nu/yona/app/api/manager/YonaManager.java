@@ -10,8 +10,18 @@
 
 package nu.yona.app.api.manager;
 
+import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
+
 /**
  * Created by kinnarvasa on 30/03/16.
  */
 public interface YonaManager {
+    /**
+     * Posts OpenAppEvent
+     *
+     * @param listener the listener
+     */
+    void postOpenAppEvent(String url, String yonaPassword,DataLoadListenerImpl listener);
+
 }

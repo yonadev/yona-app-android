@@ -8,6 +8,7 @@
 
 package nu.yona.app.ui.pincode;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -23,6 +25,9 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Href;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.YonaActivity;
@@ -162,13 +167,8 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
      * @param code
      */
     private void validatePasscode(String code) {
-
         if (APIManager.getInstance().getPasscodeManager().validateTwoPasscode(first_passcode, code)) {
-            if (isFromSettings) {
-                finish();
-            } else {
-                showChallengesScreen();
-            }
+            postOpenAppEvent();
         } else {
             isPasscodeFlowRetry = true;
             doBack();
@@ -179,12 +179,21 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
                     YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcodetryagain));
                 }
             }, AppConstant.TIMER_DELAY);
-
         }
-
     }
 
-    private void showChallengesScreen() {
+    @Override
+    protected Object handlePostAppEventSuccess(Object result){
+        if (isFromSettings) {
+            finish();
+        } else {
+            navigateToNextScreen();
+        }
+        return null;
+    }
+
+    @Override
+    protected void navigateToNextScreen() {
         Intent intent = new Intent(PasscodeActivity.this, YonaActivity.class);
         intent.putExtra(AppConstant.FROM_LOGIN, true);
         ActivityCompat.startActivity(this, intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
@@ -196,7 +205,6 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
         }, AppConstant.TIMER_DELAY);
 
     }
-
 
 }
 

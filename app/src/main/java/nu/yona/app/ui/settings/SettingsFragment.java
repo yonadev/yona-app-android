@@ -33,6 +33,7 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.impl.DeviceManagerImpl;
+import nu.yona.app.api.model.AppMetaInfo;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
@@ -84,11 +85,11 @@ public class SettingsFragment extends BaseFragment {
                 }
             }
         });
-        try {
-            PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
-            ((TextView) view.findViewById(R.id.label_version)).setText(getString(R.string.version) + pInfo.versionName + getString(R.string.space) + pInfo.versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            AppUtils.throwException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
+        AppMetaInfo appMetaInfo = AppMetaInfo.getInstance();
+        if(appMetaInfo.getAppVersionCode() != 0){
+            ((TextView) view.findViewById(R.id.label_version)).setText(getString(R.string.version) + appMetaInfo.getAppVersion() + getString(R.string.space) + appMetaInfo.getAppVersionCode());
+        }else{
+            ((TextView) view.findViewById(R.id.label_version)).setText(getString(R.string.version) + "NA" + getString(R.string.space) + "NA");
         }
         setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_SCREEN_SETTINGS));
         return view;

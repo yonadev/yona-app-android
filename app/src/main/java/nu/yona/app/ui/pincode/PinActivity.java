@@ -8,12 +8,14 @@
 
 package nu.yona.app.ui.pincode;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.View;
@@ -26,8 +28,10 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.PinResetDelay;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.signup.OTPActivity;
@@ -92,7 +96,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
             case EventChangeManager.EVENT_PASSCODE_STEP_TWO:
                 String passcode = (String) object;
                 if (APIManager.getInstance().getPasscodeManager().validatePasscode(passcode)) {
-                    showChallengesScreen();
+                    postOpenAppEvent();
                 } else if (APIManager.getInstance().getPasscodeManager().isWrongCounterReached()) {
                     passcode_error.setVisibility(View.GONE);
                     YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
@@ -118,7 +122,14 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 
     }
 
-    private void showChallengesScreen() {
+    @Override
+    protected Object handlePostAppEventSuccess(Object result){
+        navigateToNextScreen();
+        return null;
+    }
+
+    @Override
+    protected void navigateToNextScreen() {
         if (!TextUtils.isEmpty(screenType) && screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION)) {
             updatePin();
         }
