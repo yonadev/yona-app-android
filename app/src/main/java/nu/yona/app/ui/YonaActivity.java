@@ -129,7 +129,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static boolean isUserFromOnCreate;
     private boolean isUserFromPinScreenAlert;
     private boolean isSkipPinFlow;
-    private SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
+    private final SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
     /**
      * Gets activity.
      *
@@ -1237,7 +1237,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 if (userPreferences.getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
                     checkFileWritePermission();
                 } else if(!AppUtils.isVPNConnected(YonaActivity.this)) {
-                    if (BuildConfig.FLAVOR == "development") {
+                    if (BuildConfig.FLAVOR.equals("development")) {
                         vpnStartConfirmation();
                     }else{
                         startVPN();
