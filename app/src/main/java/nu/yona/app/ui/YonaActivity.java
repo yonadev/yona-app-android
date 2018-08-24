@@ -61,6 +61,7 @@ import java.util.List;
 
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.activities.ConfigConverter;
+import nu.yona.app.BuildConfig;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.db.DatabaseHelper;
@@ -128,7 +129,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     private static boolean isUserFromOnCreate;
     private boolean isUserFromPinScreenAlert;
     private boolean isSkipPinFlow;
-
+    private final SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
     /**
      * Gets activity.
      *
@@ -162,7 +163,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
         }
 
-        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {
+        if (userPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {
             homeFragment = new ProfileFragment();
             bundle.putSerializable(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
         } else {
@@ -196,12 +197,12 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
         });
 
-        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {
+        if (userPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false)) {
             updateTabIcon(false);
-            YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.PROFILE_OTP_STEP, false).commit();
+            userPreferences.edit().putBoolean(PreferenceConstant.PROFILE_OTP_STEP, false).commit();
         } else {
             //Load default dashboard_selector fragment on start after login, if signup, start challenges.
-            if (!YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
+            if (!userPreferences.getBoolean(PreferenceConstant.STEP_CHALLENGES, false)) {
                 mTabLayout.getTabAt(2).select();
             } else {
                 mTabLayout.getTabAt(0).select();
@@ -342,7 +343,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            SharedPreferences.Editor editor = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+                            SharedPreferences.Editor editor = userPreferences.edit();
                             editor.clear();
                             editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
                             editor.commit();
@@ -433,7 +434,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             case IMPORT_PROFILE:
                 if (resultCode == RESULT_OK) {
                     if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID))) {
-                        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
+                        userPreferences.edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
                         AppUtils.startVPN(this, false);
                     } else {
                         importVPNProfile();
@@ -492,7 +493,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
     }
 
     private void showInstallAlert(final byte[] keystore) {
-        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, null) != null) {
+        if (userPreferences.getString(PreferenceConstant.PROFILE_UUID, null) != null) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.certificate_installation));
             builder.setMessage(getString(R.string.certfiicate_installtion_detail));
@@ -937,7 +938,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                 break;
             case EventChangeManager.EVENT_USER_NOT_EXIST:
                 DatabaseHelper.getInstance(this).deleteAllData();
-                YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().clear();
+                userPreferences.edit().clear();
                 if (object != null && object instanceof ErrorMessage) {
                     showError((ErrorMessage) object);
                 }
@@ -1233,51 +1234,48 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             public void run() {
                 isToDisplayLogin = false;
                 skipVerification = true;
-                if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
+                if (userPreferences.getString(PreferenceConstant.PROFILE_UUID, "").equals("")) {
                     checkFileWritePermission();
-                } else {
-
-                    if(!AppUtils.isVPNConnected(YonaActivity.this))
+                } else if(!AppUtils.isVPNConnected(YonaActivity.this)) {
+                    if (BuildConfig.FLAVOR.equals("development")) {
                         vpnStartConfirmation();
-
-                    /*isUserFromOnCreate = true;
-                    AppUtils.startVPN(YonaActivity.this, false);
-                    isUserFromPinScreenAlert = false;
-                    lockScreen();*/
-
+                    }else{
+                        startVPN();
+                    }
                 }
             }
         }, AppConstant.ONE_SECOND);
     }
 
-
     /**
      * #JIRA-1022
      */
     void vpnStartConfirmation() {
-        android.app.AlertDialog.Builder d = new android.app.AlertDialog.Builder(this);
-        d.setTitle(de.blinkt.openvpn.R.string.test_vpn_restart_confirmation_title);
-        d.setMessage(de.blinkt.openvpn.R.string.test_vpn_restart_confirmation);
-        d.setCancelable(false);
-        d.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(this);
+        alert.setTitle(de.blinkt.openvpn.R.string.test_vpn_restart_confirmation_title);
+        alert.setMessage(de.blinkt.openvpn.R.string.test_vpn_restart_confirmation);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Logger.logi("Yona", "START");
-                isUserFromOnCreate = true;
-                AppUtils.startVPN(YonaActivity.this, false);
-                isUserFromPinScreenAlert = false;
-                lockScreen();
+                startVPN();
             }
         });
-
-        d.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
+        alert.show();
+    }
 
-        d.show();
+    private void startVPN(){
+        Logger.logi("Yona", "START");
+        isUserFromOnCreate = true;
+        AppUtils.startVPN(YonaActivity.this, false);
+        isUserFromPinScreenAlert = false;
+        lockScreen();
     }
 
     private void lockScreen() {
