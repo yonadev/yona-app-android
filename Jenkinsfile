@@ -23,18 +23,7 @@ pipeline {
               submitter: 'authenticated',
               parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
           nlReleaseNotes.length() >= 500 && error("Release notes can be at most 500 characters")
-
-          def versionPropsFileName = "app/version.properties"
-          def versionProps = readProperties file: versionPropsFileName
-          env.NEW_VERSION_CODE = versionProps['VERSION_CODE'].toInteger() + 1
-          versionProps['VERSION_CODE']=env.NEW_VERSION_CODE
-          def versionPropsString = "#" + new Date() + "\n";
-          def toKeyValue = {
-            it.collect { "$it.key=$it.value" } join "\n"
-          }
-          versionPropsString += toKeyValue(versionProps)
-          writeFile file: versionPropsFileName, text: versionPropsString
-
+          incrementVersion()
           writeFile file: "app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${nlReleaseNotes}"
           writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${enReleaseNotes}"
         }
@@ -51,7 +40,7 @@ pipeline {
         sh 'git add app/version.properties'
         sh "git add app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt"
         sh "git add app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt"
-        sh 'git commit -m "Updated versionCode for build $BUILD_NUMBER [ci skip]"'
+        sh 'git commit -m "Build $BUILD_NUMBER updated versionCode to $NEW_VERSION_CODE [ci skip]"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git'
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git --tags'
@@ -94,7 +83,7 @@ pipeline {
         }
       }
     }
-    stage('Decide deploy promote to beta') {
+    stage('Decide release to beta') {
       when {
         allOf {
           not { changelog '.*\\[ci skip\\].*' }
@@ -106,15 +95,15 @@ pipeline {
       steps {
         checkpoint 'APK uploaded to Google Play'
         script {
-          env.DEPLOY_AS_BETA = input message: 'User input required',
+          env.RELEASE_TO_BETA = input message: 'User input required',
               submitter: 'authenticated',
-              parameters: [choice(name: 'Promote to beta on Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to promote this to beta on Google Play')]
+              parameters: [choice(name: 'Release to beta on Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to release this build to beta on Google Play')]
         }
       }
     }
     stage('Promote to beta') {
       when {
-        environment name: 'DEPLOY_AS_BETA', value: 'yes'
+        environment name: 'RELEASE_TO_BETA', value: 'yes'
       }
       steps {
         sh 'cd app && bundle install'
@@ -124,12 +113,62 @@ pipeline {
       }
       post {
         success {
-          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully promoted to beta on Google Play"
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully released to beta on Google Play"
         }
         failure {
-          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to promote to beta on Google Play"
+          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to released to beta on Google Play"
+        }
+      }
+    }
+    stage('Decide deploy release to production') {
+      when {
+        allOf {
+          not { changelog '.*\\[ci skip\\].*' }
+          anyOf {
+            branch 'master'
+          }
+        }
+      }
+      steps {
+        checkpoint 'App released to beta'
+        script {
+          env.RELEASE_TO_PRODUCTION = input message: 'User input required',
+              submitter: 'authenticated',
+              parameters: [choice(name: 'Release to production on Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to release this build to production on Google Play')]
+        }
+      }
+    }
+    stage('Promote to production') {
+      when {
+        environment name: 'RELEASE_TO_PRODUCTION', value: 'yes'
+      }
+      steps {
+        sh 'cd app && bundle install'
+        withCredentials(bindings: [string(credentialsId: 'GoogleJsonKeyData', variable: 'SUPPLY_JSON_KEY_DATA')]) {
+          sh 'cd app && bundle exec fastlane --verbose production'
+        }
+      }
+      post {
+        success {
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully release to production on Google Play"
+        }
+        failure {
+          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to release to production on Google Play"
         }
       }
     }
   }
+}
+
+def incrementVersion() {
+  def versionPropsFileName = "app/version.properties"
+  def versionProps = readProperties file: versionPropsFileName
+  env.NEW_VERSION_CODE = versionProps['VERSION_CODE'].toInteger() + 1
+  versionProps['VERSION_CODE']=env.NEW_VERSION_CODE
+  def versionPropsString = "#" + new Date() + "\n";
+  def toKeyValue = {
+    it.collect { "$it.key=$it.value" } join "\n"
+  }
+  versionPropsString += toKeyValue(versionProps)
+  writeFile file: versionPropsFileName, text: versionPropsString
 }

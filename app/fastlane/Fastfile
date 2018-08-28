@@ -40,13 +40,13 @@ platform :android do
 
   desc "Promote the Beta build to production on Google Play"
   lane :production do
-    #supply(
-    #       track: "beta",
-    #       track_promote_to: "production",
-    #       skip_upload_apk: true,
-    #       skip_upload_metadata: true,
-    #       skip_upload_images: true,
-    #       skip_upload_screenshots: true,
-    #      )
+    supply(
+           track: "beta",
+           track_promote_to: "production",
+           skip_upload_apk: true,
+           skip_upload_metadata: true,
+           skip_upload_images: true,
+           skip_upload_screenshots: true,
+          )
   end
 end
