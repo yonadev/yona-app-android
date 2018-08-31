@@ -15,9 +15,13 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
 
+import org.apache.commons.codec.binary.Base64;
+
 import java.util.Arrays;
 
+import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import nu.yona.app.YonaApplication;
 import nu.yona.app.security.MyCipher;
@@ -131,13 +135,25 @@ public class SharedPreference {
         }
     }
 
+    public void upgradeYonaPasswordEncryption(){
+        if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, ""))) {
+            byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
+            byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
+            IvParameterSpec iv = new IvParameterSpec(dataIV);
+            MyCipher myCipher = new MyCipher(Build.SERIAL);
+            String yonaPasswordWithOldEncryption = myCipher.getYonaPasswordWithOldEncryptedData(encrypted_data,iv);
+            setYonaPassword(yonaPasswordWithOldEncryption);
+        }
+    }
+
+
     private byte[] byteToString(String response) {
         String[] byteValues = response.substring(1, response.length() - 1).split(",");
         byte[] encrypted_data = new byte[byteValues.length];
-
         for (int i = 0, len = encrypted_data.length; i < len; i++) {
             encrypted_data[i] = Byte.parseByte(byteValues[i].trim());
         }
         return encrypted_data;
     }
+
 }

@@ -77,4 +77,6 @@ public interface PreferenceConstant {
     String PROFILE_UUID = "profileUUID";
 
     String PROFILE_OTP_STEP = "profileOtpStep";
+
+    String YONA_ENCRYPTION_UPGRADED = "yonaEncryptionUpgraded";
 }
