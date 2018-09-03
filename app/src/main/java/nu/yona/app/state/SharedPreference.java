@@ -15,13 +15,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
 
-import org.apache.commons.codec.binary.Base64;
-
 import java.util.Arrays;
 
-import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 import nu.yona.app.YonaApplication;
 import nu.yona.app.security.MyCipher;
@@ -85,13 +81,9 @@ public class SharedPreference {
     public void setYonaPassword(String password) {
         yonaPwd = null;
         //According to http://android-developers.blogspot.com.es/2013/08/some-securerandom-thoughts.html
-        try {
-            PRNGFixes.apply();
-            MyCipherData cipherData = new MyCipher(Build.SERIAL).encryptUTF8(password);
-            userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
-        } catch (Exception e) {
-            AppUtils.throwException(SharedPreference.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
+        PRNGFixes.apply();
+        MyCipherData cipherData = new MyCipher(Build.SERIAL).encryptUTF8(password);
+        userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
     }
 
     public void setVPNProfilePath(String path) {
@@ -141,8 +133,8 @@ public class SharedPreference {
             byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
             IvParameterSpec iv = new IvParameterSpec(dataIV);
             MyCipher myCipher = new MyCipher(Build.SERIAL);
-            String yonaPasswordWithOldEncryption = myCipher.getYonaPasswordWithOldEncryptedData(encrypted_data,iv);
-            setYonaPassword(yonaPasswordWithOldEncryption);
+            String yonaPassword = myCipher.getYonaPasswordWithOldEncryptedData(encrypted_data,iv);
+            setYonaPassword(yonaPassword);
         }
     }
 

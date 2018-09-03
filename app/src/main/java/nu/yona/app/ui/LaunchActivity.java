@@ -45,6 +45,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.enums.EncryptionMethod;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.SharedPreference;
 import nu.yona.app.ui.login.LoginActivity;
@@ -56,7 +57,7 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
-import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_UPGRADED;
+import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 
 public class LaunchActivity extends BaseActivity {
     private Bundle bundle;
@@ -138,11 +139,11 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void validateYonaPasswordEncryption(){
-        if(!sharedUserPreferences.getBoolean(YONA_ENCRYPTION_UPGRADED,false)){
+        if ((sharedUserPreferences.getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal()) == EncryptionMethod.INITIAL_METHOD.ordinal()
+        && !TextUtils.isEmpty(sharedUserPreferences.getString(PreferenceConstant.YONA_PASSCODE, "")))) {
             YonaApplication.getEventChangeManager().getSharedPreference().upgradeYonaPasswordEncryption();
-        }else {
-            sharedUserPreferences.edit().putBoolean(YONA_ENCRYPTION_UPGRADED,true);
         }
+        sharedUserPreferences.edit().putInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.ENHANCED_STILL_BASED_ON_SERIAL.ordinal());
     }
 
     /**

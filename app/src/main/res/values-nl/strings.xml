@@ -220,5 +220,6 @@
     <string name="environment_alert_title">Voer de server URL in :</string>
     <string name="enviroment_input_placeholder">Enter Text Here</string>
     <string name="generic_alert_title">Waarschuwing</string>
+    <string name="generic_exception_message">Onbekende uitzondering. Neem contact op met Adminstrator</string>
 
 </resources>
