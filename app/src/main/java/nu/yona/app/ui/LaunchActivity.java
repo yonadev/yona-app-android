@@ -139,6 +139,7 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void validateYonaPasswordEncryption(){
+        // if App is older version and user is already logged in, upgrade the encryption.
         if ((sharedUserPreferences.getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal()) == EncryptionMethod.INITIAL_METHOD.ordinal()
         && !TextUtils.isEmpty(sharedUserPreferences.getString(PreferenceConstant.YONA_PASSCODE, "")))) {
             YonaApplication.getEventChangeManager().getSharedPreference().upgradeYonaPasswordEncryption();
