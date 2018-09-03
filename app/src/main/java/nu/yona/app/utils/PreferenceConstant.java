@@ -78,5 +78,5 @@ public interface PreferenceConstant {
 
     String PROFILE_OTP_STEP = "profileOtpStep";
 
-    String YONA_ENCRYPTION_METHOD = "yonaEncryptionUpgraded";
+    String YONA_ENCRYPTION_METHOD = "yonaEncryptionMethod";
 }
