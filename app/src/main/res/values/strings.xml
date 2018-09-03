@@ -222,4 +222,5 @@
     <string name="environment_alert_title">Enter server URL :</string>
     <string name="enviroment_input_placeholder">Enter Text Here</string>
     <string name="generic_alert_title">Alert</string>
+    <string name="generic_exception_message">Unknown Exception. Please contact Yona support</string>
 </resources>

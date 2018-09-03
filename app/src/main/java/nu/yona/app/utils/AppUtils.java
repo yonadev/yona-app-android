@@ -32,6 +32,7 @@ import android.text.TextUtils;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Toast;
 
 import org.joda.time.Period;
 
@@ -257,18 +258,36 @@ public class AppUtils {
      * @param listener  DataLoadListener to update UI
      */
     public static void throwException(String className, Exception e, Thread t, DataLoadListener listener) {
+        ErrorMessage errorMessage = new ErrorMessage();
         try {
+            if (e != null && e.getMessage() != null) {
+                errorMessage.setMessage(e.getMessage());
+            } else {
+                errorMessage.setMessage(YonaApplication.getAppContext().getString(R.string.error_message));
+            }
             if (listener != null) {
-                if (e != null && e.getMessage() != null) {
-                    listener.onError(new ErrorMessage(e.getMessage()));
-                } else {
-                    listener.onError(YonaApplication.getAppContext().getString(R.string.error_message));
-                }
+                listener.onError(errorMessage);
+            }else{
+                showErrorToast(errorMessage);
             }
         } catch (Exception x) {
+            // Catching to avoid application crash and showing user friendly message.
             loge(TAG, "Exception in throwException method");
+            errorMessage.setMessage(YonaApplication.getAppContext().getString(R.string.generic_exception_message));
+            showErrorToast(errorMessage);
         }
     }
+
+    /**
+     * Gets filter.
+     *
+     * @return the filter
+     */
+
+    private static void showErrorToast(ErrorMessage errorMessage){
+        Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+    }
+
 
     /**
      * Gets filter.

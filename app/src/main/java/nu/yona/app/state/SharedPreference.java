@@ -81,13 +81,9 @@ public class SharedPreference {
     public void setYonaPassword(String password) {
         yonaPwd = null;
         //According to http://android-developers.blogspot.com.es/2013/08/some-securerandom-thoughts.html
-        try {
-            PRNGFixes.apply();
-            MyCipherData cipherData = new MyCipher(Build.SERIAL).encryptUTF8(password);
-            userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
-        } catch (Exception e) {
-            AppUtils.throwException(SharedPreference.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
+        PRNGFixes.apply();
+        MyCipherData cipherData = new MyCipher(Build.SERIAL).encryptUTF8(password);
+        userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
     }
 
     public void setVPNProfilePath(String path) {
@@ -131,13 +127,25 @@ public class SharedPreference {
         }
     }
 
+    public void upgradeYonaPasswordEncryption(){
+        if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, ""))) {
+            byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
+            byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
+            IvParameterSpec iv = new IvParameterSpec(dataIV);
+            MyCipher myCipher = new MyCipher(Build.SERIAL);
+            String yonaPassword = myCipher.getYonaPasswordWithOldEncryptedData(encrypted_data,iv);
+            setYonaPassword(yonaPassword);
+        }
+    }
+
+
     private byte[] byteToString(String response) {
         String[] byteValues = response.substring(1, response.length() - 1).split(",");
         byte[] encrypted_data = new byte[byteValues.length];
-
         for (int i = 0, len = encrypted_data.length; i < len; i++) {
             encrypted_data[i] = Byte.parseByte(byteValues[i].trim());
         }
         return encrypted_data;
     }
+
 }

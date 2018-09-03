@@ -45,7 +45,9 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.enums.EncryptionMethod;
 import nu.yona.app.listener.DataLoadListenerImpl;
+import nu.yona.app.state.SharedPreference;
 import nu.yona.app.ui.login.LoginActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
 import nu.yona.app.ui.signup.OTPActivity;
@@ -55,6 +57,8 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
+
 public class LaunchActivity extends BaseActivity {
     private Bundle bundle;
     private SharedPreferences sharedUserPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
@@ -62,6 +66,7 @@ public class LaunchActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeCrashlytics();
+        validateYonaPasswordEncryption();
         setUpApplicationInitialView();
         navigateToValidActivity();
         setListeners();
@@ -131,6 +136,15 @@ public class LaunchActivity extends BaseActivity {
                 return true;
             }
         });
+    }
+
+    private void validateYonaPasswordEncryption(){
+        // if App is older version and user is already logged in, upgrade the encryption.
+        if ((sharedUserPreferences.getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal()) == EncryptionMethod.INITIAL_METHOD.ordinal()
+        && !TextUtils.isEmpty(sharedUserPreferences.getString(PreferenceConstant.YONA_PASSCODE, "")))) {
+            YonaApplication.getEventChangeManager().getSharedPreference().upgradeYonaPasswordEncryption();
+        }
+        sharedUserPreferences.edit().putInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.ENHANCED_STILL_BASED_ON_SERIAL.ordinal());
     }
 
     /**
