@@ -121,7 +121,8 @@ public class AuthenticateManagerImplTest extends YonaTestCase {
     public void verifyUserPassCodeWithNullCode() {
         confirmMobileNumberWithOtp(nullOtpCode);
         assertThat(dataLoadResult, is(nullValue()));
-        assertThat(dataLoadError, equalTo(nullOtpFailureMessage));
+        assertThat(dataLoadError, instanceOf(ErrorMessage.class));
+        assertThat(((ErrorMessage)dataLoadError).getMessage(), equalTo(nullOtpFailureMessage));
     }
 
     private void verifyUserRegistration(){
