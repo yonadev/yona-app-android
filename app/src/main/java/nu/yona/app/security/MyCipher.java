@@ -11,8 +11,7 @@
 package nu.yona.app.security;
 
 import android.os.Build;
-
-import org.apache.commons.codec.binary.Base64;
+import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -37,6 +36,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import nu.yona.app.utils.AppUtils;
+
+import static android.util.Base64.DEFAULT;
 
 /*
  * This software is provided 'as-is', without any express or implied
@@ -67,7 +68,7 @@ public class MyCipher {
     public MyCipherData encryptUTF8(String data) {
         try {
             byte[] bytes = data.toString().getBytes("utf-8");
-            byte[] bytesBase64 = Base64.encodeBase64(bytes);
+            byte[] bytesBase64 = Base64.encode(bytes,DEFAULT);
             return encrypt(bytesBase64);
         }catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | UnsupportedEncodingException
                 | IllegalBlockSizeException | BadPaddingException | InvalidParameterSpecException | InvalidKeySpecException e) {
@@ -79,7 +80,7 @@ public class MyCipher {
     public String decryptUTF8(byte[] encryptedData, IvParameterSpec iv) {
         try {
             byte[] decryptedData = decrypt(encryptedData, iv);
-            byte[] decodedBytes = Base64.decodeBase64(decryptedData);
+            byte[] decodedBytes = Base64.decode(decryptedData,DEFAULT);
             String restored_data = new String(decodedBytes, Charset.forName("UTF8"));
             return restored_data;
         } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
@@ -168,7 +169,7 @@ public class MyCipher {
     public String getYonaPasswordWithOldEncryptedData(byte[] encryptedData, IvParameterSpec iv) {
         try {
             byte[] decryptedData = decryptWithOldKey(encryptedData, iv);
-            byte[] decodedBytes = Base64.decodeBase64(decryptedData);
+            byte[] decodedBytes = Base64.decode(decryptedData,DEFAULT);
             return  new String(decodedBytes, Charset.forName("UTF8"));
         }  catch (UnsupportedEncodingException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                 | IllegalBlockSizeException | BadPaddingException  e) {
