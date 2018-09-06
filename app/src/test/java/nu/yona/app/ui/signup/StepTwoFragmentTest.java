@@ -30,6 +30,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.customview.YonaFontEditTextView;
 import nu.yona.app.customview.YonaFontNumberTextView;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.MobileNumberFormatter;
 
 
 /**
@@ -66,16 +67,16 @@ public class StepTwoFragmentTest extends YonaTestCase {
     @Test
     public void validateMobileNumber() {
 
-        mobileNumber.setText("+31 (0) 123456789");
+        mobileNumber.setText(MobileNumberFormatter.formatMobileNumberWithCountryCode("+31 (0) 123456789"));
         assertTrue(APIManager.getInstance().getAuthenticateManager().validateMobileNumber(mobileNumber.getText().toString()));
 
-        mobileNumber.setText("+31123456789");
+        mobileNumber.setText(MobileNumberFormatter.formatMobileNumberWithCountryCode("+31123456789"));
         assertTrue(APIManager.getInstance().getAuthenticateManager().validateMobileNumber(mobileNumber.getText().toString()));
 
         mobileNumber.setText("+311234567ddddd89");
         assertFalse(APIManager.getInstance().getAuthenticateManager().validateMobileNumber(mobileNumber.getText().toString()));
 
-        mobileNumber.setText("+919686270640");
+        mobileNumber.setText(MobileNumberFormatter.formatMobileNumberWithCountryCode("+919686270640"));
         assertTrue(APIManager.getInstance().getAuthenticateManager().validateMobileNumber(mobileNumber.getText().toString()));
 
         mobileNumber.setText(null);
