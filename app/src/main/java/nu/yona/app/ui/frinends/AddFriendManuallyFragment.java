@@ -252,11 +252,14 @@ public class AddFriendManuallyFragment extends BaseFragment implements EventChan
     private void addFriend() {
         ((YonaActivity) getActivity()).showLoadingView(true, null);
         YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.ADD_FRIEND, getString(R.string.invitefriend));
-        String number = MobileNumberFormatter.formatDutchAndInternationalNumber(mobileNumber.getText().toString());
-
+        String number = MobileNumberFormatter.formatMobileNumberWithCountryCode(mobileNumber.getText().toString());
+        mobileNumber.setText(number);
         Logger.logi("Mobile_validation", number);
+        makeAddFriendAPIRequest(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), number);
+    }
 
-        APIManager.getInstance().getBuddyManager().addBuddy(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), number, new DataLoadListener() {
+    private void makeAddFriendAPIRequest(String firstName, String lastName, String email, String mobileNumber) {
+        APIManager.getInstance().getBuddyManager().addBuddy(firstName, lastName, email, mobileNumber, new DataLoadListener() {
             @Override
             public void onDataLoad(Object result) {
                 YonaActivity.getActivity().showLoadingView(false, null);

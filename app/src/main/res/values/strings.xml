@@ -223,4 +223,5 @@
     <string name="enviroment_input_placeholder">Enter Text Here</string>
     <string name="generic_alert_title">Alert</string>
     <string name="generic_exception_message">Unknown Exception. Please contact Yona support</string>
+    <string name="generic_mobile_number_format_error">Invalid Mobile Number. Please check the format</string>
 </resources>
