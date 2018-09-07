@@ -35,7 +35,7 @@ public interface AuthenticateManager {
      * @param mobileNumber the mobile number
      * @return the boolean
      */
-    boolean validateMobileNumber(String mobileNumber);
+    boolean isMobileNumberValid(String mobileNumber);
 
     /**
      * Register user.

@@ -86,11 +86,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      * @param mobileNumber user's mobile number
      * @return true if number is in expected format
      */
-    public boolean validateMobileNumber(String mobileNumber) {
-        // do validation for mobile number
-        // 9 digits of mobile number and '+31'
-        mobileNumber = mobileNumber.replaceAll(" ", "");
-        return !(TextUtils.isEmpty(mobileNumber)) && android.util.Patterns.PHONE.matcher(mobileNumber).matches();
+    public boolean isMobileNumberValid(String mobileNumber) {
+
+        return MobileNumberFormatter.isValid(mobileNumber);
     }
 
     /**

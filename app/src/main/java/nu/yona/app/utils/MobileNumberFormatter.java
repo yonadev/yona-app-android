@@ -7,6 +7,8 @@ public class MobileNumberFormatter {
     private static final int MIN_ACCEPTED_PHONE_NUMBER_LENGTH = 9;
     private static final String UNACCEPTED_PHONE_NUMBER_CHARACTERS_REGEX = "[^0123456789+]";
     private static final String NON_DUTCH_INTERNATIONAL_NUMBER_PREFIX_REGEX = "\\+(?!31).*";
+    private static final String VALID_NUMBER_REGEX = "^\\+[0-9]{6,20}$";
+
 
     /**
      * @param number user's mobile number
@@ -38,6 +40,48 @@ public class MobileNumberFormatter {
             }
         }
         return result;
+    }
+
+/*
+        Below function will do following on mobile number:
+            - Remove white spaces, new lines any other unwanted characters our of character set "[^0123456789+]"
+            - Concate country code prefix if it is not present.
+            - Add the prefix from the prefix input field if the number doesn't already start with +
+*/
+
+    public static String format(String countryCode, String mobileNumber){
+        countryCode = removeUnwantedCharacters(countryCode);
+        mobileNumber = removeUnwantedCharacters(mobileNumber);
+        String mobileNumberWithCountryCode = mobileNumber;
+        if(!mobileNumber.startsWith("+")){
+            if(!countryCode.startsWith("+")){
+                countryCode = "+"+countryCode;
+            }
+            mobileNumberWithCountryCode = countryCode+mobileNumber;
+        }
+        return format(mobileNumberWithCountryCode);
+    }
+
+    /*
+        Below function will do following on mobile number:
+             - Remove white spaces, new lines any other unwanted characters our of character set "[^0123456789+]"
+            - Remove the construct (0) if that occurs in the number
+            - Replace +310 with +31, as it's a common Dutch mistake to convert a mobile number like 06 1819... to +31061819...
+            - Validate the regex "^\\+[0-9]{6,20}$"
+*/
+
+    public static String format(String mobileNumberWithCountryCode){
+        mobileNumberWithCountryCode = removeUnwantedCharacters(mobileNumberWithCountryCode);
+        mobileNumberWithCountryCode = mobileNumberWithCountryCode.replace("(0)","");
+        if(mobileNumberWithCountryCode.startsWith("+310")){
+            mobileNumberWithCountryCode = mobileNumberWithCountryCode.replace("+310","+31");
+        }
+        return mobileNumberWithCountryCode;
+    }
+
+    // To validate after formatting the number.
+    public static boolean isValid(String mobileNumber){
+        return mobileNumber.matches(VALID_NUMBER_REGEX);
     }
 
 }
