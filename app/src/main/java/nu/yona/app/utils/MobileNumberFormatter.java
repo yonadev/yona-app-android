@@ -80,7 +80,7 @@ public class MobileNumberFormatter {
     }
 
     // To validate after formatting the number.
-    public static boolean validate(String mobileNumber){
+    public static boolean isValid(String mobileNumber){
         return mobileNumber.matches(VALID_NUMBER_REGEX);
     }
 

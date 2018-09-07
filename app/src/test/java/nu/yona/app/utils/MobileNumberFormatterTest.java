@@ -75,36 +75,36 @@ public class MobileNumberFormatterTest {
     @Test
     public void validate_withDigitsExceed_returnsFalse(){
         String input = "+91465654464431545456645";
-        boolean excepted = false;
-        assertEquals(excepted, MobileNumberFormatter.validate(input));
+        boolean expected = false;
+        assertEquals(expected, MobileNumberFormatter.isValid(input));
     }
 
     @Test
     public void validate_digitsShortage_returnsFalse(){
         String input = "+3232";
-        boolean excepted = false;
-        assertEquals(excepted, MobileNumberFormatter.validate(input));
+        boolean expected = false;
+        assertEquals(expected, MobileNumberFormatter.isValid(input));
     }
 
     @Test
     public void validate_alphaNumericString_returnsFalse(){
         String input = "+xyz3232";
-        boolean excepted = false;
-        assertEquals(excepted, MobileNumberFormatter.validate(input));
+        boolean expected = false;
+        assertEquals(expected, MobileNumberFormatter.isValid(input));
     }
 
     @Test
-    public void validate_validString_returnsTrue(){
+    public void validate_validNumber_returnsTrue(){
         String input = "+919686270640";
-        boolean excepted = true;
-        assertEquals(excepted, MobileNumberFormatter.validate(input));
+        boolean expected = true;
+        assertEquals(expected, MobileNumberFormatter.isValid(input));
     }
 
     @Test
     public void validate_numberWithoutPlus_returnsFalse(){
         String input = "919686270640";
-        boolean excepted = false;
-        assertEquals(excepted, MobileNumberFormatter.validate(input));
+        boolean expected = false;
+        assertEquals(expected, MobileNumberFormatter.isValid(input));
     }
 
 }

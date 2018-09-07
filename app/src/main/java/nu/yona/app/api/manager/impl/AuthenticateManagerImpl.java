@@ -88,7 +88,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      */
     public boolean isMobileNumberValid(String mobileNumber) {
 
-        return MobileNumberFormatter.validate(mobileNumber);
+        return MobileNumberFormatter.isValid(mobileNumber);
     }
 
     /**
