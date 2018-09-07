@@ -49,7 +49,7 @@ public class MobileNumberFormatter {
             - Add the prefix from the prefix input field if the number doesn't already start with +
 */
 
-    public static String formatMobileNumber(String countryCode, String mobileNumber){
+    public static String format(String countryCode, String mobileNumber){
         countryCode = removeUnwantedCharacters(countryCode);
         mobileNumber = removeUnwantedCharacters(mobileNumber);
         String mobileNumberWithCountryCode = mobileNumber;
@@ -59,7 +59,7 @@ public class MobileNumberFormatter {
             }
             mobileNumberWithCountryCode = countryCode+mobileNumber;
         }
-        return formatMobileNumberWithCountryCode(mobileNumberWithCountryCode);
+        return format(mobileNumberWithCountryCode);
     }
 
     /*
@@ -70,7 +70,7 @@ public class MobileNumberFormatter {
             - Validate the regex "^\\+[0-9]{6,20}$"
 */
 
-    public static String formatMobileNumberWithCountryCode(String mobileNumberWithCountryCode){
+    public static String format(String mobileNumberWithCountryCode){
         mobileNumberWithCountryCode = removeUnwantedCharacters(mobileNumberWithCountryCode);
         mobileNumberWithCountryCode = mobileNumberWithCountryCode.replace("(0)","");
         if(mobileNumberWithCountryCode.startsWith("+310")){
@@ -80,7 +80,7 @@ public class MobileNumberFormatter {
     }
 
     // To validate after formatting the number.
-    public static boolean validateMobileNumber(String mobileNumber){
+    public static boolean validate(String mobileNumber){
         return mobileNumber.matches(VALID_NUMBER_REGEX);
     }
 

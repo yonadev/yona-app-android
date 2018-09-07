@@ -170,7 +170,7 @@ public class StepTwoFragment extends BaseFragment implements EventChangeListener
     }
 
     private void goToNext() {
-        String formattedNumber = MobileNumberFormatter.formatMobileNumber(countryCode.getText().toString(), mobileNumber.getText().toString());
+        String formattedNumber = MobileNumberFormatter.format(countryCode.getText().toString(), mobileNumber.getText().toString());
         if (validateMobileNumber(formattedNumber) && validateNickName()) {
             YonaAnalytics.createTapEvent(getString(R.string.next));
             YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setMobileNumber(formattedNumber);
@@ -180,7 +180,7 @@ public class StepTwoFragment extends BaseFragment implements EventChangeListener
     }
 
     private boolean validateMobileNumber(String number) {
-        if (!APIManager.getInstance().getAuthenticateManager().validateMobileNumber(number)) {
+        if (!APIManager.getInstance().getAuthenticateManager().isMobileNumberValid(number)) {
             mobileErrorTextview.setVisibility(View.VISIBLE);
             mobileErrorTextview.setText(getString(R.string.enternumbervalidation));
             activity.showKeyboard(mobileNumber);

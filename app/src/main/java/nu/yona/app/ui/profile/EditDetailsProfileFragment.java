@@ -291,7 +291,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
             YonaActivity.getActivity().showKeyboard(nickName);
             nickName.requestFocus();
             return false;
-        } else if (!APIManager.getInstance().getAuthenticateManager().validateMobileNumber(phonenumber)) {
+        } else if (!APIManager.getInstance().getAuthenticateManager().isMobileNumberValid(phonenumber)) {
             mobileNumberLayout.setErrorEnabled(true);
             mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
             YonaActivity.getActivity().showKeyboard(mobileNumber);

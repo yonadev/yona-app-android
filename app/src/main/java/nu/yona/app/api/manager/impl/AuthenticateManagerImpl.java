@@ -86,9 +86,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
      * @param mobileNumber user's mobile number
      * @return true if number is in expected format
      */
-    public boolean validateMobileNumber(String mobileNumber) {
+    public boolean isMobileNumberValid(String mobileNumber) {
 
-        return MobileNumberFormatter.validateMobileNumber(mobileNumber);
+        return MobileNumberFormatter.validate(mobileNumber);
     }
 
     /**
