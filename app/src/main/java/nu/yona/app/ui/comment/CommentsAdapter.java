@@ -21,6 +21,7 @@ import java.util.List;
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.model.YonaMessage;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by bhargavsuthar on 28/07/16.
@@ -78,6 +79,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                             holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
                         }
                     } catch (Exception e) {
+                        AppUtils.reportException(CommentsAdapter.class.getSimpleName(), e, Thread.currentThread(), null);
                         holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
                     }
 
@@ -106,6 +108,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                             holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
                         }
                     } catch (Exception e) {
+                        AppUtils.reportException(CommentsAdapter.class.getSimpleName(), e, Thread.currentThread(), null);
                         holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
                     }
                 }

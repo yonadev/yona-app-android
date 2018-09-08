@@ -40,7 +40,7 @@ public class JsonSerializer implements DbSerializer {
         try {
             return mapper.writeValueAsBytes(obj);
         } catch (IOException e) {
-            AppUtils.throwException(JsonSerializer.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(JsonSerializer.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         return new byte[0];
     }

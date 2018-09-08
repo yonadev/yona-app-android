@@ -286,7 +286,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
                         dayActivityList.add(embeddedYonaActivity.getDayActivityList().get(i));
                     }
                 } catch (Exception e) {
-                    AppUtils.throwException(DayActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
+                    AppUtils.reportException(DayActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
                 }
             }
             int itemIndex = getIndex(activity);

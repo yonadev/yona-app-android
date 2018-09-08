@@ -51,7 +51,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
                 getRestApi().updateRegisterUser(url, password, Locale.getDefault().toString().replace('_', '-'), registerUser).enqueue(getUserCallBack(listener));
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -59,7 +59,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().registerUser(url, Locale.getDefault().toString().replace('_', '-'), object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -88,7 +88,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().readDeepLinkData(url, Locale.getDefault().toString().replace('_', '-')).enqueue(getDeepLinkUserDataCallBack(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -104,7 +104,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().overrideRegisterUser(Locale.getDefault().toString().replace('_', '-'), otp, object).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -119,7 +119,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().getUser(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -135,7 +135,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().verifyMobileNumber(url, password, Locale.getDefault().toString().replace('_', '-'), otp).enqueue(getUserCallBack(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -150,7 +150,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().resendOTP(url, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -164,7 +164,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().requestUserOverride(Locale.getDefault().toString().replace('_', '-'), mobileNumber).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -179,7 +179,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().deleteUser(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -208,7 +208,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -223,7 +223,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
         try {
             getRestApi().verifyPin(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), Locale.getDefault().toString().replace('_', '-'), new OTPVerficationCode(otp)).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -246,7 +246,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
                 }
             }));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 

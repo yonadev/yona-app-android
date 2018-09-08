@@ -69,7 +69,7 @@ public class DateUtility {
                 relativeDate = new SimpleDateFormat("EEEE, d MMM").format(future.getTime());
 
             } catch (Exception e) {
-                AppUtils.throwException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
+                AppUtils.reportException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
             }
         }
 
@@ -148,7 +148,7 @@ public class DateUtility {
                 calendar.add(Calendar.DAY_OF_WEEK, 1);
             }
         } catch (Exception e) {
-            AppUtils.throwException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
         }
 
         return listOfdates;
@@ -204,6 +204,7 @@ public class DateUtility {
                 }
             } catch (ParseException e) {
                 Logger.loge(TAG, "Exception", e);
+                AppUtils.reportException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
                 e.printStackTrace();
             }
         }

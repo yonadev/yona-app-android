@@ -38,6 +38,8 @@ import java.security.SecureRandom;
 import java.security.SecureRandomSpi;
 import java.security.Security;
 
+import nu.yona.app.api.receiver.YonaReceiver;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 
 /**
@@ -285,6 +287,7 @@ public final class PRNGFixes {
                 // Log and ignore.
                 Logger.loge(PRNGFixes.class.getSimpleName(),
                         "Failed to mix seed into " + URANDOM_FILE);
+                AppUtils.reportException(PRNGFixes.class.getSimpleName(), e, Thread.currentThread(), null);
             } finally {
                 mSeeded = true;
             }

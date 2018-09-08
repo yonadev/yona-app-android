@@ -310,7 +310,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
             }
             setDayDetailTitleAndIcon();
         } catch (NullPointerException e) {
-            AppUtils.throwException(WeekActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(WeekActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         return null;
     }

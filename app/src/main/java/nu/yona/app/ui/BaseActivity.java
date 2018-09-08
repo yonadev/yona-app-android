@@ -18,10 +18,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import nu.yona.app.R;
+import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.Categorizable;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.customview.CustomProgressDialog;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 
 /**
@@ -58,6 +60,7 @@ public class BaseActivity extends AppCompatActivity implements Categorizable {
                 progressDialog = null;
             }
         } catch (Exception e) {
+            AppUtils.reportException(BaseActivity.class.getSimpleName(), e, Thread.currentThread(), null);
             Logger.loge(BaseActivity.class.getSimpleName(), e.getMessage());
         }
     }

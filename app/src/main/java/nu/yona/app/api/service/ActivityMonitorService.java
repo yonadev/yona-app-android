@@ -68,7 +68,7 @@ public class ActivityMonitorService extends Service {
                 currentApp = am.getRunningAppProcesses().get(0).processName;
             }
         } catch (Exception e) {
-            AppUtils.throwException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         return currentApp;
     }
@@ -175,7 +175,7 @@ public class ActivityMonitorService extends Service {
                 scheduledFuture = null;
             }
         } catch (Exception e) {
-            AppUtils.throwException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 

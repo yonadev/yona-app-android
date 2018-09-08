@@ -118,7 +118,7 @@ class BaseDAO {
                 }
             }.executeAsync();
         } catch (Exception e) {
-            AppUtils.throwException(BaseDAO.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(BaseDAO.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 }

@@ -108,7 +108,7 @@ public class BuddyManagerImpl implements BuddyManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -143,7 +143,7 @@ public class BuddyManagerImpl implements BuddyManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -194,7 +194,7 @@ public class BuddyManagerImpl implements BuddyManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 }

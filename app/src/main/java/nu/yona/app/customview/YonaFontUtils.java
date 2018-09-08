@@ -83,7 +83,7 @@ class YonaFontUtils {
             try {
                 typeface = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontname);
             } catch (Exception e) {
-                AppUtils.throwException(YonaFontUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+                AppUtils.reportException(YonaFontUtils.class.getSimpleName(), e, Thread.currentThread(), null);
                 return null;
             }
 

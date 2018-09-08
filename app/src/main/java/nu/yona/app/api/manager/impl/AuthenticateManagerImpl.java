@@ -115,7 +115,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -245,7 +245,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 });
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -272,7 +272,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 verifyOTPAfterUser(otp, listener);
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -340,7 +340,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.invalidotp)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -378,7 +378,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -400,7 +400,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -435,7 +435,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 }
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
 
     }
@@ -467,7 +467,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 }
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -495,7 +495,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 resendOTPAfterUser(listener);
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -544,7 +544,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 OverrideUser(listener);
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -588,7 +588,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 

@@ -34,6 +34,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.joda.time.Period;
 
 import java.io.BufferedInputStream;
@@ -151,7 +153,7 @@ public class AppUtils {
             activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
             context.startService(activityMonitorIntent);
         } catch (Exception e) {
-            throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+            reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
@@ -167,7 +169,7 @@ public class AppUtils {
                 activityMonitorIntent = null;
             }
         } catch (Exception e) {
-            throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+            reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
         }
     }
 
@@ -244,38 +246,41 @@ public class AppUtils {
             }
             return Pair.create(buffer.toString(), totalTime);
         } catch (Exception e) {
-            AppUtils.throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         return Pair.create(time, (long) 0);
     }
 
     /**
-     * Throw exception.
+     * Report exception.
      *
      * @param className class name where exception throws
      * @param e         Error
      * @param t         Current Thread (Thread.currentThread())
      * @param listener  DataLoadListener to update UI
      */
-    public static void throwException(String className, Exception e, Thread t, DataLoadListener listener) {
+    public static void reportException(String className, Exception e, Thread t, DataLoadListener listener) {
         ErrorMessage errorMessage = new ErrorMessage();
-        try {
-            if (e != null && e.getMessage() != null) {
-                errorMessage.setMessage(e.getMessage());
-            } else {
-                errorMessage.setMessage(YonaApplication.getAppContext().getString(R.string.error_message));
-            }
-            if (listener != null) {
-                listener.onError(errorMessage);
-            }else{
-                showErrorToast(errorMessage);
-            }
-        } catch (Exception x) {
-            // Catching to avoid application crash and showing user friendly message.
-            loge(TAG, "Exception in throwException method");
-            errorMessage.setMessage(YonaApplication.getAppContext().getString(R.string.generic_exception_message));
-            showErrorToast(errorMessage);
+        if (e != null && e.getMessage() != null) {
+            errorMessage.setMessage(e.getMessage());
+        } else {
+            errorMessage.setMessage(YonaApplication.getAppContext().getString(R.string.error_message));
         }
+        if (listener != null) {
+            listener.onError(errorMessage);
+        } else {
+            showErrorToast(errorMessage);
+            logExceptionToCrashlytics(e);
+        }
+    }
+
+    /*
+    Method logs Exception to the Crashlytics Dashboard under Non-fatal section.
+    Application uploads the Exceptions only after next launch after event occurs.
+     */
+
+    public static void logExceptionToCrashlytics(Exception e){
+        Crashlytics.logException(e);
     }
 
     /**
@@ -548,6 +553,7 @@ public class AppUtils {
                 buf.close();
                 return bytes;
             } catch (FileNotFoundException e) {
+                AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
                 printStackTrace(e);
             } catch (IOException e) {
                 printStackTrace(e);
@@ -578,7 +584,7 @@ public class AppUtils {
                 }
             }
         } catch (Exception e) {
-            throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+            reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
         }
         return isCertExist;
 

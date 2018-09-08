@@ -78,7 +78,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
                     }
                 }
             } catch (Exception e) {
-                AppUtils.throwException(TimelineFragment.class.getSimpleName(), e, Thread.currentThread(), null);
+                AppUtils.reportException(TimelineFragment.class.getSimpleName(), e, Thread.currentThread(), null);
             }
         }
     };

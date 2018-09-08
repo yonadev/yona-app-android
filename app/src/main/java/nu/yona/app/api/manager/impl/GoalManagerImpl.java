@@ -72,7 +72,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -99,7 +99,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -126,7 +126,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -153,7 +153,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -176,7 +176,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -199,7 +199,7 @@ public class GoalManagerImpl implements GoalManager {
                 listener.onError(mContext.getString(R.string.urlnotfound));
             }
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 

@@ -78,7 +78,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
         try {
             activityCategoriesDAO.saveActivityCategories(((ActivityCategories) result), listener);
         } catch (Exception e) {
-            AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
         return null; // No value to return from here
     }
@@ -92,7 +92,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager {
         try {
             activityCategoriesNetwork.getActivityCategories(listener);
         } catch (Exception e) {
-            AppUtils.throwException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 }

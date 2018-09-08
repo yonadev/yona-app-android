@@ -52,7 +52,7 @@ public class BuddyNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -81,7 +81,7 @@ public class BuddyNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -96,7 +96,7 @@ public class BuddyNetworkImpl extends BaseImpl {
         try {
             getRestApi().deleteBuddy(url, passwrod, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 }

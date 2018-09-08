@@ -59,7 +59,7 @@ public class AuthenticateDAO extends BaseDAO {
                 listener.onDataLoad(getUser());
             }
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -78,7 +78,7 @@ public class AuthenticateDAO extends BaseDAO {
                 }
             }
         } catch (Exception e) {
-            AppUtils.throwException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), null);
         } finally {
             if (c != null) {
                 c.close();

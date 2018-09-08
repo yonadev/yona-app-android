@@ -41,7 +41,7 @@ public class ActivityNetworkImpl extends BaseImpl {
         try {
             getRestApi().getActivities(nextDayActivittUrl, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -56,7 +56,7 @@ public class ActivityNetworkImpl extends BaseImpl {
         try {
             getRestApi().getDayDetailActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getDayDetailActivity(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -71,7 +71,7 @@ public class ActivityNetworkImpl extends BaseImpl {
         try {
             getRestApi().getActivities(nextWeeksActivityUrl, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -86,7 +86,7 @@ public class ActivityNetworkImpl extends BaseImpl {
         try {
             getRestApi().getWeekDetailActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getweekDetailActivity(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -103,7 +103,7 @@ public class ActivityNetworkImpl extends BaseImpl {
         try {
             getRestApi().getWithBuddyActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -119,7 +119,7 @@ public class ActivityNetworkImpl extends BaseImpl {
         try {
             getRestApi().postAppActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), appActivity).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -127,7 +127,7 @@ public class ActivityNetworkImpl extends BaseImpl {
         try {
             getRestApi().getComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -149,7 +149,7 @@ public class ActivityNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -171,7 +171,7 @@ public class ActivityNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 

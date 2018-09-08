@@ -51,7 +51,7 @@ public class NotificationNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -83,7 +83,7 @@ public class NotificationNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -98,7 +98,7 @@ public class NotificationNetworkImpl extends BaseImpl {
         try {
             getRestApi().deleteMessage(url, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -114,7 +114,7 @@ public class NotificationNetworkImpl extends BaseImpl {
         try {
             getRestApi().postMessage(url, password, Locale.getDefault().toString().replace('_', '-'), body).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -122,7 +122,7 @@ public class NotificationNetworkImpl extends BaseImpl {
         try {
             getRestApi().getComments(url, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 

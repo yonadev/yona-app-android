@@ -131,7 +131,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                                     uploadDate = DateUtility.getRelativeDate(futureCalendar);
                                                     message.setStickyTitle(uploadDate);
                                                 } catch (Exception e) {
-                                                    AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+                                                    AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
                                                 }
                                                 yonaMessages.setEmbedded(embedded);
                                                 if (!isProcessUpdate && message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null
@@ -161,7 +161,7 @@ public class NotificationManagerImpl implements NotificationManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -196,7 +196,7 @@ public class NotificationManagerImpl implements NotificationManager {
             String uploadDate = DateUtility.getRelativeDate(futureCalendar);
             return uploadDate;
         }catch(ParseException parseEx) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), parseEx, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), parseEx, Thread.currentThread(), null);
         }
         return null;
     }
@@ -206,7 +206,7 @@ public class NotificationManagerImpl implements NotificationManager {
             DataLoadListenerImpl dataloadListenerImpl =  new DataLoadListenerImpl((result)->processYonaMessages((YonaMessages) result),listener);
             notificationNetwork.getNextSetOfMessagesFromURL(urlForMessagesFetch, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus,dataloadListenerImpl);
         } catch (IllegalArgumentException e) {
-            AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -259,7 +259,7 @@ public class NotificationManagerImpl implements NotificationManager {
                 });
             }
         } catch (Exception e) {
-            AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -292,7 +292,7 @@ public class NotificationManagerImpl implements NotificationManager {
                 });
             }
         } catch (Exception e) {
-            AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -310,7 +310,7 @@ public class NotificationManagerImpl implements NotificationManager {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -341,7 +341,7 @@ public class NotificationManagerImpl implements NotificationManager {
                 }
             }
         } catch (Exception e) {
-            AppUtils.throwException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         } finally {
             listener.onDataLoad(yonaMessageList);
         }
