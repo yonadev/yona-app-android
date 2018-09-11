@@ -101,7 +101,7 @@ pipeline {
         }
       }
     }
-    stage('Promote to beta') {
+    stage('Release to beta') {
       when {
         environment name: 'RELEASE_TO_BETA', value: 'yes'
       }
@@ -116,7 +116,7 @@ pipeline {
           slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully released to beta on Google Play"
         }
         failure {
-          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to released to beta on Google Play"
+          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to release to beta on Google Play"
         }
       }
     }
@@ -138,7 +138,7 @@ pipeline {
         }
       }
     }
-    stage('Promote to production') {
+    stage('Release to production') {
       when {
         environment name: 'RELEASE_TO_PRODUCTION', value: 'yes'
       }
@@ -150,7 +150,7 @@ pipeline {
       }
       post {
         success {
-          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully release to production on Google Play"
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} successfully released to production on Google Play"
         }
         failure {
           slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed to release to production on Google Play"
