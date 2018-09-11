@@ -246,7 +246,7 @@ public class AuthenticateNetworkImpl extends BaseImpl {
                 }
             }));
         } catch (Exception e) {
-            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 

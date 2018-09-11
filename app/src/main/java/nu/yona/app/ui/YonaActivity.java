@@ -356,8 +356,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                         }
                     });
                 } catch (Exception e) {
-                    AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread(), null);
-                    Logger.loge(YonaActivity.class.getSimpleName(), e.getMessage());
+                    AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
                 }
             } else {
                 Snackbar.make(findViewById(android.R.id.content), errorMessage.getMessage(), Snackbar.LENGTH_LONG).show();
@@ -468,7 +467,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             FileOutputStream fos = new FileOutputStream(file);
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
         } catch (FileNotFoundException ex) {
-            AppUtils.reportException(YonaActivity.class.getSimpleName(), ex, Thread.currentThread(), null);
+            AppUtils.reportException(YonaActivity.class.getSimpleName(), ex, Thread.currentThread());
             return null;
         }
         return file;
@@ -919,8 +918,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
             }
             super.onBackPressed();
         } catch (Exception e) {
-            AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread(), null);
-            Logger.loge(YonaActivity.class.getSimpleName(), e.getMessage());
+            AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -1036,7 +1034,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
                     }
                     phoneCur.close();
                 } catch (Exception e) {
-                    AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread(), null);
+                    AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
                 }
                 return null;
             }

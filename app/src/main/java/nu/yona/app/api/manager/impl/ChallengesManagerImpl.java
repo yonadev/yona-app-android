@@ -163,7 +163,7 @@ public class ChallengesManagerImpl implements ChallengesManager {
                 }
             }
         } catch (Exception e) {
-            AppUtils.reportException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread());
         }
         return false;
     }

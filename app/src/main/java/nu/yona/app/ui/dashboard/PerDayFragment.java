@@ -80,7 +80,7 @@ public class PerDayFragment extends BaseFragment {
                     }
                 }
             } catch (Exception e) {
-                AppUtils.reportException(PerDayFragment.class.getSimpleName(), e, Thread.currentThread(), null);
+                AppUtils.reportException(PerDayFragment.class.getSimpleName(), e, Thread.currentThread());
             }
         }
     };

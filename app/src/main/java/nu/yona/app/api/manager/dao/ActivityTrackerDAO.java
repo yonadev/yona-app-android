@@ -71,7 +71,7 @@ public class ActivityTrackerDAO extends BaseDAO {
                 } while (c.moveToNext());
             }
         } catch (Exception e) {
-            AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread());
         } finally {
             if (c != null) {
                 c.close();

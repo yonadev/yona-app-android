@@ -79,7 +79,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                             holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
                         }
                     } catch (Exception e) {
-                        AppUtils.reportException(CommentsAdapter.class.getSimpleName(), e, Thread.currentThread(), null);
+                        AppUtils.reportException(CommentsAdapter.class.getSimpleName(), e, Thread.currentThread());
                         holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
                     }
 
@@ -108,7 +108,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder> {
                             holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_self_round));
                         }
                     } catch (Exception e) {
-                        AppUtils.reportException(CommentsAdapter.class.getSimpleName(), e, Thread.currentThread(), null);
+                        AppUtils.reportException(CommentsAdapter.class.getSimpleName(), e, Thread.currentThread());
                         holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
                     }
                 }

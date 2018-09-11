@@ -60,8 +60,7 @@ public class BaseActivity extends AppCompatActivity implements Categorizable {
                 progressDialog = null;
             }
         } catch (Exception e) {
-            AppUtils.reportException(BaseActivity.class.getSimpleName(), e, Thread.currentThread(), null);
-            Logger.loge(BaseActivity.class.getSimpleName(), e.getMessage());
+            AppUtils.reportException(BaseActivity.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 

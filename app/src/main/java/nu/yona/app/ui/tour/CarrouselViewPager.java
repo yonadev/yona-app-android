@@ -63,7 +63,7 @@ public class CarrouselViewPager extends ViewPager {
                     (Interpolator) interpolator.get(null));
             scroller.set(this, mScroller);
         } catch (Exception e) {
-            AppUtils.reportException(CarrouselViewPager.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(CarrouselViewPager.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 

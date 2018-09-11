@@ -179,7 +179,6 @@ public class SettingsFragment extends BaseFragment {
                 }
             });
         } catch (Exception e) {
-            AppUtils.reportException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
             showAlert(e.toString(), false);
         }
     }
@@ -200,8 +199,7 @@ public class SettingsFragment extends BaseFragment {
                         .show();
             }
         } catch (Exception e) {
-            AppUtils.reportException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
-            Log.e(SettingsFragment.class.getSimpleName(), e.getMessage());
+            AppUtils.reportException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -219,8 +217,7 @@ public class SettingsFragment extends BaseFragment {
                 }
             });
         } catch (Exception e) {
-            AppUtils.reportException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread(), null);
-            showAlert(e.toString(), false);
+            AppUtils.reportException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 

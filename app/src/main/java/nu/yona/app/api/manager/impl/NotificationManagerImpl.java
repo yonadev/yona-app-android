@@ -131,7 +131,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                                     uploadDate = DateUtility.getRelativeDate(futureCalendar);
                                                     message.setStickyTitle(uploadDate);
                                                 } catch (Exception e) {
-                                                    AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+                                                    AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
                                                 }
                                                 yonaMessages.setEmbedded(embedded);
                                                 if (!isProcessUpdate && message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null
@@ -196,7 +196,7 @@ public class NotificationManagerImpl implements NotificationManager {
             String uploadDate = DateUtility.getRelativeDate(futureCalendar);
             return uploadDate;
         }catch(ParseException parseEx) {
-            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), parseEx, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), parseEx, Thread.currentThread());
         }
         return null;
     }

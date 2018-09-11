@@ -35,7 +35,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().getUserGoals(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),  Locale.getDefault().toString().replace('_', '-')).enqueue(getGoals(listener));
         } catch (Exception e) {
-            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -51,7 +51,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().putUserGoals(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), goal).enqueue(getGoals(listener));
         } catch (Exception e) {
-            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -67,7 +67,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().putUserGoals(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), goal).enqueue(getGoals(listener));
         } catch (Exception e) {
-            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -82,7 +82,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().deleteUserGoal(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -98,7 +98,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().updateUserGoal(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), "", goal).enqueue(getGoals(listener));
         } catch (Exception e) {
-            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -114,7 +114,7 @@ public class GoalNetworkImpl extends BaseImpl {
         try {
             getRestApi().updateUserGoal(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), "", goal).enqueue(getGoals(listener));
         } catch (Exception e) {
-            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 

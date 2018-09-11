@@ -101,8 +101,7 @@ public class YonaApplication extends Application {
                 tracker.setAppVersion(pInfo.versionName + mContext.getString(R.string.space) + pInfo.versionCode);
                 tracker.send(new HitBuilders.ScreenViewBuilder().build());
             } catch (PackageManager.NameNotFoundException e) {
-                AppUtils.reportException(YonaApplication.class.getSimpleName(), e, Thread.currentThread(), null);
-                nu.yona.app.utils.Logger.loge(YonaApplication.class.getSimpleName(), e.getMessage());
+                AppUtils.reportException(YonaApplication.class.getSimpleName(), e, Thread.currentThread());
             }
 
             GoogleAnalytics.getInstance(mContext).getLogger()

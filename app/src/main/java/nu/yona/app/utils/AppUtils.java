@@ -153,7 +153,7 @@ public class AppUtils {
             activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
             context.startService(activityMonitorIntent);
         } catch (Exception e) {
-            reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+            reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -169,7 +169,7 @@ public class AppUtils {
                 activityMonitorIntent = null;
             }
         } catch (Exception e) {
-            reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+            reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -246,7 +246,7 @@ public class AppUtils {
             }
             return Pair.create(buffer.toString(), totalTime);
         } catch (Exception e) {
-            AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
         }
         return Pair.create(time, (long) 0);
     }
@@ -272,6 +272,18 @@ public class AppUtils {
             showErrorToast(errorMessage);
             logExceptionToCrashlytics(e);
         }
+        Logger.loge(e.getClass().getSimpleName(), e.getMessage());
+    }
+
+    /**
+     * Report exception.
+     *
+     * @param className class name where exception throws
+     * @param e         Error
+     * @param t         Current Thread (Thread.currentThread())
+     */
+    public static void reportException(String className, Exception e, Thread t) {
+        AppUtils.reportException(className,e,t,null);
     }
 
     /*
@@ -553,10 +565,9 @@ public class AppUtils {
                 buf.close();
                 return bytes;
             } catch (FileNotFoundException e) {
-                AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
-                printStackTrace(e);
+                AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
             } catch (IOException e) {
-                printStackTrace(e);
+                AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
             }
         }
         return null;
@@ -584,7 +595,7 @@ public class AppUtils {
                 }
             }
         } catch (Exception e) {
-            reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
+            reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
         }
         return isCertExist;
 

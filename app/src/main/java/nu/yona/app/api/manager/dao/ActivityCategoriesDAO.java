@@ -75,7 +75,7 @@ public class ActivityCategoriesDAO extends BaseDAO {
                 }
             }
         } catch (Exception e) {
-            AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread());
         } finally {
             if (c != null) {
                 c.close();

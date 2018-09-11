@@ -285,9 +285,7 @@ public final class PRNGFixes {
             } catch (IOException e) {
                 // On a small fraction of devices /dev/urandom is not writable.
                 // Log and ignore.
-                Logger.loge(PRNGFixes.class.getSimpleName(),
-                        "Failed to mix seed into " + URANDOM_FILE);
-                AppUtils.reportException(PRNGFixes.class.getSimpleName(), e, Thread.currentThread(), null);
+                AppUtils.reportException(PRNGFixes.class.getSimpleName(), e, Thread.currentThread());
             } finally {
                 mSeeded = true;
             }

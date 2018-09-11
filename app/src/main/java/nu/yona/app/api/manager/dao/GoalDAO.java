@@ -73,7 +73,7 @@ public class GoalDAO extends BaseDAO {
                 }
             }
         } catch (Exception e) {
-            AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread());
         } finally {
             if (c != null) {
                 c.close();
