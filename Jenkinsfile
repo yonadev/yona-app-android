@@ -120,7 +120,7 @@ pipeline {
         }
       }
     }
-    stage('Decide deploy release to production') {
+    stage('Decide release to production') {
       when {
         allOf {
           not { changelog '.*\\[ci skip\\].*' }
