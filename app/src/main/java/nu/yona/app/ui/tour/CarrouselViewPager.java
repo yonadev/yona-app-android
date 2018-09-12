@@ -16,6 +16,8 @@ import android.view.animation.Interpolator;
 
 import java.lang.reflect.Field;
 
+import nu.yona.app.utils.AppUtils;
+
 /**
  * Created by bhargavsuthar on 19/05/16.
  */
@@ -61,6 +63,7 @@ public class CarrouselViewPager extends ViewPager {
                     (Interpolator) interpolator.get(null));
             scroller.set(this, mScroller);
         } catch (Exception e) {
+            AppUtils.reportException(CarrouselViewPager.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 

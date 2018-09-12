@@ -62,6 +62,7 @@ import nu.yona.app.enums.GoalsEnum;
 import nu.yona.app.enums.WeekDayEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoadListenerImpl;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
@@ -135,7 +136,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -179,7 +180,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 }
             }
         } catch (Exception e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
         }
         return null;
     }
@@ -269,7 +270,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 }
             }
         }catch (NullPointerException e){
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
         }
         return null;
     }
@@ -282,7 +283,7 @@ public class ActivityManagerImpl implements ActivityManager {
         try {
             activityTrackerDAO.saveActivities(getAppActivity(applicationName, startDate, endDate));
         } catch (Exception e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -562,7 +563,7 @@ public class ActivityManagerImpl implements ActivityManager {
                         break;
                     }
                 } catch (Exception e) {
-                    AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+                    AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
                 }
             }
         }
@@ -582,7 +583,7 @@ public class ActivityManagerImpl implements ActivityManager {
                         break;
                     }
                 } catch (Exception e) {
-                    AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+                    AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
                 }
             }
         }
@@ -618,7 +619,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -646,7 +647,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -673,7 +674,7 @@ public class ActivityManagerImpl implements ActivityManager {
                             try {
                                 activity.setStickyTitle(DateUtility.getRetriveWeek(overview.getDate()));
                             } catch (Exception e) {
-                                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+                                AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
                             }
                             activity.setDate(overview.getDate());
                             activity = getWeekDayActivity(activity);
@@ -710,7 +711,7 @@ public class ActivityManagerImpl implements ActivityManager {
             try {
                 weekActivity.setStickyTitle(DateUtility.getRetriveWeek(weekActivity.getDate()));
             } catch (Exception e) {
-                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+                AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
             }
             weekActivity.setDate(weekActivity.getDate());
             weekActivity = getWeekDayActivity(weekActivity);
@@ -726,7 +727,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 weekActivity.setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
             }
         } catch (Exception e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
         }
         if (listener != null) {
             listener.onDataLoad(weekActivity);
@@ -859,8 +860,7 @@ public class ActivityManagerImpl implements ActivityManager {
                             futureCalendar.setTime(sdf.parse(createdTime));
                             activity.setStickyTitle(DateUtility.getRelativeDate(futureCalendar));
                         } catch (Exception e) {
-                            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-                            Logger.loge(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+                            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
                         }
                         // TODO: History check need to ve verify. Concern Issue: http://jira.yona.nu/browse/APPDEV-999.
                         if (activity.getYonaGoal() != null && activity.getYonaGoal() != null/* && !activity.getYonaGoal().isHistoryItem()*/) {
@@ -1104,7 +1104,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -1117,7 +1117,7 @@ public class ActivityManagerImpl implements ActivityManager {
             dayActivity.setStickyTitle(DateUtility.getRelativeDate(futureCalendar));
             return dayActivity;
         } catch (ParseException e) {
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
         }
         return null;
     }
@@ -1177,7 +1177,7 @@ public class ActivityManagerImpl implements ActivityManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.no_data_found)));
             }
         }catch (NullPointerException e){
-            AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -1207,7 +1207,7 @@ public class ActivityManagerImpl implements ActivityManager {
             futureCalendar.setTime(sdf.parse(createdTime));
             activity.setStickyTitle(DateUtility.getRelativeDate(futureCalendar));
         } catch (Exception e) {
-            Logger.loge(NotificationManagerImpl.class.getName(), "DateFormat " + e);
+            AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread());
         }
         listener.onDataLoad(generateTimeZoneSpread(activity));
     }
@@ -1233,13 +1233,13 @@ public class ActivityManagerImpl implements ActivityManager {
                                                     break;
                                                 }
                                             } catch (Exception e) {
-                                                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+                                                AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
                                             }
                                         }
                                     }
                                 }
                             } catch (Exception e) {
-                                AppUtils.throwException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+                                AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
                             }
                         }
                     }

@@ -72,7 +72,7 @@ public class MyCipher {
             return encrypt(bytesBase64);
         }catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | UnsupportedEncodingException
                 | IllegalBlockSizeException | BadPaddingException | InvalidParameterSpecException | InvalidKeySpecException e) {
-            AppUtils.throwException(MyCipher.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(MyCipher.class.getSimpleName(), e, Thread.currentThread());
         }
         return null;
     }
@@ -85,7 +85,7 @@ public class MyCipher {
             return restored_data;
         } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                 | IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException e) {
-            AppUtils.throwException(MyCipher.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(MyCipher.class.getSimpleName(), e, Thread.currentThread());
         }
         return null;
     }
@@ -173,7 +173,7 @@ public class MyCipher {
             return  new String(decodedBytes, Charset.forName("UTF8"));
         }  catch (UnsupportedEncodingException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                 | IllegalBlockSizeException | BadPaddingException  e) {
-            AppUtils.throwException(MyCipher.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(MyCipher.class.getSimpleName(), e, Thread.currentThread());
         }
         return null;
     }

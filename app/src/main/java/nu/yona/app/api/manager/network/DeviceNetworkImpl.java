@@ -37,7 +37,7 @@ public class DeviceNetworkImpl extends BaseImpl {
         try {
             getRestApi().addDevice(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), devicePassword).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -52,7 +52,7 @@ public class DeviceNetworkImpl extends BaseImpl {
         try {
             getRestApi().deleteDevice(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
         } catch (Exception e) {
-            AppUtils.throwException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -81,7 +81,7 @@ public class DeviceNetworkImpl extends BaseImpl {
                 }
             });
         } catch (Exception e) {
-            AppUtils.throwException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 }

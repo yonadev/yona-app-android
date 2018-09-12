@@ -24,6 +24,8 @@ import java.util.Locale;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
+import nu.yona.app.ui.settings.SettingsFragment;
+import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 16/03/16.
@@ -99,7 +101,7 @@ public class YonaApplication extends Application {
                 tracker.setAppVersion(pInfo.versionName + mContext.getString(R.string.space) + pInfo.versionCode);
                 tracker.send(new HitBuilders.ScreenViewBuilder().build());
             } catch (PackageManager.NameNotFoundException e) {
-                nu.yona.app.utils.Logger.loge(YonaApplication.class.getSimpleName(), e.getMessage());
+                AppUtils.reportException(YonaApplication.class.getSimpleName(), e, Thread.currentThread());
             }
 
             GoogleAnalytics.getInstance(mContext).getLogger()

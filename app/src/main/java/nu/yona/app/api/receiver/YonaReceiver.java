@@ -84,7 +84,7 @@ public class YonaReceiver extends BroadcastReceiver {
             NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
             notificationManager.notify(0, notification);
         } catch (Exception e) {
-            Logger.loge(YonaReceiver.class.getSimpleName(), e.getMessage());
+            AppUtils.reportException(YonaReceiver.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 }

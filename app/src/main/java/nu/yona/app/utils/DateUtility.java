@@ -69,7 +69,7 @@ public class DateUtility {
                 relativeDate = new SimpleDateFormat("EEEE, d MMM").format(future.getTime());
 
             } catch (Exception e) {
-                AppUtils.throwException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
+                AppUtils.reportException(DateUtility.class.getSimpleName(), e, Thread.currentThread());
             }
         }
 
@@ -148,7 +148,7 @@ public class DateUtility {
                 calendar.add(Calendar.DAY_OF_WEEK, 1);
             }
         } catch (Exception e) {
-            AppUtils.throwException(DateUtility.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(DateUtility.class.getSimpleName(), e, Thread.currentThread());
         }
 
         return listOfdates;
@@ -203,8 +203,7 @@ public class DateUtility {
                     formattedString = YonaApplication.getAppContext().getResources().getString(R.string.last_seen_status_back_week, formattedString);
                 }
             } catch (ParseException e) {
-                Logger.loge(TAG, "Exception", e);
-                e.printStackTrace();
+                AppUtils.reportException(DateUtility.class.getSimpleName(), e, Thread.currentThread());
             }
         }
 

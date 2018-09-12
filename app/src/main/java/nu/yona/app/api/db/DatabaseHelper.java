@@ -65,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(getDBHelper().TABLE_GOAL);
             db.execSQL(getDBHelper().TABLE_ACTIVITY_TRACKER);
         } catch (Exception e) {
-            AppUtils.throwException(DatabaseHelper.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(DatabaseHelper.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 
@@ -81,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_ACTIVITY_TRACKER);
             createTables(mInstance.getWritableDatabase());
         } catch (Exception e) {
-            AppUtils.throwException(DatabaseHelper.class.getSimpleName(), e, Thread.currentThread(), null);
+            AppUtils.reportException(DatabaseHelper.class.getSimpleName(), e, Thread.currentThread());
         }
     }
 

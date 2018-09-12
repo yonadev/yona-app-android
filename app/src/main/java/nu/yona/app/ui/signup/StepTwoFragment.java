@@ -42,6 +42,8 @@ import nu.yona.app.customview.YonaPhoneWatcher;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
+import nu.yona.app.ui.YonaActivity;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.MobileNumberFormatter;
 
@@ -50,7 +52,6 @@ import nu.yona.app.utils.MobileNumberFormatter;
  */
 public class StepTwoFragment extends BaseFragment implements EventChangeListener {
 
-    private final String TAG = StepTwoFragment.class.getSimpleName();
 
     private YonaFontNumberTextView mobileNumber, countryCode;
     private YonaFontEditTextView nickName;
@@ -112,7 +113,7 @@ public class StepTwoFragment extends BaseFragment implements EventChangeListener
                 mobileNumber.setText(number.substring(ccode.length(), number.length()));
 
             } catch (NumberParseException e) {
-                Logger.loge(TAG, "Exception", e);
+                AppUtils.reportException(StepTwoFragment.class.getSimpleName(), e, Thread.currentThread());
             }
         } else {
             countryCode.setText(R.string.country_code);

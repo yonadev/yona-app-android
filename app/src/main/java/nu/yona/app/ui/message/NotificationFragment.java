@@ -126,7 +126,7 @@ public class NotificationFragment extends BaseFragment {
 
                         mMessageIntent.putExtra(AppConstant.EVENT_TIME, calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
                     } catch (Exception e) {
-                        Logger.printStackTrace(e);
+                        AppUtils.reportException(NotificationFragment.class.getSimpleName(), e, Thread.currentThread());
                     }
 
                     if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getSelf() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getSelf().getHref())) {
@@ -312,7 +312,7 @@ public class NotificationFragment extends BaseFragment {
             DataLoadListenerImpl dataLoadListenerImpl =  new DataLoadListenerImpl(((result) -> handleYonaMessagesFetchSuccess((YonaMessages) result)), ((result) ->handleYonaMessagesFetchFailure(result)),null);
             APIManager.getInstance().getNotificationManager().getMessages(urlForMessageFetch,false, dataLoadListenerImpl);
         }catch (IllegalArgumentException e ) {
-            AppUtils.throwException(NotificationFragment.class.getSimpleName(),e,Thread.currentThread(),null);
+            AppUtils.reportException(NotificationFragment.class.getSimpleName(),e,Thread.currentThread(),null);
         }
     }
 

@@ -119,7 +119,7 @@ public class DeviceManagerImpl implements DeviceManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -150,7 +150,7 @@ public class DeviceManagerImpl implements DeviceManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -184,7 +184,7 @@ public class DeviceManagerImpl implements DeviceManager {
                         }
                     });
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
     }
 
@@ -211,7 +211,7 @@ public class DeviceManagerImpl implements DeviceManager {
                 listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
             }
         } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+            AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
         }
 
     }
