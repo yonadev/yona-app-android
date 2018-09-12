@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.ui.signup;
@@ -47,7 +45,7 @@ import nu.yona.app.utils.PreferenceConstant;
 public class OTPActivity extends BasePasscodeActivity implements EventChangeListener
 {
 
-	private SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
+	private final SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
 	private PasscodeFragment otpFragment;
 	private RegisterUser user;
 

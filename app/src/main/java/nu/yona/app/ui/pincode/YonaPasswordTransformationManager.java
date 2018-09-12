@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -37,16 +37,19 @@ class YonaPasswordTransformationManager extends PasswordTransformationMethod
 			mSource = source; // Store char sequence
 		}
 
+		@Override
 		public char charAt(int index)
 		{
 			return '*'; // This is the important part
 		}
 
+		@Override
 		public int length()
 		{
 			return mSource.length(); // Return default
 		}
 
+		@Override
 		public CharSequence subSequence(int start, int end)
 		{
 			return mSource.subSequence(start, end); // Return default

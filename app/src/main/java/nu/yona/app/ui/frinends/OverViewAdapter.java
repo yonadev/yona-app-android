@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -37,7 +37,7 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
 
 	private final OnFriendsItemClickListener mOnFriendsItemClickListener;
 	private List<YonaBuddy> listYonaMessage;
-	private Context context;
+	private final Context context;
 
 	/**
 	 * Instantiates a new Overview adapter.
@@ -178,6 +178,7 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
 	{
 		Collections.sort(listYonaMessage, new Comparator<YonaBuddy>()
 		{
+			@Override
 			public int compare(YonaBuddy o1, YonaBuddy o2)
 			{
 				if (!TextUtils.isEmpty(o1.getSendingStatus()) && !TextUtils.isEmpty(o2.getSendingStatus()))

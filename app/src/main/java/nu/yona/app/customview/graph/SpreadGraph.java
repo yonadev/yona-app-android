@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -101,6 +101,7 @@ public class SpreadGraph extends BaseView
 		this.mListZoneSpread = mListZoneSpread;
 	}
 
+	@Override
 	protected void onDraw(Canvas canvas)
 	{
 		super.onDraw(canvas);

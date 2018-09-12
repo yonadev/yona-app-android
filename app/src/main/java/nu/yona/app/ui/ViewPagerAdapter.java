@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.ui;
@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class ViewPagerAdapter extends FragmentPagerAdapter
 {
-	private List<Fragment> mFragmentList = new ArrayList<>();
-	private List<String> mFragmentTitleList = new ArrayList<>();
+	private final List<Fragment> mFragmentList = new ArrayList<>();
+	private final List<String> mFragmentTitleList = new ArrayList<>();
 
 	/**
 	 * Instantiates a new View pager adapter.

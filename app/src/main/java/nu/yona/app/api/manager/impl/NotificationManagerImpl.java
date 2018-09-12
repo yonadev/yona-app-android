@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016, 2018 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.api.manager.impl;
@@ -48,8 +46,8 @@ import nu.yona.app.utils.DateUtility;
 public class NotificationManagerImpl implements NotificationManager
 {
 
-	private NotificationNetworkImpl notificationNetwork;
-	private Context mContext;
+	private final NotificationNetworkImpl notificationNetwork;
+	private final Context mContext;
 
 	/**
 	 * Instantiates a new Notification manager.
@@ -67,11 +65,13 @@ public class NotificationManagerImpl implements NotificationManager
 	 *
 	 * @param listener the listener
 	 */
+	@Override
 	public void getMessage(DataLoadListener listener)
 	{
 		getMessage(0, 0, listener); //set default page 0, start page = 0
 	}
 
+	@Override
 	public void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener)
 	{
 		getMessage(itemsPerPage, pageNo, false, listener);
@@ -84,6 +84,7 @@ public class NotificationManagerImpl implements NotificationManager
 	 * @param pageNo       the page no
 	 * @param listener     the listener
 	 */
+	@Override
 	public void getMessage(final int itemsPerPage, final int pageNo, boolean isUnreadStatus, final DataLoadListener listener)
 	{
 		getMessage(itemsPerPage, pageNo, isUnreadStatus, listener, false);
@@ -239,6 +240,7 @@ public class NotificationManagerImpl implements NotificationManager
 		return null;
 	}
 
+	@Override
 	public void getMessages(String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener)
 	{
 		try
@@ -331,6 +333,7 @@ public class NotificationManagerImpl implements NotificationManager
 	 * @param pageNo       the page no
 	 * @param listener     the listener
 	 */
+	@Override
 	public void postMessage(String url, MessageBody body, final int itemsPerPage, final int pageNo, final DataLoadListener listener)
 	{
 		try
@@ -359,6 +362,7 @@ public class NotificationManagerImpl implements NotificationManager
 		}
 	}
 
+	@Override
 	public void deleteMessage(@NonNull String url, final int itemsPerPage, final int pageNo, final DataLoadListener listener)
 	{
 		try
@@ -384,6 +388,7 @@ public class NotificationManagerImpl implements NotificationManager
 		}
 	}
 
+	@Override
 	public void setReadMessage(List<YonaMessage> yonaMessageList, YonaMessage message, DataLoadListener listener)
 	{
 		try

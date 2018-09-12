@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.utils;
@@ -30,8 +28,8 @@ import nu.yona.app.listener.DataLoader;
 public class DownloadFileFromURL
 {
 	String stringUrl;
-	private DataLoadListener listener;
-	private static int BUFFER_SIZE = 65536;
+	private final DataLoadListener listener;
+	private static final int BUFFER_SIZE = 65536;
 
 	public DownloadFileFromURL(String url, DataLoadListener listener)
 	{

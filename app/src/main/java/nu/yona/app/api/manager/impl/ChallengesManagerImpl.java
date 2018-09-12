@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -40,11 +40,11 @@ import nu.yona.app.utils.PreferenceConstant;
 public class ChallengesManagerImpl implements ChallengesManager
 {
 
-	private List<YonaActivityCategories> mYonaActivityCategoriesList;
-	private HashMap<String, String> mGoalCategoriesMap;
-	private List<YonaGoal> budgetCategoriesGoalList;
-	private List<YonaGoal> timeZoneCategoriesGoalList;
-	private List<YonaGoal> noGoCategoriesGoalList;
+	private final List<YonaActivityCategories> mYonaActivityCategoriesList;
+	private final HashMap<String, String> mGoalCategoriesMap;
+	private final List<YonaGoal> budgetCategoriesGoalList;
+	private final List<YonaGoal> timeZoneCategoriesGoalList;
+	private final List<YonaGoal> noGoCategoriesGoalList;
 
 	/**
 	 * Instantiates a new Challenges manager.
@@ -158,6 +158,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 		}
 		Collections.sort(yonaGoals, new Comparator<YonaGoal>()
 		{
+			@Override
 			public int compare(YonaGoal o1, YonaGoal o2)
 			{
 				if (!TextUtils.isEmpty(o1.getActivityCategoryName()) && !TextUtils.isEmpty(o2.getActivityCategoryName()))
@@ -215,6 +216,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 	 * @param budgetType
 	 * @return
 	 */
+	@Override
 	public YonaActivityCategories getSelectedGoalCategories(String budgetType)
 	{
 		ActivityCategories embeddedActivityCategories = APIManager.getInstance().getActivityCategoryManager().getListOfActivityCategories();
@@ -238,6 +240,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 		getListOfCategory();
 		Collections.sort(mYonaActivityCategoriesList, new Comparator<YonaActivityCategories>()
 		{
+			@Override
 			public int compare(YonaActivityCategories o1, YonaActivityCategories o2)
 			{
 				if (!TextUtils.isEmpty(o1.getName()) && !TextUtils.isEmpty(o2.getName()))
@@ -307,6 +310,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 	 * @param goal     YonaGoal selected object
 	 * @param listener
 	 */
+	@Override
 	public void postBudgetGoals(long time, YonaGoal goal, final DataLoadListener listener)
 	{
 		APIManager.getInstance().getGoalManager().postBudgetGoals(getPostYonaGoalForBudget(time, goal), new DataLoadListener()
@@ -326,6 +330,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 		});
 	}
 
+	@Override
 	public void postBudgetGoals(long time, final YonaActivityCategories category, final DataLoadListener listener)
 	{
 		APIManager.getInstance().getGoalManager().postBudgetGoals(getPostYonaGoalForBudget(time, category), new DataLoadListener()
@@ -393,6 +398,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 	 * @param goal     selected yona Goal
 	 * @param listener
 	 */
+	@Override
 	public void postTimeGoals(List<String> timeGoal, YonaGoal goal, final DataLoadListener listener)
 	{
 		APIManager.getInstance().getGoalManager().postTimeZoneGoals(getPostYonaGoalForTimeZone(timeGoal, goal), new DataLoadListener()
@@ -518,6 +524,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 	 * @param yonaGoal YonaGoal object to delete it.
 	 * @param listener
 	 */
+	@Override
 	public void deleteGoal(YonaGoal yonaGoal, final DataLoadListener listener)
 	{
 		APIManager.getInstance().getGoalManager().deleteGoal(yonaGoal, new DataLoadListener()
@@ -565,6 +572,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 		return null;
 	}
 
+	@Override
 	public void getUserGoal(final DataLoadListener listener)
 	{
 		//Require to update user as well

@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016, 2018 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.api.manager.impl;
@@ -160,6 +158,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 	}
 
+	@Override
 	public void getDetailOfEachSpreadWithDayActivity(final DayActivity dayActivity, final DataLoadListener listener)
 	{
 		if (validateDayAcvitiyTimeZoneSpread(dayActivity))
@@ -277,6 +276,7 @@ public class ActivityManagerImpl implements ActivityManager
 		});
 	}
 
+	@Override
 	public void getDetailOfEachWeekSpreadWithWeekActivity(WeekActivity weekActivity, DataLoadListener listener)
 	{
 		if (validateWeekAcvitiyTimeZoneSpread(weekActivity))
@@ -341,6 +341,7 @@ public class ActivityManagerImpl implements ActivityManager
 	/**
 	 * Save User app acvitiy to local db
 	 */
+	@Override
 	public void postActivityToDB(String applicationName, Date startDate, Date endDate)
 	{
 		try
@@ -396,6 +397,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 	}
 
+	@Override
 	public void postAllDBActivities()
 	{
 		List<Activity> activityList = activityTrackerDAO.getActivities();
@@ -413,6 +415,7 @@ public class ActivityManagerImpl implements ActivityManager
 	 * Buddy activity processing ***********
 	 */
 
+	@Override
 	public void getWithBuddyActivity(boolean loadMore, final DataLoadListener listener)
 	{
 		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
@@ -440,6 +443,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 	}
 
+	@Override
 	public void getComments(List<DayActivity> dayActivityList, int position, final DataLoadListener listener)
 	{
 		int pageNo = 0;
@@ -465,6 +469,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 	}
 
+	@Override
 	public void getCommentsForWeek(List<WeekActivity> weekActivityList, int position, final DataLoadListener listener)
 	{
 		if (weekActivityList != null && weekActivityList.size() > 0)
@@ -1148,6 +1153,7 @@ public class ActivityManagerImpl implements ActivityManager
 	{
 		Collections.sort(overviewDayActiivties, new Comparator<DayActivity>()
 		{
+			@Override
 			public int compare(DayActivity o1, DayActivity o2)
 			{
 				if (!TextUtils.isEmpty(o1.getYonaGoal().getActivityCategoryName()) && !TextUtils.isEmpty(o2.getYonaGoal().getActivityCategoryName()))
@@ -1164,6 +1170,7 @@ public class ActivityManagerImpl implements ActivityManager
 	{
 		Collections.sort(overviewDayActiivties, new Comparator<WeekActivity>()
 		{
+			@Override
 			public int compare(WeekActivity o1, WeekActivity o2)
 			{
 				if (!TextUtils.isEmpty(o1.getYonaGoal().getActivityCategoryName()) && !TextUtils.isEmpty(o2.getYonaGoal().getActivityCategoryName()))
@@ -1210,6 +1217,7 @@ public class ActivityManagerImpl implements ActivityManager
 	}
 
 
+	@Override
 	public YonaBuddy findYonaBuddy(Href yonaBuddy)
 	{
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
@@ -1278,6 +1286,7 @@ public class ActivityManagerImpl implements ActivityManager
 		return null;
 	}
 
+	@Override
 	public String getActivityCategoryName(String categoryPath)
 	{
 		ActivityCategories categories = APIManager.getInstance().getActivityCategoryManager().getListOfActivityCategories();

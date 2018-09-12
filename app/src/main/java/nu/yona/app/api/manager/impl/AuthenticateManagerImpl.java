@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.api.manager.impl;
@@ -81,6 +79,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	 *
 	 * @return true if first name and last name are correct.
 	 */
+	@Override
 	public boolean validateText(String string)
 	{
 		// do validation for first name and last name
@@ -91,6 +90,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	 * @param mobileNumber user's mobile number
 	 * @return true if number is in expected format
 	 */
+	@Override
 	public boolean isMobileNumberValid(String mobileNumber)
 	{
 
@@ -133,6 +133,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 	}
 
+	@Override
 	public void registerUser(String url, RegisterUser user, final DataLoadListener listener)
 	{
 		authNetwork.registerUser(url, user, new DataLoadListener()
@@ -307,6 +308,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 	}
 
+	@Override
 	public void verifyOTP(final String otp, final DataLoadListener listener)
 	{
 		try
@@ -799,11 +801,13 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 	}
 
+	@Override
 	public User getUser()
 	{
 		return authenticateDao.getUser();
 	}
 
+	@Override
 	public void getUserFromServer()
 	{
 		if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null

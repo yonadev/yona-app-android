@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -80,6 +80,7 @@ public class PasscodeManagerImpl implements PasscodeManager
 	 *
 	 * @return boolean boolean
 	 */
+	@Override
 	public boolean isWrongCounterReached()
 	{
 		return getWrongPasscodeCounter() >= AppConstant.MAX_COUNTER;
@@ -98,6 +99,7 @@ public class PasscodeManagerImpl implements PasscodeManager
 	/**
 	 * Reset the Passocde wrong counter once user has successfull log in
 	 */
+	@Override
 	public void resetWrongCounter()
 	{
 		counter = 0;

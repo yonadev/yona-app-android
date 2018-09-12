@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -104,6 +104,7 @@ public class TimeBucketGraph extends BaseView
 		this.postInvalidate();
 	}
 
+	@Override
 	protected void onLayout(boolean changed, int left, int top, int right, int bottom)
 	{
 		super.onLayout(changed, left, top, right, bottom);

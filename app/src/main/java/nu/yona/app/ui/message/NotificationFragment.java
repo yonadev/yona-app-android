@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016, 2018 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.ui.message;
@@ -68,7 +68,7 @@ public class NotificationFragment extends BaseFragment
 	/**
 	 * Click listener for item click and delete click of recycler view's item
 	 */
-	private OnFriendsItemClickListener onFriendsItemClickListener = new OnFriendsItemClickListener()
+	private final OnFriendsItemClickListener onFriendsItemClickListener = new OnFriendsItemClickListener()
 	{
 		@Override
 		public void onFriendsItemClick(View view)
@@ -253,7 +253,7 @@ public class NotificationFragment extends BaseFragment
 	/**
 	 * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
 	 */
-	private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener()
+	private final RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener()
 	{
 		@Override
 		public void onScrollStateChanged(RecyclerView recyclerView, int newState)

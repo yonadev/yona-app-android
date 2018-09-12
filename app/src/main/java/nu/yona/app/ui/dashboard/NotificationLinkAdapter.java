@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2018 Stichting Yona Foundation
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 package nu.yona.app.ui.dashboard;
 
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +26,7 @@ import nu.yona.app.api.model.NotificationLinkData;
  */
 public class NotificationLinkAdapter extends RecyclerView.Adapter<NotificationLinkAdapter.ViewHolder>
 {
-	private List<NotificationLinkData> mDataset;
+	private final List<NotificationLinkData> mDataset;
 
 	// Provide a reference to the views for each data item
 	// Complex data items may need more than one view per item, and

@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2018 Stichting Yona Foundation
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 package nu.yona.app.ui.dashboard;
 
 import android.content.Context;
@@ -25,7 +33,7 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 {
 
 	private List<DayActivity> dayActivityList;
-	private View.OnClickListener listener;
+	private final View.OnClickListener listener;
 	private Context mContext;
 
 	/**

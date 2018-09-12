@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -205,6 +205,7 @@ public class PasscodeActivity extends BasePasscodeActivity implements EventChang
 
 			new Handler().postDelayed(new Runnable()
 			{
+				@Override
 				public void run()
 				{
 					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_ERROR, getString(R.string.passcodetryagain));

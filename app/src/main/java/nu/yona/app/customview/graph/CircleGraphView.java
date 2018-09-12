@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -21,8 +21,8 @@ public class CircleGraphView
 		extends View
 {
 
-	private int strokeColor = GraphUtils.COLOR_WHITE_THREE;
-	private int strokeWidth = 2;
+	private final int strokeColor = GraphUtils.COLOR_WHITE_THREE;
+	private final int strokeWidth = 2;
 	private int fillColor = GraphUtils.COLOR_WHITE_THREE;
 
 	/**

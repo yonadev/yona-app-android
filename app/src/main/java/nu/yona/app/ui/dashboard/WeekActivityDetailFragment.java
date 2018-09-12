@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016, 2018 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.ui.dashboard;
@@ -81,7 +79,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 	private ImageView chatBoxImage;
 	private boolean isDataLoading = false;
 
-	private View.OnClickListener itemClickListener = new View.OnClickListener()
+	private final View.OnClickListener itemClickListener = new View.OnClickListener()
 	{
 		@Override
 		public void onClick(View v)
@@ -101,7 +99,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 		}
 	};
 
-	private View.OnClickListener messageItemClick = new View.OnClickListener()
+	private final View.OnClickListener messageItemClick = new View.OnClickListener()
 	{
 		@Override
 		public void onClick(View v)
@@ -122,7 +120,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 		}
 	};
 
-	private NestedScrollView.OnScrollChangeListener nesteadScrollistener = new NestedScrollView.OnScrollChangeListener()
+	private final NestedScrollView.OnScrollChangeListener nesteadScrollistener = new NestedScrollView.OnScrollChangeListener()
 	{
 		@Override
 		public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)

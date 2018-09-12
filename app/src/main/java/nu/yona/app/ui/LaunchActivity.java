@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.ui;
@@ -51,7 +49,7 @@ import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 public class LaunchActivity extends BaseActivity
 {
 	private Bundle bundle;
-	private SharedPreferences sharedUserPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
+	private final SharedPreferences sharedUserPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -180,6 +178,7 @@ public class LaunchActivity extends BaseActivity
 		alertDialogBuilder.setCancelable(false)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener()
 				{
+					@Override
 					public void onClick(DialogInterface dialog, int id)
 					{
 						Log.d("Entered URL", "Hello, " + editText.getText());
@@ -197,6 +196,7 @@ public class LaunchActivity extends BaseActivity
 				.setNegativeButton("Cancel",
 						new DialogInterface.OnClickListener()
 						{
+							@Override
 							public void onClick(DialogInterface dialog, int id)
 							{
 								dialog.cancel();

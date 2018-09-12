@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.ui;
@@ -122,8 +122,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	private boolean isToDisplayLogin = true;
 	private boolean skipVerification;
 	private boolean launchedPinActiivty;
-	private int READ_EXTERNAL_STORAGE_REQUEST = 1;
-	private int CAMERA_REQUEST = 2;
+	private final int READ_EXTERNAL_STORAGE_REQUEST = 1;
+	private final int CAMERA_REQUEST = 2;
 	private Fragment oldFragment;
 	private User user;
 	private boolean isUpdateIconOnly;
@@ -1653,6 +1653,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				return null;
 			}
 
+			@Override
 			protected void onPostExecute(byte[] keystore)
 			{
 				if (keystore != null)

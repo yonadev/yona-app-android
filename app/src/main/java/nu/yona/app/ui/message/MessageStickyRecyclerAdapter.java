@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -36,8 +36,8 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 {
 
 	private List<YonaMessage> listYonaMessage;
-	private YonaActivity activity;
-	private OnFriendsItemClickListener mOnFriendsItemClickListener;
+	private final YonaActivity activity;
+	private final OnFriendsItemClickListener mOnFriendsItemClickListener;
 
 	/**
 	 * Instantiates a new Message sticky recycler adapter.

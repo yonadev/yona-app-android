@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -50,8 +50,8 @@ public class YonaCarrouselActivity extends BaseActivity implements View.OnClickL
 	private ImageView[] dots;
 	private YonaCarrouselAdapter mAdapter;
 	private int currentPage;
-	private Timer timer = new Timer();
-	private int[] mImageResources = {
+	private final Timer timer = new Timer();
+	private final int[] mImageResources = {
 			R.drawable.slider_transparantie_clean,
 			R.drawable.slider_delen_clean,
 			R.drawable.slider_grenzen_clean,

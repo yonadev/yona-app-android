@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -31,7 +31,7 @@ public class DividerDecoration extends RecyclerView.ItemDecoration
 	private static final int[] ATTRS = new int[]{
 			android.R.attr.listDivider
 	};
-	private Drawable mDivider;
+	private final Drawable mDivider;
 
 	/**
 	 * Instantiates a new Divider decoration.

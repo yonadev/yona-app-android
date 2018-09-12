@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.security;
@@ -60,7 +58,7 @@ public class MyCipher
 	 * As we are using secure random passwords, a fixed salt suffices.
 	 */
 	private static final byte[] SALT = "0123456789012345".getBytes();
-	private String mySecret;
+	private final String mySecret;
 
 	public MyCipher(String mySecret)
 	{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -18,8 +18,8 @@ import android.widget.Scroller;
 public class CarrouselScroller extends Scroller
 {
 
-	private double mScrollFactor = 1;
-	private int mDuration = 1000;
+	private final double mScrollFactor = 1;
+	private final int mDuration = 1000;
 
 	/**
 	 * Instantiates a new Carrousel scroller.

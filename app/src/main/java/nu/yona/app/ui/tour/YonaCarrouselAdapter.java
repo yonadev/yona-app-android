@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -26,8 +26,8 @@ import nu.yona.app.customview.YonaFontTextView;
 public class YonaCarrouselAdapter extends PagerAdapter
 {
 
-	private Context mContext;
-	private int[] mResources;
+	private final Context mContext;
+	private final int[] mResources;
 
 	/**
 	 * Instantiates a new Yona carrousel adapter.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, 2018 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -87,12 +87,14 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager
 		return null; // No value to return from here
 	}
 
+	@Override
 	public void updateNetworkAPIEnvironment(String environmentURL)
 	{
 		YonaApplication.getEventChangeManager().getDataState().setServerUrl(environmentURL);
 		activityCategoriesNetwork.updateNeworkEnvironment();
 	}
 
+	@Override
 	public void validateNewEnvironment(DataLoadListener listener)
 	{
 		try
