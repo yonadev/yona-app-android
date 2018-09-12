@@ -43,226 +43,282 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class PerDayFragment extends BaseFragment {
+public class PerDayFragment extends BaseFragment
+{
 
-    private RecyclerView listView;
-    private PerDayStickyAdapter perDayStickyAdapter;
-    private LinearLayoutManager mLayoutManager;
-    //    private EmbeddedYonaActivity embeddedYonaActivity;
-    private boolean mIsLoading = false;
-    private boolean isDataLoading = false;
-    private YonaHeaderTheme mYonaHeaderTheme;
-    private YonaBuddy yonaBuddy;
-    private boolean isCurrentTabInView;
-    /**
-     * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
-     */
-    private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-        }
+	private RecyclerView listView;
+	private PerDayStickyAdapter perDayStickyAdapter;
+	private LinearLayoutManager mLayoutManager;
+	//    private EmbeddedYonaActivity embeddedYonaActivity;
+	private boolean mIsLoading = false;
+	private boolean isDataLoading = false;
+	private YonaHeaderTheme mYonaHeaderTheme;
+	private YonaBuddy yonaBuddy;
+	private boolean isCurrentTabInView;
+	/**
+	 * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
+	 */
+	private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener()
+	{
+		@Override
+		public void onScrollStateChanged(RecyclerView recyclerView, int newState)
+		{
+			super.onScrollStateChanged(recyclerView, newState);
+		}
 
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            try {
-                if (dy > 0) {
-                    int visibleItemCount = mLayoutManager.getChildCount();
-                    int totalItemCount = mLayoutManager.getItemCount();
-                    int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-                    EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
-                    if (!mIsLoading &&
-                            embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
-                            && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
-                            && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
-                        loadMoreItems();
-                    }
-                }
-            } catch (Exception e) {
-                AppUtils.reportException(PerDayFragment.class.getSimpleName(), e, Thread.currentThread());
-            }
-        }
-    };
+		@Override
+		public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+		{
+			super.onScrolled(recyclerView, dx, dy);
+			try
+			{
+				if (dy > 0)
+				{
+					int visibleItemCount = mLayoutManager.getChildCount();
+					int totalItemCount = mLayoutManager.getItemCount();
+					int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+					EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+					if (!mIsLoading &&
+							embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
+							&& embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
+							&& (visibleItemCount + firstVisibleItemPosition) >= totalItemCount)
+					{
+						loadMoreItems();
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				AppUtils.reportException(PerDayFragment.class.getSimpleName(), e, Thread.currentThread());
+			}
+		}
+	};
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null) {
-            if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy) {
-                yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
-            }
-        }
-        if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null) {
-            mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
-        }
-    }
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null)
+		{
+			if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
+			{
+				yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+			}
+		}
+		if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
+		{
+			mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+		}
+	}
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dashboard_perday_fragment, null);
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	{
+		View view = inflater.inflate(R.layout.dashboard_perday_fragment, null);
 
-        listView = (RecyclerView) view.findViewById(R.id.listView);
-        mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
+		listView = (RecyclerView) view.findViewById(R.id.listView);
+		mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
 
-        perDayStickyAdapter = new PerDayStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getTag() instanceof DayActivity) {
-                    openDetailPage((DayActivity) v.getTag());
-                }
-            }
-        });
+		perDayStickyAdapter = new PerDayStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				if (v.getTag() instanceof DayActivity)
+				{
+					openDetailPage((DayActivity) v.getTag());
+				}
+			}
+		});
 
-        listView.setLayoutManager(mLayoutManager);
-        listView.setAdapter(perDayStickyAdapter);
-        listView.addOnScrollListener(mRecyclerViewOnScrollListener);
-        setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(perDayStickyAdapter));
-        return view;
+		listView.setLayoutManager(mLayoutManager);
+		listView.setAdapter(perDayStickyAdapter);
+		listView.addOnScrollListener(mRecyclerViewOnScrollListener);
+		setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(perDayStickyAdapter));
+		return view;
 
-    }
+	}
 
-    private void openDetailPage(DayActivity activity) {
-        isDataLoading = false;
-        showData();
-        mIsLoading = false;
-        YonaAnalytics.createTapEventWithCategory(getString(R.string.perday), activity.getYonaGoal().getActivityCategoryName().toUpperCase());
-        Intent intent = new Intent(IntentEnum.ACTION_ACTIVITY_DETAIL_VIEW.getActionString());
-        intent.putExtra(AppConstant.OBJECT, activity);
-        intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
-        intent.putExtra(AppConstant.BOOLEAN, true);
-        mYonaHeaderTheme.setHeader_title(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
-        intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
-        YonaActivity.getActivity().replaceFragment(intent);
+	private void openDetailPage(DayActivity activity)
+	{
+		isDataLoading = false;
+		showData();
+		mIsLoading = false;
+		YonaAnalytics.createTapEventWithCategory(getString(R.string.perday), activity.getYonaGoal().getActivityCategoryName().toUpperCase());
+		Intent intent = new Intent(IntentEnum.ACTION_ACTIVITY_DETAIL_VIEW.getActionString());
+		intent.putExtra(AppConstant.OBJECT, activity);
+		intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
+		intent.putExtra(AppConstant.BOOLEAN, true);
+		mYonaHeaderTheme.setHeader_title(activity.getYonaGoal().getActivityCategoryName().toUpperCase());
+		intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
+		YonaActivity.getActivity().replaceFragment(intent);
 
-    }
+	}
 
-    /**
-     * update RecyclerView item header for grouping section
-     *
-     * @param headerDecor
-     */
-    private void setRecyclerHeaderAdapterUpdate(final StickyRecyclerHeadersDecoration headerDecor) {
-        listView.addItemDecoration(headerDecor);
+	/**
+	 * update RecyclerView item header for grouping section
+	 *
+	 * @param headerDecor
+	 */
+	private void setRecyclerHeaderAdapterUpdate(final StickyRecyclerHeadersDecoration headerDecor)
+	{
+		listView.addItemDecoration(headerDecor);
 
-        // Add touch listeners
-        StickyRecyclerHeadersTouchListener touchListener =
-                new StickyRecyclerHeadersTouchListener(listView, headerDecor);
-        touchListener.setOnHeaderClickListener(
-                new StickyRecyclerHeadersTouchListener.OnHeaderClickListener() {
-                    @Override
-                    public void onHeaderClick(View header, int position, long headerId) {
-                    }
-                });
-        perDayStickyAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                headerDecor.invalidateHeaders();
-            }
-        });
-    }
+		// Add touch listeners
+		StickyRecyclerHeadersTouchListener touchListener =
+				new StickyRecyclerHeadersTouchListener(listView, headerDecor);
+		touchListener.setOnHeaderClickListener(
+				new StickyRecyclerHeadersTouchListener.OnHeaderClickListener()
+				{
+					@Override
+					public void onHeaderClick(View header, int position, long headerId)
+					{
+					}
+				});
+		perDayStickyAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver()
+		{
+			@Override
+			public void onChanged()
+			{
+				headerDecor.invalidateHeaders();
+			}
+		});
+	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!isDataLoading) {
-            isDataLoading = true;
-            refreshAdapter();
-        } else if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null) {
-            showData();
-        }
-    }
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		if (!isDataLoading)
+		{
+			isDataLoading = true;
+			refreshAdapter();
+		}
+		else if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null)
+		{
+			showData();
+		}
+	}
 
-    /**
-     * Refresh recyclerview's adapter
-     */
-    private void refreshAdapter() {
-        perDayStickyAdapter.clear();
-        getDayActivity(false);
-    }
+	/**
+	 * Refresh recyclerview's adapter
+	 */
+	private void refreshAdapter()
+	{
+		perDayStickyAdapter.clear();
+		getDayActivity(false);
+	}
 
-    public void setIsInView(boolean isInView) {
-        isCurrentTabInView = isInView;
-    }
+	public void setIsInView(boolean isInView)
+	{
+		isCurrentTabInView = isInView;
+	}
 
-    /**
-     * load more items
-     */
-    private void loadMoreItems() {
-        mIsLoading = true;
-        getDayActivity(true);
-    }
-
-
-    private Href getURLToFetchDayActivityOverViews(EmbeddedYonaActivity embeddedYonaActivity,boolean loadMore){
-        Href urlToFetchDayActivitiyOverviews = null;
-        if (embeddedYonaActivity !=null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null && loadMore){
-            urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getNext();
-        }else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null){
-            urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getSelf();
-        }else{
-            urlToFetchDayActivitiyOverviews =  mYonaHeaderTheme.getDayActivityUrl();
-        }
-        return urlToFetchDayActivitiyOverviews;
-    }
+	/**
+	 * load more items
+	 */
+	private void loadMoreItems()
+	{
+		mIsLoading = true;
+		getDayActivity(true);
+	}
 
 
-    /**
-     * to get the list of user's messages
-     */
-    private void getDayActivity(boolean loadMore) {
-        final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
-        if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
-                || (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())) {
-            YonaActivity.getActivity().showLoadingView(true, null);
-           Href urlToFetchDayActivitiyOverviews = getURLToFetchDayActivityOverViews(embeddedYonaActivity,loadMore);
-            APIManager.getInstance().getActivityManager().getDaysActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), urlToFetchDayActivitiyOverviews, new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    isDataLoading = false;
-                    showData();
-                    mIsLoading = false;
-                }
-                @Override
-                public void onError(Object errorMessage) {
-                    isDataLoading = false;
-                    YonaActivity.getActivity().showLoadingView(false, null);
-                    YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
-                }
-            });
-        } else {
-            showData();
-        }
-    }
+	private Href getURLToFetchDayActivityOverViews(EmbeddedYonaActivity embeddedYonaActivity, boolean loadMore)
+	{
+		Href urlToFetchDayActivitiyOverviews = null;
+		if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null && loadMore)
+		{
+			urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getNext();
+		}
+		else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null)
+		{
+			urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getSelf();
+		}
+		else
+		{
+			urlToFetchDayActivitiyOverviews = mYonaHeaderTheme.getDayActivityUrl();
+		}
+		return urlToFetchDayActivitiyOverviews;
+	}
 
-    private void showData() {
-        if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null
-                && YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList() != null
-                && YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().size() > 0) {
-            perDayStickyAdapter.notifyDataSetChange(setHeaderListView());
-            mIsLoading = false;
-            YonaActivity.getActivity().showLoadingView(false, null);
-        } else if (YonaActivity.getActivity() != null) {
-            YonaActivity.getActivity().showLoadingView(false, null);
-            YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
-        }
-    }
 
-    private List<DayActivity> setHeaderListView() {
-        List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
-        int index = 0;
-        for (int i = 0; i < dayActivityList.size(); i++) {
-            if (i == 0) {
-                dayActivityList.get(i).setStickyHeaderId(index++);
-            } else {
-                if (dayActivityList.get(i).getStickyTitle().equals(dayActivityList.get(i - 1).getStickyTitle())) {
-                    dayActivityList.get(i).setStickyHeaderId(dayActivityList.get(i - 1).getStickyHeaderId());
-                } else {
-                    dayActivityList.get(i).setStickyHeaderId(index++);
-                }
-            }
-        }
-        return dayActivityList;
-    }
+	/**
+	 * to get the list of user's messages
+	 */
+	private void getDayActivity(boolean loadMore)
+	{
+		final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+		if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
+				|| (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()))
+		{
+			YonaActivity.getActivity().showLoadingView(true, null);
+			Href urlToFetchDayActivitiyOverviews = getURLToFetchDayActivityOverViews(embeddedYonaActivity, loadMore);
+			APIManager.getInstance().getActivityManager().getDaysActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), urlToFetchDayActivitiyOverviews, new DataLoadListener()
+			{
+				@Override
+				public void onDataLoad(Object result)
+				{
+					isDataLoading = false;
+					showData();
+					mIsLoading = false;
+				}
+
+				@Override
+				public void onError(Object errorMessage)
+				{
+					isDataLoading = false;
+					YonaActivity.getActivity().showLoadingView(false, null);
+					YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+				}
+			});
+		}
+		else
+		{
+			showData();
+		}
+	}
+
+	private void showData()
+	{
+		if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null
+				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList() != null
+				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().size() > 0)
+		{
+			perDayStickyAdapter.notifyDataSetChange(setHeaderListView());
+			mIsLoading = false;
+			YonaActivity.getActivity().showLoadingView(false, null);
+		}
+		else if (YonaActivity.getActivity() != null)
+		{
+			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
+		}
+	}
+
+	private List<DayActivity> setHeaderListView()
+	{
+		List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
+		int index = 0;
+		for (int i = 0; i < dayActivityList.size(); i++)
+		{
+			if (i == 0)
+			{
+				dayActivityList.get(i).setStickyHeaderId(index++);
+			}
+			else
+			{
+				if (dayActivityList.get(i).getStickyTitle().equals(dayActivityList.get(i - 1).getStickyTitle()))
+				{
+					dayActivityList.get(i).setStickyHeaderId(dayActivityList.get(i - 1).getStickyHeaderId());
+				}
+				else
+				{
+					dayActivityList.get(i).setStickyHeaderId(index++);
+				}
+			}
+		}
+		return dayActivityList;
+	}
 }

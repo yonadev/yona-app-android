@@ -19,32 +19,36 @@ import com.google.gson.annotations.SerializedName;
 /**
  * The type Links.
  */
-public class Links_ extends BaseEntity {
+public class Links_ extends BaseEntity
+{
 
-    @SerializedName("self")
-    @Expose
-    private Href self;
+	@SerializedName("self")
+	@Expose
+	private Href self;
 
-    /**
-     * Gets self.
-     *
-     * @return The self
-     */
-    public Href getSelf() {
-        return self;
-    }
+	/**
+	 * Gets self.
+	 *
+	 * @return The self
+	 */
+	public Href getSelf()
+	{
+		return self;
+	}
 
-    /**
-     * Sets self.
-     *
-     * @param self The self
-     */
-    public void setSelf(Href self) {
-        this.self = self;
-    }
+	/**
+	 * Sets self.
+	 *
+	 * @param self The self
+	 */
+	public void setSelf(Href self)
+	{
+		this.self = self;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

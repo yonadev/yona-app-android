@@ -21,38 +21,49 @@ import retrofit2.Response;
 /**
  * Created by kinnarvasa on 14/04/16.
  */
-public class ActivityCategoriesNetworkImpl extends BaseImpl {
+public class ActivityCategoriesNetworkImpl extends BaseImpl
+{
 
-    /**
-     * Gets activity categories.
-     *
-     * @param listener the listener
-     */
-    public void getActivityCategories( DataLoadListener listener) {
-        getRestApi().getActivityCategories(Locale.getDefault().toString().replace('_', '-')).enqueue(new Callback<ActivityCategories>() {
-            @Override
-            public void onResponse(Call<ActivityCategories> call, Response<ActivityCategories> response) {
-                if(listener == null) {
-                    return;
-                }
-                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
-                } else {
-                    onError(response, listener);
-                }
-            }
+	/**
+	 * Gets activity categories.
+	 *
+	 * @param listener the listener
+	 */
+	public void getActivityCategories(DataLoadListener listener)
+	{
+		getRestApi().getActivityCategories(Locale.getDefault().toString().replace('_', '-')).enqueue(new Callback<ActivityCategories>()
+		{
+			@Override
+			public void onResponse(Call<ActivityCategories> call, Response<ActivityCategories> response)
+			{
+				if (listener == null)
+				{
+					return;
+				}
+				if (response.code() < NetworkConstant.RESPONSE_STATUS)
+				{
+					listener.onDataLoad(response.body());
+				}
+				else
+				{
+					onError(response, listener);
+				}
+			}
 
-            @Override
-            public void onFailure(Call<ActivityCategories> call, Throwable t) {
-                if(listener != null) {
-                    onError(t, listener);
-                }
-            }
-        });
+			@Override
+			public void onFailure(Call<ActivityCategories> call, Throwable t)
+			{
+				if (listener != null)
+				{
+					onError(t, listener);
+				}
+			}
+		});
 
-    }
+	}
 
-    public void updateNeworkEnvironment(){
-        reinitializeAPI();
-    }
+	public void updateNeworkEnvironment()
+	{
+		reinitializeAPI();
+	}
 }

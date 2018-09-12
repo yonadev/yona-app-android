@@ -5,22 +5,26 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LinksProfilePhoto extends BaseEntity {
+public class LinksProfilePhoto extends BaseEntity
+{
 
-    @SerializedName("yona:userPhoto")
-    @Expose
-    private Href userPhoto;
+	@SerializedName("yona:userPhoto")
+	@Expose
+	private Href userPhoto;
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 
-    public Href getUserPhoto() {
-        return userPhoto;
-    }
+	public Href getUserPhoto()
+	{
+		return userPhoto;
+	}
 
-    public void setUserPhoto(Href userPhoto) {
-        this.userPhoto = userPhoto;
-    }
+	public void setUserPhoto(Href userPhoto)
+	{
+		this.userPhoto = userPhoto;
+	}
 }

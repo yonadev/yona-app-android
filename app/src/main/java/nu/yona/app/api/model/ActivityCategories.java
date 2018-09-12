@@ -16,53 +16,59 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public class ActivityCategories extends BaseEntity {
-    @SerializedName("_embedded")
-    @Expose
-    private EmbeddedActivityCategories embeddedActivityCategories;
+public class ActivityCategories extends BaseEntity
+{
+	@SerializedName("_embedded")
+	@Expose
+	private EmbeddedActivityCategories embeddedActivityCategories;
 
-    @SerializedName("_links")
-    @Expose
-    private Links links;
+	@SerializedName("_links")
+	@Expose
+	private Links links;
 
-    /**
-     * Gets links.
-     *
-     * @return the links
-     */
-    public Links getLinks() {
-        return links;
-    }
+	/**
+	 * Gets links.
+	 *
+	 * @return the links
+	 */
+	public Links getLinks()
+	{
+		return links;
+	}
 
-    /**
-     * Sets links.
-     *
-     * @param links the links
-     */
-    public void setLinks(Links links) {
-        this.links = links;
-    }
+	/**
+	 * Sets links.
+	 *
+	 * @param links the links
+	 */
+	public void setLinks(Links links)
+	{
+		this.links = links;
+	}
 
-    /**
-     * Gets embedded activity categories.
-     *
-     * @return the embedded activity categories
-     */
-    public EmbeddedActivityCategories getEmbeddedActivityCategories() {
-        return embeddedActivityCategories;
-    }
+	/**
+	 * Gets embedded activity categories.
+	 *
+	 * @return the embedded activity categories
+	 */
+	public EmbeddedActivityCategories getEmbeddedActivityCategories()
+	{
+		return embeddedActivityCategories;
+	}
 
-    /**
-     * Sets embedded activity categories.
-     *
-     * @param embeddedActivityCategories the embedded activity categories
-     */
-    public void setEmbeddedActivityCategories(EmbeddedActivityCategories embeddedActivityCategories) {
-        this.embeddedActivityCategories = embeddedActivityCategories;
-    }
+	/**
+	 * Sets embedded activity categories.
+	 *
+	 * @param embeddedActivityCategories the embedded activity categories
+	 */
+	public void setEmbeddedActivityCategories(EmbeddedActivityCategories embeddedActivityCategories)
+	{
+		this.embeddedActivityCategories = embeddedActivityCategories;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

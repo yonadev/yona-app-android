@@ -17,10 +17,13 @@ import android.support.v4.app.Fragment;
  * Created by kinnarvasa on 02/09/16.
  */
 
-public interface PauseResumeHook {
-    void onPause(Fragment curFragment);
-    void onResume(Fragment curFragment);
+public interface PauseResumeHook
+{
+	void onPause(Fragment curFragment);
 
-    void onPause(Activity activity);
-    void onResume(Activity activity);
+	void onResume(Fragment curFragment);
+
+	void onPause(Activity activity);
+
+	void onResume(Activity activity);
 }

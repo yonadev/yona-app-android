@@ -13,15 +13,16 @@ import nu.yona.app.customview.YonaFontTextView;
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-class GaolViewHolder {
+class GaolViewHolder
+{
 
-    /**
-     * The Title goal.
-     */
-    YonaFontTextView title_goal;
-    /**
-     * The Desc goal.
-     */
-    YonaFontTextView desc_goal;
+	/**
+	 * The Title goal.
+	 */
+	YonaFontTextView title_goal;
+	/**
+	 * The Desc goal.
+	 */
+	YonaFontTextView desc_goal;
 
 }

@@ -19,32 +19,36 @@ import java.util.List;
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public class EmbeddedActivityCategories extends BaseEntity {
+public class EmbeddedActivityCategories extends BaseEntity
+{
 
-    @SerializedName("yona:activityCategories")
-    @Expose
-    private List<YonaActivityCategories> yonaActivityCategories = new ArrayList<>();
+	@SerializedName("yona:activityCategories")
+	@Expose
+	private List<YonaActivityCategories> yonaActivityCategories = new ArrayList<>();
 
-    /**
-     * Gets yona activity categories.
-     *
-     * @return the yona activity categories
-     */
-    public List<YonaActivityCategories> getYonaActivityCategories() {
-        return yonaActivityCategories;
-    }
+	/**
+	 * Gets yona activity categories.
+	 *
+	 * @return the yona activity categories
+	 */
+	public List<YonaActivityCategories> getYonaActivityCategories()
+	{
+		return yonaActivityCategories;
+	}
 
-    /**
-     * Sets yona activity categories.
-     *
-     * @param yonaActivityCategories the yona activity categories
-     */
-    public void setYonaActivityCategories(List<YonaActivityCategories> yonaActivityCategories) {
-        this.yonaActivityCategories = yonaActivityCategories;
-    }
+	/**
+	 * Sets yona activity categories.
+	 *
+	 * @param yonaActivityCategories the yona activity categories
+	 */
+	public void setYonaActivityCategories(List<YonaActivityCategories> yonaActivityCategories)
+	{
+		this.yonaActivityCategories = yonaActivityCategories;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

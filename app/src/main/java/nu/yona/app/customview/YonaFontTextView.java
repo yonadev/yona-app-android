@@ -15,41 +15,45 @@ import android.widget.TextView;
 /**
  * The type Yona font text view.
  */
-public class YonaFontTextView extends TextView {
+public class YonaFontTextView extends TextView
+{
 
-    /**
-     * Instantiates a new Yona font text view.
-     *
-     * @param context the context
-     */
-    public YonaFontTextView(Context context) {
-        super(context);
+	/**
+	 * Instantiates a new Yona font text view.
+	 *
+	 * @param context the context
+	 */
+	public YonaFontTextView(Context context)
+	{
+		super(context);
 
-        YonaFontUtils.applyCustomFont(this, context, null);
-    }
+		YonaFontUtils.applyCustomFont(this, context, null);
+	}
 
-    /**
-     * Instantiates a new Yona font text view.
-     *
-     * @param context the context
-     * @param attrs   the attrs
-     */
-    public YonaFontTextView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+	/**
+	 * Instantiates a new Yona font text view.
+	 *
+	 * @param context the context
+	 * @param attrs   the attrs
+	 */
+	public YonaFontTextView(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
 
-        YonaFontUtils.applyCustomFont(this, context, attrs);
-    }
+		YonaFontUtils.applyCustomFont(this, context, attrs);
+	}
 
-    /**
-     * Instantiates a new Yona font text view.
-     *
-     * @param context  the context
-     * @param attrs    the attrs
-     * @param defStyle the def style
-     */
-    public YonaFontTextView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+	/**
+	 * Instantiates a new Yona font text view.
+	 *
+	 * @param context  the context
+	 * @param attrs    the attrs
+	 * @param defStyle the def style
+	 */
+	public YonaFontTextView(Context context, AttributeSet attrs, int defStyle)
+	{
+		super(context, attrs, defStyle);
 
-        YonaFontUtils.applyCustomFont(this, context, attrs);
-    }
+		YonaFontUtils.applyCustomFont(this, context, attrs);
+	}
 }

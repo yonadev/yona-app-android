@@ -18,52 +18,58 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by kinnarvasa on 14/04/16.
  */
-public class NewDevice extends BaseEntity {
-    @SerializedName("yonaPassword")
-    @Expose
-    private String yonaPassword;
-    @SerializedName("_links")
-    @Expose
-    private Links Links;
+public class NewDevice extends BaseEntity
+{
+	@SerializedName("yonaPassword")
+	@Expose
+	private String yonaPassword;
+	@SerializedName("_links")
+	@Expose
+	private Links Links;
 
-    /**
-     * Gets yona password.
-     *
-     * @return The yonaPassword
-     */
-    public String getYonaPassword() {
-        return yonaPassword;
-    }
+	/**
+	 * Gets yona password.
+	 *
+	 * @return The yonaPassword
+	 */
+	public String getYonaPassword()
+	{
+		return yonaPassword;
+	}
 
-    /**
-     * Sets yona password.
-     *
-     * @param yonaPassword The yonaPassword
-     */
-    public void setYonaPassword(String yonaPassword) {
-        this.yonaPassword = yonaPassword;
-    }
+	/**
+	 * Sets yona password.
+	 *
+	 * @param yonaPassword The yonaPassword
+	 */
+	public void setYonaPassword(String yonaPassword)
+	{
+		this.yonaPassword = yonaPassword;
+	}
 
-    /**
-     * Gets links.
-     *
-     * @return The Links
-     */
-    public Links getLinks() {
-        return Links;
-    }
+	/**
+	 * Gets links.
+	 *
+	 * @return The Links
+	 */
+	public Links getLinks()
+	{
+		return Links;
+	}
 
-    /**
-     * Sets links.
-     *
-     * @param Links The _links
-     */
-    public void setLinks(Links Links) {
-        this.Links = Links;
-    }
+	/**
+	 * Sets links.
+	 *
+	 * @param Links The _links
+	 */
+	public void setLinks(Links Links)
+	{
+		this.Links = Links;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

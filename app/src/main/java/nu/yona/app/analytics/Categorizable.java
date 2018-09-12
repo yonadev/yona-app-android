@@ -13,6 +13,7 @@ package nu.yona.app.analytics;
 /**
  * Created by dalexander on 2/20/15.
  */
-public interface Categorizable {
-    String getAnalyticsCategory();
+public interface Categorizable
+{
+	String getAnalyticsCategory();
 }

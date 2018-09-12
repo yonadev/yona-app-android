@@ -21,12 +21,14 @@ import nu.yona.app.ui.BaseFragment;
 /**
  * Created by kinnarvasa on 27/04/16.
  */
-public class AddFriendContacts extends BaseFragment {
+public class AddFriendContacts extends BaseFragment
+{
 
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	{
+		return super.onCreateView(inflater, container, savedInstanceState);
+	}
 }

@@ -17,20 +17,24 @@ import nu.yona.app.customview.YonaFontTextView;
 /**
  * Created by bhargavsuthar on 25/07/16.
  */
-public class StickyHeaderHolder extends RecyclerView.ViewHolder {
+public class StickyHeaderHolder extends RecyclerView.ViewHolder
+{
 
-    private YonaFontTextView headerText;
+	private YonaFontTextView headerText;
 
-    public StickyHeaderHolder(View itemView) {
-        super(itemView);
-        headerText = (YonaFontTextView) itemView.findViewById(R.id.msg_header);
-    }
+	public StickyHeaderHolder(View itemView)
+	{
+		super(itemView);
+		headerText = (YonaFontTextView) itemView.findViewById(R.id.msg_header);
+	}
 
-    public YonaFontTextView getHeaderText() {
-        return headerText;
-    }
+	public YonaFontTextView getHeaderText()
+	{
+		return headerText;
+	}
 
-    public void setHeaderText(YonaFontTextView headerText) {
-        this.headerText = headerText;
-    }
+	public void setHeaderText(YonaFontTextView headerText)
+	{
+		this.headerText = headerText;
+	}
 }

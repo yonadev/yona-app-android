@@ -23,64 +23,83 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by kinnarvasa on 14/04/16.
  */
-public class ActivityCategoriesDAO extends BaseDAO {
+public class ActivityCategoriesDAO extends BaseDAO
+{
 
-    /**
-     * Instantiates a new Activity categories dao.
-     *
-     * @param mOpenHelper the m open helper
-     * @param context     the context
-     */
-    public ActivityCategoriesDAO(SQLiteOpenHelper mOpenHelper, Context context) {
-        super(mOpenHelper);
-    }
+	/**
+	 * Instantiates a new Activity categories dao.
+	 *
+	 * @param mOpenHelper the m open helper
+	 * @param context     the context
+	 */
+	public ActivityCategoriesDAO(SQLiteOpenHelper mOpenHelper, Context context)
+	{
+		super(mOpenHelper);
+	}
 
-    /**
-     * This method will clear all data from db and store new data in table.
-     *
-     * @param activityCategories the activity categories
-     * @param listener           the listener
-     */
-    public void saveActivityCategories(final ActivityCategories activityCategories, final DataLoadListener listener) {
-        try {
-            ContentValues values = new ContentValues();
-            String ID = "1";
-            values.put(DBConstant.ID, ID);
-            values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(activityCategories));
-            if (getActivityCategories() == null) {
-                insert(DBConstant.TBL_ACTIVITY_CATEGORIES, values);
-            } else {
-                update(DBConstant.TBL_ACTIVITY_CATEGORIES, values, DBConstant.ID + " = ?", ID);
-            }
-            if(listener!=null) {
-                listener.onDataLoad(activityCategories);
-            }
-        } catch (Exception e) {
-            AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * This method will clear all data from db and store new data in table.
+	 *
+	 * @param activityCategories the activity categories
+	 * @param listener           the listener
+	 */
+	public void saveActivityCategories(final ActivityCategories activityCategories, final DataLoadListener listener)
+	{
+		try
+		{
+			ContentValues values = new ContentValues();
+			String ID = "1";
+			values.put(DBConstant.ID, ID);
+			values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(activityCategories));
+			if (getActivityCategories() == null)
+			{
+				insert(DBConstant.TBL_ACTIVITY_CATEGORIES, values);
+			}
+			else
+			{
+				update(DBConstant.TBL_ACTIVITY_CATEGORIES, values, DBConstant.ID + " = ?", ID);
+			}
+			if (listener != null)
+			{
+				listener.onDataLoad(activityCategories);
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Gets activity categories.
-     *
-     * @return the activity categories
-     */
-    public ActivityCategories getActivityCategories() {
-        Cursor c = query(DBConstant.TBL_ACTIVITY_CATEGORIES);
-        try {
-            if (c != null && c.getCount() > 0) {
+	/**
+	 * Gets activity categories.
+	 *
+	 * @return the activity categories
+	 */
+	public ActivityCategories getActivityCategories()
+	{
+		Cursor c = query(DBConstant.TBL_ACTIVITY_CATEGORIES);
+		try
+		{
+			if (c != null && c.getCount() > 0)
+			{
 
-                if (c.moveToFirst()) {
-                    return serializer.deserialize(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT)), ActivityCategories.class);
-                }
-            }
-        } catch (Exception e) {
-            AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread());
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-        }
-        return null;
-    }
+				if (c.moveToFirst())
+				{
+					return serializer.deserialize(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT)), ActivityCategories.class);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread());
+		}
+		finally
+		{
+			if (c != null)
+			{
+				c.close();
+			}
+		}
+		return null;
+	}
 }

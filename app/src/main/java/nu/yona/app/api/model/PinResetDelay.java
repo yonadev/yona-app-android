@@ -15,30 +15,34 @@ import android.content.ContentValues;
 /**
  * Created by kinnarvasa on 25/04/16.
  */
-public class PinResetDelay extends BaseEntity {
+public class PinResetDelay extends BaseEntity
+{
 
-    private String delay;
+	private String delay;
 
-    /**
-     * Gets delay.
-     *
-     * @return the delay
-     */
-    public String getDelay() {
-        return delay;
-    }
+	/**
+	 * Gets delay.
+	 *
+	 * @return the delay
+	 */
+	public String getDelay()
+	{
+		return delay;
+	}
 
-    /**
-     * Sets delay.
-     *
-     * @param delay the delay
-     */
-    public void setDelay(String delay) {
-        this.delay = delay;
-    }
+	/**
+	 * Sets delay.
+	 *
+	 * @param delay the delay
+	 */
+	public void setDelay(String delay)
+	{
+		this.delay = delay;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

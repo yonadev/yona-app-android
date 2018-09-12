@@ -26,239 +26,273 @@ import java.util.List;
 /**
  * Created by bhargavsuthar on 07/06/16.
  */
-public class TimeBucketGraph extends BaseView {
+public class TimeBucketGraph extends BaseView
+{
 
-    private int mTotalActivityBeyondGoal;
-    private int mTotalMinTarget;
-    private int mTotalActivityDurationMin;
-    private float mFillEndRange;
-    private float txtStartValue;
-    private float txtEndValue;
-    private float mDifference;
-    //equal parts
-    private float mVolume = 0;
-    private float animEndPoint;
-    private float greenEndPoint;
+	private int mTotalActivityBeyondGoal;
+	private int mTotalMinTarget;
+	private int mTotalActivityDurationMin;
+	private float mFillEndRange;
+	private float txtStartValue;
+	private float txtEndValue;
+	private float mDifference;
+	//equal parts
+	private float mVolume = 0;
+	private float animEndPoint;
+	private float greenEndPoint;
 
-    private List<Animator> animList;
-    private List<Animator> viewAnimList;
+	private List<Animator> animList;
+	private List<Animator> viewAnimList;
 
-    private float height;
-    private float txtHeightMarginTop;
-    private int fullWidth;
-    private float xStartPoint;
-    private float yStartPoint;
-    private float xEndPoint;
-    private float yEndPoint;
-    private float txtHeight;
+	private float height;
+	private float txtHeightMarginTop;
+	private int fullWidth;
+	private float xStartPoint;
+	private float yStartPoint;
+	private float xEndPoint;
+	private float yEndPoint;
+	private float txtHeight;
 
-    /**
-     * Instantiates a new Time bucket graph.
-     *
-     * @param context the context
-     */
-    public TimeBucketGraph(Context context) {
-        super(context);
-        this.postInvalidate();
-    }
+	/**
+	 * Instantiates a new Time bucket graph.
+	 *
+	 * @param context the context
+	 */
+	public TimeBucketGraph(Context context)
+	{
+		super(context);
+		this.postInvalidate();
+	}
 
-    /**
-     * Instantiates a new Time bucket graph.
-     *
-     * @param context the context
-     * @param attrs   the attrs
-     */
-    public TimeBucketGraph(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.postInvalidate();
-    }
+	/**
+	 * Instantiates a new Time bucket graph.
+	 *
+	 * @param context the context
+	 * @param attrs   the attrs
+	 */
+	public TimeBucketGraph(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
+		this.postInvalidate();
+	}
 
-    /**
-     * Instantiates a new Time bucket graph.
-     *
-     * @param context      the context
-     * @param attrs        the attrs
-     * @param defStyleAttr the def style attr
-     */
-    public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        this.postInvalidate();
-    }
+	/**
+	 * Instantiates a new Time bucket graph.
+	 *
+	 * @param context      the context
+	 * @param attrs        the attrs
+	 * @param defStyleAttr the def style attr
+	 */
+	public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr)
+	{
+		super(context, attrs, defStyleAttr);
+		this.postInvalidate();
+	}
 
-    /**
-     * Instantiates a new Time bucket graph.
-     *
-     * @param context      the context
-     * @param attrs        the attrs
-     * @param defStyleAttr the def style attr
-     * @param defStyleRes  the def style res
-     */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        this.postInvalidate();
-    }
+	/**
+	 * Instantiates a new Time bucket graph.
+	 *
+	 * @param context      the context
+	 * @param attrs        the attrs
+	 * @param defStyleAttr the def style attr
+	 * @param defStyleRes  the def style res
+	 */
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public TimeBucketGraph(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
+	{
+		super(context, attrs, defStyleAttr, defStyleRes);
+		this.postInvalidate();
+	}
 
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        graphArguments(mTotalActivityBeyondGoal, mTotalMinTarget, mTotalActivityDurationMin);
-    }
-
-
-    /**
-     * Graph arguments.
-     *
-     * @param totalActivityBeyondGoal      the total activity beyond goal
-     * @param totalMinTarget               the total min target
-     * @param totalActivityDurationMinutes the total activity duration minutes
-     */
-    public void graphArguments(int totalActivityBeyondGoal, int totalMinTarget, int totalActivityDurationMinutes) {
-        mTotalActivityBeyondGoal = totalActivityBeyondGoal;
-        mTotalActivityDurationMin = totalActivityDurationMinutes;
-        mTotalMinTarget = totalMinTarget;
-
-        animList = new ArrayList<>();
-        viewAnimList = new ArrayList<Animator>();
-
-        fullWidth = getWidth();
-        height = scaleFactor * GraphUtils.HEIGHT_BAR;
-        txtHeightMarginTop = scaleFactor * GraphUtils.MARGIN_TOP;
-
-        //using mDifference to check wheather its beyond time or not
-        mDifference = mTotalMinTarget - mTotalActivityDurationMin;
-
-        //if beyond time then its start value should be difference value else its zero(0)
-        if (mDifference < 0) {
-            txtStartValue = mDifference;
-        } else {
-            txtStartValue = 0;
-        }
-
-        //end point should be total minutes of goal
-        txtEndValue = mTotalMinTarget;
-
-        //goint to divide into equal part of width
-        if (mTotalMinTarget > 0 && !(mDifference < 0)) {
-            mVolume = (float) fullWidth / mTotalMinTarget;
-        } else {
-            mVolume = (float) fullWidth / mTotalActivityDurationMin;
-        }
-
-        if (mDifference < 0) {
-            mFillEndRange = mVolume * mTotalActivityBeyondGoal;
-        } else {
-            mFillEndRange = mDifference * mVolume;
-        }
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom)
+	{
+		super.onLayout(changed, left, top, right, bottom);
+		graphArguments(mTotalActivityBeyondGoal, mTotalMinTarget, mTotalActivityDurationMin);
+	}
 
 
-        xStartPoint = 0;
-        yStartPoint = 0;
+	/**
+	 * Graph arguments.
+	 *
+	 * @param totalActivityBeyondGoal      the total activity beyond goal
+	 * @param totalMinTarget               the total min target
+	 * @param totalActivityDurationMinutes the total activity duration minutes
+	 */
+	public void graphArguments(int totalActivityBeyondGoal, int totalMinTarget, int totalActivityDurationMinutes)
+	{
+		mTotalActivityBeyondGoal = totalActivityBeyondGoal;
+		mTotalActivityDurationMin = totalActivityDurationMinutes;
+		mTotalMinTarget = totalMinTarget;
 
-        xEndPoint = fullWidth;
-        yEndPoint = yStartPoint + height;
-        animEndPoint = 0;
-        greenEndPoint = 0;
+		animList = new ArrayList<>();
+		viewAnimList = new ArrayList<Animator>();
 
-        startAnimation();
-    }
+		fullWidth = getWidth();
+		height = scaleFactor * GraphUtils.HEIGHT_BAR;
+		txtHeightMarginTop = scaleFactor * GraphUtils.MARGIN_TOP;
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+		//using mDifference to check wheather its beyond time or not
+		mDifference = mTotalMinTarget - mTotalActivityDurationMin;
+
+		//if beyond time then its start value should be difference value else its zero(0)
+		if (mDifference < 0)
+		{
+			txtStartValue = mDifference;
+		}
+		else
+		{
+			txtStartValue = 0;
+		}
+
+		//end point should be total minutes of goal
+		txtEndValue = mTotalMinTarget;
+
+		//goint to divide into equal part of width
+		if (mTotalMinTarget > 0 && !(mDifference < 0))
+		{
+			mVolume = (float) fullWidth / mTotalMinTarget;
+		}
+		else
+		{
+			mVolume = (float) fullWidth / mTotalActivityDurationMin;
+		}
+
+		if (mDifference < 0)
+		{
+			mFillEndRange = mVolume * mTotalActivityBeyondGoal;
+		}
+		else
+		{
+			mFillEndRange = mDifference * mVolume;
+		}
 
 
-        //Drawing main Rectangle of Grey
-        RectF myRectum = new RectF(xStartPoint, yStartPoint, xEndPoint, yEndPoint);
-        canvas.drawRect(myRectum, linePaint);
+		xStartPoint = 0;
+		yStartPoint = 0;
 
-        txtHeight = yEndPoint + txtHeightMarginTop;
+		xEndPoint = fullWidth;
+		yEndPoint = yStartPoint + height;
+		animEndPoint = 0;
+		greenEndPoint = 0;
 
-        canvas.drawText(String.valueOf((int) txtStartValue), xStartPoint, txtHeight, getFontStyle());
+		startAnimation();
+	}
 
-        String textlenth = String.valueOf(txtEndValue);
-        int useItemCount = textlenth.length();
-        canvas.drawText(String.valueOf((int) txtEndValue), xEndPoint - ((getWidthOfText(String.valueOf(txtEndValue), getFontStyle())) - ((useItemCount + 3) * scaleFactor)), txtHeight, getFontStyle());
+	@Override
+	protected void onDraw(Canvas canvas)
+	{
+		super.onDraw(canvas);
 
-        //Filling usage of time
-        Paint mDrawRange = new Paint();
-        if (mDifference < 0) {
-            mDrawRange.setColor(GraphUtils.COLOR_PINK);
-            canvas.drawText(String.valueOf(0), mFillEndRange - getWidthOfText("0", getFontStyle()), txtHeight, getFontStyle());
-        } else {
-            mDrawRange.setColor(GraphUtils.COLOR_GREEN);
-        }
 
-        Paint greenBarPaint = new Paint();
-        greenBarPaint.setColor(GraphUtils.COLOR_GREEN);
+		//Drawing main Rectangle of Grey
+		RectF myRectum = new RectF(xStartPoint, yStartPoint, xEndPoint, yEndPoint);
+		canvas.drawRect(myRectum, linePaint);
 
-        if (mDifference < 0) {
-            //when there is no over min usage
+		txtHeight = yEndPoint + txtHeightMarginTop;
 
-            //first draw the green bar
-            RectF greenRectFill = new RectF(mFillEndRange, xStartPoint, greenEndPoint, yEndPoint);
-            canvas.drawRect(greenRectFill, greenBarPaint);
-            //second draw the pink bar
-            RectF pinkRectFill = new RectF(animEndPoint, yStartPoint, mFillEndRange, yEndPoint);
-            canvas.drawRect(pinkRectFill, mDrawRange);
-        } else {
-            //when full width and mfillEndRange is equl then no animation else do animation
-            if (mFillEndRange == getWidth()) {
-                RectF rectFill = new RectF(xStartPoint, yStartPoint, mFillEndRange, yEndPoint);
-                canvas.drawRect(rectFill, mDrawRange);
-            } else {
-                RectF rectFill = new RectF(xStartPoint, yStartPoint, animEndPoint, yEndPoint);
-                canvas.drawRect(rectFill, mDrawRange);
-            }
-        }
+		canvas.drawText(String.valueOf((int) txtStartValue), xStartPoint, txtHeight, getFontStyle());
 
-    }
+		String textlenth = String.valueOf(txtEndValue);
+		int useItemCount = textlenth.length();
+		canvas.drawText(String.valueOf((int) txtEndValue), xEndPoint - ((getWidthOfText(String.valueOf(txtEndValue), getFontStyle())) - ((useItemCount + 3) * scaleFactor)), txtHeight, getFontStyle());
 
-    public void startAnimation() {
-        // now we add them all to the anim list
-        AnimatorSet animSet = new AnimatorSet();
+		//Filling usage of time
+		Paint mDrawRange = new Paint();
+		if (mDifference < 0)
+		{
+			mDrawRange.setColor(GraphUtils.COLOR_PINK);
+			canvas.drawText(String.valueOf(0), mFillEndRange - getWidthOfText("0", getFontStyle()), txtHeight, getFontStyle());
+		}
+		else
+		{
+			mDrawRange.setColor(GraphUtils.COLOR_GREEN);
+		}
 
-        if (mFillEndRange == getWidth()) {
-            return;
-        }
+		Paint greenBarPaint = new Paint();
+		greenBarPaint.setColor(GraphUtils.COLOR_GREEN);
 
-        Animator animGreen = ObjectAnimator.ofFloat(this, "greenEndPoint", this.getWidth(), mFillEndRange).setDuration(500);
-        viewAnimList.add(animGreen);
+		if (mDifference < 0)
+		{
+			//when there is no over min usage
 
-        if (!(mDifference < 0)) {
-            Animator anim = ObjectAnimator.ofFloat(this, "animEndPoint", this.getWidth(), mFillEndRange).setDuration(1000);
-            viewAnimList.add(anim);
-        } else {
-            Animator anim = ObjectAnimator.ofFloat(this, "animEndPoint", mFillEndRange, 0.0f).setDuration(2000);
-            viewAnimList.add(anim);
-        }
+			//first draw the green bar
+			RectF greenRectFill = new RectF(mFillEndRange, xStartPoint, greenEndPoint, yEndPoint);
+			canvas.drawRect(greenRectFill, greenBarPaint);
+			//second draw the pink bar
+			RectF pinkRectFill = new RectF(animEndPoint, yStartPoint, mFillEndRange, yEndPoint);
+			canvas.drawRect(pinkRectFill, mDrawRange);
+		}
+		else
+		{
+			//when full width and mfillEndRange is equl then no animation else do animation
+			if (mFillEndRange == getWidth())
+			{
+				RectF rectFill = new RectF(xStartPoint, yStartPoint, mFillEndRange, yEndPoint);
+				canvas.drawRect(rectFill, mDrawRange);
+			}
+			else
+			{
+				RectF rectFill = new RectF(xStartPoint, yStartPoint, animEndPoint, yEndPoint);
+				canvas.drawRect(rectFill, mDrawRange);
+			}
+		}
 
-        animSet.playTogether(viewAnimList);
-        animList.add(animSet);
+	}
 
-        AnimatorSet menuAnimSet = new AnimatorSet();
-        menuAnimSet.playSequentially(animList);
-        menuAnimSet.start();
-    }
+	public void startAnimation()
+	{
+		// now we add them all to the anim list
+		AnimatorSet animSet = new AnimatorSet();
 
-    /**
-     * do not remove this method, animEndPoint's ObjectAnimator is using this
-     */
-    public void setAnimEndPoint(float endPoint) {
-        this.animEndPoint = endPoint;
-        invalidate();
-    }
+		if (mFillEndRange == getWidth())
+		{
+			return;
+		}
 
-    /**
-     * do not remove this method, greenEndPoint's ObjectAnimator is using this
-     */
-    public void setGreenEndPoint(float endPoint) {
-        this.greenEndPoint = endPoint;
-        invalidate();
-    }
+		Animator animGreen = ObjectAnimator.ofFloat(this, "greenEndPoint", this.getWidth(), mFillEndRange).setDuration(500);
+		viewAnimList.add(animGreen);
 
-    private float getWidthOfText(String text, Paint paint) {
-        Rect bounds = new Rect();
-        paint.getTextBounds(text, 0, text.length(), bounds);
-        return bounds.width();
-    }
+		if (!(mDifference < 0))
+		{
+			Animator anim = ObjectAnimator.ofFloat(this, "animEndPoint", this.getWidth(), mFillEndRange).setDuration(1000);
+			viewAnimList.add(anim);
+		}
+		else
+		{
+			Animator anim = ObjectAnimator.ofFloat(this, "animEndPoint", mFillEndRange, 0.0f).setDuration(2000);
+			viewAnimList.add(anim);
+		}
+
+		animSet.playTogether(viewAnimList);
+		animList.add(animSet);
+
+		AnimatorSet menuAnimSet = new AnimatorSet();
+		menuAnimSet.playSequentially(animList);
+		menuAnimSet.start();
+	}
+
+	/**
+	 * do not remove this method, animEndPoint's ObjectAnimator is using this
+	 */
+	public void setAnimEndPoint(float endPoint)
+	{
+		this.animEndPoint = endPoint;
+		invalidate();
+	}
+
+	/**
+	 * do not remove this method, greenEndPoint's ObjectAnimator is using this
+	 */
+	public void setGreenEndPoint(float endPoint)
+	{
+		this.greenEndPoint = endPoint;
+		invalidate();
+	}
+
+	private float getWidthOfText(String text, Paint paint)
+	{
+		Rect bounds = new Rect();
+		paint.getTextBounds(text, 0, text.length(), bounds);
+		return bounds.width();
+	}
 }

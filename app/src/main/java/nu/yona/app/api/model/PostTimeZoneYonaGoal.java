@@ -18,27 +18,30 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 21/04/16.
  */
-public class PostTimeZoneYonaGoal extends PostYonaGoal {
-    @SerializedName("zones")
-    @Expose
-    private List<String> zones;
+public class PostTimeZoneYonaGoal extends PostYonaGoal
+{
+	@SerializedName("zones")
+	@Expose
+	private List<String> zones;
 
-    /**
-     * Gets zones.
-     *
-     * @return the zones
-     */
-    public List<String> getZones() {
-        return zones;
-    }
+	/**
+	 * Gets zones.
+	 *
+	 * @return the zones
+	 */
+	public List<String> getZones()
+	{
+		return zones;
+	}
 
-    /**
-     * Sets zones.
-     *
-     * @param zones the zones
-     */
-    public void setZones(List<String> zones) {
-        this.zones = zones;
-    }
+	/**
+	 * Sets zones.
+	 *
+	 * @param zones the zones
+	 */
+	public void setZones(List<String> zones)
+	{
+		this.zones = zones;
+	}
 
 }

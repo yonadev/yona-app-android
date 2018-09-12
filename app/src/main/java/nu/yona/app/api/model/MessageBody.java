@@ -18,31 +18,35 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by kinnarvasa on 09/05/16.
  */
-public class MessageBody extends BaseEntity {
-    @SerializedName("properties")
-    @Expose
-    private Properties properties;
+public class MessageBody extends BaseEntity
+{
+	@SerializedName("properties")
+	@Expose
+	private Properties properties;
 
-    /**
-     * Gets properties.
-     *
-     * @return The properties
-     */
-    public Properties getProperties() {
-        return properties;
-    }
+	/**
+	 * Gets properties.
+	 *
+	 * @return The properties
+	 */
+	public Properties getProperties()
+	{
+		return properties;
+	}
 
-    /**
-     * Sets properties.
-     *
-     * @param properties The properties
-     */
-    public void setProperties(Properties properties) {
-        this.properties = properties;
-    }
+	/**
+	 * Sets properties.
+	 *
+	 * @param properties The properties
+	 */
+	public void setProperties(Properties properties)
+	{
+		this.properties = properties;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

@@ -13,54 +13,55 @@ package nu.yona.app.api.manager.network;
 /**
  * Created by kinnarvasa on 28/03/16.
  */
-public interface NetworkConstant {
+public interface NetworkConstant
+{
 
-    /**
-     * The constant YONA_PASSWORD.
-     */
-    String YONA_PASSWORD = "Yona-Password";
-    /**
-     * The constant ACCEPT_LANGUAGE.
-     */
-    String ACCEPT_LANGUAGE = "Accept-Language";
-    /**
-     * The constant CONTENT_TYPE.
-     */
-    String CONTENT_TYPE = "Content-Type";
-    /**
-     * The constant YONA_NEW_PASSWORD.
-     */
-    String YONA_NEW_PASSWORD = "Yona-NewDeviceRequestPassword";
-    /**
-     * The constant BODY.
-     */
-    String BODY = "body";
+	/**
+	 * The constant YONA_PASSWORD.
+	 */
+	String YONA_PASSWORD = "Yona-Password";
+	/**
+	 * The constant ACCEPT_LANGUAGE.
+	 */
+	String ACCEPT_LANGUAGE = "Accept-Language";
+	/**
+	 * The constant CONTENT_TYPE.
+	 */
+	String CONTENT_TYPE = "Content-Type";
+	/**
+	 * The constant YONA_NEW_PASSWORD.
+	 */
+	String YONA_NEW_PASSWORD = "Yona-NewDeviceRequestPassword";
+	/**
+	 * The constant BODY.
+	 */
+	String BODY = "body";
 
-    /**
-     * The constant CACHING_FILE.
-     */
-    String CACHING_FILE = "apiResponse";
+	/**
+	 * The constant CACHING_FILE.
+	 */
+	String CACHING_FILE = "apiResponse";
 
-    /**
-     * The constant API_CONNECT_TIMEOUT_IN_SECONDS.
-     */
-    long API_CONNECT_TIMEOUT_IN_SECONDS = 30;
-    /**
-     * The constant API_WRITE_TIMEOUT_IN_SECONDS.
-     */
-    int API_WRITE_TIMEOUT_IN_SECONDS = 30;
-    /**
-     * The constant API_READ_TIMEOUT_IN_SECONDS.
-     */
-    int API_READ_TIMEOUT_IN_SECONDS = 30;
+	/**
+	 * The constant API_CONNECT_TIMEOUT_IN_SECONDS.
+	 */
+	long API_CONNECT_TIMEOUT_IN_SECONDS = 30;
+	/**
+	 * The constant API_WRITE_TIMEOUT_IN_SECONDS.
+	 */
+	int API_WRITE_TIMEOUT_IN_SECONDS = 30;
+	/**
+	 * The constant API_READ_TIMEOUT_IN_SECONDS.
+	 */
+	int API_READ_TIMEOUT_IN_SECONDS = 30;
 
-    /**
-     * The constant RESPONSE_STATUS.
-     */
-    int RESPONSE_STATUS = 300;
+	/**
+	 * The constant RESPONSE_STATUS.
+	 */
+	int RESPONSE_STATUS = 300;
 
-    /**
-     * The constant RESPONSE_ERROR_CODE.
-     */
-    int RESPONSE_ERROR_CODE = 400;
+	/**
+	 * The constant RESPONSE_ERROR_CODE.
+	 */
+	int RESPONSE_ERROR_CODE = 400;
 }

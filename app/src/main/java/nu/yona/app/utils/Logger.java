@@ -11,41 +11,54 @@ import nu.yona.app.BuildConfig;
  * A common Logger implementation to support loggin mechanism in application.
  */
 
-public class Logger {
+public class Logger
+{
 
-    public static void logi(String TAG, String message) {
-        if(BuildConfig.DEBUG) {
-            Log.i(TAG, message);
-        }
-    }
+	public static void logi(String TAG, String message)
+	{
+		if (BuildConfig.DEBUG)
+		{
+			Log.i(TAG, message);
+		}
+	}
 
-    public static void loge(String TAG, String message) {
-        if(BuildConfig.DEBUG) {
-            Log.e(TAG, message);
-        }
-    }
+	public static void loge(String TAG, String message)
+	{
+		if (BuildConfig.DEBUG)
+		{
+			Log.e(TAG, message);
+		}
+	}
 
-    public static void loge(String TAG, String message, Exception e) {
-        if(BuildConfig.DEBUG) {
-            Log.e(TAG, message, e);
-        }
-    }
+	public static void loge(String TAG, String message, Exception e)
+	{
+		if (BuildConfig.DEBUG)
+		{
+			Log.e(TAG, message, e);
+		}
+	}
 
-    public static void logd(String TAG, String message) {
-        if(BuildConfig.DEBUG) {
-            Log.d(TAG, message);
-        }
-    }
+	public static void logd(String TAG, String message)
+	{
+		if (BuildConfig.DEBUG)
+		{
+			Log.d(TAG, message);
+		}
+	}
 
-    public static void printStackTrace(Exception e) {
-        if(BuildConfig.DEBUG) {
-            e.printStackTrace();
-        }
-    }
+	public static void printStackTrace(Exception e)
+	{
+		if (BuildConfig.DEBUG)
+		{
+			e.printStackTrace();
+		}
+	}
 
-    public static void toast(Context context, String message) {
-        if(BuildConfig.DEBUG) {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-        }
-    }
+	public static void toast(Context context, String message)
+	{
+		if (BuildConfig.DEBUG)
+		{
+			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+		}
+	}
 }

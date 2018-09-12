@@ -18,86 +18,95 @@ import android.view.View;
  * Created by bhargavsuthar on 20/06/16.
  */
 public class CircleGraphView
-        extends View {
+		extends View
+{
 
-    private int strokeColor = GraphUtils.COLOR_WHITE_THREE;
-    private int strokeWidth = 2;
-    private int fillColor = GraphUtils.COLOR_WHITE_THREE;
+	private int strokeColor = GraphUtils.COLOR_WHITE_THREE;
+	private int strokeWidth = 2;
+	private int fillColor = GraphUtils.COLOR_WHITE_THREE;
 
-    /**
-     * Instantiates a new Circle graph view.
-     *
-     * @param context the context
-     */
-    public CircleGraphView(Context context) {
-        super(context);
+	/**
+	 * Instantiates a new Circle graph view.
+	 *
+	 * @param context the context
+	 */
+	public CircleGraphView(Context context)
+	{
+		super(context);
 
-        init();
-    }
+		init();
+	}
 
-    /**
-     * Instantiates a new Circle graph view.
-     *
-     * @param context the context
-     * @param attrs   the attrs
-     */
-    public CircleGraphView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+	/**
+	 * Instantiates a new Circle graph view.
+	 *
+	 * @param context the context
+	 * @param attrs   the attrs
+	 */
+	public CircleGraphView(Context context, AttributeSet attrs)
+	{
+		this(context, attrs, 0);
 
-        init();
-    }
+		init();
+	}
 
-    /**
-     * Instantiates a new Circle graph view.
-     *
-     * @param context      the context
-     * @param attrs        the attrs
-     * @param defStyleAttr the def style attr
-     */
-    public CircleGraphView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
+	/**
+	 * Instantiates a new Circle graph view.
+	 *
+	 * @param context      the context
+	 * @param attrs        the attrs
+	 * @param defStyleAttr the def style attr
+	 */
+	public CircleGraphView(Context context, AttributeSet attrs, int defStyleAttr)
+	{
+		super(context, attrs, defStyleAttr);
+		init();
+	}
 
-    private void init() {
-        this.setSaveEnabled(true);
-    }
+	private void init()
+	{
+		this.setSaveEnabled(true);
+	}
 
-    @Override
-    public void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+	@Override
+	public void onDraw(Canvas canvas)
+	{
+		super.onDraw(canvas);
 
-        int w = this.getWidth();
-        int h = this.getHeight();
+		int w = this.getWidth();
+		int h = this.getHeight();
 
-        int ox = w / 2;
-        int oy = h / 2;
+		int ox = w / 2;
+		int oy = h / 2;
 
-        canvas.drawCircle(ox, oy, w / 2, getFill());
-    }
+		canvas.drawCircle(ox, oy, w / 2, getFill());
+	}
 
-    private Paint getStroke() {
-        Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p.setStrokeWidth(strokeWidth);
-        p.setColor(strokeColor);
-        p.setStyle(Paint.Style.STROKE);
-        return p;
-    }
+	private Paint getStroke()
+	{
+		Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+		p.setStrokeWidth(strokeWidth);
+		p.setColor(strokeColor);
+		p.setStyle(Paint.Style.STROKE);
+		return p;
+	}
 
-    private Paint getFill() {
-        Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p.setColor(fillColor);
-        p.setStyle(Paint.Style.FILL);
-        return p;
-    }
+	private Paint getFill()
+	{
+		Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+		p.setColor(fillColor);
+		p.setStyle(Paint.Style.FILL);
+		return p;
+	}
 
-    /**
-     * Sets fill color.
-     *
-     * @param fillColor the fill color
-     */
-    public void setFillColor(int fillColor) {
-        this.fillColor = fillColor;
-    }
+	/**
+	 * Sets fill color.
+	 *
+	 * @param fillColor the fill color
+	 */
+	public void setFillColor(int fillColor)
+	{
+		this.fillColor = fillColor;
+	}
 
 }

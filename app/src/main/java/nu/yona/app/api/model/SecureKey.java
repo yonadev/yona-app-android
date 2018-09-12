@@ -14,32 +14,39 @@ package nu.yona.app.api.model;
  * Created by kinnarvasa on 28/06/16.
  */
 
-public class SecureKey {
-    private String yonaPassword;
-    private String vpnUserName;
-    private String vpnPasswrod;
+public class SecureKey
+{
+	private String yonaPassword;
+	private String vpnUserName;
+	private String vpnPasswrod;
 
-    public String getVpnPasswrod() {
-        return this.vpnPasswrod;
-    }
+	public String getVpnPasswrod()
+	{
+		return this.vpnPasswrod;
+	}
 
-    public void setVpnPasswrod(String vpnPasswrod) {
-        this.vpnPasswrod = vpnPasswrod;
-    }
+	public void setVpnPasswrod(String vpnPasswrod)
+	{
+		this.vpnPasswrod = vpnPasswrod;
+	}
 
-    public String getVpnUserName() {
-        return this.vpnUserName;
-    }
+	public String getVpnUserName()
+	{
+		return this.vpnUserName;
+	}
 
-    public void setVpnUserName(String vpnUserName) {
-        this.vpnUserName = vpnUserName;
-    }
+	public void setVpnUserName(String vpnUserName)
+	{
+		this.vpnUserName = vpnUserName;
+	}
 
-    public String getYonaPassword() {
-        return this.yonaPassword;
-    }
+	public String getYonaPassword()
+	{
+		return this.yonaPassword;
+	}
 
-    public void setYonaPassword(String yonaPassword) {
-        this.yonaPassword = yonaPassword;
-    }
+	public void setYonaPassword(String yonaPassword)
+	{
+		this.yonaPassword = yonaPassword;
+	}
 }

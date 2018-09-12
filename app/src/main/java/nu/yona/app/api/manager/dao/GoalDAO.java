@@ -21,64 +21,83 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by bhargavsuthar on 15/04/16.
  */
-public class GoalDAO extends BaseDAO {
+public class GoalDAO extends BaseDAO
+{
 
-    /**
-     * Instantiates a new Goal dao.
-     *
-     * @param mOpenHelper the m open helper
-     * @param context     the context
-     */
-    public GoalDAO(SQLiteOpenHelper mOpenHelper, Context context) {
-        super(mOpenHelper);
-    }
+	/**
+	 * Instantiates a new Goal dao.
+	 *
+	 * @param mOpenHelper the m open helper
+	 * @param context     the context
+	 */
+	public GoalDAO(SQLiteOpenHelper mOpenHelper, Context context)
+	{
+		super(mOpenHelper);
+	}
 
-    /**
-     * Insert or Update the User Goals into Database
-     *
-     * @param goals    the goals
-     * @param listener the listener
-     */
-    public void saveGoalData(Goals goals, DataLoadListener listener) {
-        try {
-            ContentValues values = new ContentValues();
-            String ID = "1";
-            values.put(DBConstant.ID, ID);
-            values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(goals));
-            if (getUserGoal() == null) {
-                insert(DBConstant.TBL_GOAL, values);
-            } else {
-                update(DBConstant.TBL_GOAL, values, DBConstant.ID + " = ?", ID);
-            }
-            if (listener != null) {
-                listener.onDataLoad(getUserGoal());
-            }
-        } catch (Exception e) {
-            AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * Insert or Update the User Goals into Database
+	 *
+	 * @param goals    the goals
+	 * @param listener the listener
+	 */
+	public void saveGoalData(Goals goals, DataLoadListener listener)
+	{
+		try
+		{
+			ContentValues values = new ContentValues();
+			String ID = "1";
+			values.put(DBConstant.ID, ID);
+			values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(goals));
+			if (getUserGoal() == null)
+			{
+				insert(DBConstant.TBL_GOAL, values);
+			}
+			else
+			{
+				update(DBConstant.TBL_GOAL, values, DBConstant.ID + " = ?", ID);
+			}
+			if (listener != null)
+			{
+				listener.onDataLoad(getUserGoal());
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Gets user goal.
-     *
-     * @return the user goal
-     */
-    public Goals getUserGoal() {
-        Cursor c = query(DBConstant.TBL_GOAL);
-        try {
-            if (c != null && c.getCount() > 0) {
+	/**
+	 * Gets user goal.
+	 *
+	 * @return the user goal
+	 */
+	public Goals getUserGoal()
+	{
+		Cursor c = query(DBConstant.TBL_GOAL);
+		try
+		{
+			if (c != null && c.getCount() > 0)
+			{
 
-                if (c.moveToFirst()) {
-                    return serializer.deserialize(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT)), Goals.class);
-                }
-            }
-        } catch (Exception e) {
-            AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread());
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-        }
-        return null;
-    }
+				if (c.moveToFirst())
+				{
+					return serializer.deserialize(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT)), Goals.class);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread());
+		}
+		finally
+		{
+			if (c != null)
+			{
+				c.close();
+			}
+		}
+		return null;
+	}
 }

@@ -24,79 +24,104 @@ import retrofit2.Response;
 /**
  * Created by kinnarvasa on 28/04/16.
  */
-public class BuddyNetworkImpl extends BaseImpl {
+public class BuddyNetworkImpl extends BaseImpl
+{
 
-    /**
-     * Add Buddy
-     *
-     * @param url          the url
-     * @param yonaPassowrd the yona passowrd
-     * @param buddy        the buddy
-     * @param listener     the listener
-     */
-    public void addBuddy(String url, String yonaPassowrd, AddBuddy buddy, final DataLoadListener listener) {
-        try {
-            getRestApi().addBuddy(url, yonaPassowrd, Locale.getDefault().toString().replace('_', '-'), buddy).enqueue(new Callback<YonaBuddy>() {
-                @Override
-                public void onResponse(Call<YonaBuddy> call, Response<YonaBuddy> response) {
-                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                        listener.onDataLoad(response.body());
-                    } else {
-                        onError(response, listener);
-                    }
-                }
+	/**
+	 * Add Buddy
+	 *
+	 * @param url          the url
+	 * @param yonaPassowrd the yona passowrd
+	 * @param buddy        the buddy
+	 * @param listener     the listener
+	 */
+	public void addBuddy(String url, String yonaPassowrd, AddBuddy buddy, final DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().addBuddy(url, yonaPassowrd, Locale.getDefault().toString().replace('_', '-'), buddy).enqueue(new Callback<YonaBuddy>()
+			{
+				@Override
+				public void onResponse(Call<YonaBuddy> call, Response<YonaBuddy> response)
+				{
+					if (response.code() < NetworkConstant.RESPONSE_STATUS)
+					{
+						listener.onDataLoad(response.body());
+					}
+					else
+					{
+						onError(response, listener);
+					}
+				}
 
-                @Override
-                public void onFailure(Call<YonaBuddy> call, Throwable t) {
-                    onError(t, listener);
-                }
-            });
-        } catch (Exception e) {
-            AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+				@Override
+				public void onFailure(Call<YonaBuddy> call, Throwable t)
+				{
+					onError(t, listener);
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Gets buddies.
-     *
-     * @param url      the url
-     * @param password the password
-     * @param listener the listener
-     */
-    public void getBuddies(String url, String password, final DataLoadListener listener) {
-        try {
-            getRestApi().getBuddy(url, password, Locale.getDefault().toString().replace('_', '-')).enqueue(new Callback<YonaBuddies>() {
-                @Override
-                public void onResponse(Call<YonaBuddies> call, Response<YonaBuddies> response) {
-                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                        listener.onDataLoad(response.body());
-                    } else {
-                        onError(response, listener);
-                    }
-                }
+	/**
+	 * Gets buddies.
+	 *
+	 * @param url      the url
+	 * @param password the password
+	 * @param listener the listener
+	 */
+	public void getBuddies(String url, String password, final DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().getBuddy(url, password, Locale.getDefault().toString().replace('_', '-')).enqueue(new Callback<YonaBuddies>()
+			{
+				@Override
+				public void onResponse(Call<YonaBuddies> call, Response<YonaBuddies> response)
+				{
+					if (response.code() < NetworkConstant.RESPONSE_STATUS)
+					{
+						listener.onDataLoad(response.body());
+					}
+					else
+					{
+						onError(response, listener);
+					}
+				}
 
-                @Override
-                public void onFailure(Call<YonaBuddies> call, Throwable t) {
-                    onError(t, listener);
-                }
-            });
-        } catch (Exception e) {
-            AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+				@Override
+				public void onFailure(Call<YonaBuddies> call, Throwable t)
+				{
+					onError(t, listener);
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Delete buddy.
-     *
-     * @param url      the url
-     * @param passwrod the passwrod
-     * @param listener the listener
-     */
-    public void deleteBuddy(String url, String passwrod, DataLoadListener listener) {
-        try {
-            getRestApi().deleteBuddy(url, passwrod, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
-        } catch (Exception e) {
-            AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * Delete buddy.
+	 *
+	 * @param url      the url
+	 * @param passwrod the passwrod
+	 * @param listener the listener
+	 */
+	public void deleteBuddy(String url, String passwrod, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().deleteBuddy(url, passwrod, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 }

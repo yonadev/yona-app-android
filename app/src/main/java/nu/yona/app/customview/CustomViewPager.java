@@ -17,42 +17,52 @@ import android.view.View;
 /**
  * Created by bhargavsuthar on 29/07/16.
  */
-public class CustomViewPager extends ViewPager {
+public class CustomViewPager extends ViewPager
+{
 
-    public CustomViewPager(Context context) {
-        super(context);
-    }
+	public CustomViewPager(Context context)
+	{
+		super(context);
+	}
 
-    public CustomViewPager(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public CustomViewPager(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
+	}
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
-        // Never allow swiping to switch between pages
-        return false;
-    }
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent event)
+	{
+		// Never allow swiping to switch between pages
+		return false;
+	}
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // Never allow swiping to switch between pages
-        return false;
-    }
+	@Override
+	public boolean onTouchEvent(MotionEvent event)
+	{
+		// Never allow swiping to switch between pages
+		return false;
+	}
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+	{
 
-        int height = 0;
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-            int h = child.getMeasuredHeight();
-            if (h > height) height = h;
-        }
+		int height = 0;
+		for (int i = 0; i < getChildCount(); i++)
+		{
+			View child = getChildAt(i);
+			child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+			int h = child.getMeasuredHeight();
+			if (h > height)
+			{
+				height = h;
+			}
+		}
 
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+		heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
 
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
 
 }

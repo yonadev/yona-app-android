@@ -18,32 +18,36 @@ import com.google.gson.annotations.SerializedName;
 /**
  * The type Href.
  */
-public class Href extends BaseEntity {
+public class Href extends BaseEntity
+{
 
-    @SerializedName("href")
-    @Expose
-    private String href;
+	@SerializedName("href")
+	@Expose
+	private String href;
 
-    /**
-     * Gets href.
-     *
-     * @return The href
-     */
-    public String getHref() {
-        return href;
-    }
+	/**
+	 * Gets href.
+	 *
+	 * @return The href
+	 */
+	public String getHref()
+	{
+		return href;
+	}
 
-    /**
-     * Sets href.
-     *
-     * @param href The href
-     */
-    public void setHref(String href) {
-        this.href = href;
-    }
+	/**
+	 * Sets href.
+	 *
+	 * @param href The href
+	 */
+	public void setHref(String href)
+	{
+		this.href = href;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

@@ -21,52 +21,58 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 08/06/16.
  */
-public class AppActivity extends BaseEntity {
-    @SerializedName("deviceDateTime")
-    @Expose
-    private String deviceDateTime;
-    @SerializedName("activities")
-    @Expose
-    private List<Activity> activities = new ArrayList<Activity>();
+public class AppActivity extends BaseEntity
+{
+	@SerializedName("deviceDateTime")
+	@Expose
+	private String deviceDateTime;
+	@SerializedName("activities")
+	@Expose
+	private List<Activity> activities = new ArrayList<Activity>();
 
-    /**
-     * Gets device date time.
-     *
-     * @return The deviceDateTime
-     */
-    public String getDeviceDateTime() {
-        return deviceDateTime;
-    }
+	/**
+	 * Gets device date time.
+	 *
+	 * @return The deviceDateTime
+	 */
+	public String getDeviceDateTime()
+	{
+		return deviceDateTime;
+	}
 
-    /**
-     * Sets device date time.
-     *
-     * @param deviceDateTime The deviceDateTime
-     */
-    public void setDeviceDateTime(String deviceDateTime) {
-        this.deviceDateTime = deviceDateTime;
-    }
+	/**
+	 * Sets device date time.
+	 *
+	 * @param deviceDateTime The deviceDateTime
+	 */
+	public void setDeviceDateTime(String deviceDateTime)
+	{
+		this.deviceDateTime = deviceDateTime;
+	}
 
-    /**
-     * Gets activities.
-     *
-     * @return The activities
-     */
-    public List<Activity> getActivities() {
-        return activities;
-    }
+	/**
+	 * Gets activities.
+	 *
+	 * @return The activities
+	 */
+	public List<Activity> getActivities()
+	{
+		return activities;
+	}
 
-    /**
-     * Sets activities.
-     *
-     * @param activities The activities
-     */
-    public void setActivities(List<Activity> activities) {
-        this.activities = activities;
-    }
+	/**
+	 * Sets activities.
+	 *
+	 * @param activities The activities
+	 */
+	public void setActivities(List<Activity> activities)
+	{
+		this.activities = activities;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

@@ -19,53 +19,59 @@ import com.google.gson.annotations.SerializedName;
 /**
  * The type Yona goals.
  */
-public class YonaGoals extends BaseEntity {
+public class YonaGoals extends BaseEntity
+{
 
-    @SerializedName("_embedded")
-    @Expose
-    private EmbeddedYonaGoals Embedded;
-    @SerializedName("_links")
-    @Expose
-    private Links_ links;
+	@SerializedName("_embedded")
+	@Expose
+	private EmbeddedYonaGoals Embedded;
+	@SerializedName("_links")
+	@Expose
+	private Links_ links;
 
-    /**
-     * Gets embedded.
-     *
-     * @return The Embedded
-     */
-    public EmbeddedYonaGoals getEmbedded() {
-        return Embedded;
-    }
+	/**
+	 * Gets embedded.
+	 *
+	 * @return The Embedded
+	 */
+	public EmbeddedYonaGoals getEmbedded()
+	{
+		return Embedded;
+	}
 
-    /**
-     * Sets embedded.
-     *
-     * @param Embedded The _embedded
-     */
-    public void setEmbedded(EmbeddedYonaGoals Embedded) {
-        this.Embedded = Embedded;
-    }
+	/**
+	 * Sets embedded.
+	 *
+	 * @param Embedded The _embedded
+	 */
+	public void setEmbedded(EmbeddedYonaGoals Embedded)
+	{
+		this.Embedded = Embedded;
+	}
 
-    /**
-     * Gets links.
-     *
-     * @return The links
-     */
-    public Links_ getLinks() {
-        return links;
-    }
+	/**
+	 * Gets links.
+	 *
+	 * @return The links
+	 */
+	public Links_ getLinks()
+	{
+		return links;
+	}
 
-    /**
-     * Sets links.
-     *
-     * @param links The links
-     */
-    public void setLinks(Links_ links) {
-        this.links = links;
-    }
+	/**
+	 * Sets links.
+	 *
+	 * @param links The links
+	 */
+	public void setLinks(Links_ links)
+	{
+		this.links = links;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

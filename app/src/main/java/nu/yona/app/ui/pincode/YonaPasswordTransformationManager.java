@@ -14,35 +14,42 @@ import android.view.View;
 /**
  * Created by bhargavsuthar on 4/1/16.
  */
-class YonaPasswordTransformationManager extends PasswordTransformationMethod {
+class YonaPasswordTransformationManager extends PasswordTransformationMethod
+{
 
-    @Override
-    public CharSequence getTransformation(CharSequence source, View view) {
-        return new PasswordCharSequence(source);
-    }
+	@Override
+	public CharSequence getTransformation(CharSequence source, View view)
+	{
+		return new PasswordCharSequence(source);
+	}
 
-    private class PasswordCharSequence implements CharSequence {
-        private final CharSequence mSource;
+	private class PasswordCharSequence implements CharSequence
+	{
+		private final CharSequence mSource;
 
-        /**
-         * Instantiates a new Password char sequence.
-         *
-         * @param source the source
-         */
-        public PasswordCharSequence(CharSequence source) {
-            mSource = source; // Store char sequence
-        }
+		/**
+		 * Instantiates a new Password char sequence.
+		 *
+		 * @param source the source
+		 */
+		public PasswordCharSequence(CharSequence source)
+		{
+			mSource = source; // Store char sequence
+		}
 
-        public char charAt(int index) {
-            return '*'; // This is the important part
-        }
+		public char charAt(int index)
+		{
+			return '*'; // This is the important part
+		}
 
-        public int length() {
-            return mSource.length(); // Return default
-        }
+		public int length()
+		{
+			return mSource.length(); // Return default
+		}
 
-        public CharSequence subSequence(int start, int end) {
-            return mSource.subSequence(start, end); // Return default
-        }
-    }
+		public CharSequence subSequence(int start, int end)
+		{
+			return mSource.subSequence(start, end); // Return default
+		}
+	}
 }

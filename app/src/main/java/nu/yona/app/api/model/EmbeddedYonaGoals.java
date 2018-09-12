@@ -21,32 +21,36 @@ import java.util.List;
 /**
  * The type Embedded yona goals.
  */
-public class EmbeddedYonaGoals extends BaseEntity {
+public class EmbeddedYonaGoals extends BaseEntity
+{
 
-    @SerializedName("yona:goals")
-    @Expose
-    private List<YonaGoal> yonaGoals = new ArrayList<>();
+	@SerializedName("yona:goals")
+	@Expose
+	private List<YonaGoal> yonaGoals = new ArrayList<>();
 
-    /**
-     * Gets yona goals.
-     *
-     * @return The yonaGoals
-     */
-    public List<YonaGoal> getYonaGoals() {
-        return yonaGoals;
-    }
+	/**
+	 * Gets yona goals.
+	 *
+	 * @return The yonaGoals
+	 */
+	public List<YonaGoal> getYonaGoals()
+	{
+		return yonaGoals;
+	}
 
-    /**
-     * Sets yona goals.
-     *
-     * @param yonaGoals The yona:goals
-     */
-    public void setYonaGoals(List<YonaGoal> yonaGoals) {
-        this.yonaGoals = yonaGoals;
-    }
+	/**
+	 * Sets yona goals.
+	 *
+	 * @param yonaGoals The yona:goals
+	 */
+	public void setYonaGoals(List<YonaGoal> yonaGoals)
+	{
+		this.yonaGoals = yonaGoals;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

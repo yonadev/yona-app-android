@@ -18,53 +18,59 @@ import com.google.gson.annotations.SerializedName;
 /**
  * The type Embedded yona user.
  */
-public class EmbeddedYonaUser extends BaseEntity {
+public class EmbeddedYonaUser extends BaseEntity
+{
 
-    @SerializedName("yona:user")
-    @Expose
-    private YonaUser yonaUser;
-    @SerializedName(("yona:goals"))
-    @Expose
-    private YonaGoals yonaGoals;
+	@SerializedName("yona:user")
+	@Expose
+	private YonaUser yonaUser;
+	@SerializedName(("yona:goals"))
+	@Expose
+	private YonaGoals yonaGoals;
 
-    /**
-     * Gets yona user.
-     *
-     * @return The yonaUser
-     */
-    public YonaUser getYonaUser() {
-        return yonaUser;
-    }
+	/**
+	 * Gets yona user.
+	 *
+	 * @return The yonaUser
+	 */
+	public YonaUser getYonaUser()
+	{
+		return yonaUser;
+	}
 
-    /**
-     * Sets yona user.
-     *
-     * @param yonaUser The yona:user
-     */
-    public void setYonaUser(YonaUser yonaUser) {
-        this.yonaUser = yonaUser;
-    }
+	/**
+	 * Sets yona user.
+	 *
+	 * @param yonaUser The yona:user
+	 */
+	public void setYonaUser(YonaUser yonaUser)
+	{
+		this.yonaUser = yonaUser;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 
-    /**
-     * Get yona Goals
-     *
-     * @return yona goals
-     */
-    public YonaGoals getYonaGoals() {
-        return yonaGoals;
-    }
+	/**
+	 * Get yona Goals
+	 *
+	 * @return yona goals
+	 */
+	public YonaGoals getYonaGoals()
+	{
+		return yonaGoals;
+	}
 
-    /**
-     * Set yona Goals
-     *
-     * @param yonaGoals the yona goals
-     */
-    public void setYonaGoals(YonaGoals yonaGoals) {
-        this.yonaGoals = yonaGoals;
-    }
+	/**
+	 * Set yona Goals
+	 *
+	 * @param yonaGoals the yona goals
+	 */
+	public void setYonaGoals(YonaGoals yonaGoals)
+	{
+		this.yonaGoals = yonaGoals;
+	}
 }

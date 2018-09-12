@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import nu.yona.app.R;
 import nu.yona.app.customview.YonaFontTextView;
@@ -21,78 +20,85 @@ import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
 /**
  * Created by bhargavsuthar on 10/05/16.
  */
-public class MessageItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class MessageItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+{
 
-    /**
-     * Swipe layout
-     */
-    public com.daimajia.swipe.SwipeLayout swipeLayout;
-    /**
-     * The Img avtar.
-     */
-    public ImageView img_avtar;
-    /**
-     * The Img status.
-     */
-    public ImageView img_status;
-    /**
-     * The Txt title msg.
-     */
-    public YonaFontTextView txtTitleMsg, /**
-     * The Txt footer msg.
-     */
-    txtFooterMsg;
+	/**
+	 * Swipe layout
+	 */
+	public com.daimajia.swipe.SwipeLayout swipeLayout;
+	/**
+	 * The Img avtar.
+	 */
+	public ImageView img_avtar;
+	/**
+	 * The Img status.
+	 */
+	public ImageView img_status;
+	/**
+	 * The Txt title msg.
+	 */
+	public YonaFontTextView txtTitleMsg, /**
+ * The Txt footer msg.
+ */
+txtFooterMsg;
 
-    /**
-     * The Delete msg.
-     */
-    public LinearLayout deleteMsg;
-    /**
-     * The Message container.
-     */
-    public LinearLayout messageContainer;
-    private OnFriendsItemClickListener onFriendsItemClickListener;
-    public YonaFontTextView profileIconTxt;
+	/**
+	 * The Delete msg.
+	 */
+	public LinearLayout deleteMsg;
+	/**
+	 * The Message container.
+	 */
+	public LinearLayout messageContainer;
+	private OnFriendsItemClickListener onFriendsItemClickListener;
+	public YonaFontTextView profileIconTxt;
 
-    /**
-     * Instantiates a new Message item view holder.
-     *
-     * @param itemView          the item view
-     * @param itemClickListener click of item view
-     */
-    public MessageItemViewHolder(View itemView, OnFriendsItemClickListener itemClickListener) {
-        super(itemView);
-        this.onFriendsItemClickListener = itemClickListener;
-        swipeLayout = (com.daimajia.swipe.SwipeLayout) itemView.findViewById(R.id.swipe_layout);
-        messageContainer = (LinearLayout) itemView.findViewById(R.id.messageContainer);
-        deleteMsg = (LinearLayout) itemView.findViewById(R.id.swipe_delete_goal);
-        img_avtar = (ImageView) itemView.findViewById(R.id.img_user_icon);
-        profileIconTxt = (YonaFontTextView) itemView.findViewById(R.id.profileTextIcon);
-        img_status = (ImageView) itemView.findViewById(R.id.img_status);
-        txtTitleMsg = (YonaFontTextView) itemView.findViewById(R.id.txt_title);
-        txtFooterMsg = (YonaFontTextView) itemView.findViewById(R.id.txt_footer);
-        messageContainer.setOnClickListener(this);
-        deleteMsg.setOnClickListener(this);
-    }
+	/**
+	 * Instantiates a new Message item view holder.
+	 *
+	 * @param itemView          the item view
+	 * @param itemClickListener click of item view
+	 */
+	public MessageItemViewHolder(View itemView, OnFriendsItemClickListener itemClickListener)
+	{
+		super(itemView);
+		this.onFriendsItemClickListener = itemClickListener;
+		swipeLayout = (com.daimajia.swipe.SwipeLayout) itemView.findViewById(R.id.swipe_layout);
+		messageContainer = (LinearLayout) itemView.findViewById(R.id.messageContainer);
+		deleteMsg = (LinearLayout) itemView.findViewById(R.id.swipe_delete_goal);
+		img_avtar = (ImageView) itemView.findViewById(R.id.img_user_icon);
+		profileIconTxt = (YonaFontTextView) itemView.findViewById(R.id.profileTextIcon);
+		img_status = (ImageView) itemView.findViewById(R.id.img_status);
+		txtTitleMsg = (YonaFontTextView) itemView.findViewById(R.id.txt_title);
+		txtFooterMsg = (YonaFontTextView) itemView.findViewById(R.id.txt_footer);
+		messageContainer.setOnClickListener(this);
+		deleteMsg.setOnClickListener(this);
+	}
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.swipe_delete_goal:
-                if (onFriendsItemClickListener != null) {
-                    onFriendsItemClickListener.onFriendsItemDeleteClick(v);
-                }
-                break;
-            case R.id.messageContainer:
-                if (onFriendsItemClickListener != null) {
-                    onFriendsItemClickListener.onFriendsItemClick(v);
-                }
-                break;
-            default:
-                if (onFriendsItemClickListener != null) {
-                    onFriendsItemClickListener.onItemClick(v);
-                }
-                break;
-        }
-    }
+	@Override
+	public void onClick(View v)
+	{
+		switch (v.getId())
+		{
+			case R.id.swipe_delete_goal:
+				if (onFriendsItemClickListener != null)
+				{
+					onFriendsItemClickListener.onFriendsItemDeleteClick(v);
+				}
+				break;
+			case R.id.messageContainer:
+				if (onFriendsItemClickListener != null)
+				{
+					onFriendsItemClickListener.onFriendsItemClick(v);
+				}
+				break;
+			default:
+				if (onFriendsItemClickListener != null)
+				{
+					onFriendsItemClickListener.onItemClick(v);
+				}
+				break;
+		}
+	}
 }

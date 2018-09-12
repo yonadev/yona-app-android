@@ -13,25 +13,28 @@ import android.os.AsyncTask;
 /**
  * The type Data loader.
  */
-public abstract class DataLoader extends AsyncTask<Void, Void, Object> {
+public abstract class DataLoader extends AsyncTask<Void, Void, Object>
+{
 
-    @Override
-    protected Object doInBackground(Void... params) {
-        return doDBCall();
-    }
+	@Override
+	protected Object doInBackground(Void... params)
+	{
+		return doDBCall();
+	}
 
-    /**
-     * Do db call object.
-     *
-     * @return the object
-     */
-    public abstract Object doDBCall();
+	/**
+	 * Do db call object.
+	 *
+	 * @return the object
+	 */
+	public abstract Object doDBCall();
 
-    /**
-     * Execute async.
-     */
-    public void executeAsync() {
-        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
+	/**
+	 * Execute async.
+	 */
+	public void executeAsync()
+	{
+		executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+	}
 }
 

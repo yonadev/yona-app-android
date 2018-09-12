@@ -28,160 +28,183 @@ import static nu.yona.app.YonaApplication.getEventChangeManager;
 /**
  * Created by kinnarvasa on 10/06/16.
  */
-public class DataState {
+public class DataState
+{
 
-    private User user;
-    private EmbeddedYonaActivity embeddedDayActivity;
-    private EmbeddedYonaActivity embeddedWeekActivity;
-    private EmbeddedYonaActivity embeddedWithBuddyActivity;
-    private RegisterUser registerUser;
-    private int notificaitonCount;
+	private User user;
+	private EmbeddedYonaActivity embeddedDayActivity;
+	private EmbeddedYonaActivity embeddedWeekActivity;
+	private EmbeddedYonaActivity embeddedWithBuddyActivity;
+	private RegisterUser registerUser;
+	private int notificaitonCount;
 
-    /**
-     * Gets user.
-     *
-     * @return the user
-     */
-    public User getUser() {
-        if (user == null) {
-            user = APIManager.getInstance().getAuthenticateManager().getUser();
-        }
-        return user;
-    }
+	/**
+	 * Gets user.
+	 *
+	 * @return the user
+	 */
+	public User getUser()
+	{
+		if (user == null)
+		{
+			user = APIManager.getInstance().getAuthenticateManager().getUser();
+		}
+		return user;
+	}
 
-    /**
-     * Sets user.
-     *
-     * @param user the user
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
+	/**
+	 * Sets user.
+	 *
+	 * @param user the user
+	 */
+	public void setUser(User user)
+	{
+		this.user = user;
+	}
 
-    /**
-     * Update user user.
-     *
-     * @return the user
-     */
-    public User updateUser() {
-        user = APIManager.getInstance().getAuthenticateManager().getUser();
-        return user;
-    }
+	/**
+	 * Update user user.
+	 *
+	 * @return the user
+	 */
+	public User updateUser()
+	{
+		user = APIManager.getInstance().getAuthenticateManager().getUser();
+		return user;
+	}
 
-    /**
-     * Gets embedded day activity.
-     *
-     * @return the embedded day activity
-     */
-    public EmbeddedYonaActivity getEmbeddedDayActivity() {
-        return this.embeddedDayActivity;
-    }
+	/**
+	 * Gets embedded day activity.
+	 *
+	 * @return the embedded day activity
+	 */
+	public EmbeddedYonaActivity getEmbeddedDayActivity()
+	{
+		return this.embeddedDayActivity;
+	}
 
-    /**
-     * Sets embedded yona activity.
-     *
-     * @param embeddedDayActivity the embedded yona activity
-     */
-    public void setEmbeddedDayActivity(EmbeddedYonaActivity embeddedDayActivity) {
-        this.embeddedDayActivity = embeddedDayActivity;
-    }
+	/**
+	 * Sets embedded yona activity.
+	 *
+	 * @param embeddedDayActivity the embedded yona activity
+	 */
+	public void setEmbeddedDayActivity(EmbeddedYonaActivity embeddedDayActivity)
+	{
+		this.embeddedDayActivity = embeddedDayActivity;
+	}
 
 
-    /**
-     * Gets embedded week activity.
-     *
-     * @return the embedded week activity
-     */
-    public EmbeddedYonaActivity getEmbeddedWeekActivity() {
-        return this.embeddedWeekActivity;
-    }
+	/**
+	 * Gets embedded week activity.
+	 *
+	 * @return the embedded week activity
+	 */
+	public EmbeddedYonaActivity getEmbeddedWeekActivity()
+	{
+		return this.embeddedWeekActivity;
+	}
 
-    /**
-     * Sets embedded week activity.
-     *
-     * @param embeddedWeekActivity the embedded week activity
-     */
-    public void setEmbeddedWeekActivity(EmbeddedYonaActivity embeddedWeekActivity) {
-        this.embeddedWeekActivity = embeddedWeekActivity;
-    }
+	/**
+	 * Sets embedded week activity.
+	 *
+	 * @param embeddedWeekActivity the embedded week activity
+	 */
+	public void setEmbeddedWeekActivity(EmbeddedYonaActivity embeddedWeekActivity)
+	{
+		this.embeddedWeekActivity = embeddedWeekActivity;
+	}
 
-    /**
-     * Clear activity list.
-     *
-     * @param fragment the fragment
-     */
-    public void clearActivityList(BaseFragment fragment) {
-        if (!(fragment instanceof DayActivityDetailFragment)) {
-            embeddedDayActivity = null;
-            embeddedWeekActivity = null;
-        }
-    }
+	/**
+	 * Clear activity list.
+	 *
+	 * @param fragment the fragment
+	 */
+	public void clearActivityList(BaseFragment fragment)
+	{
+		if (!(fragment instanceof DayActivityDetailFragment))
+		{
+			embeddedDayActivity = null;
+			embeddedWeekActivity = null;
+		}
+	}
 
-    /**
-     * Gets embedded with buddy activity.
-     *
-     * @return the embedded with buddy activity
-     */
-    public EmbeddedYonaActivity getEmbeddedWithBuddyActivity() {
-        return this.embeddedWithBuddyActivity;
-    }
+	/**
+	 * Gets embedded with buddy activity.
+	 *
+	 * @return the embedded with buddy activity
+	 */
+	public EmbeddedYonaActivity getEmbeddedWithBuddyActivity()
+	{
+		return this.embeddedWithBuddyActivity;
+	}
 
-    /**
-     * Sets embedded with buddy activity.
-     *
-     * @param embeddedWithBuddyActivity the embedded with buddy activity
-     */
-    public void setEmbeddedWithBuddyActivity(EmbeddedYonaActivity embeddedWithBuddyActivity) {
-        this.embeddedWithBuddyActivity = embeddedWithBuddyActivity;
-    }
+	/**
+	 * Sets embedded with buddy activity.
+	 *
+	 * @param embeddedWithBuddyActivity the embedded with buddy activity
+	 */
+	public void setEmbeddedWithBuddyActivity(EmbeddedYonaActivity embeddedWithBuddyActivity)
+	{
+		this.embeddedWithBuddyActivity = embeddedWithBuddyActivity;
+	}
 
-    /**
-     * Gets server url.
-     *
-     * @return the server url
-     */
-    public String getServerUrl() {
-        if (TextUtils.isEmpty(getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.blank)))) {
-            setServerUrl(YonaApplication.getAppContext().getString(R.string.server_url));
-        }
-        return getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
-    }
+	/**
+	 * Gets server url.
+	 *
+	 * @return the server url
+	 */
+	public String getServerUrl()
+	{
+		if (TextUtils.isEmpty(getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.blank))))
+		{
+			setServerUrl(YonaApplication.getAppContext().getString(R.string.server_url));
+		}
+		return getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
+	}
 
-    /**
-     * Sets server url.
-     *
-     * @param serverUrl the server url
-     */
-    public void setServerUrl(String serverUrl) {
-        getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
-        getAppPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
-    }
+	/**
+	 * Sets server url.
+	 *
+	 * @param serverUrl the server url
+	 */
+	public void setServerUrl(String serverUrl)
+	{
+		getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
+		getAppPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
+	}
 
-    private SharedPreferences getUserPreferences() {
-        return getEventChangeManager().getSharedPreference().getUserPreferences();
-    }
+	private SharedPreferences getUserPreferences()
+	{
+		return getEventChangeManager().getSharedPreference().getUserPreferences();
+	}
 
-    private SharedPreferences getAppPreferences() {
-        return getEventChangeManager().getSharedPreference().getAppPreferences();
-    }
+	private SharedPreferences getAppPreferences()
+	{
+		return getEventChangeManager().getSharedPreference().getAppPreferences();
+	}
 
-    public RegisterUser getRegisterUser() {
-        if (registerUser == null) {
-            registerUser = new RegisterUser();
-        }
-        return registerUser;
-    }
+	public RegisterUser getRegisterUser()
+	{
+		if (registerUser == null)
+		{
+			registerUser = new RegisterUser();
+		}
+		return registerUser;
+	}
 
-    public void setRegisterUser(RegisterUser registerUser) {
-        this.registerUser = registerUser;
-    }
+	public void setRegisterUser(RegisterUser registerUser)
+	{
+		this.registerUser = registerUser;
+	}
 
-    public int getNotificaitonCount() {
-        return notificaitonCount;
-    }
+	public int getNotificaitonCount()
+	{
+		return notificaitonCount;
+	}
 
-    public void setNotificaitonCount(int notificaitonCount) {
-        this.notificaitonCount = notificaitonCount;
-    }
+	public void setNotificaitonCount(int notificaitonCount)
+	{
+		this.notificaitonCount = notificaitonCount;
+	}
 
 }

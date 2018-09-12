@@ -18,42 +18,48 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class ViewPagerAdapter extends FragmentPagerAdapter {
-    private List<Fragment> mFragmentList = new ArrayList<>();
-    private List<String> mFragmentTitleList = new ArrayList<>();
+public class ViewPagerAdapter extends FragmentPagerAdapter
+{
+	private List<Fragment> mFragmentList = new ArrayList<>();
+	private List<String> mFragmentTitleList = new ArrayList<>();
 
-    /**
-     * Instantiates a new View pager adapter.
-     *
-     * @param fm the fm
-     */
-    public ViewPagerAdapter(FragmentManager fm) {
-        super(fm);
-    }
+	/**
+	 * Instantiates a new View pager adapter.
+	 *
+	 * @param fm the fm
+	 */
+	public ViewPagerAdapter(FragmentManager fm)
+	{
+		super(fm);
+	}
 
-    @Override
-    public Fragment getItem(int position) {
-        return mFragmentList.get(position);
-    }
+	@Override
+	public Fragment getItem(int position)
+	{
+		return mFragmentList.get(position);
+	}
 
-    @Override
-    public int getCount() {
-        return mFragmentList.size();
-    }
+	@Override
+	public int getCount()
+	{
+		return mFragmentList.size();
+	}
 
-    /**
-     * Add fragment.
-     *
-     * @param fragment the fragment
-     * @param title    the title
-     */
-    public void addFragment(Fragment fragment, String title) {
-        mFragmentList.add(fragment);
-        mFragmentTitleList.add(title);
-    }
+	/**
+	 * Add fragment.
+	 *
+	 * @param fragment the fragment
+	 * @param title    the title
+	 */
+	public void addFragment(Fragment fragment, String title)
+	{
+		mFragmentList.add(fragment);
+		mFragmentTitleList.add(title);
+	}
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mFragmentTitleList.get(position);
-    }
+	@Override
+	public CharSequence getPageTitle(int position)
+	{
+		return mFragmentTitleList.get(position);
+	}
 }

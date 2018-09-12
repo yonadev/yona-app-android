@@ -15,39 +15,44 @@ import android.content.ContentValues;
 /**
  * Created by kinnarvasa on 13/04/16.
  */
-public class NewDeviceRequest extends BaseEntity {
+public class NewDeviceRequest extends BaseEntity
+{
 
-    private String newDeviceRequestPassword;
+	private String newDeviceRequestPassword;
 
-    /**
-     * Instantiates a new New device request.
-     *
-     * @param newDeviceRequestPassword the new device request password
-     */
-    public NewDeviceRequest(String newDeviceRequestPassword) {
-        this.newDeviceRequestPassword = newDeviceRequestPassword;
-    }
+	/**
+	 * Instantiates a new New device request.
+	 *
+	 * @param newDeviceRequestPassword the new device request password
+	 */
+	public NewDeviceRequest(String newDeviceRequestPassword)
+	{
+		this.newDeviceRequestPassword = newDeviceRequestPassword;
+	}
 
-    /**
-     * Gets new device request password.
-     *
-     * @return the new device request password
-     */
-    public String getNewDeviceRequestPassword() {
-        return newDeviceRequestPassword;
-    }
+	/**
+	 * Gets new device request password.
+	 *
+	 * @return the new device request password
+	 */
+	public String getNewDeviceRequestPassword()
+	{
+		return newDeviceRequestPassword;
+	}
 
-    /**
-     * Sets new device request password.
-     *
-     * @param newDeviceRequestPassword the new device request password
-     */
-    public void setNewDeviceRequestPassword(String newDeviceRequestPassword) {
-        this.newDeviceRequestPassword = newDeviceRequestPassword;
-    }
+	/**
+	 * Sets new device request password.
+	 *
+	 * @param newDeviceRequestPassword the new device request password
+	 */
+	public void setNewDeviceRequestPassword(String newDeviceRequestPassword)
+	{
+		this.newDeviceRequestPassword = newDeviceRequestPassword;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

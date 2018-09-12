@@ -17,28 +17,33 @@ import com.google.gson.annotations.Expose;
 /**
  * Created by kinnarvasa on 09/05/16.
  */
-public class Properties extends BaseEntity {
+public class Properties extends BaseEntity
+{
 
-    @Expose
-    private String message = null;
+	@Expose
+	private String message = null;
 
-    /**
-     * Instantiates a new Properties.
-     */
-    public Properties() {
+	/**
+	 * Instantiates a new Properties.
+	 */
+	public Properties()
+	{
 
-    }
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 
-    public String getMessage() {
-        return this.message;
-    }
+	public String getMessage()
+	{
+		return this.message;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setMessage(String message)
+	{
+		this.message = message;
+	}
 }

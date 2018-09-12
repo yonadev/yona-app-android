@@ -26,55 +26,62 @@ import nu.yona.app.state.EventChangeManager;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class CreditFragment extends BaseGoalCreateFragment implements View.OnClickListener, EventChangeListener {
+public class CreditFragment extends BaseGoalCreateFragment implements View.OnClickListener, EventChangeListener
+{
 
-    private GoalListAdapter mGoalListAdapter;
+	private GoalListAdapter mGoalListAdapter;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        YonaApplication.getEventChangeManager().registerListener(this);
-        showCurrentGoalListView(ChallengesEnum.CREDIT_TAB.getTab());
-        mGoalListAdapter = new GoalListAdapter(getActivity(), APIManager.getInstance().getChallengesManager().getListOfBudgetGoals());
-        mGoalListView.setAdapter(mGoalListAdapter);
-        mGoalListView.setOnItemClickListener(itemClickListener);
-        mDescTab.setText(getActivity().getString(R.string.challenge_budget_title));
-        btnGoalAdd.setOnClickListener(this);
-        return view;
-    }
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	{
+		View view = super.onCreateView(inflater, container, savedInstanceState);
+		YonaApplication.getEventChangeManager().registerListener(this);
+		showCurrentGoalListView(ChallengesEnum.CREDIT_TAB.getTab());
+		mGoalListAdapter = new GoalListAdapter(getActivity(), APIManager.getInstance().getChallengesManager().getListOfBudgetGoals());
+		mGoalListView.setAdapter(mGoalListAdapter);
+		mGoalListView.setOnItemClickListener(itemClickListener);
+		mDescTab.setText(getActivity().getString(R.string.challenge_budget_title));
+		btnGoalAdd.setOnClickListener(this);
+		return view;
+	}
 
-    @Override
-    public void onDestroyView() {
-        YonaApplication.getEventChangeManager().unRegisterListener(this);
-        super.onDestroyView();
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.img_add_goal:
-                //show new goal list creation view
-                YonaAnalytics.createTapEventWithCategory(getString(R.string.challengescredit), AnalyticsConstant.ADD_GOAL);
-                mDescTab.setText(getActivity().getString(R.string.challengestegoedheader));
-                showNewListOfGoalView(ChallengesEnum.CREDIT_TAB.getTab());
-                break;
-            default:
-                break;
-        }
-    }
+	@Override
+	public void onDestroyView()
+	{
+		YonaApplication.getEventChangeManager().unRegisterListener(this);
+		super.onDestroyView();
+	}
 
 
-    @Override
-    public void onStateChange(int eventType, Object object) {
-        switch (eventType) {
-            case EventChangeManager.EVENT_UPDATE_GOALS:
-                mDescTab.setText(getActivity().getString(R.string.challenge_budget_title));
-                mGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfBudgetGoals());
-                break;
-            default:
-                break;
-        }
-    }
+	@Override
+	public void onClick(View v)
+	{
+		switch (v.getId())
+		{
+			case R.id.img_add_goal:
+				//show new goal list creation view
+				YonaAnalytics.createTapEventWithCategory(getString(R.string.challengescredit), AnalyticsConstant.ADD_GOAL);
+				mDescTab.setText(getActivity().getString(R.string.challengestegoedheader));
+				showNewListOfGoalView(ChallengesEnum.CREDIT_TAB.getTab());
+				break;
+			default:
+				break;
+		}
+	}
+
+
+	@Override
+	public void onStateChange(int eventType, Object object)
+	{
+		switch (eventType)
+		{
+			case EventChangeManager.EVENT_UPDATE_GOALS:
+				mDescTab.setText(getActivity().getString(R.string.challenge_budget_title));
+				mGoalListAdapter.notifyDataSetChanged(APIManager.getInstance().getChallengesManager().getListOfBudgetGoals());
+				break;
+			default:
+				break;
+		}
+	}
 }

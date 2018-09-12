@@ -10,63 +10,72 @@ package nu.yona.app.listener;
 
 import java.util.Objects;
 
-public class DataLoadListenerImpl<T, U> implements DataLoadListener<T, U> {
-    @FunctionalInterface
-    public interface ListenerFunction<T> {
-        T handle(T result);
-    }
-    private final ListenerFunction<T> loadHandler;
-    private final ListenerFunction<U> errorHandler;
-    private final DataLoadListener<T, U> nextListener;
+public class DataLoadListenerImpl<T, U> implements DataLoadListener<T, U>
+{
+	@FunctionalInterface
+	public interface ListenerFunction<T>
+	{
+		T handle(T result);
+	}
 
-    public DataLoadListenerImpl(ListenerFunction<T> loadHandler)
-    {
-        this(Objects.requireNonNull(loadHandler), null, null);
-    }
+	private final ListenerFunction<T> loadHandler;
+	private final ListenerFunction<U> errorHandler;
+	private final DataLoadListener<T, U> nextListener;
 
-    public DataLoadListenerImpl(ListenerFunction<T> loadHandler, ListenerFunction<U> errorHandler)
-    {
-        this(Objects.requireNonNull(loadHandler), Objects.requireNonNull(errorHandler), null);
-    }
+	public DataLoadListenerImpl(ListenerFunction<T> loadHandler)
+	{
+		this(Objects.requireNonNull(loadHandler), null, null);
+	}
 
-    public DataLoadListenerImpl(ListenerFunction<T> loadHandler, DataLoadListener<T, U> nextListener)
-    {
-        this(Objects.requireNonNull(loadHandler), null, Objects.requireNonNull(nextListener));
-    }
+	public DataLoadListenerImpl(ListenerFunction<T> loadHandler, ListenerFunction<U> errorHandler)
+	{
+		this(Objects.requireNonNull(loadHandler), Objects.requireNonNull(errorHandler), null);
+	}
 
-    public DataLoadListenerImpl(DataLoadListener<T, U> nextListener)
-    {
-        this(null, null, Objects.requireNonNull(nextListener));
-    }
+	public DataLoadListenerImpl(ListenerFunction<T> loadHandler, DataLoadListener<T, U> nextListener)
+	{
+		this(Objects.requireNonNull(loadHandler), null, Objects.requireNonNull(nextListener));
+	}
 
-    public DataLoadListenerImpl(ListenerFunction<T> loadHandler, ListenerFunction<U> errorHandler, DataLoadListener<T, U> nextListener)
-    {
-        this.loadHandler = loadHandler;
-        this.errorHandler = errorHandler;
-        this.nextListener = nextListener;
-    }
+	public DataLoadListenerImpl(DataLoadListener<T, U> nextListener)
+	{
+		this(null, null, Objects.requireNonNull(nextListener));
+	}
 
-    @Override
-    public void onDataLoad(T result) {
-        T updatedResult = null;
-        if (loadHandler != null) {
-            updatedResult = loadHandler.handle(result);
-        }
-        if (nextListener == null) {
-            return;
-        }
-        nextListener.onDataLoad((updatedResult == null) ? result : updatedResult);
-    }
+	public DataLoadListenerImpl(ListenerFunction<T> loadHandler, ListenerFunction<U> errorHandler, DataLoadListener<T, U> nextListener)
+	{
+		this.loadHandler = loadHandler;
+		this.errorHandler = errorHandler;
+		this.nextListener = nextListener;
+	}
 
-    @Override
-    public void onError(U errorMessage) {
-        U updatedErrorMessage = null;
-        if (errorHandler != null) {
-            updatedErrorMessage = errorHandler.handle(errorMessage);
-        }
-        if (nextListener == null) {
-            return;
-        }
-        nextListener.onError((updatedErrorMessage == null) ? errorMessage : updatedErrorMessage);
-    }
+	@Override
+	public void onDataLoad(T result)
+	{
+		T updatedResult = null;
+		if (loadHandler != null)
+		{
+			updatedResult = loadHandler.handle(result);
+		}
+		if (nextListener == null)
+		{
+			return;
+		}
+		nextListener.onDataLoad((updatedResult == null) ? result : updatedResult);
+	}
+
+	@Override
+	public void onError(U errorMessage)
+	{
+		U updatedErrorMessage = null;
+		if (errorHandler != null)
+		{
+			updatedErrorMessage = errorHandler.handle(errorMessage);
+		}
+		if (nextListener == null)
+		{
+			return;
+		}
+		nextListener.onError((updatedErrorMessage == null) ? errorMessage : updatedErrorMessage);
+	}
 }

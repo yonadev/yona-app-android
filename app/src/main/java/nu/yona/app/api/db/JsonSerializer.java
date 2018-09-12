@@ -21,37 +21,47 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by kinnarvasa on 04/04/16.
  */
-public class JsonSerializer implements DbSerializer {
+public class JsonSerializer implements DbSerializer
+{
 
-    private static final String TAG = JsonSerializer.class.getCanonicalName();
+	private static final String TAG = JsonSerializer.class.getCanonicalName();
 
-    private final ObjectMapper mapper;
+	private final ObjectMapper mapper;
 
-    /**
-     * Instantiates a new Json serializer.
-     */
-    public JsonSerializer() {
-        mapper = JsonParserHelper.getObjectMapper();
-    }
+	/**
+	 * Instantiates a new Json serializer.
+	 */
+	public JsonSerializer()
+	{
+		mapper = JsonParserHelper.getObjectMapper();
+	}
 
 
-    @Override
-    public byte[] serialize(Object obj) {
-        try {
-            return mapper.writeValueAsBytes(obj);
-        } catch (IOException e) {
-            AppUtils.reportException(JsonSerializer.class.getSimpleName(), e, Thread.currentThread());
-        }
-        return new byte[0];
-    }
+	@Override
+	public byte[] serialize(Object obj)
+	{
+		try
+		{
+			return mapper.writeValueAsBytes(obj);
+		}
+		catch (IOException e)
+		{
+			AppUtils.reportException(JsonSerializer.class.getSimpleName(), e, Thread.currentThread());
+		}
+		return new byte[0];
+	}
 
-    @Override
-    public <T> T deserialize(byte[] data, Class<T> type) {
-        try {
-            return mapper.readValue(data, type);
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to deserialize object!", e);
-        }
-        return null;
-    }
+	@Override
+	public <T> T deserialize(byte[] data, Class<T> type)
+	{
+		try
+		{
+			return mapper.readValue(data, type);
+		}
+		catch (IOException e)
+		{
+			Log.e(TAG, "Failed to deserialize object!", e);
+		}
+		return null;
+	}
 }

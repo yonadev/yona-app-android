@@ -21,79 +21,93 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by bhargavsuthar on 19/05/16.
  */
-public class CarrouselViewPager extends ViewPager {
+public class CarrouselViewPager extends ViewPager
+{
 
-    private CarrouselScroller mScroller = null;
-    private float mStartDragX;
-    private OnSwipeOutListener mListener;
+	private CarrouselScroller mScroller = null;
+	private float mStartDragX;
+	private OnSwipeOutListener mListener;
 
-    /**
-     * Instantiates a new Carrousel view pager.
-     *
-     * @param context the context
-     */
-    public CarrouselViewPager(Context context) {
-        super(context);
-        postInitViewPager();
-    }
+	/**
+	 * Instantiates a new Carrousel view pager.
+	 *
+	 * @param context the context
+	 */
+	public CarrouselViewPager(Context context)
+	{
+		super(context);
+		postInitViewPager();
+	}
 
-    /**
-     * Instantiates a new Carrousel view pager.
-     *
-     * @param context the context
-     * @param attrs   the attrs
-     */
-    public CarrouselViewPager(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        postInitViewPager();
-    }
+	/**
+	 * Instantiates a new Carrousel view pager.
+	 *
+	 * @param context the context
+	 * @param attrs   the attrs
+	 */
+	public CarrouselViewPager(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
+		postInitViewPager();
+	}
 
-    /**
-     * Override the Scroller instance with our own class so we can change the
-     * duration
-     */
-    private void postInitViewPager() {
-        try {
-            Field scroller = ViewPager.class.getDeclaredField("mScroller");
-            scroller.setAccessible(true);
-            Field interpolator = ViewPager.class.getDeclaredField("sInterpolator");
-            interpolator.setAccessible(true);
+	/**
+	 * Override the Scroller instance with our own class so we can change the
+	 * duration
+	 */
+	private void postInitViewPager()
+	{
+		try
+		{
+			Field scroller = ViewPager.class.getDeclaredField("mScroller");
+			scroller.setAccessible(true);
+			Field interpolator = ViewPager.class.getDeclaredField("sInterpolator");
+			interpolator.setAccessible(true);
 
-            mScroller = new CarrouselScroller(getContext(),
-                    (Interpolator) interpolator.get(null));
-            scroller.set(this, mScroller);
-        } catch (Exception e) {
-            AppUtils.reportException(CarrouselViewPager.class.getSimpleName(), e, Thread.currentThread());
-        }
-    }
+			mScroller = new CarrouselScroller(getContext(),
+					(Interpolator) interpolator.get(null));
+			scroller.set(this, mScroller);
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(CarrouselViewPager.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-    public void setOnSwipeOutListener(OnSwipeOutListener listener) {
-        mListener = listener;
-    }
+	public void setOnSwipeOutListener(OnSwipeOutListener listener)
+	{
+		mListener = listener;
+	}
 
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        float x = ev.getX();
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mStartDragX = x;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (mStartDragX < x) {
-                    mListener.onSwipeOutAtStart();
-                } else if (mStartDragX > x) {
-                    mListener.onSwipeOutAtEnd();
-                }
-                break;
-        }
-        return super.onInterceptTouchEvent(ev);
-    }
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev)
+	{
+		float x = ev.getX();
+		switch (ev.getAction())
+		{
+			case MotionEvent.ACTION_DOWN:
+				mStartDragX = x;
+				break;
+			case MotionEvent.ACTION_MOVE:
+				if (mStartDragX < x)
+				{
+					mListener.onSwipeOutAtStart();
+				}
+				else if (mStartDragX > x)
+				{
+					mListener.onSwipeOutAtEnd();
+				}
+				break;
+		}
+		return super.onInterceptTouchEvent(ev);
+	}
 
-    public interface OnSwipeOutListener {
-        public void onSwipeOutAtStart();
+	public interface OnSwipeOutListener
+	{
+		public void onSwipeOutAtStart();
 
-        public void onSwipeOutAtEnd();
-    }
+		public void onSwipeOutAtEnd();
+	}
 
 }

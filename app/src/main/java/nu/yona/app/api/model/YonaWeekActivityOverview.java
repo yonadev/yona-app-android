@@ -21,94 +21,104 @@ import java.util.List;
 /**
  * Created by kinnarvasa on 06/06/16.
  */
-public class YonaWeekActivityOverview extends BaseEntity {
-    @SerializedName("date")
-    @Expose
-    private String date;
-    @SerializedName("timeZoneId")
-    @Expose
-    private String timeZoneId;
-    @SerializedName("weekActivities")
-    @Expose
-    private List<WeekActivity> weekActivities = new ArrayList<WeekActivity>();
-    @SerializedName("_links")
-    @Expose
-    private Links links;
+public class YonaWeekActivityOverview extends BaseEntity
+{
+	@SerializedName("date")
+	@Expose
+	private String date;
+	@SerializedName("timeZoneId")
+	@Expose
+	private String timeZoneId;
+	@SerializedName("weekActivities")
+	@Expose
+	private List<WeekActivity> weekActivities = new ArrayList<WeekActivity>();
+	@SerializedName("_links")
+	@Expose
+	private Links links;
 
-    /**
-     * Gets date.
-     *
-     * @return The date
-     */
-    public String getDate() {
-        return date;
-    }
+	/**
+	 * Gets date.
+	 *
+	 * @return The date
+	 */
+	public String getDate()
+	{
+		return date;
+	}
 
-    /**
-     * Sets date.
-     *
-     * @param date The date
-     */
-    public void setDate(String date) {
-        this.date = date;
-    }
+	/**
+	 * Sets date.
+	 *
+	 * @param date The date
+	 */
+	public void setDate(String date)
+	{
+		this.date = date;
+	}
 
-    /**
-     * Gets time zone id.
-     *
-     * @return The timeZoneId
-     */
-    public String getTimeZoneId() {
-        return timeZoneId;
-    }
+	/**
+	 * Gets time zone id.
+	 *
+	 * @return The timeZoneId
+	 */
+	public String getTimeZoneId()
+	{
+		return timeZoneId;
+	}
 
-    /**
-     * Sets time zone id.
-     *
-     * @param timeZoneId The timeZoneId
-     */
-    public void setTimeZoneId(String timeZoneId) {
-        this.timeZoneId = timeZoneId;
-    }
+	/**
+	 * Sets time zone id.
+	 *
+	 * @param timeZoneId The timeZoneId
+	 */
+	public void setTimeZoneId(String timeZoneId)
+	{
+		this.timeZoneId = timeZoneId;
+	}
 
-    /**
-     * Gets week activities.
-     *
-     * @return The weekActivities
-     */
-    public List<WeekActivity> getWeekActivities() {
-        return weekActivities;
-    }
+	/**
+	 * Gets week activities.
+	 *
+	 * @return The weekActivities
+	 */
+	public List<WeekActivity> getWeekActivities()
+	{
+		return weekActivities;
+	}
 
-    /**
-     * Sets week activities.
-     *
-     * @param weekActivities The weekActivities
-     */
-    public void setWeekActivities(List<WeekActivity> weekActivities) {
-        this.weekActivities = weekActivities;
-    }
+	/**
+	 * Sets week activities.
+	 *
+	 * @param weekActivities The weekActivities
+	 */
+	public void setWeekActivities(List<WeekActivity> weekActivities)
+	{
+		this.weekActivities = weekActivities;
+	}
 
-    /**
-     * Gets links.
-     *
-     * @return The links
-     */
-    public Links getLinks() {
-        return links;
-    }
+	/**
+	 * Gets links.
+	 *
+	 * @return The links
+	 */
+	public Links getLinks()
+	{
+		return links;
+	}
 
-    /**
-     * Sets links.
-     *
-     * @param links The _links
-     */
-    public void setLinks(Links links) {
-        this.links = links;
-    }
+	/**
+	 * Sets links.
+	 *
+	 * @param links The _links
+	 */
+	public void setLinks(Links links)
+	{
+		this.links = links;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

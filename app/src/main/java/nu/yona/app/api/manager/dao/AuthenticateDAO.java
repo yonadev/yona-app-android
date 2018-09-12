@@ -24,66 +24,85 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by kinnarvasa on 28/03/16.
  */
-public class AuthenticateDAO extends BaseDAO {
+public class AuthenticateDAO extends BaseDAO
+{
 
 
-    /**
-     * Instantiates a new Authenticate dao.
-     *
-     * @param context the context
-     */
-    public AuthenticateDAO(Context context) {
-        super(DatabaseHelper.getInstance(context));
-    }
+	/**
+	 * Instantiates a new Authenticate dao.
+	 *
+	 * @param context the context
+	 */
+	public AuthenticateDAO(Context context)
+	{
+		super(DatabaseHelper.getInstance(context));
+	}
 
-    /**
-     * Update data for register user.
-     *
-     * @param result   the result
-     * @param listener the listener
-     */
-    public void updateDataForRegisterUser(Object result, DataLoadListener listener) {
-        // do process for storing data in database.
-        try {
-            ContentValues values = new ContentValues();
-            String USER_ID = "1";
-            values.put(DBConstant.ID, USER_ID);
-            values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(result));
-            // we will store only one user in database, so check if already user exist in db, just update.
-            if (getUser() == null) {
-                insert(DBConstant.TBL_USER_DATA, values);
-            } else {
-                update(DBConstant.TBL_USER_DATA, values, DBConstant.ID + " = ?", USER_ID);
-            }
-            if (listener != null) {
-                listener.onDataLoad(getUser());
-            }
-        } catch (Exception e) {
-            AppUtils.reportException(AuthenticateDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * Update data for register user.
+	 *
+	 * @param result   the result
+	 * @param listener the listener
+	 */
+	public void updateDataForRegisterUser(Object result, DataLoadListener listener)
+	{
+		// do process for storing data in database.
+		try
+		{
+			ContentValues values = new ContentValues();
+			String USER_ID = "1";
+			values.put(DBConstant.ID, USER_ID);
+			values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(result));
+			// we will store only one user in database, so check if already user exist in db, just update.
+			if (getUser() == null)
+			{
+				insert(DBConstant.TBL_USER_DATA, values);
+			}
+			else
+			{
+				update(DBConstant.TBL_USER_DATA, values, DBConstant.ID + " = ?", USER_ID);
+			}
+			if (listener != null)
+			{
+				listener.onDataLoad(getUser());
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Gets user.
-     *
-     * @return the user
-     */
-    public User getUser() {
-        Cursor c = query(DBConstant.TBL_USER_DATA);
-        try {
-            if (c != null && c.getCount() > 0) {
+	/**
+	 * Gets user.
+	 *
+	 * @return the user
+	 */
+	public User getUser()
+	{
+		Cursor c = query(DBConstant.TBL_USER_DATA);
+		try
+		{
+			if (c != null && c.getCount() > 0)
+			{
 
-                if (c.moveToFirst()) {
-                    return serializer.deserialize(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT)), User.class);
-                }
-            }
-        } catch (Exception e) {
-            AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread());
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-        }
-        return null;
-    }
+				if (c.moveToFirst())
+				{
+					return serializer.deserialize(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT)), User.class);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread());
+		}
+		finally
+		{
+			if (c != null)
+			{
+				c.close();
+			}
+		}
+		return null;
+	}
 }

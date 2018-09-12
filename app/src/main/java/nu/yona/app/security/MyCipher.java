@@ -52,130 +52,150 @@ import static android.util.Base64.DEFAULT;
  *
  */
 
-public class MyCipher {
+public class MyCipher
+{
 
-    private final static String ALGORITHM = "AES";
-    /**
-     * As we are using secure random passwords, a fixed salt suffices.
-     */
-    private static final byte[] SALT = "0123456789012345".getBytes();
-    private String mySecret;
+	private final static String ALGORITHM = "AES";
+	/**
+	 * As we are using secure random passwords, a fixed salt suffices.
+	 */
+	private static final byte[] SALT = "0123456789012345".getBytes();
+	private String mySecret;
 
-    public MyCipher(String mySecret) {
-        this.mySecret = mySecret;
-    }
+	public MyCipher(String mySecret)
+	{
+		this.mySecret = mySecret;
+	}
 
-    public MyCipherData encryptUTF8(String data) {
-        try {
-            byte[] bytes = data.toString().getBytes("utf-8");
-            byte[] bytesBase64 = Base64.encode(bytes,DEFAULT);
-            return encrypt(bytesBase64);
-        }catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | UnsupportedEncodingException
-                | IllegalBlockSizeException | BadPaddingException | InvalidParameterSpecException | InvalidKeySpecException e) {
-            AppUtils.reportException(MyCipher.class.getSimpleName(), e, Thread.currentThread());
-        }
-        return null;
-    }
+	public MyCipherData encryptUTF8(String data)
+	{
+		try
+		{
+			byte[] bytes = data.toString().getBytes("utf-8");
+			byte[] bytesBase64 = Base64.encode(bytes, DEFAULT);
+			return encrypt(bytesBase64);
+		}
+		catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | UnsupportedEncodingException
+				| IllegalBlockSizeException | BadPaddingException | InvalidParameterSpecException | InvalidKeySpecException e)
+		{
+			AppUtils.reportException(MyCipher.class.getSimpleName(), e, Thread.currentThread());
+		}
+		return null;
+	}
 
-    public String decryptUTF8(byte[] encryptedData, IvParameterSpec iv) {
-        try {
-            byte[] decryptedData = decrypt(encryptedData, iv);
-            byte[] decodedBytes = Base64.decode(decryptedData,DEFAULT);
-            String restored_data = new String(decodedBytes, Charset.forName("UTF8"));
-            return restored_data;
-        } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
-                | IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException e) {
-            AppUtils.reportException(MyCipher.class.getSimpleName(), e, Thread.currentThread());
-        }
-        return null;
-    }
+	public String decryptUTF8(byte[] encryptedData, IvParameterSpec iv)
+	{
+		try
+		{
+			byte[] decryptedData = decrypt(encryptedData, iv);
+			byte[] decodedBytes = Base64.decode(decryptedData, DEFAULT);
+			String restored_data = new String(decodedBytes, Charset.forName("UTF8"));
+			return restored_data;
+		}
+		catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
+				| IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException e)
+		{
+			AppUtils.reportException(MyCipher.class.getSimpleName(), e, Thread.currentThread());
+		}
+		return null;
+	}
 
-    //AES
-    private MyCipherData encrypt(byte[] raw, byte[] clear) throws
-            NoSuchAlgorithmException, NoSuchPaddingException,InvalidKeyException,
-            IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException
-    {
-        SecretKeySpec skeySpec = new SecretKeySpec(raw, ALGORITHM);
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        //solved using PRNGFixes class
-        cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-        byte[] data = cipher.doFinal(clear);
-        AlgorithmParameters params = cipher.getParameters();
-        byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
-        return new MyCipherData(data, iv);
-    }
+	//AES
+	private MyCipherData encrypt(byte[] raw, byte[] clear) throws
+			NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException
+	{
+		SecretKeySpec skeySpec = new SecretKeySpec(raw, ALGORITHM);
+		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		//solved using PRNGFixes class
+		cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+		byte[] data = cipher.doFinal(clear);
+		AlgorithmParameters params = cipher.getParameters();
+		byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
+		return new MyCipherData(data, iv);
+	}
 
-    private byte[] decrypt(byte[] raw, byte[] encrypted, IvParameterSpec iv) throws
-            NoSuchAlgorithmException, NoSuchPaddingException,InvalidKeyException,
-            IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException
-    {
-        SecretKeySpec skeySpec = new SecretKeySpec(raw, ALGORITHM);
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
-        byte[] decrypted = cipher.doFinal(encrypted);
-        return decrypted;
-    }
+	private byte[] decrypt(byte[] raw, byte[] encrypted, IvParameterSpec iv) throws
+			NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException
+	{
+		SecretKeySpec skeySpec = new SecretKeySpec(raw, ALGORITHM);
+		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+		byte[] decrypted = cipher.doFinal(encrypted);
+		return decrypted;
+	}
 
-    private byte[] getKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String password = this.mySecret;
-        int iterationCount = 1000;
-        int keyLength = 128; // 256-bits for AES-256, 128-bits for AES-128, etc
-        /* Use this to derive the key from the password: */
-        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), SALT, iterationCount, keyLength);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(getCompatibleAlgorithm());
-        byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
-        SecretKey key = new SecretKeySpec(keyBytes, "AES");
-        return key.getEncoded();
-    }
+	private byte[] getKey() throws NoSuchAlgorithmException, InvalidKeySpecException
+	{
+		String password = this.mySecret;
+		int iterationCount = 1000;
+		int keyLength = 128; // 256-bits for AES-256, 128-bits for AES-128, etc
+		/* Use this to derive the key from the password: */
+		KeySpec keySpec = new PBEKeySpec(password.toCharArray(), SALT, iterationCount, keyLength);
+		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(getCompatibleAlgorithm());
+		byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
+		SecretKey key = new SecretKeySpec(keyBytes, "AES");
+		return key.getEncoded();
+	}
 
-    private String getCompatibleAlgorithm(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return "PBKDF2withHmacSHA256";
-        }
-        return "PBKDF2WithHmacSHA1";
-    }
+	private String getCompatibleAlgorithm()
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+		{
+			return "PBKDF2withHmacSHA256";
+		}
+		return "PBKDF2WithHmacSHA1";
+	}
 
-    private byte[] getOldKey() throws  UnsupportedEncodingException, NoSuchAlgorithmException
-    {
-        //a pelo pues porque por ahora no hay mejor solucion
-        byte[] keyStart = this.mySecret.getBytes("utf-8");
-        KeyGenerator kgen = KeyGenerator.getInstance(ALGORITHM);
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", new CryptoProvider());
-        sr.setSeed(keyStart);
-        kgen.init(128, sr); // 192 and 256 bits may not be available
-        SecretKey skey = kgen.generateKey();
-        byte[] key = skey.getEncoded();
-        return key;
-    }
+	private byte[] getOldKey() throws UnsupportedEncodingException, NoSuchAlgorithmException
+	{
+		//a pelo pues porque por ahora no hay mejor solucion
+		byte[] keyStart = this.mySecret.getBytes("utf-8");
+		KeyGenerator kgen = KeyGenerator.getInstance(ALGORITHM);
+		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", new CryptoProvider());
+		sr.setSeed(keyStart);
+		kgen.init(128, sr); // 192 and 256 bits may not be available
+		SecretKey skey = kgen.generateKey();
+		byte[] key = skey.getEncoded();
+		return key;
+	}
 
 
-    ////////////////////////////////////////////////////////////
-    private MyCipherData encrypt(byte[] data) throws  InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-            IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException {
-        return encrypt(getKey(), data);
-    }
+	////////////////////////////////////////////////////////////
+	private MyCipherData encrypt(byte[] data) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException
+	{
+		return encrypt(getKey(), data);
+	}
 
-    private byte[] decrypt(byte[] encryptedData, IvParameterSpec iv) throws  InvalidKeySpecException,NoSuchAlgorithmException, NoSuchPaddingException,InvalidKeyException,
-            IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException{
-        return decrypt(getKey(), encryptedData, iv);
-    }
+	private byte[] decrypt(byte[] encryptedData, IvParameterSpec iv) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException
+	{
+		return decrypt(getKey(), encryptedData, iv);
+	}
 
-    private byte[] decryptWithOldKey(byte[] encryptedData, IvParameterSpec iv) throws
-            UnsupportedEncodingException,NoSuchAlgorithmException, NoSuchPaddingException,InvalidKeyException,
-            IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
-        return decrypt(getOldKey(), encryptedData, iv);
-    }
+	private byte[] decryptWithOldKey(byte[] encryptedData, IvParameterSpec iv) throws
+			UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+			IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException
+	{
+		return decrypt(getOldKey(), encryptedData, iv);
+	}
 
-    public String getYonaPasswordWithOldEncryptedData(byte[] encryptedData, IvParameterSpec iv) {
-        try {
-            byte[] decryptedData = decryptWithOldKey(encryptedData, iv);
-            byte[] decodedBytes = Base64.decode(decryptedData,DEFAULT);
-            return  new String(decodedBytes, Charset.forName("UTF8"));
-        }  catch (UnsupportedEncodingException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
-                | IllegalBlockSizeException | BadPaddingException  e) {
-            AppUtils.reportException(MyCipher.class.getSimpleName(), e, Thread.currentThread());
-        }
-        return null;
-    }
+	public String getYonaPasswordWithOldEncryptedData(byte[] encryptedData, IvParameterSpec iv)
+	{
+		try
+		{
+			byte[] decryptedData = decryptWithOldKey(encryptedData, iv);
+			byte[] decodedBytes = Base64.decode(decryptedData, DEFAULT);
+			return new String(decodedBytes, Charset.forName("UTF8"));
+		}
+		catch (UnsupportedEncodingException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
+				| IllegalBlockSizeException | BadPaddingException e)
+		{
+			AppUtils.reportException(MyCipher.class.getSimpleName(), e, Thread.currentThread());
+		}
+		return null;
+	}
 }
 

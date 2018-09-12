@@ -14,33 +14,34 @@ import nu.yona.app.listener.DataLoadListener;
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public interface ActivityCategoryManager {
+public interface ActivityCategoryManager
+{
 
-    /**
-     * Gets activity categories by id.
-     *
-     * @param listener the listener
-     */
-    void getActivityCategoriesById(DataLoadListener listener);
+	/**
+	 * Gets activity categories by id.
+	 *
+	 * @param listener the listener
+	 */
+	void getActivityCategoriesById(DataLoadListener listener);
 
-    /**
-     * Gets list of activity categories.
-     *
-     * @return the list of activity categories
-     */
-    ActivityCategories getListOfActivityCategories();
+	/**
+	 * Gets list of activity categories.
+	 *
+	 * @return the list of activity categories
+	 */
+	ActivityCategories getListOfActivityCategories();
 
 
-    /**
-     * Validates the new environment by requesting the activityCategoryList api. Hence the function is added in this class.
-     * @param listener the listener
-     * @return the list of activity categories
-     */
-     void validateNewEnvironment( DataLoadListener listener);
+	/**
+	 * Validates the new environment by requesting the activityCategoryList api. Hence the function is added in this class.
+	 *
+	 * @param listener the listener
+	 * @return the list of activity categories
+	 */
+	void validateNewEnvironment(DataLoadListener listener);
 
-    /**
-     *Updates the network api host with Server url in App user defaults.
-     *
-     */
-     void updateNetworkAPIEnvironment(String environmentURL);
+	/**
+	 * Updates the network api host with Server url in App user defaults.
+	 */
+	void updateNetworkAPIEnvironment(String environmentURL);
 }

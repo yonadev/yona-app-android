@@ -13,97 +13,104 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public class YonaActivityCategories extends BaseEntity {
+public class YonaActivityCategories extends BaseEntity
+{
 
-    @SerializedName("name")
-    @Expose
-    private
-    String name;
+	@SerializedName("name")
+	@Expose
+	private
+	String name;
 
-    @SerializedName("description")
-    @Expose
-    private
-    String description;
+	@SerializedName("description")
+	@Expose
+	private
+	String description;
 
-    @SerializedName("mandatoryNoGo")
-    @Expose
-    private
-    boolean mandatoryNoGo;
+	@SerializedName("mandatoryNoGo")
+	@Expose
+	private
+	boolean mandatoryNoGo;
 
-    @SerializedName("_links")
-    @Expose
-    private Links _links;
+	@SerializedName("_links")
+	@Expose
+	private Links _links;
 
-    /**
-     * Gets name.
-     *
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Gets name.
+	 *
+	 * @return the name
+	 */
+	public String getName()
+	{
+		return name;
+	}
 
-    /**
-     * Sets name.
-     *
-     * @param name the name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * Sets name.
+	 *
+	 * @param name the name
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-    /**
-     * Is mandatory no go boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isMandatoryNoGo() {
-        return mandatoryNoGo;
-    }
+	/**
+	 * Is mandatory no go boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isMandatoryNoGo()
+	{
+		return mandatoryNoGo;
+	}
 
-    /**
-     * Sets mandatory no go.
-     *
-     * @param mandatoryNoGo the mandatory no go
-     */
-    public void setMandatoryNoGo(boolean mandatoryNoGo) {
-        this.mandatoryNoGo = mandatoryNoGo;
-    }
+	/**
+	 * Sets mandatory no go.
+	 *
+	 * @param mandatoryNoGo the mandatory no go
+	 */
+	public void setMandatoryNoGo(boolean mandatoryNoGo)
+	{
+		this.mandatoryNoGo = mandatoryNoGo;
+	}
 
-    /**
-     * Gets links.
-     *
-     * @return the links
-     */
-    public Links get_links() {
-        return _links;
-    }
+	/**
+	 * Gets links.
+	 *
+	 * @return the links
+	 */
+	public Links get_links()
+	{
+		return _links;
+	}
 
-    /**
-     * Sets links.
-     *
-     * @param _links the links
-     */
-    public void set_links(Links _links) {
-        this._links = _links;
-    }
+	/**
+	 * Sets links.
+	 *
+	 * @param _links the links
+	 */
+	public void set_links(Links _links)
+	{
+		this._links = _links;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription()
+	{
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
 }

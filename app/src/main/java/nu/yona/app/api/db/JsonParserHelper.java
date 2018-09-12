@@ -17,21 +17,24 @@ import org.codehaus.jackson.map.SerializationConfig;
 /**
  * The type Json parser helper.
  */
-class JsonParserHelper {
+class JsonParserHelper
+{
 
-    private static ObjectMapper objectMapper;
+	private static ObjectMapper objectMapper;
 
-    /**
-     * Gets object mapper.
-     *
-     * @return the object mapper
-     */
-    public static synchronized ObjectMapper getObjectMapper() {
-        if (objectMapper == null) {
-            objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            objectMapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-        }
-        return objectMapper;
-    }
+	/**
+	 * Gets object mapper.
+	 *
+	 * @return the object mapper
+	 */
+	public static synchronized ObjectMapper getObjectMapper()
+	{
+		if (objectMapper == null)
+		{
+			objectMapper = new ObjectMapper();
+			objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			objectMapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+		}
+		return objectMapper;
+	}
 }

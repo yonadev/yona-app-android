@@ -15,21 +15,23 @@ import java.io.Serializable;
 /**
  * Author @MobiquityInc.
  */
-public abstract class BaseEntity implements Serializable, Cloneable {
+public abstract class BaseEntity implements Serializable, Cloneable
+{
 
-    private static final long serialVersionUID = 4243329623573859700L;
+	private static final long serialVersionUID = 4243329623573859700L;
 
-    /**
-     * Instantiates a new Base entity.
-     */
-    BaseEntity() {
+	/**
+	 * Instantiates a new Base entity.
+	 */
+	BaseEntity()
+	{
 
-    }
+	}
 
-    /**
-     * Gets db content values.
-     *
-     * @return the db content values
-     */
-    public abstract ContentValues getDbContentValues();
+	/**
+	 * Gets db content values.
+	 *
+	 * @return the db content values
+	 */
+	public abstract ContentValues getDbContentValues();
 }

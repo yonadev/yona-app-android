@@ -18,52 +18,58 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by kinnarvasa on 21/04/16.
  */
-public class PostYonaGoal extends BaseEntity {
-    @SerializedName("@type")
-    @Expose
-    private String Type;
-    @SerializedName("_links")
-    @Expose
-    private Links Links;
+public class PostYonaGoal extends BaseEntity
+{
+	@SerializedName("@type")
+	@Expose
+	private String Type;
+	@SerializedName("_links")
+	@Expose
+	private Links Links;
 
-    /**
-     * Gets type.
-     *
-     * @return The Type
-     */
-    public String getType() {
-        return Type;
-    }
+	/**
+	 * Gets type.
+	 *
+	 * @return The Type
+	 */
+	public String getType()
+	{
+		return Type;
+	}
 
-    /**
-     * Sets type.
-     *
-     * @param Type The @type
-     */
-    public void setType(String Type) {
-        this.Type = Type;
-    }
+	/**
+	 * Sets type.
+	 *
+	 * @param Type The @type
+	 */
+	public void setType(String Type)
+	{
+		this.Type = Type;
+	}
 
-    /**
-     * Gets links.
-     *
-     * @return The Links
-     */
-    public Links getLinks() {
-        return Links;
-    }
+	/**
+	 * Gets links.
+	 *
+	 * @return The Links
+	 */
+	public Links getLinks()
+	{
+		return Links;
+	}
 
-    /**
-     * Sets links.
-     *
-     * @param Links The _links
-     */
-    public void setLinks(Links Links) {
-        this.Links = Links;
-    }
+	/**
+	 * Sets links.
+	 *
+	 * @param Links The _links
+	 */
+	public void setLinks(Links Links)
+	{
+		this.Links = Links;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

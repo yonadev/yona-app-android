@@ -10,22 +10,26 @@
 
 package nu.yona.app.security;
 
-public class MyCipherData {
+public class MyCipherData
+{
 
-    private byte[] data;
-    private byte[] iv;
+	private byte[] data;
+	private byte[] iv;
 
-    public MyCipherData(byte[] data, byte[] iv) {
-        this.data = data;
-        this.iv = iv;
-    }
+	public MyCipherData(byte[] data, byte[] iv)
+	{
+		this.data = data;
+		this.iv = iv;
+	}
 
-    public byte[] getData() {
-        return data;
-    }
+	public byte[] getData()
+	{
+		return data;
+	}
 
-    public byte[] getIV() {
-        return iv;
-    }
+	public byte[] getIV()
+	{
+		return iv;
+	}
 
 }

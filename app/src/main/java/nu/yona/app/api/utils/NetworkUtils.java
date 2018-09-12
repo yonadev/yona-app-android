@@ -17,22 +17,25 @@ import android.net.NetworkInfo;
 /**
  * Created by kinnarvasa on 28/03/16.
  */
-public class NetworkUtils {
+public class NetworkUtils
+{
 
-    private NetworkUtils() {
+	private NetworkUtils()
+	{
 
-    }
+	}
 
-    /**
-     * Is online boolean.
-     *
-     * @param mContext the m context
-     * @return the boolean
-     */
-    public static boolean isOnline(Context mContext) {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
+	/**
+	 * Is online boolean.
+	 *
+	 * @param mContext the m context
+	 * @return the boolean
+	 */
+	public static boolean isOnline(Context mContext)
+	{
+		ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		return netInfo != null && netInfo.isConnectedOrConnecting();
+	}
 
 }

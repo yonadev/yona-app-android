@@ -34,101 +34,125 @@ import nu.yona.app.utils.AppUtils;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class BaseFragment extends Fragment implements Categorizable {
-    /**
-     * The M tool bar.
-     */
-    protected Toolbar mToolBar;
-    /**
-     * The Toolbar title.
-     */
-    protected YonaFontTextView toolbarTitle,
-            txtNotificationCounter;
-    /**
-     * The Left icon.
-     */
-    protected ImageView profileCircleImageView, /**
-     * The Right icon.
-     */
-    rightIcon,
+public class BaseFragment extends Fragment implements Categorizable
+{
+	/**
+	 * The M tool bar.
+	 */
+	protected Toolbar mToolBar;
+	/**
+	 * The Toolbar title.
+	 */
+	protected YonaFontTextView toolbarTitle,
+			txtNotificationCounter;
+	/**
+	 * The Left icon.
+	 */
+	protected ImageView profileCircleImageView, /**
+ * The Right icon.
+ */
+rightIcon,
 
-    rightIconProfile;
+	rightIconProfile;
 
-    protected YonaFontTextView profileIconTxt, initialsImageView;
+	protected YonaFontTextView profileIconTxt, initialsImageView;
 
-    private PauseResumeHook hook;
+	private PauseResumeHook hook;
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (hook != null) {
-            hook.onPause(this);
-        }
-    }
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		if (hook != null)
+		{
+			hook.onPause(this);
+		}
+	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        YonaAnalytics.updateScreen(this);
-        if (hook != null) {
-            hook.onResume(this);
-        }
-    }
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		YonaAnalytics.updateScreen(this);
+		if (hook != null)
+		{
+			hook.onResume(this);
+		}
+	}
 
-    /**
-     * Sets toolbar.
-     *
-     * @param view the view
-     */
-    protected void setupToolbar(View view) {
-        mToolBar = view.findViewById(R.id.main_toolbar);
-        toolbarTitle = mToolBar.findViewById(R.id.toolbar_title);
-        profileCircleImageView = mToolBar.findViewById(R.id.leftIcon);
-        rightIcon = mToolBar.findViewById(R.id.rightIcon);
-        rightIconProfile = mToolBar.findViewById(R.id.rightIconProfile);
-        profileIconTxt = mToolBar.findViewById(R.id.profileToolbarIcon);
-        initialsImageView = mToolBar.findViewById(R.id.leftIconTxt);
-        txtNotificationCounter = mToolBar.findViewById(R.id.txtNotificationCounter);
-        if (!(this instanceof DashboardFragment)) {
-            mToolBar.removeView(profileCircleImageView);
-        }
-        updateToolBarBackground();
-        YonaActivity.getActivity().setSupportActionBar(mToolBar);
-    }
+	/**
+	 * Sets toolbar.
+	 *
+	 * @param view the view
+	 */
+	protected void setupToolbar(View view)
+	{
+		mToolBar = view.findViewById(R.id.main_toolbar);
+		toolbarTitle = mToolBar.findViewById(R.id.toolbar_title);
+		profileCircleImageView = mToolBar.findViewById(R.id.leftIcon);
+		rightIcon = mToolBar.findViewById(R.id.rightIcon);
+		rightIconProfile = mToolBar.findViewById(R.id.rightIconProfile);
+		profileIconTxt = mToolBar.findViewById(R.id.profileToolbarIcon);
+		initialsImageView = mToolBar.findViewById(R.id.leftIconTxt);
+		txtNotificationCounter = mToolBar.findViewById(R.id.txtNotificationCounter);
+		if (!(this instanceof DashboardFragment))
+		{
+			mToolBar.removeView(profileCircleImageView);
+		}
+		updateToolBarBackground();
+		YonaActivity.getActivity().setSupportActionBar(mToolBar);
+	}
 
-    private void updateToolBarBackground() {
-        if (this instanceof ChallengesFragment || this instanceof ChallengesGoalDetailFragment) {
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_green);
-        } else if (this instanceof NotificationFragment) {
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
-        } else if (this instanceof SettingsFragment || this instanceof PrivacyFragment) {
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_mango);
-        } else if (this instanceof FriendsFragment || this instanceof FriendsRequestFragment || this instanceof AddFriendFragment) {
-            mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
-        }
-    }
+	private void updateToolBarBackground()
+	{
+		if (this instanceof ChallengesFragment || this instanceof ChallengesGoalDetailFragment)
+		{
+			mToolBar.setBackgroundResource(R.drawable.triangle_shadow_green);
+		}
+		else if (this instanceof NotificationFragment)
+		{
+			mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape);
+		}
+		else if (this instanceof SettingsFragment || this instanceof PrivacyFragment)
+		{
+			mToolBar.setBackgroundResource(R.drawable.triangle_shadow_mango);
+		}
+		else if (this instanceof FriendsFragment || this instanceof FriendsRequestFragment || this instanceof AddFriendFragment)
+		{
+			mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
+		}
+	}
 
-    public void udpateBottomTabVisibility(final View view) {
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (isAdded()) {
-                    if (AppUtils.checkKeyboardOpen(view)) {
-                        ((YonaActivity) getActivity()).changeBottomTabVisibility(false);
-                    } else {
-                        ((YonaActivity) getActivity()).changeBottomTabVisibility(true);
-                    }
-                }
-            }
-        });
-    }
+	public void udpateBottomTabVisibility(final View view)
+	{
+		view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+		{
+			@Override
+			public void onGlobalLayout()
+			{
+				if (isAdded())
+				{
+					if (AppUtils.checkKeyboardOpen(view))
+					{
+						((YonaActivity) getActivity()).changeBottomTabVisibility(false);
+					}
+					else
+					{
+						((YonaActivity) getActivity()).changeBottomTabVisibility(true);
+					}
+				}
+			}
+		});
+	}
 
-    @Override
-    public String getAnalyticsCategory() {
-        return AnalyticsConstant.SCREEN_BASE_FRAGMENT;
-    }
+	@Override
+	public String getAnalyticsCategory()
+	{
+		return AnalyticsConstant.SCREEN_BASE_FRAGMENT;
+	}
 
-    public void setHook(PauseResumeHook hook) {
-        this.hook = hook;
-    }
+	public void setHook(PauseResumeHook hook)
+	{
+		this.hook = hook;
+	}
 }

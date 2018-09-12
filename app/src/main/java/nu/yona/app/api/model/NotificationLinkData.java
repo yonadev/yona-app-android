@@ -5,24 +5,29 @@ package nu.yona.app.api.model;
  * Data class written to hold link & event time for NoGo notifications.
  */
 
-public class NotificationLinkData {
+public class NotificationLinkData
+{
 
-    public String eventTime;
-    public String url;
+	public String eventTime;
+	public String url;
 
-    public String getEventTime() {
-        return eventTime;
-    }
+	public String getEventTime()
+	{
+		return eventTime;
+	}
 
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
-    }
+	public void setEventTime(String eventTime)
+	{
+		this.eventTime = eventTime;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public String getUrl()
+	{
+		return url;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public void setUrl(String url)
+	{
+		this.url = url;
+	}
 }

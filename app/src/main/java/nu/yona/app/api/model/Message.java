@@ -16,19 +16,23 @@ import android.content.ContentValues;
  * Created by kinnarvasa on 13/07/16.
  */
 
-public class Message extends BaseEntity {
-    private String message;
+public class Message extends BaseEntity
+{
+	private String message;
 
-    public String getMessage() {
-        return this.message;
-    }
+	public String getMessage()
+	{
+		return this.message;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setMessage(String message)
+	{
+		this.message = message;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

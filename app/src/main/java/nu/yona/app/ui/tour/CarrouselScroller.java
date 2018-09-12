@@ -15,53 +15,59 @@ import android.widget.Scroller;
 /**
  * Created by bhargavsuthar on 19/05/16.
  */
-public class CarrouselScroller extends Scroller {
+public class CarrouselScroller extends Scroller
+{
 
-    private double mScrollFactor = 1;
-    private int mDuration = 1000;
+	private double mScrollFactor = 1;
+	private int mDuration = 1000;
 
-    /**
-     * Instantiates a new Carrousel scroller.
-     *
-     * @param context the context
-     */
-    public CarrouselScroller(Context context) {
-        super(context);
-    }
+	/**
+	 * Instantiates a new Carrousel scroller.
+	 *
+	 * @param context the context
+	 */
+	public CarrouselScroller(Context context)
+	{
+		super(context);
+	}
 
-    /**
-     * Instantiates a new Carrousel scroller.
-     *
-     * @param context      the context
-     * @param interpolator the interpolator
-     */
-    public CarrouselScroller(Context context, Interpolator interpolator) {
-        super(context, interpolator);
-    }
+	/**
+	 * Instantiates a new Carrousel scroller.
+	 *
+	 * @param context      the context
+	 * @param interpolator the interpolator
+	 */
+	public CarrouselScroller(Context context, Interpolator interpolator)
+	{
+		super(context, interpolator);
+	}
 
-    /**
-     * Instantiates a new Carrousel scroller.
-     *
-     * @param context      the context
-     * @param interpolator the interpolator
-     * @param flywheel     the flywheel
-     */
-    public CarrouselScroller(Context context, Interpolator interpolator, boolean flywheel) {
-        super(context, interpolator, flywheel);
-    }
+	/**
+	 * Instantiates a new Carrousel scroller.
+	 *
+	 * @param context      the context
+	 * @param interpolator the interpolator
+	 * @param flywheel     the flywheel
+	 */
+	public CarrouselScroller(Context context, Interpolator interpolator, boolean flywheel)
+	{
+		super(context, interpolator, flywheel);
+	}
 
-    /**
-     * Set the Factor duration
-     */
-    @Override
-    public void startScroll(int startX, int startY, int dx, int dy, int duration) {
-        super.startScroll(startX, startY, dx, dy, (int) (mDuration * mScrollFactor));
-    }
+	/**
+	 * Set the Factor duration
+	 */
+	@Override
+	public void startScroll(int startX, int startY, int dx, int dy, int duration)
+	{
+		super.startScroll(startX, startY, dx, dy, (int) (mDuration * mScrollFactor));
+	}
 
-    @Override
-    public void startScroll(int startX, int startY, int dx, int dy) {
-        super.startScroll(startX, startY, dx, dy, (int) (mDuration * mScrollFactor));
-    }
+	@Override
+	public void startScroll(int startX, int startY, int dx, int dy)
+	{
+		super.startScroll(startX, startY, dx, dy, (int) (mDuration * mScrollFactor));
+	}
 }
 
 

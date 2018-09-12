@@ -38,154 +38,191 @@ import nu.yona.app.utils.Logger;
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class ActivityMonitorService extends Service {
+public class ActivityMonitorService extends Service
+{
 
-    private static String currentApp;
-    private final Stopwatch stopWatch = new Stopwatch();
-    private String previousAppName;
-    private PowerManager powerManager;
-    private Date startTime, endTime;
-    private ScheduledFuture scheduledFuture;
+	private static String currentApp;
+	private final Stopwatch stopWatch = new Stopwatch();
+	private String previousAppName;
+	private PowerManager powerManager;
+	private Date startTime, endTime;
+	private ScheduledFuture scheduledFuture;
 
-    private static String printForegroundTask(Context context) {
-        currentApp = "NULL";
-        try {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-                long time = System.currentTimeMillis();
-                List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - AppConstant.ONE_SECOND * AppConstant.ONE_SECOND, time);
-                if (appList != null && appList.size() > 0) {
-                    SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
-                    for (UsageStats usageStats : appList) {
-                        mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
-                    }
-                    if (!mySortedMap.isEmpty()) {
-                        currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
-                    }
-                }
-            } else {
-                ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-                currentApp = am.getRunningAppProcesses().get(0).processName;
-            }
-        } catch (Exception e) {
-            AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread());
-        }
-        return currentApp;
-    }
+	private static String printForegroundTask(Context context)
+	{
+		currentApp = "NULL";
+		try
+		{
+			if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+			{
+				UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+				long time = System.currentTimeMillis();
+				List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - AppConstant.ONE_SECOND * AppConstant.ONE_SECOND, time);
+				if (appList != null && appList.size() > 0)
+				{
+					SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
+					for (UsageStats usageStats : appList)
+					{
+						mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
+					}
+					if (!mySortedMap.isEmpty())
+					{
+						currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+					}
+				}
+			}
+			else
+			{
+				ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+				currentApp = am.getRunningAppProcesses().get(0).processName;
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread());
+		}
+		return currentApp;
+	}
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        restartReceiver();
-        powerManager = ((PowerManager) YonaApplication.getAppContext().getSystemService(Context.POWER_SERVICE));
-    }
+	@Override
+	public void onCreate()
+	{
+		super.onCreate();
+		restartReceiver();
+		powerManager = ((PowerManager) YonaApplication.getAppContext().getSystemService(Context.POWER_SERVICE));
+	}
 
-    private void restartReceiver() {
-        if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false)) {
-            YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, false).commit();
-            AppUtils.registerReceiver(YonaApplication.getAppContext());
-        }
-        AppUtils.registerReceiver(YonaApplication.getAppContext());
-    }
+	private void restartReceiver()
+	{
+		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
+		{
+			YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, false).commit();
+			AppUtils.registerReceiver(YonaApplication.getAppContext());
+		}
+		AppUtils.registerReceiver(YonaApplication.getAppContext());
+	}
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        scheduleMethod();
-        return START_NOT_STICKY;
-    }
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId)
+	{
+		scheduleMethod();
+		return START_NOT_STICKY;
+	}
 
-    @Override
-    public void onDestroy() {
-        shutdownScheduler();
-        endTime = new Date();
-        updateOnServer(previousAppName);
-        super.onDestroy();
-    }
+	@Override
+	public void onDestroy()
+	{
+		shutdownScheduler();
+		endTime = new Date();
+		updateOnServer(previousAppName);
+		super.onDestroy();
+	}
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
+	@Nullable
+	@Override
+	public IBinder onBind(Intent intent)
+	{
+		return null;
+	}
 
-    private void scheduleMethod() {
+	private void scheduleMethod()
+	{
 
-        scheduledFuture = AppUtils.getInitializeScheduler().scheduleAtFixedRate(new Runnable() {
+		scheduledFuture = AppUtils.getInitializeScheduler().scheduleAtFixedRate(new Runnable()
+		{
 
-            @Override
-            public void run() {
-                if (AppUtils.getScheduler() == null) {
-                    scheduledFuture.cancel(true);
-                    return;
-                }
-                // This method will check for the Running apps after every 5000ms
-                checkRunningApps();
-            }
-        }, 0, AppConstant.ONE_SECOND, TimeUnit.MILLISECONDS);
-    }
+			@Override
+			public void run()
+			{
+				if (AppUtils.getScheduler() == null)
+				{
+					scheduledFuture.cancel(true);
+					return;
+				}
+				// This method will check for the Running apps after every 5000ms
+				checkRunningApps();
+			}
+		}, 0, AppConstant.ONE_SECOND, TimeUnit.MILLISECONDS);
+	}
 
-    private void checkRunningApps() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH && !powerManager.isInteractive()) {
-            endTime = new Date();
-            stopWatch.stop();
-            updateOnServer(previousAppName);
-            return;
-        }
-        final String apppackagename = printForegroundTask(this);
-        if (stopWatch.isStarted()) {
-            if (!previousAppName.equalsIgnoreCase(apppackagename)) {
-                endTime = new Date();
-                updateOnServer(previousAppName);
-                //once updated on server, start new tracking again.
-                previousAppName = apppackagename;
-                stopWatch.stop();
-                startTime = new Date();
-                stopWatch.start();
-            }//else if both are same package, we don't need to track.
-        } else {
-            startTime = new Date();
-            stopWatch.start();
-            previousAppName = apppackagename;
-        }
-    }
+	private void checkRunningApps()
+	{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH && !powerManager.isInteractive())
+		{
+			endTime = new Date();
+			stopWatch.stop();
+			updateOnServer(previousAppName);
+			return;
+		}
+		final String apppackagename = printForegroundTask(this);
+		if (stopWatch.isStarted())
+		{
+			if (!previousAppName.equalsIgnoreCase(apppackagename))
+			{
+				endTime = new Date();
+				updateOnServer(previousAppName);
+				//once updated on server, start new tracking again.
+				previousAppName = apppackagename;
+				stopWatch.stop();
+				startTime = new Date();
+				stopWatch.start();
+			}//else if both are same package, we don't need to track.
+		}
+		else
+		{
+			startTime = new Date();
+			stopWatch.start();
+			previousAppName = apppackagename;
+		}
+	}
 
-    private void updateOnServer(String pkgname) {
-        Logger.logi("updateOnServer", "pck: " + pkgname);
-        if (previousAppName != null && !pkgname.equals("NULL") && startTime != null && endTime != null && startTime.before(endTime)) {
-            APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
-        }
-    }
+	private void updateOnServer(String pkgname)
+	{
+		Logger.logi("updateOnServer", "pck: " + pkgname);
+		if (previousAppName != null && !pkgname.equals("NULL") && startTime != null && endTime != null && startTime.before(endTime))
+		{
+			APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
+		}
+	}
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
-        shutdownScheduler();
-        restartService();
-        super.onTaskRemoved(rootIntent);
-    }
+	@Override
+	public void onTaskRemoved(Intent rootIntent)
+	{
+		YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
+		shutdownScheduler();
+		restartService();
+		super.onTaskRemoved(rootIntent);
+	}
 
-    private void shutdownScheduler() {
-        try {
-            if (AppUtils.getScheduler() != null) {
-                AppUtils.getScheduler().shutdownNow();
-                AppUtils.setNullScheduler();
-            }
-            if (scheduledFuture != null) {
-                scheduledFuture.cancel(true);
-                scheduledFuture = null;
-            }
-        } catch (Exception e) {
-            AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread());
-        }
-    }
+	private void shutdownScheduler()
+	{
+		try
+		{
+			if (AppUtils.getScheduler() != null)
+			{
+				AppUtils.getScheduler().shutdownNow();
+				AppUtils.setNullScheduler();
+			}
+			if (scheduledFuture != null)
+			{
+				scheduledFuture.cancel(true);
+				scheduledFuture = null;
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-    private void restartService() {
-        Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
-        restartServiceIntent.setPackage(getPackageName());
+	private void restartService()
+	{
+		Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
+		restartServiceIntent.setPackage(getPackageName());
 
-        PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + AppConstant.ONE_SECOND, restartServicePendingIntent);
+		PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
+		AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+		alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + AppConstant.ONE_SECOND, restartServicePendingIntent);
 
-    }
+	}
 }
