@@ -222,5 +222,6 @@
     <string name="generic_alert_title">Waarschuwing</string>
     <string name="generic_exception_message">Onbekende fout. Neem contact op met Yona support.</string>
     <string name="generic_mobile_number_format_error">Ongeldig telefoonnummer. Controleer het formaat</string>
+    <string name="generic_error_message">Onbekende fout. Neem contact op met Yona support.</string>
 
 </resources>

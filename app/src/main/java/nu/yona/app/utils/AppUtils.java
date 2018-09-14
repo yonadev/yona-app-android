@@ -289,15 +289,7 @@ public class AppUtils
 	 */
 	public static void reportException(String className, Exception e, Thread t, DataLoadListener listener)
 	{
-		ErrorMessage errorMessage = new ErrorMessage();
-		if (e != null && e.getMessage() != null)
-		{
-			errorMessage.setMessage(e.getMessage());
-		}
-		else
-		{
-			errorMessage.setMessage(YonaApplication.getAppContext().getString(R.string.error_message));
-		}
+		ErrorMessage errorMessage = getErrorMessage(e);
 		if (listener != null)
 		{
 			listener.onError(errorMessage);
@@ -307,7 +299,27 @@ public class AppUtils
 			showErrorToast(errorMessage);
 			logExceptionToCrashlytics(e);
 		}
-		Logger.loge(e.getClass().getSimpleName(), e.getMessage());
+	}
+
+	/**
+	 * getErrorMessage from give Exception or return a generic error message
+	 */
+
+	public static ErrorMessage getErrorMessage(Exception e)
+	{
+		ErrorMessage errorMessage = new ErrorMessage();
+		if (e != null && e.getMessage() != null)
+		{
+			errorMessage.setMessage(e.getMessage());
+			Logger.loge(e.getClass().getSimpleName(), e.getMessage());
+		}
+		else
+		{
+			String message = YonaApplication.getAppContext().getString(R.string.generic_error_message);
+			errorMessage.setMessage(message);
+			Logger.loge(e.getClass().getSimpleName(), message);
+		}
+		return errorMessage;
 	}
 
 	/**
@@ -319,12 +331,7 @@ public class AppUtils
 	 */
 	public static void reportException(String className, Exception e, Thread t)
 	{
-		if (Looper.getMainLooper().getThread() == Thread.currentThread())
-		{
-			// Current Thread is Main Thread.
-			AppUtils.reportException(className, e, t, null);
-		}
-
+		AppUtils.reportException(className, e, t, null);
 	}
 
     /*
