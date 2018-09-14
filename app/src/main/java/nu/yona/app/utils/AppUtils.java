@@ -27,6 +27,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -318,7 +319,12 @@ public class AppUtils
 	 */
 	public static void reportException(String className, Exception e, Thread t)
 	{
-		AppUtils.reportException(className, e, t, null);
+		if (Looper.getMainLooper().getThread() == Thread.currentThread())
+		{
+			// Current Thread is Main Thread.
+			AppUtils.reportException(className, e, t, null);
+		}
+
 	}
 
     /*
@@ -339,7 +345,24 @@ public class AppUtils
 
 	private static void showErrorToast(ErrorMessage errorMessage)
 	{
-		Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+		boolean isUiThread = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Looper.getMainLooper().isCurrentThread()
+				: Thread.currentThread() == Looper.getMainLooper().getThread();
+		if (isUiThread)
+		{
+			Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+		}
+		else
+		{
+			new Handler(Looper.getMainLooper()).post(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					//this runs on the UI thread
+					Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+				}
+			});
+		}
 	}
 
 
