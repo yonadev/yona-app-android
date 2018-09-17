@@ -359,7 +359,7 @@ public class NotificationFragment extends BaseFragment
 		{
 			urlForMessageFetch = mYonaMessages.getLinks().getNext();
 		}
-		else if (mYonaMessages.getLinks().getFirst() != null)
+		else if (mYonaMessages.getPage().getTotalPages() > 1)
 		{
 			urlForMessageFetch = mYonaMessages.getLinks().getFirst();
 		}
