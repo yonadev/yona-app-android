@@ -283,13 +283,13 @@ public class AppUtils
 	 * Report exception.
 	 *
 	 * @param className class name where exception throws
-	 * @param e         Error
+	 * @param exception Error
 	 * @param t         Current Thread (Thread.currentThread())
 	 * @param listener  DataLoadListener to update UI
 	 */
-	public static void reportException(String className, Exception e, Thread t, DataLoadListener listener)
+	public static void reportException(String className, Exception exception, Thread t, DataLoadListener listener)
 	{
-		ErrorMessage errorMessage = getErrorMessage(e);
+		ErrorMessage errorMessage = getErrorMessageFromException(exception);
 		if (listener != null)
 		{
 			listener.onError(errorMessage);
@@ -297,41 +297,34 @@ public class AppUtils
 		else
 		{
 			showErrorToast(errorMessage);
-			logExceptionToCrashlytics(e);
+			logExceptionToCrashlytics(exception);
 		}
+		Logger.loge(className, errorMessage.getMessage());
 	}
 
 	/**
 	 * getErrorMessage from give Exception or return a generic error message
 	 */
 
-	public static ErrorMessage getErrorMessage(Exception e)
+	public static ErrorMessage getErrorMessageFromException(Exception exception)
 	{
-		ErrorMessage errorMessage = new ErrorMessage();
-		if (e != null && e.getMessage() != null)
+		if (exception != null && exception.getMessage() != null)
 		{
-			errorMessage.setMessage(e.getMessage());
-			Logger.loge(e.getClass().getSimpleName(), e.getMessage());
+			return new ErrorMessage(exception.getMessage());
 		}
-		else
-		{
-			String message = YonaApplication.getAppContext().getString(R.string.generic_error_message);
-			errorMessage.setMessage(message);
-			Logger.loge(e.getClass().getSimpleName(), message);
-		}
-		return errorMessage;
+		return new ErrorMessage(YonaApplication.getAppContext().getString(R.string.generic_exception_message));
 	}
 
 	/**
 	 * Report exception.
 	 *
 	 * @param className class name where exception throws
-	 * @param e         Error
+	 * @param exception Error
 	 * @param t         Current Thread (Thread.currentThread())
 	 */
-	public static void reportException(String className, Exception e, Thread t)
+	public static void reportException(String className, Exception exception, Thread t)
 	{
-		AppUtils.reportException(className, e, t, null);
+		AppUtils.reportException(className, exception, t, null);
 	}
 
     /*
@@ -339,9 +332,9 @@ public class AppUtils
     Application uploads the Exceptions only after next launch after event occurs.
      */
 
-	public static void logExceptionToCrashlytics(Exception e)
+	public static void logExceptionToCrashlytics(Exception exception)
 	{
-		Crashlytics.logException(e);
+		Crashlytics.logException(exception);
 	}
 
 	/**

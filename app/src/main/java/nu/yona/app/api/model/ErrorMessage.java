@@ -44,6 +44,20 @@ public class ErrorMessage extends BaseEntity
 		this.message = message;
 	}
 
+
+	/**
+	 * Instantiates a new Error message.
+	 *
+	 * @param message the message
+	 * @param code    the error code for custom messages.
+	 */
+	public ErrorMessage(String message, String code)
+	{
+		this.code = code;
+		this.message = message;
+	}
+
+
 	/**
 	 * Gets message.
 	 *
@@ -52,16 +66,6 @@ public class ErrorMessage extends BaseEntity
 	public String getMessage()
 	{
 		return message;
-	}
-
-	/**
-	 * Sets message.
-	 *
-	 * @param message The message
-	 */
-	public void setMessage(String message)
-	{
-		this.message = message;
 	}
 
 	/**
@@ -74,15 +78,6 @@ public class ErrorMessage extends BaseEntity
 		return code;
 	}
 
-	/**
-	 * Sets code.
-	 *
-	 * @param code The code
-	 */
-	public void setCode(String code)
-	{
-		this.code = code;
-	}
 
 	@Override
 	public ContentValues getDbContentValues()
