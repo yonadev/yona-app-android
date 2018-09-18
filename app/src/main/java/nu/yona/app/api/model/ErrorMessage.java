@@ -20,17 +20,17 @@ public class ErrorMessage extends BaseEntity
 {
 	@SerializedName("message")
 	@Expose
-	private String message;
+	private final String message;
 	@SerializedName("code")
 	@Expose
-	private String code;
+	private final String code;
 
 	/**
 	 * Instantiates a new Error message.
 	 */
 	public ErrorMessage()
 	{
-
+		this(null, null);
 	}
 
 	/**
@@ -40,9 +40,22 @@ public class ErrorMessage extends BaseEntity
 	 */
 	public ErrorMessage(String message)
 	{
-		this.code = "";
+		this(message, null);
+	}
+
+
+	/**
+	 * Instantiates a new Error message.
+	 *
+	 * @param message the message
+	 * @param code    the error code for custom messages.
+	 */
+	public ErrorMessage(String message, String code)
+	{
+		this.code = code;
 		this.message = message;
 	}
+
 
 	/**
 	 * Gets message.
@@ -55,16 +68,6 @@ public class ErrorMessage extends BaseEntity
 	}
 
 	/**
-	 * Sets message.
-	 *
-	 * @param message The message
-	 */
-	public void setMessage(String message)
-	{
-		this.message = message;
-	}
-
-	/**
 	 * Gets code.
 	 *
 	 * @return The code
@@ -74,15 +77,6 @@ public class ErrorMessage extends BaseEntity
 		return code;
 	}
 
-	/**
-	 * Sets code.
-	 *
-	 * @param code The code
-	 */
-	public void setCode(String code)
-	{
-		this.code = code;
-	}
 
 	@Override
 	public ContentValues getDbContentValues()

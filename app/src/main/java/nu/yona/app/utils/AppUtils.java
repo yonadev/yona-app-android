@@ -27,6 +27,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -282,21 +283,13 @@ public class AppUtils
 	 * Report exception.
 	 *
 	 * @param className class name where exception throws
-	 * @param e         Error
+	 * @param exception Error
 	 * @param t         Current Thread (Thread.currentThread())
 	 * @param listener  DataLoadListener to update UI
 	 */
-	public static void reportException(String className, Exception e, Thread t, DataLoadListener listener)
+	public static void reportException(String className, Exception exception, Thread t, DataLoadListener listener)
 	{
-		ErrorMessage errorMessage = new ErrorMessage();
-		if (e != null && e.getMessage() != null)
-		{
-			errorMessage.setMessage(e.getMessage());
-		}
-		else
-		{
-			errorMessage.setMessage(YonaApplication.getAppContext().getString(R.string.error_message));
-		}
+		ErrorMessage errorMessage = getErrorMessageFromException(exception);
 		if (listener != null)
 		{
 			listener.onError(errorMessage);
@@ -304,21 +297,34 @@ public class AppUtils
 		else
 		{
 			showErrorToast(errorMessage);
-			logExceptionToCrashlytics(e);
+			logExceptionToCrashlytics(exception);
 		}
-		Logger.loge(e.getClass().getSimpleName(), e.getMessage());
+		Logger.loge(className, errorMessage.getMessage());
+	}
+
+	/**
+	 * getErrorMessage from give Exception or return a generic error message
+	 */
+
+	private static ErrorMessage getErrorMessageFromException(Exception exception)
+	{
+		if (exception != null && exception.getMessage() != null)
+		{
+			return new ErrorMessage(exception.getMessage());
+		}
+		return new ErrorMessage(YonaApplication.getAppContext().getString(R.string.generic_exception_message));
 	}
 
 	/**
 	 * Report exception.
 	 *
 	 * @param className class name where exception throws
-	 * @param e         Error
+	 * @param exception Error
 	 * @param t         Current Thread (Thread.currentThread())
 	 */
-	public static void reportException(String className, Exception e, Thread t)
+	public static void reportException(String className, Exception exception, Thread t)
 	{
-		AppUtils.reportException(className, e, t, null);
+		AppUtils.reportException(className, exception, t, null);
 	}
 
     /*
@@ -326,9 +332,9 @@ public class AppUtils
     Application uploads the Exceptions only after next launch after event occurs.
      */
 
-	public static void logExceptionToCrashlytics(Exception e)
+	public static void logExceptionToCrashlytics(Exception exception)
 	{
-		Crashlytics.logException(e);
+		Crashlytics.logException(exception);
 	}
 
 	/**
@@ -339,7 +345,24 @@ public class AppUtils
 
 	private static void showErrorToast(ErrorMessage errorMessage)
 	{
-		Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+		boolean isUiThread = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Looper.getMainLooper().isCurrentThread()
+				: Thread.currentThread() == Looper.getMainLooper().getThread();
+		if (isUiThread)
+		{
+			Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+		}
+		else
+		{
+			new Handler(Looper.getMainLooper()).post(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					//this runs on the UI thread
+					Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+				}
+			});
+		}
 	}
 
 
