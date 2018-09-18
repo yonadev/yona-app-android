@@ -14,7 +14,7 @@ pipeline {
         GIT = credentials('65325e52-5ec0-46a7-a937-f81f545f3c1b')
       }
       steps {
-        slackSend color: 'warning', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting Release Notes input to finish Build"
+        slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting release notes input to start the build"
         script {
           def enReleaseNotes = input message: 'User input required',
               submitter: 'authenticated',
@@ -95,7 +95,7 @@ pipeline {
       }
       steps {
         checkpoint 'APK uploaded to Google Play'
-        slackSend color: 'warning', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting approval for release to Beta"
+        slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting approval for release to Beta"
         script {
           env.RELEASE_TO_BETA = input message: 'User input required',
               submitter: 'authenticated',
@@ -133,7 +133,7 @@ pipeline {
       }
       steps {
         checkpoint 'App released to beta'
-        slackSend color: 'warning', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting approval for release to Production"
+        slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting approval for release to Production"
         script {
           env.RELEASE_TO_PRODUCTION = input message: 'User input required',
               submitter: 'authenticated',
