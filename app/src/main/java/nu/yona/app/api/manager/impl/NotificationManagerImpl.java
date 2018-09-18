@@ -197,6 +197,10 @@ public class NotificationManagerImpl implements NotificationManager
 
 	public YonaMessages processYonaMessages(YonaMessages resultYonaMessages)
 	{
+		if (resultYonaMessages.getPage().getTotalPages() == 0)
+		{
+			return resultYonaMessages;
+		}
 		List<YonaMessage> listMessages = resultYonaMessages.getEmbedded().getYonaMessages();
 		for (YonaMessage message : listMessages)
 		{
