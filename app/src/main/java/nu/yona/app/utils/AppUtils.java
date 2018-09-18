@@ -306,7 +306,7 @@ public class AppUtils
 	 * getErrorMessage from give Exception or return a generic error message
 	 */
 
-	public static ErrorMessage getErrorMessageFromException(Exception exception)
+	private static ErrorMessage getErrorMessageFromException(Exception exception)
 	{
 		if (exception != null && exception.getMessage() != null)
 		{

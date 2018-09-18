@@ -20,17 +20,17 @@ public class ErrorMessage extends BaseEntity
 {
 	@SerializedName("message")
 	@Expose
-	private String message;
+	private final String message;
 	@SerializedName("code")
 	@Expose
-	private String code;
+	private final String code;
 
 	/**
 	 * Instantiates a new Error message.
 	 */
 	public ErrorMessage()
 	{
-
+		this(null, null);
 	}
 
 	/**
@@ -40,8 +40,7 @@ public class ErrorMessage extends BaseEntity
 	 */
 	public ErrorMessage(String message)
 	{
-		this.code = "";
-		this.message = message;
+		this(message, null);
 	}
 
 
