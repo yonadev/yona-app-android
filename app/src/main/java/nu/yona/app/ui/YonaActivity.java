@@ -393,32 +393,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	{
 		if (!isFinishing())
 		{
-			if (errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND) && this != null)
+			//Added getCode Null check to fix APPDEV-1174.
+			if (errorMessage.getCode() != null && errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND) && this != null)
 			{
-				try
-				{
-					CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialogInterface, int i)
-						{
-							SharedPreferences.Editor editor = userPreferences.edit();
-							editor.clear();
-							editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
-							editor.commit();
-							//delete database
-							DatabaseHelper.getInstance(YonaActivity.this).deleteAllData();
-							YonaApplication.getEventChangeManager().clearAll();
-							startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
-							dialogInterface.dismiss();
-							YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
-						}
-					});
-				}
-				catch (Exception e)
-				{
-					AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
-				}
+				showUserNotFoundAlertDialog(errorMessage);
 			}
 			else
 			{
@@ -426,6 +404,44 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			}
 
 		}
+	}
+
+	private void showUserNotFoundAlertDialog(ErrorMessage errorMessage)
+	{
+		try
+		{
+			CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialogInterface, int i)
+				{
+					updateSharedPreferences();
+					dialogInterface.dismiss();
+					clearDatabaseAndNavigateToLaunchActivity();
+
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
+
+	private void updateSharedPreferences()
+	{
+		SharedPreferences.Editor editor = userPreferences.edit();
+		editor.clear();
+		editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
+		editor.commit();
+	}
+
+	private void clearDatabaseAndNavigateToLaunchActivity()
+	{
+		DatabaseHelper.getInstance(YonaActivity.this).deleteAllData();
+		YonaApplication.getEventChangeManager().clearAll();
+		startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
+		YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
 	}
 
 	@Override
