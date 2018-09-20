@@ -393,8 +393,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	{
 		if (!isFinishing())
 		{
-			//Added getCode Null check to fix APPDEV-1174.
-			if (errorMessage.getCode() != null && errorMessage.getCode().equals(ServerErrorCode.USER_NOT_FOUND) && this != null)
+			if (ServerErrorCode.USER_NOT_FOUND.equals(errorMessage.getCode()) && this != null)
 			{
 				showUserNotFoundAlertDialog(errorMessage);
 			}
@@ -410,17 +409,13 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	{
 		try
 		{
-			CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok), new DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialogInterface, int i)
-				{
-					updateSharedPreferences();
-					dialogInterface.dismiss();
-					clearDatabaseAndNavigateToLaunchActivity();
-
-				}
-			});
+			CustomAlertDialog.show(YonaActivity.this, errorMessage.getMessage(), getString(R.string.ok),
+					(DialogInterface dialogInterface, int which) ->
+					{
+						resetData();
+						dialogInterface.dismiss();
+						navigateToLaunchActivity();
+					});
 		}
 		catch (Exception e)
 		{
@@ -428,18 +423,18 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		}
 	}
 
-	private void updateSharedPreferences()
+	private void resetData()
 	{
 		SharedPreferences.Editor editor = userPreferences.edit();
 		editor.clear();
 		editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
 		editor.commit();
-	}
-
-	private void clearDatabaseAndNavigateToLaunchActivity()
-	{
 		DatabaseHelper.getInstance(YonaActivity.this).deleteAllData();
 		YonaApplication.getEventChangeManager().clearAll();
+	}
+
+	private void navigateToLaunchActivity()
+	{
 		startActivity(new Intent(YonaActivity.this, LaunchActivity.class));
 		YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
 	}
