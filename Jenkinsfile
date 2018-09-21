@@ -56,10 +56,10 @@ pipeline {
           junit '**/build/test-results/*/*.xml'
         }  
         success {
-          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER_TO_DEPLOY} on branch ${BRANCH_NAME} completed successfully"
+          slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} completed successfully"
         }
         failure {
-          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER_TO_DEPLOY} on branch ${BRANCH_NAME} failed"
+          slackSend color: 'bad', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} failed"
         }
       }
     }
