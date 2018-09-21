@@ -39,6 +39,8 @@ pipeline {
           sh './gradlew clean testDevelopmentDebugUnitTest app:assemble'
           sh 'rm app/fabric.properties'
         }
+        sh 'git config --global user.email build@yona.nu'
+        sh 'git config --global user.name yonabuild'
         sh 'git add app/version.properties'
         sh "git add app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt"
         sh "git add app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt"
