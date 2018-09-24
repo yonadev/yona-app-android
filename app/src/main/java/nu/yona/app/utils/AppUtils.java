@@ -35,8 +35,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
-
 import org.joda.time.Period;
 
 import java.io.BufferedInputStream;
@@ -297,9 +295,8 @@ public class AppUtils
 		else
 		{
 			showErrorToast(errorMessage);
-			logExceptionToCrashlytics(exception);
+			Logger.loge(className, errorMessage.getMessage(), exception);
 		}
-		Logger.loge(className, errorMessage.getMessage());
 	}
 
 	/**
@@ -325,16 +322,6 @@ public class AppUtils
 	public static void reportException(String className, Exception exception, Thread t)
 	{
 		AppUtils.reportException(className, exception, t, null);
-	}
-
-    /*
-    Method logs Exception to the Crashlytics Dashboard under Non-fatal section.
-    Application uploads the Exceptions only after next launch after event occurs.
-     */
-
-	public static void logExceptionToCrashlytics(Exception exception)
-	{
-		Crashlytics.logException(exception);
 	}
 
 	/**

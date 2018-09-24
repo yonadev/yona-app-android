@@ -12,45 +12,64 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 import nu.yona.app.BuildConfig;
 
 /**
- * Created by spatni on 15/09/17.
- * A common Logger implementation to support loggin mechanism in application.
+ * A common Logger implementation to support logging mechanism in application.
  */
 
 public class Logger
 {
 
-	public static void logi(String TAG, String message)
+	public static void logi(String tag, String message)
 	{
-		if (BuildConfig.DEBUG)
+		if (Fabric.isInitialized())
 		{
-			Log.i(TAG, message);
+			Crashlytics.log(Log.INFO, tag, message);
+		}
+		else
+		{
+			Log.i(tag, message);
 		}
 	}
 
-	public static void loge(String TAG, String message)
+	public static void loge(String tag, String message)
 	{
-		if (BuildConfig.DEBUG)
+		if (Fabric.isInitialized())
 		{
-			Log.e(TAG, message);
+			Crashlytics.log(Log.ERROR, tag, message);
+		}
+		else
+		{
+			Log.e(tag, message);
 		}
 	}
 
-	public static void loge(String TAG, String message, Exception e)
+	public static void loge(String tag, String message, Exception exception)
 	{
-		if (BuildConfig.DEBUG)
+		if (Fabric.isInitialized())
 		{
-			Log.e(TAG, message, e);
+			Crashlytics.log(Log.ERROR, tag, message);
+			Crashlytics.logException(exception);
+		}
+		else
+		{
+			Log.e(tag, message, exception);
 		}
 	}
 
-	public static void logd(String TAG, String message)
+	public static void logd(String tag, String message)
 	{
-		if (BuildConfig.DEBUG)
+		if (Fabric.isInitialized())
 		{
-			Log.d(TAG, message);
+			Crashlytics.log(Log.DEBUG, tag, message);
+		}
+		else
+		{
+			Log.d(tag, message);
 		}
 	}
 
