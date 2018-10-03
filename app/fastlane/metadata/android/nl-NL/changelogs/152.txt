@@ -1,0 +1,1 @@
+APPDEV-1177 Meten van app activiteiten werkt weer op Android Oreo
