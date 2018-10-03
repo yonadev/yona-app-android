@@ -11,6 +11,7 @@ package nu.yona.app.utils;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
@@ -28,6 +29,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -79,6 +82,7 @@ public class AppUtils
 	private static ScheduledExecutorService scheduler;
 	private static final YonaReceiver receiver = new YonaReceiver();
 	private static int trialCertificateCount = 0, trialVPNCount = 0;
+	private static final Handler mHandler = new Handler();
 
 	private static final String TAG = "AppUtils";
 
@@ -158,11 +162,37 @@ public class AppUtils
 		try
 		{
 			activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
-			context.startService(activityMonitorIntent);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+			{
+				validatePermissionsAndAsStartForegroundService(context, activityMonitorIntent);
+			}
+			else
+			{
+				context.startService(activityMonitorIntent);
+			}
 		}
 		catch (Exception e)
 		{
 			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
+
+	/*
+		Checks if application is not permitted to show notifications as this permission is necessary to show foreground notifications and Toasts
+		Starts foreground service.
+		Post Alert message if app is not permitted to do so.
+	 */
+	@TargetApi(26)
+	public static void validatePermissionsAndAsStartForegroundService(Context context, Intent activityMonitorIntent)
+	{
+		if (NotificationManagerCompat.from(context).areNotificationsEnabled())
+		{
+			context.startForegroundService(activityMonitorIntent);
+		}
+		else
+		{
+			Logger.logi("Notifications Disabled", context.getString(R.string.notification_disabled_message));
+			displayErrorAlert(context, new ErrorMessage(context.getString(R.string.notification_disabled_message)));
 		}
 	}
 
@@ -324,34 +354,72 @@ public class AppUtils
 		AppUtils.reportException(className, exception, t, null);
 	}
 
+
 	/**
-	 * Gets filter.
-	 *
-	 * @return the filter
+	 * Display Error toast
 	 */
 
 	private static void showErrorToast(ErrorMessage errorMessage)
+	{
+		runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+			}
+		});
+	}
+
+	/**
+	 * Display Error Alert if app is running else return;
+	 */
+	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
+	{
+		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
+		{
+			return;
+		}
+		runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				getGenericAlertDialogWithErrorMessage(context, errorMessage).show();
+			}
+		});
+	}
+
+	public static AlertDialog getGenericAlertDialogWithErrorMessage(Context context, ErrorMessage errorMessage)
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		alertDialogBuilder.setMessage(errorMessage.getMessage());
+		alertDialogBuilder.setPositiveButton("Ok",
+				new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface arg0, int arg1)
+					{
+					}
+				});
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		return alertDialog;
+	}
+
+
+	public static final void runOnUiThread(Runnable runnable)
 	{
 		boolean isUiThread = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Looper.getMainLooper().isCurrentThread()
 				: Thread.currentThread() == Looper.getMainLooper().getThread();
 		if (isUiThread)
 		{
-			Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+			runnable.run();
 		}
 		else
 		{
-			new Handler(Looper.getMainLooper()).post(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					//this runs on the UI thread
-					Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
-				}
-			});
+			mHandler.post(runnable);
 		}
 	}
-
 
 	/**
 	 * Gets filter.

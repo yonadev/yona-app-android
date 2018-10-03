@@ -8,8 +8,12 @@
 
 package nu.yona.app.api.service;
 
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.usage.UsageStats;
@@ -21,6 +25,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 
 import java.util.Date;
 import java.util.List;
@@ -29,8 +34,10 @@ import java.util.TreeMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
@@ -47,6 +54,7 @@ public class ActivityMonitorService extends Service
 	private PowerManager powerManager;
 	private Date startTime, endTime;
 	private ScheduledFuture scheduledFuture;
+	private static final int NOTIFICATION_ID = 1111;
 
 	private static String printForegroundTask(Context context)
 	{
@@ -106,7 +114,41 @@ public class ActivityMonitorService extends Service
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
 		scheduleMethod();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+		{
+			displayActivityMonitoringNotification();
+		}
 		return START_NOT_STICKY;
+	}
+
+	@TargetApi(26)
+	private void displayActivityMonitoringNotification()
+	{
+		String CHANNEL_ID = "yona-channel";
+		NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+				"yona activity monitoring channel",
+				NotificationManager.IMPORTANCE_MIN);
+		channel.setShowBadge(false);
+		Intent intent = new Intent(this, LaunchActivity.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 /* Request code */, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+		Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle(this.getString(R.string.yona_notification_content))
+				.setContentIntent(pendingIntent)
+				.setOngoing(true)
+				.setPriority(0)
+				.setOngoing(true)
+				.build();
+		startForeground(NOTIFICATION_ID, notification);
+	}
+
+	private void removeActivityMonitoringNotification()
+	{
+		NotificationManager mNotificationManager = (NotificationManager)
+				this.getSystemService(NOTIFICATION_SERVICE);
+		mNotificationManager.cancel(NOTIFICATION_ID);
 	}
 
 	@Override
@@ -115,6 +157,7 @@ public class ActivityMonitorService extends Service
 		shutdownScheduler();
 		endTime = new Date();
 		updateOnServer(previousAppName);
+		removeActivityMonitoringNotification();
 		super.onDestroy();
 	}
 
