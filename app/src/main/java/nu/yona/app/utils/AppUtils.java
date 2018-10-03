@@ -28,6 +28,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.NotificationManagerCompat;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -160,7 +161,23 @@ public class AppUtils
 		try
 		{
 			activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
-			context.startService(activityMonitorIntent);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+			{
+				if (NotificationManagerCompat.from(context).areNotificationsEnabled())
+				{
+					context.startForegroundService(activityMonitorIntent);
+				}
+				else
+				{
+					Logger.logi("Notifications Disabled", context.getString(R.string.notification_disabled_message));
+					showErrorToast(new ErrorMessage(context.getString(R.string.notification_disabled_message)));
+				}
+			}
+			else
+			{
+				context.startService(activityMonitorIntent);
+			}
+
 		}
 		catch (Exception e)
 		{
