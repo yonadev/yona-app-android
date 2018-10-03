@@ -224,6 +224,6 @@
     <string name="generic_mobile_number_format_error">Ongeldig telefoonnummer. Controleer het formaat</string>
     <string name="yona_notification_content">App-gebruik wordt gemonitord door Yona.</string>
     <string name="notification_disabled_message">Meldingen voor de Yona-applicatie zijn uitgeschakeld door de gebruiker. Geef rechten op in apparaatinstellingen.</string>
-    <string name="notification_channel_name">Yona activiteit monitoring kanaal</string>
+    <string name="notification_channel_name">Yona activiteitmonitoringkanaal</string>
 
 </resources>
