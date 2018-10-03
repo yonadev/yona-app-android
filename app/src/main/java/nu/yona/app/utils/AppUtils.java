@@ -28,6 +28,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -79,6 +81,7 @@ public class AppUtils
 	private static ScheduledExecutorService scheduler;
 	private static final YonaReceiver receiver = new YonaReceiver();
 	private static int trialCertificateCount = 0, trialVPNCount = 0;
+	private static final Handler uiTaskHandler = new Handler();
 
 	private static final String TAG = "AppUtils";
 
@@ -158,12 +161,36 @@ public class AppUtils
 		try
 		{
 			activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
-			context.startService(activityMonitorIntent);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+			{
+				startForegroundService(context, activityMonitorIntent);
+			}
+			else
+			{
+				context.startService(activityMonitorIntent);
+			}
 		}
 		catch (Exception e)
 		{
 			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
 		}
+	}
+
+	/*
+		Checks if application is not permitted to show notifications as this permission is necessary to show foreground notifications and Toasts
+		Starts foreground service.
+		Post Alert message if app is not permitted to do so.
+	 */
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void startForegroundService(Context context, Intent activityMonitorIntent)
+	{
+		if (!NotificationManagerCompat.from(context).areNotificationsEnabled())
+		{
+			Logger.loge("Notifications Disabled", context.getString(R.string.notification_disabled_message));
+			displayErrorAlert(context, new ErrorMessage(context.getString(R.string.notification_disabled_message)));
+			return;
+		}
+		context.startForegroundService(activityMonitorIntent);
 	}
 
 	/**
@@ -324,34 +351,65 @@ public class AppUtils
 		AppUtils.reportException(className, exception, t, null);
 	}
 
+
 	/**
-	 * Gets filter.
-	 *
-	 * @return the filter
+	 * Display Error toast
 	 */
 
 	private static void showErrorToast(ErrorMessage errorMessage)
+	{
+		runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+			}
+		});
+	}
+
+	/**
+	 * Display Error Alert if app is running else return;
+	 */
+	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
+	{
+		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
+		{
+			return;
+		}
+		runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				getGenericAlertDialogWithErrorMessage(context, errorMessage).show();
+			}
+		});
+	}
+
+	public static AlertDialog getGenericAlertDialogWithErrorMessage(Context context, ErrorMessage errorMessage)
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		alertDialogBuilder.setMessage(errorMessage.getMessage());
+		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), null);
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		return alertDialog;
+	}
+
+
+	public static final void runOnUiThread(Runnable runnable)
 	{
 		boolean isUiThread = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Looper.getMainLooper().isCurrentThread()
 				: Thread.currentThread() == Looper.getMainLooper().getThread();
 		if (isUiThread)
 		{
-			Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+			runnable.run();
 		}
 		else
 		{
-			new Handler(Looper.getMainLooper()).post(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					//this runs on the UI thread
-					Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
-				}
-			});
+			uiTaskHandler.post(runnable);
 		}
 	}
-
 
 	/**
 	 * Gets filter.
