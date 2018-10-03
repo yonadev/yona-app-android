@@ -11,7 +11,6 @@ package nu.yona.app.utils;
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
@@ -82,7 +81,7 @@ public class AppUtils
 	private static ScheduledExecutorService scheduler;
 	private static final YonaReceiver receiver = new YonaReceiver();
 	private static int trialCertificateCount = 0, trialVPNCount = 0;
-	private static final Handler mHandler = new Handler();
+	private static final Handler uiTaskHandler = new Handler();
 
 	private static final String TAG = "AppUtils";
 
@@ -164,7 +163,7 @@ public class AppUtils
 			activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
 			{
-				validatePermissionsAndAsStartForegroundService(context, activityMonitorIntent);
+				startForegroundService(context, activityMonitorIntent);
 			}
 			else
 			{
@@ -182,18 +181,16 @@ public class AppUtils
 		Starts foreground service.
 		Post Alert message if app is not permitted to do so.
 	 */
-	@TargetApi(26)
-	public static void validatePermissionsAndAsStartForegroundService(Context context, Intent activityMonitorIntent)
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void startForegroundService(Context context, Intent activityMonitorIntent)
 	{
-		if (NotificationManagerCompat.from(context).areNotificationsEnabled())
+		if (!NotificationManagerCompat.from(context).areNotificationsEnabled())
 		{
-			context.startForegroundService(activityMonitorIntent);
-		}
-		else
-		{
-			Logger.logi("Notifications Disabled", context.getString(R.string.notification_disabled_message));
+			Logger.loge("Notifications Disabled", context.getString(R.string.notification_disabled_message));
 			displayErrorAlert(context, new ErrorMessage(context.getString(R.string.notification_disabled_message)));
+			return;
 		}
+		context.startForegroundService(activityMonitorIntent);
 	}
 
 	/**
@@ -394,14 +391,7 @@ public class AppUtils
 	{
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 		alertDialogBuilder.setMessage(errorMessage.getMessage());
-		alertDialogBuilder.setPositiveButton("Ok",
-				new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface arg0, int arg1)
-					{
-					}
-				});
+		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), null);
 		AlertDialog alertDialog = alertDialogBuilder.create();
 		return alertDialog;
 	}
@@ -417,7 +407,7 @@ public class AppUtils
 		}
 		else
 		{
-			mHandler.post(runnable);
+			uiTaskHandler.post(runnable);
 		}
 	}
 

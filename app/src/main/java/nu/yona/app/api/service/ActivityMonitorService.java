@@ -121,12 +121,12 @@ public class ActivityMonitorService extends Service
 		return START_NOT_STICKY;
 	}
 
-	@TargetApi(26)
+	@TargetApi(Build.VERSION_CODES.O)
 	private void displayActivityMonitoringNotification()
 	{
 		String CHANNEL_ID = "yona-channel";
 		NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-				"yona activity monitoring channel",
+				this.getString(R.string.notification_channel_name),
 				NotificationManager.IMPORTANCE_MIN);
 		channel.setShowBadge(false);
 		Intent intent = new Intent(this, LaunchActivity.class);
@@ -143,6 +143,7 @@ public class ActivityMonitorService extends Service
 				.build();
 		startForeground(NOTIFICATION_ID, notification);
 	}
+
 
 	private void removeActivityMonitoringNotification()
 	{
