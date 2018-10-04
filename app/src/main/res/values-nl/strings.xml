@@ -225,5 +225,4 @@
     <string name="yona_notification_content">Monitort appgebruik</string>
     <string name="notification_disabled_message">Meldingen voor de Yona-applicatie zijn uitgeschakeld door de gebruiker. Geef rechten in apparaatinstellingen.</string>
     <string name="notification_channel_name">Vaste melding</string>
-
 </resources>
