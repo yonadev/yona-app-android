@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.util.ArrayList;
@@ -165,6 +166,20 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 		if (currentYonaMessage.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED)
 		{
 			currentMessageItemHolder.img_avtar.setImageResource(R.drawable.adult_sad);
+			currentMessageItemHolder.img_avtar.setVisibility(View.VISIBLE);
+			currentMessageItemHolder.profileIconTxt.setVisibility(View.GONE);
+		}
+		else
+		{
+			setMessageListItemUserAvatar();
+		}
+	}
+
+	private void setMessageListItemUserAvatar()
+	{
+		if (currentYonaMessage.getLinks().getUserPhoto() != null)
+		{
+			Picasso.with(this.activity).load(currentYonaMessage.getLinks().getUserPhoto().getHref()).noFade().into(currentMessageItemHolder.img_avtar);
 			currentMessageItemHolder.img_avtar.setVisibility(View.VISIBLE);
 			currentMessageItemHolder.profileIconTxt.setVisibility(View.GONE);
 		}
