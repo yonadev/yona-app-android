@@ -210,6 +210,16 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		customPageAdapter = new CustomPageAdapter(getActivity(), linkList);
 		viewPager.setAdapter(customPageAdapter);
 		initilizeCommentControl(view);
+		if (getArguments() != null)
+		{
+			if (getArguments().get(AppConstant.OBJECT) != null)
+			{
+				if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity)
+				{
+					activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
+				}
+			}
+		}
 		messageTxt = (YonaFontEditTextViewGeneral) view.findViewById(R.id.userMessage);
 		sendButton = (YonaFontButton) view.findViewById(R.id.btnSend);
 		NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.nesteadScrollview);
@@ -357,12 +367,13 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 				profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
 				profileClickEvent(profileIconTxt);
 			}
-			if (notificationMessage != null && notificationMessage.getLinks() != null && notificationMessage.getLinks().getYonaActivityCategory() != null)
-			{
-				String categoryName = APIManager.getInstance().getActivityManager().getActivityCategoryName(notificationMessage.getLinks().getYonaActivityCategory().getHref());
-				toolbarTitle.setText(categoryName != null ? categoryName.toUpperCase() : "");
-				toolbarTitle.setVisibility(View.VISIBLE);
-			}
+
+		}
+		if (notificationMessage != null && notificationMessage.getLinks() != null && notificationMessage.getLinks().getYonaActivityCategory() != null)
+		{
+			String categoryName = APIManager.getInstance().getActivityManager().getActivityCategoryName(notificationMessage.getLinks().getYonaActivityCategory().getHref());
+			toolbarTitle.setText(categoryName != null ? categoryName.toUpperCase() : "");
+			toolbarTitle.setVisibility(View.VISIBLE);
 		}
 		if (activity != null && activity.getYonaGoal() != null && !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName()))
 		{

@@ -168,6 +168,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 		{
 			intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName()) ? activity.getYonaGoal().getActivityCategoryName().toUpperCase() : getString(R.string.blank), R.color.grape, R.drawable.triangle_shadow_grape));
 		}
+		intent.putExtra(AppConstant.OBJECT, activity);
 		YonaActivity.getActivity().replaceFragment(intent);
 	}
 
