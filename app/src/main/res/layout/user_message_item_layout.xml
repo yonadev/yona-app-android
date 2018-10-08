@@ -45,13 +45,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_user_icon"
             android:layout_width="@dimen/img_width"
             android:layout_height="@dimen/img_height"
-            android:layout_margin="16dp"
-            android:scaleType="fitXY"
             android:src="@drawable/icn_avatar"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/sixteen"
             android:visibility="gone" />
 
         <nu.yona.app.customview.YonaFontTextView
