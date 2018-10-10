@@ -366,7 +366,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		{
 			setUserAvatarFromNotification();
 		}
-		else
+		else if (yonaBuddy != null)// User ICON will not be set if yona buddy is also null.
 		{
 			setUserAvatarFromYonaBuddy();
 		}
@@ -389,7 +389,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 	{
 		if (notificationMessage.getLinks().getUserPhoto() != null)
 		{
-			setUserAvatarImage(notificationMessage.getLinks().getUserPhoto().getHref());
+			setUserAvatarImage(notificationMessage.getLinks().getUserPhoto().getHref());//Yona buddy in this is not having user photo in it.
 		}
 		else
 		{

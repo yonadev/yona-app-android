@@ -253,7 +253,7 @@ public class NotificationFragment extends BaseFragment
 		setEventTimeForGoalConflictMessageIntent();
 		if (yonaMessageClicked.getLinks() != null && yonaMessageClicked.getLinks().getYonaBuddy() != null && !TextUtils.isEmpty(yonaMessageClicked.getLinks().getYonaBuddy().getHref()))
 		{
-			messageIntentClicked.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
+			messageIntentClicked.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
 			messageIntentClicked.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(yonaMessageClicked.getLinks().getYonaBuddy()));
 		}
 		else
