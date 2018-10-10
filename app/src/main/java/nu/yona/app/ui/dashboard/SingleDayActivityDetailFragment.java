@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -210,16 +212,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		customPageAdapter = new CustomPageAdapter(getActivity(), linkList);
 		viewPager.setAdapter(customPageAdapter);
 		initilizeCommentControl(view);
-		if (getArguments() != null)
-		{
-			if (getArguments().get(AppConstant.OBJECT) != null)
-			{
-				if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity)
-				{
-					activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
-				}
-			}
-		}
+		setUpDayAcvitivy();
 		messageTxt = (YonaFontEditTextViewGeneral) view.findViewById(R.id.userMessage);
 		sendButton = (YonaFontButton) view.findViewById(R.id.btnSend);
 		NestedScrollView nestedScrollView = (NestedScrollView) view.findViewById(R.id.nesteadScrollview);
@@ -308,6 +301,20 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 	}
 
 
+	private void setUpDayAcvitivy()
+	{
+		if (getArguments() != null)
+		{
+			if (getArguments().get(AppConstant.OBJECT) != null)
+			{
+				if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity)
+				{
+					activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
+				}
+			}
+		}
+	}
+
 	@Override
 	public void onDestroyView()
 	{
@@ -336,39 +343,82 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 	private void setDayActivityDetails()
 	{
 		loadDayActivity(yonaDayDetailUrl);
-		setDayDetailTitleAndIcon();
+		setDayDetailActivityTitle();
+		setUpUserDetailsInHeader();
 	}
 
-	private void setDayDetailTitleAndIcon()
+	private void setUpUserDetailsInHeader()
 	{
-		if (mYonaHeaderTheme.isBuddyFlow() && yonaBuddy != null)
+		if (mYonaHeaderTheme.isBuddyFlow())
 		{
-			profileCircleImageView.setVisibility(View.GONE);
-			rightIcon.setVisibility(View.GONE);
-			rightIconProfile.setVisibility(View.VISIBLE);
-			if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName()))
-			{
-				profileIconTxt.setVisibility(View.VISIBLE);
-				profileIconTxt.setText(yonaBuddy.getNickname().substring(0, 1).toUpperCase());
-				profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
-			}
-			profileClickEvent(profileIconTxt);
-
+			setUpUserHeaderIcon();
 		}
 		else
 		{
 			profileCircleImageView.setVisibility(View.GONE);
 			rightIcon.setVisibility(View.GONE);
-			if (notificationMessage != null && notificationMessage.getLinks() != null && notificationMessage.getLinks().getYonaBuddy() != null)
-			{
-				rightIconProfile.setVisibility(View.VISIBLE);
-				profileIconTxt.setVisibility(View.VISIBLE);
-				profileIconTxt.setText(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname().substring(0, 1).toUpperCase());
-				profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
-				profileClickEvent(profileIconTxt);
-			}
-
 		}
+	}
+
+	private void setUpUserHeaderIcon()
+	{
+		if (notificationMessage != null)// This case comes when navigating from notifications
+		{
+			setUserAvatarFromNotification();
+		}
+		else
+		{
+			setUserAvatarFromYonaBuddy();
+		}
+
+	}
+
+	private void setUserAvatarFromYonaBuddy()
+	{
+		if (yonaBuddy.getLinks().getUserPhoto() != null)
+		{
+			setUserAvatarImage(yonaBuddy.getLinks().getUserPhoto().getHref());
+		}
+		else
+		{
+			setUserAvatarFromName(yonaBuddy.getEmbedded().getYonaUser().getFirstName());
+		}
+	}
+
+	private void setUserAvatarFromNotification()
+	{
+		if (notificationMessage.getLinks().getUserPhoto() != null)
+		{
+			setUserAvatarImage(notificationMessage.getLinks().getUserPhoto().getHref());
+		}
+		else
+		{
+			setUserAvatarFromName(yonaBuddy.getEmbedded().getYonaUser().getFirstName());
+		}
+	}
+
+	private void setUserAvatarImage(String userAvatarURL)
+	{
+		profileCircleImageView.setVisibility(View.VISIBLE);
+		rightIcon.setVisibility(View.GONE);
+		rightIconProfile.setVisibility(View.GONE);
+		Picasso.with(getContext()).load(userAvatarURL).noFade().into(profileCircleImageView);
+		profileClickEvent(profileCircleImageView);
+	}
+
+	private void setUserAvatarFromName(String name)
+	{
+		profileCircleImageView.setVisibility(View.GONE);
+		rightIcon.setVisibility(View.GONE);
+		rightIconProfile.setVisibility(View.VISIBLE);
+		profileIconTxt.setVisibility(View.VISIBLE);
+		profileIconTxt.setText(name.substring(0, 1).toUpperCase());
+		profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
+		profileClickEvent(profileIconTxt);
+	}
+
+	private void setDayDetailActivityTitle()
+	{
 		if (notificationMessage != null && notificationMessage.getLinks() != null && notificationMessage.getLinks().getYonaActivityCategory() != null)
 		{
 			String categoryName = APIManager.getInstance().getActivityManager().getActivityCategoryName(notificationMessage.getLinks().getYonaActivityCategory().getHref());
@@ -389,9 +439,9 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 			public void onClick(View v)
 			{
 				Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
-				intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
 				if (yonaBuddy != null)
 				{
+					intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
 					intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
 				}
 				else

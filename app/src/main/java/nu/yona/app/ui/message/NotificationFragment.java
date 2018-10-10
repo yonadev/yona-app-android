@@ -115,8 +115,8 @@ public class NotificationFragment extends BaseFragment
 			if (messageIntentClicked != null)
 			{
 				messageIntentClicked.putExtra(AppConstant.YONA_MESSAGE, yonaMessageClicked);
+				YonaActivity.getActivity().replaceFragment(messageIntentClicked);
 			}
-			YonaActivity.getActivity().replaceFragment(messageIntentClicked);
 		}
 
 		@Override
@@ -253,11 +253,12 @@ public class NotificationFragment extends BaseFragment
 		setEventTimeForGoalConflictMessageIntent();
 		if (yonaMessageClicked.getLinks() != null && yonaMessageClicked.getLinks().getYonaBuddy() != null && !TextUtils.isEmpty(yonaMessageClicked.getLinks().getYonaBuddy().getHref()))
 		{
-			messageIntentClicked.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_blue));
+			messageIntentClicked.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
+			messageIntentClicked.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(yonaMessageClicked.getLinks().getYonaBuddy()));
 		}
 		else
 		{
-			messageIntentClicked.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_grape));
+			messageIntentClicked.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
 		}
 		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, NotificationEnum.GOALCONFLICTMESSAGE.getNotificationType());
 	}
