@@ -381,7 +381,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		}
 		else
 		{
-			setUserAvatarFromName(yonaBuddy.getEmbedded().getYonaUser().getFirstName());
+			setUserAvatarFromName(yonaBuddy.getNickname());
 		}
 	}
 
@@ -389,11 +389,11 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 	{
 		if (notificationMessage.getLinks().getUserPhoto() != null)
 		{
-			setUserAvatarImage(notificationMessage.getLinks().getUserPhoto().getHref());//Yona buddy in this is not having user photo in it.
+			setUserAvatarImage(notificationMessage.getLinks().getUserPhoto().getHref());// In this case Yona buddy is not having user photo in it.
 		}
 		else
 		{
-			setUserAvatarFromName(yonaBuddy.getEmbedded().getYonaUser().getFirstName());
+			setUserAvatarFromName(yonaBuddy.getNickname());
 		}
 	}
 
@@ -402,17 +402,23 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		profileCircleImageView.setVisibility(View.VISIBLE);
 		rightIcon.setVisibility(View.GONE);
 		rightIconProfile.setVisibility(View.GONE);
-		Picasso.with(getContext()).load(userAvatarURL).noFade().into(profileCircleImageView);
+		if (userAvatarURL != null)
+		{
+			Picasso.with(getContext()).load(userAvatarURL).noFade().into(profileCircleImageView);
+		}
 		profileClickEvent(profileCircleImageView);
 	}
 
-	private void setUserAvatarFromName(String name)
+	private void setUserAvatarFromName(String nickname)
 	{
 		profileCircleImageView.setVisibility(View.GONE);
 		rightIcon.setVisibility(View.GONE);
 		rightIconProfile.setVisibility(View.VISIBLE);
 		profileIconTxt.setVisibility(View.VISIBLE);
-		profileIconTxt.setText(name.substring(0, 1).toUpperCase());
+		if (nickname != null)
+		{
+			profileIconTxt.setText(nickname.substring(0, 1).toUpperCase());
+		}
 		profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
 		profileClickEvent(profileIconTxt);
 	}
