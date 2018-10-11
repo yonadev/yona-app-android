@@ -20,7 +20,7 @@ public enum NotificationMessageEnum
 	/**
 	 * Buddy connect request accepted notification message enum.
 	 */
-	BUDDY_CONNECT_REQUEST_ACCEPTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.ACCEPTED, getString(R.string.buddyconnectrequested), R.drawable.icn_ok),
+	BUDDY_CONNECT_REQUEST_ACCEPTED(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE, StatusEnum.ACCEPTED, getString(R.string.buddyresponseaccepted), R.drawable.icn_ok),
 	/**
 	 * Buddy connect request rejected notification message enum.
 	 */
@@ -37,12 +37,12 @@ public enum NotificationMessageEnum
 	/**
 	 * Buddy connect response message rejected notification message enum.
 	 */
-	BUDDY_CONNECT_RESPONSE_MESSAGE_REJECTED(NotificationEnum.BUDDYCONNECTRESPONSEMESSAGE, StatusEnum.REJECTED, getString(R.string.buddyresponserejected), R.drawable.icn_no),
+	BUDDY_CONNECT_RESPONSE_MESSAGE_REJECTED(NotificationEnum.BUDDYCONNECTRESPONSEMESSAGE, StatusEnum.REJECTED, getString(R.string.buddyconnectresponserejected), R.drawable.icn_no),
 
 	/**
 	 * Buddy connect response message accepted notification message enum.
 	 */
-	BUDDY_CONNECT_RESPONSE_MESSAGE_ACCEPTED(NotificationEnum.BUDDYCONNECTRESPONSEMESSAGE, StatusEnum.ACCEPTED, getString(R.string.buddyresponseaccepted), R.drawable.icn_ok),
+	BUDDY_CONNECT_RESPONSE_MESSAGE_ACCEPTED(NotificationEnum.BUDDYCONNECTRESPONSEMESSAGE, StatusEnum.ACCEPTED, getString(R.string.buddyconnectresponseaccepted), R.drawable.icn_ok),
 
 	/**
 	 * The Buddy disconnect message user removed buddy.

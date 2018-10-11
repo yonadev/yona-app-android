@@ -24,15 +24,15 @@ import java.util.List;
 import java.util.Set;
 
 import nu.yona.app.R;
+import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaMessage;
-import nu.yona.app.enums.NotificationEnum;
 import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
 
-import static nu.yona.app.enums.StatusEnum.ACCEPTED;
-import static nu.yona.app.enums.StatusEnum.REJECTED;
+import static nu.yona.app.YonaApplication.getEventChangeManager;
 
 /**
  * Created by bhargavsuthar on 10/05/16.
@@ -84,54 +84,15 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 
 	private void setUpMessageListItemTitle()
 	{
-		if (currentYonaMessage.getNotificationMessageEnum() != null && !TextUtils.isEmpty(currentYonaMessage.getNotificationMessageEnum().getUserMessage()))
-		{
-			if (currentYonaMessage.getNotificationMessageEnum().getUserMessage().equals(NotificationEnum.BUDDYCONNECTREQUESTMESSAGE))
-			{
-				currentMessageItemHolder.txtTitleMsg.setText(getMessageListItemTitle(currentYonaMessage.getNotificationMessageEnum().getNotificationEnum()));
-			}
-			else
-			{
-				currentMessageItemHolder.txtTitleMsg.setText(currentYonaMessage.getNotificationMessageEnum().getUserMessage());
-			}
-			currentMessageItemHolder.img_status.setImageResource(currentYonaMessage.getNotificationMessageEnum().getImageId());
-		}
+		currentMessageItemHolder.txtTitleMsg.setText(currentYonaMessage.getNotificationMessageEnum().getUserMessage());
+		currentMessageItemHolder.img_status.setImageResource(currentYonaMessage.getNotificationMessageEnum().getImageId());
 	}
 
-	private String getMessageListItemTitle(NotificationEnum yonaNotificationEnum)
-	{
-		String messagetitle = "";
-		switch (yonaNotificationEnum)
-		{
-			case BUDDYCONNECTREQUESTMESSAGE:
-				messagetitle = this.activity.getString(R.string.buddyconnectrequested);
-				break;
-			case BUDDYCONNECTRESPONSEMESSAGE:
-				if (currentYonaMessage.getNotificationMessageEnum().getStatusEnum() == ACCEPTED)
-				{
-					messagetitle = this.activity.getString(R.string.buddyconnectresponseaccepted);
-				}
-				else if (currentYonaMessage.getNotificationMessageEnum().getStatusEnum() == REJECTED)
-				{
-					messagetitle = this.activity.getString(R.string.buddyconnectresponserejected);
-				}
-				break;
-			default:
-				break;
-		}
-		return messagetitle;
-	}
 
 	private void setUpMessageItemHolderSwipe()
 	{
-		if (currentYonaMessage.getLinks() != null && currentYonaMessage.getLinks().getEdit() != null)
-		{
-			currentMessageItemHolder.swipeLayout.setRightSwipeEnabled(true);
-		}
-		else
-		{
-			currentMessageItemHolder.swipeLayout.setRightSwipeEnabled(false);
-		}
+		boolean isEditable = currentYonaMessage.getLinks() != null && currentYonaMessage.getLinks().getEdit() != null;
+		currentMessageItemHolder.swipeLayout.setRightSwipeEnabled(isEditable);
 	}
 
 	private void setUpMessageItemHolderDetails()
@@ -187,21 +148,30 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 		{
 			currentMessageItemHolder.img_avtar.setVisibility(View.GONE);
 			currentMessageItemHolder.profileIconTxt.setVisibility(View.VISIBLE);
-			currentMessageItemHolder.profileIconTxt.setText(currentYonaMessage.getNickname().substring(0, 1).toUpperCase());
+			currentMessageItemHolder.profileIconTxt.setText(getMessageProfileIconText());
 			currentMessageItemHolder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
+		}
+	}
+
+	private String getMessageProfileIconText()
+	{
+		RegisterUser registerUser = currentYonaMessage.getEmbedded().getYonaUser();
+		User loggedInUser = getEventChangeManager().getDataState().getUser();
+		if (loggedInUser.getMobileNumber() != registerUser.getMobileNumber())
+		{
+			return currentYonaMessage.getNickname().substring(0, 1).toUpperCase();// return nick name for yona buddy
+		}
+		else
+		{
+			return loggedInUser.getFirstName().substring(0, 1).toUpperCase() + loggedInUser.getLastName().substring(0, 1).toUpperCase();
 		}
 	}
 
 	private void setUpMessageContainerBackground()
 	{
-		if (currentYonaMessage.getLinks() != null && currentYonaMessage.getLinks().getMarkRead() != null && !TextUtils.isEmpty(currentYonaMessage.getLinks().getMarkRead().getHref()))
-		{
-			currentMessageItemHolder.messageContainer.setBackground(ContextCompat.getDrawable(activity, R.drawable.item_selected_gradient));
-		}
-		else
-		{
-			currentMessageItemHolder.messageContainer.setBackground(ContextCompat.getDrawable(activity, R.drawable.item_gradient));
-		}
+		boolean isUnread = currentYonaMessage.getLinks() != null && currentYonaMessage.getLinks().getMarkRead() != null;
+		int resourceId = (isUnread) ? R.drawable.item_selected_gradient : R.drawable.item_gradient;
+		currentMessageItemHolder.messageContainer.setBackground(ContextCompat.getDrawable(activity, resourceId));
 	}
 
 	/**
