@@ -305,12 +305,9 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 	{
 		if (getArguments() != null)
 		{
-			if (getArguments().get(AppConstant.OBJECT) != null)
+			if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity)
 			{
-				if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity)
-				{
-					activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
-				}
+				activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
 			}
 		}
 	}
@@ -389,7 +386,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 	{
 		if (notificationMessage.getLinks().getUserPhoto() != null)
 		{
-			setUserAvatarImage(notificationMessage.getLinks().getUserPhoto().getHref());// In this case Yona buddy is not having user photo in it.
+			setUserAvatarImage(notificationMessage.getLinks().getUserPhoto().getHref());
 		}
 		else
 		{
