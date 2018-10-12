@@ -303,15 +303,12 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 
 	private void setUpDayAcvitivy()
 	{
-		if (getArguments() != null)
+		if (getArguments() != null && getArguments().get(AppConstant.OBJECT) instanceof DayActivity)
 		{
-			if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity)
-			{
-				activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
-			}
+			activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
 		}
 	}
-
+	
 	@Override
 	public void onDestroyView()
 	{
