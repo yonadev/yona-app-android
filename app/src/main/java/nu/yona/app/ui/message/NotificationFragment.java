@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,7 +43,6 @@ import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.api.model.YonaMessages;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.enums.NotificationEnum;
-import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoadListenerImpl;
@@ -65,6 +65,7 @@ public class NotificationFragment extends BaseFragment
 	private boolean mIsLoading = false;
 	private LinearLayoutManager mLayoutManager;
 
+
 	/**
 	 * Click listener for item click and delete click of recycler view's item
 	 */
@@ -75,137 +76,45 @@ public class NotificationFragment extends BaseFragment
 		{
 			if (view.getTag() instanceof YonaMessage)
 			{
-				YonaMessage yonaMessage = (YonaMessage) view.getTag();
-				Intent mMessageIntent = null;
-				if (yonaMessage.getNotificationMessageEnum() == NotificationMessageEnum.SYSTEM_MESSAGE)
+				YonaMessage messageClicked = (YonaMessage) view.getTag();
+				Intent messageIntent = null;
+				switch (messageClicked.getNotificationMessageEnum().getNotificationEnum())
 				{
-					mMessageIntent = new Intent(IntentEnum.ACTION_ADMIN_MESSAGE_DETAIL.getActionString());
-					mMessageIntent.putExtra(AppConstant.ADMIN_MESSAGE, yonaMessage);
-					mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
-					YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, AnalyticsConstant.ADMIN_MESSAGE_SCREEN);
+					case SYSTEMMESSAGE:
+						messageIntent = handleSystemMessageClick(messageClicked);
+						break;
+					case BUDDYCONNECTREQUESTMESSAGE:
+						messageIntent = handleBuddyConnectRequestMessageClick(messageIntent, messageClicked);
+						break;
+					case BUDDYCONNECTRESPONSEMESSAGE:
+						messageIntent = handleBuddyConnectResponseMessageClick(messageIntent, messageClicked);
+						break;
+					case ACTIVITYCOMMENTMESSAGE:
+						messageIntent = handleActivityCommentMessageClick(messageIntent, messageClicked);
+						break;
+					case GOALCONFLICTMESSAGE:
+						messageIntent = handleGoalConflictMessageClick(messageIntent, messageClicked);
+						break;
+					case GOALCHANGEMESSAGE:
+						messageIntent = handleGoalChangeMessageClick(messageIntent, messageClicked);
+						break;
+					case BUDDYINFOCHANGEMESSAGE:
+						messageIntent = handleBuddyInfoChangeMessageClick(messageClicked);
+						break;
+					default:
+						break;
 				}
-				else if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null && yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.ACCEPTED)
-				{
-					mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_PROFILE.getActionString());
-					YonaHeaderTheme yonaHeaderTheme = new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue);
-					mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, yonaHeaderTheme);
-					mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
-					mMessageIntent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
-					YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, getString(R.string.friends));
-				}
-				else if (yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.REQUESTED)
-				{
-					mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_REQUEST.getActionString());
-					mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
-					YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, getString(R.string.status_friend_request));
-				}
-				else if (yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.ACTIVITYCOMMENTMESSAGE)
-				{
-					if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getYonaDayDetails() != null)
-					{
-						mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
-						mMessageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, yonaMessage.getLinks().getYonaDayDetails().getHref());
-						if (yonaMessage.getLinks().getReplyComment() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getReplyComment().getHref()))
-						{
-							mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
-						}
-						else
-						{
-							mMessageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(yonaMessage.getLinks().getYonaBuddy()));
-							mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
-						}
-						YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN);
-					}
-					else if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getWeekDetails() != null)
-					{
-						mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_WEEK_DETAIL_VIEW.getActionString());
-						mMessageIntent.putExtra(AppConstant.YONA_WEEK_DETAIL_URL, yonaMessage.getLinks().getWeekDetails().getHref());
-						if (yonaMessage.getLinks().getReplyComment() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getReplyComment().getHref()))
-						{
-							mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
-						}
-						else
-						{
-							mMessageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(yonaMessage.getLinks().getYonaBuddy()));
-							mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
-						}
-						YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN);
-					}
-				}
-				else if ((yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.GOALCONFLICTMESSAGE)
-						&& yonaMessage.getLinks().getYonaDayDetails() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getYonaDayDetails().getHref()))
-				{
-					mMessageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
-					mMessageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, yonaMessage.getLinks().getYonaDayDetails().getHref());
-					mMessageIntent.putExtra(AppConstant.URL, yonaMessage.getUrl());
+				replaceFragment(messageIntent, messageClicked);
+			}
+		}
 
-					try
-					{
-						SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
-						Date date = sdf.parse(yonaMessage.getActivityStartTime());
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(date);
-
-						mMessageIntent.putExtra(AppConstant.EVENT_TIME, calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
-					}
-					catch (Exception e)
-					{
-						AppUtils.reportException(NotificationFragment.class.getSimpleName(), e, Thread.currentThread());
-					}
-
-					if (yonaMessage.getLinks() != null && yonaMessage.getLinks().getSelf() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getSelf().getHref()))
-					{
-						mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
-					}
-					else
-					{
-						mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
-					}
-					YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, NotificationEnum.GOALCONFLICTMESSAGE.getNotificationType());
-				}
-				else if (yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.GOALCHANGEMESSAGE && yonaMessage.getLinks().getYonaBuddy() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getYonaBuddy().getHref()))
-				{
-					mMessageIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
-					YonaBuddy yonaBuddy = findBuddy(yonaMessage.getLinks().getYonaBuddy());
-					mMessageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
-					if (yonaBuddy.getLinks() != null)
-					{
-						mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, yonaBuddy.getLinks().getYonaDailyActivityReports(), yonaBuddy.getLinks().getYonaWeeklyActivityReports(), 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
-					}
-					else
-					{
-						mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
-					}
-					YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, NotificationEnum.GOALCHANGEMESSAGE.getNotificationType());
-				}
-				else if (yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.BUDDYCONNECTREQUESTMESSAGE)
-				{
-					if (yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.REQUESTED)
-					{
-						//self.performSegueWithIdentifier(R.segue.notificationsViewController.showAcceptFriend, sender: self)
-						return;
-					}
-
-					if (yonaMessage.getNotificationMessageEnum().getStatusEnum() == StatusEnum.ACCEPTED)
-					{
-						return;
-					}
-				}
-				else if (yonaMessage.getNotificationMessageEnum().getNotificationEnum() == NotificationEnum.BUDDYINFOCHANGEMESSAGE)
-				{
-					mMessageIntent = new Intent(IntentEnum.ACTION_FRIEND_PROFILE.getActionString());
-					YonaHeaderTheme yonaHeaderTheme = new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue);
-					mMessageIntent.putExtra(AppConstant.YONA_THEME_OBJ, yonaHeaderTheme);
-					mMessageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, yonaMessage);
-					mMessageIntent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
-					YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, getString(R.string.friends));
-				}
-				updateStatusAsRead(yonaMessage);
-				if (mMessageIntent != null)
-				{
-					mMessageIntent.putExtra(AppConstant.YONA_MESSAGE, yonaMessage);
-				}
-				YonaActivity.getActivity().replaceFragment(mMessageIntent);
+		private void replaceFragment(Intent messageIntent, YonaMessage messageClicked)
+		{
+			updateStatusAsRead(messageClicked);
+			if (messageIntent != null)
+			{
+				messageIntent.putExtra(AppConstant.YONA_MESSAGE, messageClicked);
+				YonaActivity.getActivity().replaceFragment(messageIntent);
 			}
 		}
 
@@ -214,12 +123,12 @@ public class NotificationFragment extends BaseFragment
 		{
 			if (view.getTag() instanceof YonaMessage)
 			{
-				YonaMessage yonaMessage = (YonaMessage) view.getTag();
-				updateStatusAsRead(yonaMessage);
-				if (yonaMessage != null && yonaMessage.getLinks() != null && yonaMessage.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaMessage.getLinks().getEdit().getHref()))
+				YonaMessage yonaMessageClicked = (YonaMessage) view.getTag();
+				updateStatusAsRead(yonaMessageClicked);
+				if (yonaMessageClicked != null && yonaMessageClicked.getLinks() != null && yonaMessageClicked.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaMessageClicked.getLinks().getEdit().getHref()))
 				{
 					YonaActivity.getActivity().showLoadingView(true, null);
-					APIManager.getInstance().getNotificationManager().deleteMessage(yonaMessage.getLinks().getEdit().getHref(), 0, 0, new DataLoadListener()
+					APIManager.getInstance().getNotificationManager().deleteMessage(yonaMessageClicked.getLinks().getEdit().getHref(), 0, 0, new DataLoadListener()
 					{
 						@Override
 						public void onDataLoad(Object result)
@@ -244,11 +153,168 @@ public class NotificationFragment extends BaseFragment
 		{
 			if (view.getTag() instanceof YonaMessage)
 			{
-				YonaMessage yonaMessage = (YonaMessage) view.getTag();
-				updateStatusAsRead(yonaMessage);
+				YonaMessage yonaMessageClicked = (YonaMessage) view.getTag();
+				updateStatusAsRead(yonaMessageClicked);
 			}
 		}
 	};
+
+
+	private Intent handleSystemMessageClick(YonaMessage messageClicked)
+	{
+		Intent messageIntent = new Intent(IntentEnum.ACTION_ADMIN_MESSAGE_DETAIL.getActionString());
+		messageIntent.putExtra(AppConstant.ADMIN_MESSAGE, messageClicked);
+		messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
+		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, AnalyticsConstant.ADMIN_MESSAGE_SCREEN);
+		return messageIntent;
+	}
+
+	private Intent handleBuddyConnectResponseMessageClick(Intent messageIntent, YonaMessage messageClicked)
+	{
+		if (messageClicked.getLinks() != null && messageClicked.getLinks().getEdit() != null && messageClicked.getNotificationMessageEnum().getStatusEnum() == StatusEnum.ACCEPTED)
+		{
+			messageIntent = new Intent(IntentEnum.ACTION_FRIEND_PROFILE.getActionString());
+			YonaHeaderTheme yonaHeaderTheme = new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue);
+			messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, yonaHeaderTheme);
+			messageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, messageClicked);
+			messageIntent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
+		}
+		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, getString(R.string.friends));
+		return messageIntent;
+	}
+
+	private Intent handleBuddyConnectRequestMessageClick(Intent messageIntent, YonaMessage messageClicked)
+	{
+		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, getString(R.string.status_friend_request));
+		if (messageClicked.getNotificationMessageEnum().getStatusEnum() == StatusEnum.REJECTED)
+		{
+			return messageIntent;
+		}
+		if (messageClicked.getNotificationMessageEnum().getStatusEnum() == StatusEnum.ACCEPTED)
+		{
+			return messageIntent;
+		}
+		else if (messageClicked.getNotificationMessageEnum().getStatusEnum() == StatusEnum.REQUESTED)
+		{
+			messageIntent = new Intent(IntentEnum.ACTION_FRIEND_REQUEST.getActionString());
+			messageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, messageClicked);
+		}
+		return messageIntent;
+	}
+
+	private Intent handleActivityCommentMessageClick(Intent messageIntent, YonaMessage messageClicked)
+	{
+		if (messageClicked.getLinks() != null && messageClicked.getLinks().getYonaDayDetails() != null)
+		{
+			return handleDayActivityCommentMessageClick(messageClicked);
+		}
+		else if (messageClicked.getLinks() != null && messageClicked.getLinks().getWeekDetails() != null)
+		{
+			return handleWeekActivityCommentMessageClick(messageClicked);
+		}
+		return messageIntent;
+	}
+
+	private Intent handleDayActivityCommentMessageClick(YonaMessage messageClicked)
+	{
+		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN);
+		Intent messageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
+		messageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, messageClicked.getLinks().getYonaDayDetails().getHref());
+		return setIntentExtrasForActivityCommentMessageClick(messageIntent, messageClicked);
+	}
+
+	private Intent handleWeekActivityCommentMessageClick(YonaMessage messageClicked)
+	{
+		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN);
+		Intent messageIntent = new Intent(IntentEnum.ACTION_SINGLE_WEEK_DETAIL_VIEW.getActionString());
+		messageIntent.putExtra(AppConstant.YONA_WEEK_DETAIL_URL, messageClicked.getLinks().getWeekDetails().getHref());
+		return setIntentExtrasForActivityCommentMessageClick(messageIntent, messageClicked);
+	}
+
+	private Intent setIntentExtrasForActivityCommentMessageClick(Intent messageIntent, YonaMessage messageClicked)
+	{
+		if (messageClicked.getLinks().getReplyComment() != null && !TextUtils.isEmpty(messageClicked.getLinks().getReplyComment().getHref()))
+		{
+			messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
+		}
+		else
+		{
+			messageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(messageClicked.getLinks().getYonaBuddy()));
+			messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
+		}
+		return messageIntent;
+	}
+
+	private Intent handleGoalConflictMessageClick(Intent messageIntent, YonaMessage messageClicked)
+	{
+		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, NotificationEnum.GOALCONFLICTMESSAGE.getNotificationType());
+		if (messageClicked.getLinks().getYonaDayDetails() == null || (TextUtils.isEmpty(messageClicked.getLinks().getYonaDayDetails().getHref())))
+		{
+			return messageIntent;
+		}
+		messageIntent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
+		messageIntent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, messageClicked.getLinks().getYonaDayDetails().getHref());
+		messageIntent.putExtra(AppConstant.URL, messageClicked.getUrl());
+		messageIntent = setEventTimeForGoalConflictMessageIntent(messageIntent, messageClicked);
+		if (messageClicked.getLinks() != null && messageClicked.getLinks().getYonaBuddy() != null && !TextUtils.isEmpty(messageClicked.getLinks().getYonaBuddy().getHref()))
+		{
+			messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+			messageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(messageClicked.getLinks().getYonaBuddy()));
+		}
+		else
+		{
+			messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
+		}
+		return messageIntent;
+	}
+
+	private Intent setEventTimeForGoalConflictMessageIntent(Intent messageIntent, YonaMessage messageClicked)
+	{
+		try
+		{
+			SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
+			Date date = sdf.parse(messageClicked.getActivityStartTime());
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			return messageIntent.putExtra(AppConstant.EVENT_TIME, calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE));
+		}
+		catch (ParseException e)
+		{
+			AppUtils.reportException(NotificationFragment.class.getSimpleName(), e, Thread.currentThread());
+		}
+		return messageIntent;
+	}
+
+	private Intent handleGoalChangeMessageClick(Intent messageIntent, YonaMessage messageClicked)
+	{
+		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, NotificationEnum.GOALCHANGEMESSAGE.getNotificationType());
+		if (messageClicked.getLinks().getYonaBuddy() != null && !TextUtils.isEmpty(messageClicked.getLinks().getYonaBuddy().getHref()))
+		{
+			messageIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
+			YonaBuddy yonaBuddy = findBuddy(messageClicked.getLinks().getYonaBuddy());
+			messageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
+			if (yonaBuddy.getLinks() != null)
+			{
+				messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, yonaBuddy.getLinks().getYonaDailyActivityReports(), yonaBuddy.getLinks().getYonaWeeklyActivityReports(), 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+			}
+			else
+			{
+				messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, yonaBuddy.getEmbedded().getYonaUser().getFirstName() + " " + yonaBuddy.getEmbedded().getYonaUser().getLastName(), R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
+			}
+		}
+		return messageIntent;
+	}
+
+	private Intent handleBuddyInfoChangeMessageClick(YonaMessage messageClicked)
+	{
+		Intent messageIntent = new Intent(IntentEnum.ACTION_FRIEND_PROFILE.getActionString());
+		YonaHeaderTheme yonaHeaderTheme = new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue);
+		messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, yonaHeaderTheme);
+		messageIntent.putExtra(AppConstant.YONAMESSAGE_OBJ, messageClicked);
+		messageIntent.putExtra(AppConstant.SECOND_COLOR_CODE, R.color.grape);
+		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.NOTIFICATION, getString(R.string.friends));
+		return messageIntent;
+	}
 
 	/**
 	 * Recyclerview's scroll listener when its getting end to load more data till the pages not reached
