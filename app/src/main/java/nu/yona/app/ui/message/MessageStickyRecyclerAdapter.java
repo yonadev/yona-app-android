@@ -24,15 +24,11 @@ import java.util.List;
 import java.util.Set;
 
 import nu.yona.app.R;
-import nu.yona.app.api.model.RegisterUser;
-import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
-
-import static nu.yona.app.YonaApplication.getEventChangeManager;
 
 /**
  * Created by bhargavsuthar on 10/05/16.
@@ -155,16 +151,7 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 
 	private String getMessageProfileIconText()
 	{
-		RegisterUser registerUser = currentYonaMessage.getEmbedded().getYonaUser();
-		User loggedInUser = getEventChangeManager().getDataState().getUser();
-		if (loggedInUser.getMobileNumber() != registerUser.getMobileNumber())
-		{
-			return currentYonaMessage.getNickname().substring(0, 1).toUpperCase();// return nick name for yona buddy
-		}
-		else
-		{
-			return loggedInUser.getFirstName().substring(0, 1).toUpperCase() + loggedInUser.getLastName().substring(0, 1).toUpperCase();
-		}
+		return currentYonaMessage.getNickname().substring(0, 1).toUpperCase();// return nick name from notification object.
 	}
 
 	private void setUpMessageContainerBackground()
