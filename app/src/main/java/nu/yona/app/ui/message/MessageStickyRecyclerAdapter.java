@@ -24,15 +24,15 @@ import java.util.List;
 import java.util.Set;
 
 import nu.yona.app.R;
-import nu.yona.app.api.manager.APIManager;
-import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.RegisterUser;
-import nu.yona.app.api.model.YonaBuddy;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
+
+import static nu.yona.app.YonaApplication.getEventChangeManager;
 
 /**
  * Created by bhargavsuthar on 10/05/16.
@@ -155,36 +155,16 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 
 	private String getMessageProfileIconText()
 	{
-		String userAvatarIconTitle = "";
-		switch (currentYonaMessage.getNotificationMessageEnum().getNotificationEnum().getUserEnum())
+		RegisterUser registerUser = currentYonaMessage.getEmbedded().getYonaUser();
+		User loggedInUser = getEventChangeManager().getDataState().getUser();
+		if (loggedInUser.getMobileNumber() != registerUser.getMobileNumber())
 		{
-			case EMBEDDED_USER:
-				RegisterUser senderUser = currentYonaMessage.getEmbedded().getYonaUser();
-				userAvatarIconTitle = senderUser.getNickName().substring(0, 1).toUpperCase();
-				break;
-			case LINKED_USER:
-
-				if (currentYonaMessage.getLinks().getYonaUser() != null)
-				{
-					YonaBuddy buddy = findBuddy(currentYonaMessage.getLinks().getYonaUser());
-					if (buddy != null)
-					{
-						userAvatarIconTitle = buddy.getNickname().substring(0, 1).toUpperCase();
-					}
-					else
-					{
-						userAvatarIconTitle = currentYonaMessage.getNickname().substring(0, 1).toUpperCase();
-					}
-				}
-				else
-				{
-					userAvatarIconTitle = currentYonaMessage.getNickname().substring(0, 1).toUpperCase();
-				}
-				break;
-			default:
-				break;
+			return currentYonaMessage.getNickname().substring(0, 1).toUpperCase();// return nick name for yona buddy
 		}
-		return userAvatarIconTitle;
+		else
+		{
+			return loggedInUser.getFirstName().substring(0, 1).toUpperCase() + loggedInUser.getLastName().substring(0, 1).toUpperCase();
+		}
 	}
 
 	private void setUpMessageContainerBackground()
@@ -192,11 +172,6 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 		boolean isUnread = currentYonaMessage.getLinks() != null && currentYonaMessage.getLinks().getMarkRead() != null;
 		int resourceId = (isUnread) ? R.drawable.item_selected_gradient : R.drawable.item_gradient;
 		currentMessageItemHolder.messageContainer.setBackground(ContextCompat.getDrawable(activity, resourceId));
-	}
-
-	private YonaBuddy findBuddy(Href href)
-	{
-		return APIManager.getInstance().getActivityManager().findYonaBuddy(href);
 	}
 
 	/**

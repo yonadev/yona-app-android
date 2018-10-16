@@ -56,11 +56,6 @@ public enum NotificationEnum
 	NONE("none");
 
 	/**
-	 * The User message.
-	 */
-	UserEnum userEnum;
-
-	/**
 	 * The Notification type.
 	 */
 	String notificationType;
@@ -68,27 +63,6 @@ public enum NotificationEnum
 	NotificationEnum(String type)
 	{
 		this.notificationType = type;
-		setUpUserEnum();
-	}
-
-	private void setUpUserEnum()
-	{
-		switch (this.notificationType)
-		{
-			case "none":
-				this.userEnum = UserEnum.NO_USER;
-				break;
-			case "SystemMessage":
-				this.userEnum = UserEnum.NO_USER;
-				break;
-			case "BuddyConnectRequestMessage":
-				this.userEnum = UserEnum.EMBEDDED_USER;
-				break;
-			default:
-				this.userEnum = UserEnum.LINKED_USER;
-				break;
-
-		}
 	}
 
 	/**
@@ -117,15 +91,5 @@ public enum NotificationEnum
 	public String getNotificationType()
 	{
 		return notificationType;
-	}
-
-	/**
-	 * Gets notification type.
-	 *
-	 * @return the notification type
-	 */
-	public UserEnum getUserEnum()
-	{
-		return userEnum;
 	}
 }
