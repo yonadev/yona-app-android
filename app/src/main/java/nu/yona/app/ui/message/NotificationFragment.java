@@ -233,15 +233,8 @@ public class NotificationFragment extends BaseFragment
 
 	private Intent setIntentExtrasForActivityCommentMessageClick(Intent messageIntent, YonaMessage messageClicked)
 	{
-		if (messageClicked.getLinks().getReplyComment() != null && !TextUtils.isEmpty(messageClicked.getLinks().getReplyComment().getHref()))
-		{
-			messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
-		}
-		else
-		{
-			messageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(messageClicked.getLinks().getYonaBuddy()));
-			messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
-		}
+		messageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(messageClicked.getLinks().getYonaBuddy()));
+		// for activity-comment-message type notification yona header theme is set up in the respective activity after comparing the nickname inside yona goal with logged in user nick name.
 		return messageIntent;
 	}
 

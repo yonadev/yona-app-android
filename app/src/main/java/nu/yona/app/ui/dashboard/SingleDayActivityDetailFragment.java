@@ -337,8 +337,6 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 	private void setDayActivityDetails()
 	{
 		loadDayActivity(yonaDayDetailUrl);
-		setDayDetailActivityTitle();
-		setUpUserDetailsInHeader();
 	}
 
 	private void setUpUserDetailsInHeader()
@@ -511,6 +509,23 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		viewPager.setCurrentItem(dayActivityList.indexOf(dayActivity));
 		updateFlow(dayActivityList.indexOf(dayActivity));
 		YonaActivity.getActivity().showLoadingView(false, null);
+		setUpYonaHeaderTheme();
+		setDayDetailActivityTitle();
+		setUpUserDetailsInHeader();
+
+	}
+
+	private void setUpYonaHeaderTheme()
+	{
+		if (activity.getYonaGoal().getNickName().equals(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()))
+		{
+			mYonaHeaderTheme = new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape);
+		}
+		else
+		{
+			mYonaHeaderTheme = new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue);
+		}
+		mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
 	}
 
 	private void updateFlow(int position)
