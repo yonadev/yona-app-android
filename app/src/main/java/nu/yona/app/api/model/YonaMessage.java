@@ -17,6 +17,8 @@ import java.util.Objects;
 
 import nu.yona.app.enums.NotificationMessageEnum;
 
+import static nu.yona.app.enums.NotificationMessageEnum.NONE_NONE;
+
 /**
  * Created by kinnarvasa on 09/05/16.
  */
@@ -64,7 +66,7 @@ public class YonaMessage extends BaseEntity
 	private String Type;
 	@SerializedName("@notificationMessageEnum")
 	@Expose
-	private NotificationMessageEnum notificationMessageEnum;
+	private NotificationMessageEnum notificationMessageEnum = NONE_NONE;
 	@SerializedName("@stickyTitle")
 	@Expose
 	private String stickyTitle;

@@ -1,1 +1,37 @@
-Yona Application
+SAMEN GEZOND ONLINE
+De Yona app helpt je samen met een of meer vrienden een gezonde online levensstijl te ontwikkelen. Dat doe je door voor jezelf challenges vast te leggen. Deze deel je met een of meer vrienden. En andersom kun jij zien of het jouw vrienden lukt om hun challenges te halen. 
+
+CHALLENGES VASTLEGGEN EN DELEN
+Een challenge is de maximale tijd die je per dag aan een categorie apps wilt besteden. Of de tijdstippen waarop je een categorie apps wel of niet wilt gebruiken. 
+
+CATEGORIEEN 
+De categorieen zijn gaming, shopping, social, communicatie, gokken en porno. De laatste twee categorieen zijn no-go areas: deze hebben automatisch een maximale tijd van 0 minuten.
+
+GEEN BEPERKINGEN
+Yona blokkeert niets: je kunt alles op je telefoon doen wat je altijd al kon. Dus aan jou zelf de keuze hoe je met je challenges om gaat.
+
+GRATIS
+Yona is gratis. Yona bevat geen reclame en gegevens worden met niemand gedeeld. Yona wordt volledig gefinancierd door giften en voor een groot deel ontwikkeld en onderhouden door vrijwilligers.
+
+PRIVACY GEGARANDEERD
+Met Yona ben je over en weer transparant over je challenges. Yona laat enkel aan je vrienden zien of je bepaalde challenges al dan niet hebt gehaald. Verder deelt Yona geen andere informatie. Dus ook geen enkele content zoals bezochte websites, berichtinhoud of foto's. 
+
+Yona helpt jou om goed om te gaan met internet. Om dat te kunnen doen volgt de Yona-app je internetgedrag. Daarbij staat privacy heel hoog in het vaandel.
+
+Om deze privacy te garanderen, is de Yona-app sterk beveiligd tegen ongeautoriseerde toegang. Yona-systeembeheerders die wel toegang hebben, kunnen het volgende van jou zien: je voornaam, achternaam, telefoonnummer en wanneer je voor het laatst actief was op de Yona-app. Alle andere gegevens zijn versleuteld of anoniem opgeslagen en dus niet naar jou te herleiden.
+
+Als je technisch bent, kun je het Yona-ontwerp bekijken op onze wiki: http://wiki.yona.nu/display/DEV/Architecture.
+
+Ben je heel erg technisch, dan kun je de Yona-code bekijken op GitHub: https://github.com/yonadev/yona-server. 
+
+VPN
+Om Yona goed te laten functioneren hoort bij de installatie van Yona ook de installatie van een VPN app. VPN staat voor Virtual Private Network. Deze app levert aan Yona de informatie die nodig is om de challenges te kunnen meten.
+
+UITSCHRIJVEN
+Als je Yona niet langer wilt gebruiken dan kies je onder het instellingenmenu de optie "Uitschrijven". Je gegevens worden dan verwijderd van de Yona servers en je verdwijnt ook uit de Yona-app van je vrienden.
+
+ANDROID VERSIE
+Yona is beschikbaar vanaf Android versie 4.4
+
+YONA FOUNDATION
+Yona is een product van de Yona Foundation.

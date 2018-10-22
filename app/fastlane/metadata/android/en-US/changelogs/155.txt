@@ -1,0 +1,1 @@
+APPDEV-1182 Improvement in notification list

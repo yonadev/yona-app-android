@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 
 	private List<YonaMessage> listYonaMessage;
 	private final YonaActivity activity;
+	private YonaMessage currentYonaMessage;
+	private MessageItemViewHolder currentMessageItemHolder;
 	private final OnFriendsItemClickListener mOnFriendsItemClickListener;
 
 	/**
@@ -64,63 +67,98 @@ public class MessageStickyRecyclerAdapter extends RecyclerView.Adapter<MessageIt
 	@Override
 	public void onBindViewHolder(MessageItemViewHolder holder, int position)
 	{
-		YonaMessage yonaObject = (YonaMessage) getItem(position);
-
-		if (yonaObject != null)
+		currentYonaMessage = (YonaMessage) getItem(position);
+		currentMessageItemHolder = holder;
+		if (currentYonaMessage != null)
 		{
-			if (yonaObject.getNotificationMessageEnum() != null && !TextUtils.isEmpty(yonaObject.getNotificationMessageEnum().getUserMessage()))
-			{
-				holder.txtTitleMsg.setText(yonaObject.getMessage());
-				holder.img_status.setImageResource(yonaObject.getNotificationMessageEnum().getImageId());
-			}
-			if (yonaObject.getLinks() != null && yonaObject.getLinks().getEdit() != null)
-			{
-				holder.swipeLayout.setRightSwipeEnabled(true);
-			}
-			else
-			{
-				holder.swipeLayout.setRightSwipeEnabled(false);
-			}
-			if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.SYSTEM_MESSAGE)
-			{
-				holder.img_avtar.setVisibility(View.GONE);
-				if (!TextUtils.isEmpty(yonaObject.getMessage()))
-				{
-					holder.txtFooterMsg.setText(yonaObject.getMessage());
-				}
-				holder.profileIconTxt.setVisibility(View.VISIBLE);
-				holder.profileIconTxt.setText(yonaObject.getNickname().substring(0, 1).toUpperCase());
-				holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_admin_round));
-			}
-			else if (!TextUtils.isEmpty(yonaObject.getNickname()))
-			{
-				holder.txtFooterMsg.setText(yonaObject.getNickname());
-				if (yonaObject.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED)
-				{
-					holder.img_avtar.setImageResource(R.drawable.adult_sad);
-					holder.img_avtar.setVisibility(View.VISIBLE);
-					holder.profileIconTxt.setVisibility(View.GONE);
-				}
-				else
-				{
-					holder.img_avtar.setVisibility(View.GONE);
-					holder.profileIconTxt.setVisibility(View.VISIBLE);
-					holder.profileIconTxt.setText(yonaObject.getNickname().substring(0, 1).toUpperCase());
-					holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
-				}
-			}
-			if (yonaObject.getLinks() != null && yonaObject.getLinks().getMarkRead() != null && !TextUtils.isEmpty(yonaObject.getLinks().getMarkRead().getHref()))
-			{
-				holder.messageContainer.setBackground(ContextCompat.getDrawable(activity, R.drawable.item_selected_gradient));
-			}
-			else
-			{
-				holder.messageContainer.setBackground(ContextCompat.getDrawable(activity, R.drawable.item_gradient));
-			}
-			holder.deleteMsg.setTag(yonaObject);
-			holder.messageContainer.setTag(yonaObject);
+			setUpMessageListItemTitle();
+			setUpMessageItemHolderDetails();
+			currentMessageItemHolder.deleteMsg.setTag(currentYonaMessage);
+			currentMessageItemHolder.messageContainer.setTag(currentYonaMessage);
 		}
+	}
 
+	private void setUpMessageListItemTitle()
+	{
+		currentMessageItemHolder.txtTitleMsg.setText(currentYonaMessage.getNotificationMessageEnum().getUserMessage());
+		currentMessageItemHolder.img_status.setImageResource(currentYonaMessage.getNotificationMessageEnum().getImageId());
+	}
+
+
+	private void setUpMessageItemHolderSwipe()
+	{
+		boolean isEditable = currentYonaMessage.getLinks() != null && currentYonaMessage.getLinks().getEdit() != null;
+		currentMessageItemHolder.swipeLayout.setRightSwipeEnabled(isEditable);
+	}
+
+	private void setUpMessageItemHolderDetails()
+	{
+		setUpMessageItemHolderSwipe();
+		if (currentYonaMessage.getNotificationMessageEnum() == NotificationMessageEnum.SYSTEM_MESSAGE)
+		{
+			setUpSystemMessageItemHolder();
+		}
+		else if (!TextUtils.isEmpty(currentYonaMessage.getNickname()))
+		{
+			setUpNonSystemMessageItemHolder();
+		}
+		setUpMessageContainerBackground();
+	}
+
+	private void setUpSystemMessageItemHolder()
+	{
+		currentMessageItemHolder.img_avtar.setVisibility(View.GONE);
+		if (!TextUtils.isEmpty(currentYonaMessage.getMessage()))
+		{
+			currentMessageItemHolder.txtFooterMsg.setText(currentYonaMessage.getMessage());
+		}
+		currentMessageItemHolder.profileIconTxt.setVisibility(View.VISIBLE);
+		currentMessageItemHolder.profileIconTxt.setText(currentYonaMessage.getNickname().substring(0, 1).toUpperCase());
+		currentMessageItemHolder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_admin_round));
+	}
+
+	private void setUpNonSystemMessageItemHolder()
+	{
+		currentMessageItemHolder.txtFooterMsg.setText(currentYonaMessage.getNickname());
+		if (currentYonaMessage.getNotificationMessageEnum() == NotificationMessageEnum.GOALCONFLICTMESSAGE_ANNOUNCED)
+		{
+			currentMessageItemHolder.img_avtar.setImageResource(R.drawable.adult_sad);
+			currentMessageItemHolder.img_avtar.setVisibility(View.VISIBLE);
+			currentMessageItemHolder.profileIconTxt.setVisibility(View.GONE);
+		}
+		else
+		{
+			setMessageListItemUserAvatar();
+		}
+	}
+
+	private void setMessageListItemUserAvatar()
+	{
+		if (currentYonaMessage.getLinks().getUserPhoto() != null)
+		{
+			Picasso.with(this.activity).load(currentYonaMessage.getLinks().getUserPhoto().getHref()).noFade().into(currentMessageItemHolder.img_avtar);
+			currentMessageItemHolder.img_avtar.setVisibility(View.VISIBLE);
+			currentMessageItemHolder.profileIconTxt.setVisibility(View.GONE);
+		}
+		else
+		{
+			currentMessageItemHolder.img_avtar.setVisibility(View.GONE);
+			currentMessageItemHolder.profileIconTxt.setVisibility(View.VISIBLE);
+			currentMessageItemHolder.profileIconTxt.setText(getMessageProfileIconText());
+			currentMessageItemHolder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));
+		}
+	}
+
+	private String getMessageProfileIconText()
+	{
+		return currentYonaMessage.getNickname().substring(0, 1).toUpperCase();// return nick name from notification object.
+	}
+
+	private void setUpMessageContainerBackground()
+	{
+		boolean isUnread = currentYonaMessage.getLinks() != null && currentYonaMessage.getLinks().getMarkRead() != null;
+		int resourceId = (isUnread) ? R.drawable.item_selected_gradient : R.drawable.item_gradient;
+		currentMessageItemHolder.messageContainer.setBackground(ContextCompat.getDrawable(activity, resourceId));
 	}
 
 	/**
