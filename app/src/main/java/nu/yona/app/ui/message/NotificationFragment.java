@@ -231,17 +231,11 @@ public class NotificationFragment extends BaseFragment
 		return setIntentExtrasForActivityCommentMessageClick(messageIntent, messageClicked);
 	}
 
+
 	private Intent setIntentExtrasForActivityCommentMessageClick(Intent messageIntent, YonaMessage messageClicked)
 	{
-		if (messageClicked.getLinks().getReplyComment() != null && !TextUtils.isEmpty(messageClicked.getLinks().getReplyComment().getHref()))
-		{
-			messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape));
-		}
-		else
-		{
-			messageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(messageClicked.getLinks().getYonaBuddy()));
-			messageIntent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue));
-		}
+		messageIntent.putExtra(AppConstant.YONA_BUDDY_OBJ, findBuddy(messageClicked.getLinks().getYonaBuddy()));
+		// For ActivityCommentMessage type notification Yona-header theme is set up in respective activity after checking for yonaBuddy link.
 		return messageIntent;
 	}
 
