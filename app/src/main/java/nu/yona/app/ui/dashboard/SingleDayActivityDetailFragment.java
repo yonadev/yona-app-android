@@ -308,7 +308,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 			activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
 		}
 	}
-	
+
 	@Override
 	public void onDestroyView()
 	{
@@ -517,7 +517,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 
 	private void setUpYonaHeaderTheme()
 	{
-		if (activity.getYonaGoal().getNickName().equals(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()))
+		if (activity.getLinks().getYonaBuddy() == null)
 		{
 			mYonaHeaderTheme = new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape);
 		}
