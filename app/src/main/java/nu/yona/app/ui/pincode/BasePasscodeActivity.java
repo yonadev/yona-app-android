@@ -567,8 +567,7 @@ passcode_reset;
 		User loggedInUser = YonaApplication.getEventChangeManager().getDataState().getUser();
 		if (loggedInUser.getLinks() == null || loggedInUser.getLinks().getYonaPostOpenAppEvent() == null)
 		{
-			// To avoid crash when Data base is cleared in backend and user is already logged in the application.
-			// https://jira.yona.nu/browse/APPDEV-1201
+			// The user account is apparently deleted
 			return;
 		}
 		Href yonaPostOpenAppEventHref = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaPostOpenAppEvent();
