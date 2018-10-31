@@ -42,6 +42,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontEditTextView;
@@ -254,12 +255,31 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 	private void goToNext()
 	{
-		if (validateFields())
+		if (validateFields() && userDetailsChanged())
 		{
 			YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.SCREEN_EDIT_PROFILE, AnalyticsConstant.SAVE);
 			updateUserProfile();
 		}
+		else
+		{
+			YonaActivity.getActivity().onBackPressed();
+		}
 	}
+
+	private static boolean editTextEquals(EditText editText, String value)
+	{
+		return editText.getText().toString().equals(value);
+	}
+
+	private boolean userDetailsChanged()
+	{
+		User loggedInUser = YonaApplication.getEventChangeManager().getDataState().getUser();
+		return editTextEquals(firstName, loggedInUser.getFirstName()) ||
+				editTextEquals(lastName, loggedInUser.getLastName()) ||
+				editTextEquals(nickName, loggedInUser.getNickname()) ||
+				editTextEquals(mobileNumber, loggedInUser.getMobileNumber());
+	}
+
 
 	private void setTitleAndIcon()
 	{
