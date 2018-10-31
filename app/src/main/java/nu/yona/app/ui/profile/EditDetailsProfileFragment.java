@@ -266,26 +266,18 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		}
 	}
 
+	private static boolean editTextEquals(EditText editText, String value)
+	{
+		return editText.getText().toString().equals(value);
+	}
+
 	private boolean userDetailsChanged()
 	{
 		User loggedInUser = YonaApplication.getEventChangeManager().getDataState().getUser();
-		if (!firstName.getText().toString().equals(loggedInUser.getFirstName()))
-		{
-			return true;
-		}
-		if (!lastName.getText().toString().equals(loggedInUser.getLastName()))
-		{
-			return true;
-		}
-		if (!nickName.getText().toString().equals(loggedInUser.getNickname()))
-		{
-			return true;
-		}
-		if (!mobileNumber.getText().toString().equals(loggedInUser.getMobileNumber()))
-		{
-			return true;
-		}
-		return false;
+		return editTextEquals(firstName, loggedInUser.getFirstName()) ||
+				editTextEquals(lastName, loggedInUser.getLastName()) ||
+				editTextEquals(nickName, loggedInUser.getNickname()) ||
+				editTextEquals(mobileNumber, loggedInUser.getMobileNumber());
 	}
 
 
