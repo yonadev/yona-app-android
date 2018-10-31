@@ -86,46 +86,37 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 
 	private void setUpTimeLineViewHolderWithDayActivity(TimelineHolder holder, DayActivity dayActivity)
 	{
-		if (dayActivity != null)
+		switch (dayActivity.getChartTypeEnum())
 		{
-			switch (dayActivity.getChartTypeEnum())
-			{
-				case TIME_FRAME_CONTROL:
-					setUpTimeFrameControlHolderView(dayActivity, holder);
-					break;
-				case TIME_BUCKET_CONTROL:
-					setUpTimeBucketControlHolderView(dayActivity, holder);
-					break;
-				case SPREAD_CONTROL:
-					break;
-				case NOGO_CONTROL:
-					setUpNoGoHolderView(dayActivity, holder);
-					break;
-				case TITLE:
-					holder.getmHeaderCategoryTypeGoal().setText(dayActivity.getYonaGoal().getActivityCategoryName());
-				default:
-					break;
-			}
+			case TIME_FRAME_CONTROL:
+				setUpTimeFrameControlHolderView(dayActivity, holder);
+				break;
+			case TIME_BUCKET_CONTROL:
+				setUpTimeBucketControlHolderView(dayActivity, holder);
+				break;
+			case SPREAD_CONTROL:
+				break;
+			case NOGO_CONTROL:
+				setUpNoGoHolderView(dayActivity, holder);
+				break;
+			case TITLE:
+				holder.getmHeaderCategoryTypeGoal().setText(dayActivity.getYonaGoal().getActivityCategoryName());
+			default:
+				break;
 		}
 	}
 
 
 	private void setUpTimeFrameControlHolderView(DayActivity dayActivity, TimelineHolder holder)
 	{
-		if (dayActivity.getTimeZoneSpread() != null)
-		{
-			holder.getmTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
-		}
+		holder.getmTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
 		updateProfileImage(holder, dayActivity);
 	}
 
 	private void setUpTimeBucketControlHolderView(DayActivity dayActivity, TimelineHolder holder)
 	{
-		int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
-		if (maxDurationAllow > 0)
-		{
-			holder.getmTimebucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
-		}
+		holder.getmTimebucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(),
+				(int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
 		updateProfileImage(holder, dayActivity);
 	}
 
