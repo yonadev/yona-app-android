@@ -21,7 +21,6 @@ import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.view.Display;
-import android.widget.Toast;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -76,7 +75,6 @@ public class YonaReceiver extends BroadcastReceiver
 
 	private void handleScreenOnBroadcast(Context context)
 	{
-		Toast.makeText(context, "handleDeviceWakeUpBroadCastInOroeAndAbove", Toast.LENGTH_LONG).show();
 		Logger.logi("Screen On", "Screen On");
 		startService(context);
 		AppUtils.startVPN(context, false);
@@ -97,12 +95,11 @@ public class YonaReceiver extends BroadcastReceiver
 	@TargetApi(Build.VERSION_CODES.O)
 	private void handleDeviceWakeUpBroadCastInOroeAndAbove(Context context)
 	{
-		// Device is awake from doze/sleep (it can be because of user interaction or of some Push action).
+		// Device is awake from doze/sleep (it can be because of user interaction or of some silent Push notifications).
 		// We should start service only when device screen is on.
 		Logger.logi("Device WAKE UP On", "Device WAKE UP On");
 		if (isScreenOn(context))
 		{
-			Toast.makeText(context, "isInteractive", Toast.LENGTH_LONG).show();
 			startService(context);
 			AppUtils.startVPN(context, false);
 		}
