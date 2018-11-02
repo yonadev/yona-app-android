@@ -8,6 +8,8 @@
 
 package nu.yona.app.api.receiver;
 
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,7 +17,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.hardware.display.DisplayManager;
 import android.os.Build;
+import android.os.PowerManager;
+import android.view.Display;
+import android.widget.Toast;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -24,44 +30,119 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 
+import static android.content.Context.POWER_SERVICE;
+
 /**
  * Created by kinnarvasa on 23/03/16.
  */
 public class YonaReceiver extends BroadcastReceiver
 {
 
-	private Context mContext;
+	private Context context;
 
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
-		this.mContext = context;
+		this.context = context;
 		switch (intent.getAction())
 		{
 			case Intent.ACTION_BOOT_COMPLETED:
-				Logger.loge("ACTION_BOOT_COMPLETED On", "ACTION_BOOT_COMPLETED On");
-				startService(context);
+				handleRebootCompletedBroadcast(context);
 			case Intent.ACTION_SCREEN_ON:
-				Logger.loge("Screen On", "Screen On");
-				startService(context);
-				AppUtils.startVPN(context, false);
+				handleScreenOnBroadcast(context);
 				break;
 			case Intent.ACTION_SCREEN_OFF:
-				Logger.loge("SEND_Screen Off", "Screen Off");
-				AppUtils.setNullScheduler();
-				AppUtils.sendLogToServer(AppConstant.ONE_SECOND);
-				AppUtils.stopService(context);
+				handleScreenOffBroadcast(context);
+				break;
+			case AppConstant.WAKE_UP:
+				handleDeviceWakeUpBroadCastInOroeAndAbove(context);
 				break;
 			case AppConstant.RESTART_DEVICE:
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_DEVICE_RESTART_REQUIRE, null);
 				break;
 			case AppConstant.RESTART_VPN:
-				Logger.loge("Show restart VPN calll", "Show restart vpn call");
-				showRestartVPN(mContext.getString(R.string.vpn_disconnected));
+				handleRestartVPNBroadcast(context);
 				break;
 			default:
 				break;
 		}
+	}
+
+	private void handleRebootCompletedBroadcast(Context context)
+	{
+		Logger.loge("ACTION_BOOT_COMPLETED On", "ACTION_BOOT_COMPLETED On");
+		startService(context);
+	}
+
+	private void handleScreenOnBroadcast(Context context)
+	{
+		Toast.makeText(context, "handleDeviceWakeUpBroadCastInOroeAndAbove", Toast.LENGTH_LONG).show();
+		Logger.logi("Screen On", "Screen On");
+		startService(context);
+		AppUtils.startVPN(context, false);
+	}
+
+	private void handleScreenOffBroadcast(Context context)
+	{
+		Logger.logi("SEND_Screen Off", "Screen Off");
+		AppUtils.setNullScheduler();
+		AppUtils.sendLogToServer(AppConstant.ONE_SECOND);
+		AppUtils.stopService(context);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+		{
+			scheduleRTCWakeupAlarm(context, AppConstant.ONE_SECOND);
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.O)
+	private void handleDeviceWakeUpBroadCastInOroeAndAbove(Context context)
+	{
+		// Device is awake from doze/sleep (it can be because of user interaction or of some Push action).
+		// We should start service only when device screen is on.
+		Logger.logi("Device WAKE UP On", "Device WAKE UP On");
+		if (isScreenOn(context))
+		{
+			Toast.makeText(context, "isInteractive", Toast.LENGTH_LONG).show();
+			startService(context);
+			AppUtils.startVPN(context, false);
+		}
+	}
+
+	private boolean isScreenOn(Context context)
+	{
+		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH)
+		{
+			DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+			for (Display display : dm.getDisplays())
+			{
+				if (display.getState() == Display.STATE_ON ||
+						display.getState() == Display.STATE_UNKNOWN)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
+		return powerManager.isScreenOn();
+	}
+
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void scheduleRTCWakeupAlarm(Context context, long delay)
+	{
+		Intent alarmIntent = new Intent(context, YonaReceiver.class);
+		alarmIntent.setAction(AppConstant.WAKE_UP);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.cancel(pendingIntent);
+		// Setting up alarm to fire when device wakes up from doze/sleep mode.
+		alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delay, pendingIntent);
+	}
+
+	private void handleRestartVPNBroadcast(Context context)
+	{
+		Logger.logi("Show restart VPN calll", "Show restart vpn call");
+		showRestartVPN(context.getString(R.string.vpn_disconnected));
 	}
 
 	private void startService(Context context)
@@ -73,29 +154,30 @@ public class YonaReceiver extends BroadcastReceiver
 		}
 	}
 
+
 	private void showRestartVPN(final String message)
 	{
 		try
 		{
-			Intent intent = AppUtils.startVPN(mContext, true);
-			PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis() + 10000, intent, 0);
+			Intent intent = AppUtils.startVPN(context, true);
+			PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis() + 10000, intent, 0);
 
-			Notification notification = new Notification.Builder(mContext).setContentTitle(mContext.getString(R.string.appname))
+			Notification notification = new Notification.Builder(context).setContentTitle(context.getString(R.string.appname))
 					.setContentText(message)
-					.setTicker(mContext.getString(R.string.appname))
+					.setTicker(context.getString(R.string.appname))
 					.setWhen(0)
 					.setVibrate(new long[]{1, 1, 1})
 					.setDefaults(Notification.DEFAULT_SOUND)
 					.setStyle(new Notification.BigTextStyle().bigText(message))
 					.setSmallIcon(R.mipmap.ic_launcher)
-					.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher))
+					.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
 					.setContentIntent(pIntent)
 					.setAutoCancel(true)
 					.build();
 
 			notification.flags |= Notification.FLAG_NO_CLEAR;
 
-			NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 			notificationManager.notify(0, notification);
 		}
 		catch (Exception e)
