@@ -501,30 +501,48 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		}
 	}
 
+	private void handleImageCropRequest(Intent data)
+	{
+		CropImage.ActivityResult result = CropImage.getActivityResult(data);
+		File image = compressFile(result);
+		if (image != null)
+		{
+			uploadUserPhoto(image);
+		}
+		else
+		{
+			showError(new ErrorMessage(getString(R.string.somethingwentwrong)));
+		}
+	}
+
+	private void handleImportProfileRequest(Intent data)
+	{
+		if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)))
+		{
+			userPreferences.edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
+			AppUtils.startVPN(this, false);
+		}
+		else
+		{
+			importVPNProfile();
+		}
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		switch (requestCode)
 		{
 			case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
-				CropImage.ActivityResult result = CropImage.getActivityResult(data);
 				if (resultCode == RESULT_OK)
 				{
-					//show dialog ?
-					File image = compressFile(result);
-					if (image != null)
-					{
-						uploadUserPhoto(image);
-					}
-					else
-					{
-						showError(new ErrorMessage(getString(R.string.somethingwentwrong)));
-					}
+					handleImageCropRequest(data);
 				}
 				else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
 				{
 					showError(new ErrorMessage(getString(R.string.somethingwentwrong)));
 				}
+				break;
 			case PICK_CONTACT:
 				if (resultCode == RESULT_OK)
 				{
@@ -535,15 +553,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			case IMPORT_PROFILE:
 				if (resultCode == RESULT_OK)
 				{
-					if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)))
-					{
-						userPreferences.edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
-						AppUtils.startVPN(this, false);
-					}
-					else
-					{
-						importVPNProfile();
-					}
+					handleImportProfileRequest(data);
 				}
 				break;
 			case REQUEST_PERMISSION_SETTING:

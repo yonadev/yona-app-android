@@ -1,0 +1,1 @@
+APPDEV-1185 Fixed error on adding profile photo

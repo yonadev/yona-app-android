@@ -35,6 +35,7 @@ import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
+import nu.yona.app.api.model.User;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListenerImpl;
@@ -563,6 +564,12 @@ passcode_reset;
 
 	protected void postOpenAppEvent()
 	{
+		User loggedInUser = YonaApplication.getEventChangeManager().getDataState().getUser();
+		if (loggedInUser.getLinks() == null || loggedInUser.getLinks().getYonaPostOpenAppEvent() == null)
+		{
+			// The user account is apparently deleted
+			return;
+		}
 		Href yonaPostOpenAppEventHref = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaPostOpenAppEvent();
 		String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
 		DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result), (error) -> handlePostAppEventFailure(error), null);
