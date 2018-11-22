@@ -17,10 +17,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.os.PowerManager;
-import android.view.Display;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
@@ -54,7 +52,7 @@ public class YonaReceiver extends BroadcastReceiver
 				handleScreenOffBroadcast(context);
 				break;
 			case AppConstant.WAKE_UP:
-				handleDeviceWakeUpBroadCastInOroeAndAbove(context);
+				handleWakeUpAlarmInOroeAndAbove(context);
 				break;
 			case AppConstant.RESTART_DEVICE:
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_DEVICE_RESTART_REQUIRE, null);
@@ -88,51 +86,44 @@ public class YonaReceiver extends BroadcastReceiver
 		AppUtils.stopService(context);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
 		{
-			scheduleRTCWakeupAlarm(context, AppConstant.ONE_SECOND);
+			scheduleNextAlarmToCheckIfDeviceIsInteractive(context, AppConstant.TEN_SECONDS);
 		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)
-	private void handleDeviceWakeUpBroadCastInOroeAndAbove(Context context)
+	private void handleWakeUpAlarmInOroeAndAbove(Context context)
 	{
 		// Device is awake from doze/sleep (it can be because of user interaction or of some silent Push notifications).
-		// We should start service only when device screen is on.
-		Logger.logi("Device WAKE UP On", "Device WAKE UP On");
-		if (isScreenOn(context))
+		// We should start service only when device is interactive else schedule next alarm
+		Logger.logi("WAKE", "Alarm Fired");
+		if (isDeviceInteractive(context))
 		{
+			Logger.logi("WAKE", "Device interactive. Service started");
 			startService(context);
 			AppUtils.startVPN(context, false);
 		}
-	}
-
-	private boolean isScreenOn(Context context)
-	{
-		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH)
+		else
 		{
-			DisplayManager dm = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
-			for (Display display : dm.getDisplays())
-			{
-				if (display.getState() == Display.STATE_ON ||
-						display.getState() == Display.STATE_UNKNOWN)
-				{
-					return true;
-				}
-			}
-			return false;
+			Logger.logi("WAKE", "Scheduled Next Alarm");
+			scheduleNextAlarmToCheckIfDeviceIsInteractive(context, AppConstant.TEN_SECONDS);
 		}
-		PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
-		return powerManager.isScreenOn();
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)
-	public static void scheduleRTCWakeupAlarm(Context context, long delay)
+	private boolean isDeviceInteractive(Context context)
+	{
+		PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
+		return powerManager.isInteractive();
+	}
+
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void scheduleNextAlarmToCheckIfDeviceIsInteractive(Context context, long delay)
 	{
 		Intent alarmIntent = new Intent(context, YonaReceiver.class);
 		alarmIntent.setAction(AppConstant.WAKE_UP);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.cancel(pendingIntent);
-		// Setting up alarm to fire when device wakes up from doze/sleep mode.
 		alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delay, pendingIntent);
 	}
 
