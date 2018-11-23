@@ -34,6 +34,7 @@ import static android.content.Context.POWER_SERVICE;
  */
 public class YonaReceiver extends BroadcastReceiver
 {
+	private static final int INTERACTIVE_CHECK_INTERVAL = 10000;
 
 	private Context context;
 
@@ -52,7 +53,7 @@ public class YonaReceiver extends BroadcastReceiver
 				handleScreenOffBroadcast(context);
 				break;
 			case AppConstant.WAKE_UP:
-				handleWakeUpAlarmInOroeAndAbove(context);
+				handleWakeUpAlarm(context);
 				break;
 			case AppConstant.RESTART_DEVICE:
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_DEVICE_RESTART_REQUIRE, null);
@@ -86,16 +87,15 @@ public class YonaReceiver extends BroadcastReceiver
 		AppUtils.stopService(context);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
 		{
-			scheduleNextAlarmToCheckIfDeviceIsInteractive(context, AppConstant.TEN_SECONDS);
+			scheduleNextAlarmToCheckIfDeviceIsInteractive(context, INTERACTIVE_CHECK_INTERVAL);
 		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)
-	private void handleWakeUpAlarmInOroeAndAbove(Context context)
+	private void handleWakeUpAlarm(Context context)
 	{
 		// Device is awake from doze/sleep (it can be because of user interaction or of some silent Push notifications).
 		// We should start service only when device is interactive else schedule next alarm
-		Logger.logi("WAKE", "Alarm Fired");
 		if (isDeviceInteractive(context))
 		{
 			Logger.logi("WAKE", "Device interactive. Service started");
@@ -104,8 +104,7 @@ public class YonaReceiver extends BroadcastReceiver
 		}
 		else
 		{
-			Logger.logi("WAKE", "Scheduled Next Alarm");
-			scheduleNextAlarmToCheckIfDeviceIsInteractive(context, AppConstant.TEN_SECONDS);
+			scheduleNextAlarmToCheckIfDeviceIsInteractive(context, INTERACTIVE_CHECK_INTERVAL);
 		}
 	}
 
@@ -129,7 +128,7 @@ public class YonaReceiver extends BroadcastReceiver
 
 	private void handleRestartVPNBroadcast(Context context)
 	{
-		Logger.logi("Show restart VPN calll", "Show restart vpn call");
+		Logger.logi("VPN", "Restart VPN Broadcast received");
 		showRestartVPN(context.getString(R.string.vpn_disconnected));
 	}
 

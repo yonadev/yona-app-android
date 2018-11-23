@@ -131,6 +131,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	private boolean isUserFromPinScreenAlert;
 	private boolean isSkipPinFlow;
 	private final SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
+	private static final int LOCK_SCREEN_INTERVAL = 3000;
 
 	/**
 	 * Gets activity.
@@ -1590,7 +1591,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			{
 				isSkipPinFlow = true;
 			}
-		}, AppConstant.THREE_SECOND);
+		}, LOCK_SCREEN_INTERVAL);
 	}
 
 	@TargetApi(Build.VERSION_CODES.M)

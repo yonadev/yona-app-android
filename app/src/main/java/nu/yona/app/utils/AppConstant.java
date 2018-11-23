@@ -71,13 +71,6 @@ public interface AppConstant
 	 */
 	int ONE_SECOND = 1000;
 
-	int THREE_SECOND = 3000;
-
-	int TEN_SECONDS = 10000;
-	/**
-	 * The constant FIVE_SECONDS.
-	 */
-	int FIVE_SECONDS = 5000;
 	/**
 	 * The constant TIME_INTERVAL_ONE.
 	 */
