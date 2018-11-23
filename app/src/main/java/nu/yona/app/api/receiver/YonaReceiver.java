@@ -98,7 +98,6 @@ public class YonaReceiver extends BroadcastReceiver
 		// We should start service only when device is interactive else schedule next alarm
 		if (isDeviceInteractive(context))
 		{
-			Logger.logi("WAKE", "Device interactive. Service started");
 			startService(context);
 			AppUtils.startVPN(context, false);
 		}
