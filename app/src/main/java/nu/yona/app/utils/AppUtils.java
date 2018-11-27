@@ -9,7 +9,9 @@
 package nu.yona.app.utils;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AppOpsManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -164,6 +166,7 @@ public class AppUtils
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
 			{
 				startForegroundService(context, activityMonitorIntent);
+				cancelPendingWakeUpAlarms(context);
 			}
 			else
 			{
@@ -174,6 +177,16 @@ public class AppUtils
 		{
 			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
 		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void cancelPendingWakeUpAlarms(Context context)
+	{
+		Intent alarmIntent = new Intent(context, YonaReceiver.class);
+		alarmIntent.setAction(AppConstant.WAKE_UP);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.cancel(pendingIntent);
 	}
 
 	/*

@@ -71,11 +71,6 @@ public interface AppConstant
 	 */
 	int ONE_SECOND = 1000;
 
-	int THREE_SECOND = 3000;
-	/**
-	 * The constant FIVE_SECONDS.
-	 */
-	int FIVE_SECONDS = 5000;
 	/**
 	 * The constant TIME_INTERVAL_ONE.
 	 */
@@ -296,4 +291,5 @@ public interface AppConstant
 
 	String RESTART_VPN = "com.yona.app.RESTART_VPN";
 	String RESTART_DEVICE = "com.yona.app.RESTART_DEVICE";
+	String WAKE_UP = "com.yona.app.WAKE_UP_ALARM";
 }

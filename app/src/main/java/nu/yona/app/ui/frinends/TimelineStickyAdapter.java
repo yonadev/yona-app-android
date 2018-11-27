@@ -80,49 +80,58 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 	public void onBindViewHolder(final TimelineHolder holder, int position)
 	{
 		DayActivity dayActivity = (DayActivity) getItem(position);
+		holder.getView().setTag(dayActivity);
+		setUpTimeLineViewHolderWithDayActivity(holder, dayActivity);
+	}
 
-		if (dayActivity != null)
+	private void setUpTimeLineViewHolderWithDayActivity(TimelineHolder holder, DayActivity dayActivity)
+	{
+		switch (dayActivity.getChartTypeEnum())
 		{
-			switch (dayActivity.getChartTypeEnum())
-			{
-				case TIME_FRAME_CONTROL:
-					holder.getView().setTag(dayActivity);
-					if (dayActivity.getTimeZoneSpread() != null)
-					{
-						holder.getmTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
-					}
-					updateProfileImage(holder, dayActivity);
-					break;
-				case TIME_BUCKET_CONTROL:
-					holder.getView().setTag(dayActivity);
-					int maxDurationAllow = (int) dayActivity.getYonaGoal().getMaxDurationMinutes();
-					if (maxDurationAllow > 0)
-					{
-						holder.getmTimebucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(), (int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
-					}
-					updateProfileImage(holder, dayActivity);
-					break;
-				case SPREAD_CONTROL:
-					break;
-				case NOGO_CONTROL:
-					holder.getView().setTag(dayActivity);
-					if (dayActivity.getGoalAccomplished())
-					{
-						holder.getmNogoImage().setImageResource(R.drawable.adult_happy);
-					}
-					else
-					{
-						holder.getmNogoImage().setImageResource(R.drawable.adult_sad);
-					}
-					holder.getmTxtNogo().setText(dayActivity.getYonaGoal().getNickName());
-					holder.getmTxtNogoTime().setText(mContext.getString(R.string.nogogoalbeyond, dayActivity.getYonaGoal().getMaxDurationMinutes()));
-					break;
-				case TITLE:
-					holder.getmHeaderCategoryTypeGoal().setText(dayActivity.getYonaGoal().getActivityCategoryName());
-				default:
-					break;
-			}
+			case TIME_FRAME_CONTROL:
+				setUpTimeFrameControlHolderView(dayActivity, holder);
+				break;
+			case TIME_BUCKET_CONTROL:
+				setUpTimeBucketControlHolderView(dayActivity, holder);
+				break;
+			case SPREAD_CONTROL:
+				break;
+			case NOGO_CONTROL:
+				setUpNoGoHolderView(dayActivity, holder);
+				break;
+			case TITLE:
+				holder.getmHeaderCategoryTypeGoal().setText(dayActivity.getYonaGoal().getActivityCategoryName());
+			default:
+				break;
 		}
+	}
+
+
+	private void setUpTimeFrameControlHolderView(DayActivity dayActivity, TimelineHolder holder)
+	{
+		holder.getmTimeFrameGraph().chartValuePre(dayActivity.getTimeZoneSpread());
+		updateProfileImage(holder, dayActivity);
+	}
+
+	private void setUpTimeBucketControlHolderView(DayActivity dayActivity, TimelineHolder holder)
+	{
+		holder.getmTimebucketGraph().graphArguments(dayActivity.getTotalMinutesBeyondGoal(),
+				(int) dayActivity.getYonaGoal().getMaxDurationMinutes(), dayActivity.getTotalActivityDurationMinutes());
+		updateProfileImage(holder, dayActivity);
+	}
+
+	private void setUpNoGoHolderView(DayActivity dayActivity, TimelineHolder holder)
+	{
+		if (dayActivity.getGoalAccomplished())
+		{
+			holder.getmNogoImage().setImageResource(R.drawable.adult_happy);
+		}
+		else
+		{
+			holder.getmNogoImage().setImageResource(R.drawable.adult_sad);
+		}
+		holder.getmTxtNogo().setText(dayActivity.getYonaGoal().getNickName());
+		holder.getmTxtNogoTime().setText(mContext.getString(R.string.nogogoalbeyond, String.valueOf(dayActivity.getTotalMinutesBeyondGoal())));
 	}
 
 	private void updateProfileImage(TimelineHolder holder, DayActivity dayActivity)
