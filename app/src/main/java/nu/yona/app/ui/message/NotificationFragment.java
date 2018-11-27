@@ -48,7 +48,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
-import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
+import nu.yona.app.ui.friends.OnFriendsItemClickListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
