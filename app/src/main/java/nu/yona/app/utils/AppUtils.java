@@ -30,6 +30,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
@@ -261,6 +262,8 @@ public class AppUtils
 		filter.addAction(Intent.ACTION_BOOT_COMPLETED);
 		filter.addAction(AppConstant.RESTART_DEVICE);
 		filter.addAction(AppConstant.RESTART_VPN);
+		filter.addAction(PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED);
+
 
 		context.registerReceiver(receiver, filter);
 	}
