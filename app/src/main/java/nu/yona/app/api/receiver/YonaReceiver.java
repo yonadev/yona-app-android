@@ -74,12 +74,9 @@ public class YonaReceiver extends BroadcastReceiver
 	{
 		Logger.loge("Broadcast", "ACTION_DEVICE_IDLE_MODE_CHANGED");
 		PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
-		if (powerManager.isDeviceIdleMode())
+		if (powerManager.isDeviceIdleMode() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
 		{
-			if (powerManager.isDeviceIdleMode() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-			{
-				scheduleNextAlarmToCheckIfDeviceIsInteractive(context, INTERACTIVE_CHECK_INTERVAL);
-			}
+			scheduleNextAlarmToCheckIfDeviceIsInteractive(context, INTERACTIVE_CHECK_INTERVAL);
 		}
 	}
 
