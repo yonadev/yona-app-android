@@ -61,45 +61,59 @@ public class YonaReceiver extends BroadcastReceiver
 			case AppConstant.RESTART_VPN:
 				handleRestartVPNBroadcast(context);
 				break;
+			case PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED:
+				handleDeviceDozeMode(context);
+				break;
 			default:
 				break;
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.O)
+	private void handleDeviceDozeMode(Context context)
+	{
+		Logger.loge("BroadCast", "ACTION_DEVICE_IDLE_MODE_CHANGED");
+		PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
+		if (powerManager.isDeviceIdleMode())
+		{
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+			{
+				scheduleNextAlarmToCheckIfDeviceIsInteractive(context, INTERACTIVE_CHECK_INTERVAL);
+			}
+		}
+	}
+
 	private void handleRebootCompletedBroadcast(Context context)
 	{
-		Logger.loge("ACTION_BOOT_COMPLETED On", "ACTION_BOOT_COMPLETED On");
+		Logger.loge("BroadCast", "ACTION_BOOT_COMPLETED");
 		startService(context);
 	}
 
 	private void handleScreenOnBroadcast(Context context)
 	{
-		Logger.logi("Screen On", "Screen On");
+		Logger.logi("BroadCast", "ACTION_SCREEN_ON");
 		startService(context);
 		AppUtils.startVPN(context, false);
 	}
 
 	private void handleScreenOffBroadcast(Context context)
 	{
-		Logger.logi("SEND_Screen Off", "Screen Off");
+		Logger.logi("BroadCast", "ACTION_SCREEN_OFF");
 		AppUtils.setNullScheduler();
 		AppUtils.sendLogToServer(AppConstant.ONE_SECOND);
-		AppUtils.stopService(context);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-		{
-			scheduleNextAlarmToCheckIfDeviceIsInteractive(context, INTERACTIVE_CHECK_INTERVAL);
-		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)
 	private void handleWakeUpAlarm(Context context)
 	{
+		Logger.logi("BroadCast", "WAKE_UP");
 		// Device is awake from doze/sleep (it can be because of user interaction or of some silent Push notifications).
 		// We should start service only when device is interactive else schedule next alarm
 		if (isDeviceInteractive(context))
 		{
 			startService(context);
 			AppUtils.startVPN(context, false);
+			AppUtils.cancelPendingWakeUpAlarms(context);
 		}
 		else
 		{
@@ -127,7 +141,7 @@ public class YonaReceiver extends BroadcastReceiver
 
 	private void handleRestartVPNBroadcast(Context context)
 	{
-		Logger.logi("VPN", "Restart VPN Broadcast received");
+		Logger.logi("BroadCast", "Restart VPN Broadcast received");
 		showRestartVPN(context.getString(R.string.vpn_disconnected));
 	}
 
