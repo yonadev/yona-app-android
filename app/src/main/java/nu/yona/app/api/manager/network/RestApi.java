@@ -341,21 +341,6 @@ public interface RestApi
 								   @Header(NetworkConstant.ACCEPT_LANGUAGE) String acceptLanguage,
 								   @Query("onlyUnreadMessages") boolean isUnreadMessage);
 
-	/********
-	 * NOTIFICATION MANAGER
-	 *
-	 * @param url      the url
-	 * @param password the password
-	 * @param size     the size
-	 * @param page     the page
-	 * @return the messages
-	 */
-	@GET
-	Call<YonaMessages> getMessages(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
-								   @Header(NetworkConstant.ACCEPT_LANGUAGE) String acceptLanguage,
-								   @Query("onlyUnreadMessages") boolean isUnreadMessage,
-								   @Query("size") int size, @Query("page") int page);
-
 	/**
 	 * Delete message call.
 	 *

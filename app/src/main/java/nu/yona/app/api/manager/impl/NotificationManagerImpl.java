@@ -68,29 +68,22 @@ public class NotificationManagerImpl implements NotificationManager
 	@Override
 	public void getMessage(DataLoadListener listener)
 	{
-		getMessage(0, 0, listener); //set default page 0, start page = 0
+		getMessage(false, listener);//set default page 0, start page = 0
 	}
 
-	@Override
-	public void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener)
-	{
-		getMessage(itemsPerPage, pageNo, false, listener);
-	}
 
 	/**
 	 * Gets message.
 	 *
-	 * @param itemsPerPage the items per page
-	 * @param pageNo       the page no
-	 * @param listener     the listener
+	 * @param listener the listener
 	 */
 	@Override
-	public void getMessage(final int itemsPerPage, final int pageNo, boolean isUnreadStatus, final DataLoadListener listener)
+	public void getMessage(boolean isUnreadStatus, final DataLoadListener listener)
 	{
-		getMessage(itemsPerPage, pageNo, isUnreadStatus, listener, false);
+		getMessage(isUnreadStatus, listener, false);
 	}
 
-	private void getMessage(final int itemsPerPage, final int pageNo, final boolean isUnreadStatus, final DataLoadListener listener, final boolean isProcessUpdate)
+	private void getMessage(final boolean isUnreadStatus, final DataLoadListener listener, final boolean isProcessUpdate)
 	{
 		try
 		{
@@ -99,7 +92,7 @@ public class NotificationManagerImpl implements NotificationManager
 					&& !TextUtils.isEmpty(user.getLinks().getYonaMessages().getHref()))
 			{
 				notificationNetwork.getMessage(user.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus,
-						itemsPerPage, pageNo, new DataLoadListener()
+						new DataLoadListener()
 						{
 							@Override
 							public void onDataLoad(Object result)
@@ -168,7 +161,7 @@ public class NotificationManagerImpl implements NotificationManager
 											}
 											if (isAnyProcessed)
 											{
-												getMessage(itemsPerPage, pageNo, isUnreadStatus, listener, true);
+												getMessage(isUnreadStatus, listener, true);
 											}
 											APIManager.getInstance().getAuthenticateManager().getUserFromServer();
 										}
@@ -306,7 +299,7 @@ public class NotificationManagerImpl implements NotificationManager
 					@Override
 					public void onDataLoad(Object result)
 					{
-						getMessage(itemsPerPage, pageNo, listener);
+						getMessage(listener);
 					}
 
 					@Override
@@ -331,14 +324,12 @@ public class NotificationManagerImpl implements NotificationManager
 	/**
 	 * Post message.
 	 *
-	 * @param url          the url
-	 * @param body         the body
-	 * @param itemsPerPage the items per page
-	 * @param pageNo       the page no
-	 * @param listener     the listener
+	 * @param url      the url
+	 * @param body     the body
+	 * @param listener the listener
 	 */
 	@Override
-	public void postMessage(String url, MessageBody body, final int itemsPerPage, final int pageNo, final DataLoadListener listener)
+	public void postMessage(String url, MessageBody body, final DataLoadListener listener)
 	{
 		try
 		{
@@ -349,7 +340,7 @@ public class NotificationManagerImpl implements NotificationManager
 					@Override
 					public void onDataLoad(Object result)
 					{
-						getMessage(itemsPerPage, pageNo, listener);
+						getMessage(listener);
 					}
 
 					@Override
@@ -367,7 +358,7 @@ public class NotificationManagerImpl implements NotificationManager
 	}
 
 	@Override
-	public void deleteMessage(@NonNull String url, final int itemsPerPage, final int pageNo, final DataLoadListener listener)
+	public void deleteMessage(@NonNull String url, final DataLoadListener listener)
 	{
 		try
 		{
@@ -376,7 +367,7 @@ public class NotificationManagerImpl implements NotificationManager
 				@Override
 				public void onDataLoad(Object result)
 				{
-					getMessage(itemsPerPage, pageNo, listener);
+					getMessage(listener);
 				}
 
 				@Override

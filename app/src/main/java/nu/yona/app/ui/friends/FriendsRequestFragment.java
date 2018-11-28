@@ -214,7 +214,7 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
 		MessageBody messageBody = new MessageBody();
 		messageBody.setProperties(new Properties());
 		YonaActivity.getActivity().showLoadingView(true, null);
-		APIManager.getInstance().getNotificationManager().postMessage(url, messageBody, 0, 0, new DataLoadListener()
+		APIManager.getInstance().getNotificationManager().postMessage(url, messageBody, new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)

@@ -26,16 +26,8 @@ public interface NotificationManager
 	 */
 	void getMessage(DataLoadListener listener);
 
-	/**
-	 * Gets message.
-	 *
-	 * @param itemsPerPage the items per page
-	 * @param pageNo       the page no
-	 * @param listener     the listener
-	 */
-	void getMessage(int itemsPerPage, int pageNo, DataLoadListener listener);
 
-	void getMessage(final int itemsPerPage, final int pageNo, boolean isUnreadStatus, final DataLoadListener listener);
+	void getMessage(boolean isUnreadStatus, final DataLoadListener listener);
 
 
 	/**
@@ -50,23 +42,19 @@ public interface NotificationManager
 	/**
 	 * Post message.
 	 *
-	 * @param url          the url
-	 * @param body         the body
-	 * @param itemsPerPage the items per page
-	 * @param pageNo       the page no
-	 * @param listener     the listener
+	 * @param url      the url
+	 * @param body     the body
+	 * @param listener the listener
 	 */
-	void postMessage(String url, MessageBody body, int itemsPerPage, int pageNo, DataLoadListener listener);
+	void postMessage(String url, MessageBody body, DataLoadListener listener);
 
 	/**
 	 * Delete Notification Message
 	 *
-	 * @param url          the url
-	 * @param itemsPerPage the items per page
-	 * @param pageNo       the page no
-	 * @param listener     the listener
+	 * @param url      the url
+	 * @param listener the listener
 	 */
-	void deleteMessage(String url, final int itemsPerPage, final int pageNo, DataLoadListener listener);
+	void deleteMessage(String url, DataLoadListener listener);
 
 	void setReadMessage(List<YonaMessage> yonaMessageList, YonaMessage message, DataLoadListener listener);
 }
