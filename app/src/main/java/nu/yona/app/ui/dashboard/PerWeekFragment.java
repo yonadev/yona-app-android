@@ -102,12 +102,9 @@ public class PerWeekFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null)
+		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null && getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
 		{
-			if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
-			{
 				yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
-			}
 		}
 		if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
 		{
@@ -120,17 +117,14 @@ public class PerWeekFragment extends BaseFragment
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.dashboard_perweek_fragment, null);
-
 		listView = view.findViewById(R.id.listView);
 		mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
-
 		perWeekStickyAdapter = new PerWeekStickyAdapter(new ArrayList<>(), v -> {
 			if (v.getTag() instanceof WeekActivity)
 			{
 				openDetailPage((WeekActivity) v.getTag());
 			}
 		});
-
 		listView.setLayoutManager(mLayoutManager);
 		listView.setAdapter(perWeekStickyAdapter);
 		listView.addOnScrollListener(mRecyclerViewOnScrollListener);
@@ -178,7 +172,7 @@ public class PerWeekFragment extends BaseFragment
 
 	private Href getURLToFetchWeekActivityOverViews(EmbeddedYonaActivity embeddedYonaActivity, boolean loadMore)
 	{
-		Href urlToFetchDayActivityOverviews = null;
+		Href urlToFetchDayActivityOverviews;
 		if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null && loadMore)
 		{
 			urlToFetchDayActivityOverviews = embeddedYonaActivity.getLinks().getNext();

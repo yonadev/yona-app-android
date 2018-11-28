@@ -103,12 +103,9 @@ public class PerDayFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null)
+		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null && getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
 		{
-			if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
-			{
 				yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
-			}
 		}
 		if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
 		{
@@ -207,7 +204,7 @@ public class PerDayFragment extends BaseFragment
 
 	private Href getURLToFetchDayActivityOverViews(EmbeddedYonaActivity embeddedYonaActivity, boolean loadMore)
 	{
-		Href urlToFetchDayActivityOverviews = null;
+		Href urlToFetchDayActivityOverviews;
 		if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null && loadMore)
 		{
 			urlToFetchDayActivityOverviews = embeddedYonaActivity.getLinks().getNext();
