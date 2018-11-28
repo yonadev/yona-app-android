@@ -105,7 +105,7 @@ public class PerDayFragment extends BaseFragment
 		super.onCreate(savedInstanceState);
 		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null && getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
 		{
-				yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+			yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
 		}
 		if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
 		{
@@ -264,42 +264,37 @@ public class PerDayFragment extends BaseFragment
 
 	private void showData()
 	{
-		if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().size() > 0)
+		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+		if (embeddedYonaActivity != null
+				&& embeddedYonaActivity.getDayActivityList() != null
+				&& embeddedYonaActivity.getDayActivityList().size() > 0)
 		{
-			perDayStickyAdapter.notifyDataSetChange(setHeaderListView());
+			perDayStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
 			mIsLoading = false;
 			YonaActivity.getActivity().showLoadingView(false, null);
 		}
-		else if (YonaActivity.getActivity() != null)
+		else
 		{
 			YonaActivity.getActivity().showLoadingView(false, null);
 			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
 		}
 	}
 
-	private List<DayActivity> setHeaderListView()
+	private List<DayActivity> setHeaderListView(EmbeddedYonaActivity embeddedYonaActivity)
 	{
-		List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
+		List<DayActivity> dayActivityList = embeddedYonaActivity.getDayActivityList();
 		int index = 0;
-		for (int i = 0; i < dayActivityList.size(); i++)
+		dayActivityList.get(0).setStickyHeaderId(index++);
+		for (int i = 1; i < dayActivityList.size(); i++)
 		{
-			if (i == 0)
+			DayActivity currentDayActivity = dayActivityList.get(i);
+			DayActivity previousDayActivity = dayActivityList.get(i - 1);
+			if (currentDayActivity.getStickyTitle().equals(previousDayActivity.getStickyTitle()))
 			{
-				dayActivityList.get(i).setStickyHeaderId(index++);
+				currentDayActivity.setStickyHeaderId(previousDayActivity.getStickyHeaderId());
+				continue;
 			}
-			else
-			{
-				if (dayActivityList.get(i).getStickyTitle().equals(dayActivityList.get(i - 1).getStickyTitle()))
-				{
-					dayActivityList.get(i).setStickyHeaderId(dayActivityList.get(i - 1).getStickyHeaderId());
-				}
-				else
-				{
-					dayActivityList.get(i).setStickyHeaderId(index++);
-				}
-			}
+			currentDayActivity.setStickyHeaderId(index++);
 		}
 		return dayActivityList;
 	}

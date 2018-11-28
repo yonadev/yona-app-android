@@ -159,7 +159,7 @@ public class PerWeekFragment extends BaseFragment
 		perWeekStickyAdapter.clear();
 		getWeekActivity(false);
 	}
-	
+
 	/**
 	 * load more items
 	 */
@@ -228,42 +228,37 @@ public class PerWeekFragment extends BaseFragment
 
 	private void showData()
 	{
-		if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList().size() > 0)
-		{
-			perWeekStickyAdapter.notifyDataSetChange(setHeaderListView());
-			YonaActivity.getActivity().showLoadingView(false, null);
-		}
-		else
-		{
-			YonaActivity.getActivity().showLoadingView(false, null);
-			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
-		}
-	}
+        EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+        if (embeddedYonaActivity != null
+            && embeddedYonaActivity.getWeekActivityList() != null
+            && embeddedYonaActivity.getWeekActivityList().size() > 0)
+    {
+        perWeekStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
+        YonaActivity.getActivity().showLoadingView(false, null);
+    }
+    else
+    {
+        YonaActivity.getActivity().showLoadingView(false, null);
+        YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
+    }
+}
 
-	private List<WeekActivity> setHeaderListView()
+	private List<WeekActivity> setHeaderListView(EmbeddedYonaActivity embeddedYonaActivity)
 	{
-		List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
-		int index = 0;
-		for (int i = 0; i < weekActivityList.size(); i++)
+	    List<WeekActivity> weekActivityList = embeddedYonaActivity.getWeekActivityList();
+        int index = 0;
+        weekActivityList.get(0).setStickyHeaderId(index++);
+		for (int i = 1; i < weekActivityList.size(); i++)
 		{
-			if (i == 0)
-			{
-				weekActivityList.get(i).setStickyHeaderId(index++);
-			}
-			else
-			{
-				if (weekActivityList.get(i).getStickyTitle().equals(weekActivityList.get(i - 1).getStickyTitle()))
+		    WeekActivity currentWeekActivity = weekActivityList.get(i);
+		    WeekActivity previousWeekActivity = weekActivityList.get(i-1);
+				if (currentWeekActivity.getStickyTitle().equals(previousWeekActivity.getStickyTitle()))
 				{
-					weekActivityList.get(i).setStickyHeaderId(weekActivityList.get(i - 1).getStickyHeaderId());
+                    currentWeekActivity.setStickyHeaderId(previousWeekActivity.getStickyHeaderId());
+					continue;
 				}
-				else
-				{
-					weekActivityList.get(i).setStickyHeaderId(index++);
-				}
+            currentWeekActivity.setStickyHeaderId(index++);
 			}
-		}
 		return weekActivityList;
 	}
 
