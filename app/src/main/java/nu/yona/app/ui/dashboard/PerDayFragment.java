@@ -10,6 +10,7 @@ package nu.yona.app.ui.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -77,7 +78,7 @@ public class PerDayFragment extends BaseFragment
 				{
 					return; // this happens when the view loads even before the api call returns the response.
 				}
-				loadItemsOnScroll(dy, recyclerView);
+				loadItemsOnScroll(dy);
 			}
 			catch (Exception e)
 			{
@@ -86,13 +87,12 @@ public class PerDayFragment extends BaseFragment
 		}
 	};
 
-	private void loadItemsOnScroll(int dy, RecyclerView recyclerView)
+	private void loadItemsOnScroll(int dy)
 	{
 		int visibleItemCount = mLayoutManager.getChildCount();
 		int totalItemCount = mLayoutManager.getItemCount();
 		int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-		if ((dy > 0 && ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount)) ||
-				(mLayoutManager.getHeight() >= recyclerView.computeVerticalScrollRange()))
+		if (dy > 0 && ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount))
 		{
 			//load more items if number of items are less than the screen height or scroll view dy >0
 			loadMoreItems();
@@ -272,12 +272,29 @@ public class PerDayFragment extends BaseFragment
 			perDayStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
 			mIsLoading = false;
 			YonaActivity.getActivity().showLoadingView(false, null);
+			loadMoreItemsIfScreenHasEmptySpace();
 		}
 		else
 		{
 			YonaActivity.getActivity().showLoadingView(false, null);
 			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
 		}
+	}
+
+	private void loadMoreItemsIfScreenHasEmptySpace()
+	{
+		final Handler handler = new Handler();
+		handler.postDelayed(() -> {
+			if (mLayoutManager.getHeight() >= listView.computeVerticalScrollRange())
+			{
+				loadMoreItems();
+			}
+			else
+			{
+				mIsLoading = false;
+				YonaActivity.getActivity().showLoadingView(false, null);
+			}
+		}, 1000);
 	}
 
 	private List<DayActivity> setHeaderListView(EmbeddedYonaActivity embeddedYonaActivity)

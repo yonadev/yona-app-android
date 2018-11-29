@@ -10,6 +10,7 @@ package nu.yona.app.ui.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -76,7 +77,7 @@ public class PerWeekFragment extends BaseFragment
 				{
 					return; // this happens when the view loads even before the api call returns the response.
 				}
-				loadItemsOnScroll(dy, recyclerView);
+				loadItemsOnScroll(dy);
 			}
 			catch (Exception e)
 			{
@@ -85,13 +86,12 @@ public class PerWeekFragment extends BaseFragment
 		}
 	};
 
-	private void loadItemsOnScroll(int dy, RecyclerView recyclerView)
+	private void loadItemsOnScroll(int dy)
 	{
 		int visibleItemCount = mLayoutManager.getChildCount();
 		int totalItemCount = mLayoutManager.getItemCount();
 		int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-		if ((dy > 0 && ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount)) ||
-				(mLayoutManager.getHeight() >= recyclerView.computeVerticalScrollRange()))
+		if (dy > 0 && ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount))
 		{
 			//load more items if number of items are less than the screen height or scroll view dy >0
 			loadMoreItems();
@@ -104,7 +104,7 @@ public class PerWeekFragment extends BaseFragment
 		super.onCreate(savedInstanceState);
 		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null && getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
 		{
-				yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+			yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
 		}
 		if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
 		{
@@ -228,37 +228,55 @@ public class PerWeekFragment extends BaseFragment
 
 	private void showData()
 	{
-        EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
-        if (embeddedYonaActivity != null
-            && embeddedYonaActivity.getWeekActivityList() != null
-            && embeddedYonaActivity.getWeekActivityList().size() > 0)
-    {
-        perWeekStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
-        YonaActivity.getActivity().showLoadingView(false, null);
-    }
-    else
-    {
-        YonaActivity.getActivity().showLoadingView(false, null);
-        YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
-    }
-}
+		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+		if (embeddedYonaActivity != null
+				&& embeddedYonaActivity.getWeekActivityList() != null
+				&& embeddedYonaActivity.getWeekActivityList().size() > 0)
+		{
+			perWeekStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
+			mIsLoading = false;
+			YonaActivity.getActivity().showLoadingView(false, null);
+			loadMoreItemsIfScreenHasEmptySpace();
+		}
+		else
+		{
+			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
+		}
+	}
+
+	private void loadMoreItemsIfScreenHasEmptySpace()
+	{
+		final Handler handler = new Handler();
+		handler.postDelayed(() -> {
+			if (mLayoutManager.getHeight() >= listView.computeVerticalScrollRange())
+			{
+				loadMoreItems();
+			}
+			else
+			{
+				mIsLoading = false;
+				YonaActivity.getActivity().showLoadingView(false, null);
+			}
+		}, 1000);
+	}
 
 	private List<WeekActivity> setHeaderListView(EmbeddedYonaActivity embeddedYonaActivity)
 	{
-	    List<WeekActivity> weekActivityList = embeddedYonaActivity.getWeekActivityList();
-        int index = 0;
-        weekActivityList.get(0).setStickyHeaderId(index++);
+		List<WeekActivity> weekActivityList = embeddedYonaActivity.getWeekActivityList();
+		int index = 0;
+		weekActivityList.get(0).setStickyHeaderId(index++);
 		for (int i = 1; i < weekActivityList.size(); i++)
 		{
-		    WeekActivity currentWeekActivity = weekActivityList.get(i);
-		    WeekActivity previousWeekActivity = weekActivityList.get(i-1);
-				if (currentWeekActivity.getStickyTitle().equals(previousWeekActivity.getStickyTitle()))
-				{
-                    currentWeekActivity.setStickyHeaderId(previousWeekActivity.getStickyHeaderId());
-					continue;
-				}
-            currentWeekActivity.setStickyHeaderId(index++);
+			WeekActivity currentWeekActivity = weekActivityList.get(i);
+			WeekActivity previousWeekActivity = weekActivityList.get(i - 1);
+			if (currentWeekActivity.getStickyTitle().equals(previousWeekActivity.getStickyTitle()))
+			{
+				currentWeekActivity.setStickyHeaderId(previousWeekActivity.getStickyHeaderId());
+				continue;
 			}
+			currentWeekActivity.setStickyHeaderId(index++);
+		}
 		return weekActivityList;
 	}
 
