@@ -291,7 +291,7 @@ public class SettingsFragment extends BaseFragment
 	private void showEmailClient(String userCredential)
 	{
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		Uri data = Uri.parse("mailto:support@yona.nu?subject=Yona" + "&body=" + userCredential);
+		Uri data = Uri.parse("mailto:support@yona.nu?subject=" + getString(R.string.support_mail_subject) + "&body=" + userCredential);
 		intent.setData(data);
 		startActivity(intent);
 	}
