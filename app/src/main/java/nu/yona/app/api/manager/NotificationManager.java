@@ -24,10 +24,10 @@ public interface NotificationManager
 	 *
 	 * @param listener the listener
 	 */
-	void getMessage(DataLoadListener listener);
+	void getMessages(DataLoadListener listener);
 
 
-	void getMessage(boolean isUnreadStatus, final DataLoadListener listener);
+	void getMessages(boolean isUnreadStatus, final DataLoadListener listener);
 
 
 	/**
