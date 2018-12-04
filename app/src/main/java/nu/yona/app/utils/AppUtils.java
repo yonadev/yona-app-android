@@ -582,6 +582,7 @@ public class AppUtils
 
 	public static void stopVPN(Context context)
 	{
+		Logger.loge("VPNCheck", "VPN Stopped");
 		String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
 		if (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile)
@@ -594,9 +595,24 @@ public class AppUtils
 
 	public static boolean isVPNConnected(Context context)
 	{
+
 		String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
-		return (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile);
+		if (ProfileManager.getLastConnectedVpn() != null && profile != null)
+		{
+			Logger.loge("VPNCheck", "last connected vpn profile UUID: " + ProfileManager.getLastConnectedVpn().getUUIDString());
+			Logger.loge("VPNCheck", "current profile id: " + profile.getUUIDString());
+		}
+		if (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile)
+		{
+			Logger.loge("VPNCheck", "isVPNConnected true");
+			return true;
+		}
+		else
+		{
+			Logger.loge("VPNCheck", "isVPNConnected false");
+			return false;
+		}
 	}
 
 	public static Intent startVPN(Context context, boolean returnIntent)
@@ -604,17 +620,20 @@ public class AppUtils
 		String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-
+		Logger.loge("VPNCheck", "Logged in User ID " + user.getLinks().getSelf().getHref());
 		if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null)
 		{
 			profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
 			profile.mPassword = !TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
+			Logger.loge("VPNCheck", "current Profile UDID " + profile.getUUIDString());
 			if (returnIntent)
 			{
+				Logger.loge("VPNCheck", "getVPNIntent called");
 				return getVPNIntent(profile, context);
 			}
 			else
 			{
+				Logger.loge("VPNCheck", "startVPN called");
 				startVPN(profile, context);
 			}
 		}
