@@ -620,11 +620,11 @@ public class AppUtils
 		String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-		Logger.loge("VPNCheck", "Logged in User ID " + user.getLinks().getSelf().getHref());
 		if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null)
 		{
 			profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
 			profile.mPassword = !TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
+			Logger.loge("VPNCheck", "Logged in User ID " + user.getLinks().getSelf().getHref());
 			Logger.loge("VPNCheck", "current Profile UDID " + profile.getUUIDString());
 			if (returnIntent)
 			{
