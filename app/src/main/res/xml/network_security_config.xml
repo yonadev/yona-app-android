@@ -2,9 +2,8 @@
 <network-security-config>
     <base-config cleartextTrafficPermitted="false" />
     <domain-config>
-        <domain includeSubdomains="true">yona.nu</domain>
+        <domain includeSubdomains="true">*.yona.nu</domain>
         <trust-anchors>
-            <!-- Trust a debug certificate in addition to the system certificates -->
             <certificates src="system" />
             <certificates src="user" />
         </trust-anchors>
