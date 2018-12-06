@@ -1,0 +1,1 @@
+APPDEV-1207 Added setting (under preferences) to show the VPN log window, to debug issues in case they occur
