@@ -81,17 +81,13 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 	private YonaMessage notificationMessage;
 
 	private final View.OnClickListener itemClickListener = v -> {
-		switch (v.getId())
+		if (v.getId() == R.id.circle_view)
 		{
-			case R.id.circle_view:
-				Day day = (Day) v.getTag(R.integer.day_key);
-				if (day != null)
-				{
-					openDetailPage(day);
-				}
-				break;
-			default:
-				break;
+			Day day = (Day) v.getTag(R.integer.day_key);
+			if (day != null)
+			{
+				openDetailPage(day);
+			}
 		}
 	};
 
@@ -100,18 +96,14 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		@Override
 		public void onClick(View v)
 		{
-			if (v.getTag() instanceof YonaMessage)
+			if (v.getTag() instanceof YonaMessage && customPageAdapter != null)
 			{
 				YonaMessage currentMsg = (YonaMessage) v.getTag();
 				//Todo update ui of current selected page of adapter
-				if (customPageAdapter != null)
-				{
-					isUserCommenting = true;
-					currentReplayingMsg = currentMsg;
-					visibleAddCommentView(currentReplayingMsg);
-				}
+				isUserCommenting = true;
+				currentReplayingMsg = currentMsg;
+				visibleAddCommentView(currentReplayingMsg);
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SHOW_CHAT_OPTION, null);
-
 			}
 		}
 	};
@@ -157,26 +149,31 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null)
 		{
-			if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null && getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
-			{
-				yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
-			}
-			else
-			{
-				yonaBuddy = APIManager.getInstance().getActivityManager().findYonaBuddy((Href) getArguments().get(AppConstant.YONA_BUDDY_OBJ));
-			}
-			if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
-			{
-				mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
-			}
-			if (getArguments().get(AppConstant.YONA_WEEK_DETAIL_URL) != null)
-			{
-				yonaWeekDetailUrl = (String) getArguments().get(AppConstant.YONA_WEEK_DETAIL_URL);
-			}
-			if (getArguments().get(AppConstant.YONA_MESSAGE) != null)
-			{
-				notificationMessage = (YonaMessage) getArguments().get(AppConstant.YONA_MESSAGE);
-			}
+			setDataFromArguments();
+		}
+	}
+
+	private void setDataFromArguments()
+	{
+		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null && getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
+		{
+			yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+		}
+		else
+		{
+			yonaBuddy = APIManager.getInstance().getActivityManager().findYonaBuddy((Href) getArguments().get(AppConstant.YONA_BUDDY_OBJ));
+		}
+		if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
+		{
+			mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
+		}
+		if (getArguments().get(AppConstant.YONA_WEEK_DETAIL_URL) != null)
+		{
+			yonaWeekDetailUrl = (String) getArguments().get(AppConstant.YONA_WEEK_DETAIL_URL);
+		}
+		if (getArguments().get(AppConstant.YONA_MESSAGE) != null)
+		{
+			notificationMessage = (YonaMessage) getArguments().get(AppConstant.YONA_MESSAGE);
 		}
 	}
 
@@ -190,10 +187,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		setUpWeekActivity();
 		initializeOnClickListeners();
 		initializeOnPageClickListener();
-		if (!TextUtils.isEmpty(yonaWeekDetailUrl))
-		{
-			setDayActivityDetails();
-		}
+		setDayActivityDetails();
 		setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_WEEK_ACTIVITY_DETAIL_SCREEN));
 		YonaApplication.getEventChangeManager().registerListener(this);
 		return view;
@@ -204,21 +198,42 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		view = inflater.inflate(R.layout.detail_pager_fragment, null);
 		View activityRootView = view.findViewById(R.id.main_content);
 		udpateBottomTabVisibility(activityRootView);
-		setupToolbar(view);
-		if (mYonaHeaderTheme != null)
-		{
-			mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
-		}
+		setUpViewComponents();
+	}
+
+	private void setUpViewComponents()
+	{
+		setUpViewToolBar();
+		setUpViewPager();
 		previousItem = view.findViewById(R.id.previous);
 		nextItem = view.findViewById(R.id.next);
 		dateTitle = view.findViewById(R.id.date);
 		commentBox = view.findViewById(R.id.comment_box);
 		chatBoxImage = view.findViewById(R.id.comment_box_image);
 		messageTxt = view.findViewById(R.id.userMessage);
-		viewPager = view.findViewById(R.id.viewPager);
-		customPageAdapter = new CustomPageAdapter(getActivity(), itemClickListener);
+		setUpNestedScrollView();
+	}
+
+	private void setUpNestedScrollView()
+	{
 		NestedScrollView nestedScrollView = view.findViewById(R.id.nesteadScrollview);
 		nestedScrollView.setOnScrollChangeListener(nesteadScrollistener);
+	}
+
+
+	private void setUpViewToolBar()
+	{
+		setupToolbar(view);
+		if (mYonaHeaderTheme != null)
+		{
+			mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
+		}
+	}
+
+	private void setUpViewPager()
+	{
+		viewPager = view.findViewById(R.id.viewPager);
+		customPageAdapter = new CustomPageAdapter(getActivity(), itemClickListener);
 		viewPager.setAdapter(customPageAdapter);
 	}
 
@@ -227,16 +242,17 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		previousItem.setOnClickListener(v -> previousWeekActivity());
 		nextItem.setOnClickListener(v -> nextWeekActivity());
 		view.findViewById(R.id.btnSend).setOnClickListener(v -> {
-			if (!TextUtils.isEmpty(messageTxt.getText()))
+			if (TextUtils.isEmpty(messageTxt.getText()))
 			{
-				if (isUserCommenting)
-				{
-					postCommentInNetworkCall(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null, true);
-				}
-				else
-				{
-					postCommentInNetworkCall(messageTxt.getText().toString(), weekActivity.getLinks().getAddComment().getHref(), false);
-				}
+				return;
+			}
+			if (isUserCommenting)
+			{
+				postCommentInNetworkCall(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null, true);
+			}
+			else
+			{
+				postCommentInNetworkCall(messageTxt.getText().toString(), weekActivity.getLinks().getAddComment().getHref(), false);
 			}
 		});
 	}
@@ -303,6 +319,10 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 
 	private void setDayActivityDetails()
 	{
+		if (TextUtils.isEmpty(yonaWeekDetailUrl))
+		{
+			return;
+		}
 		loadWeekActivity(yonaWeekDetailUrl);
 	}
 
@@ -313,7 +333,6 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 			return;
 		}
 		YonaActivity.getActivity().showLoadingView(true, null);
-
 		if (getLocalWeekActivity(url) != null)
 		{
 			weekActivity = getLocalWeekActivity(url);
@@ -524,7 +543,6 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		{
 			dateTitle.setText(weekActivityList.get(position).getStickyTitle());
 		}
-
 		if ((weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getPrev() != null && !TextUtils.isEmpty(weekActivity.getLinks().getPrev().getHref())))
 		{
 			previousItem.setVisibility(View.VISIBLE);
@@ -541,7 +559,6 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		{
 			nextItem.setVisibility(View.INVISIBLE);
 		}
-
 	}
 
 	private void fetchComments(final int position)
