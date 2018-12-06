@@ -66,6 +66,7 @@
     <string name="accountloginsecuritymessage">For security, you will receive a code by SMS. Please enter this code below.</string>
     <string name="sendotpagain">Send code again</string>
     <string name="adddevice">ADD DEVICE</string>
+    <string name="showopenvpnlog">Show VPN log screen</string>
     <string name="yonaadddevicemessage">%1$s enter this passcode on the new device where you like to use Yona.</string>
     <string name="loggedinadddevicemessage">You have not logged on this device before. Go to your primary device (probably your mobile), open Yona, open settings and use \'Add Device\' and enter the fields below.</string>
     <string name="passcode">CODE</string>
