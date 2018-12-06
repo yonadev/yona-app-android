@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +77,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 	private CommentsAdapter commentsAdapter;
 	private YonaMessage currentReplayingMsg;
 	private ImageView chatBoxImage;
+	private YonaMessage notificationMessage;
 
 	private final View.OnClickListener itemClickListener = new View.OnClickListener()
 	{
@@ -182,6 +185,10 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 			{
 				yonaWeekDetailUrl = (String) getArguments().get(AppConstant.YONA_WEEK_DETAIL_URL);
 			}
+			if (getArguments().get(AppConstant.YONA_MESSAGE) != null)
+			{
+				notificationMessage = (YonaMessage) getArguments().get(AppConstant.YONA_MESSAGE);
+			}
 		}
 	}
 
@@ -212,19 +219,13 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		nestedScrollView.setOnScrollChangeListener(nesteadScrollistener);
 		viewPager.setAdapter(customPageAdapter);
 		initalizeCommentControl(view);
-		if (getArguments() != null)
-		{
-			if (getArguments().get(AppConstant.OBJECT) != null)
-			{
-				weekActivity = (WeekActivity) getArguments().get(AppConstant.OBJECT);
-			}
-		}
+		setUpWeekActivity();
 		previousItem.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				previousDayActivity();
+				previousWeekActivity();
 			}
 		});
 		nextItem.setOnClickListener(new View.OnClickListener()
@@ -232,7 +233,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 			@Override
 			public void onClick(View v)
 			{
-				nextDayActivity();
+				nextWeekActivity();
 			}
 		});
 
@@ -293,9 +294,18 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		commentsAdapter = new CommentsAdapter(mYonaCommentsList, messageItemClick);
 		commentRecyclerView.setLayoutManager(mLayoutManager);
 		commentRecyclerView.setAdapter(commentsAdapter);
+		commentRecyclerView.setNestedScrollingEnabled(false);
 	}
 
-	private void previousDayActivity()
+	private void setUpWeekActivity()
+	{
+		if (getArguments() != null && getArguments().get(AppConstant.OBJECT) instanceof WeekActivity)
+		{
+			weekActivity = (WeekActivity) getArguments().get(AppConstant.OBJECT);
+		}
+	}
+
+	private void previousWeekActivity()
 	{
 		if (weekActivity != null)
 		{
@@ -304,7 +314,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		}
 	}
 
-	private void nextDayActivity()
+	private void nextWeekActivity()
 	{
 		if (weekActivity != null)
 		{
@@ -326,9 +336,9 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		}
 		YonaActivity.getActivity().showLoadingView(true, null);
 
-		if (getLocalDayActivity(url) != null)
+		if (getLocalWeekActivity(url) != null)
 		{
-			weekActivity = getLocalDayActivity(url);
+			weekActivity = getLocalWeekActivity(url);
 			updateDayActivityData(weekActivity);
 			YonaActivity.getActivity().showLoadingView(false, null);
 		}
@@ -345,7 +355,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 						weekActivity = (WeekActivity) result;
 						updateDayActivityData(weekActivity);
 					}
-					YonaActivity.getActivity().showLoadingView(false, null);
+					//	YonaActivity.getActivity().showLoadingView(false, null);
 				}
 
 				@Override
@@ -357,7 +367,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		}
 	}
 
-	private WeekActivity getLocalDayActivity(String url)
+	private WeekActivity getLocalWeekActivity(String url)
 	{
 		for (WeekActivity weekActivity : weekActivityList)
 		{
@@ -383,47 +393,118 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		super.onResume();
 	}
 
-	private void updateDayActivityData(WeekActivity weekActivity)
+	private void updateDayActivityData(WeekActivity weekActivity1)
 	{
 		customPageAdapter.notifyDataSetChanged(weekActivityList);
 		fetchComments(weekActivityList.indexOf(weekActivity));
-		viewPager.setCurrentItem(weekActivityList.indexOf(weekActivity));
-		updateFlow(weekActivityList.indexOf(weekActivity));
+		viewPager.setCurrentItem(weekActivityList.indexOf(weekActivity1));
+		updateFlow(weekActivityList.indexOf(weekActivity1));
 		YonaActivity.getActivity().showLoadingView(false, null);
-		setWeekDetailTitleAndIcon();
+		setUpYonaHeaderTheme();
+		setWeekDetailActivityTitle();
+		setUpUserDetailsInHeader();
 	}
 
-	private void setWeekDetailTitleAndIcon()
+	private void setUpYonaHeaderTheme()
 	{
-		if (mYonaHeaderTheme.isBuddyFlow() && yonaBuddy != null)
+		if (weekActivity.getLinks().getYonaBuddy() == null)
 		{
-			profileCircleImageView.setVisibility(View.GONE);
-			rightIcon.setVisibility(View.GONE);
-			rightIconProfile.setVisibility(View.VISIBLE);
-			if (yonaBuddy.getEmbedded() != null && yonaBuddy.getEmbedded().getYonaUser() != null && !TextUtils.isEmpty(yonaBuddy.getEmbedded().getYonaUser().getFirstName()))
-			{
-				profileIconTxt.setVisibility(View.VISIBLE);
-				profileIconTxt.setText(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase());
-				profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
-				profileClickEvent(profileIconTxt);
-			}
+			mYonaHeaderTheme = new YonaHeaderTheme(false, null, null, 0, 0, null, R.color.grape, R.drawable.triangle_shadow_grape);
 		}
 		else
 		{
-			profileCircleImageView.setVisibility(View.GONE);
-			rightIcon.setVisibility(View.GONE);
-			if (mYonaHeaderTheme.isBuddyFlow())
-			{
-				profileIconTxt.setVisibility(View.VISIBLE);
-				profileIconTxt.setText(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase());
-				profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
-				profileClickEvent(profileIconTxt);
-			}
+			mYonaHeaderTheme = new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue, R.drawable.triangle_shadow_blue);
+		}
+		mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
+	}
+
+	private void setWeekDetailActivityTitle()
+	{
+		if (notificationMessage != null && notificationMessage.getLinks() != null && notificationMessage.getLinks().getYonaActivityCategory() != null)
+		{
+			String categoryName = APIManager.getInstance().getActivityManager().getActivityCategoryName(notificationMessage.getLinks().getYonaActivityCategory().getHref());
+			toolbarTitle.setText(categoryName != null ? categoryName.toUpperCase() : "");
+			toolbarTitle.setVisibility(View.VISIBLE);
 		}
 		if (weekActivity != null && weekActivity.getYonaGoal() != null && !TextUtils.isEmpty(weekActivity.getYonaGoal().getActivityCategoryName()))
 		{
 			toolbarTitle.setText(weekActivity.getYonaGoal().getActivityCategoryName().toUpperCase());
 		}
+	}
+
+	private void setUpUserDetailsInHeader()
+	{
+		if (mYonaHeaderTheme.isBuddyFlow())
+		{
+			setUpUserHeaderIcon();
+		}
+		else
+		{
+			profileCircleImageView.setVisibility(View.GONE);
+			rightIcon.setVisibility(View.GONE);
+		}
+	}
+
+	private void setUpUserHeaderIcon()
+	{
+		if (notificationMessage != null)// This case comes when navigating from notifications
+		{
+			setUserAvatarFromNotification();
+		}
+		else if (yonaBuddy != null)// User ICON will not be set if yona buddy is also null.
+		{
+			setUserAvatarFromYonaBuddy();
+		}
+	}
+
+	private void setUserAvatarFromNotification()
+	{
+		if (notificationMessage.getLinks().getUserPhoto() != null)
+		{
+			setUserAvatarImage(notificationMessage.getLinks().getUserPhoto().getHref());
+		}
+		else
+		{
+			setUserAvatarFromName(yonaBuddy.getNickname());
+		}
+	}
+
+	private void setUserAvatarFromYonaBuddy()
+	{
+		if (yonaBuddy.getLinks().getUserPhoto() != null)
+		{
+			setUserAvatarImage(yonaBuddy.getLinks().getUserPhoto().getHref());
+		}
+		else
+		{
+			setUserAvatarFromName(yonaBuddy.getNickname());
+		}
+	}
+
+	private void setUserAvatarImage(String userAvatarURL)
+	{
+		profileCircleImageView.setVisibility(View.VISIBLE);
+		rightIcon.setVisibility(View.GONE);
+		rightIconProfile.setVisibility(View.GONE);
+		if (userAvatarURL != null)
+		{
+			Picasso.with(getContext()).load(userAvatarURL).noFade().into(profileCircleImageView);
+		}
+		profileClickEvent(profileCircleImageView);
+	}
+
+	private void setUserAvatarFromName(String nickname)
+	{
+		profileCircleImageView.setVisibility(View.GONE);
+		rightIcon.setVisibility(View.GONE);
+		rightIconProfile.setVisibility(View.VISIBLE);
+		profileIconTxt.setVisibility(View.VISIBLE);
+		if (nickname != null)
+		{
+			profileIconTxt.setText(nickname.substring(0, 1).toUpperCase());
+		}
+		profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
+		profileClickEvent(profileIconTxt);
 	}
 
 	private void profileClickEvent(View profileView)
@@ -434,10 +515,9 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 			public void onClick(View v)
 			{
 				Intent intent = new Intent(IntentEnum.ACTION_PROFILE.getActionString());
-				intent.putExtras(getArguments());
-				intent.putExtra(AppConstant.YONA_THEME_OBJ, mYonaHeaderTheme);
 				if (yonaBuddy != null)
 				{
+					intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, null, R.color.mid_blue_two, R.drawable.triangle_shadow_blue));
 					intent.putExtra(AppConstant.YONA_BUDDY_OBJ, yonaBuddy);
 				}
 				else
@@ -561,6 +641,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 			{
 				YonaActivity.getActivity().showLoadingView(false, null);
 				messageTxt.getText().clear();
+				updateParentcommentView();
 				fetchComments(viewPager.getCurrentItem());
 				//TODO response will be object of YonaMessage -> add in list of comments array and notify UI to update item in list.
 			}
