@@ -1575,7 +1575,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 	private void startVPN()
 	{
-		Logger.loge("VPNCheck", "VPN Initiated");
 		isUserFromOnCreate = true;
 		AppUtils.startVPN(YonaActivity.this, false);
 		isUserFromPinScreenAlert = false;

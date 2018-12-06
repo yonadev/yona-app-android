@@ -8,6 +8,7 @@
 
 package nu.yona.app.ui.settings;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,7 +22,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import nu.yona.app.R;
@@ -50,59 +54,139 @@ import nu.yona.app.utils.AppUtils;
 public class SettingsFragment extends BaseFragment
 {
 	private DeviceManagerImpl deviceManager;
+	private SettingListViewAdaptor settingsListViewAdaptor;
+
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		View view = inflater.inflate(R.layout.settings_fragment, null);
+		View settingsLayoutView = inflater.inflate(R.layout.settings_fragment, null);
+		settingsLayoutView = configureSettingsListView(settingsLayoutView);
+		setupToolbar(settingsLayoutView);
+		configureAppMetaInfoDisplay(settingsLayoutView);
+		return settingsLayoutView;
+	}
 
-		setupToolbar(view);
+	public class SettingListViewAdaptor extends ArrayAdapter<String>
+	{
+		public SettingListViewAdaptor(Context context, int resource, int textViewResourceId, String[] list)
+		{
+			super(context, resource, textViewResourceId, list);
+		}
 
-		ListView listView = (ListView) view.findViewById(R.id.list_view);
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent)
+		{
+			if (convertView == null)
+			{
+				LayoutInflater inflater = LayoutInflater.from(getContext());
+				convertView = inflater.inflate(R.layout.settings_list_item, parent, false);
+			}
+			setUpListItemView(convertView, position);
+			return convertView;
+		}
+
+		private View setUpListItemView(View convertView, int position)
+		{
+			RelativeLayout listRelativeLayout = convertView.findViewById(R.id.list_relative_layout);
+			YonaFontTextView yonaFontTextView = listRelativeLayout.findViewById(R.id.list_title);
+			String title = getItem(position);
+			yonaFontTextView.setText(title);
+			CheckBox checkBox = listRelativeLayout.findViewById(R.id.list_check_box);
+			if ((title.equals(getString(R.string.showopenvpnlog))))
+			{
+				checkBox.setVisibility(View.VISIBLE);
+				setUpListItemViewCheckBox(checkBox);
+			}
+			else
+			{
+				checkBox.setVisibility(View.GONE);
+			}
+			return convertView;
+		}
+
+		private CheckBox setUpListItemViewCheckBox(CheckBox checkBox)
+		{
+			boolean showOpenVpnLog = YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
+			checkBox.setChecked(showOpenVpnLog);
+			checkBox.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+				toggleVPNLogWindowDisplay();
+			});
+			return checkBox;
+		}
+	}
+
+	private View configureSettingsListView(View settingsLayoutView)
+	{
+		ListView settingsListView = (ListView) settingsLayoutView.findViewById(R.id.list_view);
 		deviceManager = new DeviceManagerImpl(getActivity());
-		listView.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.settings_list_item, new String[]{getString(R.string.changepin), getString(R.string.privacy), getString(R.string.adddevice), getString(R.string.contact_us), getString(R.string.deleteuser)}));
+		String[] listArray = new String[]{
+				getString(R.string.changepin),
+				getString(R.string.privacy),
+				getString(R.string.adddevice),
+				getString(R.string.showopenvpnlog),
+				getString(R.string.contact_us),
+				getString(R.string.deleteuser)};
+		settingsListViewAdaptor = new SettingListViewAdaptor(getActivity(), R.layout.settings_list_item, R.id.list_title, listArray);
+		settingsListView.setAdapter(settingsListViewAdaptor);
+		setUpListItemOnClickListener(settingsListView);
+		configureAppMetaInfoDisplay(settingsLayoutView);
+		return settingsLayoutView;
+	}
 
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+	private ListView setUpListItemOnClickListener(ListView settingsListView)
+	{
+		settingsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.changepin)))
+				RelativeLayout listRelativeLayout = view.findViewById(R.id.list_relative_layout);
+				YonaFontTextView yonaFontTextView = listRelativeLayout.findViewById(R.id.list_title);
+				String listItemTitle = yonaFontTextView.getText().toString();
+				if (listItemTitle.equals(getString(R.string.changepin)))
 				{
-					YonaAnalytics.createTapEvent(getString(R.string.changepin));
 					showChangePin();
 				}
-				else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.privacy)))
+				else if (listItemTitle.equals(getString(R.string.privacy)))
 				{
-					YonaAnalytics.createTapEvent(getString(R.string.privacy));
 					showPrivacy();
 				}
-				else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.adddevice)))
+				else if (listItemTitle.equals(getString(R.string.adddevice)))
 				{
-					YonaAnalytics.createTapEvent(getString(R.string.adddevice));
-					YonaActivity.getActivity().showLoadingView(true, null);
 					addDevice(AppUtils.getRandomString(AppConstant.ADD_DEVICE_PASSWORD_CHAR_LIMIT));
 				}
-				else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.deleteuser)))
+				else if (listItemTitle.equals(getString(R.string.deleteuser)))
 				{
-					YonaAnalytics.createTapEvent(getString(R.string.deleteuser));
 					unsubscribeUser();
 				}
-				else if (((YonaFontTextView) view).getText().toString().equals(getString(R.string.contact_us)))
+				else if (listItemTitle.equals(getString(R.string.contact_us)))
 				{
 					openEmail();
 				}
+				else if (listItemTitle.equals(getString(R.string.showopenvpnlog)))
+				{
+					toggleVPNLogWindowDisplay();
+				}
 			}
 		});
-		AppMetaInfo appMetaInfo = AppMetaInfo.getInstance();
-		((TextView) view.findViewById(R.id.label_version)).setText(getString(R.string.version) + appMetaInfo.getAppVersion() + getString(R.string.space) + appMetaInfo.getAppVersionCode());
-		setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_SCREEN_SETTINGS));
-		return view;
+		return settingsListView;
 	}
+
+
+	private View configureAppMetaInfoDisplay(View settingsLayoutView)
+	{
+		AppMetaInfo appMetaInfo = AppMetaInfo.getInstance();
+		((TextView) settingsLayoutView.findViewById(R.id.label_version)).setText(getString(R.string.version) + appMetaInfo.getAppVersion() + getString(R.string.space) + appMetaInfo.getAppVersionCode());
+		setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_SCREEN_SETTINGS));
+		return settingsLayoutView;
+	}
+
 
 	private void showChangePin()
 	{
+		YonaAnalytics.createTapEvent(getString(R.string.changepin));
 		YonaActivity.getActivity().setSkipVerification(true);
 		APIManager.getInstance().getPasscodeManager().resetWrongCounter();
 		Intent intent = new Intent(getActivity(), PinActivity.class);
@@ -118,14 +202,24 @@ public class SettingsFragment extends BaseFragment
 		startActivity(intent);
 	}
 
+	private void toggleVPNLogWindowDisplay()
+	{
+		boolean showOpenVpnLog = YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
+		YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().edit().putBoolean(AppConstant.SHOW_VPN_WINDOW, !showOpenVpnLog).commit();
+		settingsListViewAdaptor.notifyDataSetChanged();
+	}
+
+
 	private void showPrivacy()
 	{
+		YonaAnalytics.createTapEvent(getString(R.string.privacy));
 		Intent friendIntent = new Intent(IntentEnum.ACTION_PRIVACY_POLICY.getActionString());
 		YonaActivity.getActivity().replaceFragment(friendIntent);
 	}
 
 	private void unsubscribeUser()
 	{
+		YonaAnalytics.createTapEvent(getString(R.string.deleteuser));
 		CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.deleteuser), getString(R.string.deleteusermessage),
 				getString(R.string.ok), getString(R.string.cancel), new DialogInterface.OnClickListener()
 				{
@@ -190,6 +284,8 @@ public class SettingsFragment extends BaseFragment
 
 	private void addDevice(final String pin)
 	{
+		YonaAnalytics.createTapEvent(getString(R.string.adddevice));
+		YonaActivity.getActivity().showLoadingView(true, null);
 		try
 		{
 			deviceManager.addDevice(pin, new DataLoadListener()
