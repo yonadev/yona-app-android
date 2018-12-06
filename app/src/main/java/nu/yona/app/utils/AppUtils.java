@@ -594,17 +594,9 @@ public class AppUtils
 
 	public static boolean isVPNConnected(Context context)
 	{
-
 		String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
-		if (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile);
 	}
 
 	public static Intent startVPN(Context context, boolean returnIntent)
