@@ -1,0 +1,1 @@
+APPDEV-1197 Label nu in hoofdletters
