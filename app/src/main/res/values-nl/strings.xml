@@ -66,7 +66,7 @@
     <string name="accountloginsecuritymessage">Als extra beveiliging ontvang je een code per SMS. Graag deze code hieronder invullen.</string>
     <string name="sendotpagain">Stuur code opnieuw</string>
     <string name="adddevice">APPARAAT TOEVOEGEN</string>
-    <string name="showopenvpnlog">Toon VPN logvenster</string>
+    <string name="showopenvpnlog">TOON VPN LOGVENSTER</string>
     <string name="yonaadddevicemessage">%1$s toets deze pincode in op het apparaat waarop je Yona gaat gebruiken.</string>
     <string name="loggedinadddevicemessage">Je hebt nog niet eerder ingelogd op dit apparaat. Ga naar je primaire apparaat (waarschijnlijk je mobiel), open Yona, vervolgens naar instellingen en klik op \'apparaat toevoegen\'. Vul vervolgens onderstaande velden in.</string>
     <string name="passcode">CODE</string>
