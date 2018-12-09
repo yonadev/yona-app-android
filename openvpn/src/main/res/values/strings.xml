@@ -418,4 +418,5 @@
 
     <string name="test_vpn_restart_confirmation_title">VPN Connection.</string>
     <string name="test_vpn_restart_confirmation">VPN disconnect!! Please connect it again.</string>
+    <string name="dismiss_btn_title">dismiss</string>
 </resources>
