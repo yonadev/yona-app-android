@@ -100,7 +100,6 @@ pipeline {
         }
       }
       steps {
-        checkpoint 'APK uploaded to Google Play'
         slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting approval for release to Beta"
         script {
           env.RELEASE_TO_BETA = input message: 'User input required',
@@ -141,7 +140,6 @@ pipeline {
         }
       }
       steps {
-        checkpoint 'App released to beta'
         slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting approval for release to Production"
         script {
           env.RELEASE_TO_PRODUCTION = input message: 'User input required',
