@@ -1,0 +1,18 @@
+RELEASE 1.1
+We solved 85 issues in total.
+Much effort has been spent on stabilizing the Yona app on different Android versions
+
+USER INTERFACE IMPROVEMENTS
+* Profile photos
+* Dashboard screen
+* Buddy timeline
+* Showing challenges
+* Notifications
+
+OTHER IMPROVEMENTS
+* Right support email address
+* Friend invitation
+* Mobile number checking and formatting
+* Crashes solved, tooling included in app for analyzing crashes
+
+Mail us for more detailed release notes

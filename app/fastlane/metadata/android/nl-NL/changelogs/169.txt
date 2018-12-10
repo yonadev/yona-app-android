@@ -1,0 +1,18 @@
+RELEASE 1.1
+Totaal 85 problemen afgehandeld.
+Er is veel aandacht besteed aan het stabiel maken van de Yona app op verschillende versies van Android
+
+USER INTERFACE VERBETERINGEN
+* Profielfoto’s
+* Dashboard scherm
+* Vriendentijdslijn
+* Weergeven van challenges
+* Notificaties
+
+ANDERE VERBETERINGEN
+* Juiste support e-mailadres
+* Uitnodigen vriend
+* Controle en opmaak telefoonnummer 
+* Crashes opgelost en tooling ingebouwd voor analyse van crashes
+
+Mail ons voor gedetailleerde release notes
