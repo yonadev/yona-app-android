@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -21,75 +21,88 @@ import android.view.View;
 /**
  * The type Divider decoration.
  */
-public class DividerDecoration extends RecyclerView.ItemDecoration {
+public class DividerDecoration extends RecyclerView.ItemDecoration
+{
 
-    /**
-     * The constant VERTICAL_LIST.
-     */
-    public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
-    private static final int[] ATTRS = new int[]{
-            android.R.attr.listDivider
-    };
-    private Drawable mDivider;
+	/**
+	 * The constant VERTICAL_LIST.
+	 */
+	public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
+	private static final int[] ATTRS = new int[]{
+			android.R.attr.listDivider
+	};
+	private final Drawable mDivider;
 
-    /**
-     * Instantiates a new Divider decoration.
-     *
-     * @param context the context
-     */
-    public DividerDecoration(Context context) {
-        final TypedArray a = context.obtainStyledAttributes(ATTRS);
-        mDivider = a.getDrawable(0);
-        a.recycle();
-    }
+	/**
+	 * Instantiates a new Divider decoration.
+	 *
+	 * @param context the context
+	 */
+	public DividerDecoration(Context context)
+	{
+		final TypedArray a = context.obtainStyledAttributes(ATTRS);
+		mDivider = a.getDrawable(0);
+		a.recycle();
+	}
 
-    private int getOrientation(RecyclerView parent) {
-        LinearLayoutManager layoutManager;
-        try {
-            layoutManager = (LinearLayoutManager) parent.getLayoutManager();
-        } catch (ClassCastException e) {
-            throw new IllegalStateException("DividerDecoration can only be used with a " +
-                    "LinearLayoutManager.", e);
-        }
-        return layoutManager.getOrientation();
-    }
+	private int getOrientation(RecyclerView parent)
+	{
+		LinearLayoutManager layoutManager;
+		try
+		{
+			layoutManager = (LinearLayoutManager) parent.getLayoutManager();
+		}
+		catch (ClassCastException e)
+		{
+			throw new IllegalStateException("DividerDecoration can only be used with a " +
+					"LinearLayoutManager.", e);
+		}
+		return layoutManager.getOrientation();
+	}
 
-    @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        super.onDraw(c, parent, state);
-        drawVertical(c, parent);
-    }
+	@Override
+	public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state)
+	{
+		super.onDraw(c, parent, state);
+		drawVertical(c, parent);
+	}
 
-    /**
-     * Draw vertical.
-     *
-     * @param c      the c
-     * @param parent the parent
-     */
-    public void drawVertical(Canvas c, RecyclerView parent) {
-        final int left = parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
-        final int recyclerViewTop = parent.getPaddingTop();
-        final int recyclerViewBottom = parent.getHeight() - parent.getPaddingBottom();
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                    .getLayoutParams();
-            final int top = Math.max(recyclerViewTop, child.getBottom() + params.bottomMargin);
-            final int bottom = Math.min(recyclerViewBottom, top + mDivider.getIntrinsicHeight());
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
-        }
-    }
+	/**
+	 * Draw vertical.
+	 *
+	 * @param c      the c
+	 * @param parent the parent
+	 */
+	public void drawVertical(Canvas c, RecyclerView parent)
+	{
+		final int left = parent.getPaddingLeft();
+		final int right = parent.getWidth() - parent.getPaddingRight();
+		final int recyclerViewTop = parent.getPaddingTop();
+		final int recyclerViewBottom = parent.getHeight() - parent.getPaddingBottom();
+		final int childCount = parent.getChildCount();
+		for (int i = 0; i < childCount; i++)
+		{
+			final View child = parent.getChildAt(i);
+			final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
+					.getLayoutParams();
+			final int top = Math.max(recyclerViewTop, child.getBottom() + params.bottomMargin);
+			final int bottom = Math.min(recyclerViewBottom, top + mDivider.getIntrinsicHeight());
+			mDivider.setBounds(left, top, right, bottom);
+			mDivider.draw(c);
+		}
+	}
 
-    @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        super.getItemOffsets(outRect, view, parent, state);
-        if (getOrientation(parent) == VERTICAL_LIST) {
-            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
-        } else {
-            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
-        }
-    }
+	@Override
+	public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state)
+	{
+		super.getItemOffsets(outRect, view, parent, state);
+		if (getOrientation(parent) == VERTICAL_LIST)
+		{
+			outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+		}
+		else
+		{
+			outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+		}
+	}
 }

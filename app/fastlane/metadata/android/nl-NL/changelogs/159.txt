@@ -1,0 +1,3 @@
+APPDEV-1181 Toont nu de juiste tijd voor no-go challenges
+APPDEV-1193 Stuurt nu maar een bericht als je je foto verandert
+APPDEV-1201 De app crashte als je je account op een ander apparaat had verwijderd. Dit is nu verholpen.

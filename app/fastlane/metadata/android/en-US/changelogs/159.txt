@@ -1,0 +1,3 @@
+APPDEV-1181 Now shows proper time for no-go challenges
+APPDEV-1193 Only one notification is sent when changing your photo
+APPDEV-1201 App doesn't crash anymore when the user account was deleted

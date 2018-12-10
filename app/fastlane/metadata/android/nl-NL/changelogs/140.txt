@@ -1,0 +1,1 @@
+APPDEV-1069 geïmplementeerd. Druk lang op het Yona-logo op het beginscherm om een andere server te selecteren.

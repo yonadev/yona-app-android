@@ -1,0 +1,1 @@
+APPDEV-1185 Fout bij het toevoegen van een profielfoto opgelost

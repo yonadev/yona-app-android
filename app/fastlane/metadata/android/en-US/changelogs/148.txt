@@ -1,0 +1,2 @@
+APPDEV-1171 Resolved crash on Android 5.1 when no messages are available
+APPDEV-1170 Better error handling

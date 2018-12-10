@@ -1,0 +1,1 @@
+APPDEV-1154 The annoying VPN connection dialog is now removed

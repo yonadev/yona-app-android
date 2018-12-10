@@ -1,15 +1,17 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.utils;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AppOpsManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -27,11 +29,16 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.PowerManager;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Toast;
 
 import org.joda.time.Period;
 
@@ -65,216 +72,366 @@ import nu.yona.timepicker.time.Timepoint;
 
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
-import static nu.yona.app.utils.Logger.printStackTrace;
 
 /**
  * Created by kinnarvasa on 21/03/16.
  */
-public class AppUtils {
-    private static InputFilter filter;
-    private static boolean submitPressed;
-    private static Intent activityMonitorIntent;
-    private static ScheduledExecutorService scheduler;
-    private static YonaReceiver receiver = new YonaReceiver();
-    private static int trialCertificateCount = 0, trialVPNCount = 0;
+public class AppUtils
+{
+	private static InputFilter filter;
+	private static boolean submitPressed;
+	private static Intent activityMonitorIntent;
+	private static ScheduledExecutorService scheduler;
+	private static final YonaReceiver receiver = new YonaReceiver();
+	private static int trialCertificateCount = 0, trialVPNCount = 0;
+	private static final Handler uiTaskHandler = new Handler();
 
-    private static final String TAG = "AppUtils";
+	private static final String TAG = "AppUtils";
 
-    /**
-     * Gets circle bitmap.
-     *
-     * @param bitmap the bitmap
-     * @return the circle bitmap
-     */
-    public static Bitmap getCircleBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(output);
+	/**
+	 * Gets circle bitmap.
+	 *
+	 * @param bitmap the bitmap
+	 * @return the circle bitmap
+	 */
+	public static Bitmap getCircleBitmap(Bitmap bitmap)
+	{
+		final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+		final Canvas canvas = new Canvas(output);
 
-        final int color = Color.BLUE;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
+		final int color = Color.BLUE;
+		final Paint paint = new Paint();
+		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		final RectF rectF = new RectF(rect);
 
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
+		paint.setAntiAlias(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawOval(rectF, paint);
 
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
+		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, rect, rect, paint);
 
-        bitmap.recycle();
+		bitmap.recycle();
 
-        return output;
-    }
+		return output;
+	}
 
-    /**
-     * Has permission boolean.
-     *
-     * @param context the context
-     * @return false if user has not given permission for package access so far.
-     */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static boolean hasPermission(Context context) {
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
-            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
-            return (mode == AppOpsManager.MODE_ALLOWED);
-        } catch (PackageManager.NameNotFoundException e) {
-            return true;
-        }
+	/**
+	 * Has permission boolean.
+	 *
+	 * @param context the context
+	 * @return false if user has not given permission for package access so far.
+	 */
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+	public static boolean hasPermission(Context context)
+	{
+		try
+		{
+			PackageManager packageManager = context.getPackageManager();
+			ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+			AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+			int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+			return (mode == AppOpsManager.MODE_ALLOWED);
+		}
+		catch (PackageManager.NameNotFoundException e)
+		{
+			return true;
+		}
 
-    }
+	}
 
-    /**
-     * Gets dp.
-     *
-     * @param context the context
-     * @param dp      the dp
-     * @return the dp
-     */
-    public static int getDp(Context context, int dp) {
-        return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
-    }
+	/**
+	 * Gets dp.
+	 *
+	 * @param context the context
+	 * @param dp      the dp
+	 * @return the dp
+	 */
+	public static int getDp(Context context, int dp)
+	{
+		return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
+	}
 
-    /**
-     * Start service once user grant permission for application permission (for 5.1+ version)
-     *
-     * @param context the context
-     */
-    public static void startService(Context context) {
-        try {
-            activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
-            context.startService(activityMonitorIntent);
-        } catch (Exception e) {
-            throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-    }
+	/**
+	 * Start service once user grant permission for application permission (for 5.1+ version)
+	 *
+	 * @param context the context
+	 */
+	public static void startService(Context context)
+	{
+		try
+		{
+			activityMonitorIntent = new Intent(context, ActivityMonitorService.class);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+			{
+				startForegroundService(context, activityMonitorIntent);
+				cancelPendingWakeUpAlarms(context);
+			}
+			else
+			{
+				context.startService(activityMonitorIntent);
+			}
+		}
+		catch (Exception e)
+		{
+			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-    /**
-     * Stop service.
-     *
-     * @param context the context
-     */
-    public static void stopService(Context context) {
-        try {
-            if (activityMonitorIntent != null) {
-                context.stopService(activityMonitorIntent);
-                activityMonitorIntent = null;
-            }
-        } catch (Exception e) {
-            throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-    }
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void cancelPendingWakeUpAlarms(Context context)
+	{
+		Intent alarmIntent = new Intent(context, YonaReceiver.class);
+		alarmIntent.setAction(AppConstant.WAKE_UP);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.cancel(pendingIntent);
+	}
 
-    /**
-     * Generate Random String length of 20
-     *
-     * @param charLimit the char limit
-     * @return random string
-     */
-    public static String getRandomString(int charLimit) {
-        char[] chars = "abcdefghijkmnopqrstuvwxyz0123456789ABCDEFGHJKLMNOPQRSTUVWXYZ".toCharArray();
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < charLimit; i++) {
-            char c = chars[random.nextInt(chars.length)];
-            sb.append(c);
-        }
-        return sb.toString();
-    }
+	/*
+		Checks if application is not permitted to show notifications as this permission is necessary to show foreground notifications and Toasts
+		Starts foreground service.
+		Post Alert message if app is not permitted to do so.
+	 */
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void startForegroundService(Context context, Intent activityMonitorIntent)
+	{
+		if (!NotificationManagerCompat.from(context).areNotificationsEnabled())
+		{
+			Logger.loge("Notifications Disabled", context.getString(R.string.notification_disabled_message));
+			displayErrorAlert(context, new ErrorMessage(context.getString(R.string.notification_disabled_message)));
+			return;
+		}
+		context.startForegroundService(activityMonitorIntent);
+	}
 
-    /**
-     * This will register receiver for different events like screen on-off, boot, connectivity etc.
-     *
-     * @param context the context
-     */
-    public static void registerReceiver(Context context) {
-        loge(TAG, "Register Receiver");
+	/**
+	 * Stop service.
+	 *
+	 * @param context the context
+	 */
+	public static void stopService(Context context)
+	{
+		try
+		{
+			if (activityMonitorIntent != null)
+			{
+				context.stopService(activityMonitorIntent);
+				activityMonitorIntent = null;
+			}
+		}
+		catch (Exception e)
+		{
+			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
-        filter.addAction(AppConstant.RESTART_DEVICE);
-        filter.addAction(AppConstant.RESTART_VPN);
+	/**
+	 * Generate Random String length of 20
+	 *
+	 * @param charLimit the char limit
+	 * @return random string
+	 */
+	public static String getRandomString(int charLimit)
+	{
+		char[] chars = "abcdefghijkmnopqrstuvwxyz0123456789ABCDEFGHJKLMNOPQRSTUVWXYZ".toCharArray();
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+		for (int i = 0; i < charLimit; i++)
+		{
+			char c = chars[random.nextInt(chars.length)];
+			sb.append(c);
+		}
+		return sb.toString();
+	}
 
-        context.registerReceiver(receiver, filter);
-    }
+	/**
+	 * This will register receiver for different events like screen on-off, boot, connectivity etc.
+	 *
+	 * @param context the context
+	 */
+	public static void registerReceiver(Context context)
+	{
+		loge(TAG, "Register Receiver");
 
-    /**
-     * get the two digit length if digit length is one
-     *
-     * @param digit the digit
-     * @return digit hour digit
-     */
-    public static String getHourDigit(String digit) {
-        if (digit.length() != 2) {
-            digit = "0" + digit;
-        }
-        return digit;
-    }
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Intent.ACTION_SCREEN_ON);
+		filter.addAction(Intent.ACTION_SCREEN_OFF);
+		filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+		filter.addAction(AppConstant.RESTART_DEVICE);
+		filter.addAction(AppConstant.RESTART_VPN);
+		filter.addAction(PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED);
 
-    /**
-     * Gets time for otp.
-     *
-     * @param time the time
-     * @return the time for otp
-     */
-    public static Pair<String, Long> getTimeForOTP(String time) {
-        try {
-            StringBuffer buffer = new StringBuffer();
-            long totalTime = 0;
-            Period period = new Period(time);
-            if (period.getHours() > 0) {
-                totalTime += period.getHours() * AppConstant.ONE_SECOND * 60 * 60;
-                buffer.append(YonaApplication.getAppContext().getString(R.string.hours, period.getHours() + ""));
-            }
-            if (period.getMinutes() > 0) {
-                totalTime += period.getMinutes() * AppConstant.ONE_SECOND * 60;
-                buffer.append(YonaApplication.getAppContext().getString(R.string.minute, period.getMinutes() + ""));
-            }
-            if (period.getSeconds() > 0) {
-                totalTime += period.getSeconds() * AppConstant.ONE_SECOND;
-                buffer.append(YonaApplication.getAppContext().getString(R.string.seconds, period.getSeconds() + ""));
-            }
-            return Pair.create(buffer.toString(), totalTime);
-        } catch (Exception e) {
-            AppUtils.throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-        return Pair.create(time, (long) 0);
-    }
 
-    /**
-     * Throw exception.
-     *
-     * @param className class name where exception throws
-     * @param e         Error
-     * @param t         Current Thread (Thread.currentThread())
-     * @param listener  DataLoadListener to update UI
-     */
-    public static void throwException(String className, Exception e, Thread t, DataLoadListener listener) {
-        try {
-            if (listener != null) {
-                if (e != null && e.getMessage() != null) {
-                    listener.onError(new ErrorMessage(e.getMessage()));
-                } else {
-                    listener.onError(YonaApplication.getAppContext().getString(R.string.error_message));
-                }
-            }
-        } catch (Exception x) {
-            loge(TAG, "Exception in throwExcption method");
-        }
-    }
+		context.registerReceiver(receiver, filter);
+	}
 
-    /**
-     * Gets filter.
-     *
-     * @return the filter
-     */
+	/**
+	 * get the two digit length if digit length is one
+	 *
+	 * @param digit the digit
+	 * @return digit hour digit
+	 */
+	public static String getHourDigit(String digit)
+	{
+		if (digit.length() != 2)
+		{
+			digit = "0" + digit;
+		}
+		return digit;
+	}
+
+	/**
+	 * Gets time for otp.
+	 *
+	 * @param time the time
+	 * @return the time for otp
+	 */
+	public static Pair<String, Long> getTimeForOTP(String time)
+	{
+		try
+		{
+			StringBuffer buffer = new StringBuffer();
+			long totalTime = 0;
+			Period period = new Period(time);
+			if (period.getHours() > 0)
+			{
+				totalTime += period.getHours() * AppConstant.ONE_SECOND * 60 * 60;
+				buffer.append(YonaApplication.getAppContext().getString(R.string.hours, period.getHours() + ""));
+			}
+			if (period.getMinutes() > 0)
+			{
+				totalTime += period.getMinutes() * AppConstant.ONE_SECOND * 60;
+				buffer.append(YonaApplication.getAppContext().getString(R.string.minute, period.getMinutes() + ""));
+			}
+			if (period.getSeconds() > 0)
+			{
+				totalTime += period.getSeconds() * AppConstant.ONE_SECOND;
+				buffer.append(YonaApplication.getAppContext().getString(R.string.seconds, period.getSeconds() + ""));
+			}
+			return Pair.create(buffer.toString(), totalTime);
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+		}
+		return Pair.create(time, (long) 0);
+	}
+
+	/**
+	 * Report exception.
+	 *
+	 * @param className class name where exception throws
+	 * @param exception Error
+	 * @param t         Current Thread (Thread.currentThread())
+	 * @param listener  DataLoadListener to update UI
+	 */
+	public static void reportException(String className, Exception exception, Thread t, DataLoadListener listener)
+	{
+		ErrorMessage errorMessage = getErrorMessageFromException(exception);
+		if (listener != null)
+		{
+			listener.onError(errorMessage);
+		}
+		else
+		{
+			showErrorToast(errorMessage);
+			Logger.loge(className, errorMessage.getMessage(), exception);
+		}
+	}
+
+	/**
+	 * getErrorMessage from give Exception or return a generic error message
+	 */
+
+	private static ErrorMessage getErrorMessageFromException(Exception exception)
+	{
+		if (exception != null && exception.getMessage() != null)
+		{
+			return new ErrorMessage(exception.getMessage());
+		}
+		return new ErrorMessage(YonaApplication.getAppContext().getString(R.string.generic_exception_message));
+	}
+
+	/**
+	 * Report exception.
+	 *
+	 * @param className class name where exception throws
+	 * @param exception Error
+	 * @param t         Current Thread (Thread.currentThread())
+	 */
+	public static void reportException(String className, Exception exception, Thread t)
+	{
+		AppUtils.reportException(className, exception, t, null);
+	}
+
+
+	/**
+	 * Display Error toast
+	 */
+
+	private static void showErrorToast(ErrorMessage errorMessage)
+	{
+		runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
+			}
+		});
+	}
+
+	/**
+	 * Display Error Alert if app is running else return;
+	 */
+	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
+	{
+		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
+		{
+			return;
+		}
+		runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				getGenericAlertDialogWithErrorMessage(context, errorMessage).show();
+			}
+		});
+	}
+
+	public static AlertDialog getGenericAlertDialogWithErrorMessage(Context context, ErrorMessage errorMessage)
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		alertDialogBuilder.setMessage(errorMessage.getMessage());
+		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), null);
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		return alertDialog;
+	}
+
+
+	public static final void runOnUiThread(Runnable runnable)
+	{
+		boolean isUiThread = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Looper.getMainLooper().isCurrentThread()
+				: Thread.currentThread() == Looper.getMainLooper().getThread();
+		if (isUiThread)
+		{
+			runnable.run();
+		}
+		else
+		{
+			uiTaskHandler.post(runnable);
+		}
+	}
+
+	/**
+	 * Gets filter.
+	 *
+	 * @return the filter
+	 */
 //    public static InputFilter getFilter() {
 //        if (filter == null) {
 //            filter = new InputFilter() {
@@ -291,325 +448,387 @@ public class AppUtils {
 //        return filter;
 //    }
 
-    /**
-     * Get splited time. ex: 21:00 - 23:54 whill return 21:00 and 23:54
-     *
-     * @param time the time
-     * @return string [ ]
-     */
-    public static String[] getSplitedTime(String time) {
-        return time.split("-", 2);
-    }
+	/**
+	 * Get splited time. ex: 21:00 - 23:54 whill return 21:00 and 23:54
+	 *
+	 * @param time the time
+	 * @return string [ ]
+	 */
+	public static String[] getSplitedTime(String time)
+	{
+		return time.split("-", 2);
+	}
 
 
-    /**
-     * Get splited hr string [ ].
-     *
-     * @param time the time
-     * @return the string [ ]
-     */
-    public static String[] getSplitedHr(String time) {
-        return time.split(":", 2);
-    }
+	/**
+	 * Get splited hr string [ ].
+	 *
+	 * @param time the time
+	 * @return the string [ ]
+	 */
+	public static String[] getSplitedHr(String time)
+	{
+		return time.split(":", 2);
+	}
 
 
-    /**
-     * Gets time in milliseconds.
-     *
-     * @param time the time
-     * @return the time in milliseconds
-     */
-    public static Timepoint getTimeInMilliseconds(String time) {
-        if (!TextUtils.isEmpty(time) && time.contains(":")) {
-            String[] min = time.split(":");
-            return new Timepoint(Integer.parseInt(min[0]), Integer.parseInt(min[1]), 0);
-        } else {
-            return new Timepoint(0, 0, 0);
-        }
-    }
+	/**
+	 * Gets time in milliseconds.
+	 *
+	 * @param time the time
+	 * @return the time in milliseconds
+	 */
+	public static Timepoint getTimeInMilliseconds(String time)
+	{
+		if (!TextUtils.isEmpty(time) && time.contains(":"))
+		{
+			String[] min = time.split(":");
+			return new Timepoint(Integer.parseInt(min[0]), Integer.parseInt(min[1]), 0);
+		}
+		else
+		{
+			return new Timepoint(0, 0, 0);
+		}
+	}
 
-    /**
-     * convert one digit number to two digit number appending with 0 if its length is one else return same
-     *
-     * @param time the time
-     * @return the time digit
-     */
-    public static String getTimeDigit(int time) {
-        String timeDigit = String.valueOf(time);
-        if (timeDigit.length() == 1) {
-            timeDigit = "0" + timeDigit;
-        }
-        return timeDigit;
-    }
+	/**
+	 * convert one digit number to two digit number appending with 0 if its length is one else return same
+	 *
+	 * @param time the time
+	 * @return the time digit
+	 */
+	public static String getTimeDigit(int time)
+	{
+		String timeDigit = String.valueOf(time);
+		if (timeDigit.length() == 1)
+		{
+			timeDigit = "0" + timeDigit;
+		}
+		return timeDigit;
+	}
 
-    /**
-     * Is submit pressed boolean.
-     *
-     * @return the boolean
-     */
-    public static boolean isSubmitPressed() {
-        return AppUtils.submitPressed;
-    }
+	/**
+	 * Is submit pressed boolean.
+	 *
+	 * @return the boolean
+	 */
+	public static boolean isSubmitPressed()
+	{
+		return AppUtils.submitPressed;
+	}
 
-    /**
-     * Sets submit pressed.
-     *
-     * @param submitPressed the submit pressed
-     */
-    public static void setSubmitPressed(boolean submitPressed) {
-        AppUtils.submitPressed = submitPressed;
-    }
+	/**
+	 * Sets submit pressed.
+	 *
+	 * @param submitPressed the submit pressed
+	 */
+	public static void setSubmitPressed(boolean submitPressed)
+	{
+		AppUtils.submitPressed = submitPressed;
+	}
 
-    /**
-     * Send log to server.
-     *
-     * @param delayMilliseconds the delay milliseconds
-     */
-    public static void sendLogToServer(long delayMilliseconds) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                APIManager.getInstance().getActivityManager().postAllDBActivities();
-            }
-        }, delayMilliseconds);
-    }
+	/**
+	 * Send log to server.
+	 *
+	 * @param delayMilliseconds the delay milliseconds
+	 */
+	public static void sendLogToServer(long delayMilliseconds)
+	{
+		new Handler().postDelayed(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				APIManager.getInstance().getActivityManager().postAllDBActivities();
+			}
+		}, delayMilliseconds);
+	}
 
-    /**
-     * Gets initialize scheduler.
-     *
-     * @return the initialize scheduler
-     */
-    public static ScheduledExecutorService getInitializeScheduler() {
-        if (scheduler == null) {
-            scheduler = Executors.newSingleThreadScheduledExecutor();
-        }
-        return scheduler;
-    }
+	/**
+	 * Gets initialize scheduler.
+	 *
+	 * @return the initialize scheduler
+	 */
+	public static ScheduledExecutorService getInitializeScheduler()
+	{
+		if (scheduler == null)
+		{
+			scheduler = Executors.newSingleThreadScheduledExecutor();
+		}
+		return scheduler;
+	}
 
-    /**
-     * Gets scheduler.
-     *
-     * @return the scheduler
-     */
-    public static ScheduledExecutorService getScheduler() {
-        return AppUtils.scheduler;
-    }
+	/**
+	 * Gets scheduler.
+	 *
+	 * @return the scheduler
+	 */
+	public static ScheduledExecutorService getScheduler()
+	{
+		return AppUtils.scheduler;
+	}
 
-    /**
-     * Sets null scheduler.
-     */
-    public static void setNullScheduler() {
-        if (scheduler != null) {
-            scheduler.shutdown();
-        }
-        scheduler = null;
-    }
+	/**
+	 * Sets null scheduler.
+	 */
+	public static void setNullScheduler()
+	{
+		if (scheduler != null)
+		{
+			scheduler.shutdown();
+		}
+		scheduler = null;
+	}
 
-    public static void stopVPN(Context context) {
-        String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
-        VpnProfile profile = ProfileManager.get(context, profileUUID);
-        if (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile) {
-            Intent disconnectVPN = new Intent(context, DisconnectVPN.class);
-            disconnectVPN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(disconnectVPN);
-        }
-    }
+	public static void stopVPN(Context context)
+	{
+		String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
+		VpnProfile profile = ProfileManager.get(context, profileUUID);
+		if (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile)
+		{
+			Intent disconnectVPN = new Intent(context, DisconnectVPN.class);
+			disconnectVPN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(disconnectVPN);
+		}
+	}
 
-    public static boolean isVPNConnected(Context context) {
-        String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
-        VpnProfile profile = ProfileManager.get(context, profileUUID);
-        return (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile);
-    }
+	public static boolean isVPNConnected(Context context)
+	{
+		String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
+		VpnProfile profile = ProfileManager.get(context, profileUUID);
+		return (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile);
+	}
 
-    public static Intent startVPN(Context context, boolean returnIntent) {
-        String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
-        VpnProfile profile = ProfileManager.get(context, profileUUID);
-        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+	public static Intent startVPN(Context context, boolean returnIntent)
+	{
+		String profileUUID = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
+		VpnProfile profile = ProfileManager.get(context, profileUUID);
+		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+		if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null)
+		{
+			profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
+			profile.mPassword = !TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
+			if (returnIntent)
+			{
+				return getVPNIntent(profile, context);
+			}
+			else
+			{
+				startVPN(profile, context);
+			}
+		}
+		return null;
+	}
 
-        if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null) {
-            profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
-            profile.mPassword = !TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
-            if (returnIntent) {
-                return getVPNIntent(profile, context);
-            } else {
-                startVPN(profile, context);
-            }
-        }
-        return null;
-    }
+	private static void startVPN(VpnProfile profile, Context context)
+	{
+		context.startActivity(getVPNIntent(profile, context));
+	}
 
-    private static void startVPN(VpnProfile profile, Context context) {
-        if (profile != null) {
-            ProfileManager.getInstance(context).saveProfile(context, profile);
-            Intent intent = new Intent(context, LaunchVPN.class);
-            intent.putExtra(LaunchVPN.EXTRA_KEY, profile.getUUID().toString());
-            intent.setAction(Intent.ACTION_MAIN);
-            intent.putExtra(AppConstant.FROM_LOGIN, true);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        }
-    }
+	private static Intent getVPNIntent(VpnProfile profile, Context context)
+	{
+		ProfileManager.getInstance(context).saveProfile(context, profile);
+		Intent intent = new Intent(context, LaunchVPN.class);
+		intent.putExtra(LaunchVPN.EXTRA_KEY, profile.getUUID().toString());
+		intent.setAction(Intent.ACTION_MAIN);
+		intent.putExtra(AppConstant.FROM_LOGIN, true);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		boolean showOpenVpnLog = YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
+		intent.putExtra(LaunchVPN.EXTRA_HIDELOG, !showOpenVpnLog);
+		return intent;
+	}
 
-    private static Intent getVPNIntent(VpnProfile profile, Context context) {
-        if (profile != null) {
-            ProfileManager.getInstance(context).saveProfile(context, profile);
-            Intent intent = new Intent(context, LaunchVPN.class);
-            intent.putExtra(LaunchVPN.EXTRA_KEY, profile.getUUID().toString());
-            intent.setAction(Intent.ACTION_MAIN);
-            intent.putExtra(AppConstant.FROM_LOGIN, true);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            return intent;
-        }
-        return null;
-    }
+	public static void downloadCertificates()
+	{
+		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+		if (user != null && user.getLinks() != null)
+		{
+			if (user.getLinks().getSslRootCert() != null
+					&& YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() == null)
+			{
+				new DownloadFileFromURL(user.getLinks().getSslRootCert().getHref(), new DataLoadListener()
+				{
+					@Override
+					public void onDataLoad(Object result)
+					{
+						if (result != null && !TextUtils.isEmpty(result.toString()))
+						{
+							YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
+							YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
+						}
+						logi(TAG, "Download successful: " + result.toString());
+					}
 
-    public static void downloadCertificates() {
-        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-        if (user != null && user.getLinks() != null) {
-            if (user.getLinks().getSslRootCert() != null
-                    && YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() == null) {
-                new DownloadFileFromURL(user.getLinks().getSslRootCert().getHref(), new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        if (result != null && !TextUtils.isEmpty(result.toString())) {
-                            YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
-                            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
-                        }
-                        logi(TAG, "Download successful: " + result.toString());
-                    }
+					@Override
+					public void onError(Object errorMessage)
+					{
+						loge(TAG, "Download fail");
+						trialCertificateCount++;
+						if (trialCertificateCount < 3)
+						{
+							downloadCertificates();
+						}
+					}
+				});
+			}
+		}
+	}
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        loge(TAG, "Download fail");
-                        trialCertificateCount++;
-                        if (trialCertificateCount < 3) {
-                            downloadCertificates();
-                        }
-                    }
-                });
-            }
-        }
-    }
+	public static void downloadVPNProfile()
+	{
+		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+		if (user.getVpnProfile() != null && user.getVpnProfile().getLinks() != null && user.getVpnProfile().getLinks().getOvpnProfile() != null
+				&& YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() == null)
+		{
+			new DownloadFileFromURL(user.getVpnProfile().getLinks().getOvpnProfile().getHref(), new DataLoadListener()
+			{
+				@Override
+				public void onDataLoad(Object result)
+				{
+					if (result != null && !TextUtils.isEmpty(result.toString()))
+					{
+						YonaApplication.getEventChangeManager().getSharedPreference().setVPNProfilePath(result.toString());
+						YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_VPN_CERTIFICATE_DOWNLOADED, null);
+					}
 
-    public static void downloadVPNProfile() {
-        User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-        if (user.getVpnProfile() != null && user.getVpnProfile().getLinks() != null && user.getVpnProfile().getLinks().getOvpnProfile() != null
-                && YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() == null) {
-            new DownloadFileFromURL(user.getVpnProfile().getLinks().getOvpnProfile().getHref(), new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    if (result != null && !TextUtils.isEmpty(result.toString())) {
-                        YonaApplication.getEventChangeManager().getSharedPreference().setVPNProfilePath(result.toString());
-                        YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_VPN_CERTIFICATE_DOWNLOADED, null);
-                    }
+					logi(TAG, "Download successful: " + result.toString());
+				}
 
-                    logi(TAG, "Download successful: " + result.toString());
-                }
+				@Override
+				public void onError(Object errorMessage)
+				{
+					loge(TAG, "Download fail");
+					trialVPNCount++;
+					if (trialVPNCount < 3)
+					{
+						downloadVPNProfile();
+					}
+				}
+			});
+		}
+	}
 
-                @Override
-                public void onError(Object errorMessage) {
-                    loge(TAG, "Download fail");
-                    trialVPNCount++;
-                    if (trialVPNCount < 3) {
-                        downloadVPNProfile();
-                    }
-                }
-            });
-        }
-    }
+	public static byte[] getCACertificate(String path)
+	{
+		if (path != null && !TextUtils.isEmpty(path))
+		{
+			File file = new File(path);
+			int size = (int) file.length();
+			byte[] bytes = new byte[size];
+			try
+			{
+				BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+				buf.read(bytes, 0, bytes.length);
+				buf.close();
+				return bytes;
+			}
+			catch (FileNotFoundException e)
+			{
+				AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+			}
+			catch (IOException e)
+			{
+				AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+			}
+		}
+		return null;
+	}
 
-    public static byte[] getCACertificate(String path) {
-        if (path != null && !TextUtils.isEmpty(path)) {
-            File file = new File(path);
-            int size = (int) file.length();
-            byte[] bytes = new byte[size];
-            try {
-                BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-                buf.read(bytes, 0, bytes.length);
-                buf.close();
-                return bytes;
-            } catch (FileNotFoundException e) {
-                printStackTrace(e);
-            } catch (IOException e) {
-                printStackTrace(e);
-            }
-        }
-        return null;
-    }
+	public static boolean checkCACertificate()
+	{
+		boolean isCertExist = false;
+		try
+		{
+			KeyStore ks = KeyStore.getInstance("AndroidCAStore");
+			if (ks != null)
+			{
+				ks.load(null, null);
+				Enumeration aliases = ks.aliases();
+				if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN() != null)
+				{
+					String caCertName = YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN();
+					if (!TextUtils.isEmpty(caCertName))
+					{
+						while (aliases.hasMoreElements())
+						{
+							String alias = (String) aliases.nextElement();
+							java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate) ks.getCertificate(alias);
+							if (cert.getIssuerDN().getName().contains(caCertName))
+							{
+								isCertExist = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+		}
+		return isCertExist;
 
-    public static boolean checkCACertificate() {
-        boolean isCertExist = false;
-        try {
-            KeyStore ks = KeyStore.getInstance("AndroidCAStore");
-            if (ks != null) {
-                ks.load(null, null);
-                Enumeration aliases = ks.aliases();
-                if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN() != null) {
-                    String caCertName = YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN();
-                    if (!TextUtils.isEmpty(caCertName)) {
-                        while (aliases.hasMoreElements()) {
-                            String alias = (String) aliases.nextElement();
-                            java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate) ks.getCertificate(alias);
-                            if (cert.getIssuerDN().getName().contains(caCertName)) {
-                                isCertExist = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throwException(AppUtils.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-        return isCertExist;
+	}
 
-    }
+	public static boolean checkKeyboardOpen(View view)
+	{
+		int defaultKeyboardDp = 100;
+		Rect r = new Rect();
+		view.getWindowVisibleDisplayFrame(r);
 
-    public static boolean checkKeyboardOpen(View view) {
-        int defaultKeyboardDp = 100;
-        Rect r = new Rect();
-        view.getWindowVisibleDisplayFrame(r);
+		int estimatedKeyboardHeight = (int) TypedValue
+				.applyDimension(TypedValue.COMPLEX_UNIT_DIP, defaultKeyboardDp, view.getResources().getDisplayMetrics());
 
-        int estimatedKeyboardHeight = (int) TypedValue
-                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, defaultKeyboardDp, view.getResources().getDisplayMetrics());
+		view.getWindowVisibleDisplayFrame(r);
+		int heightDiff = view.getRootView().getHeight() - (r.bottom - r.top);
+		return heightDiff > estimatedKeyboardHeight;
+	}
 
-        view.getWindowVisibleDisplayFrame(r);
-        int heightDiff = view.getRootView().getHeight() - (r.bottom - r.top);
-        return heightDiff > estimatedKeyboardHeight;
-    }
+	/**
+	 * Check for network availability.
+	 *
+	 * @param context requested context object.
+	 * @return true if available else false.
+	 */
+	public static boolean isNetworkAvailable(final Context context)
+	{
+		ConnectivityManager cm =
+				(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-    /**
-     * Check for network availability.
-     * @param context requested context object.
-     * @return true if available else false.
-     */
-    public static boolean isNetworkAvailable(final Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		return activeNetwork != null &&
+				activeNetwork.isConnectedOrConnecting();
+	}
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-    }
+	/**
+	 * It convert requested @{@link StatusEnum} to Local based string.
+	 *
+	 * @return Local based string for current @{@link StatusEnum}.
+	 * Using by @{@link nu.yona.app.api.model.YonaBuddy} object.
+	 */
+	public static String getSendingStatusToDisplay(String sendingStatus)
+	{
+		if (sendingStatus != null)
+		{
+			if (sendingStatus.equals(StatusEnum.NOT_REQUESTED.getStatus()))
+			{
+				return YonaApplication.getAppContext().getResources().getString(R.string.not_requested);
+			}
+			else if (sendingStatus.equals(StatusEnum.REQUESTED.getStatus()))
+			{
+				return YonaApplication.getAppContext().getResources().getString(R.string.requested);
+			}
+			else if (sendingStatus.equals(StatusEnum.ACCEPTED.getStatus()))
+			{
+				return YonaApplication.getAppContext().getResources().getString(R.string.accepted);
+			}
+			else if (sendingStatus.equals(StatusEnum.REJECTED.getStatus()))
+			{
+				return YonaApplication.getAppContext().getResources().getString(R.string.rejected);
+			}
+		}
 
-    /**
-     * It convert requested @{@link StatusEnum} to Local based string.
-     * @return Local based string for current @{@link StatusEnum}.
-     * Using by @{@link nu.yona.app.api.model.YonaBuddy} object.
-     */
-    public static String getSendingStatusToDisplay(String sendingStatus) {
-        if(sendingStatus != null) {
-            if (sendingStatus.equals(StatusEnum.NOT_REQUESTED.getStatus())) {
-                return YonaApplication.getAppContext().getResources().getString(R.string.not_requested);
-            } else if (sendingStatus.equals(StatusEnum.REQUESTED.getStatus())) {
-                return YonaApplication.getAppContext().getResources().getString(R.string.requested);
-            } else if (sendingStatus.equals(StatusEnum.ACCEPTED.getStatus())) {
-                return YonaApplication.getAppContext().getResources().getString(R.string.accepted);
-            } else if (sendingStatus.equals(StatusEnum.REJECTED.getStatus())) {
-                return YonaApplication.getAppContext().getResources().getString(R.string.rejected);
-            }
-        }
-
-        return StatusEnum.NOT_REQUESTED.getStatus(); //Considered as default.
-    }
+		return StatusEnum.NOT_REQUESTED.getStatus(); //Considered as default.
+	}
 }

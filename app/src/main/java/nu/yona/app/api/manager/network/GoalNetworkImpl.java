@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -23,119 +23,152 @@ import retrofit2.Response;
 /**
  * Created by bhargavsuthar on 15/04/16.
  */
-public class GoalNetworkImpl extends BaseImpl {
+public class GoalNetworkImpl extends BaseImpl
+{
 
-    /**
-     * Gets user goals.
-     *
-     * @param url      the url
-     * @param listener the listener
-     */
-    public void getUserGoals(String url, DataLoadListener listener) {
-        try {
-            getRestApi().getUserGoals(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),  Locale.getDefault().toString().replace('_', '-')).enqueue(getGoals(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-    }
+	/**
+	 * Gets user goals.
+	 *
+	 * @param url      the url
+	 * @param listener the listener
+	 */
+	public void getUserGoals(String url, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().getUserGoals(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), Locale.getDefault().toString().replace('_', '-')).enqueue(getGoals(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-    /**
-     * Put user budget goals.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param goal         the goal
-     * @param listener     the listener
-     */
-    public void putUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener) {
-        try {
-            getRestApi().putUserGoals(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), goal).enqueue(getGoals(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-    }
+	/**
+	 * Put user budget goals.
+	 *
+	 * @param url          the url
+	 * @param yonaPassword the yona password
+	 * @param goal         the goal
+	 * @param listener     the listener
+	 */
+	public void putUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().putUserGoals(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), goal).enqueue(getGoals(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-    /**
-     * Put user time zone goals.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param goal         the goal
-     * @param listener     the listener
-     */
-    public void putUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener) {
-        try {
-            getRestApi().putUserGoals(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), goal).enqueue(getGoals(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-    }
+	/**
+	 * Put user time zone goals.
+	 *
+	 * @param url          the url
+	 * @param yonaPassword the yona password
+	 * @param goal         the goal
+	 * @param listener     the listener
+	 */
+	public void putUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().putUserGoals(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), goal).enqueue(getGoals(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-    /**
-     * Delete goal.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param listener     the listener
-     */
-    public void deleteGoal(String url, String yonaPassword, DataLoadListener listener) {
-        try {
-            getRestApi().deleteUserGoal(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-    }
+	/**
+	 * Delete goal.
+	 *
+	 * @param url          the url
+	 * @param yonaPassword the yona password
+	 * @param listener     the listener
+	 */
+	public void deleteGoal(String url, String yonaPassword, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().deleteUserGoal(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getCall(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-    /**
-     * Update user budget goals.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param goal         the goal
-     * @param listener     the listener
-     */
-    public void updateUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener) {
-        try {
-            getRestApi().updateUserGoal(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), "", goal).enqueue(getGoals(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-    }
+	/**
+	 * Update user budget goals.
+	 *
+	 * @param url          the url
+	 * @param yonaPassword the yona password
+	 * @param goal         the goal
+	 * @param listener     the listener
+	 */
+	public void updateUserBudgetGoals(String url, String yonaPassword, PostBudgetYonaGoal goal, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().updateUserGoal(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), "", goal).enqueue(getGoals(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-    /**
-     * Update user time zone goals.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param goal         the goal
-     * @param listener     the listener
-     */
-    public void updateUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener) {
-        try {
-            getRestApi().updateUserGoal(url, yonaPassword,  Locale.getDefault().toString().replace('_', '-'), "", goal).enqueue(getGoals(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), null);
-        }
-    }
+	/**
+	 * Update user time zone goals.
+	 *
+	 * @param url          the url
+	 * @param yonaPassword the yona password
+	 * @param goal         the goal
+	 * @param listener     the listener
+	 */
+	public void updateUserTimeZoneGoals(String url, String yonaPassword, PostTimeZoneYonaGoal goal, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().updateUserGoal(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), "", goal).enqueue(getGoals(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+		}
+	}
 
-    private Callback<Goals> getGoals(final DataLoadListener listener) {
-        return new Callback<Goals>() {
-            @Override
-            public void onResponse(Call<Goals> call, Response<Goals> response) {
-                if (listener == null) {
-                    return;
-                }
-                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
-                } else {
-                    onError(response, listener);
-                }
-            }
+	private Callback<Goals> getGoals(final DataLoadListener listener)
+	{
+		return new Callback<Goals>()
+		{
+			@Override
+			public void onResponse(Call<Goals> call, Response<Goals> response)
+			{
+				if (listener == null)
+				{
+					return;
+				}
+				if (response.code() < NetworkConstant.RESPONSE_STATUS)
+				{
+					listener.onDataLoad(response.body());
+				}
+				else
+				{
+					onError(response, listener);
+				}
+			}
 
-            @Override
-            public void onFailure(Call<Goals> call, Throwable t) {
-                onError(t, listener);
-            }
-        };
-    }
+			@Override
+			public void onFailure(Call<Goals> call, Throwable t)
+			{
+				onError(t, listener);
+			}
+		};
+	}
 }

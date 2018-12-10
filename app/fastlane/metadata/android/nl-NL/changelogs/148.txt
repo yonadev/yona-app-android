@@ -1,0 +1,2 @@
+APPDEV-1171 Probleem op Android 5.1 opgelost in het geval er geen berichten waren
+APPDEV-1170 Verbeterde foutafhandeling

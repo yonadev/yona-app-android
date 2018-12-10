@@ -35,7 +35,8 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
+        tools:replace="android:allowBackup"
+        android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
             android:name=".ui.LaunchActivity"
@@ -49,6 +50,7 @@
 
             <intent-filter android:label="@string/appname">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -108,8 +110,9 @@
             android:icon="@mipmap/ic_launcher"
             android:label="@string/service_name" />
 
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
 
         <receiver android:name=".api.receiver.YonaReceiver">
             <intent-filter>

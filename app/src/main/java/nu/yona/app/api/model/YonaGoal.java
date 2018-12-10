@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.api.model;
@@ -21,180 +19,198 @@ import java.util.List;
 /**
  * The type Yona goal.
  */
-public class YonaGoal extends BaseEntity {
+public class YonaGoal extends BaseEntity
+{
 
-    @SerializedName("_links")
-    @Expose
-    private Links Links;
-    @SerializedName("@type")
-    @Expose
-    private String Type;
-    @SerializedName("activityCategoryName")
-    @Expose
-    private String activityCategoryName;
-    @SerializedName("maxDurationMinutes")
-    @Expose
-    private long maxDurationMinutes;
-    @SerializedName("zones")
-    @Expose
-    private List<String> zones = new ArrayList<>();
-    @SerializedName("spreadCells")
-    @Expose
-    private List<Integer> spreadCells = new ArrayList<Integer>();
-    @SerializedName("historyItem")
-    @Expose
-    private boolean historyItem;
-    //Nickname of buddy require for friend's timeline
-    @SerializedName("@nickName")
-    @Expose
-    private String nickName;
+	@SerializedName("_links")
+	@Expose
+	private Links Links;
+	@SerializedName("@type")
+	@Expose
+	private String Type;
+	@SerializedName("activityCategoryName")
+	@Expose
+	private String activityCategoryName;
+	@SerializedName("maxDurationMinutes")
+	@Expose
+	private long maxDurationMinutes;
+	@SerializedName("zones")
+	@Expose
+	private List<String> zones = new ArrayList<>();
+	@SerializedName("spreadCells")
+	@Expose
+	private List<Integer> spreadCells = new ArrayList<Integer>();
+	@SerializedName("historyItem")
+	@Expose
+	private boolean historyItem;
+	//Nickname of buddy require for friend's timeline
+	@SerializedName("@nickName")
+	@Expose
+	private String nickName;
 
-    /**
-     * Gets links.
-     *
-     * @return the links
-     */
-    public Links getLinks() {
-        return Links;
-    }
+	/**
+	 * Gets links.
+	 *
+	 * @return the links
+	 */
+	public Links getLinks()
+	{
+		return Links;
+	}
 
-    /**
-     * Sets links.
-     *
-     * @param Links the links
-     */
-    public void setLinks(nu.yona.app.api.model.Links Links) {
-        this.Links = Links;
-    }
+	/**
+	 * Sets links.
+	 *
+	 * @param Links the links
+	 */
+	public void setLinks(nu.yona.app.api.model.Links Links)
+	{
+		this.Links = Links;
+	}
 
-    /**
-     * Gets type.
-     *
-     * @return the type
-     */
-    public String getType() {
-        return Type;
-    }
+	/**
+	 * Gets type.
+	 *
+	 * @return the type
+	 */
+	public String getType()
+	{
+		return Type;
+	}
 
-    /**
-     * Sets type.
-     *
-     * @param Type the type
-     */
-    public void setType(String Type) {
-        this.Type = Type;
-    }
+	/**
+	 * Sets type.
+	 *
+	 * @param Type the type
+	 */
+	public void setType(String Type)
+	{
+		this.Type = Type;
+	}
 
-    /**
-     * Gets activity category name.
-     *
-     * @return the activity category name
-     */
-    public String getActivityCategoryName() {
-        return activityCategoryName;
-    }
+	/**
+	 * Gets activity category name.
+	 *
+	 * @return the activity category name
+	 */
+	public String getActivityCategoryName()
+	{
+		return activityCategoryName;
+	}
 
-    /**
-     * Sets activity category name.
-     *
-     * @param activityCategoryName the activity category name
-     */
-    public void setActivityCategoryName(String activityCategoryName) {
-        this.activityCategoryName = activityCategoryName;
-    }
+	/**
+	 * Sets activity category name.
+	 *
+	 * @param activityCategoryName the activity category name
+	 */
+	public void setActivityCategoryName(String activityCategoryName)
+	{
+		this.activityCategoryName = activityCategoryName;
+	}
 
-    /**
-     * Gets max duration minutes.
-     *
-     * @return the max duration minutes
-     */
-    public long getMaxDurationMinutes() {
-        return maxDurationMinutes;
-    }
+	/**
+	 * Gets max duration minutes.
+	 *
+	 * @return the max duration minutes
+	 */
+	public long getMaxDurationMinutes()
+	{
+		return maxDurationMinutes;
+	}
 
-    /**
-     * Sets max duration minutes.
-     *
-     * @param maxDurationMinutes the max duration minutes
-     */
-    public void setMaxDurationMinutes(long maxDurationMinutes) {
-        this.maxDurationMinutes = maxDurationMinutes;
-    }
+	/**
+	 * Sets max duration minutes.
+	 *
+	 * @param maxDurationMinutes the max duration minutes
+	 */
+	public void setMaxDurationMinutes(long maxDurationMinutes)
+	{
+		this.maxDurationMinutes = maxDurationMinutes;
+	}
 
-    /**
-     * Gets zones.
-     *
-     * @return the zones
-     */
-    public List<String> getZones() {
-        return zones;
-    }
+	/**
+	 * Gets zones.
+	 *
+	 * @return the zones
+	 */
+	public List<String> getZones()
+	{
+		return zones;
+	}
 
-    /**
-     * Sets zones.
-     *
-     * @param zones the zones
-     */
-    public void setZones(List<String> zones) {
-        this.zones = zones;
-    }
+	/**
+	 * Sets zones.
+	 *
+	 * @param zones the zones
+	 */
+	public void setZones(List<String> zones)
+	{
+		this.zones = zones;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 
-    /**
-     * Gets spread cells.
-     *
-     * @return the spread cells
-     */
-    public List<Integer> getSpreadCells() {
-        return this.spreadCells;
-    }
+	/**
+	 * Gets spread cells.
+	 *
+	 * @return the spread cells
+	 */
+	public List<Integer> getSpreadCells()
+	{
+		return this.spreadCells;
+	}
 
-    /**
-     * Sets spread cells.
-     *
-     * @param spreadCells the spread cells
-     */
-    public void setSpreadCells(List<Integer> spreadCells) {
-        this.spreadCells = spreadCells;
-    }
+	/**
+	 * Sets spread cells.
+	 *
+	 * @param spreadCells the spread cells
+	 */
+	public void setSpreadCells(List<Integer> spreadCells)
+	{
+		this.spreadCells = spreadCells;
+	}
 
-    /**
-     * Is history item boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isHistoryItem() {
-        return this.historyItem;
-    }
+	/**
+	 * Is history item boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isHistoryItem()
+	{
+		return this.historyItem;
+	}
 
-    /**
-     * Sets history item.
-     *
-     * @param historyItem the history item
-     */
-    public void setHistoryItem(boolean historyItem) {
-        this.historyItem = historyItem;
-    }
+	/**
+	 * Sets history item.
+	 *
+	 * @param historyItem the history item
+	 */
+	public void setHistoryItem(boolean historyItem)
+	{
+		this.historyItem = historyItem;
+	}
 
-    /**
-     * Gets nick name.
-     *
-     * @return the nick name
-     */
-    public String getNickName() {
-        return this.nickName;
-    }
+	/**
+	 * Gets nick name.
+	 *
+	 * @return the nick name
+	 */
+	public String getNickName()
+	{
+		return this.nickName;
+	}
 
-    /**
-     * Sets nick name.
-     *
-     * @param nickName the nick name
-     */
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
+	/**
+	 * Sets nick name.
+	 *
+	 * @param nickName the nick name
+	 */
+	public void setNickName(String nickName)
+	{
+		this.nickName = nickName;
+	}
 }

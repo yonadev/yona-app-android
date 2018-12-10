@@ -1,0 +1,3 @@
+APPDEV-1139 App informs the server when it is being opened.
+
+This is done for usage statistics and to check whether the app is up to date for the current server version.

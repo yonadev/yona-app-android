@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -23,207 +23,277 @@ import nu.yona.app.api.model.PostBudgetYonaGoal;
 import nu.yona.app.api.model.PostTimeZoneYonaGoal;
 import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.listener.DataLoadListener;
-import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
-public class GoalManagerImpl implements GoalManager {
+public class GoalManagerImpl implements GoalManager
+{
 
 
-    private final GoalNetworkImpl goalNetwork;
-    private final GoalDAO goalDAO;
-    private final Context mContext;
+	private final GoalNetworkImpl goalNetwork;
+	private final GoalDAO goalDAO;
+	private final Context mContext;
 
-    /**
-     * Instantiates a new Goal manager.
-     *
-     * @param context the context
-     */
-    public GoalManagerImpl(Context context) {
-        goalNetwork = new GoalNetworkImpl();
-        goalDAO = new GoalDAO(DatabaseHelper.getInstance(context), context);
-        this.mContext = context;
-    }
+	/**
+	 * Instantiates a new Goal manager.
+	 *
+	 * @param context the context
+	 */
+	public GoalManagerImpl(Context context)
+	{
+		goalNetwork = new GoalNetworkImpl();
+		goalDAO = new GoalDAO(DatabaseHelper.getInstance(context), context);
+		this.mContext = context;
+	}
 
-    /**
-     * Get the User's Goal from server and update into database
-     *
-     * @param listener
-     */
-    @Override
-    public void getUserGoal(final DataLoadListener listener) {
-        try {
-            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
-                YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
-                goalNetwork.getUserGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
-                    }
+	/**
+	 * Get the User's Goal from server and update into database
+	 *
+	 * @param listener
+	 */
+	@Override
+	public void getUserGoal(final DataLoadListener listener)
+	{
+		try
+		{
+			if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref()))
+			{
+				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
+				goalNetwork.getUserGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener()
+				{
+					@Override
+					public void onDataLoad(Object result)
+					{
+						listener.onDataLoad(result);
+					}
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        handleError(errorMessage, listener);
-                    }
-                });
-            } else {
-                listener.onError(mContext.getString(R.string.urlnotfound));
-            }
-        } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+					@Override
+					public void onError(Object errorMessage)
+					{
+						handleError(errorMessage, listener);
+					}
+				});
+			}
+			else
+			{
+				listener.onError(mContext.getString(R.string.urlnotfound));
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * @param goal     PostBudgetYonaGoal object
-     * @param listener
-     */
-    @Override
-    public void postBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener) {
-        try {
-            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
-                goalNetwork.putUserBudgetGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
-                    }
+	/**
+	 * @param goal     PostBudgetYonaGoal object
+	 * @param listener
+	 */
+	@Override
+	public void postBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener)
+	{
+		try
+		{
+			if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref()))
+			{
+				goalNetwork.putUserBudgetGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener()
+				{
+					@Override
+					public void onDataLoad(Object result)
+					{
+						listener.onDataLoad(result);
+					}
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        handleError(errorMessage, listener);
-                    }
-                });
-            } else {
-                listener.onError(mContext.getString(R.string.urlnotfound));
-            }
-        } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+					@Override
+					public void onError(Object errorMessage)
+					{
+						handleError(errorMessage, listener);
+					}
+				});
+			}
+			else
+			{
+				listener.onError(mContext.getString(R.string.urlnotfound));
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * @param goal     PostTimeZoneYonaGoal object
-     * @param listener
-     */
-    @Override
-    public void postTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener) {
-        try {
-            if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref())) {
-                goalNetwork.putUserTimeZoneGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
-                    }
+	/**
+	 * @param goal     PostTimeZoneYonaGoal object
+	 * @param listener
+	 */
+	@Override
+	public void postTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener)
+	{
+		try
+		{
+			if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref()))
+			{
+				goalNetwork.putUserTimeZoneGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener()
+				{
+					@Override
+					public void onDataLoad(Object result)
+					{
+						listener.onDataLoad(result);
+					}
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        handleError(errorMessage, listener);
-                    }
-                });
-            } else {
-                listener.onError(mContext.getString(R.string.urlnotfound));
-            }
-        } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+					@Override
+					public void onError(Object errorMessage)
+					{
+						handleError(errorMessage, listener);
+					}
+				});
+			}
+			else
+			{
+				listener.onError(mContext.getString(R.string.urlnotfound));
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * @param yonaGoal YonaGoal Object
-     * @param listener
-     */
-    @Override
-    public void deleteGoal(YonaGoal yonaGoal, final DataLoadListener listener) {
-        try {
-            if (yonaGoal != null && yonaGoal.getLinks() != null && yonaGoal.getLinks().getSelf() != null && !TextUtils.isEmpty(yonaGoal.getLinks().getSelf().getHref())) {
-                goalNetwork.deleteGoal(yonaGoal.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
-                    }
+	/**
+	 * @param yonaGoal YonaGoal Object
+	 * @param listener
+	 */
+	@Override
+	public void deleteGoal(YonaGoal yonaGoal, final DataLoadListener listener)
+	{
+		try
+		{
+			if (yonaGoal != null && yonaGoal.getLinks() != null && yonaGoal.getLinks().getSelf() != null && !TextUtils.isEmpty(yonaGoal.getLinks().getSelf().getHref()))
+			{
+				goalNetwork.deleteGoal(yonaGoal.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener()
+				{
+					@Override
+					public void onDataLoad(Object result)
+					{
+						listener.onDataLoad(result);
+					}
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        handleError(errorMessage, listener);
-                    }
-                });
-            } else {
-                listener.onError(mContext.getString(R.string.urlnotfound));
-            }
-        } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+					@Override
+					public void onError(Object errorMessage)
+					{
+						handleError(errorMessage, listener);
+					}
+				});
+			}
+			else
+			{
+				listener.onError(mContext.getString(R.string.urlnotfound));
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    @Override
-    public void updateBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener) {
-        try {
-            if (!TextUtils.isEmpty(goal.getLinks().getSelf().getHref())) {
-                goalNetwork.updateUserBudgetGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
-                    }
+	@Override
+	public void updateBudgetGoals(PostBudgetYonaGoal goal, final DataLoadListener listener)
+	{
+		try
+		{
+			if (!TextUtils.isEmpty(goal.getLinks().getSelf().getHref()))
+			{
+				goalNetwork.updateUserBudgetGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener()
+				{
+					@Override
+					public void onDataLoad(Object result)
+					{
+						listener.onDataLoad(result);
+					}
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        handleError(errorMessage, listener);
-                    }
-                });
-            } else {
-                listener.onError(mContext.getString(R.string.urlnotfound));
-            }
-        } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+					@Override
+					public void onError(Object errorMessage)
+					{
+						handleError(errorMessage, listener);
+					}
+				});
+			}
+			else
+			{
+				listener.onError(mContext.getString(R.string.urlnotfound));
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    @Override
-    public void updateTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener) {
-        try {
-            if (!TextUtils.isEmpty(goal.getLinks().getSelf().getHref())) {
-                goalNetwork.updateUserTimeZoneGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener() {
-                    @Override
-                    public void onDataLoad(Object result) {
-                        listener.onDataLoad(result);
-                    }
+	@Override
+	public void updateTimeZoneGoals(PostTimeZoneYonaGoal goal, final DataLoadListener listener)
+	{
+		try
+		{
+			if (!TextUtils.isEmpty(goal.getLinks().getSelf().getHref()))
+			{
+				goalNetwork.updateUserTimeZoneGoals(goal.getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener()
+				{
+					@Override
+					public void onDataLoad(Object result)
+					{
+						listener.onDataLoad(result);
+					}
 
-                    @Override
-                    public void onError(Object errorMessage) {
-                        handleError(errorMessage, listener);
-                    }
-                });
-            } else {
-                listener.onError(mContext.getString(R.string.urlnotfound));
-            }
-        } catch (Exception e) {
-            AppUtils.throwException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+					@Override
+					public void onError(Object errorMessage)
+					{
+						handleError(errorMessage, listener);
+					}
+				});
+			}
+			else
+			{
+				listener.onError(mContext.getString(R.string.urlnotfound));
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Get Goals from Database
-     *
-     * @return
-     */
-    public Goals getUserGoalFromDb() {
-        return goalDAO.getUserGoal();
-    }
+	/**
+	 * Get Goals from Database
+	 *
+	 * @return
+	 */
+	@Override
+	public Goals getUserGoalFromDb()
+	{
+		return goalDAO.getUserGoal();
+	}
 
-    private void handleError(Object errorMessage, DataLoadListener listener) {
-        if (listener == null) {
-            return;
-        }
-        if (errorMessage instanceof ErrorMessage) {
-            listener.onError(errorMessage);
-        } else {
-            listener.onError(new ErrorMessage(errorMessage.toString()));
-        }
-    }
+	private void handleError(Object errorMessage, DataLoadListener listener)
+	{
+		if (listener == null)
+		{
+			return;
+		}
+		if (errorMessage instanceof ErrorMessage)
+		{
+			listener.onError(errorMessage);
+		}
+		else
+		{
+			listener.onError(new ErrorMessage(errorMessage.toString()));
+		}
+	}
 
-    public void saveGoals(Goals goals, DataLoadListener listener) {
-        goalDAO.saveGoalData(goals, listener);
-    }
+	@Override
+	public void saveGoals(Goals goals, DataLoadListener listener)
+	{
+		goalDAO.saveGoalData(goals, listener);
+	}
 }

@@ -11,7 +11,7 @@
     <string name="service_name">Yona Service</string>
     <string name="country_code_with_zero">"+31 (0) "</string>
     <string name="country_code">"+31"</string>
-    <string name="error_message">Error retruns null.</string>
+    <string name="error_message">Unknown Error. Please contact Yona support</string>
     <string name="space">" "</string>
     <string name="blank"></string>
     <string name="choose_environment">Choose Environment</string>

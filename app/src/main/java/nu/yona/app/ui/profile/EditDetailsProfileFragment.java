@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.ui.profile;
@@ -44,6 +42,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.RegisterUser;
+import nu.yona.app.api.model.User;
 import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontEditTextView;
@@ -62,336 +61,428 @@ import nu.yona.app.utils.PreferenceConstant;
 /**
  * Created by kinnarvasa on 10/05/16.
  */
-public class EditDetailsProfileFragment extends BaseProfileFragment implements EventChangeListener {
-    private YonaFontEditTextView firstName, lastName, nickName;
-    private YonaFontNumberTextView mobileNumber;
-    private TextInputLayout firstnameLayout, lastNameLayout, nickNameLayout, mobileNumberLayout;
-    private ImageView updateProfileImage;
-    private CircleImageView profileImage;
-    private View.OnClickListener changeProfileImageClickListener;
-    private TextWatcher textWatcher;
-    private String oldUserNumber;
-    private RegisterUser registerUser;
-    private View.OnFocusChangeListener onFocusChangeListener;
-    private boolean isAdding;
-    private YonaFontTextView profileImageTxt;
+public class EditDetailsProfileFragment extends BaseProfileFragment implements EventChangeListener
+{
+	private YonaFontEditTextView firstName, lastName, nickName;
+	private YonaFontNumberTextView mobileNumber;
+	private TextInputLayout firstnameLayout, lastNameLayout, nickNameLayout, mobileNumberLayout;
+	private ImageView updateProfileImage;
+	private CircleImageView profileImage;
+	private View.OnClickListener changeProfileImageClickListener;
+	private TextWatcher textWatcher;
+	private String oldUserNumber;
+	private RegisterUser registerUser;
+	private View.OnFocusChangeListener onFocusChangeListener;
+	private boolean isAdding;
+	private YonaFontTextView profileImageTxt;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.edit_profile_detail_fragment, null);
-        final View activityRootView = view.findViewById(R.id.main_content);
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	{
+		View view = inflater.inflate(R.layout.edit_profile_detail_fragment, null);
+		final View activityRootView = view.findViewById(R.id.main_content);
 
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (isAdded()) {
-                    if (AppUtils.checkKeyboardOpen(activityRootView)) {
-                        ((YonaActivity) getActivity()).changeBottomTabVisibility(false);
-                    } else {
-                        ((YonaActivity) getActivity()).changeBottomTabVisibility(true);
-                    }
-                }
-            }
-        });
+		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+		{
+			@Override
+			public void onGlobalLayout()
+			{
+				if (isAdded())
+				{
+					if (AppUtils.checkKeyboardOpen(activityRootView))
+					{
+						((YonaActivity) getActivity()).changeBottomTabVisibility(false);
+					}
+					else
+					{
+						((YonaActivity) getActivity()).changeBottomTabVisibility(true);
+					}
+				}
+			}
+		});
 
-        setupToolbar(view);
+		setupToolbar(view);
 
-        changeProfileImageClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                YonaActivity.getActivity().chooseImage();
-            }
-        };
-        textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		changeProfileImageClickListener = new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				YonaActivity.getActivity().chooseImage();
+			}
+		};
+		textWatcher = new TextWatcher()
+		{
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after)
+			{
 
-            }
+			}
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                isAdding = count == 1;
-                hideErrorMessages();
-            }
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count)
+			{
+				isAdding = count == 1;
+				hideErrorMessages();
+			}
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ') && isAdding) {
-                    firstName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-                    lastName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-                    nickName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-                }
-            }
-        };
+			@Override
+			public void afterTextChanged(Editable s)
+			{
+				if (s != null && s.length() > 0 && (s.length() == 1 || s.charAt(s.length() - 1) == ' ') && isAdding)
+				{
+					firstName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+					lastName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+					nickName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+				}
+			}
+		};
 
-        onFocusChangeListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    ((EditText) view).setSelection(((EditText) view).getText().length());
-                }
-            }
-        };
-        inflateView(view);
+		onFocusChangeListener = new View.OnFocusChangeListener()
+		{
+			@Override
+			public void onFocusChange(View view, boolean b)
+			{
+				if (b)
+				{
+					((EditText) view).setSelection(((EditText) view).getText().length());
+				}
+			}
+		};
+		inflateView(view);
 
-        setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_EDIT_PROFILE));
+		setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_EDIT_PROFILE));
 
-        YonaApplication.getEventChangeManager().registerListener(this);
-        return view;
-    }
+		YonaApplication.getEventChangeManager().registerListener(this);
+		return view;
+	}
 
-    private void inflateView(View view) {
+	private void inflateView(View view)
+	{
 
-        firstnameLayout = view.findViewById(R.id.first_name_layout);
-        lastNameLayout = view.findViewById(R.id.last_name_layout);
-        nickNameLayout = view.findViewById(R.id.nick_name_layout);
-        mobileNumberLayout = view.findViewById(R.id.mobile_number_layout);
+		firstnameLayout = view.findViewById(R.id.first_name_layout);
+		lastNameLayout = view.findViewById(R.id.last_name_layout);
+		nickNameLayout = view.findViewById(R.id.nick_name_layout);
+		mobileNumberLayout = view.findViewById(R.id.mobile_number_layout);
 
-        firstName = view.findViewById(R.id.first_name);
-        firstName.addTextChangedListener(textWatcher);
-        firstName.setOnFocusChangeListener(onFocusChangeListener);
+		firstName = view.findViewById(R.id.first_name);
+		firstName.addTextChangedListener(textWatcher);
+		firstName.setOnFocusChangeListener(onFocusChangeListener);
 
-        lastName = view.findViewById(R.id.last_name);
-        lastName.addTextChangedListener(textWatcher);
-        lastName.setOnFocusChangeListener(onFocusChangeListener);
+		lastName = view.findViewById(R.id.last_name);
+		lastName.addTextChangedListener(textWatcher);
+		lastName.setOnFocusChangeListener(onFocusChangeListener);
 
-        nickName = view.findViewById(R.id.nick_name);
-        nickName.addTextChangedListener(textWatcher);
-        nickName.setOnFocusChangeListener(onFocusChangeListener);
+		nickName = view.findViewById(R.id.nick_name);
+		nickName.addTextChangedListener(textWatcher);
+		nickName.setOnFocusChangeListener(onFocusChangeListener);
 
-        mobileNumber = view.findViewById(R.id.mobile_number);
-        mobileNumber.requestFocus();
-        YonaActivity.getActivity().showKeyboard(mobileNumber);
-        mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getActivity(), null));
+		mobileNumber = view.findViewById(R.id.mobile_number);
+		mobileNumber.requestFocus();
+		YonaActivity.getActivity().showKeyboard(mobileNumber);
+		mobileNumber.addTextChangedListener(new YonaPhoneWatcher(mobileNumber, getActivity(), null));
 
-        firstnameLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                YonaActivity.getActivity().showKeyboard(firstName);
-            }
-        });
+		firstnameLayout.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				YonaActivity.getActivity().showKeyboard(firstName);
+			}
+		});
 
-        lastNameLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                YonaActivity.getActivity().showKeyboard(lastName);
-            }
-        });
+		lastNameLayout.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				YonaActivity.getActivity().showKeyboard(lastName);
+			}
+		});
 
-        mobileNumberLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                YonaActivity.getActivity().showKeyboard(mobileNumber);
-            }
-        });
+		mobileNumberLayout.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				YonaActivity.getActivity().showKeyboard(mobileNumber);
+			}
+		});
 
-        nickNameLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                YonaActivity.getActivity().showKeyboard(nickName);
-            }
-        });
+		nickNameLayout.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				YonaActivity.getActivity().showKeyboard(nickName);
+			}
+		});
 
-        mobileNumber.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    goToNext();
-                }
-                return false;
-            }
-        });
-
-
-        profileImage = view.findViewById(R.id.profileImage);
-        updateProfileImage = view.findViewById(R.id.updateProfileImage);
-        profileImageTxt = view.findViewById(R.id.profileIcon);
-        profileEditMode();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        YonaApplication.getEventChangeManager().unRegisterListener(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setTitleAndIcon();
-    }
-
-    private void goToNext() {
-        if (validateFields()) {
-            YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.SCREEN_EDIT_PROFILE, AnalyticsConstant.SAVE);
-            updateUserProfile();
-        }
-    }
-
-    private void setTitleAndIcon() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                profileCircleImageView.setVisibility(View.GONE);
-                toolbarTitle.setText(getString(R.string.edit_profile));
-                rightIcon.setVisibility(View.VISIBLE);
-                rightIcon.setImageResource(R.drawable.icn_create);
-
-                rightIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        goToNext();
-                    }
-                });
-            }
-        }, AppConstant.TIMER_DELAY_HUNDRED);
-
-    }
-
-    private void profileEditMode() {
-        profileImage.setOnClickListener(changeProfileImageClickListener);
-        updateProfileImage.setOnClickListener(changeProfileImageClickListener);
-        profileImageTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round));
-
-        firstName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName());
-        lastName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getLastName());
-        nickName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getNickname());
-
-        String number = YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber();
-        if (!TextUtils.isEmpty(number)) {
-            oldUserNumber = number;
-        }
-        mobileNumber.setText(number);
-        firstName.requestFocus();
-        Href userPhoto = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getUserPhoto();
-        if(userPhoto != null) {
-            displayProfileImage(userPhoto.getHref());
-        }
-    }
-
-    private boolean validateFields() {
-        String number = mobileNumber.getText().toString();
-        String phonenumber = number.replaceAll(getString(R.string.space), getString(R.string.blank));
-        if (!APIManager.getInstance().getAuthenticateManager().validateText(firstName.getText().toString())) {
-            firstnameLayout.setErrorEnabled(true);
-            firstnameLayout.setError(getString(R.string.enternamevalidation));
-            YonaActivity.getActivity().showKeyboard(firstName);
-            firstName.requestFocus();
-            return false;
-        } else if (!APIManager.getInstance().getAuthenticateManager().validateText(lastName.getText().toString())) {
-            lastNameLayout.setErrorEnabled(true);
-            lastNameLayout.setError(getString(R.string.enternamevalidation));
-            YonaActivity.getActivity().showKeyboard(lastName);
-            lastName.requestFocus();
-            return false;
-        } else if (!APIManager.getInstance().getAuthenticateManager().validateText(nickName.getText().toString())) {
-            nickNameLayout.setErrorEnabled(true);
-            nickNameLayout.setError(getString(R.string.enternicknamevalidation));
-            YonaActivity.getActivity().showKeyboard(nickName);
-            nickName.requestFocus();
-            return false;
-        } else if (!APIManager.getInstance().getAuthenticateManager().validateMobileNumber(phonenumber)) {
-            mobileNumberLayout.setErrorEnabled(true);
-            mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
-            YonaActivity.getActivity().showKeyboard(mobileNumber);
-            mobileNumber.requestFocus();
-            return false;
-        }
-        return true;
-    }
-
-    private void hideErrorMessages() {
-        firstnameLayout.setError(null);
-        lastNameLayout.setError(null);
-        nickNameLayout.setError(null);
-        mobileNumberLayout.setError(null);
-    }
-
-    private void updateUserProfile() {
-        if (getActivity() != null) {
-            registerUser = new RegisterUser();
-            registerUser.setFirstName(firstName.getText().toString());
-            registerUser.setLastName(lastName.getText().toString());
-            registerUser.setNickName(nickName.getText().toString());
-            String number = mobileNumber.getText().toString();
-            registerUser.setMobileNumber(number.replace(" ", ""));
-            YonaActivity.getActivity().showLoadingView(true, null);
-            APIManager.getInstance().getAuthenticateManager().registerUser(registerUser, true, new DataLoadListener() {
-                @Override
-                public void onDataLoad(Object result) {
-                    YonaActivity.getActivity().showLoadingView(false, null);
-                    redirectToNextPage();
-                }
-
-                @Override
-                public void onError(Object errorMessage) {
-                    showError(errorMessage);
-                }
-            });
-        }
-    }
-
-    private void redirectToNextPage() {
-        if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && oldUserNumber.equalsIgnoreCase(YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber())) {
-            YonaActivity.getActivity().onBackPressed();
-            YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, YonaApplication.getEventChangeManager().getDataState().getUser());
-        } else {
-            showMobileVerificationScreen(null);
-        }
-    }
-
-    @Override
-    public void onStateChange(int eventType, final Object payload) {
-        switch (eventType) {
-            case EventChangeManager.EVENT_RECEIVED_PHOTO:
-                displayProfileImage((String) payload);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void displayProfileImage(String path) {
-        Picasso.with(getContext()).load(path).noFade().into(profileImage);
-        profileImage.setVisibility(View.VISIBLE);
-    }
-
-    private void showError(Object errorMessage) {
-        ErrorMessage message = (ErrorMessage) errorMessage;
-        YonaActivity.getActivity().showLoadingView(false, null);
-        if (message.getCode() != null && message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR)) {
-            CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.useralreadyregister), getString(R.string.ok), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-        } else {
-            Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
-        }
-    }
-
-    private void showMobileVerificationScreen(Bundle bundle) {
-        removeStoredPassCode();
-        Intent intent = new Intent(YonaActivity.getActivity(), OTPActivity.class);
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        startActivity(intent);
-        YonaActivity.getActivity().finish();
-    }
-
-    private void removeStoredPassCode() {
-        SharedPreferences.Editor yonaPref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
-        yonaPref.putBoolean(PreferenceConstant.STEP_OTP, false);
-        yonaPref.putBoolean(PreferenceConstant.PROFILE_OTP_STEP, true);
-        yonaPref.commit();
-    }
+		mobileNumber.setOnEditorActionListener(new EditText.OnEditorActionListener()
+		{
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+			{
+				if (actionId == EditorInfo.IME_ACTION_DONE)
+				{
+					goToNext();
+				}
+				return false;
+			}
+		});
 
 
-    @Override
-    public String getAnalyticsCategory() {
-        return AnalyticsConstant.SCREEN_EDIT_PROFILE;
-    }
+		profileImage = view.findViewById(R.id.profileImage);
+		updateProfileImage = view.findViewById(R.id.updateProfileImage);
+		profileImageTxt = view.findViewById(R.id.profileIcon);
+		profileEditMode();
+	}
+
+	@Override
+	public void onDestroyView()
+	{
+		super.onDestroyView();
+		YonaApplication.getEventChangeManager().unRegisterListener(this);
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		setTitleAndIcon();
+	}
+
+	private void goToNext()
+	{
+		if (validateFields() && userDetailsChanged())
+		{
+			YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.SCREEN_EDIT_PROFILE, AnalyticsConstant.SAVE);
+			updateUserProfile();
+		}
+		else
+		{
+			YonaActivity.getActivity().onBackPressed();
+		}
+	}
+
+	private static boolean editTextEquals(EditText editText, String value)
+	{
+		return editText.getText().toString().equals(value);
+	}
+
+	private boolean userDetailsChanged()
+	{
+		User loggedInUser = YonaApplication.getEventChangeManager().getDataState().getUser();
+		return !(editTextEquals(firstName, loggedInUser.getFirstName()) &&
+				editTextEquals(lastName, loggedInUser.getLastName()) &&
+				editTextEquals(nickName, loggedInUser.getNickname()) &&
+				editTextEquals(mobileNumber, loggedInUser.getMobileNumber()));
+	}
+
+
+	private void setTitleAndIcon()
+	{
+		new Handler().postDelayed(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				profileCircleImageView.setVisibility(View.GONE);
+				toolbarTitle.setText(getString(R.string.edit_profile));
+				rightIcon.setVisibility(View.VISIBLE);
+				rightIcon.setImageResource(R.drawable.icn_create);
+
+				rightIcon.setOnClickListener(new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						goToNext();
+					}
+				});
+			}
+		}, AppConstant.TIMER_DELAY_HUNDRED);
+
+	}
+
+	private void profileEditMode()
+	{
+		profileImage.setOnClickListener(changeProfileImageClickListener);
+		updateProfileImage.setOnClickListener(changeProfileImageClickListener);
+		profileImageTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round));
+
+		firstName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName());
+		lastName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getLastName());
+		nickName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getNickname());
+
+		String number = YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber();
+		if (!TextUtils.isEmpty(number))
+		{
+			oldUserNumber = number;
+		}
+		mobileNumber.setText(number);
+		firstName.requestFocus();
+		Href userPhoto = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getUserPhoto();
+		if (userPhoto != null)
+		{
+			displayProfileImage(userPhoto.getHref());
+		}
+	}
+
+	private boolean validateFields()
+	{
+		String number = mobileNumber.getText().toString();
+		String phonenumber = number.replaceAll(getString(R.string.space), getString(R.string.blank));
+		if (!APIManager.getInstance().getAuthenticateManager().validateText(firstName.getText().toString()))
+		{
+			firstnameLayout.setErrorEnabled(true);
+			firstnameLayout.setError(getString(R.string.enternamevalidation));
+			YonaActivity.getActivity().showKeyboard(firstName);
+			firstName.requestFocus();
+			return false;
+		}
+		else if (!APIManager.getInstance().getAuthenticateManager().validateText(lastName.getText().toString()))
+		{
+			lastNameLayout.setErrorEnabled(true);
+			lastNameLayout.setError(getString(R.string.enternamevalidation));
+			YonaActivity.getActivity().showKeyboard(lastName);
+			lastName.requestFocus();
+			return false;
+		}
+		else if (!APIManager.getInstance().getAuthenticateManager().validateText(nickName.getText().toString()))
+		{
+			nickNameLayout.setErrorEnabled(true);
+			nickNameLayout.setError(getString(R.string.enternicknamevalidation));
+			YonaActivity.getActivity().showKeyboard(nickName);
+			nickName.requestFocus();
+			return false;
+		}
+		else if (!APIManager.getInstance().getAuthenticateManager().isMobileNumberValid(phonenumber))
+		{
+			mobileNumberLayout.setErrorEnabled(true);
+			mobileNumberLayout.setError(getString(R.string.enternumbervalidation));
+			YonaActivity.getActivity().showKeyboard(mobileNumber);
+			mobileNumber.requestFocus();
+			return false;
+		}
+		return true;
+	}
+
+	private void hideErrorMessages()
+	{
+		firstnameLayout.setError(null);
+		lastNameLayout.setError(null);
+		nickNameLayout.setError(null);
+		mobileNumberLayout.setError(null);
+	}
+
+	private void updateUserProfile()
+	{
+		if (getActivity() != null)
+		{
+			registerUser = new RegisterUser();
+			registerUser.setFirstName(firstName.getText().toString());
+			registerUser.setLastName(lastName.getText().toString());
+			registerUser.setNickName(nickName.getText().toString());
+			String number = mobileNumber.getText().toString();
+			registerUser.setMobileNumber(number.replace(" ", ""));
+			YonaActivity.getActivity().showLoadingView(true, null);
+			APIManager.getInstance().getAuthenticateManager().registerUser(registerUser, true, new DataLoadListener()
+			{
+				@Override
+				public void onDataLoad(Object result)
+				{
+					YonaActivity.getActivity().showLoadingView(false, null);
+					redirectToNextPage();
+				}
+
+				@Override
+				public void onError(Object errorMessage)
+				{
+					showError(errorMessage);
+				}
+			});
+		}
+	}
+
+	private void redirectToNextPage()
+	{
+		if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && oldUserNumber.equalsIgnoreCase(YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber()))
+		{
+			YonaActivity.getActivity().onBackPressed();
+			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, YonaApplication.getEventChangeManager().getDataState().getUser());
+		}
+		else
+		{
+			showMobileVerificationScreen(null);
+		}
+	}
+
+	@Override
+	public void onStateChange(int eventType, final Object payload)
+	{
+		switch (eventType)
+		{
+			case EventChangeManager.EVENT_RECEIVED_PHOTO:
+				displayProfileImage((String) payload);
+				break;
+			default:
+				break;
+		}
+	}
+
+	private void displayProfileImage(String path)
+	{
+		Picasso.with(getContext()).load(path).noFade().into(profileImage);
+		profileImage.setVisibility(View.VISIBLE);
+	}
+
+	private void showError(Object errorMessage)
+	{
+		ErrorMessage message = (ErrorMessage) errorMessage;
+		YonaActivity.getActivity().showLoadingView(false, null);
+		if (message.getCode() != null && message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR))
+		{
+			CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.useralreadyregister), getString(R.string.ok), new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dialog.dismiss();
+				}
+			});
+		}
+		else
+		{
+			Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
+		}
+	}
+
+	private void showMobileVerificationScreen(Bundle bundle)
+	{
+		removeStoredPassCode();
+		Intent intent = new Intent(YonaActivity.getActivity(), OTPActivity.class);
+		if (bundle != null)
+		{
+			intent.putExtras(bundle);
+		}
+		startActivity(intent);
+		YonaActivity.getActivity().finish();
+	}
+
+	private void removeStoredPassCode()
+	{
+		SharedPreferences.Editor yonaPref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+		yonaPref.putBoolean(PreferenceConstant.STEP_OTP, false);
+		yonaPref.putBoolean(PreferenceConstant.PROFILE_OTP_STEP, true);
+		yonaPref.commit();
+	}
+
+
+	@Override
+	public String getAnalyticsCategory()
+	{
+		return AnalyticsConstant.SCREEN_EDIT_PROFILE;
+	}
 }

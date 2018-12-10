@@ -1,0 +1,7 @@
+<resources>
+    <string name="server_url">https://app.beta.yona.nu/</string>
+    <string name="http_scheme">https</string>
+    <string name="https_scheme">https</string>
+    <string name="host_name">*.beta.yona.nu</string>
+    <string name="prefix">/users/</string>
+</resources>

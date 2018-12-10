@@ -1,11 +1,9 @@
 /*
- *  Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package nu.yona.app.api.manager.network;
@@ -28,208 +26,274 @@ import retrofit2.Response;
 /**
  * The type Activity network.
  */
-public class ActivityNetworkImpl extends BaseImpl {
+public class ActivityNetworkImpl extends BaseImpl
+{
 
-    /**
-     * Gets days activity.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
-     * @param listener     the listener
-     */
-    public void getDaysActivity(String url, String yonaPassword, int itemsPerPage, int pageNo, DataLoadListener listener) {
-        try {
-            getRestApi().getActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * Gets Next days activity.
+	 *
+	 * @param nextDayActivittUrl the url
+	 * @param yonaPassword       the yona password
+	 * @param listener           the listener
+	 */
+	public void getNextDayActivity(String nextDayActivittUrl, String yonaPassword, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().getActivities(nextDayActivittUrl, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Gets day detail activity.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param listener     the listener
-     */
-    public void getDayDetailActivity(String url, String yonaPassword, DataLoadListener listener) {
-        try {
-            getRestApi().getDayDetailActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getDayDetailActivity(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * Gets day detail activity.
+	 *
+	 * @param url          the url
+	 * @param yonaPassword the yona password
+	 * @param listener     the listener
+	 */
+	public void getDayDetailActivity(String url, String yonaPassword, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().getDayDetailActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getDayDetailActivity(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Gets weeks activity.
-     *
-     * @param url          the url
-     * @param password     the password
-     * @param itemsPerPage the items per page
-     * @param pageNo       the page no
-     * @param listener     the listener
-     */
-    public void getWeeksActivity(String url, String password, int itemsPerPage, int pageNo, DataLoadListener listener) {
-        try {
-            getRestApi().getActivity(url, password, Locale.getDefault().toString().replace('_', '-'), itemsPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * Gets Next weeks activity.
+	 *
+	 * @param nextWeeksActivityUrl the url
+	 * @param password             the password
+	 * @param listener             the listener
+	 */
+	public void getNextWeeksActivity(String nextWeeksActivityUrl, String password, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().getActivities(nextWeeksActivityUrl, password, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Gets weeks detail activity.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param listener     the listener
-     */
-    public void getWeeksDetailActivity(String url, String yonaPassword, DataLoadListener listener) {
-        try {
-            getRestApi().getWeekDetailActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getweekDetailActivity(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * Gets weeks detail activity.
+	 *
+	 * @param url          the url
+	 * @param yonaPassword the yona password
+	 * @param listener     the listener
+	 */
+	public void getWeeksDetailActivity(String url, String yonaPassword, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().getWeekDetailActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getweekDetailActivity(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Gets with buddy activity.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param itemPerPage  the item per page
-     * @param pageNo       the page no
-     * @param listener     the listener
-     */
-    public void getWithBuddyActivity(String url, String yonaPassword, int itemPerPage, int pageNo, DataLoadListener listener) {
-        try {
-            getRestApi().getWithBuddyActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * Gets with buddy activity.
+	 *
+	 * @param url          the url
+	 * @param yonaPassword the yona password
+	 * @param itemPerPage  the item per page
+	 * @param pageNo       the page no
+	 * @param listener     the listener
+	 */
+	public void getWithBuddyActivity(String url, String yonaPassword, int itemPerPage, int pageNo, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().getWithBuddyActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    /**
-     * Post app activity.
-     *
-     * @param url          the url
-     * @param yonaPassword the yona password
-     * @param appActivity  the app activity
-     * @param listener     the listener
-     */
-    public void postAppActivity(String url, String yonaPassword, AppActivity appActivity, DataLoadListener listener) {
-        try {
-            getRestApi().postAppActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), appActivity).enqueue(getCall(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	/**
+	 * Post app activity.
+	 *
+	 * @param url          the url
+	 * @param yonaPassword the yona password
+	 * @param appActivity  the app activity
+	 * @param listener     the listener
+	 */
+	public void postAppActivity(String url, String yonaPassword, AppActivity appActivity, DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().postAppActivity(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), appActivity).enqueue(getCall(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    public void getComments(String url, String yonaPassword, int pageNo, int itemPerPage, final DataLoadListener listener) {
-        try {
-            getRestApi().getComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), itemPerPage, pageNo).enqueue(getEmbeddedYonaActivity(listener));
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+	public void getComments(String url, String yonaPassword, final DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().getComments(url, yonaPassword, Locale.getDefault().toString().replace('_', '-')).enqueue(getEmbeddedYonaActivity(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    public void addComment(String url, String yonaPassword, Message message, final DataLoadListener listener) {
-        try {
-            getRestApi().addComment(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), message).enqueue(new Callback<YonaMessage>() {
-                @Override
-                public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response) {
-                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                        listener.onDataLoad(response.body());
-                    } else {
-                        onError(response, listener);
-                    }
-                }
+	public void addComment(String url, String yonaPassword, Message message, final DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().addComment(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), message).enqueue(new Callback<YonaMessage>()
+			{
+				@Override
+				public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response)
+				{
+					if (response.code() < NetworkConstant.RESPONSE_STATUS)
+					{
+						listener.onDataLoad(response.body());
+					}
+					else
+					{
+						onError(response, listener);
+					}
+				}
 
-                @Override
-                public void onFailure(Call<YonaMessage> call, Throwable t) {
-                    onError(t, listener);
-                }
-            });
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+				@Override
+				public void onFailure(Call<YonaMessage> call, Throwable t)
+				{
+					onError(t, listener);
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    public void replyComment(String url, String yonaPasswrod, MessageBody messageBody, final DataLoadListener listener) {
-        try {
-            getRestApi().replyComment(url, yonaPasswrod, Locale.getDefault().toString().replace('_', '-'), messageBody).enqueue(new Callback<YonaMessage>() {
-                @Override
-                public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response) {
-                    if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                        listener.onDataLoad(response.body());
-                    } else {
-                        onError(response, listener);
-                    }
-                }
+	public void replyComment(String url, String yonaPasswrod, MessageBody messageBody, final DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().replyComment(url, yonaPasswrod, Locale.getDefault().toString().replace('_', '-'), messageBody).enqueue(new Callback<YonaMessage>()
+			{
+				@Override
+				public void onResponse(Call<YonaMessage> call, Response<YonaMessage> response)
+				{
+					if (response.code() < NetworkConstant.RESPONSE_STATUS)
+					{
+						listener.onDataLoad(response.body());
+					}
+					else
+					{
+						onError(response, listener);
+					}
+				}
 
-                @Override
-                public void onFailure(Call<YonaMessage> call, Throwable t) {
-                    onError(t, listener);
-                }
-            });
-        } catch (Exception e) {
-            AppUtils.throwException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-        }
-    }
+				@Override
+				public void onFailure(Call<YonaMessage> call, Throwable t)
+				{
+					onError(t, listener);
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+		}
+	}
 
-    private Callback<EmbeddedYonaActivity> getEmbeddedYonaActivity(final DataLoadListener listener) {
-        return new Callback<EmbeddedYonaActivity>() {
-            @Override
-            public void onResponse(Call<EmbeddedYonaActivity> call, Response<EmbeddedYonaActivity> response) {
-                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
-                } else {
-                    onError(response, listener);
-                }
-            }
+	private Callback<EmbeddedYonaActivity> getEmbeddedYonaActivity(final DataLoadListener listener)
+	{
+		return new Callback<EmbeddedYonaActivity>()
+		{
+			@Override
+			public void onResponse(Call<EmbeddedYonaActivity> call, Response<EmbeddedYonaActivity> response)
+			{
+				if (response.code() < NetworkConstant.RESPONSE_STATUS)
+				{
+					listener.onDataLoad(response.body());
+				}
+				else
+				{
+					onError(response, listener);
+				}
+			}
 
-            @Override
-            public void onFailure(Call<EmbeddedYonaActivity> call, Throwable t) {
-                onError(t, listener);
-            }
-        };
-    }
+			@Override
+			public void onFailure(Call<EmbeddedYonaActivity> call, Throwable t)
+			{
+				onError(t, listener);
+			}
+		};
+	}
 
-    private Callback<DayActivity> getDayDetailActivity(final DataLoadListener listener) {
-        return new Callback<DayActivity>() {
-            @Override
-            public void onResponse(Call<DayActivity> call, Response<DayActivity> response) {
-                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
-                } else {
-                    onError(response, listener);
-                }
-            }
+	private Callback<DayActivity> getDayDetailActivity(final DataLoadListener listener)
+	{
+		return new Callback<DayActivity>()
+		{
+			@Override
+			public void onResponse(Call<DayActivity> call, Response<DayActivity> response)
+			{
+				if (response.code() < NetworkConstant.RESPONSE_STATUS)
+				{
+					listener.onDataLoad(response.body());
+				}
+				else
+				{
+					onError(response, listener);
+				}
+			}
 
-            @Override
-            public void onFailure(Call<DayActivity> call, Throwable t) {
-                onError(t, listener);
-            }
-        };
-    }
+			@Override
+			public void onFailure(Call<DayActivity> call, Throwable t)
+			{
+				onError(t, listener);
+			}
+		};
+	}
 
-    private Callback<WeekActivity> getweekDetailActivity(final DataLoadListener listener) {
-        return new Callback<WeekActivity>() {
-            @Override
-            public void onResponse(Call<WeekActivity> call, Response<WeekActivity> response) {
-                if (response.code() < NetworkConstant.RESPONSE_STATUS) {
-                    listener.onDataLoad(response.body());
-                } else {
-                    onError(response, listener);
-                }
-            }
+	private Callback<WeekActivity> getweekDetailActivity(final DataLoadListener listener)
+	{
+		return new Callback<WeekActivity>()
+		{
+			@Override
+			public void onResponse(Call<WeekActivity> call, Response<WeekActivity> response)
+			{
+				if (response.code() < NetworkConstant.RESPONSE_STATUS)
+				{
+					listener.onDataLoad(response.body());
+				}
+				else
+				{
+					onError(response, listener);
+				}
+			}
 
-            @Override
-            public void onFailure(Call<WeekActivity> call, Throwable t) {
-                onError(t, listener);
-            }
-        };
-    }
+			@Override
+			public void onFailure(Call<WeekActivity> call, Throwable t)
+			{
+				onError(t, listener);
+			}
+		};
+	}
 }

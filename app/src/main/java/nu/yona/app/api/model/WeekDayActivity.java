@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Stichting Yona Foundation
+ * Copyright (c) 2018 Stichting Yona Foundation
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,61 +15,73 @@ import nu.yona.app.enums.WeekDayEnum;
 /**
  * Created by bhargavsuthar on 27/06/16.
  */
-public class WeekDayActivity extends BaseEntity {
+public class WeekDayActivity extends BaseEntity
+{
 
-    private WeekDayEnum weekDayEnum;
+	private WeekDayEnum weekDayEnum;
 
-    private String url;
+	private String url;
 
-    private String day;
+	private String day;
 
-    private String date;
+	private String date;
 
-    private int color;
+	private int color;
 
 
-    public String getDay() {
-        return day;
-    }
+	public String getDay()
+	{
+		return day;
+	}
 
-    public void setDay(String day) {
-        this.day = day;
-    }
+	public void setDay(String day)
+	{
+		this.day = day;
+	}
 
-    public String getDate() {
-        return date;
-    }
+	public String getDate()
+	{
+		return date;
+	}
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+	public void setDate(String date)
+	{
+		this.date = date;
+	}
 
-    public int getColor() {
-        return color;
-    }
+	public int getColor()
+	{
+		return color;
+	}
 
-    public void setColor(int color) {
-        this.color = color;
-    }
+	public void setColor(int color)
+	{
+		this.color = color;
+	}
 
-    public WeekDayEnum getWeekDayEnum() {
-        return weekDayEnum;
-    }
+	public WeekDayEnum getWeekDayEnum()
+	{
+		return weekDayEnum;
+	}
 
-    public void setWeekDayEnum(WeekDayEnum weekDayEnum) {
-        this.weekDayEnum = weekDayEnum;
-    }
+	public void setWeekDayEnum(WeekDayEnum weekDayEnum)
+	{
+		this.weekDayEnum = weekDayEnum;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public String getUrl()
+	{
+		return url;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public void setUrl(String url)
+	{
+		this.url = url;
+	}
 
-    @Override
-    public ContentValues getDbContentValues() {
-        return null;
-    }
+	@Override
+	public ContentValues getDbContentValues()
+	{
+		return null;
+	}
 }

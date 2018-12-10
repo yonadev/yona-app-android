@@ -1,0 +1,1 @@
+APPDEV-1196 Addressed issue that caused app activity monitoring to stop on Android Oreo and Android Pie

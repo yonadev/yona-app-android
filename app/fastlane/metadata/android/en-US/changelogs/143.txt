@@ -1,0 +1,1 @@
+APPDEV-1135 Upgraded Android SDK for better support of Android Oreo and Pie
