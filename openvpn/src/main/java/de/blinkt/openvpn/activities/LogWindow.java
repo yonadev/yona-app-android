@@ -29,6 +29,7 @@ public class LogWindow extends BaseActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.log_window);
 		Button dismissButton = (Button) findViewById(R.id.dismiss_button);
+		//        getActionBar().setDisplayHomeAsUpEnabled(true);
 		dismissButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
