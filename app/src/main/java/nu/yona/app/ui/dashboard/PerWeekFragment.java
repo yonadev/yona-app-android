@@ -10,6 +10,7 @@ package nu.yona.app.ui.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
-import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersTouchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import nu.yona.app.api.model.WeekActivity;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.IntentEnum;
-import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
@@ -71,20 +71,13 @@ public class PerWeekFragment extends BaseFragment
 			super.onScrolled(recyclerView, dx, dy);
 			try
 			{
-				if (dy > 0)
+				EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+				if (mIsLoading || embeddedYonaActivity == null ||
+						embeddedYonaActivity.getPage().getNumber() >= embeddedYonaActivity.getPage().getTotalPages())
 				{
-					int visibleItemCount = mLayoutManager.getChildCount();
-					int totalItemCount = mLayoutManager.getItemCount();
-					int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-					EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
-					if (!mIsLoading &&
-							embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
-							&& embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
-							&& (visibleItemCount + firstVisibleItemPosition) >= totalItemCount)
-					{
-						loadMoreItems();
-					}
+					return; // this happens when the view loads even before the api call returns the response.
 				}
+				loadItemsOnScroll(dy);
 			}
 			catch (Exception e)
 			{
@@ -93,16 +86,25 @@ public class PerWeekFragment extends BaseFragment
 		}
 	};
 
+	private void loadItemsOnScroll(int dy)
+	{
+		int visibleItemCount = mLayoutManager.getChildCount();
+		int totalItemCount = mLayoutManager.getItemCount();
+		int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+		if (dy > 0 && ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount))
+		{
+			//load more items if number of items are less than the screen height or scroll view dy >0
+			loadMoreItems();
+		}
+	}
+
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null)
+		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
 		{
-			if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
-			{
-				yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
-			}
+			yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
 		}
 		if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
 		{
@@ -115,22 +117,14 @@ public class PerWeekFragment extends BaseFragment
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.dashboard_perweek_fragment, null);
-
-		listView = (RecyclerView) view.findViewById(R.id.listView);
+		listView = view.findViewById(R.id.listView);
 		mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
-
-		perWeekStickyAdapter = new PerWeekStickyAdapter(new ArrayList<WeekActivity>(), new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
+		perWeekStickyAdapter = new PerWeekStickyAdapter(new ArrayList<>(), v -> {
+			if (v.getTag() instanceof WeekActivity)
 			{
-				if (v.getTag() instanceof WeekActivity)
-				{
-					openDetailPage((WeekActivity) v.getTag());
-				}
+				openDetailPage((WeekActivity) v.getTag());
 			}
 		});
-
 		listView.setLayoutManager(mLayoutManager);
 		listView.setAdapter(perWeekStickyAdapter);
 		listView.addOnScrollListener(mRecyclerViewOnScrollListener);
@@ -154,18 +148,6 @@ public class PerWeekFragment extends BaseFragment
 	private void setRecyclerHeaderAdapterUpdate(StickyRecyclerHeadersDecoration headerDecor)
 	{
 		listView.addItemDecoration(headerDecor);
-
-		// Add touch listeners
-		StickyRecyclerHeadersTouchListener touchListener =
-				new StickyRecyclerHeadersTouchListener(listView, headerDecor);
-		touchListener.setOnHeaderClickListener(
-				new StickyRecyclerHeadersTouchListener.OnHeaderClickListener()
-				{
-					@Override
-					public void onHeaderClick(View header, int position, long headerId)
-					{
-					}
-				});
 	}
 
 	/**
@@ -175,10 +157,6 @@ public class PerWeekFragment extends BaseFragment
 	{
 		perWeekStickyAdapter.clear();
 		getWeekActivity(false);
-	}
-
-	public void setIsInView(boolean isInView)
-	{
 	}
 
 	/**
@@ -193,20 +171,20 @@ public class PerWeekFragment extends BaseFragment
 
 	private Href getURLToFetchWeekActivityOverViews(EmbeddedYonaActivity embeddedYonaActivity, boolean loadMore)
 	{
-		Href urlToFetchDayActivitiyOverviews = null;
+		Href urlToFetchDayActivityOverviews;
 		if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null && loadMore)
 		{
-			urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getNext();
+			urlToFetchDayActivityOverviews = embeddedYonaActivity.getLinks().getNext();
 		}
 		else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null)
 		{
-			urlToFetchDayActivitiyOverviews = embeddedYonaActivity.getLinks().getSelf();
+			urlToFetchDayActivityOverviews = embeddedYonaActivity.getLinks().getSelf();
 		}
 		else
 		{
-			urlToFetchDayActivitiyOverviews = mYonaHeaderTheme.getWeekActivityUrl();
+			urlToFetchDayActivityOverviews = mYonaHeaderTheme.getWeekActivityUrl();
 		}
-		return urlToFetchDayActivitiyOverviews;
+		return urlToFetchDayActivityOverviews;
 	}
 
 	/**
@@ -215,27 +193,9 @@ public class PerWeekFragment extends BaseFragment
 	private void getWeekActivity(boolean loadMore)
 	{
 		final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
-		if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
-				|| (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()))
+		if (embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null || embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())
 		{
-			YonaActivity.getActivity().showLoadingView(true, null);
-			Href urlToFetchWeekActivitiyOverviews = getURLToFetchWeekActivityOverViews(embeddedYonaActivity, loadMore);
-			APIManager.getInstance().getActivityManager().getWeeksActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), urlToFetchWeekActivitiyOverviews, new DataLoadListener()
-			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-					showData();
-					mIsLoading = false;
-				}
-
-				@Override
-				public void onError(Object errorMessage)
-				{
-					YonaActivity.getActivity().showLoadingView(false, null);
-					YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
-				}
-			});
+			loadWeeksActivity(embeddedYonaActivity, loadMore);
 		}
 		else
 		{
@@ -243,14 +203,39 @@ public class PerWeekFragment extends BaseFragment
 		}
 	}
 
+	private void loadWeeksActivity(EmbeddedYonaActivity embeddedYonaActivity, boolean loadMore)
+	{
+		YonaActivity.getActivity().showLoadingView(true, null);
+		Href urlToFetchWeekActivityOverviews = getURLToFetchWeekActivityOverViews(embeddedYonaActivity, loadMore);
+		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result -> handleWeeksActivityRetrieveOnSuccess(result)), result -> handleWeeksActivityRetrieveOnFailure(result), null);
+		APIManager.getInstance().getActivityManager().getWeeksActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), urlToFetchWeekActivityOverviews, dataLoadListener);
+	}
+
+	private Object handleWeeksActivityRetrieveOnSuccess(Object result)
+	{
+		showData();
+		mIsLoading = false;
+		return null;
+	}
+
+	private Object handleWeeksActivityRetrieveOnFailure(Object errorMessage)
+	{
+		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
+		return null;
+	}
+
 	private void showData()
 	{
-		if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList().size() > 0)
+		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+		if (embeddedYonaActivity != null
+				&& embeddedYonaActivity.getWeekActivityList() != null
+				&& embeddedYonaActivity.getWeekActivityList().size() > 0)
 		{
-			perWeekStickyAdapter.notifyDataSetChange(setHeaderListView());
+			perWeekStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
+			mIsLoading = false;
 			YonaActivity.getActivity().showLoadingView(false, null);
+			loadMoreItemsIfScreenHasEmptySpace();
 		}
 		else
 		{
@@ -259,27 +244,37 @@ public class PerWeekFragment extends BaseFragment
 		}
 	}
 
-	private List<WeekActivity> setHeaderListView()
+	private void loadMoreItemsIfScreenHasEmptySpace()
 	{
-		List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
-		int index = 0;
-		for (int i = 0; i < weekActivityList.size(); i++)
-		{
-			if (i == 0)
+		final Handler handler = new Handler();
+		handler.postDelayed(() -> {
+			if (mLayoutManager.getHeight() >= listView.computeVerticalScrollRange())
 			{
-				weekActivityList.get(i).setStickyHeaderId(index++);
+				loadMoreItems();
 			}
 			else
 			{
-				if (weekActivityList.get(i).getStickyTitle().equals(weekActivityList.get(i - 1).getStickyTitle()))
-				{
-					weekActivityList.get(i).setStickyHeaderId(weekActivityList.get(i - 1).getStickyHeaderId());
-				}
-				else
-				{
-					weekActivityList.get(i).setStickyHeaderId(index++);
-				}
+				mIsLoading = false;
+				YonaActivity.getActivity().showLoadingView(false, null);
 			}
+		}, 1000);
+	}
+
+	private List<WeekActivity> setHeaderListView(EmbeddedYonaActivity embeddedYonaActivity)
+	{
+		List<WeekActivity> weekActivityList = embeddedYonaActivity.getWeekActivityList();
+		int index = 0;
+		weekActivityList.get(0).setStickyHeaderId(index++);
+		for (int i = 1; i < weekActivityList.size(); i++)
+		{
+			WeekActivity currentWeekActivity = weekActivityList.get(i);
+			WeekActivity previousWeekActivity = weekActivityList.get(i - 1);
+			if (currentWeekActivity.getStickyTitle().equals(previousWeekActivity.getStickyTitle()))
+			{
+				currentWeekActivity.setStickyHeaderId(previousWeekActivity.getStickyHeaderId());
+				continue;
+			}
+			currentWeekActivity.setStickyHeaderId(index++);
 		}
 		return weekActivityList;
 	}
