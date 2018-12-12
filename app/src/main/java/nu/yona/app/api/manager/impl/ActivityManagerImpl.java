@@ -484,6 +484,7 @@ public class ActivityManagerImpl implements ActivityManager
 			else if (weekActivity.getComments().getLinks().getNext() == null)
 			{
 				// No more comments
+				listener.onDataLoad(weekActivityList);
 				return;
 			}
 			else
