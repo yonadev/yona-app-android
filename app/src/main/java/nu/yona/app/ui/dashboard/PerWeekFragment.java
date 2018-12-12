@@ -102,7 +102,7 @@ public class PerWeekFragment extends BaseFragment
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null && getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
+		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
 		{
 			yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
 		}
@@ -149,7 +149,6 @@ public class PerWeekFragment extends BaseFragment
 	{
 		listView.addItemDecoration(headerDecor);
 	}
-
 
 	/**
 	 * Refresh recyclerview's adapter
