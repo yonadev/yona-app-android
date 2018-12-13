@@ -10,7 +10,6 @@ package nu.yona.app.ui.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,7 +48,6 @@ public class PerDayFragment extends BaseFragment
 	private RecyclerView listView;
 	private PerDayStickyAdapter perDayStickyAdapter;
 	private LinearLayoutManager mLayoutManager;
-	//    private EmbeddedYonaActivity embeddedYonaActivity;
 	private boolean mIsLoading = false;
 	private boolean isDataLoading = false;
 	private YonaHeaderTheme mYonaHeaderTheme;
@@ -94,7 +92,6 @@ public class PerDayFragment extends BaseFragment
 		int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
 		if (dy > 0 && ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount))
 		{
-			//load more items if number of items are less than the screen height or scroll view dy >0
 			loadMoreItems();
 		}
 	}
@@ -126,12 +123,14 @@ public class PerDayFragment extends BaseFragment
 				openDetailPage((DayActivity) v.getTag());
 			}
 		});
+		perDayStickyAdapter.setOnBottomReachedListener((position) -> loadMoreItems());
 		listView.setLayoutManager(mLayoutManager);
 		listView.setAdapter(perDayStickyAdapter);
 		listView.addOnScrollListener(mRecyclerViewOnScrollListener);
 		setRecyclerHeaderAdapterUpdate(new StickyRecyclerHeadersDecoration(perDayStickyAdapter));
 		return view;
 	}
+
 
 	private void openDetailPage(DayActivity activity)
 	{
@@ -203,20 +202,19 @@ public class PerDayFragment extends BaseFragment
 
 	private Href getURLToFetchDayActivityOverViews(EmbeddedYonaActivity embeddedYonaActivity, boolean loadMore)
 	{
-		Href urlToFetchDayActivityOverviews;
 		if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getNext() != null && loadMore)
 		{
-			urlToFetchDayActivityOverviews = embeddedYonaActivity.getLinks().getNext();
+			return embeddedYonaActivity.getLinks().getNext();
 		}
-		else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null)
+		if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getFirst() != null)
 		{
-			urlToFetchDayActivityOverviews = embeddedYonaActivity.getLinks().getSelf();
+			if (perDayStickyAdapter.getItemCount() == 0)
+			{ //Loading from beginnig after perDayStickyAdapter is cleared in onResume.
+				return embeddedYonaActivity.getLinks().getFirst();
+			}
+			return embeddedYonaActivity.getLinks().getSelf();
 		}
-		else
-		{
-			urlToFetchDayActivityOverviews = mYonaHeaderTheme.getDayActivityUrl();
-		}
-		return urlToFetchDayActivityOverviews;
+		return mYonaHeaderTheme.getDayActivityUrl();
 	}
 
 
@@ -271,29 +269,12 @@ public class PerDayFragment extends BaseFragment
 			perDayStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
 			mIsLoading = false;
 			YonaActivity.getActivity().showLoadingView(false, null);
-			loadMoreItemsIfScreenHasEmptySpace();
 		}
 		else
 		{
 			YonaActivity.getActivity().showLoadingView(false, null);
 			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
 		}
-	}
-
-	private void loadMoreItemsIfScreenHasEmptySpace()
-	{
-		final Handler handler = new Handler();
-		handler.postDelayed(() -> {
-			if (mLayoutManager.getHeight() >= listView.computeVerticalScrollRange())
-			{
-				loadMoreItems();
-			}
-			else
-			{
-				mIsLoading = false;
-				YonaActivity.getActivity().showLoadingView(false, null);
-			}
-		}, 1000);
 	}
 
 	private List<DayActivity> setHeaderListView(EmbeddedYonaActivity embeddedYonaActivity)
