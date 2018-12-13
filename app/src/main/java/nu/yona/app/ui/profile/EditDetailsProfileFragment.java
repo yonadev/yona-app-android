@@ -274,10 +274,10 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 	private boolean userDetailsChanged()
 	{
 		User loggedInUser = YonaApplication.getEventChangeManager().getDataState().getUser();
-		return editTextEquals(firstName, loggedInUser.getFirstName()) ||
-				editTextEquals(lastName, loggedInUser.getLastName()) ||
-				editTextEquals(nickName, loggedInUser.getNickname()) ||
-				editTextEquals(mobileNumber, loggedInUser.getMobileNumber());
+		return !(editTextEquals(firstName, loggedInUser.getFirstName()) &&
+				editTextEquals(lastName, loggedInUser.getLastName()) &&
+				editTextEquals(nickName, loggedInUser.getNickname()) &&
+				editTextEquals(mobileNumber, loggedInUser.getMobileNumber()));
 	}
 
 

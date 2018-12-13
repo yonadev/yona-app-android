@@ -48,7 +48,6 @@ public class PerDayFragment extends BaseFragment
 	private RecyclerView listView;
 	private PerDayStickyAdapter perDayStickyAdapter;
 	private LinearLayoutManager mLayoutManager;
-	//    private EmbeddedYonaActivity embeddedYonaActivity;
 	private boolean mIsLoading = false;
 	private boolean isDataLoading = false;
 	private YonaHeaderTheme mYonaHeaderTheme;

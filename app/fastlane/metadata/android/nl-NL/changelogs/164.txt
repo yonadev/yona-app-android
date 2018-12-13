@@ -1,0 +1,1 @@
+APPDEV-1207 Instelling toegevoegd waarmee het VPN logwindow getoond kan worden, om eventuele problemen met de VPN-verbinding te analyseren

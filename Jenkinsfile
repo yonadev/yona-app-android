@@ -100,14 +100,13 @@ pipeline {
         }
       }
       steps {
-        checkpoint 'APK uploaded to Google Play'
         slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting approval for release to Beta"
         script {
           env.RELEASE_TO_BETA = input message: 'User input required',
               submitter: 'authenticated',
               parameters: [choice(name: 'Release to beta on Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to release this build to beta on Google Play')]
           if (env.RELEASE_TO_BETA == 'no') {
-            slackSend color: 'warning', channel: '#devops', message: "Android app build ${env.BUILD_NUMBER} skips all further steps"
+            slackSend color: 'warning', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} skips all further steps"
           }
         }
       }
@@ -141,14 +140,13 @@ pipeline {
         }
       }
       steps {
-        checkpoint 'App released to beta'
         slackSend color: 'good', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} on branch ${BRANCH_NAME} is awaiting approval for release to Production"
         script {
           env.RELEASE_TO_PRODUCTION = input message: 'User input required',
               submitter: 'authenticated',
               parameters: [choice(name: 'Release to production on Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to release this build to production on Google Play')]
           if (env.RELEASE_TO_PRODUCTION == 'no') {
-            slackSend color: 'warning', channel: '#devops', message: "Android app build ${env.BUILD_NUMBER} skips all further steps"
+            slackSend color: 'warning', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} skips all further steps"
           }
         }
       }
