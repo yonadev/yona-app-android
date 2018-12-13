@@ -173,21 +173,15 @@ public class PerWeekFragment extends BaseFragment
 		{
 			return embeddedYonaActivity.getLinks().getNext();
 		}
-		else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null)
+		if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getSelf() != null)
 		{
 			if (perWeekStickyAdapter.getItemCount() == 0)
 			{
 				return embeddedYonaActivity.getLinks().getFirst();
 			}
-			else
-			{
-				return embeddedYonaActivity.getLinks().getSelf();
-			}
+			return embeddedYonaActivity.getLinks().getSelf();
 		}
-		else
-		{
-			return mYonaHeaderTheme.getWeekActivityUrl();
-		}
+		return mYonaHeaderTheme.getWeekActivityUrl();
 	}
 
 	/**

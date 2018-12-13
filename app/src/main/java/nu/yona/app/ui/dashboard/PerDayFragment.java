@@ -206,21 +206,15 @@ public class PerDayFragment extends BaseFragment
 		{
 			return embeddedYonaActivity.getLinks().getNext();
 		}
-		else if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getFirst() != null)
+		if (embeddedYonaActivity != null && embeddedYonaActivity.getLinks() != null && embeddedYonaActivity.getLinks().getFirst() != null)
 		{
 			if (perDayStickyAdapter.getItemCount() == 0)
 			{ //Loading from beginnig after perDayStickyAdapter is cleared in onResume.
 				return embeddedYonaActivity.getLinks().getFirst();
 			}
-			else
-			{
-				return embeddedYonaActivity.getLinks().getSelf();
-			}
+			return embeddedYonaActivity.getLinks().getSelf();
 		}
-		else
-		{
-			return mYonaHeaderTheme.getDayActivityUrl();
-		}
+		return mYonaHeaderTheme.getDayActivityUrl();
 	}
 
 
