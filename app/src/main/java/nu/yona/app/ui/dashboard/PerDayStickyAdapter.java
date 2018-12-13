@@ -36,6 +36,8 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 	private final View.OnClickListener listener;
 	private Context mContext;
 
+	private OnBottomReachedListener onBottomReachedListener;
+
 	/**
 	 * Instantiates a new Per day sticky adapter.
 	 *
@@ -46,6 +48,11 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 	{
 		this.dayActivityList = chartItem;
 		this.listener = listener;
+	}
+
+	public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener)
+	{
+		this.onBottomReachedListener = onBottomReachedListener;
 	}
 
 	@Override
@@ -74,6 +81,10 @@ public class PerDayStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> i
 	@Override
 	public void onBindViewHolder(final ChartItemHolder holder, int position)
 	{
+		if (position == getItemCount() - 1)
+		{
+			onBottomReachedListener.onBottomReached(position);
+		}
 		DayActivity dayActivity = (DayActivity) getItem(position);
 
 		if (dayActivity != null)
