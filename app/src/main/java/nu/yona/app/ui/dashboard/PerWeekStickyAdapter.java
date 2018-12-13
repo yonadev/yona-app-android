@@ -34,6 +34,8 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
 
 	private List<WeekActivity> perWeekActivityList;
 	private final View.OnClickListener listener;
+	private OnBottomReachedListener onBottomReachedListener;
+
 
 	/**
 	 * Instantiates a new Per Week sticky adapter.
@@ -47,6 +49,11 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
 		this.listener = listener;
 	}
 
+	public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener)
+	{
+		this.onBottomReachedListener = onBottomReachedListener;
+	}
+
 	@Override
 	public ChartItemHolder onCreateViewHolder(ViewGroup parent, int viewType)
 	{
@@ -57,6 +64,10 @@ public class PerWeekStickyAdapter extends RecyclerView.Adapter<ChartItemHolder> 
 	@Override
 	public void onBindViewHolder(ChartItemHolder holder, int position)
 	{
+		if (position == getItemCount() - 1)
+		{
+			onBottomReachedListener.onBottomReached(position);
+		}
 		WeekActivity weekActivity = (WeekActivity) getItem(position);
 		holder.getView().setTag(weekActivity);
 		if (weekActivity != null)
