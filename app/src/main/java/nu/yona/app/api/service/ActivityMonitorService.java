@@ -124,16 +124,15 @@ public class ActivityMonitorService extends Service
 	@TargetApi(Build.VERSION_CODES.O)
 	private void displayActivityMonitoringNotification()
 	{
-		String CHANNEL_ID = "yona-channel";
-		NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-				this.getString(R.string.notification_channel_name),
+		NotificationChannel channel = new NotificationChannel(AppConstant.YONA_VPN_CHANNEL_ID,
+				this.getString(R.string.yona_service_notification_channel_name),
 				NotificationManager.IMPORTANCE_MIN);
 		channel.setShowBadge(false);
 		Intent intent = new Intent(this, LaunchActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 /* Request code */, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
-		Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+		Notification notification = new NotificationCompat.Builder(this, AppConstant.YONA_VPN_CHANNEL_ID)
 				.setSmallIcon(R.drawable.ic_launcher)
 				.setContentTitle(this.getString(R.string.yona_notification_content))
 				.setContentIntent(pendingIntent)
