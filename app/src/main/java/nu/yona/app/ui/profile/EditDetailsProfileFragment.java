@@ -75,6 +75,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 	private View.OnFocusChangeListener onFocusChangeListener;
 	private boolean isAdding;
 	private YonaFontTextView profileImageTxt;
+	private boolean isProfileUpdated;
 
 	@Nullable
 	@Override
@@ -260,6 +261,11 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 			YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.SCREEN_EDIT_PROFILE, AnalyticsConstant.SAVE);
 			updateUserProfile();
 		}
+		else if (isProfileUpdated)
+		{
+			YonaActivity.getActivity().onBackPressed();
+			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, YonaApplication.getEventChangeManager().getDataState().getUser());
+		}
 		else
 		{
 			YonaActivity.getActivity().onBackPressed();
@@ -426,6 +432,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		{
 			case EventChangeManager.EVENT_RECEIVED_PHOTO:
 				displayProfileImage((String) payload);
+				isProfileUpdated = true;
 				break;
 			default:
 				break;
