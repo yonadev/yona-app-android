@@ -11,18 +11,20 @@ package nu.yona.app.api.receiver;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.PowerManager;
+import android.support.v4.app.NotificationCompat;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.state.EventChangeManager;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
@@ -152,34 +154,38 @@ public class YonaReceiver extends BroadcastReceiver
 	}
 
 
-	private void showRestartVPN(final String message)
+	private void showRestartVPN(String message)
 	{
-		try
+		Intent intent = new Intent(context.getApplicationContext(), YonaActivity.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+		if (pendingIntent == null)
 		{
-			Intent intent = AppUtils.startVPN(context, true);
-			PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis() + 10000, intent, 0);
-
-			Notification notification = new Notification.Builder(context).setContentTitle(context.getString(R.string.appname))
-					.setContentText(message)
-					.setTicker(context.getString(R.string.appname))
-					.setWhen(0)
-					.setVibrate(new long[]{1, 1, 1})
-					.setDefaults(Notification.DEFAULT_SOUND)
-					.setStyle(new Notification.BigTextStyle().bigText(message))
-					.setSmallIcon(R.mipmap.ic_launcher)
-					.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
-					.setContentIntent(pIntent)
-					.setAutoCancel(true)
-					.build();
-
-			notification.flags |= Notification.FLAG_NO_CLEAR;
-
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-			notificationManager.notify(0, notification);
+			return;
 		}
-		catch (Exception e)
+		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
 		{
-			AppUtils.reportException(YonaReceiver.class.getSimpleName(), e, Thread.currentThread());
+			NotificationChannel channel = new NotificationChannel(AppConstant.YONA_VPN_CHANNEL_ID,
+					context.getString(R.string.yona_vpn_notification_channel_name),
+					NotificationManager.IMPORTANCE_DEFAULT);
+			mNotificationManager.createNotificationChannel(channel);
 		}
+		mNotificationManager.notify(0, getConfiguredVPNRestartNotification(message, pendingIntent));
+	}
+
+
+	private Notification getConfiguredVPNRestartNotification(String message, PendingIntent pendingIntent)
+	{
+		NotificationCompat.Builder mBuilder =
+				new NotificationCompat.Builder(context.getApplicationContext(), AppConstant.YONA_VPN_CHANNEL_ID);
+		NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+		bigText.bigText(message);
+		mBuilder.setStyle(bigText);
+		mBuilder.setContentIntent(pendingIntent);
+		mBuilder.setContentText(message);
+		mBuilder.setTicker(context.getString(R.string.appname));
+		mBuilder.setSmallIcon(R.mipmap.ic_launcher);
+		mBuilder.setPriority(Notification.PRIORITY_MAX);
+		return mBuilder.build();
 	}
 }

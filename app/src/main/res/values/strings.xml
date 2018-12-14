@@ -227,6 +227,7 @@
     <string name="generic_mobile_number_format_error">Invalid Mobile Number. Please check the format</string>
     <string name="yona_notification_content">Monitoring app usage</string>
     <string name="notification_disabled_message">Notifications for the Yona application have been disabled by the user. Give permission in device settings.</string>
-    <string name="notification_channel_name">Persistent notifications</string>
+    <string name="yona_service_notification_channel_name">Persistent notifications</string>
+    <string name="yona_vpn_notification_channel_name">VPN notifications</string>
     <string name="support_mail_subject">Problem with Yona app</string>
 </resources>
