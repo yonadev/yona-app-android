@@ -5,7 +5,7 @@ CHALLENGES VASTLEGGEN EN DELEN
 Een challenge is de maximale tijd die je per dag aan een categorie apps wilt besteden. Of de tijdstippen waarop je een categorie apps wel of niet wilt gebruiken. 
 
 CATEGORIEEN 
-De categorieen zijn gaming, shopping, social, communicatie, gokken en porno. De laatste twee categorieen zijn no-go areas: deze hebben automatisch een maximale tijd van 0 minuten.
+De categorieen zijn gaming, social, communicatie, gokken en porno. De laatste categorie is een no-go area: deze heeft automatisch een maximale tijd van 0 minuten.
 
 GEEN BEPERKINGEN
 Yona blokkeert niets: je kunt alles op je telefoon doen wat je altijd al kon. Dus aan jou zelf de keuze hoe je met je challenges om gaat.
