@@ -134,6 +134,7 @@ pipeline {
       when {
         allOf {
           not { changelog '.*\\[ci skip\\].*' }
+          environment name: 'RELEASE_TO_BETA', value: 'yes'
           anyOf {
             branch 'master'
           }
