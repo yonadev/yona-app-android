@@ -289,7 +289,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 	{
 		String number = mobileNumber.getText().toString();
 		String phonenumber = number.replaceAll(getString(R.string.space), getString(R.string.blank));
-		if (validateDataInEditTextView())
+		if (!validateDataInEditTextView())
 		{
 			return false;
 		}
@@ -321,7 +321,10 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 			showErrorMessageToUserUponInvalidData(nickNameLayout, nickName, R.string.enternicknamevalidation);
 			return false;
 		}
-		return true;
+		else
+		{
+			return true;
+		}
 	}
 
 	private boolean validateYonaFontEditTextView(YonaFontEditTextView yonaFontEditTextView)
