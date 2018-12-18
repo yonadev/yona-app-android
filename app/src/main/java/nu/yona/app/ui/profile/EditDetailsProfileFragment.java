@@ -62,7 +62,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 {
 	private YonaFontEditTextView firstName, lastName, nickName;
 	private YonaFontNumberTextView mobileNumber;
-	private TextInputLayout firstnameLayout, lastNameLayout, nickNameLayout, mobileNumberLayout;
+	private TextInputLayout firstNameLayout, lastNameLayout, nickNameLayout, mobileNumberLayout;
 	private ImageView updateProfileImage;
 	private CircleImageView profileImage;
 	private View.OnClickListener changeProfileImageClickListener;
@@ -81,12 +81,12 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		View view = inflater.inflate(R.layout.edit_profile_detail_fragment, null);
 		setupActivityRootView(view);
 		setupToolbar(view);
-		changeProfileImageClickListener = v -> YonaActivity.getActivity().chooseImage();
+		changeProfileImageClickListener = (profileImageView) -> YonaActivity.getActivity().chooseImage();
 		setupTextWatcher();
-		onFocusChangeListener = (view1, b) -> {
-			if (b)
+		onFocusChangeListener = (editTextView, hasFocus) -> {
+			if (hasFocus)
 			{
-				((EditText) view1).setSelection(((EditText) view1).getText().length());
+				((EditText) editTextView).setSelection(((EditText) editTextView).getText().length());
 			}
 		};
 		inflateView(view);
@@ -97,18 +97,19 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 	private void setupActivityRootView(View view)
 	{
-		final View activityRootView = view.findViewById(R.id.main_content);
+		View activityRootView = view.findViewById(R.id.main_content);
 		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-			if (isAdded())
+			if (!isAdded())
 			{
-				if (AppUtils.checkKeyboardOpen(activityRootView))
-				{
-					((YonaActivity) getActivity()).changeBottomTabVisibility(false);
-				}
-				else
-				{
-					((YonaActivity) getActivity()).changeBottomTabVisibility(true);
-				}
+				return;
+			}
+			if (AppUtils.checkKeyboardOpen(activityRootView))
+			{
+				((YonaActivity) getActivity()).changeBottomTabVisibility(false);
+			}
+			else
+			{
+				((YonaActivity) getActivity()).changeBottomTabVisibility(true);
 			}
 		});
 	}
@@ -156,11 +157,11 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 	private void setupFirstNameLayout(View view)
 	{
-		firstnameLayout = view.findViewById(R.id.first_name_layout);
+		firstNameLayout = view.findViewById(R.id.first_name_layout);
 		firstName = view.findViewById(R.id.first_name);
 		firstName.addTextChangedListener(textWatcher);
 		firstName.setOnFocusChangeListener(onFocusChangeListener);
-		firstnameLayout.setOnClickListener(v -> YonaActivity.getActivity().showKeyboard(firstName));
+		firstNameLayout.setOnClickListener(v -> YonaActivity.getActivity().showKeyboard(firstName));
 	}
 
 	private void setupLastNameLayout(View view)
@@ -255,7 +256,6 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 			rightIcon.setImageResource(R.drawable.icn_create);
 			rightIcon.setOnClickListener(v -> goToNext());
 		}, AppConstant.TIMER_DELAY_HUNDRED);
-
 	}
 
 	private void profileEditMode()
@@ -308,7 +308,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 	{
 		if (validateYonaFontEditTextView(firstName))
 		{
-			showErrorMessageToUserUponInvalidData(firstnameLayout, firstName, R.string.enternamevalidation);
+			showErrorMessageToUserUponInvalidData(firstNameLayout, firstName, R.string.enternamevalidation);
 			return false;
 		}
 		else if (validateYonaFontEditTextView(lastName))
@@ -342,7 +342,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 	private void hideErrorMessages()
 	{
-		firstnameLayout.setError(null);
+		firstNameLayout.setError(null);
 		lastNameLayout.setError(null);
 		nickNameLayout.setError(null);
 		mobileNumberLayout.setError(null);
@@ -350,18 +350,19 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 	private void updateUserProfile()
 	{
-		if (getActivity() != null)
+		if (getActivity() == null)
 		{
-			registerUser = new RegisterUser();
-			registerUser.setFirstName(firstName.getText().toString());
-			registerUser.setLastName(lastName.getText().toString());
-			registerUser.setNickName(nickName.getText().toString());
-			String number = mobileNumber.getText().toString();
-			registerUser.setMobileNumber(number.replace(" ", ""));
-			YonaActivity.getActivity().showLoadingView(true, null);
-			DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> redirectToNextPage(), result -> showError(result), null);
-			APIManager.getInstance().getAuthenticateManager().registerUser(registerUser, true, dataLoadListener);
+			return;
 		}
+		registerUser = new RegisterUser();
+		registerUser.setFirstName(firstName.getText().toString());
+		registerUser.setLastName(lastName.getText().toString());
+		registerUser.setNickName(nickName.getText().toString());
+		String number = mobileNumber.getText().toString();
+		registerUser.setMobileNumber(number.replace(" ", ""));
+		YonaActivity.getActivity().showLoadingView(true, null);
+		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> redirectToNextPage(), result -> showError(result), null);
+		APIManager.getInstance().getAuthenticateManager().registerUser(registerUser, true, dataLoadListener);
 	}
 
 	private Object redirectToNextPage()
