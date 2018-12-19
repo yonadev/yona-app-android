@@ -1,0 +1,1 @@
+APPDEV-1218 Corrected profile picture update issue
