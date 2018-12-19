@@ -83,16 +83,19 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		setupToolbar(view);
 		changeProfileImageClickListener = (profileImageView) -> YonaActivity.getActivity().chooseImage();
 		setupTextWatcher();
-		onFocusChangeListener = (editTextView, hasFocus) -> {
-			if (hasFocus)
-			{
-				((EditText) editTextView).setSelection(((EditText) editTextView).getText().length());
-			}
-		};
+		onFocusChangeListener = EditDetailsProfileFragment::onFocusChange;
 		inflateView(view);
 		setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_EDIT_PROFILE));
 		YonaApplication.getEventChangeManager().registerListener(this);
 		return view;
+	}
+
+	private static void onFocusChange(View view, boolean hasFocus)
+	{
+		if (hasFocus)
+		{
+			((EditText) view).setSelection(((EditText) view).getText().length());
+		}
 	}
 
 	private void setupActivityRootView(View view)
@@ -160,7 +163,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		firstNameLayout = view.findViewById(R.id.first_name_layout);
 		firstName = view.findViewById(R.id.first_name);
 		firstName.addTextChangedListener(textWatcher);
-		firstName.setOnFocusChangeListener(onFocusChangeListener);
+		firstName.setOnFocusChangeListener(EditDetailsProfileFragment::onFocusChange);
 		firstNameLayout.setOnClickListener(v -> YonaActivity.getActivity().showKeyboard(firstName));
 	}
 
@@ -311,12 +314,12 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 			showErrorMessageToUserUponInvalidData(firstNameLayout, firstName, R.string.enternamevalidation);
 			return false;
 		}
-		else if (validateYonaFontEditTextView(lastName))
+		if (validateYonaFontEditTextView(lastName))
 		{
 			showErrorMessageToUserUponInvalidData(lastNameLayout, lastName, R.string.enternamevalidation);
 			return false;
 		}
-		else if (validateYonaFontEditTextView(nickName))
+		if (validateYonaFontEditTextView(nickName))
 		{
 			showErrorMessageToUserUponInvalidData(nickNameLayout, nickName, R.string.enternicknamevalidation);
 			return false;
@@ -377,7 +380,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		{
 			showMobileVerificationScreen(null);
 		}
-		return null;
+		return null; // Dummy return value to allow use as data load handler
 	}
 
 	@Override
@@ -412,7 +415,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		{
 			Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
 		}
-		return null;
+		return null; // Dummy return value to allow use as data load handler
 	}
 
 	private void showMobileVerificationScreen(Bundle bundle)
