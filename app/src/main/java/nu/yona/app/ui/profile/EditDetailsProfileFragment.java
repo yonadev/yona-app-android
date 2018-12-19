@@ -69,7 +69,6 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 	private TextWatcher textWatcher;
 	private String oldUserNumber;
 	private RegisterUser registerUser;
-	private View.OnFocusChangeListener onFocusChangeListener;
 	private boolean isAdding;
 	private YonaFontTextView profileImageTxt;
 	private boolean isProfileUpdated;
@@ -83,7 +82,6 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		setupToolbar(view);
 		changeProfileImageClickListener = (profileImageView) -> YonaActivity.getActivity().chooseImage();
 		setupTextWatcher();
-		onFocusChangeListener = EditDetailsProfileFragment::onFocusChange;
 		inflateView(view);
 		setHook(new YonaAnalytics.BackHook(AnalyticsConstant.BACK_FROM_EDIT_PROFILE));
 		YonaApplication.getEventChangeManager().registerListener(this);
@@ -172,7 +170,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		lastNameLayout = view.findViewById(R.id.last_name_layout);
 		lastName = view.findViewById(R.id.last_name);
 		lastName.addTextChangedListener(textWatcher);
-		lastName.setOnFocusChangeListener(onFocusChangeListener);
+		lastName.setOnFocusChangeListener(EditDetailsProfileFragment::onFocusChange);
 		lastNameLayout.setOnClickListener(v -> YonaActivity.getActivity().showKeyboard(lastName));
 	}
 
@@ -181,7 +179,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		nickNameLayout = view.findViewById(R.id.nick_name_layout);
 		nickName = view.findViewById(R.id.nick_name);
 		nickName.addTextChangedListener(textWatcher);
-		nickName.setOnFocusChangeListener(onFocusChangeListener);
+		nickName.setOnFocusChangeListener(EditDetailsProfileFragment::onFocusChange);
 		nickNameLayout.setOnClickListener(v -> YonaActivity.getActivity().showKeyboard(nickName));
 	}
 
@@ -324,10 +322,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 			showErrorMessageToUserUponInvalidData(nickNameLayout, nickName, R.string.enternicknamevalidation);
 			return false;
 		}
-		else
-		{
-			return true;
-		}
+		return true;
 	}
 
 	private boolean validateYonaFontEditTextView(YonaFontEditTextView yonaFontEditTextView)
