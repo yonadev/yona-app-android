@@ -41,6 +41,7 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
@@ -590,20 +591,19 @@ passcode_reset;
 		{
 			errorMessageStr = (String) errorMessage;
 		}
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		displayErrorMessageToUser(errorMessageStr);
+		return null;
+	}
+
+
+	private void displayErrorMessageToUser(String errorMessageStr)
+	{
+		final AlertDialog.Builder builder = new AlertDialog.Builder(YonaActivity.getActivity());
 		builder.setTitle(getString(R.string.generic_alert_title));
 		builder.setMessage(errorMessageStr);
-		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				navigateToNextScreen();
-			}
-		});
+		builder.setPositiveButton(android.R.string.ok, (DialogInterface dialog, int which) -> navigateToNextScreen());
 		builder.setCancelable(false);
 		builder.create().show();
-		return null;
 	}
 
 	protected abstract void navigateToNextScreen();
