@@ -34,7 +34,6 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 	private List<DayActivity> dayActivityList;
 	private final View.OnClickListener listener;
 	private Context context;
-	private static final String headerViewTag = "HeaderView";
 
 	/**
 	 * Instantiates a new Per day sticky adapter.
@@ -86,11 +85,7 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 
 	public void setHolderViewTag(TimelineHolder holder, DayActivity dayActivity)
 	{
-		if (dayActivity.getChartTypeEnum() == ChartTypeEnum.TITLE)
-		{
-			holder.getView().setTag(headerViewTag);//to differentiate in item.onClickListener.
-		}
-		else
+		if (dayActivity.getChartTypeEnum() != ChartTypeEnum.TITLE)
 		{
 			holder.getView().setTag(dayActivity);
 		}
