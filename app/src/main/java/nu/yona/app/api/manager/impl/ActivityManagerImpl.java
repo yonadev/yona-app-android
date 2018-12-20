@@ -95,7 +95,7 @@ public class ActivityManagerImpl implements ActivityManager
 	public void getDaysActivity(boolean loadMore, boolean isBuddyFlow, Href url, DataLoadListener listener)
 	{
 		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
-		if (loadMore || validateEmbeddedDayActivityList(embeddedYonaActivity))
+		if (loadMore || isValidEmbeddedDayActivityList(embeddedYonaActivity))
 		{
 			if (url != null && !TextUtils.isEmpty(url.getHref()))
 			{
@@ -143,13 +143,13 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onError(new ErrorMessage(errorMessage.toString()));
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	@Override
 	public void getDetailOfEachSpreadWithDayActivity(DayActivity dayActivity, DataLoadListener listener)
 	{
-		if (!validateDayActivityTimeZoneSpread(dayActivity))
+		if (!isValidDayActivityTimeZoneSpread(dayActivity))
 		{
 			listener.onDataLoad(dayActivity);
 		}
@@ -160,14 +160,14 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 	}
 
-	private boolean validateDayActivityTimeZoneSpread(DayActivity dayActivity)
+	private boolean isValidDayActivityTimeZoneSpread(DayActivity dayActivity)
 	{
 		return (dayActivity.getTimeZoneSpread() == null
 				|| (dayActivity.getTimeZoneSpread() != null && dayActivity.getTimeZoneSpread().size() == 0)
 				|| dayActivity.getChartTypeEnum() == ChartTypeEnum.TIME_FRAME_CONTROL);
 	}
 
-	private boolean compareDayActivitiesDayDetailsHrefs(DayActivity leftSideDayActivity, DayActivity rightSideDayActivity)
+	private boolean isEqualDayActivityDetailHrefs(DayActivity leftSideDayActivity, DayActivity rightSideDayActivity)
 	{
 		return leftSideDayActivity.getLinks().getYonaDayDetails().getHref().equals(rightSideDayActivity.getLinks().getSelf().getHref());
 	}
@@ -176,10 +176,10 @@ public class ActivityManagerImpl implements ActivityManager
 	{
 		if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() == null)
 		{
-			return null;
+			return null; // Dummy return value to allow use as data load handler
 		}
 		updateDayActivity(dayActivity);
-		return null;
+		return null; // Dummy return value to allow use as data load handler
 	}
 
 
@@ -189,7 +189,7 @@ public class ActivityManagerImpl implements ActivityManager
 		List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList();
 		for (int i = 0; i < dayActivityList.size(); i++)
 		{
-			if (compareDayActivitiesDayDetailsHrefs(dayActivityList.get(i), resultActivity))
+			if (isEqualDayActivityDetailHrefs(dayActivityList.get(i), resultActivity))
 			{
 				dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
 				YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity().getDayActivityList().set(i, updateLinks(dayActivityList.get(i), resultActivity));
@@ -206,7 +206,7 @@ public class ActivityManagerImpl implements ActivityManager
 	public void getWeeksActivity(boolean loadMore, boolean isBuddyFlow, Href href, DataLoadListener listener)
 	{
 		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
-		if (loadMore || validateEmbeddedWeekActivityList(embeddedYonaActivity))
+		if (loadMore || isValidEmbeddedWeekActivityList(embeddedYonaActivity))
 		{
 			if (href != null && !TextUtils.isEmpty(href.getHref()))
 			{
@@ -251,7 +251,7 @@ public class ActivityManagerImpl implements ActivityManager
 				|| weekActivity.getChartTypeEnum() == ChartTypeEnum.TIME_FRAME_CONTROL);
 	}
 
-	private boolean compareWeekActivitiesDayDetailsHrefs(WeekActivity leftSideWeekActivity, WeekActivity rightSideWeekActivity)
+	private boolean isEqualWeekActivitiesDayDetailsHrefs(WeekActivity leftSideWeekActivity, WeekActivity rightSideWeekActivity)
 	{
 		return (leftSideWeekActivity.getLinks().getWeekDetails().getHref().equals(rightSideWeekActivity.getLinks().getSelf().getHref()));
 	}
@@ -262,7 +262,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() == null)
 			{
-				return null;
+				return null; // Dummy return value, to allow use as data error handler
 			}
 			updateWeekActivityListTimeZoneSpread(weekActivity);
 		}
@@ -270,7 +270,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private void updateWeekActivityListTimeZoneSpread(WeekActivity weekActivity)
@@ -279,7 +279,7 @@ public class ActivityManagerImpl implements ActivityManager
 		List<WeekActivity> weekActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity().getWeekActivityList();
 		for (int i = 0; i < weekActivityList.size(); i++)
 		{
-			if (compareWeekActivitiesDayDetailsHrefs(weekActivityList.get(i), resultActivity))
+			if (isEqualWeekActivitiesDayDetailsHrefs(weekActivityList.get(i), resultActivity))
 			{
 				weekActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
 				weekActivityList.set(i, updateLinks(weekActivityList.get(i), resultActivity));
@@ -331,7 +331,7 @@ public class ActivityManagerImpl implements ActivityManager
 			activityTrackerDAO.clearActivities();
 		}
 		isSyncAPICallDone = true;
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private Object handlePostAppActivityOnFailure(Boolean fromDB, AppActivity activity)
@@ -342,7 +342,7 @@ public class ActivityManagerImpl implements ActivityManager
 			activityTrackerDAO.saveActivities(activity.getActivities());
 		}
 		isSyncAPICallDone = true;
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	@Override
@@ -366,12 +366,12 @@ public class ActivityManagerImpl implements ActivityManager
 	public void getWithBuddyActivity(boolean loadMore, DataLoadListener listener)
 	{
 		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
-		if (loadMore || validateEmbeddedDayActivityList(embeddedYonaActivity))
+		if (loadMore || isValidEmbeddedDayActivityList(embeddedYonaActivity))
 		{
 			int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
 					&& embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
 			User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-			if (checkWhetherUserHasYonaDailyActivityReports(user))
+			if (isUserWithDailyActivityReports(user))
 			{
 				getWithBuddyActivity(user.getLinks().getDailyActivityReportsWithBuddies().getHref(), AppConstant.PAGE_SIZE, pageNo, listener);
 			}
@@ -386,7 +386,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 	}
 
-	private boolean validateEmbeddedDayActivityList(EmbeddedYonaActivity embeddedYonaActivity)
+	private boolean isValidEmbeddedDayActivityList(EmbeddedYonaActivity embeddedYonaActivity)
 	{
 		return (embeddedYonaActivity == null
 				|| embeddedYonaActivity.getDayActivityList() == null
@@ -394,14 +394,14 @@ public class ActivityManagerImpl implements ActivityManager
 	}
 
 
-	private boolean validateEmbeddedWeekActivityList(EmbeddedYonaActivity embeddedYonaActivity)
+	private boolean isValidEmbeddedWeekActivityList(EmbeddedYonaActivity embeddedYonaActivity)
 	{
 		return (embeddedYonaActivity == null
 				|| embeddedYonaActivity.getDayActivityList() == null
 				|| embeddedYonaActivity.getDayActivityList().size() == 0);
 	}
 
-	private boolean checkWhetherUserHasYonaDailyActivityReports(User user)
+	private boolean isUserWithDailyActivityReports(User user)
 	{
 		return (user != null && user.getLinks() != null
 				&& user.getLinks().getYonaDailyActivityReports() != null
@@ -482,7 +482,7 @@ public class ActivityManagerImpl implements ActivityManager
 	{
 		Message message = new Message();
 		message.setMessage(comment);
-		if ((weekActivity != null && weekActivity.getLinks() != null) && (weekActivity.getLinks().getAddComment() != null))
+		if (weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getAddComment() != null)
 		{
 			doAddComment(weekActivity.getLinks().getAddComment().getHref(), message, listener);
 		}
@@ -510,7 +510,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onDataLoad(result);
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private void getCommentsFromServerForWeek(List<WeekActivity> weekActivityList, WeekActivity weekActivity, String urlToFetchComments, DataLoadListener listener)
@@ -532,7 +532,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private WeekActivity getUpdatedWeekActivity(Object result, WeekActivity weekActivity)
@@ -584,7 +584,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private String getUrlToFetchCommentsForDayActivity(DayActivity dayActivity)
@@ -722,7 +722,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onError(new ErrorMessage(mContext.getString(R.string.dataparseerror)));
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private Object filterAndUpdateWeekData(EmbeddedYonaActivity embeddedYonaActivity, boolean isbuddyFlow, DataLoadListener listener)
@@ -747,7 +747,7 @@ public class ActivityManagerImpl implements ActivityManager
 			}
 			listener.onDataLoad(embeddedYonaActivity);
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private void setupWeekActivityListWithOverviews(EmbeddedYonaActivity embeddedYonaActivity, boolean isbuddyFlow)
@@ -784,31 +784,32 @@ public class ActivityManagerImpl implements ActivityManager
 	private void setUpWeekActivityWithGoal(boolean isbuddyFlow, WeekActivity activity, YonaWeekActivityOverview overview, List<WeekActivity> thisWeekActivities)
 	{
 		YonaGoal goal = getYonaGoal(isbuddyFlow, activity.getLinks().getYonaGoal());
-		if (goal != null)
+		if (goal == null)
 		{
-			activity.setYonaGoal(goal);
-			if (activity.getYonaGoal() != null)
-			{
-				activity.setChartTypeEnum(ChartTypeEnum.WEEK_SCORE_CONTROL);
-			}
-			try
-			{
-				activity.setStickyTitle(DateUtility.getRetriveWeek(overview.getDate()));
-			}
-			catch (ParseException e)
-			{
-				AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
-			}
-			activity.setDate(overview.getDate());
-			activity = getWeekDayActivity(activity);
-			thisWeekActivities.add(activity);
+			return;
 		}
+		activity.setYonaGoal(goal);
+		if (activity.getYonaGoal() != null)
+		{
+			activity.setChartTypeEnum(ChartTypeEnum.WEEK_SCORE_CONTROL);
+		}
+		try
+		{
+			activity.setStickyTitle(DateUtility.getRetriveWeek(overview.getDate()));
+		}
+		catch (ParseException e)
+		{
+			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+		}
+		activity.setDate(overview.getDate());
+		activity = getWeekDayActivity(activity);
+		thisWeekActivities.add(activity);
 	}
 
 	private Object updateWeekActivity(WeekActivity weekActivity, DataLoadListener listener)
 	{
 		WeekActivity resultActivity = generateTimeZoneSpread(updateWeekActivityWithCurrentYonaGoal(weekActivity));
-		if (validateWeekActivity(weekActivity, resultActivity))
+		if (isValidWeekActivity(weekActivity, resultActivity))
 		{
 			weekActivity.setTimeZoneSpread(resultActivity.getTimeZoneSpread());
 			weekActivity.setTotalActivityDurationMinutes(resultActivity.getTotalActivityDurationMinutes());
@@ -817,10 +818,10 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onDataLoad(weekActivity);
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
-	private boolean validateWeekActivity(WeekActivity weekActivity, WeekActivity resultActivity)
+	private boolean isValidWeekActivity(WeekActivity weekActivity, WeekActivity resultActivity)
 	{
 		return (weekActivity != null && weekActivity.getLinks() != null && weekActivity.getLinks().getWeekDetails() != null
 				&& !TextUtils.isEmpty(weekActivity.getLinks().getWeekDetails().getHref())
@@ -1120,7 +1121,7 @@ public class ActivityManagerImpl implements ActivityManager
 				}
 			}
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 
@@ -1142,18 +1143,18 @@ public class ActivityManagerImpl implements ActivityManager
 				}
 			}
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private YonaGoal findYonaBuddyGoal(Href goalHref)
 	{
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-		if (checkWhetherUserHasYonaBuddies(user))
+		if (isUserWithBuddies(user))
 		{
 			List<YonaBuddy> yonaBuddies = user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
 			for (YonaBuddy buddy : yonaBuddies)
 			{
-				if (checkWhetherBuddyHasYonaGoals(buddy))
+				if (isUserWithGoals(buddy))
 				{
 					List<YonaGoal> yonaGoals = buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
 					for (YonaGoal goal : yonaGoals)
@@ -1168,10 +1169,10 @@ public class ActivityManagerImpl implements ActivityManager
 				}
 			}
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
-	private boolean checkWhetherUserHasYonaBuddies(User user)
+	private boolean isUserWithBuddies(User user)
 	{
 		return (user != null && user.getEmbedded() != null
 				&& user.getEmbedded().getYonaBuddies() != null
@@ -1179,7 +1180,7 @@ public class ActivityManagerImpl implements ActivityManager
 				&& user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null);
 	}
 
-	private boolean checkWhetherBuddyHasYonaGoals(YonaBuddy buddy)
+	private boolean isUserWithGoals(YonaBuddy buddy)
 	{
 		return (buddy != null && buddy.getEmbedded() != null && buddy.getEmbedded().getYonaGoals() != null
 				&& buddy.getEmbedded().getYonaGoals().getEmbedded() != null
@@ -1342,7 +1343,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onError(new ErrorMessage(mContext.getString(R.string.dataparseerror)));
 		}
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private DayActivity processEachDayActivityDetails(DayActivity dayActivity, String createdTime)
@@ -1483,7 +1484,7 @@ public class ActivityManagerImpl implements ActivityManager
 			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread());
 		}
 		listener.onDataLoad(generateTimeZoneSpread(activity));
-		return null;
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private void getBuddyDetailOfEachSpread()
@@ -1501,22 +1502,19 @@ public class ActivityManagerImpl implements ActivityManager
 
 	private Object handleDayDetailActivityFetchSuccess(Object result)
 	{
-		if (result instanceof DayActivity)
+		try
 		{
-			try
+			if (result instanceof DayActivity && YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() != null)
 			{
 				DayActivity resultActivity = generateTimeZoneSpread((DayActivity) result);
-				if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() != null)
-				{
-					setupDayActivityListWithTimeZoneSpread(resultActivity);
-				}
-			}
-			catch (Exception e)
-			{
-				AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+				setupDayActivityListWithTimeZoneSpread(resultActivity);
 			}
 		}
-		return null;
+		catch (Exception e)
+		{
+			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+		}
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private void setupDayActivityListWithTimeZoneSpread(DayActivity resultActivity)
@@ -1630,7 +1628,5 @@ public class ActivityManagerImpl implements ActivityManager
 			actualLinks.setAddComment(resultLinks.getAddComment());
 		}
 	}
-
-
 }
 
