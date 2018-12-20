@@ -262,7 +262,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity() == null)
 			{
-				return null; // Dummy return value, to allow use as data error handler
+				return null; // Dummy return value, to allow use as data load handler
 			}
 			updateWeekActivityListTimeZoneSpread(weekActivity);
 		}
@@ -270,7 +270,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private void updateWeekActivityListTimeZoneSpread(WeekActivity weekActivity)
@@ -331,7 +331,7 @@ public class ActivityManagerImpl implements ActivityManager
 			activityTrackerDAO.clearActivities();
 		}
 		isSyncAPICallDone = true;
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private Object handlePostAppActivityOnFailure(Boolean fromDB, AppActivity activity)
@@ -510,7 +510,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onDataLoad(result);
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private void getCommentsFromServerForWeek(List<WeekActivity> weekActivityList, WeekActivity weekActivity, String urlToFetchComments, DataLoadListener listener)
@@ -532,7 +532,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private WeekActivity getUpdatedWeekActivity(Object result, WeekActivity weekActivity)
@@ -584,7 +584,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onError(new ErrorMessage(YonaApplication.getAppContext().getString(R.string.no_data_found)));
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private String getUrlToFetchCommentsForDayActivity(DayActivity dayActivity)
@@ -722,7 +722,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onError(new ErrorMessage(mContext.getString(R.string.dataparseerror)));
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private Object filterAndUpdateWeekData(EmbeddedYonaActivity embeddedYonaActivity, boolean isbuddyFlow, DataLoadListener listener)
@@ -747,7 +747,7 @@ public class ActivityManagerImpl implements ActivityManager
 			}
 			listener.onDataLoad(embeddedYonaActivity);
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private void setupWeekActivityListWithOverviews(EmbeddedYonaActivity embeddedYonaActivity, boolean isbuddyFlow)
@@ -818,7 +818,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onDataLoad(weekActivity);
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private boolean isValidWeekActivity(WeekActivity weekActivity, WeekActivity resultActivity)
@@ -1121,7 +1121,7 @@ public class ActivityManagerImpl implements ActivityManager
 				}
 			}
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 
@@ -1143,7 +1143,7 @@ public class ActivityManagerImpl implements ActivityManager
 				}
 			}
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private YonaGoal findYonaBuddyGoal(Href goalHref)
@@ -1169,7 +1169,7 @@ public class ActivityManagerImpl implements ActivityManager
 				}
 			}
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private boolean isUserWithBuddies(User user)
@@ -1343,7 +1343,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			listener.onError(new ErrorMessage(mContext.getString(R.string.dataparseerror)));
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private DayActivity processEachDayActivityDetails(DayActivity dayActivity, String createdTime)
@@ -1484,7 +1484,7 @@ public class ActivityManagerImpl implements ActivityManager
 			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread());
 		}
 		listener.onDataLoad(generateTimeZoneSpread(activity));
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private void getBuddyDetailOfEachSpread()
@@ -1514,7 +1514,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
 		}
-		return null; // Dummy return value, to allow use as data error handler
+		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private void setupDayActivityListWithTimeZoneSpread(DayActivity resultActivity)
