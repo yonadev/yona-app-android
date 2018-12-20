@@ -298,6 +298,6 @@ public interface AppConstant
 
 
 	// Notifications Channel Id's
-	String YONA_VPN_CHANNEL_ID = "Yona-VPN";
-	String YONA_SERVICE_CHANNEL_ID = "yona-channel";
+	String YONA_VPN_CHANNEL_ID = "yona-vpn-channel";
+	String YONA_SERVICE_CHANNEL_ID = "yona-service-channel";
 }

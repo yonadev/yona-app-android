@@ -162,15 +162,15 @@ public class YonaReceiver extends BroadcastReceiver
 		{
 			return;
 		}
-		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
 		{
 			NotificationChannel channel = new NotificationChannel(AppConstant.YONA_VPN_CHANNEL_ID,
 					context.getString(R.string.yona_vpn_notification_channel_name),
 					NotificationManager.IMPORTANCE_DEFAULT);
-			mNotificationManager.createNotificationChannel(channel);
+			notificationManager.createNotificationChannel(channel);
 		}
-		mNotificationManager.notify(0, getConfiguredVPNRestartNotification(message, pendingIntent));
+		notificationManager.notify(0, getConfiguredVPNRestartNotification(message, pendingIntent));
 	}
 
 
