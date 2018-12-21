@@ -1,0 +1,1 @@
+APPDEV-1205 profile icon now visible in header of week notification details

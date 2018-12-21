@@ -33,7 +33,7 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 
 	private List<DayActivity> dayActivityList;
 	private final View.OnClickListener listener;
-	private Context mContext;
+	private Context context;
 
 	/**
 	 * Instantiates a new Per day sticky adapter.
@@ -50,25 +50,24 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 	@Override
 	public TimelineHolder onCreateViewHolder(ViewGroup parent, int viewType)
 	{
-		mContext = parent.getContext();
-
+		context = parent.getContext();
 		View childView = null;
 		switch (ChartTypeEnum.getChartTypeEnum(viewType))
 		{
 			case NOGO_CONTROL:
-				childView = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_nogo_layout, parent, false);
+				childView = LayoutInflater.from(context).inflate(R.layout.timeline_nogo_layout, parent, false);
 				break;
 			case TIME_BUCKET_CONTROL:
-				childView = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_timebucket_layout, parent, false);
+				childView = LayoutInflater.from(context).inflate(R.layout.timeline_timebucket_layout, parent, false);
 				break;
 			case TIME_FRAME_CONTROL:
-				childView = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_timeframe_layout, parent, false);
+				childView = LayoutInflater.from(context).inflate(R.layout.timeline_timeframe_layout, parent, false);
 				break;
 			case TITLE:
-				childView = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_timeline, parent, false);
+				childView = LayoutInflater.from(context).inflate(R.layout.header_timeline, parent, false);
 				break;
 			case LINE:
-				childView = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_line_view, parent, false);
+				childView = LayoutInflater.from(context).inflate(R.layout.horizontal_line_view, parent, false);
 				break;
 			default:
 				break;
@@ -77,11 +76,19 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 	}
 
 	@Override
-	public void onBindViewHolder(final TimelineHolder holder, int position)
+	public void onBindViewHolder(TimelineHolder holder, int position)
 	{
 		DayActivity dayActivity = (DayActivity) getItem(position);
-		holder.getView().setTag(dayActivity);
+		setHolderViewTag(holder, dayActivity);
 		setUpTimeLineViewHolderWithDayActivity(holder, dayActivity);
+	}
+
+	public void setHolderViewTag(TimelineHolder holder, DayActivity dayActivity)
+	{
+		if (dayActivity.getChartTypeEnum() != ChartTypeEnum.TITLE)
+		{
+			holder.getView().setTag(dayActivity);
+		}
 	}
 
 	private void setUpTimeLineViewHolderWithDayActivity(TimelineHolder holder, DayActivity dayActivity)
@@ -131,7 +138,7 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 			holder.getmNogoImage().setImageResource(R.drawable.adult_sad);
 		}
 		holder.getmTxtNogo().setText(dayActivity.getYonaGoal().getNickName());
-		holder.getmTxtNogoTime().setText(mContext.getString(R.string.nogogoalbeyond, String.valueOf(dayActivity.getTotalMinutesBeyondGoal())));
+		holder.getmTxtNogoTime().setText(context.getString(R.string.nogogoalbeyond, String.valueOf(dayActivity.getTotalMinutesBeyondGoal())));
 	}
 
 	private void updateProfileImage(TimelineHolder holder, DayActivity dayActivity)
@@ -171,9 +178,7 @@ public class TimelineStickyAdapter extends RecyclerView.Adapter<TimelineHolder> 
 	{
 		View view = LayoutInflater.from(parent.getContext())
 				.inflate(R.layout.message_header_layout, parent, false);
-		return new StickyHeaderHolder(view)
-		{
-		};
+		return new StickyHeaderHolder(view);
 	}
 
 	@Override

@@ -295,4 +295,9 @@ public interface AppConstant
 	String RESTART_VPN = "com.yona.app.RESTART_VPN";
 	String RESTART_DEVICE = "com.yona.app.RESTART_DEVICE";
 	String WAKE_UP = "com.yona.app.WAKE_UP_ALARM";
+
+
+	// Notifications Channel Id's
+	String YONA_VPN_CHANNEL_ID = "yona-vpn-channel";
+	String YONA_SERVICE_CHANNEL_ID = "yona-service-channel";
 }

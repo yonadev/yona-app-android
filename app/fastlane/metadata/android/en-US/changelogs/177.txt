@@ -1,0 +1,1 @@
+APPDEV-1211 Fixed an issue where comments are not displayed when switching between weeks

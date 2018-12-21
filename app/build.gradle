@@ -120,7 +120,7 @@ def determineVersionCode() {
 }
 
 def determineVersionName() {
-	def versionNameBase = "1.1"
+	def versionNameBase = "1.2"
 	
 	if (!System.env.BRANCH_NAME) {
 	    return versionNameBase + " (local build!)"

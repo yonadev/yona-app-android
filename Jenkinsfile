@@ -106,7 +106,7 @@ pipeline {
               submitter: 'authenticated',
               parameters: [choice(name: 'Release to beta on Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to release this build to beta on Google Play')]
           if (env.RELEASE_TO_BETA == 'no') {
-            slackSend color: 'warning', channel: '#devops', message: "Android app build ${env.BUILD_NUMBER} skips all further steps"
+            slackSend color: 'warning', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} skips all further steps"
           }
         }
       }
@@ -134,6 +134,7 @@ pipeline {
       when {
         allOf {
           not { changelog '.*\\[ci skip\\].*' }
+          environment name: 'RELEASE_TO_BETA', value: 'yes'
           anyOf {
             branch 'master'
           }
@@ -146,7 +147,7 @@ pipeline {
               submitter: 'authenticated',
               parameters: [choice(name: 'Release to production on Google Play', choices: 'no\nyes', description: 'Choose "yes" if you want to release this build to production on Google Play')]
           if (env.RELEASE_TO_PRODUCTION == 'no') {
-            slackSend color: 'warning', channel: '#devops', message: "Android app build ${env.BUILD_NUMBER} skips all further steps"
+            slackSend color: 'warning', channel: '#dev', message: "Android app build ${env.BUILD_NUMBER} skips all further steps"
           }
         }
       }
