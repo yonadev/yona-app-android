@@ -685,7 +685,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			if (!TextUtils.isEmpty(url))
 			{
-				DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(result -> filterAndUpdateWeekData((EmbeddedYonaActivity) result, isbuddyFlow, listener), (result) -> handleErrorMessage(result, null), null);
+				DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(result -> filterAndUpdateWeekData((EmbeddedYonaActivity) result, isbuddyFlow, listener), (result) -> handleErrorMessage(result, listener), null);
 				activityNetwork.getNextWeeksActivity(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), dataLoadListenerImpl);
 			}
 			else
