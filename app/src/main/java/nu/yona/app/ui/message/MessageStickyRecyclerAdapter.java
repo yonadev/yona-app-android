@@ -28,7 +28,7 @@ import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.enums.NotificationMessageEnum;
 import nu.yona.app.ui.StickyHeaderHolder;
 import nu.yona.app.ui.YonaActivity;
-import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
+import nu.yona.app.ui.friends.OnFriendsItemClickListener;
 
 /**
  * Created by bhargavsuthar on 10/05/16.

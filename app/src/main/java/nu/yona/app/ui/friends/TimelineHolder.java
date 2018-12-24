@@ -6,7 +6,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package nu.yona.app.ui.frinends;
+package nu.yona.app.ui.friends;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

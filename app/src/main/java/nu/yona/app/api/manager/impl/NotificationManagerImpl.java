@@ -19,9 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
-import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.NotificationManager;
 import nu.yona.app.api.manager.network.NotificationNetworkImpl;
 import nu.yona.app.api.model.Embedded;
@@ -66,134 +64,37 @@ public class NotificationManagerImpl implements NotificationManager
 	 * @param listener the listener
 	 */
 	@Override
-	public void getMessage(DataLoadListener listener)
+	public void getMessages(DataLoadListener listener)
 	{
-		getMessage(0, 0, listener); //set default page 0, start page = 0
+		getMessages(false, listener);
+	}
+
+
+	@Override
+	public void getMessages(boolean isUnreadStatus, DataLoadListener listener)
+	{
+		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+		if (user != null && user.getLinks() != null && user.getLinks().getYonaMessages() != null &&
+				!TextUtils.isEmpty(user.getLinks().getYonaMessages().getHref()))
+		{
+			getMessages(user.getLinks().getYonaMessages().getHref(), isUnreadStatus, listener);
+		}
 	}
 
 	@Override
-	public void getMessage(final int itemsPerPage, final int pageNo, final DataLoadListener listener)
-	{
-		getMessage(itemsPerPage, pageNo, false, listener);
-	}
-
-	/**
-	 * Gets message.
-	 *
-	 * @param itemsPerPage the items per page
-	 * @param pageNo       the page no
-	 * @param listener     the listener
-	 */
-	@Override
-	public void getMessage(final int itemsPerPage, final int pageNo, boolean isUnreadStatus, final DataLoadListener listener)
-	{
-		getMessage(itemsPerPage, pageNo, isUnreadStatus, listener, false);
-	}
-
-	private void getMessage(final int itemsPerPage, final int pageNo, final boolean isUnreadStatus, final DataLoadListener listener, final boolean isProcessUpdate)
+	public void getMessages(String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener)
 	{
 		try
 		{
-			User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-			if (user != null && user.getLinks() != null && user.getLinks().getYonaMessages() != null
-					&& !TextUtils.isEmpty(user.getLinks().getYonaMessages().getHref()))
-			{
-				notificationNetwork.getMessage(user.getLinks().getYonaMessages().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus,
-						itemsPerPage, pageNo, new DataLoadListener()
-						{
-							@Override
-							public void onDataLoad(Object result)
-							{
-								if (listener != null)
-								{
-									if (result instanceof YonaMessages)
-									{
-										YonaMessages yonaMessages = (YonaMessages) result;
-										if (yonaMessages != null && yonaMessages.getEmbedded() != null)
-										{
-											Embedded embedded = yonaMessages.getEmbedded();
-											List<YonaMessage> listMessages = embedded.getYonaMessages();
-											boolean isAnyProcessed = false;
-											SimpleDateFormat sdf = new SimpleDateFormat(AppConstant.YONA_LONG_DATE_FORMAT, Locale.getDefault());
-											for (YonaMessage message : listMessages)
-											{
-												//update enum
-												if (message.getStatus() != null)
-												{
-													message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getStatus()));
-												}
-												else if (message.getDropBuddyReason() != null)
-												{
-													message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getDropBuddyReason()));
-												}
-												else
-												{
-													message.setNotificationMessageEnum(NotificationMessageEnum.getNotificationMessageEnum(message.getType(), message.getChange()));
-												}
-												if (message.getLinks() != null && message.getLinks().getYonaUser() != null
-														&& !TextUtils.isEmpty(message.getLinks().getYonaUser().getHref()))
-												{
-													if (message.getEmbedded() == null)
-													{
-														message.setEmbedded(new Embedded());
-													}
-													message.getEmbedded().setYonaUser(getYonaUser(message.getLinks().getYonaUser().getHref()));
-												}
-												String uploadDate = "";
-
-												String createdTime = message.getCreationTime();
-												try
-												{
-													Date date = sdf.parse(createdTime);
-
-													Calendar futureCalendar = Calendar.getInstance();
-													futureCalendar.setTime(date);
-
-													uploadDate = DateUtility.getRelativeDate(futureCalendar);
-													message.setStickyTitle(uploadDate);
-												}
-												catch (Exception e)
-												{
-													AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
-												}
-												yonaMessages.setEmbedded(embedded);
-												if (!isProcessUpdate && message != null && message.getLinks() != null && message.getLinks().getYonaPreocess() != null
-														&& !TextUtils.isEmpty(message.getLinks().getYonaPreocess().getHref()))
-												{
-													isAnyProcessed = true;
-													MessageBody body = new MessageBody();
-													body.setProperties(new Properties());
-													postMessageForProcess(message.getLinks().getYonaPreocess().getHref(), body);
-												}
-											}
-											if (isAnyProcessed)
-											{
-												getMessage(itemsPerPage, pageNo, isUnreadStatus, listener, true);
-											}
-											APIManager.getInstance().getAuthenticateManager().getUserFromServer();
-										}
-										listener.onDataLoad(yonaMessages);
-									}
-								}
-							}
-
-							@Override
-							public void onError(Object errorMessage)
-							{
-								throwError(listener, errorMessage);
-							}
-						});
-			}
-			else
-			{
-				listener.onError(new ErrorMessage(mContext.getString(R.string.urlnotfound)));
-			}
+			DataLoadListenerImpl dataloadListenerImpl = new DataLoadListenerImpl((result) -> processYonaMessages((YonaMessages) result), listener);
+			notificationNetwork.getNextSetOfMessagesFromURL(urlForMessagesFetch, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus, dataloadListenerImpl);
 		}
-		catch (Exception e)
+		catch (IllegalArgumentException e)
 		{
 			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
 		}
 	}
+
 
 	public YonaMessages processYonaMessages(YonaMessages resultYonaMessages)
 	{
@@ -244,21 +145,6 @@ public class NotificationManagerImpl implements NotificationManager
 		return null;
 	}
 
-	@Override
-	public void getMessages(String urlForMessagesFetch, boolean isUnreadStatus, DataLoadListener listener)
-	{
-		try
-		{
-			DataLoadListenerImpl dataloadListenerImpl = new DataLoadListenerImpl((result) -> processYonaMessages((YonaMessages) result), listener);
-			notificationNetwork.getNextSetOfMessagesFromURL(urlForMessagesFetch, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), isUnreadStatus, dataloadListenerImpl);
-		}
-		catch (IllegalArgumentException e)
-		{
-			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
-		}
-	}
-
-
 	private RegisterUser getYonaUser(String href)
 	{
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
@@ -289,12 +175,10 @@ public class NotificationManagerImpl implements NotificationManager
 	/**
 	 * Delete message.
 	 *
-	 * @param message      the message
-	 * @param itemsPerPage the items per page
-	 * @param pageNo       the page no
-	 * @param listener     the listener
+	 * @param message  the message
+	 * @param listener the listener
 	 */
-	public void deleteMessage(YonaMessage message, final int itemsPerPage, final int pageNo, final DataLoadListener listener)
+	public void deleteMessage(YonaMessage message, final DataLoadListener listener)
 	{
 		try
 		{
@@ -306,7 +190,7 @@ public class NotificationManagerImpl implements NotificationManager
 					@Override
 					public void onDataLoad(Object result)
 					{
-						getMessage(itemsPerPage, pageNo, listener);
+						getMessages(listener);
 					}
 
 					@Override
@@ -331,14 +215,12 @@ public class NotificationManagerImpl implements NotificationManager
 	/**
 	 * Post message.
 	 *
-	 * @param url          the url
-	 * @param body         the body
-	 * @param itemsPerPage the items per page
-	 * @param pageNo       the page no
-	 * @param listener     the listener
+	 * @param url      the url
+	 * @param body     the body
+	 * @param listener the listener
 	 */
 	@Override
-	public void postMessage(String url, MessageBody body, final int itemsPerPage, final int pageNo, final DataLoadListener listener)
+	public void postMessage(String url, MessageBody body, final DataLoadListener listener)
 	{
 		try
 		{
@@ -349,7 +231,7 @@ public class NotificationManagerImpl implements NotificationManager
 					@Override
 					public void onDataLoad(Object result)
 					{
-						getMessage(itemsPerPage, pageNo, listener);
+						getMessages(listener);
 					}
 
 					@Override
@@ -367,7 +249,7 @@ public class NotificationManagerImpl implements NotificationManager
 	}
 
 	@Override
-	public void deleteMessage(@NonNull String url, final int itemsPerPage, final int pageNo, final DataLoadListener listener)
+	public void deleteMessage(@NonNull String url, final DataLoadListener listener)
 	{
 		try
 		{
@@ -376,7 +258,7 @@ public class NotificationManagerImpl implements NotificationManager
 				@Override
 				public void onDataLoad(Object result)
 				{
-					getMessage(itemsPerPage, pageNo, listener);
+					getMessages(listener);
 				}
 
 				@Override

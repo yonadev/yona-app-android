@@ -84,9 +84,9 @@ import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
 import nu.yona.app.ui.dashboard.SingleDayActivityDetailFragment;
 import nu.yona.app.ui.dashboard.SingleWeekDayActivityDetailFragment;
 import nu.yona.app.ui.dashboard.WeekActivityDetailFragment;
-import nu.yona.app.ui.frinends.AddFriendFragment;
-import nu.yona.app.ui.frinends.FriendsFragment;
-import nu.yona.app.ui.frinends.FriendsRequestFragment;
+import nu.yona.app.ui.friends.AddFriendFragment;
+import nu.yona.app.ui.friends.FriendsFragment;
+import nu.yona.app.ui.friends.FriendsRequestFragment;
 import nu.yona.app.ui.message.AdminNotificationFragment;
 import nu.yona.app.ui.message.NotificationFragment;
 import nu.yona.app.ui.pincode.PinActivity;
@@ -346,7 +346,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 	private void getUserMessages()
 	{
-		APIManager.getInstance().getNotificationManager().getMessage(AppConstant.PAGE_SIZE, 0, true, new DataLoadListener()
+		APIManager.getInstance().getNotificationManager().getMessages(true, new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)

@@ -48,7 +48,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
-import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
+import nu.yona.app.ui.friends.OnFriendsItemClickListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
@@ -128,7 +128,7 @@ public class NotificationFragment extends BaseFragment
 				if (yonaMessageClicked != null && yonaMessageClicked.getLinks() != null && yonaMessageClicked.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaMessageClicked.getLinks().getEdit().getHref()))
 				{
 					YonaActivity.getActivity().showLoadingView(true, null);
-					APIManager.getInstance().getNotificationManager().deleteMessage(yonaMessageClicked.getLinks().getEdit().getHref(), 0, 0, new DataLoadListener()
+					APIManager.getInstance().getNotificationManager().deleteMessage(yonaMessageClicked.getLinks().getEdit().getHref(), new DataLoadListener()
 					{
 						@Override
 						public void onDataLoad(Object result)
