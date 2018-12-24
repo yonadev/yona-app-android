@@ -1,0 +1,1 @@
+APPDEV-1211 Probleem opgelost waarbij reacties op activiteiten niet getoond werden bij het wisselen tussen weken in het overzicht

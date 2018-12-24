@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import java.io.IOException;
+
+import de.blinkt.openvpn.activities.LogWindow;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
 import de.blinkt.openvpn.core.VpnStatus;
@@ -141,11 +143,9 @@ public class LaunchVPN extends Activity {
     }
 
     void showLogWindow() {
-
-//        Intent startLW = new Intent(getBaseContext(), LogWindow.class);
-//        startLW.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//        startActivity(startLW);
-
+        Intent startLW = new Intent(getBaseContext(), LogWindow.class);
+        startLW.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(startLW);
     }
 
     void showConfigErrorDialog(int vpnok) {

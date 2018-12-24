@@ -1,0 +1,2 @@
+APPDEV-1204 Probleem opgelost met buitensporig batterijgebruik om sommige Samsung apparaten
+APPDEV-1193 Probleem met profielupdates opgelost

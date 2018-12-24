@@ -19,9 +19,12 @@ public interface AppConstant
 	String CLEAR_FRAGMENT_STACK = "clearFragmentStack";
 
 	/**
-	 * The constant SERVER_URL.
+	 * Constants for App preferences
 	 */
 	String SERVER_URL = "serverUrl";
+	String SHOW_VPN_WINDOW = "showVpnWindow";
+
+
 	/**
 	 * The constant MAX_COUNTER.
 	 */
@@ -286,10 +289,15 @@ public interface AppConstant
 	String URL = "url";
 	String DEEP_LINK = "deep_link";
 	String EVENT_TIME = "eventTime";
-
 	String YONA_FOLDER = "yonaFolder";
 
+	//Custom Broadcast actions.
 	String RESTART_VPN = "com.yona.app.RESTART_VPN";
 	String RESTART_DEVICE = "com.yona.app.RESTART_DEVICE";
 	String WAKE_UP = "com.yona.app.WAKE_UP_ALARM";
+
+
+	// Notifications Channel Id's
+	String YONA_VPN_CHANNEL_ID = "yona-vpn-channel";
+	String YONA_SERVICE_CHANNEL_ID = "yona-service-channel";
 }

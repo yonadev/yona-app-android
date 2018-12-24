@@ -319,14 +319,10 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
 	{
 		if (position == 0)
 		{
-			perDayFragment.setIsInView(false);
-			perWeekFragment.setIsInView(true);
 			YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.DASHBOARD_SCREEN, getString(R.string.perday));
 		}
 		else
 		{
-			perDayFragment.setIsInView(true);
-			perWeekFragment.setIsInView(false);
 			YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.DASHBOARD_SCREEN, getString(R.string.perweek));
 		}
 	}

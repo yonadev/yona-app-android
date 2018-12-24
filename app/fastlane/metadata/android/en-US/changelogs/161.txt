@@ -1,0 +1,2 @@
+APPDEV-1204 Addressed excessive battery usage issue on some Samsung devices
+APPDEV-1193 Fixed issue with profile updates

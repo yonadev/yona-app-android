@@ -1,0 +1,1 @@
+APPDEV-1197 Added close button to VPN log screen

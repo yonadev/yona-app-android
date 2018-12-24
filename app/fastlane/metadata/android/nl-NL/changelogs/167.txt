@@ -1,0 +1,1 @@
+APPDEV-1197 Knop toegevoegd om VPN logscherm te sluiten
