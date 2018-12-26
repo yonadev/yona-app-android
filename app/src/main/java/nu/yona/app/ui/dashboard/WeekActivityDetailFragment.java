@@ -348,10 +348,13 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 				if (itemIndex >= 0)
 				{
 					customPageAdapter.notifyDataSetChanged(weekActivityList);
-					fetchComments(itemIndex);
 					if (itemIndex != viewPager.getCurrentItem())
 					{
 						viewPager.setCurrentItem(itemIndex);
+					}
+					else
+					{
+						fetchComments(itemIndex);
 					}
 					updateFlow(itemIndex);
 				}
