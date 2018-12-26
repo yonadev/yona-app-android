@@ -39,13 +39,15 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.sharedUserPreferences;
+
 /**
  * Created by kinnarvasa on 04/04/16.
  */
 public class OTPActivity extends BasePasscodeActivity implements EventChangeListener
 {
 
-	private final SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
+	private final SharedPreferences userPreferences = sharedUserPreferences;
 	private PasscodeFragment otpFragment;
 	private RegisterUser user;
 

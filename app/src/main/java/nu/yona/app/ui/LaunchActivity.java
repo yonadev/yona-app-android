@@ -44,12 +44,13 @@ import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.sharedAppDataState;
+import static nu.yona.app.YonaApplication.sharedUserPreferences;
 import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 
 public class LaunchActivity extends BaseActivity
 {
 	private Bundle bundle;
-	private final SharedPreferences sharedUserPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -174,7 +175,7 @@ public class LaunchActivity extends BaseActivity
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setView(promptView);
 		final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
-		editText.setText(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
+		editText.setText(sharedAppDataState.getServerUrl());
 		alertDialogBuilder.setCancelable(false)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener()
 				{
@@ -182,7 +183,7 @@ public class LaunchActivity extends BaseActivity
 					public void onClick(DialogInterface dialog, int id)
 					{
 						Log.d("Entered URL", "Hello, " + editText.getText());
-						if (!(YonaApplication.getEventChangeManager().getDataState().getServerUrl().equals(editText.getText().toString())))
+						if (!(sharedAppDataState.getServerUrl().equals(editText.getText().toString())))
 						{
 							validateEnvironment(editText.getText().toString());
 						}
@@ -235,7 +236,7 @@ public class LaunchActivity extends BaseActivity
 	void validateEnvironment(String newEnvironmentURL)
 	{
 		showLoadingView(true, null);
-		String oldEnvironmentURL = YonaApplication.getEventChangeManager().getDataState().getServerUrl();
+		String oldEnvironmentURL = sharedAppDataState.getServerUrl();
 		APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(newEnvironmentURL);// initializes the network manager with the new host url from data state.
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(((result) -> showEnvironmentSwitchSuccessMessageToUser(newEnvironmentURL, result)),
 				((result) -> showEnvironmentSwitchFailureMessageToUser(oldEnvironmentURL, result)), null);

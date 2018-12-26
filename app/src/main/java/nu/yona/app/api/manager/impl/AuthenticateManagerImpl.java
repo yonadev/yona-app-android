@@ -31,6 +31,9 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.MobileNumberFormatter;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.sharedAppDataState;
+import static nu.yona.app.YonaApplication.sharedUserPreferences;
+
 /**
  * Created by kinnarvasa on 31/03/16.
  */
@@ -109,14 +112,14 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			String url = null;
 			if (isEditMode)
 			{
-				url = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getEdit().getHref();
+				url = sharedAppDataState.getUser().getLinks().getEdit().getHref();
 			}
 			authNetwork.registerUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), registerUser, isEditMode, new DataLoadListener()
 			{
 				@Override
 				public void onDataLoad(Object result)
 				{
-					YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
+					sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
 					updateDataForRegisterUser(result, listener);
 				}
 
@@ -143,7 +146,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			{
 				if (result != null)
 				{
-					YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
+					sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
 					updateDataForRegisterUser(result, listener);
 				}
 			}
@@ -241,7 +244,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			@Override
 			public void onDataLoad(Object result)
 			{
-				YonaApplication.getEventChangeManager().getDataState().updateUser();
+				sharedAppDataState.updateUser();
 				if (listener != null)
 				{
 					listener.onDataLoad(result);
@@ -287,7 +290,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 					@Override
 					public void onDataLoad(Object result)
 					{
-						SharedPreferences.Editor editor = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+						SharedPreferences.Editor editor = sharedUserPreferences.edit();
 						editor.putBoolean(PreferenceConstant.STEP_REGISTER, true);
 						editor.putBoolean(PreferenceConstant.STEP_OTP, true);
 						editor.commit();
@@ -313,10 +316,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		try
 		{
-			if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
-					&& YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref()))
+			if (sharedAppDataState.getUser() != null && sharedAppDataState.getUser().getLinks() != null
+					&& sharedAppDataState.getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(sharedAppDataState.getUser().getLinks().getSelf().getHref()))
 			{
-				getUser(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
+				getUser(sharedAppDataState.getUser().getLinks().getSelf().getHref(), new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)
@@ -361,7 +364,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		{
 			if (otp.length() == AppConstant.OTP_LENGTH)
 			{
-				if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false) || !YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false))
+				if (sharedUserPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false) || !sharedUserPreferences.getBoolean(PreferenceConstant.STEP_PASSCODE, false))
 				{
 					if (authenticateDao.getUser() != null && authenticateDao.getUser().getLinks() != null
 							&& authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber() != null
@@ -375,7 +378,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 									public void onDataLoad(Object result)
 									{
 										updateDataForRegisterUser(result, listener);
-										YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, true).commit();
+										sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_OTP, true).commit();
 									}
 
 									@Override
@@ -399,10 +402,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 				}
 				else
 				{
-					if (YonaApplication.getEventChangeManager().getDataState().getUser() != null
-							&& YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
-							&& YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getVerifyPinReset() != null
-							&& !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getVerifyPinReset().getHref()))
+					if (sharedAppDataState.getUser() != null
+							&& sharedAppDataState.getUser().getLinks() != null
+							&& sharedAppDataState.getUser().getLinks().getVerifyPinReset() != null
+							&& !TextUtils.isEmpty(sharedAppDataState.getUser().getLinks().getVerifyPinReset().getHref()))
 					{
 						authNetwork.doVerifyPin(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref(), otp, new DataLoadListener()
 						{
@@ -447,7 +450,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 
 	private void updatePreferenceForPinReset()
 	{
-		SharedPreferences.Editor editor = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+		SharedPreferences.Editor editor = sharedUserPreferences.edit();
 		editor.putBoolean(PreferenceConstant.USER_BLOCKED, false);
 		editor.putBoolean(PreferenceConstant.STEP_OTP, true);
 		editor.putBoolean(PreferenceConstant.STEP_PASSCODE, false);
@@ -460,7 +463,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		try
 		{
 			storedPassCode("");
-			YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, false).commit();
+			sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_OTP, false).commit();
 			User user = authenticateDao.getUser();
 			if (user != null && user.getLinks() != null && user.getLinks().getRequestPinReset() != null && !TextUtils.isEmpty(user.getLinks().getRequestPinReset().getHref()))
 			{
@@ -631,10 +634,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		try
 		{
-			if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
-					&& YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref()))
+			if (sharedAppDataState.getUser() != null && sharedAppDataState.getUser().getLinks() != null
+					&& sharedAppDataState.getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(sharedAppDataState.getUser().getLinks().getSelf().getHref()))
 			{
-				getUser(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
+				getUser(sharedAppDataState.getUser().getLinks().getSelf().getHref(), new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)
@@ -671,7 +674,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		try
 		{
-			User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+			User user = sharedAppDataState.getUser();
 			if (user != null && user.getLinks() != null)
 			{
 				if (user.getLinks().getResendMobileNumberConfirmationCode() != null
@@ -742,7 +745,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 
 	private void OverrideUser(final DataLoadListener listener)
 	{
-		APIManager.getInstance().getAuthenticateManager().requestUserOverride(YonaApplication.getEventChangeManager().getDataState().getRegisterUser().getMobileNumber(), new DataLoadListener()
+		APIManager.getInstance().getAuthenticateManager().requestUserOverride(sharedAppDataState.getRegisterUser().getMobileNumber(), new DataLoadListener()
 		{
 
 			@Override
@@ -769,11 +772,11 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 				@Override
 				public void onDataLoad(Object result)
 				{
-					if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
-							&& YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null
-							&& !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref()))
+					if (sharedAppDataState.getUser() != null && sharedAppDataState.getUser().getLinks() != null
+							&& sharedAppDataState.getUser().getLinks().getSelf() != null
+							&& !TextUtils.isEmpty(sharedAppDataState.getUser().getLinks().getSelf().getHref()))
 					{
-						getUser(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref(), listener);
+						getUser(sharedAppDataState.getUser().getLinks().getSelf().getHref(), listener);
 					}
 					else
 					{
@@ -810,10 +813,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	@Override
 	public void getUserFromServer()
 	{
-		if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null)
+		if (sharedAppDataState.getUser() != null && sharedAppDataState.getUser().getLinks() != null
+				&& sharedAppDataState.getUser().getLinks().getSelf() != null)
 		{
-			getUser(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
+			getUser(sharedAppDataState.getUser().getLinks().getSelf().getHref(), new DataLoadListener()
 			{
 				@Override
 				public void onDataLoad(Object result)
@@ -841,7 +844,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			@Override
 			public void onDataLoad(Object result)
 			{
-				SharedPreferences.Editor editor = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+				SharedPreferences.Editor editor = sharedUserPreferences.edit();
 				editor.clear();
 				editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
 				editor.commit();
@@ -870,7 +873,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	 */
 	private void storedPassCode(String code)
 	{
-		SharedPreferences.Editor yonaPref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+		SharedPreferences.Editor yonaPref = sharedUserPreferences.edit();
 		yonaPref.putBoolean(PreferenceConstant.STEP_PASSCODE, true);
 		yonaPref.commit();
 	}

@@ -48,6 +48,8 @@ import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
+import static nu.yona.app.YonaApplication.sharedAppPreferences;
+
 /**
  * Created by kinnarvasa on 21/03/16.
  */
@@ -108,7 +110,7 @@ public class SettingsFragment extends BaseFragment
 
 		private CheckBox setUpListItemViewCheckBox(CheckBox checkBox)
 		{
-			boolean showOpenVpnLog = YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
+			boolean showOpenVpnLog = sharedAppPreferences.getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
 			checkBox.setChecked(showOpenVpnLog);
 			checkBox.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
 				toggleVPNLogWindowDisplay();
@@ -204,8 +206,8 @@ public class SettingsFragment extends BaseFragment
 
 	private void toggleVPNLogWindowDisplay()
 	{
-		boolean showOpenVpnLog = YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
-		YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().edit().putBoolean(AppConstant.SHOW_VPN_WINDOW, !showOpenVpnLog).commit();
+		boolean showOpenVpnLog = sharedAppPreferences.getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
+		sharedAppPreferences.edit().putBoolean(AppConstant.SHOW_VPN_WINDOW, !showOpenVpnLog).commit();
 		settingsListViewAdaptor.notifyDataSetChanged();
 	}
 

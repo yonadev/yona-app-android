@@ -159,7 +159,7 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	private void setUpApplicationTestData()
 	{
 		YonaApplication yonaApplication = (YonaApplication) RuntimeEnvironment.application;
-		yonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
+		sharedUserPreferences;
 		yonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword("AES:128:hiQK2AjU4YE8tEuJlUy+Ug==");
 		yonaApplication.getEventChangeManager().getDataState().setUser(getMockedUser());
 	}

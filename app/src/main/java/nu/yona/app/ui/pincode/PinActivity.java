@@ -35,6 +35,8 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.sharedUserPreferences;
+
 /**
  * Created by bhargavsuthar on 3/30/16.
  */
@@ -58,7 +60,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 		fragmentTransaction.replace(R.id.blank_container, passcodeFragment);
 		fragmentTransaction.commit();
 
-		isUserBlocked = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false);
+		isUserBlocked = sharedUserPreferences.getBoolean(PreferenceConstant.USER_BLOCKED, false);
 		if (TextUtils.isEmpty(screenType))
 		{
 			screenType = AppConstant.LOGGED_IN;
@@ -80,7 +82,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 	public void onResume()
 	{
 		super.onResume();
-		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null)
+		if (sharedUserPreferences.getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null)
 		{
 			updateBlockMsg();
 		}
@@ -108,7 +110,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 				else if (APIManager.getInstance().getPasscodeManager().isWrongCounterReached())
 				{
 					passcode_error.setVisibility(View.GONE);
-					YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
+					sharedUserPreferences.edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
 					updateBlockMsg();
 					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
 				}
@@ -164,7 +166,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 				{
 					PinResetDelay delay = (PinResetDelay) result;
 					final Pair<String, Long> delayTime = AppUtils.getTimeForOTP(delay.getDelay());
-					SharedPreferences.Editor pref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+					SharedPreferences.Editor pref = sharedUserPreferences.edit();
 					pref.putLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, (new Date().getTime() + delayTime.second));
 					pref.putString(PreferenceConstant.USER_WAIT_TIME_IN_STRING, delayTime.first);
 					pref.commit();

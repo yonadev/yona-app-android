@@ -9,6 +9,7 @@
 package nu.yona.app;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.StrictMode;
@@ -22,6 +23,7 @@ import com.google.android.gms.analytics.Tracker;
 import java.util.Locale;
 
 import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.state.DataState;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
 import nu.yona.app.utils.AppUtils;
@@ -35,6 +37,12 @@ public class YonaApplication extends Application
 	private static YonaApplication mContext;
 	private static EventChangeManager eventChangeManager;
 	private Tracker tracker;
+
+
+	public static SharedPreferences sharedAppPreferences;
+	public static SharedPreferences sharedUserPreferences;
+	public static DataState sharedAppDataState;
+
 
 	/**
 	 * Gets app context.
@@ -63,6 +71,9 @@ public class YonaApplication extends Application
 		super.onCreate();
 		mContext = this;
 		eventChangeManager = new EventChangeManager();
+		sharedAppPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
+		sharedUserPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
+		sharedAppDataState = eventChangeManager.getDataState();
 		Foreground.init(this);
 	}
 
@@ -128,3 +139,4 @@ public class YonaApplication extends Application
 		return mContext.tracker;
 	}
 }
+

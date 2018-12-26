@@ -43,6 +43,8 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.MobileNumberFormatter;
 
+import static nu.yona.app.YonaApplication.sharedAppDataState;
+
 /**
  * Created by kinnarvasa on 25/03/16.
  */
@@ -196,8 +198,8 @@ public class StepTwoFragment extends BaseFragment implements EventChangeListener
 		if (validateMobileNumber(formattedNumber) && validateNickName())
 		{
 			YonaAnalytics.createTapEvent(getString(R.string.next));
-			YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setMobileNumber(formattedNumber);
-			YonaApplication.getEventChangeManager().getDataState().getRegisterUser().setNickName(nickName.getText().toString());
+			sharedAppDataState.getRegisterUser().setMobileNumber(formattedNumber);
+			sharedAppDataState.getRegisterUser().setNickName(nickName.getText().toString());
 			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_TWO_ALLOW_NEXT, null);
 		}
 	}

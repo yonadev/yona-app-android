@@ -23,12 +23,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.utils.PreferenceConstant;
+
+import static nu.yona.app.YonaApplication.sharedUserPreferences;
 
 /**
  * Created by bhargavsuthar on 18/05/16.
@@ -220,7 +221,7 @@ public class YonaCarrouselActivity extends BaseActivity implements View.OnClickL
 	 */
 	private void moveToLaunchActivity()
 	{
-		YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
+		sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
 		Intent intent = new Intent(this, LaunchActivity.class);
 		if (getIntent() != null && getIntent().getExtras() != null)
 		{
