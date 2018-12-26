@@ -14,6 +14,8 @@ import org.junit.Test;
 import nu.yona.app.YonaTestCase;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.sharedUserPreferences;
+
 /**
  * Created by bhargavsuthar on 4/4/16.
  */
