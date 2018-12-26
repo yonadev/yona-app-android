@@ -345,10 +345,13 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 			if (itemIndex >= 0)
 			{
 				customPageAdapter.notifyDataSetChanged(dayActivityList);
-				fetchComments(itemIndex);
 				if (itemIndex != viewPager.getCurrentItem())
 				{
 					viewPager.setCurrentItem(itemIndex);
+				}
+				else
+				{
+					fetchComments(itemIndex);
 				}
 				updateFlow(itemIndex);
 			}
