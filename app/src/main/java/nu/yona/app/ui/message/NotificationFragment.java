@@ -400,7 +400,6 @@ public class NotificationFragment extends BaseFragment
 		mMessageStickyRecyclerAdapter.clear();
 		currentPage = 0;
 		getUserMessages(false);
-		//getSharedAppDataState().setEmbeddedWithBuddyActivity(null);
 	}
 
 	private void getUser()
