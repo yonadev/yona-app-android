@@ -32,6 +32,7 @@ import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -159,9 +160,8 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	private void setUpApplicationTestData()
 	{
 		YonaApplication yonaApplication = (YonaApplication) RuntimeEnvironment.application;
-		yonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
 		yonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword("AES:128:hiQK2AjU4YE8tEuJlUy+Ug==");
-		yonaApplication.getEventChangeManager().getDataState().setUser(getMockedUser());
+		getSharedAppDataState().setUser(getMockedUser());
 	}
 
 	private void setUpRegisterUser()

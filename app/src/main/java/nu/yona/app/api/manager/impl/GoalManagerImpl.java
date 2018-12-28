@@ -25,6 +25,8 @@ import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
 
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+
 /**
  * Created by bhargavsuthar on 14/04/16.
  */
@@ -58,10 +60,10 @@ public class GoalManagerImpl implements GoalManager
 	{
 		try
 		{
-			if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref()))
+			if (!TextUtils.isEmpty(getSharedAppDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref()))
 			{
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
-				goalNetwork.getUserGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener()
+				getSharedAppDataState().setEmbeddedWithBuddyActivity(null);
+				goalNetwork.getUserGoals(getSharedAppDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)
@@ -96,9 +98,9 @@ public class GoalManagerImpl implements GoalManager
 	{
 		try
 		{
-			if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref()))
+			if (!TextUtils.isEmpty(getSharedAppDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref()))
 			{
-				goalNetwork.putUserBudgetGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener()
+				goalNetwork.putUserBudgetGoals(getSharedAppDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)
@@ -133,9 +135,9 @@ public class GoalManagerImpl implements GoalManager
 	{
 		try
 		{
-			if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref()))
+			if (!TextUtils.isEmpty(getSharedAppDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref()))
 			{
-				goalNetwork.putUserTimeZoneGoals(YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener()
+				goalNetwork.putUserTimeZoneGoals(getSharedAppDataState().getUser().getEmbedded().getYonaGoals().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), goal, new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)

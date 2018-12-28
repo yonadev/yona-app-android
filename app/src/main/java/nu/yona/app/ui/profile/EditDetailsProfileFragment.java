@@ -55,6 +55,9 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+
 /**
  * Created by kinnarvasa on 10/05/16.
  */
@@ -225,7 +228,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		else if (isProfileUpdated)
 		{
 			YonaActivity.getActivity().onBackPressed();
-			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, YonaApplication.getEventChangeManager().getDataState().getUser());
+			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, getSharedAppDataState().getUser());
 		}
 		else
 		{
@@ -240,7 +243,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 	private boolean userDetailsChanged()
 	{
-		User loggedInUser = YonaApplication.getEventChangeManager().getDataState().getUser();
+		User loggedInUser = getSharedAppDataState().getUser();
 		return !(editTextEquals(firstName, loggedInUser.getFirstName()) &&
 				editTextEquals(lastName, loggedInUser.getLastName()) &&
 				editTextEquals(nickName, loggedInUser.getNickname()) &&
@@ -265,7 +268,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		updateProfileImage.setOnClickListener(changeProfileImageClickListener);
 		profileImageTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round));
 		setupUserDetailsInUI();
-		Href userPhoto = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getUserPhoto();
+		Href userPhoto = getSharedAppDataState().getUser().getLinks().getUserPhoto();
 		if (userPhoto != null)
 		{
 			displayProfileImage(userPhoto.getHref());
@@ -274,10 +277,10 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 	private void setupUserDetailsInUI()
 	{
-		firstName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getFirstName());
-		lastName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLastName()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getLastName());
-		nickName.setText(TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname()) ? getString(R.string.blank) : YonaApplication.getEventChangeManager().getDataState().getUser().getNickname());
-		String number = YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber();
+		firstName.setText(TextUtils.isEmpty(getSharedAppDataState().getUser().getFirstName()) ? getString(R.string.blank) : getSharedAppDataState().getUser().getFirstName());
+		lastName.setText(TextUtils.isEmpty(getSharedAppDataState().getUser().getLastName()) ? getString(R.string.blank) : getSharedAppDataState().getUser().getLastName());
+		nickName.setText(TextUtils.isEmpty(getSharedAppDataState().getUser().getNickname()) ? getString(R.string.blank) : getSharedAppDataState().getUser().getNickname());
+		String number = getSharedAppDataState().getUser().getMobileNumber();
 		if (!TextUtils.isEmpty(number))
 		{
 			oldUserNumber = number;
@@ -366,10 +369,10 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 	private Object redirectToNextPage()
 	{
 		YonaActivity.getActivity().showLoadingView(false, null);
-		if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && oldUserNumber.equalsIgnoreCase(YonaApplication.getEventChangeManager().getDataState().getUser().getMobileNumber()))
+		if (getSharedAppDataState().getUser() != null && oldUserNumber.equalsIgnoreCase(getSharedAppDataState().getUser().getMobileNumber()))
 		{
 			YonaActivity.getActivity().onBackPressed();
-			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, YonaApplication.getEventChangeManager().getDataState().getUser());
+			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_UPDATE, getSharedAppDataState().getUser());
 		}
 		else
 		{
@@ -427,7 +430,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 
 	private void removeStoredPassCode()
 	{
-		SharedPreferences.Editor yonaPref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+		SharedPreferences.Editor yonaPref = getSharedUserPreferences().edit();
 		yonaPref.putBoolean(PreferenceConstant.STEP_OTP, false);
 		yonaPref.putBoolean(PreferenceConstant.PROFILE_OTP_STEP, true);
 		yonaPref.commit();

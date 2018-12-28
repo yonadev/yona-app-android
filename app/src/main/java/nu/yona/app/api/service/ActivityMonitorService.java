@@ -42,6 +42,8 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+
 /**
  * Created by kinnarvasa on 21/03/16.
  */
@@ -102,9 +104,9 @@ public class ActivityMonitorService extends Service
 
 	private void restartReceiver()
 	{
-		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
+		if (getSharedUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
 		{
-			YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, false).commit();
+			getSharedUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, false).commit();
 			AppUtils.registerReceiver(YonaApplication.getAppContext());
 		}
 		AppUtils.registerReceiver(YonaApplication.getAppContext());
@@ -231,7 +233,7 @@ public class ActivityMonitorService extends Service
 	@Override
 	public void onTaskRemoved(Intent rootIntent)
 	{
-		YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
+		getSharedUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
 		shutdownScheduler();
 		restartService();
 		super.onTaskRemoved(rootIntent);

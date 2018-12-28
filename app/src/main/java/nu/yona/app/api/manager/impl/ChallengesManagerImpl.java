@@ -34,6 +34,8 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+
 /**
  * Created by bhargavsuthar on 20/04/16.
  */
@@ -182,7 +184,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 		try
 		{
 			if (userGoals != null
-					&& !YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false))
+					&& !getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false))
 			{
 				int serversetGoal = 0;
 				if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals() != null)

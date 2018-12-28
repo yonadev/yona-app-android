@@ -99,6 +99,9 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+
 /**
  * Created by kinnarvasa on 18/03/16.
  */
@@ -130,7 +133,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	private static boolean isUserFromOnCreate;
 	private boolean isUserFromPinScreenAlert;
 	private boolean isSkipPinFlow;
-	private final SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
 	private static final int LOCK_SCREEN_INTERVAL = 3000;
 
 	/**
@@ -161,7 +163,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		YonaApplication.getEventChangeManager().registerListener(this);
 
 		Bundle bundle = new Bundle();
-		user = YonaApplication.getEventChangeManager().getDataState().getUser();
+		user = getSharedAppDataState().getUser();
 
 		if (user != null && user.getLinks() != null)
 		{
@@ -172,10 +174,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
 		}
 
-		if (userPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
+		if (getSharedUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
 		{
 			homeFragment = new ProfileFragment();
-			bundle.putSerializable(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
+			bundle.putSerializable(AppConstant.USER, getSharedAppDataState().getUser());
 		}
 		else
 		{
@@ -215,15 +217,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			}
 		});
 
-		if (userPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
+		if (getSharedUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
 		{
 			updateTabIcon(false);
-			userPreferences.edit().putBoolean(PreferenceConstant.PROFILE_OTP_STEP, false).commit();
+			getSharedUserPreferences().edit().putBoolean(PreferenceConstant.PROFILE_OTP_STEP, false).commit();
 		}
 		else
 		{
 			//Load default dashboard_selector fragment on start after login, if signup, start challenges.
-			if (!userPreferences.getBoolean(PreferenceConstant.STEP_CHALLENGES, false))
+			if (!getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false))
 			{
 				mTabLayout.getTabAt(2).select();
 			}
@@ -268,8 +270,8 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		{
 			case R.string.dashboard:
 				getUserMessages();
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(null);
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(null);
+				getSharedAppDataState().setEmbeddedDayActivity(null);
+				getSharedAppDataState().setEmbeddedWeekActivity(null);
 				Bundle bundle = new Bundle();
 				if (user != null && user.getLinks() != null)
 				{
@@ -284,7 +286,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				replaceFragmentWithAction(dashboardIntent);
 				break;
 			case R.string.friends:
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
+				getSharedAppDataState().setEmbeddedWithBuddyActivity(null);
 				replaceFragmentWithAction(new Intent(IntentEnum.ACTION_FRIENDS.getActionString()));
 				break;
 			case R.string.challenges:
@@ -354,7 +356,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				if (result != null && result instanceof YonaMessages)
 				{
 					YonaMessages yonaMessages = (YonaMessages) result;
-					YonaApplication.getEventChangeManager().getDataState().setNotificaitonCount(yonaMessages.getPage().getTotalElements());
+					getSharedAppDataState().setNotificaitonCount(yonaMessages.getPage().getTotalElements());
 					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_NOTIFICATION_COUNT, null);
 				}
 			}
@@ -426,7 +428,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 	private void resetData()
 	{
-		SharedPreferences.Editor editor = userPreferences.edit();
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
 		editor.clear();
 		editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
 		editor.commit();
@@ -520,7 +522,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	{
 		if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)))
 		{
-			userPreferences.edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
+			getSharedUserPreferences().edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
 			AppUtils.startVPN(this, false);
 		}
 		else
@@ -596,7 +598,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	private void uploadUserPhoto(final File file)
 	{
 		APIManager.getInstance().getAuthenticateManager().uploadUserPhoto(
-				YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getEditUserPhoto().getHref(),
+				getSharedAppDataState().getUser().getLinks().getEditUserPhoto().getHref(),
 				YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
 				file,
 				new DataLoadListener()
@@ -619,7 +621,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 	private void showInstallAlert(final byte[] keystore)
 	{
-		if (userPreferences.getString(PreferenceConstant.PROFILE_UUID, null) != null)
+		if (getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, null) != null)
 		{
 			final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(getString(R.string.certificate_installation));
@@ -1157,7 +1159,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				break;
 			case EventChangeManager.EVENT_USER_NOT_EXIST:
 				DatabaseHelper.getInstance(this).deleteAllData();
-				userPreferences.edit().clear();
+				getSharedUserPreferences().edit().clear();
 				if (object != null && object instanceof ErrorMessage)
 				{
 					showError((ErrorMessage) object);
@@ -1165,7 +1167,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				YonaApplication.getEventChangeManager().clearAll();
 				break;
 			case EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST:
-				YonaApplication.getEventChangeManager().getDataState().clearActivityList(mContent);
+				getSharedAppDataState().clearActivityList(mContent);
 				break;
 			case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
 				finish();
@@ -1526,7 +1528,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			{
 				isToDisplayLogin = false;
 				skipVerification = true;
-				if (userPreferences.getString(PreferenceConstant.PROFILE_UUID, "").equals(""))
+				if (getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals(""))
 				{
 					checkFileWritePermission();
 				}

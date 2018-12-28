@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Locale;
 
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
@@ -51,6 +50,8 @@ import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.friends.OnFriendsItemClickListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -399,7 +400,6 @@ public class NotificationFragment extends BaseFragment
 		mMessageStickyRecyclerAdapter.clear();
 		currentPage = 0;
 		getUserMessages(false);
-		//YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
 	}
 
 	private void getUser()
@@ -412,7 +412,7 @@ public class NotificationFragment extends BaseFragment
 		Href urlForMessageFetch = null;
 		if (mYonaMessages == null)
 		{
-			User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+			User user = getSharedAppDataState().getUser();
 			urlForMessageFetch = user.getLinks().getYonaMessages();
 		}
 		else if (mYonaMessages.getLinks().getNext() != null && loadMore)

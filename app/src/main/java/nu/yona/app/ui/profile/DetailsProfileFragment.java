@@ -32,6 +32,8 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+
 /**
  * Created by kinnarvasa on 21/03/16.
  */
@@ -201,7 +203,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
 				YonaActivity.getActivity().showLoadingView(false, null);
 				YonaActivity.getActivity().onBackPressed();
 				YonaActivity.getActivity().onBackPressed();
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
+				getSharedAppDataState().setEmbeddedWithBuddyActivity(null);
 				new Handler().postDelayed(new Runnable()
 				{
 					@Override

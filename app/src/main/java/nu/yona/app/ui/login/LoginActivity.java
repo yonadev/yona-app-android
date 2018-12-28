@@ -44,6 +44,8 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+
 /**
  * Created by kinnarvasa on 13/04/16.
  * This Activity is used only when user is trying to add another device.
@@ -232,8 +234,8 @@ public class LoginActivity extends BaseActivity implements EventChangeListener
 
 	private void showPasscodeScreen()
 	{
-		YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
-		SharedPreferences.Editor editor = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+		getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
 		editor.putBoolean(PreferenceConstant.STEP_REGISTER, true);
 		editor.putBoolean(PreferenceConstant.STEP_OTP, true);
 		editor.putBoolean(PreferenceConstant.STEP_PASSCODE, true);

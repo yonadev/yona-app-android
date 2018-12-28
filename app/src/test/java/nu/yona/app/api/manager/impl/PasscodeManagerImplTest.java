@@ -11,48 +11,56 @@ package nu.yona.app.api.manager.impl;
 import org.junit.Before;
 import org.junit.Test;
 
-import nu.yona.app.YonaApplication;
 import nu.yona.app.YonaTestCase;
 import nu.yona.app.utils.PreferenceConstant;
+
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by bhargavsuthar on 4/4/16.
  */
-public class PasscodeManagerImplTest extends YonaTestCase {
+public class PasscodeManagerImplTest extends YonaTestCase
+{
 
-    private PasscodeManagerImpl passcodeManager;
+	private PasscodeManagerImpl passcodeManager;
 
-    @Before
-    public void setUp() throws Exception {
-        passcodeManager = new PasscodeManagerImpl();
-    }
+	@Override
+	@Before
+	public void setUp() throws Exception
+	{
+		passcodeManager = new PasscodeManagerImpl();
+	}
 
-    @Test
-    public void checkValidatePasscode() {
-        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, "1111").commit();
-        assertTrue(passcodeManager.validatePasscode("1111"));
-        YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, "3333").commit();
-        assertFalse(passcodeManager.validatePasscode("1111"));
-    }
+	@Test
+	public void checkValidatePasscode()
+	{
+		getSharedUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, "1111").commit();
+		assertTrue(passcodeManager.validatePasscode("1111"));
+		getSharedUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, "3333").commit();
+		assertFalse(passcodeManager.validatePasscode("1111"));
+	}
 
-    @Test
-    public void checkPasscodeLength() {
-        assertTrue(passcodeManager.checkPasscodeLength("2345"));
-    }
+	@Test
+	public void checkPasscodeLength()
+	{
+		assertTrue(passcodeManager.checkPasscodeLength("2345"));
+	}
 
-    @Test
-    public void verifyPasscodeEnter() {
-        assertTrue(passcodeManager.validateTwoPasscode("1234", "1234"));
-    }
+	@Test
+	public void verifyPasscodeEnter()
+	{
+		assertTrue(passcodeManager.validateTwoPasscode("1234", "1234"));
+	}
 
-    @Test
-    public void isWrongPasscodeCountReachedLimit() {
-        passcodeManager.validatePasscode("1234");
-        passcodeManager.validatePasscode("1234");
-        passcodeManager.validatePasscode("1234");
-        passcodeManager.validatePasscode("1234");
-        passcodeManager.validatePasscode("1234");
-        assertTrue(passcodeManager.isWrongCounterReached());
-    }
+	@Test
+	public void isWrongPasscodeCountReachedLimit()
+	{
+		passcodeManager.validatePasscode("1234");
+		passcodeManager.validatePasscode("1234");
+		passcodeManager.validatePasscode("1234");
+		passcodeManager.validatePasscode("1234");
+		passcodeManager.validatePasscode("1234");
+		assertTrue(passcodeManager.isWrongCounterReached());
+	}
 
 }
