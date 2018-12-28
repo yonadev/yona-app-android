@@ -64,7 +64,7 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
 import nu.yona.app.utils.Logger;
 
-import static nu.yona.app.YonaApplication.sharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 06/06/16.
@@ -96,7 +96,7 @@ public class ActivityManagerImpl implements ActivityManager
 	@Override
 	public void getDaysActivity(boolean loadMore, boolean isBuddyFlow, Href url, DataLoadListener listener)
 	{
-		EmbeddedYonaActivity embeddedYonaActivity = sharedAppDataState.getEmbeddedDayActivity();
+		EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 		if (loadMore || isValidEmbeddedDayActivityList(embeddedYonaActivity))
 		{
 			if (url != null && !TextUtils.isEmpty(url.getHref()))
@@ -110,7 +110,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		else
 		{
-			listener.onDataLoad(sharedAppDataState.getEmbeddedDayActivity().getDayActivityList());
+			listener.onDataLoad(getSharedAppDataState().getEmbeddedDayActivity().getDayActivityList());
 		}
 	}
 
@@ -176,7 +176,7 @@ public class ActivityManagerImpl implements ActivityManager
 
 	private Object handleDayActivityDetailsFetchSuccess(DayActivity dayActivity)
 	{
-		if (sharedAppDataState.getEmbeddedDayActivity() == null)
+		if (getSharedAppDataState().getEmbeddedDayActivity() == null)
 		{
 			return null; // Dummy return value to allow use as data load handler
 		}
@@ -188,13 +188,13 @@ public class ActivityManagerImpl implements ActivityManager
 	private void updateDayActivity(DayActivity dayActivity)
 	{
 		DayActivity resultActivity = generateTimeZoneSpread(dayActivity);
-		List<DayActivity> dayActivityList = sharedAppDataState.getEmbeddedDayActivity().getDayActivityList();
+		List<DayActivity> dayActivityList = getSharedAppDataState().getEmbeddedDayActivity().getDayActivityList();
 		for (int i = 0; i < dayActivityList.size(); i++)
 		{
 			if (isEqualDayActivityDetailHrefs(dayActivityList.get(i), resultActivity))
 			{
 				dayActivityList.get(i).setTimeZoneSpread(resultActivity.getTimeZoneSpread());
-				sharedAppDataState.getEmbeddedDayActivity().getDayActivityList().set(i, updateLinks(dayActivityList.get(i), resultActivity));
+				getSharedAppDataState().getEmbeddedDayActivity().getDayActivityList().set(i, updateLinks(dayActivityList.get(i), resultActivity));
 				break;
 			}
 		}
@@ -207,7 +207,7 @@ public class ActivityManagerImpl implements ActivityManager
 	@Override
 	public void getWeeksActivity(boolean loadMore, boolean isBuddyFlow, Href href, DataLoadListener listener)
 	{
-		EmbeddedYonaActivity embeddedYonaActivity = sharedAppDataState.getEmbeddedWeekActivity();
+		EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedWeekActivity();
 		if (loadMore || isValidEmbeddedWeekActivityList(embeddedYonaActivity))
 		{
 			if (href != null && !TextUtils.isEmpty(href.getHref()))
@@ -221,7 +221,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		else
 		{
-			listener.onDataLoad(sharedAppDataState.getEmbeddedWeekActivity().getWeekActivityList());
+			listener.onDataLoad(getSharedAppDataState().getEmbeddedWeekActivity().getWeekActivityList());
 		}
 	}
 
@@ -262,7 +262,7 @@ public class ActivityManagerImpl implements ActivityManager
 	{
 		try
 		{
-			if (sharedAppDataState.getEmbeddedWeekActivity() == null)
+			if (getSharedAppDataState().getEmbeddedWeekActivity() == null)
 			{
 				return null; // Dummy return value, to allow use as data load handler
 			}
@@ -278,7 +278,7 @@ public class ActivityManagerImpl implements ActivityManager
 	private void updateWeekActivityListTimeZoneSpread(WeekActivity weekActivity)
 	{
 		WeekActivity resultActivity = generateTimeZoneSpread(weekActivity);
-		List<WeekActivity> weekActivityList = sharedAppDataState.getEmbeddedWeekActivity().getWeekActivityList();
+		List<WeekActivity> weekActivityList = getSharedAppDataState().getEmbeddedWeekActivity().getWeekActivityList();
 		for (int i = 0; i < weekActivityList.size(); i++)
 		{
 			if (isEqualWeekActivitiesDayDetailsHrefs(weekActivityList.get(i), resultActivity))
@@ -317,7 +317,7 @@ public class ActivityManagerImpl implements ActivityManager
 			return;
 		}
 		isSyncAPICallDone = false;
-		User user = sharedAppDataState.getUser();
+		User user = getSharedAppDataState().getUser();
 		if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref()))
 		{
 			DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(fromDB), (result) -> handlePostAppActivityOnFailure(fromDB, activity), null);
@@ -367,12 +367,12 @@ public class ActivityManagerImpl implements ActivityManager
 	@Override
 	public void getWithBuddyActivity(boolean loadMore, DataLoadListener listener)
 	{
-		EmbeddedYonaActivity embeddedYonaActivity = sharedAppDataState.getEmbeddedWithBuddyActivity();
+		EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedWithBuddyActivity();
 		if (loadMore || isValidEmbeddedDayActivityList(embeddedYonaActivity))
 		{
 			int pageNo = (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
 					&& embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0) ? embeddedYonaActivity.getPage().getNumber() + 1 : 0;
-			User user = sharedAppDataState.getUser();
+			User user = getSharedAppDataState().getUser();
 			if (isUserWithDailyActivityReports(user))
 			{
 				getWithBuddyActivity(user.getLinks().getDailyActivityReportsWithBuddies().getHref(), AppConstant.PAGE_SIZE, pageNo, listener);
@@ -384,7 +384,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		else
 		{
-			listener.onDataLoad(sharedAppDataState.getEmbeddedWithBuddyActivity().getDayActivityList());
+			listener.onDataLoad(getSharedAppDataState().getEmbeddedWithBuddyActivity().getDayActivityList());
 		}
 	}
 

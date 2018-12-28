@@ -29,7 +29,7 @@ import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.utils.PreferenceConstant;
 
-import static nu.yona.app.YonaApplication.sharedUserPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by bhargavsuthar on 18/05/16.
@@ -221,7 +221,7 @@ public class YonaCarrouselActivity extends BaseActivity implements View.OnClickL
 	 */
 	private void moveToLaunchActivity()
 	{
-		sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
+		getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
 		Intent intent = new Intent(this, LaunchActivity.class);
 		if (getIntent() != null && getIntent().getExtras() != null)
 		{

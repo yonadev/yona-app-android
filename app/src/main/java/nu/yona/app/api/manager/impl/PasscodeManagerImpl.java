@@ -12,7 +12,7 @@ import nu.yona.app.api.manager.PasscodeManager;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
-import static nu.yona.app.YonaApplication.sharedUserPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by bhargavsuthar on 3/31/16.
@@ -94,7 +94,7 @@ public class PasscodeManagerImpl implements PasscodeManager
 	 */
 	private int getWrongPasscodeCounter()
 	{
-		return sharedUserPreferences.getInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, 0);
+		return getSharedUserPreferences().getInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, 0);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class PasscodeManagerImpl implements PasscodeManager
 	 */
 	private void updateWrongPasscodeCounter(int counter)
 	{
-		sharedUserPreferences.edit().putInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, counter).apply();
+		getSharedUserPreferences().edit().putInt(PreferenceConstant.YONA_WRONG_PASSCODE_COUNTER, counter).apply();
 	}
 
 
@@ -125,7 +125,7 @@ public class PasscodeManagerImpl implements PasscodeManager
 	 */
 	private String getStoredPassCode()
 	{
-		return sharedUserPreferences.getString(PreferenceConstant.YONA_PASSCODE, "");
+		return getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "");
 	}
 
 	/**
@@ -135,8 +135,8 @@ public class PasscodeManagerImpl implements PasscodeManager
 	 */
 	private void storedPassCode(String code)
 	{
-		sharedUserPreferences.edit().putString(PreferenceConstant.YONA_PASSCODE, code).commit();
-		sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_PASSCODE, true).commit();
+		getSharedUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, code).commit();
+		getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_PASSCODE, true).commit();
 	}
 
 }

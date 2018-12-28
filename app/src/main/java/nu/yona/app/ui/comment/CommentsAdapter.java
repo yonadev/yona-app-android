@@ -22,7 +22,7 @@ import nu.yona.app.R;
 import nu.yona.app.api.model.YonaMessage;
 import nu.yona.app.utils.AppUtils;
 
-import static nu.yona.app.YonaApplication.sharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by bhargavsuthar on 28/07/16.
@@ -85,7 +85,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder>
 					holder.getProfileImageTxt().setText(mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase());
 					try
 					{
-						if (sharedAppDataState.getUser().getLinks().getSelf().getHref().contains(mYonaMsg.getLinks().getYonaUser().getHref()))
+						if (getSharedAppDataState().getUser().getLinks().getSelf().getHref().contains(mYonaMsg.getLinks().getYonaUser().getHref()))
 						{
 							holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
 						}
@@ -127,7 +127,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentHolder>
 					holder.getProfileImageTxt().setText(mYonaMsg.getNickname().toString().substring(0, 1).toUpperCase());
 					try
 					{
-						if (sharedAppDataState.getUser().getLinks().getSelf().getHref().contains(mYonaMsg.getLinks().getYonaUser().getHref()))
+						if (getSharedAppDataState().getUser().getLinks().getSelf().getHref().contains(mYonaMsg.getLinks().getYonaUser().getHref()))
 						{
 							holder.getProfileImageTxt().setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_small_friend_round));
 						}

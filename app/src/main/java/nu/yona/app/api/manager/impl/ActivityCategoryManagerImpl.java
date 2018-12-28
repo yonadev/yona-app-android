@@ -20,7 +20,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.utils.AppUtils;
 
-import static nu.yona.app.YonaApplication.sharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
@@ -91,7 +91,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager
 	@Override
 	public void updateNetworkAPIEnvironment(String environmentURL)
 	{
-		sharedAppDataState.setServerUrl(environmentURL);
+		getSharedAppDataState().setServerUrl(environmentURL);
 		activityCategoriesNetwork.updateNeworkEnvironment();
 	}
 

@@ -51,7 +51,7 @@ import nu.yona.app.ui.friends.OnFriendsItemClickListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
-import static nu.yona.app.YonaApplication.sharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -400,7 +400,7 @@ public class NotificationFragment extends BaseFragment
 		mMessageStickyRecyclerAdapter.clear();
 		currentPage = 0;
 		getUserMessages(false);
-		//sharedAppDataState.setEmbeddedWithBuddyActivity(null);
+		//getSharedAppDataState().setEmbeddedWithBuddyActivity(null);
 	}
 
 	private void getUser()
@@ -413,7 +413,7 @@ public class NotificationFragment extends BaseFragment
 		Href urlForMessageFetch = null;
 		if (mYonaMessages == null)
 		{
-			User user = sharedAppDataState.getUser();
+			User user = getSharedAppDataState().getUser();
 			urlForMessageFetch = user.getLinks().getYonaMessages();
 		}
 		else if (mYonaMessages.getLinks().getNext() != null && loadMore)

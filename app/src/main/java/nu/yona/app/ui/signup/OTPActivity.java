@@ -9,7 +9,6 @@
 package nu.yona.app.ui.signup;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -39,7 +38,7 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
-import static nu.yona.app.YonaApplication.sharedUserPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by kinnarvasa on 04/04/16.
@@ -47,7 +46,6 @@ import static nu.yona.app.YonaApplication.sharedUserPreferences;
 public class OTPActivity extends BasePasscodeActivity implements EventChangeListener
 {
 
-	private final SharedPreferences userPreferences = sharedUserPreferences;
 	private PasscodeFragment otpFragment;
 	private RegisterUser user;
 
@@ -70,7 +68,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 	public void onResume()
 	{
 		super.onResume();
-		if (userPreferences.getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0) > new Date().getTime())
+		if (getSharedUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0) > new Date().getTime())
 		{
 			showTimer();
 		}
@@ -231,9 +229,9 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 	@Override
 	protected void navigateToNextScreen()
 	{
-		if (userPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
+		if (getSharedUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
 		{
-			userPreferences.edit().putBoolean(PreferenceConstant.STEP_OTP, true).apply();
+			getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, true).apply();
 			showProfileScreen();
 		}
 		else

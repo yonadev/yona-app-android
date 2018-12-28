@@ -44,7 +44,7 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
-import static nu.yona.app.YonaApplication.sharedUserPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by kinnarvasa on 13/04/16.
@@ -234,8 +234,8 @@ public class LoginActivity extends BaseActivity implements EventChangeListener
 
 	private void showPasscodeScreen()
 	{
-		sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
-		SharedPreferences.Editor editor = sharedUserPreferences.edit();
+		getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
 		editor.putBoolean(PreferenceConstant.STEP_REGISTER, true);
 		editor.putBoolean(PreferenceConstant.STEP_OTP, true);
 		editor.putBoolean(PreferenceConstant.STEP_PASSCODE, true);

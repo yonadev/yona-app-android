@@ -70,8 +70,8 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.timepicker.time.Timepoint;
 
-import static nu.yona.app.YonaApplication.sharedAppPreferences;
-import static nu.yona.app.YonaApplication.sharedUserPreferences;
+import static nu.yona.app.YonaApplication.getSharedAppPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
 
@@ -391,7 +391,7 @@ public class AppUtils
 	 */
 	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
 	{
-		if (sharedUserPreferences.getBoolean(AppConstant.TERMINATED_APP, false))
+		if (getSharedUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
 		{
 			return;
 		}
@@ -584,7 +584,7 @@ public class AppUtils
 
 	public static void stopVPN(Context context)
 	{
-		String profileUUID = sharedUserPreferences.getString(PreferenceConstant.PROFILE_UUID, "");
+		String profileUUID = getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
 		if (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile)
 		{
@@ -596,14 +596,14 @@ public class AppUtils
 
 	public static boolean isVPNConnected(Context context)
 	{
-		String profileUUID = sharedUserPreferences.getString(PreferenceConstant.PROFILE_UUID, "");
+		String profileUUID = getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
 		return (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile);
 	}
 
 	public static Intent startVPN(Context context, boolean returnIntent)
 	{
-		String profileUUID = sharedUserPreferences.getString(PreferenceConstant.PROFILE_UUID, "");
+		String profileUUID = getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
 		if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null)
@@ -635,7 +635,7 @@ public class AppUtils
 		intent.setAction(Intent.ACTION_MAIN);
 		intent.putExtra(AppConstant.FROM_LOGIN, true);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		boolean showOpenVpnLog = sharedAppPreferences.getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
+		boolean showOpenVpnLog = getSharedAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
 		intent.putExtra(LaunchVPN.EXTRA_HIDELOG, !showOpenVpnLog);
 		return intent;
 	}

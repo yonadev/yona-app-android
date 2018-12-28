@@ -44,8 +44,8 @@ import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
 
-import static nu.yona.app.YonaApplication.sharedAppDataState;
-import static nu.yona.app.YonaApplication.sharedUserPreferences;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by bhargavsuthar on 03/06/16.
@@ -472,7 +472,7 @@ passcode_reset;
 		timerLayout.setVisibility(View.VISIBLE);
 		passcodeView.setVisibility(View.GONE);
 		profile_progress.setVisibility(View.GONE);
-		passcode_description.setText(getString(R.string.timer_wait_desc, sharedUserPreferences.getString(PreferenceConstant.USER_WAIT_TIME_IN_STRING, "")));
+		passcode_description.setText(getString(R.string.timer_wait_desc, getSharedUserPreferences().getString(PreferenceConstant.USER_WAIT_TIME_IN_STRING, "")));
 		passcode_description.setVisibility(View.VISIBLE);
 		passcode_error.setVisibility(View.GONE);
 		accont_image.setImageResource(R.drawable.icn_secure);
@@ -483,7 +483,7 @@ passcode_reset;
 	private void showTime()
 	{
 		totalTimerTime = 0;
-		long serverTime = sharedUserPreferences.getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0);
+		long serverTime = getSharedUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0);
 		if (serverTime > new Date().getTime())
 		{
 			totalTimerTime = serverTime - new Date().getTime();
@@ -567,13 +567,13 @@ passcode_reset;
 
 	protected void postOpenAppEvent()
 	{
-		User loggedInUser = sharedAppDataState.getUser();
+		User loggedInUser = getSharedAppDataState().getUser();
 		if (loggedInUser.getLinks() == null || loggedInUser.getLinks().getYonaPostOpenAppEvent() == null)
 		{
 			// The user account is apparently deleted
 			return;
 		}
-		Href yonaPostOpenAppEventHref = sharedAppDataState.getUser().getLinks().getYonaPostOpenAppEvent();
+		Href yonaPostOpenAppEventHref = getSharedAppDataState().getUser().getLinks().getYonaPostOpenAppEvent();
 		String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
 		DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result), (error) -> handlePostAppEventFailure(error), null);
 		String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();

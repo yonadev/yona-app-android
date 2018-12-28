@@ -38,7 +38,7 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
 
-import static nu.yona.app.YonaApplication.sharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 09/05/16.
@@ -75,7 +75,7 @@ public class NotificationManagerImpl implements NotificationManager
 	@Override
 	public void getMessages(boolean isUnreadStatus, DataLoadListener listener)
 	{
-		User user = sharedAppDataState.getUser();
+		User user = getSharedAppDataState().getUser();
 		if (user != null && user.getLinks() != null && user.getLinks().getYonaMessages() != null &&
 				!TextUtils.isEmpty(user.getLinks().getYonaMessages().getHref()))
 		{
@@ -149,7 +149,7 @@ public class NotificationManagerImpl implements NotificationManager
 
 	private RegisterUser getYonaUser(String href)
 	{
-		User user = sharedAppDataState.getUser();
+		User user = getSharedAppDataState().getUser();
 		if (user != null && user.getEmbedded() != null && user.getEmbedded().getYonaBuddies() != null
 				&& user.getEmbedded().getYonaBuddies().getEmbedded() != null
 				&& user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null)

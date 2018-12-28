@@ -31,8 +31,8 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.MobileNumberFormatter;
 import nu.yona.app.utils.PreferenceConstant;
 
-import static nu.yona.app.YonaApplication.sharedAppDataState;
-import static nu.yona.app.YonaApplication.sharedUserPreferences;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by kinnarvasa on 31/03/16.
@@ -112,14 +112,14 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			String url = null;
 			if (isEditMode)
 			{
-				url = sharedAppDataState.getUser().getLinks().getEdit().getHref();
+				url = getSharedAppDataState().getUser().getLinks().getEdit().getHref();
 			}
 			authNetwork.registerUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), registerUser, isEditMode, new DataLoadListener()
 			{
 				@Override
 				public void onDataLoad(Object result)
 				{
-					sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
+					getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
 					updateDataForRegisterUser(result, listener);
 				}
 
@@ -146,7 +146,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			{
 				if (result != null)
 				{
-					sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
+					getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
 					updateDataForRegisterUser(result, listener);
 				}
 			}
@@ -244,7 +244,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			@Override
 			public void onDataLoad(Object result)
 			{
-				sharedAppDataState.updateUser();
+				getSharedAppDataState().updateUser();
 				if (listener != null)
 				{
 					listener.onDataLoad(result);
@@ -290,7 +290,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 					@Override
 					public void onDataLoad(Object result)
 					{
-						SharedPreferences.Editor editor = sharedUserPreferences.edit();
+						SharedPreferences.Editor editor = getSharedUserPreferences().edit();
 						editor.putBoolean(PreferenceConstant.STEP_REGISTER, true);
 						editor.putBoolean(PreferenceConstant.STEP_OTP, true);
 						editor.commit();
@@ -316,10 +316,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		try
 		{
-			if (sharedAppDataState.getUser() != null && sharedAppDataState.getUser().getLinks() != null
-					&& sharedAppDataState.getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(sharedAppDataState.getUser().getLinks().getSelf().getHref()))
+			if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
+					&& getSharedAppDataState().getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getSelf().getHref()))
 			{
-				getUser(sharedAppDataState.getUser().getLinks().getSelf().getHref(), new DataLoadListener()
+				getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)
@@ -364,7 +364,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		{
 			if (otp.length() == AppConstant.OTP_LENGTH)
 			{
-				if (sharedUserPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false) || !sharedUserPreferences.getBoolean(PreferenceConstant.STEP_PASSCODE, false))
+				if (getSharedUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false) || !getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false))
 				{
 					if (authenticateDao.getUser() != null && authenticateDao.getUser().getLinks() != null
 							&& authenticateDao.getUser().getLinks().getYonaConfirmMobileNumber() != null
@@ -378,7 +378,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 									public void onDataLoad(Object result)
 									{
 										updateDataForRegisterUser(result, listener);
-										sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_OTP, true).commit();
+										getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, true).commit();
 									}
 
 									@Override
@@ -402,10 +402,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 				}
 				else
 				{
-					if (sharedAppDataState.getUser() != null
-							&& sharedAppDataState.getUser().getLinks() != null
-							&& sharedAppDataState.getUser().getLinks().getVerifyPinReset() != null
-							&& !TextUtils.isEmpty(sharedAppDataState.getUser().getLinks().getVerifyPinReset().getHref()))
+					if (getSharedAppDataState().getUser() != null
+							&& getSharedAppDataState().getUser().getLinks() != null
+							&& getSharedAppDataState().getUser().getLinks().getVerifyPinReset() != null
+							&& !TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getVerifyPinReset().getHref()))
 					{
 						authNetwork.doVerifyPin(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref(), otp, new DataLoadListener()
 						{
@@ -450,7 +450,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 
 	private void updatePreferenceForPinReset()
 	{
-		SharedPreferences.Editor editor = sharedUserPreferences.edit();
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
 		editor.putBoolean(PreferenceConstant.USER_BLOCKED, false);
 		editor.putBoolean(PreferenceConstant.STEP_OTP, true);
 		editor.putBoolean(PreferenceConstant.STEP_PASSCODE, false);
@@ -463,7 +463,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		try
 		{
 			storedPassCode("");
-			sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_OTP, false).commit();
+			getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, false).commit();
 			User user = authenticateDao.getUser();
 			if (user != null && user.getLinks() != null && user.getLinks().getRequestPinReset() != null && !TextUtils.isEmpty(user.getLinks().getRequestPinReset().getHref()))
 			{
@@ -634,10 +634,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		try
 		{
-			if (sharedAppDataState.getUser() != null && sharedAppDataState.getUser().getLinks() != null
-					&& sharedAppDataState.getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(sharedAppDataState.getUser().getLinks().getSelf().getHref()))
+			if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
+					&& getSharedAppDataState().getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getSelf().getHref()))
 			{
-				getUser(sharedAppDataState.getUser().getLinks().getSelf().getHref(), new DataLoadListener()
+				getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)
@@ -674,7 +674,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		try
 		{
-			User user = sharedAppDataState.getUser();
+			User user = getSharedAppDataState().getUser();
 			if (user != null && user.getLinks() != null)
 			{
 				if (user.getLinks().getResendMobileNumberConfirmationCode() != null
@@ -745,7 +745,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 
 	private void OverrideUser(final DataLoadListener listener)
 	{
-		APIManager.getInstance().getAuthenticateManager().requestUserOverride(sharedAppDataState.getRegisterUser().getMobileNumber(), new DataLoadListener()
+		APIManager.getInstance().getAuthenticateManager().requestUserOverride(getSharedAppDataState().getRegisterUser().getMobileNumber(), new DataLoadListener()
 		{
 
 			@Override
@@ -772,11 +772,11 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 				@Override
 				public void onDataLoad(Object result)
 				{
-					if (sharedAppDataState.getUser() != null && sharedAppDataState.getUser().getLinks() != null
-							&& sharedAppDataState.getUser().getLinks().getSelf() != null
-							&& !TextUtils.isEmpty(sharedAppDataState.getUser().getLinks().getSelf().getHref()))
+					if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
+							&& getSharedAppDataState().getUser().getLinks().getSelf() != null
+							&& !TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getSelf().getHref()))
 					{
-						getUser(sharedAppDataState.getUser().getLinks().getSelf().getHref(), listener);
+						getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), listener);
 					}
 					else
 					{
@@ -813,10 +813,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	@Override
 	public void getUserFromServer()
 	{
-		if (sharedAppDataState.getUser() != null && sharedAppDataState.getUser().getLinks() != null
-				&& sharedAppDataState.getUser().getLinks().getSelf() != null)
+		if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
+				&& getSharedAppDataState().getUser().getLinks().getSelf() != null)
 		{
-			getUser(sharedAppDataState.getUser().getLinks().getSelf().getHref(), new DataLoadListener()
+			getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
 			{
 				@Override
 				public void onDataLoad(Object result)
@@ -844,7 +844,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			@Override
 			public void onDataLoad(Object result)
 			{
-				SharedPreferences.Editor editor = sharedUserPreferences.edit();
+				SharedPreferences.Editor editor = getSharedUserPreferences().edit();
 				editor.clear();
 				editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
 				editor.commit();
@@ -873,7 +873,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	 */
 	private void storedPassCode(String code)
 	{
-		SharedPreferences.Editor yonaPref = sharedUserPreferences.edit();
+		SharedPreferences.Editor yonaPref = getSharedUserPreferences().edit();
 		yonaPref.putBoolean(PreferenceConstant.STEP_PASSCODE, true);
 		yonaPref.commit();
 	}

@@ -35,13 +35,12 @@ public class YonaApplication extends Application
 {
 
 	private static YonaApplication mContext;
-	private static EventChangeManager eventChangeManager;
 	private Tracker tracker;
 
-
-	public static SharedPreferences sharedAppPreferences;
-	public static SharedPreferences sharedUserPreferences;
-	public static DataState sharedAppDataState;
+	private static EventChangeManager eventChangeManager;
+	private static SharedPreferences sharedAppPreferences;
+	private static SharedPreferences sharedUserPreferences;
+	private static DataState sharedAppDataState;
 
 
 	/**
@@ -62,6 +61,36 @@ public class YonaApplication extends Application
 	public static EventChangeManager getEventChangeManager()
 	{
 		return eventChangeManager;
+	}
+
+	/**
+	 * Gets event change manager.
+	 *
+	 * @return the event change manager
+	 */
+	public static SharedPreferences getSharedAppPreferences()
+	{
+		return sharedAppPreferences;
+	}
+
+	/**
+	 * Gets event change manager.
+	 *
+	 * @return the event change manager
+	 */
+	public static SharedPreferences getSharedUserPreferences()
+	{
+		return sharedUserPreferences;
+	}
+
+	/**
+	 * Gets event change manager.
+	 *
+	 * @return the event change manager
+	 */
+	public static DataState getSharedAppDataState()
+	{
+		return sharedAppDataState;
 	}
 
 	@Override

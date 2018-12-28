@@ -36,7 +36,7 @@ import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 
-import static nu.yona.app.YonaApplication.sharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -166,8 +166,8 @@ public class StepOne extends BaseFragment implements EventChangeListener
 		if (validateFirstName() && validateLastName())
 		{
 			YonaAnalytics.createTapEvent(getString(R.string.next));
-			sharedAppDataState.getRegisterUser().setFirstName(firstName.getText().toString());
-			sharedAppDataState.getRegisterUser().setLastName(lastName.getText().toString());
+			getSharedAppDataState().getRegisterUser().setFirstName(firstName.getText().toString());
+			getSharedAppDataState().getRegisterUser().setLastName(lastName.getText().toString());
 			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_SIGNUP_STEP_ONE_ALLOW_NEXT, null);
 		}
 	}

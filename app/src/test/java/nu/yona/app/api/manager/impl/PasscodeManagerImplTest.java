@@ -14,7 +14,7 @@ import org.junit.Test;
 import nu.yona.app.YonaTestCase;
 import nu.yona.app.utils.PreferenceConstant;
 
-import static nu.yona.app.YonaApplication.sharedUserPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by bhargavsuthar on 4/4/16.
@@ -34,9 +34,9 @@ public class PasscodeManagerImplTest extends YonaTestCase
 	@Test
 	public void checkValidatePasscode()
 	{
-		sharedUserPreferences.edit().putString(PreferenceConstant.YONA_PASSCODE, "1111").commit();
+		getSharedUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, "1111").commit();
 		assertTrue(passcodeManager.validatePasscode("1111"));
-		sharedUserPreferences.edit().putString(PreferenceConstant.YONA_PASSCODE, "3333").commit();
+		getSharedUserPreferences().edit().putString(PreferenceConstant.YONA_PASSCODE, "3333").commit();
 		assertFalse(passcodeManager.validatePasscode("1111"));
 	}
 
