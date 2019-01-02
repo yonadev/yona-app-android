@@ -157,18 +157,12 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
+		yonaBuddy = getArgument(AppConstant.YONA_BUDDY_OBJ, YonaBuddy.class, yonaBuddy);
+		if (yonaBuddy == null)
 		{
-			yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
+			yonaBuddy = APIManager.getInstance().getActivityManager().findYonaBuddy(getArgument(AppConstant.YONA_BUDDY_OBJ, Href.class));
 		}
-		else if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) != null)
-		{
-			yonaBuddy = APIManager.getInstance().getActivityManager().findYonaBuddy((Href) getArguments().get(AppConstant.YONA_BUDDY_OBJ));
-		}
-		if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
-		{
-			mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
-		}
+		mYonaHeaderTheme = getArgument(AppConstant.YONA_THEME_OBJ, YonaHeaderTheme.class, mYonaHeaderTheme);
 	}
 
 	@Nullable
@@ -182,7 +176,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 		setupViewComponents();
 		viewPager.setAdapter(customPageAdapter);
 		initalizeCommentControl(view);
-		getWeekActivityFromArguments();
+		activity = getArgument(AppConstant.OBJECT, WeekActivity.class, activity);
 		setUpOnClickListeners();
 		setUpOnPageChangeListener();
 		YonaApplication.getEventChangeManager().registerListener(this);
@@ -196,14 +190,6 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 		if (mYonaHeaderTheme != null)
 		{
 			mToolBar.setBackgroundResource(mYonaHeaderTheme.getToolbar());
-		}
-	}
-
-	private void getWeekActivityFromArguments()
-	{
-		if (getArguments() != null && getArguments().get(AppConstant.OBJECT) != null)
-		{
-			activity = (WeekActivity) getArguments().get(AppConstant.OBJECT);
 		}
 	}
 
@@ -239,25 +225,27 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 
 	private void previousWeekActivity()
 	{
-		if (viewPager.getCurrentItem() != 0)
+		if (viewPager.getCurrentItem() == 0)
 		{
-			YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.PREVIOUS);
-			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+			return;
 		}
+		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.PREVIOUS);
+		viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
 	}
 
 	private void setOnClickListenerSendButton()
 	{
-		if (!TextUtils.isEmpty(messageTxt.getText()))
+		if (TextUtils.isEmpty(messageTxt.getText()))
 		{
-			if (isUserCommenting)
-			{
-				replyComment(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null);
-			}
-			else
-			{
-				addComment(messageTxt.getText().toString(), activity.getLinks().getAddComment().getHref());
-			}
+			return;
+		}
+		if (isUserCommenting)
+		{
+			replyComment(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null);
+		}
+		else
+		{
+			addComment(messageTxt.getText().toString(), activity.getLinks().getAddComment().getHref());
 		}
 	}
 
@@ -320,12 +308,13 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 	public void getCurrentWeekActivityDetails(WeekActivity weekActivity)
 	{
 		YonaActivity.getActivity().showLoadingView(true, null);
-		if (!isDataLoading)
+		if (isDataLoading)
 		{
-			isDataLoading = true;
-			DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(((result) -> handleWeekActivityDetailsFetchSuccess((WeekActivity) result)), ((result) -> handleWeekActivityDetailsFetchFailure(result)), null);
-			APIManager.getInstance().getActivityManager().getDetailOfEachWeekSpreadWithWeekActivity(weekActivity, dataLoadListenerImpl);
+			return;
 		}
+		isDataLoading = true;
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(((result) -> handleWeekActivityDetailsFetchSuccess((WeekActivity) result)), ((result) -> handleWeekActivityDetailsFetchFailure(result)), null);
+		APIManager.getInstance().getActivityManager().getDetailOfEachWeekSpreadWithWeekActivity(weekActivity, dataLoadListenerImpl);
 	}
 
 	private Object handleWeekActivityDetailsFetchSuccess(WeekActivity result)
@@ -461,13 +450,14 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 	{
 		profileCircleImageView.setVisibility(View.GONE);
 		rightIcon.setVisibility(View.GONE);
-		if (mYonaHeaderTheme.isBuddyFlow())
+		if (!mYonaHeaderTheme.isBuddyFlow())
 		{
-			profileIconTxt.setVisibility(View.VISIBLE);
-			profileIconTxt.setText(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase());
-			profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
-			profileClickEvent(profileIconTxt);
+			return;
 		}
+		profileIconTxt.setVisibility(View.VISIBLE);
+		profileIconTxt.setText(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1).toUpperCase());
+		profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
+		profileClickEvent(profileIconTxt);
 	}
 
 	private void profileClickEvent(View profileView)
@@ -635,13 +625,14 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 
 	public void visibleAddCommentView(YonaMessage currentMsg)
 	{
-		if (commentsAdapter != null)
+		if (commentsAdapter == null)
 		{
-			List<YonaMessage> yonaMessages = new ArrayList<>();
-			yonaMessages.add(currentMsg);
-			this.mYonaCommentsList = yonaMessages;
-			commentsAdapter.notifyDatasetChanged(yonaMessages);
+			return;
 		}
+		List<YonaMessage> yonaMessages = new ArrayList<>();
+		yonaMessages.add(currentMsg);
+		this.mYonaCommentsList = yonaMessages;
+		commentsAdapter.notifyDatasetChanged(yonaMessages);
 	}
 
 	public boolean isUserCommenting()
