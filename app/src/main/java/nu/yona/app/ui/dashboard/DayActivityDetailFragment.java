@@ -50,7 +50,6 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.utils.AppConstant;
-import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 13/06/16.
@@ -157,10 +156,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 		initializeCommentControl(view);
 		if (getArguments() != null)
 		{
-			if (getArguments().get(AppConstant.OBJECT) instanceof DayActivity)
-			{
-				activity = (DayActivity) getArguments().get(AppConstant.OBJECT);
-			}
+			activity = getArgument(AppConstant.OBJECT, DayActivity.class);
 		}
 		initializeOnClickListeners();
 		initializeOnPageClickListener();
@@ -210,42 +206,43 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 
 	private void initializeOnClickListeners()
 	{
-		previousItem.setOnClickListener(view -> previousDayActivity());
-		nextItem.setOnClickListener(view -> nextDayActivity());
+		previousItem.setOnClickListener(view -> showPreviousDayActivity());
+		nextItem.setOnClickListener(view -> showNextDayActivity());
 		sendButton.setOnClickListener(view -> setOnClickListenerSendButton());
 	}
 
 	private void initializeOnPageClickListener()
 	{
-		if (viewPager != null)
+		if (viewPager == null)
 		{
-			viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
-			{
-				@Override
-				public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-				{
-				}
-
-				@Override
-				public void onPageSelected(int position)
-				{
-					EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
-					if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0)
-					{
-						DayActivity newDayActivityToLoad = dayActivityList.get(position);
-						getCurrentDayActivityDetails(newDayActivityToLoad);
-					}
-				}
-
-				@Override
-				public void onPageScrollStateChanged(int state)
-				{
-				}
-			});
+			return;
 		}
+		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+		{
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+			{
+			}
+
+			@Override
+			public void onPageSelected(int position)
+			{
+				EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+				if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0)
+				{
+					DayActivity newDayActivityToLoad = dayActivityList.get(position);
+					getCurrentDayActivityDetails(newDayActivityToLoad);
+				}
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state)
+			{
+			}
+		});
 	}
 
-	private void previousDayActivity()
+	private void showPreviousDayActivity()
 	{
 		if (viewPager.getCurrentItem() != 0)
 		{
@@ -254,7 +251,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 		}
 	}
 
-	private void nextDayActivity()
+	private void showNextDayActivity()
 	{
 		if (viewPager.getCurrentItem() != dayActivityList.size() - 1)
 		{
@@ -265,16 +262,17 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 
 	private void setOnClickListenerSendButton()
 	{
-		if (!TextUtils.isEmpty(messageTxt.getText()))
+		if (TextUtils.isEmpty(messageTxt.getText()))
 		{
-			if (isUserCommenting())
-			{
-				replyComment(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null);
-			}
-			else
-			{
-				addComment(messageTxt.getText().toString(), activity.getLinks().getAddComment().getHref());
-			}
+			return;
+		}
+		if (isUserCommenting())
+		{
+			replyComment(messageTxt.getText().toString(), currentReplayingMsg != null ? currentReplayingMsg.getLinks().getReplyComment().getHref() : null);
+		}
+		else
+		{
+			addComment(messageTxt.getText().toString(), activity.getLinks().getAddComment().getHref());
 		}
 	}
 
@@ -304,13 +302,14 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 
 	public void getCurrentDayActivityDetails(DayActivity dayActivity)
 	{
-		if (!isDataLoading)
+		if (isDataLoading)
 		{
-			YonaActivity.getActivity().showLoadingView(true, null);
-			isDataLoading = true;
-			DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleDetailOfEachSpreadWithDayActivityFetchSuccess(result), (result) -> handleDetailOfEachSpreadWithDayActivityFetchFailure(result), null);
-			APIManager.getInstance().getActivityManager().getDetailOfEachSpreadWithDayActivity(dayActivity, dataLoadListenerImpl);
+			return;
 		}
+		YonaActivity.getActivity().showLoadingView(true, null);
+		isDataLoading = true;
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleDetailOfEachSpreadWithDayActivityFetchSuccess(result), (result) -> handleDetailOfEachSpreadWithDayActivityFetchFailure(result), null);
+		APIManager.getInstance().getActivityManager().getDetailOfEachSpreadWithDayActivity(dayActivity, dataLoadListenerImpl);
 	}
 
 	private Object handleDetailOfEachSpreadWithDayActivityFetchSuccess(Object result)
@@ -348,19 +347,13 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 
 	private void setUpDayActivityListFromEmbeddedYonaActivity(EmbeddedYonaActivity embeddedYonaActivity)
 	{
-		try
+
+		for (int i = embeddedYonaActivity.getDayActivityList().size() - 1; i >= 0; i--)
 		{
-			for (int i = embeddedYonaActivity.getDayActivityList().size() - 1; i >= 0; i--)
+			if (embeddedYonaActivity.getDayActivityList().get(i).getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref()))
 			{
-				if (embeddedYonaActivity.getDayActivityList().get(i).getYonaGoal().getLinks().getSelf().getHref().equals(activity.getLinks().getYonaGoal().getHref()))
-				{
-					dayActivityList.add(embeddedYonaActivity.getDayActivityList().get(i));
-				}
+				dayActivityList.add(embeddedYonaActivity.getDayActivityList().get(i));
 			}
-		}
-		catch (Exception e)
-		{
-			AppUtils.reportException(DayActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread());
 		}
 	}
 
@@ -507,7 +500,6 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 		}
 	}
 
-	//TODO
 	private void fetchComments(final int position)
 	{
 		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> handleGetCommentsFetchSuccess(result, position), (result) -> handleErrorMessage(result), null);
