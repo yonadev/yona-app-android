@@ -133,18 +133,8 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (getArguments() == null)
-		{
-			return;
-		}
-		if (getArguments().get(AppConstant.YONA_BUDDY_OBJ) instanceof YonaBuddy)
-		{
-			yonaBuddy = (YonaBuddy) getArguments().get(AppConstant.YONA_BUDDY_OBJ);
-		}
-		if (getArguments().getSerializable(AppConstant.YONA_THEME_OBJ) != null)
-		{
-			mYonaHeaderTheme = (YonaHeaderTheme) getArguments().getSerializable(AppConstant.YONA_THEME_OBJ);
-		}
+		yonaBuddy = getArgument(AppConstant.YONA_BUDDY_OBJ, YonaBuddy.class, yonaBuddy);
+		mYonaHeaderTheme = getArgument(AppConstant.YONA_THEME_OBJ, YonaHeaderTheme.class, mYonaHeaderTheme);
 	}
 
 
@@ -154,10 +144,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 	{
 		initializeViewAttributes(inflater);
 		initializeCommentControl(view);
-		if (getArguments() != null)
-		{
-			activity = getArgument(AppConstant.OBJECT, DayActivity.class);
-		}
+		activity = getArgument(AppConstant.OBJECT, DayActivity.class, activity);
 		initializeOnClickListeners();
 		initializeOnPageClickListener();
 		YonaApplication.getEventChangeManager().registerListener(this);
