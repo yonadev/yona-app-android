@@ -1,0 +1,1 @@
+APPDEV-1209 Probleem opgelost waarbij reacties op een dagactiviteit twee keer werden getoond
