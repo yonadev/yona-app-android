@@ -157,8 +157,8 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		yonaBuddy = getArgument(AppConstant.YONA_BUDDY_OBJ, YonaBuddy.class, yonaBuddy);
-		if (yonaBuddy == null)
+		yonaBuddy = getArgument(AppConstant.YONA_BUDDY_OBJ, YonaBuddy.class);
+		if (yonaBuddy == null && getArgument(AppConstant.YONA_BUDDY_OBJ, Href.class) != null)
 		{
 			yonaBuddy = APIManager.getInstance().getActivityManager().findYonaBuddy(getArgument(AppConstant.YONA_BUDDY_OBJ, Href.class));
 		}
