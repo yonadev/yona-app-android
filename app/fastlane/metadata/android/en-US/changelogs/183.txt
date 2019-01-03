@@ -1,0 +1,1 @@
+APPDEV-1210 Fixed an issue where comments were shown twice on a week activity
