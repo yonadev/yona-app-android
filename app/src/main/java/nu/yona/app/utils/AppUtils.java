@@ -32,7 +32,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -202,9 +201,7 @@ public class AppUtils
 	{
 		if (!NotificationManagerCompat.from(context).areNotificationsEnabled())
 		{
-			Logger.loge("Notifications Disabled", context.getString(R.string.notification_disabled_message));
-			displayErrorAlert(context, new ErrorMessage(context.getString(R.string.notification_disabled_message)));
-			return;
+			return; // Notification is required for starting a ForegroundService
 		}
 		context.startForegroundService(activityMonitorIntent);
 	}
@@ -385,35 +382,6 @@ public class AppUtils
 			}
 		});
 	}
-
-	/**
-	 * Display Error Alert if app is running else return;
-	 */
-	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
-	{
-		if (getSharedUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
-		{
-			return;
-		}
-		runOnUiThread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				getGenericAlertDialogWithErrorMessage(context, errorMessage).show();
-			}
-		});
-	}
-
-	public static AlertDialog getGenericAlertDialogWithErrorMessage(Context context, ErrorMessage errorMessage)
-	{
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-		alertDialogBuilder.setMessage(errorMessage.getMessage());
-		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), null);
-		AlertDialog alertDialog = alertDialogBuilder.create();
-		return alertDialog;
-	}
-
 
 	public static final void runOnUiThread(Runnable runnable)
 	{
