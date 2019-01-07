@@ -34,7 +34,6 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.Href;
 import nu.yona.app.api.model.User;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontTextView;
@@ -568,16 +567,14 @@ passcode_reset;
 	protected void postOpenAppEvent()
 	{
 		User loggedInUser = getSharedAppDataState().getUser();
-		if (loggedInUser.getLinks() == null || loggedInUser.getLinks().getYonaPostOpenAppEvent() == null)
+		if (loggedInUser.getEmbedded() == null || loggedInUser.getEmbedded().getYonaDevices() == null)
 		{
 			// The user account is apparently deleted
 			return;
 		}
-		Href yonaPostOpenAppEventHref = getSharedAppDataState().getUser().getLinks().getYonaPostOpenAppEvent();
-		String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
 		DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result), (error) -> handlePostAppEventFailure(error), null);
 		String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();
-		APIManager.getInstance().getYonaManager().postOpenAppEvent(postAppOpenEventURL, yonaPassword, listenerWrapper);
+		APIManager.getInstance().getYonaManager().postOpenAppEvent(loggedInUser.getLinkToPostOpenAppEvent(), yonaPassword, listenerWrapper);
 	}
 
 	protected abstract Object handlePostAppEventSuccess(Object result);

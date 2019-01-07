@@ -200,16 +200,6 @@ public class User extends BaseEntity
 	}
 
 	/**
-	 * Sets vpn profile.
-	 *
-	 * @param vpnProfile The vpnProfile
-	 */
-	public void setVpnProfile(VpnProfile vpnProfile)
-	{
-		this.vpnProfile = vpnProfile;
-	}
-
-	/**
 	 * Gets nickname.
 	 *
 	 * @return The nickname
@@ -257,12 +247,7 @@ public class User extends BaseEntity
 
 	public String getSslRootCertCN()
 	{
-		return this.sslRootCertCN;
-	}
-
-	public void setSslRootCertCN(String sslRootCertCN)
-	{
-		this.sslRootCertCN = sslRootCertCN;
+		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice().getSslRootCertCN();
 	}
 
 	public String getYonaPassword()
@@ -274,6 +259,17 @@ public class User extends BaseEntity
 	{
 		YonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword(yonaPassword);
 		this.yonaPassword = yonaPassword;
+	}
+
+
+	public String getLinkToPostOpenAppEvent()
+	{
+		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice().getPostOpenAppEventLink();
+	}
+
+	public String getLinkToPostDeviceAppActivity()
+	{
+		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice().getLinkForPostingDeviceAppActivity();
 	}
 
 }

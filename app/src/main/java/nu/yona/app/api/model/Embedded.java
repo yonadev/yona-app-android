@@ -20,7 +20,9 @@ import java.util.List;
  */
 public class Embedded extends BaseEntity
 {
-
+	@SerializedName("yona:devices")
+	@Expose
+	private YonaDevices yonaDevices;
 	@SerializedName("yona:goals")
 	@Expose
 	private YonaGoals yonaGoals;
@@ -256,5 +258,15 @@ public class Embedded extends BaseEntity
 	public void setPage(Page page)
 	{
 		this.page = page;
+	}
+
+	public YonaDevices getYonaDevices()
+	{
+		return yonaDevices;
+	}
+
+	public void setYonaDevices(YonaDevices yonaDevices)
+	{
+		this.yonaDevices = yonaDevices;
 	}
 }
