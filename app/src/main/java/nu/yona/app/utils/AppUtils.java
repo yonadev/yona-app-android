@@ -208,19 +208,6 @@ public class AppUtils
 		context.startForegroundService(activityMonitorIntent);
 	}
 
-	public static void displayErrorAlert(ErrorMessage errorMessage)
-	{
-		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(errorMessage).show());
-	}
-
-	private static AlertDialog getGenericAlertDialogWithErrorMessage(ErrorMessage errorMessage)
-	{
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-		alertDialogBuilder.setMessage(errorMessage.getMessage());
-		alertDialogBuilder.setPositiveButton(getActivity().getString(R.string.ok), null);
-		return alertDialogBuilder.create();
-	}
-
 	/**
 	 * Stop service.
 	 *
@@ -396,6 +383,19 @@ public class AppUtils
 				Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		});
+	}
+
+	public static void displayErrorAlert(ErrorMessage errorMessage)
+	{
+		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(errorMessage).show());
+	}
+
+	private static AlertDialog getGenericAlertDialogWithErrorMessage(ErrorMessage errorMessage)
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+		alertDialogBuilder.setMessage(errorMessage.getMessage());
+		alertDialogBuilder.setPositiveButton(getActivity().getString(R.string.ok), null);
+		return alertDialogBuilder.create();
 	}
 
 	public static final void runOnUiThread(Runnable runnable)
