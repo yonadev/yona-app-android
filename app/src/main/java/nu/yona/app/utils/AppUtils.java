@@ -643,37 +643,35 @@ public class AppUtils
 	public static void downloadCertificates()
 	{
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-		if (user != null && user.getLinks() != null)
+		if (user == null || user.getEmbedded() == null || user.getEmbedded().getYonaDevices() == null
+				|| YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() != null)
 		{
-			if (user.getLinks().getSslRootCert() != null
-					&& YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() == null)
-			{
-				new DownloadFileFromURL(user.getLinks().getSslRootCert().getHref(), new DataLoadListener()
-				{
-					@Override
-					public void onDataLoad(Object result)
-					{
-						if (result != null && !TextUtils.isEmpty(result.toString()))
-						{
-							YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
-							YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
-						}
-						logi(TAG, "Download successful: " + result.toString());
-					}
-
-					@Override
-					public void onError(Object errorMessage)
-					{
-						loge(TAG, "Download fail");
-						trialCertificateCount++;
-						if (trialCertificateCount < 3)
-						{
-							downloadCertificates();
-						}
-					}
-				});
-			}
+			return;
 		}
+		new DownloadFileFromURL(user.getSslRootCert(), new DataLoadListener()
+		{
+			@Override
+			public void onDataLoad(Object result)
+			{
+				if (result != null && !TextUtils.isEmpty(result.toString()))
+				{
+					YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
+					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
+				}
+				logi(TAG, "Download successful: " + result.toString());
+			}
+
+			@Override
+			public void onError(Object errorMessage)
+			{
+				loge(TAG, "Download fail");
+				trialCertificateCount++;
+				if (trialCertificateCount < 3)
+				{
+					downloadCertificates();
+				}
+			}
+		});
 	}
 
 	public static void downloadVPNProfile()

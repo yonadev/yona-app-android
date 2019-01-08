@@ -272,4 +272,8 @@ public class User extends BaseEntity
 		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice().getLinkForPostingDeviceAppActivity();
 	}
 
+	public String getSslRootCert()
+	{
+		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice().getYonaSslRootCert();
+	}
 }

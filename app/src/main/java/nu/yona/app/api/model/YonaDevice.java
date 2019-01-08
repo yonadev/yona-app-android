@@ -78,4 +78,8 @@ class YonaDevice extends BaseEntity
 		return this.links.getYonaAppActivity().getHref();
 	}
 
+	public String getYonaSslRootCert()
+	{
+		return this.links.getSslRootCert().getHref();
+	}
 }
