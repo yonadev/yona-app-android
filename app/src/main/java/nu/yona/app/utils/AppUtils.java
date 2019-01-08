@@ -72,6 +72,7 @@ import nu.yona.timepicker.time.Timepoint;
 
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.ui.YonaActivity.getActivity;
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
 
@@ -202,9 +203,7 @@ public class AppUtils
 	{
 		if (!NotificationManagerCompat.from(context).areNotificationsEnabled())
 		{
-			Logger.loge("Notifications Disabled", context.getString(R.string.notification_disabled_message));
-			displayErrorAlert(context, new ErrorMessage(context.getString(R.string.notification_disabled_message)));
-			return;
+			return; // Notification permission is required for starting a ForegroundService
 		}
 		context.startForegroundService(activityMonitorIntent);
 	}
@@ -386,34 +385,18 @@ public class AppUtils
 		});
 	}
 
-	/**
-	 * Display Error Alert if app is running else return;
-	 */
-	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
+	public static void displayErrorAlert(ErrorMessage errorMessage)
 	{
-		if (getSharedUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
-		{
-			return;
-		}
-		runOnUiThread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				getGenericAlertDialogWithErrorMessage(context, errorMessage).show();
-			}
-		});
+		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(errorMessage).show());
 	}
 
-	public static AlertDialog getGenericAlertDialogWithErrorMessage(Context context, ErrorMessage errorMessage)
+	private static AlertDialog getGenericAlertDialogWithErrorMessage(ErrorMessage errorMessage)
 	{
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 		alertDialogBuilder.setMessage(errorMessage.getMessage());
-		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), null);
-		AlertDialog alertDialog = alertDialogBuilder.create();
-		return alertDialog;
+		alertDialogBuilder.setPositiveButton(getActivity().getString(R.string.ok), null);
+		return alertDialogBuilder.create();
 	}
-
 
 	public static final void runOnUiThread(Runnable runnable)
 	{
