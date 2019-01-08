@@ -1,0 +1,1 @@
+APPDEV-1230 Improved error handling in case notifications are disabled.
