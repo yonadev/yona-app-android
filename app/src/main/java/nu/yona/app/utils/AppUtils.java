@@ -32,6 +32,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -71,6 +72,7 @@ import nu.yona.timepicker.time.Timepoint;
 
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.ui.YonaActivity.getActivity;
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
 
@@ -201,9 +203,22 @@ public class AppUtils
 	{
 		if (!NotificationManagerCompat.from(context).areNotificationsEnabled())
 		{
-			return; // Notification is required for starting a ForegroundService
+			return; // Notification permission is required for starting a ForegroundService
 		}
 		context.startForegroundService(activityMonitorIntent);
+	}
+
+	public static void displayErrorAlert(ErrorMessage errorMessage)
+	{
+		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(errorMessage).show());
+	}
+
+	private static AlertDialog getGenericAlertDialogWithErrorMessage(ErrorMessage errorMessage)
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+		alertDialogBuilder.setMessage(errorMessage.getMessage());
+		alertDialogBuilder.setPositiveButton(getActivity().getString(R.string.ok), null);
+		return alertDialogBuilder.create();
 	}
 
 	/**
