@@ -67,6 +67,7 @@ import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.timepicker.time.Timepoint;
 
@@ -631,30 +632,30 @@ public class AppUtils
 		{
 			return;
 		}
-		new DownloadFileFromURL(user.getSslRootCert(), new DataLoadListener()
-		{
-			@Override
-			public void onDataLoad(Object result)
-			{
-				if (result != null && !TextUtils.isEmpty(result.toString()))
-				{
-					YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
-					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
-				}
-				logi(TAG, "Download successful: " + result.toString());
-			}
+		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> handleDownloadFileFromUrlSuccess(result), (result -> handleDownloadFileFromUrlFailure()), null);
+		new DownloadFileFromURL(user.getSslRootCert(), dataLoadListener);
+	}
 
-			@Override
-			public void onError(Object errorMessage)
-			{
-				loge(TAG, "Download fail");
-				trialCertificateCount++;
-				if (trialCertificateCount < 3)
-				{
-					downloadCertificates();
-				}
-			}
-		});
+	private static Object handleDownloadFileFromUrlSuccess(Object result)
+	{
+		if (result != null && !TextUtils.isEmpty(result.toString()))
+		{
+			YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
+			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
+		}
+		logi(TAG, "Download successful: " + result.toString());
+		return null; // Dummy return value, to allow use as data load handler
+	}
+
+	private static Object handleDownloadFileFromUrlFailure()
+	{
+		loge(TAG, "Download fail");
+		trialCertificateCount++;
+		if (trialCertificateCount < 3)
+		{
+			downloadCertificates();
+		}
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	public static void downloadVPNProfile()
