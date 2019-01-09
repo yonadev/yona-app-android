@@ -200,9 +200,7 @@ public class AppUtils
 	{
 		if (!NotificationManagerCompat.from(context).areNotificationsEnabled())
 		{
-			Logger.loge("Notifications Disabled", context.getString(R.string.notification_disabled_message));
-			displayErrorAlert(context, new ErrorMessage(context.getString(R.string.notification_disabled_message)));
-			return;
+			return; // Notification is required for starting a ForegroundService
 		}
 		context.startForegroundService(activityMonitorIntent);
 	}
@@ -389,18 +387,7 @@ public class AppUtils
 	 */
 	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
 	{
-		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
-		{
-			return;
-		}
-		runOnUiThread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				getGenericAlertDialogWithErrorMessage(context, errorMessage).show();
-			}
-		});
+		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(context, errorMessage).show());
 	}
 
 	public static AlertDialog getGenericAlertDialogWithErrorMessage(Context context, ErrorMessage errorMessage)
