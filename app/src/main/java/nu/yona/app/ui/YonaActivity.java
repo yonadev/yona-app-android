@@ -36,6 +36,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -342,6 +343,16 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			{
 				checkVPN();
 			}
+			checkForNotificationPermission();
+		}
+	}
+
+	private void checkForNotificationPermission()
+	{
+		if (!NotificationManagerCompat.from(this).areNotificationsEnabled())
+		{
+			Logger.loge("Notifications Disabled", this.getString(R.string.notification_disabled_message));
+			AppUtils.displayErrorAlert(new ErrorMessage(this.getString(R.string.notification_disabled_message)));
 		}
 	}
 
