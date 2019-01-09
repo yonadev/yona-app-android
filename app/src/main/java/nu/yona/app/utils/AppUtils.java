@@ -200,7 +200,7 @@ public class AppUtils
 	{
 		if (!NotificationManagerCompat.from(context).areNotificationsEnabled())
 		{
-			return; // Notification is required for starting a ForegroundService
+			return; // Notification permission is required for starting a ForegroundService
 		}
 		context.startForegroundService(activityMonitorIntent);
 	}
