@@ -1,0 +1,1 @@
+APPDEV-1230 Foutafhandeling verbeterd in het geval de Yona app geen meldingen mag geven

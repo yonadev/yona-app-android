@@ -1,0 +1,1 @@
+Provided a better error message when notifications have been disabled. Without notifications, Yona cannot track activities.
