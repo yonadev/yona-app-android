@@ -404,7 +404,7 @@ public class AppUtils
 	{
 		android.app.NotificationManager notificationManager = context.getSystemService(android.app.NotificationManager.class);
 		NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
-		return notificationChannel != null && notificationChannel.getImportance() == android.app.NotificationManager.IMPORTANCE_NONE;
+		return notificationChannel.getImportance() != android.app.NotificationManager.IMPORTANCE_NONE;
 	}
 
 	public static final void runOnUiThread(Runnable runnable)
