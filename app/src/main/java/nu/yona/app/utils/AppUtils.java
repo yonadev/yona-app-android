@@ -11,6 +11,7 @@ package nu.yona.app.utils;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AppOpsManager;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -396,6 +397,14 @@ public class AppUtils
 		alertDialogBuilder.setMessage(errorMessage.getMessage());
 		alertDialogBuilder.setPositiveButton(getActivity().getString(R.string.ok), null);
 		return alertDialogBuilder.create();
+	}
+
+	@TargetApi(Build.VERSION_CODES.O)
+	public static boolean arePersistentNotificationsEnabled(Context context, String channelId)
+	{
+		android.app.NotificationManager notificationManager = context.getSystemService(android.app.NotificationManager.class);
+		NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
+		return notificationChannel.getImportance() != android.app.NotificationManager.IMPORTANCE_NONE;
 	}
 
 	public static final void runOnUiThread(Runnable runnable)
