@@ -12,6 +12,7 @@ import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AppOpsManager;
 import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -400,11 +401,39 @@ public class AppUtils
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)
-	public static boolean arePersistentNotificationsEnabled(Context context, String channelId)
+	public static boolean arePersistentNotificationsEnabled(Context context)
+	{
+		if (getPersistentNotificationChannel(context) == null) // Channel will be null on first launch of the application.
+		{
+			createPersistentNotificationChannel(context);
+		}
+		return getPersistentNotificationChannel(context).getImportance() != android.app.NotificationManager.IMPORTANCE_NONE;
+	}
+
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void createPersistentNotificationChannel(Context context)
+	{
+		removeOldPersistentNotificationChannel(context);
+		NotificationChannel channel = new NotificationChannel(AppConstant.YONA_SERVICE_CHANNEL_ID,
+				context.getString(R.string.yona_service_notification_channel_name),
+				NotificationManager.IMPORTANCE_MIN);
+		channel.setShowBadge(false);
+		((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+	}
+
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void removeOldPersistentNotificationChannel(Context context)
 	{
 		android.app.NotificationManager notificationManager = context.getSystemService(android.app.NotificationManager.class);
-		NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
-		return notificationChannel.getImportance() != android.app.NotificationManager.IMPORTANCE_NONE;
+		notificationManager.deleteNotificationChannel(AppConstant.OLD_YONA_SERVICE_CHANNEL_ID);
+	}
+
+	@TargetApi(Build.VERSION_CODES.O)
+	public static NotificationChannel getPersistentNotificationChannel(Context context)
+	{
+		android.app.NotificationManager notificationManager = context.getSystemService(android.app.NotificationManager.class);
+		NotificationChannel notificationChannel = notificationManager.getNotificationChannel(AppConstant.YONA_SERVICE_CHANNEL_ID);
+		return notificationChannel;
 	}
 
 	public static final void runOnUiThread(Runnable runnable)
