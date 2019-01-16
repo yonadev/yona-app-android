@@ -109,10 +109,10 @@ public class YonaApplication extends Application
 
 	private void validateAndInitializePreferences()
 	{
-		sharedAppPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
-		sharedUserPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
+		sharedAppPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
+		sharedUserPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
 		if (sharedUserPreferences.getString(AppConstant.SERVER_URL, null) != null)
-		{
+		{  // Need to exchange the preferences, as a couple of previous builds had wrong initializations.
 			SharedPreferences tempSharedUserPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_USER_PREF", Context.MODE_PRIVATE);
 			AppUtils.copySharedPreferences(sharedAppPreferences, tempSharedUserPrefs, true);
 			SharedPreferences tempSharedAppPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_APP_PREF", Context.MODE_PRIVATE);
