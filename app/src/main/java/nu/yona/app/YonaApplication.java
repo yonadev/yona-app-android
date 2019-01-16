@@ -9,6 +9,7 @@
 package nu.yona.app;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -26,6 +27,7 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.state.DataState;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
+import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -100,10 +102,24 @@ public class YonaApplication extends Application
 		super.onCreate();
 		mContext = this;
 		eventChangeManager = new EventChangeManager();
-		sharedAppPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
-		sharedUserPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
+		validateAndInitializePreferences();
 		sharedAppDataState = eventChangeManager.getDataState();
 		Foreground.init(this);
+	}
+
+	private void validateAndInitializePreferences()
+	{
+		sharedAppPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
+		sharedUserPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
+		if (sharedUserPreferences.getString(AppConstant.SERVER_URL, null) != null)
+		{
+			SharedPreferences tempSharedUserPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_USER_PREF", Context.MODE_PRIVATE);
+			AppUtils.copySharedPreferences(sharedAppPreferences, tempSharedUserPrefs, true);
+			SharedPreferences tempSharedAppPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_APP_PREF", Context.MODE_PRIVATE);
+			AppUtils.copySharedPreferences(sharedUserPreferences, tempSharedAppPrefs, true);
+			AppUtils.copySharedPreferences(tempSharedAppPrefs, sharedAppPreferences, true);
+			AppUtils.copySharedPreferences(tempSharedUserPrefs, sharedUserPreferences, true);
+		}
 	}
 
 	private void enableStickMode()
