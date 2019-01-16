@@ -349,7 +349,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 	private void checkForNotificationPermission()
 	{
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || (NotificationManagerCompat.from(this).areNotificationsEnabled() && AppUtils.arePersistentNotificationsEnabled(getActivity(), AppConstant.YONA_SERVICE_CHANNEL_ID)))
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || (NotificationManagerCompat.from(this).areNotificationsEnabled() && AppUtils.arePersistentNotificationsEnabled(getActivity())))
 		{
 			return;
 		}
