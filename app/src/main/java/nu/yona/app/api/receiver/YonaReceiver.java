@@ -10,17 +10,13 @@ package nu.yona.app.api.receiver;
 
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.PowerManager;
 
-import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppConstant;
@@ -139,7 +135,6 @@ public class YonaReceiver extends BroadcastReceiver
 	private void handleRestartVPNBroadcast(Context context)
 	{
 		Logger.logi("Broadcast", "Restart VPN Broadcast received");
-		showRestartVPN(context.getString(R.string.vpn_disconnected));
 	}
 
 	private void startService(Context context)
@@ -148,38 +143,6 @@ public class YonaReceiver extends BroadcastReceiver
 				|| Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1)
 		{
 			AppUtils.startService(context);
-		}
-	}
-
-
-	private void showRestartVPN(final String message)
-	{
-		try
-		{
-			Intent intent = AppUtils.startVPN(context, true);
-			PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis() + 10000, intent, 0);
-
-			Notification notification = new Notification.Builder(context).setContentTitle(context.getString(R.string.appname))
-					.setContentText(message)
-					.setTicker(context.getString(R.string.appname))
-					.setWhen(0)
-					.setVibrate(new long[]{1, 1, 1})
-					.setDefaults(Notification.DEFAULT_SOUND)
-					.setStyle(new Notification.BigTextStyle().bigText(message))
-					.setSmallIcon(R.mipmap.ic_launcher)
-					.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
-					.setContentIntent(pIntent)
-					.setAutoCancel(true)
-					.build();
-
-			notification.flags |= Notification.FLAG_NO_CLEAR;
-
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-			notificationManager.notify(0, notification);
-		}
-		catch (Exception e)
-		{
-			AppUtils.reportException(YonaReceiver.class.getSimpleName(), e, Thread.currentThread());
 		}
 	}
 }
