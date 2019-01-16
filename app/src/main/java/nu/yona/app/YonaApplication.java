@@ -112,7 +112,8 @@ public class YonaApplication extends Application
 		sharedAppPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
 		sharedUserPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
 		if (sharedUserPreferences.getString(AppConstant.SERVER_URL, null) != null)
-		{  // Need to exchange the preferences, as a couple of previous builds had wrong initializations.
+		{  // Need to exchange the preferences as corrective action, as a couple of previous builds had wrong(Exchanged Preferences) initializations.
+			nu.yona.app.utils.Logger.logi("Preferences", "Preferences Exchanged");
 			SharedPreferences tempSharedUserPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_USER_PREF", Context.MODE_PRIVATE);
 			AppUtils.copySharedPreferences(sharedAppPreferences, tempSharedUserPrefs, true);
 			SharedPreferences tempSharedAppPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_APP_PREF", Context.MODE_PRIVATE);
