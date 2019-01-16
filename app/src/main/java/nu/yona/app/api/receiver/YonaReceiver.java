@@ -10,21 +10,15 @@ package nu.yona.app.api.receiver;
 
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.PowerManager;
-import android.support.v4.app.NotificationCompat;
 
-import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.state.EventChangeManager;
-import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
@@ -141,7 +135,6 @@ public class YonaReceiver extends BroadcastReceiver
 	private void handleRestartVPNBroadcast(Context context)
 	{
 		Logger.logi("Broadcast", "Restart VPN Broadcast received");
-		showRestartVPN(context.getString(R.string.vpn_disconnected));
 	}
 
 	private void startService(Context context)
@@ -151,41 +144,5 @@ public class YonaReceiver extends BroadcastReceiver
 		{
 			AppUtils.startService(context);
 		}
-	}
-
-
-	private void showRestartVPN(String message)
-	{
-		Intent intent = new Intent(context.getApplicationContext(), YonaActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-		if (pendingIntent == null)
-		{
-			return;
-		}
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-		{
-			NotificationChannel channel = new NotificationChannel(AppConstant.YONA_VPN_CHANNEL_ID,
-					context.getString(R.string.yona_vpn_notification_channel_name),
-					NotificationManager.IMPORTANCE_DEFAULT);
-			notificationManager.createNotificationChannel(channel);
-		}
-		notificationManager.notify(0, getConfiguredVPNRestartNotification(message, pendingIntent));
-	}
-
-
-	private Notification getConfiguredVPNRestartNotification(String message, PendingIntent pendingIntent)
-	{
-		NotificationCompat.Builder mBuilder =
-				new NotificationCompat.Builder(context.getApplicationContext(), AppConstant.YONA_VPN_CHANNEL_ID);
-		NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-		bigText.bigText(message);
-		mBuilder.setStyle(bigText);
-		mBuilder.setContentIntent(pendingIntent);
-		mBuilder.setContentText(message);
-		mBuilder.setTicker(context.getString(R.string.appname));
-		mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-		mBuilder.setPriority(Notification.PRIORITY_MAX);
-		return mBuilder.build();
 	}
 }
