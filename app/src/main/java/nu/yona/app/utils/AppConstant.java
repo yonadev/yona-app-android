@@ -297,7 +297,6 @@ public interface AppConstant
 	String WAKE_UP = "com.yona.app.WAKE_UP_ALARM";
 
 	// Notifications Channel Id's
-	String YONA_VPN_CHANNEL_ID = "yona-vpn-channel";
 	String YONA_SERVICE_CHANNEL_ID = "yona-service-channel";
 	String OLD_YONA_SERVICE_CHANNEL_ID = "yona-channel";
 }

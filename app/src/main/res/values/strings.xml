@@ -228,6 +228,5 @@
     <string name="yona_notification_content">Monitoring app usage</string>
     <string name="notification_disabled_message">Yona cannot monitor app activity because notifications for the Yona application have been disabled. Enable notifications for Yona again in the device settings.</string>
     <string name="yona_service_notification_channel_name">Persistent notifications</string>
-    <string name="yona_vpn_notification_channel_name">VPN notifications</string>
     <string name="support_mail_subject">Problem with Yona app</string>
 </resources>
