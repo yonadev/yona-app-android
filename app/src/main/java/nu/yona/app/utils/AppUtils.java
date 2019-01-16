@@ -829,26 +829,18 @@ public class AppUtils
 		return StatusEnum.NOT_REQUESTED.getStatus(); //Considered as default.
 	}
 
-	public static void copySharedPreferences(SharedPreferences fromPreferences, SharedPreferences toPreferences)
-	{
-		copySharedPreferences(fromPreferences, toPreferences, true);
-	}
-
-	public static void copySharedPreferences(SharedPreferences fromPreferences, SharedPreferences toPreferences, boolean clear)
+	public static void moveSharedPreferences(SharedPreferences fromPreferences, SharedPreferences toPreferences)
 	{
 
 		SharedPreferences.Editor editor = toPreferences.edit();
-		if (clear)
-		{
-			editor.clear();
-		}
+		editor.clear();
 		copySharedPreferences(fromPreferences, editor);
 		editor.commit();
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@SuppressWarnings({"unchecked", "ConstantConditions"})
-	public static void copySharedPreferences(SharedPreferences fromPreferences, SharedPreferences.Editor toEditor)
+	private static void copySharedPreferences(SharedPreferences fromPreferences, SharedPreferences.Editor toEditor)
 	{
 
 		for (Map.Entry<String, ?> entry : fromPreferences.getAll().entrySet())

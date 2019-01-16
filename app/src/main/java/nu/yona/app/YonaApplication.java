@@ -112,15 +112,22 @@ public class YonaApplication extends Application
 		sharedAppPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
 		sharedUserPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
 		if (sharedUserPreferences.getString(AppConstant.SERVER_URL, null) != null)
-		{  // Need to exchange the preferences as corrective action, as a couple of previous builds had wrong(Exchanged Preferences) initializations.
-			SharedPreferences tempSharedUserPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_USER_PREF", Context.MODE_PRIVATE);
-			SharedPreferences tempSharedAppPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_APP_PREF", Context.MODE_PRIVATE);
-			AppUtils.copySharedPreferences(sharedAppPreferences, tempSharedUserPrefs);
-			AppUtils.copySharedPreferences(sharedUserPreferences, tempSharedAppPrefs);
-			AppUtils.copySharedPreferences(tempSharedAppPrefs, sharedAppPreferences);
-			AppUtils.copySharedPreferences(tempSharedUserPrefs, sharedUserPreferences);
-			nu.yona.app.utils.Logger.logi("Preferences", "Exchanging preferences");
+		{
+			// The user preferences apparently contain the app preferences, due to an earlier bug
+			swapUserAndAppSharedPreferences();
 		}
+	}
+
+	private void swapUserAndAppSharedPreferences()
+	{
+		nu.yona.app.utils.Logger.logi("Preferences", "Correcting user and app preferences by swapping them");
+		SharedPreferences tempSharedUserPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_USER_PREF", Context.MODE_PRIVATE);
+		SharedPreferences tempSharedAppPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_APP_PREF", Context.MODE_PRIVATE);
+		AppUtils.moveSharedPreferences(sharedAppPreferences, tempSharedUserPrefs);
+		AppUtils.moveSharedPreferences(sharedUserPreferences, tempSharedAppPrefs);
+		AppUtils.moveSharedPreferences(tempSharedAppPrefs, sharedAppPreferences);
+		AppUtils.moveSharedPreferences(tempSharedUserPrefs, sharedUserPreferences);
+		nu.yona.app.utils.Logger.logi("Preferences", "Corrected user and app preferences by swapping them");
 	}
 
 	private void enableStickMode()
