@@ -1,0 +1,1 @@
+Foutmelding verbeterd die komt als de meldingen zijn uitgezet. Zonder meldingen kan Yona de activiteiten niet bijhouden.
