@@ -22,6 +22,7 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.YonaTestCase;
 import nu.yona.app.api.db.DatabaseHelper;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.dao.AuthenticateDAO;
 import nu.yona.app.api.manager.network.AuthenticateNetworkImpl;
 import nu.yona.app.api.model.ErrorMessage;
@@ -81,7 +82,7 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	{
 		setUpApplicationTestData();
 		setUpRegisterUser();
-		manager = new AuthenticateManagerImpl(YonaApplication.getAppContext());
+		manager = (AuthenticateManagerImpl) APIManager.getInstance().getAuthenticateManager();
 		mockRequiredClasses();
 		setUpMockedAuthNetworkDaoMethods();
 		setUpMockedAuthNetworkImplMethods();
