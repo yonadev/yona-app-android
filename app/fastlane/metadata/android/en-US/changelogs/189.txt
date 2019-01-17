@@ -1,0 +1,1 @@
+APPDEV-1239 Some alpha testers couldn't access their account anymore. This is resolved now
