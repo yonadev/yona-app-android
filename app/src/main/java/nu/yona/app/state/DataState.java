@@ -64,6 +64,11 @@ public class DataState
 
 	private static User setUserStatus(User user)
 	{
+		if (user == null)
+		{
+			// Loading apparently failed. Return the given value.
+			return null;
+		}
 		if (user.getLinks().getYonaMessages() != null)
 		{
 			user.setStatus(UserStatus.ACTIVE);
