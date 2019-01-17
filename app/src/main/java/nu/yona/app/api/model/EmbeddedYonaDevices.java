@@ -32,20 +32,13 @@ public class EmbeddedYonaDevices extends BaseEntity
 
 	public YonaDevice getCurrentDevice()
 	{
-		if (this.yonaDevices.size() == 1)
+		for (YonaDevice device : yonaDevices)
 		{
-			return this.yonaDevices.get(0);
-		}
-		YonaDevice currentDevice = this.yonaDevices.get(0);
-		for (int d = 0; d < yonaDevices.size(); d++)
-		{
-			YonaDevice device = this.yonaDevices.get(d);
 			if (device.isRequestingDevice())
 			{
-				currentDevice = device;
-				break;
+				return device;
 			}
 		}
-		return currentDevice;
+		throw new IllegalStateException("Current device not found. Number of devices: " + yonaDevices.size());
 	}
 }

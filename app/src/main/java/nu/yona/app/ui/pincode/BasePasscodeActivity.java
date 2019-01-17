@@ -567,7 +567,7 @@ passcode_reset;
 	protected void postOpenAppEvent()
 	{
 		User loggedInUser = getSharedAppDataState().getUser();
-		if (loggedInUser.getEmbedded() == null || loggedInUser.getEmbedded().getYonaDevices() == null)
+		if (!loggedInUser.isActive())
 		{
 			// The user account is apparently deleted
 			return;

@@ -17,6 +17,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
+import nu.yona.app.enums.UserStatus;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
 import nu.yona.app.utils.AppConstant;
@@ -58,6 +59,7 @@ public class DataState
 	public void setUser(User user)
 	{
 		this.user = user;
+		setUserStatus();
 	}
 
 	/**
@@ -68,7 +70,20 @@ public class DataState
 	public User updateUser()
 	{
 		user = APIManager.getInstance().getAuthenticateManager().getUser();
+		setUserStatus();
 		return user;
+	}
+
+	private void setUserStatus()
+	{
+		if (user.getLinks().getYonaMessages() != null)
+		{
+			user.setStatus(UserStatus.ACTIVE);
+		}
+		else
+		{
+			user.setStatus(UserStatus.NUMBER_NOT_CONFIRMED);
+		}
 	}
 
 	/**

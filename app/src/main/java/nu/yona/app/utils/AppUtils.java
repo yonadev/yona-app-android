@@ -87,7 +87,8 @@ public class AppUtils
 	private static Intent activityMonitorIntent;
 	private static ScheduledExecutorService scheduler;
 	private static final YonaReceiver receiver = new YonaReceiver();
-	private static int trialCertificateCount = 0, trialVPNCount = 0;
+	private static int certificateDownloadAttempts = 0;
+	private static int vpnConnectionAttempts = 0;
 	private static final Handler uiTaskHandler = new Handler();
 
 	private static final String TAG = "AppUtils";
@@ -627,8 +628,7 @@ public class AppUtils
 	public static void downloadCertificates()
 	{
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-		if (user == null || user.getEmbedded() == null || user.getEmbedded().getYonaDevices() == null
-				|| YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() != null)
+		if (!user.isActive() || YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() != null)
 		{
 			return;
 		}
@@ -638,7 +638,7 @@ public class AppUtils
 
 	private static Object handleDownloadFileFromUrlSuccess(Object result)
 	{
-		if (result != null && !TextUtils.isEmpty(result.toString()))
+		if (!TextUtils.isEmpty(result.toString()))
 		{
 			YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
 			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
@@ -650,8 +650,8 @@ public class AppUtils
 	private static Object handleDownloadFileFromUrlFailure()
 	{
 		loge(TAG, "Download fail");
-		trialCertificateCount++;
-		if (trialCertificateCount < 3)
+		certificateDownloadAttempts++;
+		if (certificateDownloadAttempts < 3)
 		{
 			downloadCertificates();
 		}
@@ -682,8 +682,8 @@ public class AppUtils
 				public void onError(Object errorMessage)
 				{
 					loge(TAG, "Download fail");
-					trialVPNCount++;
-					if (trialVPNCount < 3)
+					vpnConnectionAttempts++;
+					if (vpnConnectionAttempts < 3)
 					{
 						downloadVPNProfile();
 					}
