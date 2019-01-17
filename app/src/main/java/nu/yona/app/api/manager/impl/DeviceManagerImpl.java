@@ -251,7 +251,7 @@ public class DeviceManagerImpl implements DeviceManager
 					public void onDataLoad(Object result)
 					{
 						listener.onDataLoad(result);
-						getSharedAppDataState().updateUser();
+						getSharedAppDataState().reloadUser();
 					}
 
 					@Override

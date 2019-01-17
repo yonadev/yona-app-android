@@ -72,6 +72,7 @@ import nu.yona.app.api.receiver.YonaReceiver;
 import nu.yona.app.api.service.ActivityMonitorService;
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.timepicker.time.Timepoint;
 
@@ -91,7 +92,8 @@ public class AppUtils
 	private static Intent activityMonitorIntent;
 	private static ScheduledExecutorService scheduler;
 	private static final YonaReceiver receiver = new YonaReceiver();
-	private static int trialCertificateCount = 0, trialVPNCount = 0;
+	private static int certificateDownloadAttempts = 0;
+	private static int vpnConnectionAttempts = 0;
 	private static final Handler uiTaskHandler = new Handler();
 
 	private static final String TAG = "AppUtils";
@@ -667,37 +669,34 @@ public class AppUtils
 	public static void downloadCertificates()
 	{
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-		if (user != null && user.getLinks() != null)
+		if (!user.isActive() || YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() != null)
 		{
-			if (user.getLinks().getSslRootCert() != null
-					&& YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() == null)
-			{
-				new DownloadFileFromURL(user.getLinks().getSslRootCert().getHref(), new DataLoadListener()
-				{
-					@Override
-					public void onDataLoad(Object result)
-					{
-						if (result != null && !TextUtils.isEmpty(result.toString()))
-						{
-							YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
-							YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
-						}
-						logi(TAG, "Download successful: " + result.toString());
-					}
-
-					@Override
-					public void onError(Object errorMessage)
-					{
-						loge(TAG, "Download fail");
-						trialCertificateCount++;
-						if (trialCertificateCount < 3)
-						{
-							downloadCertificates();
-						}
-					}
-				});
-			}
+			return;
 		}
+		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> handleDownloadFileFromUrlSuccess(result), (result -> handleDownloadFileFromUrlFailure()), null);
+		new DownloadFileFromURL(user.getSslRootCert(), dataLoadListener);
+	}
+
+	private static Object handleDownloadFileFromUrlSuccess(Object result)
+	{
+		if (!TextUtils.isEmpty(result.toString()))
+		{
+			YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
+			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
+		}
+		logi(TAG, "Download successful: " + result.toString());
+		return null; // Dummy return value, to allow use as data load handler
+	}
+
+	private static Object handleDownloadFileFromUrlFailure()
+	{
+		loge(TAG, "Download fail");
+		certificateDownloadAttempts++;
+		if (certificateDownloadAttempts < 3)
+		{
+			downloadCertificates();
+		}
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	public static void downloadVPNProfile()
@@ -724,8 +723,8 @@ public class AppUtils
 				public void onError(Object errorMessage)
 				{
 					loge(TAG, "Download fail");
-					trialVPNCount++;
-					if (trialVPNCount < 3)
+					vpnConnectionAttempts++;
+					if (vpnConnectionAttempts < 3)
 					{
 						downloadVPNProfile();
 					}

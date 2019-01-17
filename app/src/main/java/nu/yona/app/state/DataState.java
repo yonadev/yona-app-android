@@ -17,6 +17,7 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
+import nu.yona.app.enums.UserStatus;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
 import nu.yona.app.utils.AppConstant;
@@ -34,10 +35,10 @@ public class DataState
 	private EmbeddedYonaActivity embeddedWeekActivity;
 	private EmbeddedYonaActivity embeddedWithBuddyActivity;
 	private RegisterUser registerUser;
-	private int notificaitonCount;
+	private int notificationCount;
 
 	/**
-	 * Gets user.
+	 * Gets user; loads it if it isn't loaded yet
 	 *
 	 * @return the user
 	 */
@@ -45,29 +46,32 @@ public class DataState
 	{
 		if (user == null)
 		{
-			user = APIManager.getInstance().getAuthenticateManager().getUser();
+			reloadUser();
 		}
 		return user;
 	}
 
 	/**
-	 * Sets user.
-	 *
-	 * @param user the user
-	 */
-	public void setUser(User user)
-	{
-		this.user = user;
-	}
-
-	/**
-	 * Update user user.
+	 * Reload the user.
 	 *
 	 * @return the user
 	 */
-	public User updateUser()
+	public User reloadUser()
 	{
-		user = APIManager.getInstance().getAuthenticateManager().getUser();
+		user = setUserStatus(APIManager.getInstance().getAuthenticateManager().getUser());
+		return user;
+	}
+
+	private static User setUserStatus(User user)
+	{
+		if (user.getLinks().getYonaMessages() != null)
+		{
+			user.setStatus(UserStatus.ACTIVE);
+		}
+		else
+		{
+			user.setStatus(UserStatus.NUMBER_NOT_CONFIRMED);
+		}
 		return user;
 	}
 
@@ -194,14 +198,14 @@ public class DataState
 		this.registerUser = registerUser;
 	}
 
-	public int getNotificaitonCount()
+	public int getNotificationCount()
 	{
-		return notificaitonCount;
+		return notificationCount;
 	}
 
-	public void setNotificaitonCount(int notificaitonCount)
+	public void setNotificationCount(int notificationCount)
 	{
-		this.notificaitonCount = notificaitonCount;
+		this.notificationCount = notificationCount;
 	}
 
 }

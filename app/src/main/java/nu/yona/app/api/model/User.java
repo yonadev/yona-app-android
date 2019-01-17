@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.yona.app.YonaApplication;
+import nu.yona.app.enums.UserStatus;
 
 /**
  * The type User.
@@ -67,6 +68,11 @@ public class User extends BaseEntity
 	@SerializedName("yonaPassword")
 	@Expose
 	private String yonaPassword;
+
+
+	@SerializedName("status")
+	@Expose
+	private UserStatus status;
 
 	/**
 	 * Gets mobile number confirmation code.
@@ -200,16 +206,6 @@ public class User extends BaseEntity
 	}
 
 	/**
-	 * Sets vpn profile.
-	 *
-	 * @param vpnProfile The vpnProfile
-	 */
-	public void setVpnProfile(VpnProfile vpnProfile)
-	{
-		this.vpnProfile = vpnProfile;
-	}
-
-	/**
 	 * Gets nickname.
 	 *
 	 * @return The nickname
@@ -257,12 +253,7 @@ public class User extends BaseEntity
 
 	public String getSslRootCertCN()
 	{
-		return this.sslRootCertCN;
-	}
-
-	public void setSslRootCertCN(String sslRootCertCN)
-	{
-		this.sslRootCertCN = sslRootCertCN;
+		return getCurentDevice().getSslRootCertCN();
 	}
 
 	public String getYonaPassword()
@@ -276,4 +267,39 @@ public class User extends BaseEntity
 		this.yonaPassword = yonaPassword;
 	}
 
+	public UserStatus getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(UserStatus userStatus)
+	{
+		this.status = userStatus;
+	}
+
+
+	public String getLinkToPostOpenAppEvent()
+	{
+		return getCurentDevice().getPostOpenAppEventLink();
+	}
+
+	public String getLinkToPostDeviceAppActivity()
+	{
+		return getCurentDevice().getLinkForPostingDeviceAppActivity();
+	}
+
+	public String getSslRootCert()
+	{
+		return getCurentDevice().getYonaSslRootCert();
+	}
+
+	private YonaDevice getCurentDevice()
+	{
+		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice();
+	}
+
+	public boolean isActive()
+	{
+		return this.getStatus() == UserStatus.ACTIVE;
+	}
 }

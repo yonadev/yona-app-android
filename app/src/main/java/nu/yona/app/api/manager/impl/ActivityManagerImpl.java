@@ -312,17 +312,15 @@ public class ActivityManagerImpl implements ActivityManager
 	private void postActivityOnServer(AppActivity activity, boolean fromDB)
 	{
 		Logger.logi("postActivityOnServer", "isSyncAPICallDone: " + isSyncAPICallDone);
+		User user = getSharedAppDataState().getUser();
 		if (!isSyncAPICallDone)
 		{
 			return;
 		}
 		isSyncAPICallDone = false;
-		User user = getSharedAppDataState().getUser();
-		if (user != null && user.getLinks() != null && user.getLinks().getYonaAppActivity() != null && !TextUtils.isEmpty(user.getLinks().getYonaAppActivity().getHref()))
-		{
-			DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(fromDB), (result) -> handlePostAppActivityOnFailure(fromDB, activity), null);
-			activityNetwork.postAppActivity(user.getLinks().getYonaAppActivity().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
-		}
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(fromDB), (result) -> handlePostAppActivityOnFailure(fromDB, activity), null);
+		activityNetwork.postAppActivity(user.getLinkToPostDeviceAppActivity(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
+
 	}
 
 	private Object handlePostAppActivityOnSuccess(Boolean fromDB)
