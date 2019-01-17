@@ -167,7 +167,6 @@ public class DataState
 	 */
 	public void setServerUrl(String serverUrl)
 	{
-		getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
 		getAppPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
 	}
 
