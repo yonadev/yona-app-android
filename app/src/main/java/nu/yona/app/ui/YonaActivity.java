@@ -367,7 +367,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				if (result != null && result instanceof YonaMessages)
 				{
 					YonaMessages yonaMessages = (YonaMessages) result;
-					getSharedAppDataState().setNotificaitonCount(yonaMessages.getPage().getTotalElements());
+					getSharedAppDataState().setNotificationCount(yonaMessages.getPage().getTotalElements());
 					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_NOTIFICATION_COUNT, null);
 				}
 			}

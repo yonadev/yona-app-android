@@ -244,7 +244,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			@Override
 			public void onDataLoad(Object result)
 			{
-				getSharedAppDataState().updateUser();
+				getSharedAppDataState().reloadUser();
 				if (listener != null)
 				{
 					listener.onDataLoad(result);

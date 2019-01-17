@@ -35,10 +35,10 @@ public class DataState
 	private EmbeddedYonaActivity embeddedWeekActivity;
 	private EmbeddedYonaActivity embeddedWithBuddyActivity;
 	private RegisterUser registerUser;
-	private int notificaitonCount;
+	private int notificationCount;
 
 	/**
-	 * Gets user.
+	 * Gets user; loads it if it isn't loaded yet
 	 *
 	 * @return the user
 	 */
@@ -46,35 +46,23 @@ public class DataState
 	{
 		if (user == null)
 		{
-			user = APIManager.getInstance().getAuthenticateManager().getUser();
+			reloadUser();
 		}
 		return user;
 	}
 
 	/**
-	 * Sets user.
-	 *
-	 * @param user the user
-	 */
-	public void setUser(User user)
-	{
-		this.user = user;
-		setUserStatus();
-	}
-
-	/**
-	 * Update user user.
+	 * Reload the user.
 	 *
 	 * @return the user
 	 */
-	public User updateUser()
+	public User reloadUser()
 	{
-		user = APIManager.getInstance().getAuthenticateManager().getUser();
-		setUserStatus();
+		user = setUserStatus(APIManager.getInstance().getAuthenticateManager().getUser());
 		return user;
 	}
 
-	private void setUserStatus()
+	private static User setUserStatus(User user)
 	{
 		if (user.getLinks().getYonaMessages() != null)
 		{
@@ -84,6 +72,7 @@ public class DataState
 		{
 			user.setStatus(UserStatus.NUMBER_NOT_CONFIRMED);
 		}
+		return user;
 	}
 
 	/**
@@ -210,14 +199,14 @@ public class DataState
 		this.registerUser = registerUser;
 	}
 
-	public int getNotificaitonCount()
+	public int getNotificationCount()
 	{
-		return notificaitonCount;
+		return notificationCount;
 	}
 
-	public void setNotificaitonCount(int notificaitonCount)
+	public void setNotificationCount(int notificationCount)
 	{
-		this.notificaitonCount = notificaitonCount;
+		this.notificationCount = notificationCount;
 	}
 
 }
