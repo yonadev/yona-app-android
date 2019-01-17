@@ -27,8 +27,8 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.state.DataState;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
-import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.PreferenceConstant;
 
 /**
  * Created by kinnarvasa on 16/03/16.
@@ -109,9 +109,9 @@ public class YonaApplication extends Application
 
 	private void validateAndInitializePreferences()
 	{
-		sharedAppPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
-		sharedUserPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
-		if (sharedUserPreferences.getString(AppConstant.SERVER_URL, null) != null)
+		sharedAppPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
+		sharedUserPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
+		if (sharedAppPreferences.getBoolean(PreferenceConstant.STEP_REGISTER, false))
 		{
 			// The user preferences apparently contain the app preferences, due to an earlier bug
 			swapUserAndAppSharedPreferences();
