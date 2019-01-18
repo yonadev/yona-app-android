@@ -313,6 +313,14 @@ public class ActivityManagerImpl implements ActivityManager
 	{
 		Logger.logi("postActivityOnServer", "isSyncAPICallDone: " + isSyncAPICallDone);
 		User user = getSharedAppDataState().getUser();
+		if (user.getEmbedded().getYonaDevices() != null)
+		{
+			Logger.logi("APPDEV-1241-AMIMPL", "user.embedded.messages" + user.getLinks().getYonaMessages());
+			if (user.getEmbedded().getYonaDevices().getEmbedded() != null)
+			{
+				Logger.logi("APPDEV-1241-AMIMPL", "user.embedded" + user.getEmbedded().getYonaDevices());
+			}
+		}
 		if (!isSyncAPICallDone)
 		{
 			return;

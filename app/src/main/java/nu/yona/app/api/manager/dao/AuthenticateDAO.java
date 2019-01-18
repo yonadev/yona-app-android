@@ -18,6 +18,7 @@ import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 28/03/16.
@@ -47,6 +48,7 @@ public class AuthenticateDAO extends BaseDAO
 		// do process for storing data in database.
 		try
 		{
+			Logger.logi("APPDEV-1241", "updateDataForRegisterUser");
 			ContentValues values = new ContentValues();
 			String USER_ID = "1";
 			values.put(DBConstant.ID, USER_ID);
@@ -78,6 +80,7 @@ public class AuthenticateDAO extends BaseDAO
 	 */
 	public User getUser()
 	{
+		Logger.logi("APPDEV-1241", "getUserFrromDB Called");
 		Cursor c = query(DBConstant.TBL_USER_DATA);
 		try
 		{
