@@ -21,7 +21,6 @@ import nu.yona.app.enums.UserStatus;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
 import nu.yona.app.utils.AppConstant;
-import nu.yona.app.utils.Logger;
 
 import static nu.yona.app.YonaApplication.getEventChangeManager;
 
@@ -59,7 +58,6 @@ public class DataState
 	 */
 	public User reloadUser()
 	{
-		Logger.logi("APPDEV-1241", "reloadUserCalled");
 		user = setUserStatus(APIManager.getInstance().getAuthenticateManager().getUser());
 		return user;
 	}
