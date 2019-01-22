@@ -28,6 +28,7 @@ import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.MobileNumberFormatter;
 import nu.yona.app.utils.PreferenceConstant;
 
@@ -816,6 +817,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
 				&& getSharedAppDataState().getUser().getLinks().getSelf() != null)
 		{
+			Logger.logi("APPDEV-1241", "getUserFromServer");
 			getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
 			{
 				@Override
