@@ -1,0 +1,1 @@
+APPDEV-1241 Some users faced a crash on app startup. This is fixed now.

@@ -1,0 +1,1 @@
+APPDEV-1241 Bij sommige gebruikers crashte de app bij het starten. Dit is nu opgelost.
