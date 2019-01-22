@@ -165,22 +165,6 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 		Bundle bundle = new Bundle();
 		user = getSharedAppDataState().getUser();
-		if (user.getEmbedded().getYonaDevices() != null)
-		{
-			Logger.logi("APPDEV-1241-YA", "user.embedded.messages " + user.getLinks().getYonaMessages());
-			if (user.getEmbedded().getYonaDevices().getEmbedded() != null)
-			{
-				Logger.logi("APPDEV-1241-YA", "user.embedded " + user.getEmbedded().getYonaDevices());
-				if (user.getEmbedded().getYonaDevices().getEmbedded().getYonaDevices() != null)
-				{
-					Logger.logi("APPDEV-1241-YA", "user.getEmbedded().getYonaDevices().getEmbedded().getYonaDevices()" + user.getEmbedded().getYonaDevices().getEmbedded().getYonaDevices());
-				}
-				else
-				{
-					Logger.logi("APPDEV-1241-YA", "user.getEmbedded().getYonaDevices().getEmbedded().getYonaDevices() == null ");
-				}
-			}
-		}
 
 		if (user != null && user.getLinks() != null)
 		{
