@@ -149,7 +149,6 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 		{
 			updatePin();
 		}
-		AppUtils.sendLogToServer(0);
 		finish();
 	}
 
@@ -223,6 +222,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 
 	private void updateData()
 	{
+		AppUtils.sendLogToServer(0);
 		APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(null);
 	}
 }
