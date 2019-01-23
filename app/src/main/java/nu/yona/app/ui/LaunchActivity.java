@@ -47,7 +47,6 @@ import nu.yona.app.ui.signup.SignupActivity;
 import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
-import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
@@ -66,8 +65,6 @@ public class LaunchActivity extends BaseActivity
 		validateYonaPasswordEncryption();
 		setUpApplicationInitialView();
 		navigateToValidActivity();
-		setListeners();
-		YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
 	}
 
 	private void initializeCrashlytics()
@@ -132,30 +129,36 @@ public class LaunchActivity extends BaseActivity
 	{
 		try
 		{
-			JSONObject userJsonObj = APIManager.getInstance().getAuthenticateManager().getUserJSON();
-			if (userJsonObj.getInt("version") != AppConstant.USER_ENTITY_VERSION)
+			JSONObject userJsonObj = APIManager.getInstance().getAuthenticateManager().getStoredUserObjectFromDB();
+			if (userJsonObj.isNull("version") || userJsonObj.getInt("version") != AppConstant.USER_ENTITY_VERSION)
 			{
-				Logger.logi("APPDEV-1241", "User Version " + userJsonObj.getString("version"));
 				if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
 				{
 					return;
 				}
-				JSONObject userLinks = userJsonObj.getJSONObject("_links");
-				String userSelfLink = userLinks.getString("self");
+				JSONObject userLinks = userJsonObj.getJSONObject("links");
+				JSONObject userSelfHrefObj = userLinks.getJSONObject("self");
+				String userSelfLink = userSelfHrefObj.getString("href");
 				getUserFromServer(userSelfLink);
 			}
 			else
 			{
-				startNewActivity(bundle, YonaActivity.class);
+				moveToYonaActivity();
 			}
-
 		}
 		catch (JSONException e)
 		{
 			showMandatoryUserFetchError();
-			Logger.logd("APPDEV-1241", "Exception" + e.getLocalizedMessage());
 		}
 	}
+
+	private void moveToYonaActivity()
+	{
+		startNewActivity(bundle, YonaActivity.class);
+		setListeners();
+		YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
+	}
+
 
 	private void getUserFromServer(String userSelfLink)
 	{
@@ -165,7 +168,7 @@ public class LaunchActivity extends BaseActivity
 
 	private Object handleUserFetchSuccess(Object result)
 	{
-		navigateToValidActivity();
+		moveToYonaActivity();
 		return null;
 	}
 
@@ -177,7 +180,7 @@ public class LaunchActivity extends BaseActivity
 
 	private void showMandatoryUserFetchError()
 	{
-		AppUtils.displayErrorAlert(new ErrorMessage(getApplicationContext().getString(R.string.mandatory_user_fetch_failure)));
+		AppUtils.displayErrorAlert(this, new ErrorMessage(this.getString(R.string.mandatory_user_fetch_failure)));
 	}
 
 	private void setListeners()

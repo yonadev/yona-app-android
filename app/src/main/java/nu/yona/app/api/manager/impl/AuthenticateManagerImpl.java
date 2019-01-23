@@ -814,9 +814,9 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	}
 
 	@Override
-	public JSONObject getUserJSON()
+	public JSONObject getStoredUserObjectFromDB()
 	{
-		return authenticateDao.getStoredUserJSON();
+		return authenticateDao.getStoredUserObjectFromDB();
 	}
 
 	@Override
@@ -830,6 +830,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 
 	}
 
+	@Override
 	public void getUserFromServer(String url, DataLoadListenerImpl dataLoadListener)
 	{
 		getUser(url, dataLoadListener);

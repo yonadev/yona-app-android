@@ -96,7 +96,7 @@ public interface AuthenticateManager
 	 */
 	void getUser(final String url, final DataLoadListener listener);
 
-	JSONObject getUserJSON();
+	JSONObject getStoredUserObjectFromDB();
 
 	/**
 	 * Gets friend profile.

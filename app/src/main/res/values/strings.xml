@@ -231,5 +231,4 @@
     <string name="yona_vpn_notification_channel_name">VPN notifications</string>
     <string name="support_mail_subject">Problem with Yona app</string>
     <string name="mandatory_user_fetch_failure">Yona app needs network connectivity before the app can be started</string>
-    <string name="mandatory_user_fetch_failure">Yona app needs network connectivity before the app can be started</string>
 </resources>

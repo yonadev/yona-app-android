@@ -17,7 +17,6 @@ import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
-import nu.yona.app.enums.UserStatus;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
 import nu.yona.app.utils.AppConstant;
@@ -58,27 +57,10 @@ public class DataState
 	 */
 	public User reloadUser()
 	{
-		user = setUserStatus(APIManager.getInstance().getAuthenticateManager().getUser());
+		user = APIManager.getInstance().getAuthenticateManager().getUser();
 		return user;
 	}
 
-	private static User setUserStatus(User user)
-	{
-		if (user == null)
-		{
-			// Loading apparently failed. Return the given value.
-			return null;
-		}
-		if (user.getLinks().getYonaMessages() != null)
-		{
-			user.setStatus(UserStatus.ACTIVE);
-		}
-		else
-		{
-			user.setStatus(UserStatus.NUMBER_NOT_CONFIRMED);
-		}
-		return user;
-	}
 
 	/**
 	 * Gets embedded day activity.
