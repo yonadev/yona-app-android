@@ -23,6 +23,9 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -34,6 +37,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.enums.EncryptionMethod;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.login.LoginActivity;
@@ -42,6 +46,8 @@ import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
 import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
@@ -118,10 +124,61 @@ public class LaunchActivity extends BaseActivity
 		}
 		else if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")))
 		{
-			startNewActivity(bundle, YonaActivity.class);
+			validateStoredUserEntity(); // validate any updates to user entity before moving to next screen.
 		}
 	}
 
+	private void validateStoredUserEntity()
+	{
+		try
+		{
+			JSONObject userJsonObj = APIManager.getInstance().getAuthenticateManager().getUserJSON();
+			if (userJsonObj.getInt("version") != AppConstant.USER_ENTITY_VERSION)
+			{
+				Logger.logi("APPDEV-1241", "User Version " + userJsonObj.getString("version"));
+				if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
+				{
+					return;
+				}
+				JSONObject userLinks = userJsonObj.getJSONObject("_links");
+				String userSelfLink = userLinks.getString("self");
+				getUserFromServer(userSelfLink);
+			}
+			else
+			{
+				startNewActivity(bundle, YonaActivity.class);
+			}
+
+		}
+		catch (JSONException e)
+		{
+			showMandatoryUserFetchError();
+			Logger.logd("APPDEV-1241", "Exception" + e.getLocalizedMessage());
+		}
+	}
+
+	private void getUserFromServer(String userSelfLink)
+	{
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserFetchSuccess(result), (result) -> handleUserFetchFailure(result), null);
+		APIManager.getInstance().getAuthenticateManager().getUserFromServer(userSelfLink, dataLoadListenerImpl);
+	}
+
+	private Object handleUserFetchSuccess(Object result)
+	{
+		navigateToValidActivity();
+		return null;
+	}
+
+	private Object handleUserFetchFailure(Object error)
+	{
+		showMandatoryUserFetchError();
+		return null;
+	}
+
+	private void showMandatoryUserFetchError()
+	{
+		AppUtils.displayErrorAlert(new ErrorMessage(getApplicationContext().getString(R.string.mandatory_user_fetch_failure)));
+	}
 
 	private void setListeners()
 	{

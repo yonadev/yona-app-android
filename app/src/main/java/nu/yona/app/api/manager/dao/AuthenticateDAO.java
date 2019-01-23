@@ -12,6 +12,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import org.json.JSONObject;
+
 import nu.yona.app.api.db.DBConstant;
 import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.model.ActivityCategories;
@@ -87,6 +89,34 @@ public class AuthenticateDAO extends BaseDAO
 				if (c.moveToFirst())
 				{
 					return serializer.deserialize(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT)), User.class);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread());
+		}
+		finally
+		{
+			if (c != null)
+			{
+				c.close();
+			}
+		}
+		return null;
+	}
+	
+	public JSONObject getStoredUserJSON()
+	{
+		Cursor c = query(DBConstant.TBL_USER_DATA);
+		try
+		{
+			if (c != null && c.getCount() > 0)
+			{
+
+				if (c.moveToFirst())
+				{
+					return new JSONObject(new String(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT))));
 				}
 			}
 		}

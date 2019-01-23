@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import org.json.JSONObject;
+
 import java.io.File;
 
 import nu.yona.app.R;
@@ -26,6 +28,7 @@ import nu.yona.app.api.model.ProfilePhoto;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.MobileNumberFormatter;
@@ -811,26 +814,25 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	}
 
 	@Override
+	public JSONObject getUserJSON()
+	{
+		return authenticateDao.getStoredUserJSON();
+	}
+
+	@Override
 	public void getUserFromServer()
 	{
 		if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
 				&& getSharedAppDataState().getUser().getLinks().getSelf() != null)
 		{
-			getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
-			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-
-				}
-
-				@Override
-				public void onError(Object errorMessage)
-				{
-
-				}
-			});
+			getUserFromServer(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), null);
 		}
+
+	}
+
+	public void getUserFromServer(String url, DataLoadListenerImpl dataLoadListener)
+	{
+		getUser(url, dataLoadListener);
 	}
 
 	/**

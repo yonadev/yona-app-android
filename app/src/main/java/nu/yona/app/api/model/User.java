@@ -74,6 +74,11 @@ public class User extends BaseEntity
 	@Expose
 	private UserStatus status;
 
+	@SerializedName("version")
+	@Expose
+	private int version;
+
+
 	/**
 	 * Gets mobile number confirmation code.
 	 *
@@ -275,6 +280,16 @@ public class User extends BaseEntity
 	public void setStatus(UserStatus userStatus)
 	{
 		this.status = userStatus;
+	}
+
+	public int getVersion()
+	{
+		return version;
+	}
+
+	public void setVersion(int version)
+	{
+		this.version = version;
 	}
 
 
