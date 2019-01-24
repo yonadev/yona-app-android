@@ -121,11 +121,11 @@ public class LaunchActivity extends BaseActivity
 		}
 		else if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")))
 		{
-			validateStoredUserEntity(); // validate any updates to user entity before moving to next screen.
+			checkForUserEntityVersion();// validate any updates to user entity before moving to next screen.
 		}
 	}
 
-	private void validateStoredUserEntity()
+	private void checkForUserEntityVersion()
 	{
 		try
 		{
@@ -134,12 +134,15 @@ public class LaunchActivity extends BaseActivity
 			{
 				if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
 				{
-					return;
+					showMandatoryUserFetchError();
 				}
-				JSONObject userLinks = userJsonObj.getJSONObject("links");
-				JSONObject userSelfHrefObj = userLinks.getJSONObject("self");
-				String userSelfLink = userSelfHrefObj.getString("href");
-				getUserFromServer(userSelfLink);
+				else
+				{
+					JSONObject userLinks = userJsonObj.getJSONObject("links");
+					JSONObject userSelfHrefObj = userLinks.getJSONObject("self");
+					String userSelfLink = userSelfHrefObj.getString("href");
+					getUserFromServer(userSelfLink);
+				}
 			}
 			else
 			{
@@ -152,6 +155,11 @@ public class LaunchActivity extends BaseActivity
 		}
 	}
 
+	private void validateStoredUserEntity()
+	{
+
+	}
+
 	private void moveToYonaActivity()
 	{
 		startNewActivity(bundle, YonaActivity.class);
@@ -162,6 +170,7 @@ public class LaunchActivity extends BaseActivity
 
 	private void getUserFromServer(String userSelfLink)
 	{
+		showLoadingView(true);
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserFetchSuccess(result), (result) -> handleUserFetchFailure(result), null);
 		APIManager.getInstance().getAuthenticateManager().getUserFromServer(userSelfLink, dataLoadListenerImpl);
 	}
@@ -169,11 +178,13 @@ public class LaunchActivity extends BaseActivity
 	private Object handleUserFetchSuccess(Object result)
 	{
 		moveToYonaActivity();
+		showLoadingView(false);
 		return null;
 	}
 
 	private Object handleUserFetchFailure(Object error)
 	{
+		showLoadingView(false);
 		showMandatoryUserFetchError();
 		return null;
 	}

@@ -71,6 +71,11 @@ public class BaseActivity extends AppCompatActivity implements Categorizable
 		}
 	}
 
+	public void showLoadingView(boolean loading)
+	{
+		showLoadingView(loading, null);
+	}
+
 	/**
 	 * Start new activity.
 	 *

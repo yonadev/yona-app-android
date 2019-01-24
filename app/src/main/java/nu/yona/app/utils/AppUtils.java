@@ -74,7 +74,6 @@ import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
-import nu.yona.app.ui.YonaActivity;
 import nu.yona.timepicker.time.Timepoint;
 
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
@@ -390,11 +389,6 @@ public class AppUtils
 				Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		});
-	}
-
-	public static void displayErrorAlert(ErrorMessage errorMessage)
-	{
-		displayErrorAlert(YonaActivity.getActivity(), errorMessage);
 	}
 
 	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
