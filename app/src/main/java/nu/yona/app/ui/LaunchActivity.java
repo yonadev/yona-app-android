@@ -66,7 +66,6 @@ public class LaunchActivity extends BaseActivity
 		setUpApplicationInitialView();
 		setListeners();
 		navigateToValidActivity();
-
 	}
 
 	private void initializeCrashlytics()
@@ -157,17 +156,11 @@ public class LaunchActivity extends BaseActivity
 		}
 	}
 
-	private void validateStoredUserEntity()
-	{
-
-	}
-
 	private void moveToYonaActivity()
 	{
 		startNewActivity(bundle, YonaActivity.class);
 		YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
 	}
-
 
 	private void getUserFromServer(String userSelfLink)
 	{
