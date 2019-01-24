@@ -64,7 +64,9 @@ public class LaunchActivity extends BaseActivity
 		initializeCrashlytics();
 		validateYonaPasswordEncryption();
 		setUpApplicationInitialView();
+		setListeners();
 		navigateToValidActivity();
+
 	}
 
 	private void initializeCrashlytics()
@@ -163,7 +165,6 @@ public class LaunchActivity extends BaseActivity
 	private void moveToYonaActivity()
 	{
 		startNewActivity(bundle, YonaActivity.class);
-		setListeners();
 		YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
 	}
 
