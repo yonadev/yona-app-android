@@ -16,7 +16,9 @@ import nu.yona.app.api.db.DBConstant;
 import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.api.model.User;
+import nu.yona.app.enums.UserStatus;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
 /**
@@ -39,27 +41,15 @@ public class AuthenticateDAO extends BaseDAO
 	/**
 	 * Update data for register user.
 	 *
-	 * @param result   the result
+	 * @param user     the result
 	 * @param listener the listener
 	 */
-	public void updateDataForRegisterUser(Object result, DataLoadListener listener)
+	public void updateDataForRegisterUser(Object user, DataLoadListener listener)
 	{
 		// do process for storing data in database.
 		try
 		{
-			ContentValues values = new ContentValues();
-			String USER_ID = "1";
-			values.put(DBConstant.ID, USER_ID);
-			values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(result));
-			// we will store only one user in database, so check if already user exist in db, just update.
-			if (getUser() == null)
-			{
-				insert(DBConstant.TBL_USER_DATA, values);
-			}
-			else
-			{
-				update(DBConstant.TBL_USER_DATA, values, DBConstant.ID + " = ?", USER_ID);
-			}
+			storeUserToLocalDB(user);
 			if (listener != null)
 			{
 				listener.onDataLoad(getUser());
@@ -69,6 +59,38 @@ public class AuthenticateDAO extends BaseDAO
 		{
 			AppUtils.reportException(AuthenticateDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
 		}
+	}
+
+	private void storeUserToLocalDB(Object user)
+	{
+		ContentValues values = new ContentValues();
+		String USER_ID = "1";
+		values.put(DBConstant.ID, USER_ID);
+		values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(setExtraProperties((User) user)));
+		// we will store only one user in database, so check if already user exist in db, just update.
+		if (getUser() == null)
+		{
+			insert(DBConstant.TBL_USER_DATA, values);
+		}
+		else
+		{
+			update(DBConstant.TBL_USER_DATA, values, DBConstant.ID + " = ?", USER_ID);
+		}
+
+	}
+
+	private User setExtraProperties(User resultUserObj)
+	{
+		if (resultUserObj.getLinks().getYonaMessages() != null)
+		{
+			resultUserObj.setStatus(UserStatus.ACTIVE);
+		}
+		else
+		{
+			resultUserObj.setStatus(UserStatus.NUMBER_NOT_CONFIRMED);
+		}
+		resultUserObj.setVersion(AppConstant.USER_ENTITY_VERSION);
+		return resultUserObj;
 	}
 
 	/**

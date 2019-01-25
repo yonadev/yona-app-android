@@ -301,4 +301,8 @@ public interface AppConstant
 	String YONA_VPN_CHANNEL_ID = "yona-vpn-channel";
 	String YONA_SERVICE_CHANNEL_ID = "yona-service-channel";
 	String OLD_YONA_SERVICE_CHANNEL_ID = "yona-channel";
+
+
+	// Version number of user entity stored in local database
+	int USER_ENTITY_VERSION = 1;
 }
