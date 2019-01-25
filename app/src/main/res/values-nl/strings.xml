@@ -228,5 +228,5 @@
     <string name="support_mail_subject">Probleem met Yona app</string>
     <string name="yona_service_notification_channel_name">Vaste melding</string>
     <string name="yona_vpn_notification_channel_name">VPN-meldingen</string>
-    <string name="mandatory_user_fetch_failure">De Yona-app heeft een netwerkverbinding nodig voordat de app kan worden gestart</string>
+    <string name="mandatory_user_fetch_failure">De Yona-app heeft deze keer een netwerkverbinding nodig om te starten.</string>
 </resources>

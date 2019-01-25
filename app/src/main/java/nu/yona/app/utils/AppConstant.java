@@ -303,6 +303,6 @@ public interface AppConstant
 	String OLD_YONA_SERVICE_CHANNEL_ID = "yona-channel";
 
 
-	// Model Entity Versions
+	// Version number of user entity stored in local database
 	int USER_ENTITY_VERSION = 1;
 }

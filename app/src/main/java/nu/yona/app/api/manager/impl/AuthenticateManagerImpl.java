@@ -12,8 +12,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import org.json.JSONObject;
-
 import java.io.File;
 
 import nu.yona.app.R;
@@ -811,12 +809,6 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	public User getUser()
 	{
 		return authenticateDao.getUser();
-	}
-
-	@Override
-	public JSONObject getStoredUserObjectFromDB()
-	{
-		return authenticateDao.getStoredUserObjectFromDB();
 	}
 
 	@Override

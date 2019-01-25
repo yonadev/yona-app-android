@@ -23,9 +23,6 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -38,6 +35,7 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
+import nu.yona.app.api.model.User;
 import nu.yona.app.enums.EncryptionMethod;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.login.LoginActivity;
@@ -128,32 +126,25 @@ public class LaunchActivity extends BaseActivity
 
 	private void checkForUserEntityVersion()
 	{
-		try
+		User user = APIManager.getInstance().getAuthenticateManager().getUser();
+		if (user.getVersion() != AppConstant.USER_ENTITY_VERSION)
 		{
-			JSONObject userJsonObj = APIManager.getInstance().getAuthenticateManager().getStoredUserObjectFromDB();
-			if (userJsonObj.isNull("version") || userJsonObj.getInt("version") != AppConstant.USER_ENTITY_VERSION)
-			{
-				if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
-				{
-					showMandatoryUserFetchError();
-				}
-				else
-				{
-					JSONObject userLinks = userJsonObj.getJSONObject("links");
-					JSONObject userSelfHrefObj = userLinks.getJSONObject("self");
-					String userSelfLink = userSelfHrefObj.getString("href");
-					getUserFromServer(userSelfLink);
-				}
-			}
-			else
-			{
-				moveToYonaActivity();
-			}
+			reloadUserFromServer(user.getLinks().getSelf().getHref());
 		}
-		catch (JSONException e)
+		else
 		{
-			showMandatoryUserFetchError();
+			moveToYonaActivity();
 		}
+	}
+
+	private void reloadUserFromServer(String url)
+	{
+		if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
+		{
+			AppUtils.displayErrorAlert(this, new ErrorMessage(this.getString(R.string.mandatory_user_fetch_failure)));
+			return;
+		}
+		getUserFromServer(url);
 	}
 
 	private void moveToYonaActivity()
@@ -162,58 +153,43 @@ public class LaunchActivity extends BaseActivity
 		YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
 	}
 
-	private void getUserFromServer(String userSelfLink)
+	private void getUserFromServer(String url)
 	{
 		showLoadingView(true);
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserFetchSuccess(result), (result) -> handleUserFetchFailure(result), null);
-		APIManager.getInstance().getAuthenticateManager().getUserFromServer(userSelfLink, dataLoadListenerImpl);
+		APIManager.getInstance().getAuthenticateManager().getUserFromServer(url, dataLoadListenerImpl);
 	}
 
 	private Object handleUserFetchSuccess(Object result)
 	{
 		moveToYonaActivity();
 		showLoadingView(false);
-		return null;
+		return null;// Dummy return value, to allow use as data load handler
 	}
 
 	private Object handleUserFetchFailure(Object error)
 	{
 		showLoadingView(false);
-		showMandatoryUserFetchError();
-		return null;
+		if (error instanceof ErrorMessage)
+		{
+			AppUtils.displayErrorAlert(this, (ErrorMessage) error);
+		}
+		else
+		{
+			AppUtils.displayErrorAlert(this, new ErrorMessage((String) error));
+		}
+		return null;// Dummy return value, to allow use as data load handler
 	}
 
-	private void showMandatoryUserFetchError()
-	{
-		AppUtils.displayErrorAlert(this, new ErrorMessage(this.getString(R.string.mandatory_user_fetch_failure)));
-	}
 
 	private void setListeners()
 	{
-		findViewById(R.id.join).setOnClickListener(new View.OnClickListener()
+		findViewById(R.id.join).setOnClickListener(result -> startNewActivity(bundle, SignupActivity.class));
+		findViewById(R.id.login).setOnClickListener(result -> startNewActivity(LoginActivity.class));
+		findViewById(R.id.environmentSwitch).setOnLongClickListener(result ->
 		{
-			@Override
-			public void onClick(View v)
-			{
-				startNewActivity(bundle, SignupActivity.class);
-			}
-		});
-		findViewById(R.id.login).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				startNewActivity(LoginActivity.class);
-			}
-		});
-		findViewById(R.id.environmentSwitch).setOnLongClickListener(new View.OnLongClickListener()
-		{
-			@Override
-			public boolean onLongClick(View v)
-			{
-				switchEnvironment();
-				return true;
-			}
+			switchEnvironment();
+			return true;
 		});
 	}
 

@@ -8,8 +8,6 @@
 
 package nu.yona.app.api.manager;
 
-import org.json.JSONObject;
-
 import java.io.File;
 
 import nu.yona.app.api.model.RegisterUser;
@@ -95,8 +93,6 @@ public interface AuthenticateManager
 	 * @param listener the listener
 	 */
 	void getUser(final String url, final DataLoadListener listener);
-
-	JSONObject getStoredUserObjectFromDB();
 
 	/**
 	 * Gets friend profile.

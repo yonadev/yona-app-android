@@ -12,8 +12,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import org.json.JSONObject;
-
 import nu.yona.app.api.db.DBConstant;
 import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.model.ActivityCategories;
@@ -68,7 +66,7 @@ public class AuthenticateDAO extends BaseDAO
 		ContentValues values = new ContentValues();
 		String USER_ID = "1";
 		values.put(DBConstant.ID, USER_ID);
-		values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(setUserData((User) user)));
+		values.put(DBConstant.SOURCE_OBJECT, serializer.serialize(setExtraProperties((User) user)));
 		// we will store only one user in database, so check if already user exist in db, just update.
 		if (getUser() == null)
 		{
@@ -81,7 +79,7 @@ public class AuthenticateDAO extends BaseDAO
 
 	}
 
-	private User setUserData(User resultUserObj)
+	private User setExtraProperties(User resultUserObj)
 	{
 		if (resultUserObj.getLinks().getYonaMessages() != null)
 		{
@@ -111,34 +109,6 @@ public class AuthenticateDAO extends BaseDAO
 				if (c.moveToFirst())
 				{
 					return serializer.deserialize(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT)), User.class);
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread());
-		}
-		finally
-		{
-			if (c != null)
-			{
-				c.close();
-			}
-		}
-		return null;
-	}
-
-	public JSONObject getStoredUserObjectFromDB()
-	{
-		Cursor c = query(DBConstant.TBL_USER_DATA);
-		try
-		{
-			if (c != null && c.getCount() > 0)
-			{
-
-				if (c.moveToFirst())
-				{
-					return new JSONObject(new String(c.getBlob(c.getColumnIndex(DBConstant.SOURCE_OBJECT))));
 				}
 			}
 		}
