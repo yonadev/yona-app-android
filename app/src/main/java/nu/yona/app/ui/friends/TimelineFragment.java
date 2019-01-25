@@ -99,7 +99,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 		View view = inflater.inflate(R.layout.dashboard_perday_fragment, null);
 		listView = (RecyclerView) view.findViewById(R.id.listView);
 		mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
-
+		APIManager.getInstance().getAuthenticateManager().getUserFromServer();
 		mDayTimelineStickyAdapter = new TimelineStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener()
 		{
 			@Override
