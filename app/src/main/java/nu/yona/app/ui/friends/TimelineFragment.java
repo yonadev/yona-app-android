@@ -35,7 +35,7 @@ import nu.yona.app.api.model.YonaGoal;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.enums.ChartTypeEnum;
 import nu.yona.app.enums.IntentEnum;
-import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
@@ -54,7 +54,6 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 	private LinearLayoutManager mLayoutManager;
 	private boolean mIsLoading;
 	private boolean isDataLoading;
-	private boolean isCurrentTabInView;
 
 	private final RecyclerView.OnScrollListener mRecyclerViewOnScrollListener = new RecyclerView.OnScrollListener()
 	{
@@ -72,17 +71,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 			{
 				if (dy > 0)
 				{
-					int visibleItemCount = mLayoutManager.getChildCount();
-					int totalItemCount = mLayoutManager.getItemCount();
-					int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-					EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
-					if (!mIsLoading &&
-							embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
-							&& embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
-							&& (visibleItemCount + firstVisibleItemPosition) >= totalItemCount)
-					{
-						loadMoreItems();
-					}
+					loadGoalsOnScroll();
 				}
 			}
 			catch (Exception e)
@@ -97,21 +86,15 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		View view = inflater.inflate(R.layout.dashboard_perday_fragment, null);
-		listView = (RecyclerView) view.findViewById(R.id.listView);
+		listView = view.findViewById(R.id.listView);
 		mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
 		APIManager.getInstance().getAuthenticateManager().getUserFromServer();
-		mDayTimelineStickyAdapter = new TimelineStickyAdapter(new ArrayList<DayActivity>(), new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
+		mDayTimelineStickyAdapter = new TimelineStickyAdapter(new ArrayList<>(), v -> {
+			if (v.getTag() instanceof DayActivity)
 			{
-				if (v.getTag() instanceof DayActivity)
-				{
-					openDetailPage((DayActivity) v.getTag());
-				}
+				openDetailPage((DayActivity) v.getTag());
 			}
 		});
-
 		listView.setLayoutManager(mLayoutManager);
 		listView.setAdapter(mDayTimelineStickyAdapter);
 		listView.addOnScrollListener(mRecyclerViewOnScrollListener);
@@ -123,17 +106,11 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 	private void setRecyclerHeaderAdapterUpdate(final StickyRecyclerHeadersDecoration headerDecor)
 	{
 		listView.addItemDecoration(headerDecor);
-
 		// Add touch listeners
 		StickyRecyclerHeadersTouchListener touchListener =
 				new StickyRecyclerHeadersTouchListener(listView, headerDecor);
 		touchListener.setOnHeaderClickListener(
-				new StickyRecyclerHeadersTouchListener.OnHeaderClickListener()
-				{
-					@Override
-					public void onHeaderClick(View header, int position, long headerId)
-					{
-					}
+				(header, position, headerId) -> {
 				});
 		mDayTimelineStickyAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver()
 		{
@@ -145,20 +122,42 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 		});
 	}
 
-	private void loadMoreItems()
+	private void loadGoalsOnScroll()
 	{
-		mIsLoading = true;
-		getDayActivity(true);
+		int visibleItemCount = mLayoutManager.getChildCount();
+		int totalItemCount = mLayoutManager.getItemCount();
+		int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+		if (!mIsLoading &&
+				embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
+				&& embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
+				&& (visibleItemCount + firstVisibleItemPosition) >= totalItemCount)
+		{
+			mIsLoading = true;
+			getDayActivity(true);
+		}
 	}
 
 	private void openDetailPage(DayActivity activity)
+	{
+		Intent intent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
+		addYonaDayDetailsHrefToIntent(activity, intent);
+		addYonaBuddyToIntent(activity, intent);
+		intent.putExtra(AppConstant.OBJECT, activity);
+		YonaActivity.getActivity().replaceFragment(intent);
+	}
+
+	private void addYonaDayDetailsHrefToIntent(DayActivity activity, Intent intent)
 	{
 		if (activity.getYonaGoal() != null && activity.getYonaGoal().getActivityCategoryName() != null)
 		{
 			YonaAnalytics.createTapEventWithCategory(getString(R.string.timeline), activity.getYonaGoal().getActivityCategoryName());
 		}
-		Intent intent = new Intent(IntentEnum.ACTION_SINGLE_ACTIVITY_DETAIL_VIEW.getActionString());
 		intent.putExtra(AppConstant.YONA_DAY_DEATIL_URL, activity.getLinks().getYonaDayDetails().getHref());
+	}
+
+	private void addYonaBuddyToIntent(DayActivity activity, Intent intent)
+	{
 		if (activity.getLinks().getYonaBuddy() != null)
 		{
 			intent.putExtra(AppConstant.YONA_BUDDY_OBJ, activity.getLinks().getYonaBuddy());
@@ -168,8 +167,6 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 		{
 			intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(true, null, null, 0, 0, !TextUtils.isEmpty(activity.getYonaGoal().getActivityCategoryName()) ? activity.getYonaGoal().getActivityCategoryName().toUpperCase() : getString(R.string.blank), R.color.grape, R.drawable.triangle_shadow_grape));
 		}
-		intent.putExtra(AppConstant.OBJECT, activity);
-		YonaActivity.getActivity().replaceFragment(intent);
 	}
 
 	@Override
@@ -195,7 +192,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 
 	public void setIsInView(boolean isInView)
 	{
-		isCurrentTabInView = isInView;
+		boolean isCurrentTabInView = isInView;
 	}
 
 	@Override
@@ -208,33 +205,39 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 	private void getDayActivity(boolean loadMore)
 	{
 		final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
-		if ((embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null)
-				|| (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()))
+		if (embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null || embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())
 		{
 			YonaActivity.getActivity().showLoadingView(true, null);
-			APIManager.getInstance().getActivityManager().getWithBuddyActivity(loadMore, new DataLoadListener()
-			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-					isDataLoading = false;
-					showData();
-					mIsLoading = false;
-				}
-
-				@Override
-				public void onError(Object errorMessage)
-				{
-					isDataLoading = false;
-					YonaActivity.getActivity().showLoadingView(false, null);
-					YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
-				}
-			});
+			DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result -> handleGetWithBuddyActivityFetchSuccess()), (error -> handleGetWithBuddyActivityFetchFailure(error)), null);
+			APIManager.getInstance().getActivityManager().getWithBuddyActivity(loadMore, dataLoadListener);
 		}
 		else
 		{
 			showData();
 		}
+	}
+
+	private Object handleGetWithBuddyActivityFetchSuccess()
+	{
+		isDataLoading = false;
+		showData();
+		mIsLoading = false;
+		return null; // Dummy return value, to allow use as data load handler
+	}
+
+	private Object handleGetWithBuddyActivityFetchFailure(Object error)
+	{
+		isDataLoading = false;
+		YonaActivity.getActivity().showLoadingView(false, null);
+		if (error instanceof ErrorMessage)
+		{
+			YonaActivity.getActivity().showError((ErrorMessage) error);
+		}
+		else if (error != null)
+		{
+			YonaActivity.getActivity().showError(new ErrorMessage(error.toString()));
+		}
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	private void showData()
@@ -260,46 +263,64 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 	{
 		List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList();
 		List<DayActivity> newDayActivityList = new ArrayList<>();
-		int index = 0;
+		processDayActivityListForTimeLineView(dayActivityList, newDayActivityList);
+		return newDayActivityList;
+	}
 
+	private void processDayActivityListForTimeLineView(List<DayActivity> dayActivityList, List<DayActivity> newDayActivityList)
+	{
+		int index = 0;
 		for (int i = 0; i < dayActivityList.size(); i++)
 		{
 			DayActivity currentDayActivity = dayActivityList.get(i);
 			if (i == 0)
 			{
-				newDayActivityList.add(getNewDayActivity(index, currentDayActivity, ChartTypeEnum.TITLE));
-				currentDayActivity.setStickyHeaderId(index++);
-				newDayActivityList.add(dayActivityList.get(i));
+				setFirstDayActivityProperties(currentDayActivity, newDayActivityList, index++, i, dayActivityList);
 			}
 			else
 			{
 				DayActivity previousDayActivity = dayActivityList.get(i - 1);
 				if (currentDayActivity.getStickyTitle().equals(previousDayActivity.getStickyTitle()))
 				{
-					currentDayActivity.setStickyHeaderId(previousDayActivity.getStickyHeaderId());
-					if (!currentDayActivity.getYonaGoal().getActivityCategoryName().equals(previousDayActivity.getYonaGoal().getActivityCategoryName()))
-					{
-						newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), currentDayActivity, ChartTypeEnum.TITLE));
-					}
-					else if (!currentDayActivity.getYonaGoal().getType().equals(previousDayActivity.getYonaGoal().getType()))
-					{
-						newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), currentDayActivity, ChartTypeEnum.LINE));
-					}
-					newDayActivityList.add(currentDayActivity);
+					setCurrentDayActivityProperties(previousDayActivity, currentDayActivity, newDayActivityList);
 				}
 				else
 				{
 					index++;
-					newDayActivityList.add(getNewDayActivity(index, currentDayActivity, ChartTypeEnum.TITLE));
-					currentDayActivity.setStickyHeaderId(index);
-					newDayActivityList.add(currentDayActivity);
+					setNextDayActivityProperties(index, currentDayActivity, newDayActivityList);
 				}
 			}
 		}
-
-		return newDayActivityList;
 	}
 
+	private void setFirstDayActivityProperties(DayActivity currentDayActivity, List<DayActivity> newDayActivityList, int index, int i, List<DayActivity> dayActivityList)
+	{
+		newDayActivityList.add(getNewDayActivity(index--, currentDayActivity, ChartTypeEnum.TITLE));
+		currentDayActivity.setStickyHeaderId(index);
+		newDayActivityList.add(dayActivityList.get(i));
+	}
+
+
+	private void setCurrentDayActivityProperties(DayActivity previousDayActivity, DayActivity currentDayActivity, List<DayActivity> newDayActivityList)
+	{
+		currentDayActivity.setStickyHeaderId(previousDayActivity.getStickyHeaderId());
+		if (!currentDayActivity.getYonaGoal().getActivityCategoryName().equals(previousDayActivity.getYonaGoal().getActivityCategoryName()))
+		{
+			newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), currentDayActivity, ChartTypeEnum.TITLE));
+		}
+		else if (!currentDayActivity.getYonaGoal().getType().equals(previousDayActivity.getYonaGoal().getType()))
+		{
+			newDayActivityList.add(getNewDayActivity(previousDayActivity.getStickyHeaderId(), currentDayActivity, ChartTypeEnum.LINE));
+		}
+		newDayActivityList.add(currentDayActivity);
+	}
+
+	private void setNextDayActivityProperties(int index, DayActivity currentDayActivity, List<DayActivity> newDayActivityList)
+	{
+		newDayActivityList.add(getNewDayActivity(index, currentDayActivity, ChartTypeEnum.TITLE));
+		currentDayActivity.setStickyHeaderId(index);
+		newDayActivityList.add(currentDayActivity);
+	}
 
 	private DayActivity getNewDayActivity(int index, DayActivity dayActivity, ChartTypeEnum chartTypeEnum)
 	{
@@ -316,13 +337,9 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 	@Override
 	public void onStateChange(int eventType, Object object)
 	{
-		switch (eventType)
+		if (eventType == EventChangeManager.EVENT_UPDATE_FRIEND_TIMELINE)
 		{
-			case EventChangeManager.EVENT_UPDATE_FRIEND_TIMELINE:
-				refreshAdapter();
-				break;
-			default:
-				break;
+			refreshAdapter();
 		}
 	}
 }
