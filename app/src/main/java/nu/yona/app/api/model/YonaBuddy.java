@@ -26,9 +26,6 @@ public class YonaBuddy extends BaseEntity
 	@SerializedName("_links")
 	@Expose
 	private Links Links;
-	@SerializedName("nickname")
-	@Expose
-	private String nickname;
 	@SerializedName("sendingStatus")
 	@Expose
 	private String sendingStatus;
@@ -61,26 +58,6 @@ public class YonaBuddy extends BaseEntity
 	public void setLinks(Links Links)
 	{
 		this.Links = Links;
-	}
-
-	/**
-	 * Gets nickname.
-	 *
-	 * @return The nickname
-	 */
-	public String getNickname()
-	{
-		return nickname;
-	}
-
-	/**
-	 * Sets nickname.
-	 *
-	 * @param nickname The nickname
-	 */
-	public void setNickname(String nickname)
-	{
-		this.nickname = nickname;
 	}
 
 	/**
@@ -177,5 +154,10 @@ public class YonaBuddy extends BaseEntity
 	public ContentValues getDbContentValues()
 	{
 		return null;
+	}
+
+	public String getNickname()
+	{
+		return this.getEmbedded().getYonaUser().getNickname();
 	}
 }

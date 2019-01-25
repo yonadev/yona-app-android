@@ -32,6 +32,29 @@ public class YonaUser extends BaseEntity
 	@SerializedName("mobileNumber")
 	@Expose
 	private String mobileNumber;
+	@SerializedName("nickname")
+	@Expose
+	private String nickname;
+
+	/**
+	 * Gets nickname.
+	 *
+	 * @return The nickname
+	 */
+	public String getNickname()
+	{
+		return nickname;
+	}
+
+	/**
+	 * Sets nickname.
+	 *
+	 * @param nickname The nickname
+	 */
+	public void setNickname(String nickname)
+	{
+		this.nickname = nickname;
+	}
 
 	/**
 	 * Gets links.
