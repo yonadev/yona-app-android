@@ -586,24 +586,28 @@ passcode_reset;
 		{
 			errorMessageStr = ((ErrorMessage) errorMessage).getMessage();
 		}
-		else
+		else if (errorMessage != null)
 		{
-			errorMessageStr = (String) errorMessage;
+			errorMessageStr = errorMessage.toString();
 		}
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.generic_alert_title));
-		builder.setMessage(errorMessageStr);
-		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
+		displayErrorMessageToUser(errorMessageStr);
+		return null; // dummy return value, to allow use a data error handler
+	}
+
+
+	private void displayErrorMessageToUser(String errorMessageStr)
+	{
+		runOnUiThread(() -> {
+			if (!this.isFinishing())
 			{
-				navigateToNextScreen();
+				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle(getString(R.string.generic_alert_title));
+				builder.setMessage(errorMessageStr);
+				builder.setPositiveButton(android.R.string.ok, (DialogInterface dialog, int which) -> navigateToNextScreen());
+				builder.setCancelable(false);
+				builder.create().show();
 			}
 		});
-		builder.setCancelable(false);
-		builder.create().show();
-		return null;
 	}
 
 	protected abstract void navigateToNextScreen();
