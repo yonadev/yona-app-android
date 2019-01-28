@@ -108,13 +108,11 @@ public class FriendsFragment extends BaseFragment
 	{
 		if (position == 0)
 		{
-			timelineFragment.setIsInView(false);
 			overviewFragment.setIsInView(true);
 			YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.FRIENDS_SCREEN, getString(R.string.timeline));
 		}
 		else
 		{
-			timelineFragment.setIsInView(true);
 			overviewFragment.setIsInView(false);
 			YonaAnalytics.createTrackEventWithCategory(AnalyticsConstant.FRIENDS_SCREEN, getString(R.string.overiview));
 		}
