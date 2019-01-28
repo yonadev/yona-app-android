@@ -190,11 +190,6 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 		getDayActivity(false);
 	}
 
-	public void setIsInView(boolean isInView)
-	{
-		boolean isCurrentTabInView = isInView;
-	}
-
 	@Override
 	public void onDestroyView()
 	{
