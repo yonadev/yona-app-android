@@ -354,7 +354,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			return;
 		}
 		Logger.loge("Notifications Disabled", this.getString(R.string.notification_disabled_message));
-		AppUtils.displayErrorAlert(new ErrorMessage(this.getString(R.string.notification_disabled_message)));
+		AppUtils.displayErrorAlert(getActivity(), new ErrorMessage(this.getString(R.string.notification_disabled_message)));
 	}
 
 

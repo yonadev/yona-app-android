@@ -13,6 +13,8 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import nu.yona.app.enums.UserStatus;
 /**
  * The type User.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User extends BaseEntity
 {
 
@@ -73,6 +76,11 @@ public class User extends BaseEntity
 	@SerializedName("status")
 	@Expose
 	private UserStatus status;
+
+	@SerializedName("version")
+	@Expose
+	private int version;
+
 
 	/**
 	 * Gets mobile number confirmation code.
@@ -275,6 +283,16 @@ public class User extends BaseEntity
 	public void setStatus(UserStatus userStatus)
 	{
 		this.status = userStatus;
+	}
+
+	public int getVersion()
+	{
+		return version;
+	}
+
+	public void setVersion(int version)
+	{
+		this.version = version;
 	}
 
 

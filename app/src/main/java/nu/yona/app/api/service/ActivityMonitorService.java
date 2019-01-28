@@ -25,6 +25,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 
 import java.util.Date;
 import java.util.List;
@@ -129,7 +130,8 @@ public class ActivityMonitorService extends Service
 		PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 /* Request code */, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		Notification notification = new NotificationCompat.Builder(this, AppConstant.YONA_SERVICE_CHANNEL_ID)
-				.setSmallIcon(R.drawable.ic_launcher)
+				.setColor(ContextCompat.getColor(this, R.color.grape))
+				.setSmallIcon(R.drawable.app_monitor_notif_icon)
 				.setContentTitle(this.getString(R.string.yona_notification_content))
 				.setContentIntent(pendingIntent)
 				.setOngoing(true)

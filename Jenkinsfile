@@ -25,6 +25,8 @@ pipeline {
               submitter: 'authenticated',
               parameters: [[$class: 'TextParameterDefinition', defaultValue: '', description: 'Paste the Dutch release notes', name: 'Dutch']]
           nlReleaseNotes.length() >= 500 && error("Release notes can be at most 500 characters")
+          echo "English release notes: ${enReleaseNotes}"
+          echo "Dutch release notes: ${nlReleaseNotes}"
           incrementVersion()
           writeFile file: "app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${nlReleaseNotes}"
           writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${enReleaseNotes}"

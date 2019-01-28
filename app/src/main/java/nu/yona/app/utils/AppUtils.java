@@ -78,7 +78,6 @@ import nu.yona.timepicker.time.Timepoint;
 
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
-import static nu.yona.app.ui.YonaActivity.getActivity;
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
 
@@ -392,18 +391,20 @@ public class AppUtils
 		});
 	}
 
-	public static void displayErrorAlert(ErrorMessage errorMessage)
+	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
 	{
-		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(errorMessage).show());
+		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(context, errorMessage).show());
 	}
 
-	private static AlertDialog getGenericAlertDialogWithErrorMessage(ErrorMessage errorMessage)
+
+	private static AlertDialog getGenericAlertDialogWithErrorMessage(Context context, ErrorMessage errorMessage)
 	{
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 		alertDialogBuilder.setMessage(errorMessage.getMessage());
-		alertDialogBuilder.setPositiveButton(getActivity().getString(R.string.ok), null);
+		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), null);
 		return alertDialogBuilder.create();
 	}
+
 
 	@TargetApi(Build.VERSION_CODES.O)
 	public static boolean arePersistentNotificationsEnabled(Context context)
