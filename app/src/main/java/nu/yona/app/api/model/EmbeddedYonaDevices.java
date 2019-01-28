@@ -30,7 +30,7 @@ public class EmbeddedYonaDevices extends BaseEntity
 		return yonaDevices;
 	}
 
-	public YonaDevice retreiveCurrentDevice()
+	public YonaDevice retrieveCurrentDevice()
 	{
 		for (YonaDevice device : yonaDevices)
 		{

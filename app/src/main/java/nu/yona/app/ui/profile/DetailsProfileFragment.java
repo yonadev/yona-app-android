@@ -156,7 +156,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
 		{
 			firstName.setText(TextUtils.isEmpty(buddyUser.getEmbedded().getYonaUser().getFirstName()) ? getString(R.string.blank) : buddyUser.getEmbedded().getYonaUser().getFirstName());
 			lastName.setText(TextUtils.isEmpty(buddyUser.getEmbedded().getYonaUser().getLastName()) ? getString(R.string.blank) : buddyUser.getEmbedded().getYonaUser().getLastName());
-			nickName.setText(TextUtils.isEmpty(buddyUser.retreiveNickname()) ? getString(R.string.blank) : buddyUser.retreiveNickname());
+			nickName.setText(TextUtils.isEmpty(buddyUser.retrieveNickname()) ? getString(R.string.blank) : buddyUser.retrieveNickname());
 			number = TextUtils.isEmpty(buddyUser.getEmbedded().getYonaUser().getMobileNumber()) ? getString(R.string.blank) : buddyUser.getEmbedded().getYonaUser().getMobileNumber();
 		}
 		else

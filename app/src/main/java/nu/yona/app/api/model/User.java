@@ -293,7 +293,7 @@ public class User extends BaseEntity
 
 	public String retrieveLinkToPostOpenAppEvent()
 	{
-		return retrieveCurrentDevice().retrevePostOpenAppEventLink();
+		return retrieveCurrentDevice().retrievePostOpenAppEventLink();
 	}
 
 	public String retrieveSslRootCertCN()
@@ -303,17 +303,17 @@ public class User extends BaseEntity
 
 	public String retrieveLinkToPostDeviceAppActivity()
 	{
-		return retrieveCurrentDevice().retreiveLinkForPostingDeviceAppActivity();
+		return retrieveCurrentDevice().retrieveLinkForPostingDeviceAppActivity();
 	}
 
 	public String retrieveSslRootCert()
 	{
-		return retrieveCurrentDevice().retreiveYonaSslRootCert();
+		return retrieveCurrentDevice().retrieveYonaSslRootCert();
 	}
 
 	private YonaDevice retrieveCurrentDevice()
 	{
-		return this.getEmbedded().getYonaDevices().getEmbedded().retreiveCurrentDevice();
+		return this.getEmbedded().getYonaDevices().getEmbedded().retrieveCurrentDevice();
 	}
 
 	public boolean isActive()

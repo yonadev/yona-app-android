@@ -193,7 +193,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
 							rightIconProfile.setVisibility(View.VISIBLE);
 							profileIconTxt.setVisibility(View.VISIBLE);
 							profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_friend_round));
-							profileIconTxt.setText(yonaBuddy.retreiveNickname().substring(0, 1).toUpperCase());
+							profileIconTxt.setText(yonaBuddy.retrieveNickname().substring(0, 1).toUpperCase());
 							profileClickEvent(profileIconTxt);
 						}
 						else

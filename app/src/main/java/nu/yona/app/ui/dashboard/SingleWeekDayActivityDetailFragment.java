@@ -481,7 +481,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		}
 		else
 		{
-			setUserAvatarFromName(yonaBuddy.retreiveNickname());
+			setUserAvatarFromName(yonaBuddy.retrieveNickname());
 		}
 	}
 
@@ -493,7 +493,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		}
 		else
 		{
-			setUserAvatarFromName(yonaBuddy.retreiveNickname());
+			setUserAvatarFromName(yonaBuddy.retrieveNickname());
 		}
 	}
 

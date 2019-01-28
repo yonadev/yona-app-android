@@ -1156,13 +1156,13 @@ public class ActivityManagerImpl implements ActivityManager
 			{
 				if (isUserWithGoals(buddy))
 				{
-					List<YonaGoal> yonaGoals = buddy.retreiveYonaGoals();
+					List<YonaGoal> yonaGoals = buddy.retrieveYonaGoals();
 					for (YonaGoal goal : yonaGoals)
 					{
 						if (goal != null && goal.getLinks() != null && goal.getLinks().getSelf() != null && !TextUtils.isEmpty(goal.getLinks().getSelf().getHref()) && goal.getLinks().getSelf().getHref().equals(goalHref.getHref()))
 						{
 							goal.setActivityCategoryName(getActivityCategory(goal));
-							goal.setNickName(buddy.retreiveNickname());
+							goal.setNickName(buddy.retrieveNickname());
 							return goal;
 						}
 					}
@@ -1182,7 +1182,7 @@ public class ActivityManagerImpl implements ActivityManager
 
 	private boolean isUserWithGoals(YonaBuddy buddy)
 	{
-		return (buddy != null && buddy.getEmbedded() != null && buddy.retreiveYonaGoals() != null);
+		return (buddy != null && buddy.getEmbedded() != null && buddy.retrieveYonaGoals() != null);
 	}
 
 	private String getActivityCategory(YonaGoal goal)

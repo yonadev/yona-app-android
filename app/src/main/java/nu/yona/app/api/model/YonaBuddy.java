@@ -158,12 +158,12 @@ public class YonaBuddy extends BaseEntity
 		return null;
 	}
 
-	public String retreiveNickname()
+	public String retrieveNickname()
 	{
 		return this.getEmbedded().getYonaUser().getNickname();
 	}
 
-	public List<YonaGoal> retreiveYonaGoals()
+	public List<YonaGoal> retrieveYonaGoals()
 	{
 		return this.getEmbedded().getYonaUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
 	}
