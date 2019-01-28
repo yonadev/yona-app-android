@@ -1,0 +1,1 @@
+APPDEV-1247 Fixed a crash in the friends timeline that occurred after adding a friend
