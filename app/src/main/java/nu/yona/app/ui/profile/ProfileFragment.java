@@ -251,7 +251,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
 				profileImageTxt.setText(yonaBuddy.getEmbedded().getYonaUser().getFirstName().substring(0, 1) + yonaBuddy.getEmbedded().getYonaUser().getLastName().substring(0, 1));
 				profileImageTxt.setBackground(profileBgColor == R.color.grape ? ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_friend_round) : ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_big_self_round));
 			}
-			nickName.setText(!TextUtils.isEmpty(yonaBuddy.getNickname()) ? yonaBuddy.getNickname() : YonaActivity.getActivity().getString(R.string.blank));
+			nickName.setText(!TextUtils.isEmpty(yonaBuddy.retreiveNickname()) ? yonaBuddy.retreiveNickname() : YonaActivity.getActivity().getString(R.string.blank));
 		}
 		profileTopLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), yonaHeaderTheme.getHeadercolor()));
 		tabLayout.setBackgroundColor(ContextCompat.getColor(YonaActivity.getActivity(), yonaHeaderTheme.getHeadercolor()));

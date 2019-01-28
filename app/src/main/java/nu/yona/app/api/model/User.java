@@ -259,11 +259,6 @@ public class User extends BaseEntity
 		return null;
 	}
 
-	public String getSslRootCertCN()
-	{
-		return getCurentDevice().getSslRootCertCN();
-	}
-
 	public String getYonaPassword()
 	{
 		return this.yonaPassword;
@@ -296,24 +291,29 @@ public class User extends BaseEntity
 	}
 
 
-	public String getLinkToPostOpenAppEvent()
+	public String retrieveLinkToPostOpenAppEvent()
 	{
-		return getCurentDevice().getPostOpenAppEventLink();
+		return retrieveCurrentDevice().retrevePostOpenAppEventLink();
 	}
 
-	public String getLinkToPostDeviceAppActivity()
+	public String retrieveSslRootCertCN()
 	{
-		return getCurentDevice().getLinkForPostingDeviceAppActivity();
+		return retrieveCurrentDevice().getSslRootCertCN();
 	}
 
-	public String getSslRootCert()
+	public String retrieveLinkToPostDeviceAppActivity()
 	{
-		return getCurentDevice().getYonaSslRootCert();
+		return retrieveCurrentDevice().retreiveLinkForPostingDeviceAppActivity();
 	}
 
-	private YonaDevice getCurentDevice()
+	public String retrieveSslRootCert()
 	{
-		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice();
+		return retrieveCurrentDevice().retreiveYonaSslRootCert();
+	}
+
+	private YonaDevice retrieveCurrentDevice()
+	{
+		return this.getEmbedded().getYonaDevices().getEmbedded().retreiveCurrentDevice();
 	}
 
 	public boolean isActive()

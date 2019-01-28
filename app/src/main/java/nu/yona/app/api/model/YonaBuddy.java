@@ -13,6 +13,8 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
@@ -156,8 +158,14 @@ public class YonaBuddy extends BaseEntity
 		return null;
 	}
 
-	public String getNickname()
+	public String retreiveNickname()
 	{
 		return this.getEmbedded().getYonaUser().getNickname();
 	}
+
+	public List<YonaGoal> retreiveYonaGoals()
+	{
+		return this.getEmbedded().getYonaUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
+	}
+
 }

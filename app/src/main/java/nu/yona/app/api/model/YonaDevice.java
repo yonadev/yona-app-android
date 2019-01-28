@@ -68,17 +68,17 @@ class YonaDevice extends BaseEntity
 		return requestingDevice;
 	}
 
-	public String getPostOpenAppEventLink()
+	public String retrevePostOpenAppEventLink()
 	{
 		return this.links.getYonaPostOpenAppEvent().getHref();
 	}
 
-	public String getLinkForPostingDeviceAppActivity()
+	public String retreiveLinkForPostingDeviceAppActivity()
 	{
 		return this.links.getYonaAppActivity().getHref();
 	}
 
-	public String getYonaSslRootCert()
+	public String retreiveYonaSslRootCert()
 	{
 		return this.links.getSslRootCert().getHref();
 	}

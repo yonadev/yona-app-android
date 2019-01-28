@@ -373,7 +373,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		}
 		else
 		{
-			setUserAvatarFromName(yonaBuddy.getNickname());
+			setUserAvatarFromName(yonaBuddy.retreiveNickname());
 		}
 	}
 
@@ -385,7 +385,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		}
 		else
 		{
-			setUserAvatarFromName(yonaBuddy.getNickname());
+			setUserAvatarFromName(yonaBuddy.retreiveNickname());
 		}
 	}
 

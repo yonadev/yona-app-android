@@ -35,6 +35,9 @@ public class YonaUser extends BaseEntity
 	@SerializedName("nickname")
 	@Expose
 	private String nickname;
+	@SerializedName("_embedded")
+	@Expose
+	private EmbeddedDevicesGoals embedded;
 
 	/**
 	 * Gets nickname.
@@ -134,6 +137,16 @@ public class YonaUser extends BaseEntity
 	public void setMobileNumber(String mobileNumber)
 	{
 		this.mobileNumber = mobileNumber;
+	}
+
+	public EmbeddedDevicesGoals getEmbedded()
+	{
+		return embedded;
+	}
+
+	public void setEmbedded(EmbeddedDevicesGoals embedded)
+	{
+		this.embedded = embedded;
 	}
 
 	@Override

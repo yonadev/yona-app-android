@@ -319,7 +319,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		isSyncAPICallDone = false;
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(fromDB), (result) -> handlePostAppActivityOnFailure(fromDB, activity), null);
-		activityNetwork.postAppActivity(user.getLinkToPostDeviceAppActivity(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
+		activityNetwork.postAppActivity(user.retrieveLinkToPostDeviceAppActivity(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
 
 	}
 
@@ -1156,13 +1156,13 @@ public class ActivityManagerImpl implements ActivityManager
 			{
 				if (isUserWithGoals(buddy))
 				{
-					List<YonaGoal> yonaGoals = buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
+					List<YonaGoal> yonaGoals = buddy.retreiveYonaGoals();
 					for (YonaGoal goal : yonaGoals)
 					{
 						if (goal != null && goal.getLinks() != null && goal.getLinks().getSelf() != null && !TextUtils.isEmpty(goal.getLinks().getSelf().getHref()) && goal.getLinks().getSelf().getHref().equals(goalHref.getHref()))
 						{
 							goal.setActivityCategoryName(getActivityCategory(goal));
-							goal.setNickName(buddy.getNickname());
+							goal.setNickName(buddy.retreiveNickname());
 							return goal;
 						}
 					}
@@ -1182,9 +1182,7 @@ public class ActivityManagerImpl implements ActivityManager
 
 	private boolean isUserWithGoals(YonaBuddy buddy)
 	{
-		return (buddy != null && buddy.getEmbedded() != null && buddy.getEmbedded().getYonaGoals() != null
-				&& buddy.getEmbedded().getYonaGoals().getEmbedded() != null
-				&& buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null);
+		return (buddy != null && buddy.getEmbedded() != null && buddy.retreiveYonaGoals() != null);
 	}
 
 	private String getActivityCategory(YonaGoal goal)
