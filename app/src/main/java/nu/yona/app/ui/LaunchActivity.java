@@ -141,10 +141,16 @@ public class LaunchActivity extends BaseActivity
 	{
 		if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
 		{
-			AppUtils.displayErrorAlert(this, new ErrorMessage(this.getString(R.string.mandatory_user_fetch_failure)));
+			AppUtils.displayErrorAlert(this, new ErrorMessage(this.getString(R.string.mandatory_user_fetch_failure)), this::closeApplicationIfNoNetwork);
 			return;
 		}
 		getUserFromServer(url);
+	}
+
+	public void closeApplicationIfNoNetwork(DialogInterface dialog, int which)
+	{
+		finish();
+		System.exit(0);
 	}
 
 	private void moveToYonaActivity()
