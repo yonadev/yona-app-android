@@ -675,7 +675,7 @@ public class AppUtils
 			return;
 		}
 		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> handleDownloadFileFromUrlSuccess(result), (result -> handleDownloadFileFromUrlFailure()), null);
-		new DownloadFileFromURL(user.retrieveSslRootCert(), dataLoadListener);
+		new DownloadFileFromURL(user.getSslRootCertLink(), dataLoadListener);
 	}
 
 	private static Object handleDownloadFileFromUrlSuccess(Object result)
@@ -770,9 +770,9 @@ public class AppUtils
 			{
 				ks.load(null, null);
 				Enumeration aliases = ks.aliases();
-				if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().retrieveSslRootCertCN() != null)
+				if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN() != null)
 				{
-					String caCertName = YonaApplication.getEventChangeManager().getDataState().getUser().retrieveSslRootCertCN();
+					String caCertName = YonaApplication.getEventChangeManager().getDataState().getUser().getSslRootCertCN();
 					if (!TextUtils.isEmpty(caCertName))
 					{
 						while (aliases.hasMoreElements())

@@ -574,7 +574,7 @@ passcode_reset;
 		}
 		DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result), (error) -> handlePostAppEventFailure(error), null);
 		String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();
-		APIManager.getInstance().getYonaManager().postOpenAppEvent(loggedInUser.retrieveLinkToPostOpenAppEvent(), yonaPassword, listenerWrapper);
+		APIManager.getInstance().getYonaManager().postOpenAppEvent(loggedInUser.getPostOpenAppEventLink(), yonaPassword, listenerWrapper);
 	}
 
 	protected abstract Object handlePostAppEventSuccess(Object result);

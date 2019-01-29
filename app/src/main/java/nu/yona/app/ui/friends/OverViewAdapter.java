@@ -105,9 +105,9 @@ public class OverViewAdapter extends RecyclerView.Adapter<MessageItemViewHolder>
 					}
 				}
 			}
-			else if (!TextUtils.isEmpty(yonaObject.retrieveNickname()))
+			else if (!TextUtils.isEmpty(yonaObject.getNickname()))
 			{
-				holder.txtFooterMsg.setText(yonaObject.retrieveNickname());
+				holder.txtFooterMsg.setText(yonaObject.getNickname());
 				holder.profileIconTxt.setVisibility(View.VISIBLE);
 				holder.profileIconTxt.setText(username.substring(0, 1).toUpperCase());
 				holder.profileIconTxt.setBackground(ContextCompat.getDrawable(YonaActivity.getActivity(), R.drawable.bg_small_self_round));

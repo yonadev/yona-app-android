@@ -13,6 +13,8 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.util.List;
 
 import nu.yona.app.enums.StatusEnum;
@@ -147,6 +149,7 @@ public class YonaBuddy extends BaseEntity
 	 *
 	 * @return formatted date string.
 	 */
+	@JsonIgnore
 	public String getLastMonitoredActivityDateToDisplay()
 	{
 		return DateUtility.getFormattedRelativeDateDifference(lastMonitoredActivityDate);
@@ -158,12 +161,14 @@ public class YonaBuddy extends BaseEntity
 		return null;
 	}
 
-	public String retrieveNickname()
+	@JsonIgnore
+	public String getNickname()
 	{
 		return this.getEmbedded().getYonaUser().getNickname();
 	}
 
-	public List<YonaGoal> retrieveYonaGoals()
+	@JsonIgnore
+	public List<YonaGoal> getYonaGoals()
 	{
 		return this.getEmbedded().getYonaUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
 	}
