@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class EmbeddedYonaDevices extends BaseEntity
 		return yonaDevices;
 	}
 
+	@JsonIgnore
 	public YonaDevice getCurrentDevice()
 	{
 		for (YonaDevice device : yonaDevices)

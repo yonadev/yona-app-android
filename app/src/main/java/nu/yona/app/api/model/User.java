@@ -13,6 +13,7 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.ArrayList;
@@ -259,11 +260,6 @@ public class User extends BaseEntity
 		return null;
 	}
 
-	public String getSslRootCertCN()
-	{
-		return getCurentDevice().getSslRootCertCN();
-	}
-
 	public String getYonaPassword()
 	{
 		return this.yonaPassword;
@@ -295,25 +291,40 @@ public class User extends BaseEntity
 		this.version = version;
 	}
 
-
-	public String getLinkToPostOpenAppEvent()
+	@JsonIgnore
+	public String getPostOpenAppEventLink()
 	{
-		return getCurentDevice().getPostOpenAppEventLink();
+		return getCurrentDevice().getPostOpenAppEventLink();
 	}
 
-	public String getLinkToPostDeviceAppActivity()
+	@JsonIgnore
+	public String getSslRootCertCN()
 	{
-		return getCurentDevice().getLinkForPostingDeviceAppActivity();
+		return getCurrentDevice().getSslRootCertCN();
 	}
 
-	public String getSslRootCert()
+	@JsonIgnore
+	public String getPostDeviceAppActivityLink()
 	{
-		return getCurentDevice().getYonaSslRootCert();
+		return getCurrentDevice().getPostDeviceAppActivityLink();
 	}
 
-	private YonaDevice getCurentDevice()
+	@JsonIgnore
+	public String getSslRootCertLink()
+	{
+		return getCurrentDevice().getSslRootCertLink();
+	}
+
+	@JsonIgnore
+	private YonaDevice getCurrentDevice()
 	{
 		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice();
+	}
+
+	@JsonIgnore
+	public List<YonaBuddy> getBuddies()
+	{
+		return this.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
 	}
 
 	public boolean isActive()

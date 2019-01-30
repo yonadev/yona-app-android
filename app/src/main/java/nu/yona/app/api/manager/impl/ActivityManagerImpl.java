@@ -319,7 +319,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		isSyncAPICallDone = false;
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(fromDB), (result) -> handlePostAppActivityOnFailure(fromDB, activity), null);
-		activityNetwork.postAppActivity(user.getLinkToPostDeviceAppActivity(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
+		activityNetwork.postAppActivity(user.getPostDeviceAppActivityLink(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
 
 	}
 
@@ -1129,18 +1129,16 @@ public class ActivityManagerImpl implements ActivityManager
 	public YonaBuddy findYonaBuddy(Href yonaBuddy)
 	{
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-		if (user != null && user.getEmbedded() != null
-				&& user.getEmbedded().getYonaBuddies() != null
-				&& user.getEmbedded().getYonaBuddies().getEmbedded() != null
-				&& user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null)
+		if (!isUserWithBuddies(user))
 		{
-			List<YonaBuddy> yonaBuddies = user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
-			for (YonaBuddy buddy : yonaBuddies)
+			return null;
+		}
+		List<YonaBuddy> yonaBuddies = user.getBuddies();
+		for (YonaBuddy buddy : yonaBuddies)
+		{
+			if (buddy.getLinks().getSelf().getHref().equals(yonaBuddy.getHref()))
 			{
-				if (buddy != null && buddy.getLinks() != null && buddy.getLinks().getSelf() != null && buddy.getLinks().getSelf().getHref().equals(yonaBuddy.getHref()))
-				{
-					return buddy;
-				}
+				return buddy;
 			}
 		}
 		return null; // Dummy return value, to allow use as data load handler
@@ -1149,27 +1147,33 @@ public class ActivityManagerImpl implements ActivityManager
 	private YonaGoal findYonaBuddyGoal(Href goalHref)
 	{
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-		if (isUserWithBuddies(user))
+		if (!isUserWithBuddies(user))
 		{
-			List<YonaBuddy> yonaBuddies = user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
-			for (YonaBuddy buddy : yonaBuddies)
+			return null;
+		}
+		List<YonaBuddy> yonaBuddies = user.getBuddies();
+		for (YonaBuddy buddy : yonaBuddies)
+		{
+			if (buddy.getYonaGoals() != null)
 			{
-				if (isUserWithGoals(buddy))
-				{
-					List<YonaGoal> yonaGoals = buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
-					for (YonaGoal goal : yonaGoals)
-					{
-						if (goal != null && goal.getLinks() != null && goal.getLinks().getSelf() != null && !TextUtils.isEmpty(goal.getLinks().getSelf().getHref()) && goal.getLinks().getSelf().getHref().equals(goalHref.getHref()))
-						{
-							goal.setActivityCategoryName(getActivityCategory(goal));
-							goal.setNickName(buddy.getNickname());
-							return goal;
-						}
-					}
-				}
+				return findMatchingGoalFromYonaBuddy(goalHref, buddy);
 			}
 		}
 		return null; // Dummy return value, to allow use as data load handler
+	}
+
+	private YonaGoal findMatchingGoalFromYonaBuddy(Href goalHref, YonaBuddy buddy)
+	{
+		for (YonaGoal goal : buddy.getYonaGoals())
+		{
+			if (goal.getLinks().getSelf().getHref().equals(goalHref.getHref()))
+			{
+				goal.setActivityCategoryName(getActivityCategory(goal));
+				goal.setNickName(buddy.getNickname());
+				return goal;
+			}
+		}
+		return null;
 	}
 
 	private boolean isUserWithBuddies(User user)
@@ -1178,13 +1182,6 @@ public class ActivityManagerImpl implements ActivityManager
 				&& user.getEmbedded().getYonaBuddies() != null
 				&& user.getEmbedded().getYonaBuddies().getEmbedded() != null
 				&& user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null);
-	}
-
-	private boolean isUserWithGoals(YonaBuddy buddy)
-	{
-		return (buddy != null && buddy.getEmbedded() != null && buddy.getEmbedded().getYonaGoals() != null
-				&& buddy.getEmbedded().getYonaGoals().getEmbedded() != null
-				&& buddy.getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null);
 	}
 
 	private String getActivityCategory(YonaGoal goal)

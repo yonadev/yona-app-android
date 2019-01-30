@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 class YonaDevice extends BaseEntity
 {
 	@SerializedName("_links")
@@ -68,17 +70,21 @@ class YonaDevice extends BaseEntity
 		return requestingDevice;
 	}
 
+
+	@JsonIgnore
 	public String getPostOpenAppEventLink()
 	{
 		return this.links.getYonaPostOpenAppEvent().getHref();
 	}
 
-	public String getLinkForPostingDeviceAppActivity()
+	@JsonIgnore
+	public String getPostDeviceAppActivityLink()
 	{
 		return this.links.getYonaAppActivity().getHref();
 	}
 
-	public String getYonaSslRootCert()
+	@JsonIgnore
+	public String getSslRootCertLink()
 	{
 		return this.links.getSslRootCert().getHref();
 	}

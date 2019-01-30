@@ -22,9 +22,6 @@ public class EmbeddedYonaUser extends BaseEntity
 	@SerializedName("yona:user")
 	@Expose
 	private YonaUser yonaUser;
-	@SerializedName(("yona:goals"))
-	@Expose
-	private YonaGoals yonaGoals;
 
 	/**
 	 * Gets yona user.
@@ -50,25 +47,5 @@ public class EmbeddedYonaUser extends BaseEntity
 	public ContentValues getDbContentValues()
 	{
 		return null;
-	}
-
-	/**
-	 * Get yona Goals
-	 *
-	 * @return yona goals
-	 */
-	public YonaGoals getYonaGoals()
-	{
-		return yonaGoals;
-	}
-
-	/**
-	 * Set yona Goals
-	 *
-	 * @param yonaGoals the yona goals
-	 */
-	public void setYonaGoals(YonaGoals yonaGoals)
-	{
-		this.yonaGoals = yonaGoals;
 	}
 }

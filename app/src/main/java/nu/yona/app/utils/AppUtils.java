@@ -679,7 +679,7 @@ public class AppUtils
 			return;
 		}
 		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> handleDownloadFileFromUrlSuccess(result), (result -> handleDownloadFileFromUrlFailure()), null);
-		new DownloadFileFromURL(user.getSslRootCert(), dataLoadListener);
+		new DownloadFileFromURL(user.getSslRootCertLink(), dataLoadListener);
 	}
 
 	private static Object handleDownloadFileFromUrlSuccess(Object result)
