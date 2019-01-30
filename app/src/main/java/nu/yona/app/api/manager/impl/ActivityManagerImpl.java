@@ -1129,18 +1129,16 @@ public class ActivityManagerImpl implements ActivityManager
 	public YonaBuddy findYonaBuddy(Href yonaBuddy)
 	{
 		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
-		if (user != null && user.getEmbedded() != null
-				&& user.getEmbedded().getYonaBuddies() != null
-				&& user.getEmbedded().getYonaBuddies().getEmbedded() != null
-				&& user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null)
+		if (!isUserWithBuddies(user))
 		{
-			List<YonaBuddy> yonaBuddies = user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
-			for (YonaBuddy buddy : yonaBuddies)
+			return null;
+		}
+		List<YonaBuddy> yonaBuddies = user.getBuddies();
+		for (YonaBuddy buddy : yonaBuddies)
+		{
+			if (buddy.getLinks().getSelf().getHref().equals(yonaBuddy.getHref()))
 			{
-				if (buddy != null && buddy.getLinks() != null && buddy.getLinks().getSelf() != null && buddy.getLinks().getSelf().getHref().equals(yonaBuddy.getHref()))
-				{
-					return buddy;
-				}
+				return buddy;
 			}
 		}
 		return null; // Dummy return value, to allow use as data load handler
@@ -1153,15 +1151,13 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			return null;
 		}
-		List<YonaBuddy> yonaBuddies = user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
+		List<YonaBuddy> yonaBuddies = user.getBuddies();
 		for (YonaBuddy buddy : yonaBuddies)
 		{
-			if (buddy.getYonaGoals() == null)
+			if (buddy.getYonaGoals() != null)
 			{
-				continue;
+				return findMatchingGoalFromYonaBuddy(goalHref, buddy);
 			}
-			return findMatchingGoalFromYonaBuddy(goalHref, buddy);
-
 		}
 		return null; // Dummy return value, to allow use as data load handler
 	}

@@ -321,6 +321,12 @@ public class User extends BaseEntity
 		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice();
 	}
 
+	@JsonIgnore
+	public List<YonaBuddy> getBuddies()
+	{
+		return this.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
+	}
+
 	public boolean isActive()
 	{
 		return this.getStatus() == UserStatus.ACTIVE;
