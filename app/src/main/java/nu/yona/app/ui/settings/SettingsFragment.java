@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -367,23 +368,9 @@ public class SettingsFragment extends BaseFragment
 	private void openEmail()
 	{
 		CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.usercredential), getString(R.string.usercredentialmsg),
-				getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int which)
-					{
-						String userCredential = Html.fromHtml("<html> Base URL: " + Uri.encode(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref())
-								+ "<br><br>" + Uri.encode("Password: " + YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()) + "</html>").toString();
-						showEmailClient(userCredential);
-					}
-				}, new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int which)
-					{
-						showEmailClient("");
-					}
-				});
+				getString(R.string.yes), getString(R.string.no), (dialog, which) -> {
+					showEmailClient(getTextForSupportMail(true));
+				}, (dialog, which) -> showEmailClient(getTextForSupportMail(false)));
 	}
 
 	private void showEmailClient(String userCredential)
@@ -392,6 +379,23 @@ public class SettingsFragment extends BaseFragment
 		Uri data = Uri.parse("mailto:support@yona.nu?subject=" + getString(R.string.support_mail_subject) + "&body=" + userCredential);
 		intent.setData(data);
 		startActivity(intent);
+	}
+
+	private String getTextForSupportMail(Boolean isYonaPasswordToBeAdded)
+	{
+		AppMetaInfo appMetaInfo = AppMetaInfo.getInstance();
+		String baseURL = " Base URL: " + Uri.encode(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref());
+		String yonaPassword = "";
+		if (isYonaPasswordToBeAdded)
+		{
+			yonaPassword = Uri.encode("Password: " + YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()) + "<br><br>";
+		}
+		String appVersion = "App Version: " + appMetaInfo.getAppVersion();
+		String appBuild = "App Build: " + appMetaInfo.getAppVersionCode();
+		String androidVersion = "Android version: " + Build.VERSION.RELEASE;
+		String deviceBrand = "Device Brand: " + Build.MANUFACTURER;
+		String deviceModel = "Device Model: " + Build.MODEL;
+		return Html.fromHtml("<html>" + baseURL + "<br><br>" + yonaPassword + appVersion + "<br>" + appBuild + "<br>" + androidVersion + "<br>" + deviceBrand + "<br>" + deviceModel + "</html>").toString();
 	}
 
 	@Override
