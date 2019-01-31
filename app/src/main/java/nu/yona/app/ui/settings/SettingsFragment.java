@@ -390,11 +390,11 @@ public class SettingsFragment extends BaseFragment
 		{
 			yonaPassword = Uri.encode("Password: " + YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()) + "<br><br>";
 		}
-		String appVersion = "App Version: " + appMetaInfo.getAppVersion();
-		String appBuild = "App Build: " + appMetaInfo.getAppVersionCode();
+		String appVersion = "App version: " + appMetaInfo.getAppVersion();
+		String appBuild = "App version code: " + appMetaInfo.getAppVersionCode();
 		String androidVersion = "Android version: " + Build.VERSION.RELEASE;
-		String deviceBrand = "Device Brand: " + Build.MANUFACTURER;
-		String deviceModel = "Device Model: " + Build.MODEL;
+		String deviceBrand = "Device brand: " + Build.MANUFACTURER;
+		String deviceModel = "Device model: " + Build.MODEL;
 		return Html.fromHtml("<html>" + baseURL + "<br><br>" + yonaPassword + appVersion + "<br>" + appBuild + "<br>" + androidVersion + "<br>" + deviceBrand + "<br>" + deviceModel + "</html>").toString();
 	}
 
