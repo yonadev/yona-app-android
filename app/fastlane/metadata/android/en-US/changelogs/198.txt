@@ -1,0 +1,1 @@
+APPDEV-1234 E-mail to support now includes device and version information

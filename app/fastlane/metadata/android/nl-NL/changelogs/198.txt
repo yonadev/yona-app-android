@@ -1,0 +1,1 @@
+APPDEV-1234 E-mail naar support bevat nu informatie over het apparaat en de versie van de app en van Android
