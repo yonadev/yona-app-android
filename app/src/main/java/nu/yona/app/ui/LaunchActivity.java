@@ -34,6 +34,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
+import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.enums.EncryptionMethod;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.login.LoginActivity;
@@ -42,6 +43,7 @@ import nu.yona.app.ui.signup.OTPActivity;
 import nu.yona.app.ui.signup.SignupActivity;
 import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
 import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
@@ -58,9 +60,8 @@ public class LaunchActivity extends BaseActivity
 		initializeCrashlytics();
 		validateYonaPasswordEncryption();
 		setUpApplicationInitialView();
-		navigateToValidActivity();
 		setListeners();
-		YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
+		navigateToValidActivity();
 	}
 
 	private void initializeCrashlytics()
@@ -117,39 +118,91 @@ public class LaunchActivity extends BaseActivity
 		}
 		else if (!TextUtils.isEmpty(sharedUserPreferences.getString(PreferenceConstant.YONA_PASSCODE, "")))
 		{
-			startNewActivity(bundle, YonaActivity.class);
+			checkForValidStoredUser();
 		}
+	}
+
+
+	private void checkForValidStoredUser()
+	{
+		try
+		{
+			URL environmentURL = new URL(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
+			URL storeUserURL = new URL(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref());
+			if (environmentURL.getProtocol() == storeUserURL.getProtocol())
+			{
+				moveToYonaActivity();
+			}
+			reloadUserFromServer(storeUserURL.toString().replace(storeUserURL.getProtocol(), environmentURL.getProtocol()));
+		}
+		catch (MalformedURLException e)
+		{
+			AppUtils.reportException(this.getClass().getName(), e, Thread.currentThread());
+		}
+	}
+
+	private void reloadUserFromServer(String url)
+	{
+		if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
+		{
+			AppUtils.displayErrorAlert(this, new ErrorMessage(this.getString(R.string.mandatory_user_fetch_failure)), this::closeApplication);
+			return;
+		}
+		getUserFromServer(url);
+	}
+
+	private void moveToYonaActivity()
+	{
+		startNewActivity(bundle, YonaActivity.class);
+		YonaAnalytics.trackCategoryScreen(AnalyticsConstant.LAUNCH_ACTIVITY, AnalyticsConstant.LAUNCH_ACTIVITY);
+	}
+
+	private void getUserFromServer(String url)
+	{
+		showLoadingView(true, "");
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserFetchSuccess(result), (result) -> handleUserFetchFailure(result), null);
+		APIManager.getInstance().getAuthenticateManager().getUserFromServer(url, dataLoadListenerImpl);
+	}
+
+	private Object handleUserFetchSuccess(Object result)
+	{
+		moveToYonaActivity();
+		showLoadingView(false, "");
+		return null;// Dummy return value, to allow use as data load handler
+	}
+
+	private Object handleUserFetchFailure(Object error)
+	{
+		showLoadingView(false, "");
+		if (error instanceof ErrorMessage)
+		{
+			AppUtils.displayErrorAlert(this, (ErrorMessage) error);
+		}
+		else
+		{
+			AppUtils.displayErrorAlert(this, new ErrorMessage((String) error));
+		}
+		return null;// Dummy return value, to allow use as data load handler
+	}
+
+	private void closeApplication(DialogInterface dialog, int which)
+	{
+		finish();
+		System.exit(0);
 	}
 
 
 	private void setListeners()
 	{
-		findViewById(R.id.join).setOnClickListener(new View.OnClickListener()
+		findViewById(R.id.join).setOnClickListener(result -> startNewActivity(bundle, SignupActivity.class));
+		findViewById(R.id.login).setOnClickListener(result -> startNewActivity(LoginActivity.class));
+		findViewById(R.id.environmentSwitch).setOnLongClickListener(result ->
 		{
-			@Override
-			public void onClick(View v)
-			{
-				startNewActivity(bundle, SignupActivity.class);
-			}
-		});
-		findViewById(R.id.login).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				startNewActivity(LoginActivity.class);
-			}
-		});
-		findViewById(R.id.environmentSwitch).setOnLongClickListener(new View.OnLongClickListener()
-		{
-			@Override
-			public boolean onLongClick(View v)
-			{
-				switchEnvironment();
-				return true;
-			}
+			switchEnvironment();
+			return true;
 		});
 	}
+
 
 	private void validateYonaPasswordEncryption()
 	{

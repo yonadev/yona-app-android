@@ -15,6 +15,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
@@ -389,16 +390,20 @@ public class AppUtils
 	 */
 	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
 	{
-		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(context, errorMessage).show());
+		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(context, errorMessage, null).show());
 	}
 
-	public static AlertDialog getGenericAlertDialogWithErrorMessage(Context context, ErrorMessage errorMessage)
+	public static void displayErrorAlert(Context context, ErrorMessage errorMessage, DialogInterface.OnClickListener onClickListener)
+	{
+		runOnUiThread(() -> getGenericAlertDialogWithErrorMessage(context, errorMessage, onClickListener).show());
+	}
+
+	private static AlertDialog getGenericAlertDialogWithErrorMessage(Context context, ErrorMessage errorMessage, DialogInterface.OnClickListener onClickListener)
 	{
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 		alertDialogBuilder.setMessage(errorMessage.getMessage());
-		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), null);
-		AlertDialog alertDialog = alertDialogBuilder.create();
-		return alertDialog;
+		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), onClickListener);
+		return alertDialogBuilder.create();
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)

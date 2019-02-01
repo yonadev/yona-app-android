@@ -227,4 +227,5 @@
     <string name="notification_disabled_message">Omdat meldingen voor de Yona-applicatie zijn uitgeschakeld kan Yona appgebruik niet meer bijhouden. Zet in de Android instellingen meldingen weer aan voor de Yona app.</string>
     <string name="yona_service_notification_channel_name">Vaste melding</string>
     <string name="support_mail_subject">Probleem met Yona app</string>
+    <string name="mandatory_user_fetch_failure">De Yona-app heeft deze keer een netwerkverbinding nodig om te starten.</string>
 </resources>
