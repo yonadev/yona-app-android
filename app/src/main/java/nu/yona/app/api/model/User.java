@@ -13,6 +13,8 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import nu.yona.app.YonaApplication;
 /**
  * The type User.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User extends BaseEntity
 {
 

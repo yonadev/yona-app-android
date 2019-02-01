@@ -13,6 +13,7 @@ import java.io.File;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -92,6 +93,12 @@ public interface AuthenticateManager
 	 * @param listener the listener
 	 */
 	void getUser(final String url, final DataLoadListener listener);
+
+	/**
+	 * Gets user from server.
+	 */
+	void getUserFromServer(String userSelfLink, DataLoadListenerImpl dataLoadListener);
+
 
 	/**
 	 * Gets friend profile.
