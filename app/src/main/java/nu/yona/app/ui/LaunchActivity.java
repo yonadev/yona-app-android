@@ -145,7 +145,7 @@ public class LaunchActivity extends BaseActivity
 	{
 		if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
 		{
-			AppUtils.displayErrorAlert(this, new ErrorMessage(this.getString(R.string.mandatory_user_fetch_failure)));
+			AppUtils.displayErrorAlert(this, new ErrorMessage(this.getString(R.string.mandatory_user_fetch_failure)), this::closeApplication);
 			return;
 		}
 		getUserFromServer(url);
@@ -183,6 +183,12 @@ public class LaunchActivity extends BaseActivity
 			AppUtils.displayErrorAlert(this, new ErrorMessage((String) error));
 		}
 		return null;// Dummy return value, to allow use as data load handler
+	}
+
+	private void closeApplication(DialogInterface dialog, int which)
+	{
+		finish();
+		System.exit(0);
 	}
 
 
