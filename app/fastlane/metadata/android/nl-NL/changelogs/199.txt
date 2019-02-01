@@ -1,0 +1,1 @@
+APPDEV-1256 Voor sommige nieuwe gebruikers crashet de app in het dag- of weekoverzicht. Dit is nu opgelost.
