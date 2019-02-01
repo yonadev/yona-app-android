@@ -24,6 +24,7 @@ import com.google.android.gms.analytics.Tracker;
 import java.util.Locale;
 
 import nu.yona.app.analytics.AnalyticsConstant;
+import nu.yona.app.api.model.User;
 import nu.yona.app.state.DataState;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
@@ -93,6 +94,11 @@ public class YonaApplication extends Application
 	public static DataState getSharedAppDataState()
 	{
 		return sharedAppDataState;
+	}
+
+	public static User getUserFromDB()
+	{
+		return YonaApplication.getEventChangeManager().getDataState().getUser();
 	}
 
 	@Override

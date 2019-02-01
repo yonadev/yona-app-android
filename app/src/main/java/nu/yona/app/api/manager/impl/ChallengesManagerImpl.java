@@ -35,6 +35,7 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.YonaApplication.getUserFromDB;
 
 /**
  * Created by bhargavsuthar on 20/04/16.
@@ -197,7 +198,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 						}
 					}
 				}
-				if (YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() > serversetGoal)
+				if (getUserFromDB().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() > serversetGoal)
 				{
 					YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
 					return true;
