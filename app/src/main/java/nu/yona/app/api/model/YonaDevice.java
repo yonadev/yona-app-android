@@ -16,6 +16,10 @@ class YonaDevice extends BaseEntity
 	@Expose
 	private String sslRootCertCN;
 
+	@SerializedName("vpnProfile")
+	@Expose
+	private VpnProfile vpnProfile;
+
 	@SerializedName("name")
 	@Expose
 	private String name;
@@ -70,6 +74,10 @@ class YonaDevice extends BaseEntity
 		return requestingDevice;
 	}
 
+	public VpnProfile getVpnProfile()
+	{
+		return vpnProfile;
+	}
 
 	@JsonIgnore
 	public String getPostOpenAppEventLink()
@@ -88,4 +96,5 @@ class YonaDevice extends BaseEntity
 	{
 		return this.links.getSslRootCert().getHref();
 	}
+
 }
