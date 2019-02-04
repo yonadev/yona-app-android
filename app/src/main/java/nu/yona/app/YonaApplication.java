@@ -96,7 +96,7 @@ public class YonaApplication extends Application
 		return sharedAppDataState;
 	}
 
-	public static User getUserFromDB()
+	public static User getAppUser()
 	{
 		return YonaApplication.getEventChangeManager().getDataState().getUser();
 	}

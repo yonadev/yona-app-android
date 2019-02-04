@@ -69,7 +69,7 @@ import nu.yona.timepicker.time.Timepoint;
 
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
-import static nu.yona.app.YonaApplication.getUserFromDB;
+import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
 
@@ -512,7 +512,7 @@ public class AppUtils
 	{
 		String profileUUID = getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
-		User user = getUserFromDB();
+		User user = getAppUser();
 		if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null)
 		{
 			profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
@@ -549,7 +549,7 @@ public class AppUtils
 
 	public static void downloadCertificates()
 	{
-		User user = getUserFromDB();
+		User user = getAppUser();
 		if (!user.isActive() || YonaApplication.getEventChangeManager().getSharedPreference().getRootCertPath() != null)
 		{
 			return;
@@ -582,7 +582,7 @@ public class AppUtils
 
 	public static void downloadVPNProfile()
 	{
-		User user = getUserFromDB();
+		User user = getAppUser();
 		if (user.getVpnProfile() != null && YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() == null)
 		{
 			DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> handleDownloadVpnFromUrlSuccess(result), (error) -> handleDownloadVpnFromUrlFailure(), null);
@@ -646,11 +646,11 @@ public class AppUtils
 			}
 			ks.load(null, null);
 			Enumeration aliases = ks.aliases();
-			if (getUserFromDB() == null || getUserFromDB().getSslRootCertCN() == null)
+			if (getAppUser() == null || getAppUser().getSslRootCertCN() == null)
 			{
 				return false;
 			}
-			String caCertName = getUserFromDB().getSslRootCertCN();
+			String caCertName = getAppUser().getSslRootCertCN();
 			if (!TextUtils.isEmpty(caCertName))
 			{
 				while (aliases.hasMoreElements())
