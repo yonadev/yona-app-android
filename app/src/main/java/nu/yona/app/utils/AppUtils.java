@@ -21,14 +21,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -49,8 +42,6 @@ import org.joda.time.Period;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.security.KeyStore;
 import java.util.Enumeration;
 import java.util.Map;
@@ -61,7 +52,6 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import de.blinkt.openvpn.LaunchVPN;
 import de.blinkt.openvpn.VpnProfile;
-import de.blinkt.openvpn.activities.DisconnectVPN;
 import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VpnStatus;
 import nu.yona.app.R;
@@ -100,36 +90,6 @@ public class AppUtils
 	private static final String TAG = "AppUtils";
 
 	/**
-	 * Gets circle bitmap.
-	 *
-	 * @param bitmap the bitmap
-	 * @return the circle bitmap
-	 */
-	public static Bitmap getCircleBitmap(Bitmap bitmap)
-	{
-		final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-				bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-		final Canvas canvas = new Canvas(output);
-
-		final int color = Color.BLUE;
-		final Paint paint = new Paint();
-		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-		final RectF rectF = new RectF(rect);
-
-		paint.setAntiAlias(true);
-		canvas.drawARGB(0, 0, 0, 0);
-		paint.setColor(color);
-		canvas.drawOval(rectF, paint);
-
-		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-		canvas.drawBitmap(bitmap, rect, rect, paint);
-
-		bitmap.recycle();
-
-		return output;
-	}
-
-	/**
 	 * Has permission boolean.
 	 *
 	 * @param context the context
@@ -151,18 +111,6 @@ public class AppUtils
 			return true;
 		}
 
-	}
-
-	/**
-	 * Gets dp.
-	 *
-	 * @param context the context
-	 * @param dp      the dp
-	 * @return the dp
-	 */
-	public static int getDp(Context context, int dp)
-	{
-		return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
 	}
 
 	/**
@@ -207,7 +155,7 @@ public class AppUtils
 		Post Alert message if app is not permitted to do so.
 	 */
 	@TargetApi(Build.VERSION_CODES.O)
-	public static void startForegroundService(Context context, Intent activityMonitorIntent)
+	private static void startForegroundService(Context context, Intent activityMonitorIntent)
 	{
 		if (!NotificationManagerCompat.from(context).areNotificationsEnabled())
 		{
@@ -264,7 +212,6 @@ public class AppUtils
 	public static void registerReceiver(Context context)
 	{
 		loge(TAG, "Register Receiver");
-
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_ON);
 		filter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -272,24 +219,7 @@ public class AppUtils
 		filter.addAction(AppConstant.RESTART_DEVICE);
 		filter.addAction(AppConstant.RESTART_VPN);
 		filter.addAction(PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED);
-
-
 		context.registerReceiver(receiver, filter);
-	}
-
-	/**
-	 * get the two digit length if digit length is one
-	 *
-	 * @param digit the digit
-	 * @return digit hour digit
-	 */
-	public static String getHourDigit(String digit)
-	{
-		if (digit.length() != 2)
-		{
-			digit = "0" + digit;
-		}
-		return digit;
 	}
 
 	/**
@@ -305,21 +235,7 @@ public class AppUtils
 			StringBuffer buffer = new StringBuffer();
 			long totalTime = 0;
 			Period period = new Period(time);
-			if (period.getHours() > 0)
-			{
-				totalTime += period.getHours() * AppConstant.ONE_SECOND * 60 * 60;
-				buffer.append(YonaApplication.getAppContext().getString(R.string.hours, period.getHours() + ""));
-			}
-			if (period.getMinutes() > 0)
-			{
-				totalTime += period.getMinutes() * AppConstant.ONE_SECOND * 60;
-				buffer.append(YonaApplication.getAppContext().getString(R.string.minute, period.getMinutes() + ""));
-			}
-			if (period.getSeconds() > 0)
-			{
-				totalTime += period.getSeconds() * AppConstant.ONE_SECOND;
-				buffer.append(YonaApplication.getAppContext().getString(R.string.seconds, period.getSeconds() + ""));
-			}
+			totalTime = getTotalTimeForOTP(period, totalTime, buffer);
 			return Pair.create(buffer.toString(), totalTime);
 		}
 		catch (Exception e)
@@ -327,6 +243,26 @@ public class AppUtils
 			AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
 		}
 		return Pair.create(time, (long) 0);
+	}
+
+	private static long getTotalTimeForOTP(Period period, long totalTime, StringBuffer buffer)
+	{
+		if (period.getHours() > 0)
+		{
+			totalTime += period.getHours() * AppConstant.ONE_SECOND * 60 * 60;
+			buffer.append(YonaApplication.getAppContext().getString(R.string.hours, period.getHours() + ""));
+		}
+		if (period.getMinutes() > 0)
+		{
+			totalTime += period.getMinutes() * AppConstant.ONE_SECOND * 60;
+			buffer.append(YonaApplication.getAppContext().getString(R.string.minute, period.getMinutes() + ""));
+		}
+		if (period.getSeconds() > 0)
+		{
+			totalTime += period.getSeconds() * AppConstant.ONE_SECOND;
+			buffer.append(YonaApplication.getAppContext().getString(R.string.seconds, period.getSeconds() + ""));
+		}
+		return totalTime;
 	}
 
 	/**
@@ -383,14 +319,7 @@ public class AppUtils
 
 	private static void showErrorToast(ErrorMessage errorMessage)
 	{
-		runOnUiThread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show();
-			}
-		});
+		runOnUiThread(() -> Toast.makeText(YonaApplication.getAppContext(), errorMessage.getMessage(), Toast.LENGTH_LONG).show());
 	}
 
 	public static void displayErrorAlert(Context context, ErrorMessage errorMessage)
@@ -422,7 +351,7 @@ public class AppUtils
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)
-	public static void createPersistentNotificationChannel(Context context)
+	private static void createPersistentNotificationChannel(Context context)
 	{
 		removeOldPersistentNotificationChannel(context);
 		NotificationChannel channel = new NotificationChannel(AppConstant.YONA_SERVICE_CHANNEL_ID,
@@ -433,21 +362,20 @@ public class AppUtils
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)
-	public static void removeOldPersistentNotificationChannel(Context context)
+	private static void removeOldPersistentNotificationChannel(Context context)
 	{
 		android.app.NotificationManager notificationManager = context.getSystemService(android.app.NotificationManager.class);
 		notificationManager.deleteNotificationChannel(AppConstant.OLD_YONA_SERVICE_CHANNEL_ID);
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)
-	public static NotificationChannel getPersistentNotificationChannel(Context context)
+	private static NotificationChannel getPersistentNotificationChannel(Context context)
 	{
 		android.app.NotificationManager notificationManager = context.getSystemService(android.app.NotificationManager.class);
-		NotificationChannel notificationChannel = notificationManager.getNotificationChannel(AppConstant.YONA_SERVICE_CHANNEL_ID);
-		return notificationChannel;
+		return notificationManager.getNotificationChannel(AppConstant.YONA_SERVICE_CHANNEL_ID);
 	}
 
-	public static final void runOnUiThread(Runnable runnable)
+	private static void runOnUiThread(Runnable runnable)
 	{
 		boolean isUiThread = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Looper.getMainLooper().isCurrentThread()
 				: Thread.currentThread() == Looper.getMainLooper().getThread();
@@ -462,27 +390,6 @@ public class AppUtils
 	}
 
 	/**
-	 * Gets filter.
-	 *
-	 * @return the filter
-	 */
-//    public static InputFilter getFilter() {
-//        if (filter == null) {
-//            filter = new InputFilter() {
-//                @Override
-//                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-//                    String blockCharacterSet = "~#^&|$%*!@/()-'\":;,?{}=!$^';,?×÷<>{}€£¥₩%~`¤♡♥_|《》¡¿°•○●□■◇◆♧♣▲▼▶◀↑↓←→☆★▪:-);-):-(:'(:O 1234567890";
-//                    if (source != null && blockCharacterSet.contains(("" + source))) {
-//                        return "";
-//                    }
-//                    return null;
-//                }
-//            };
-//        }
-//        return filter;
-//    }
-
-	/**
 	 * Get splited time. ex: 21:00 - 23:54 whill return 21:00 and 23:54
 	 *
 	 * @param time the time
@@ -492,19 +399,6 @@ public class AppUtils
 	{
 		return time.split("-", 2);
 	}
-
-
-	/**
-	 * Get splited hr string [ ].
-	 *
-	 * @param time the time
-	 * @return the string [ ]
-	 */
-	public static String[] getSplitedHr(String time)
-	{
-		return time.split(":", 2);
-	}
-
 
 	/**
 	 * Gets time in milliseconds.
@@ -568,14 +462,7 @@ public class AppUtils
 	 */
 	public static void sendLogToServer(long delayMilliseconds)
 	{
-		new Handler().postDelayed(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				APIManager.getInstance().getActivityManager().postAllDBActivities();
-			}
-		}, delayMilliseconds);
+		new Handler().postDelayed(() -> APIManager.getInstance().getActivityManager().postAllDBActivities(), delayMilliseconds);
 	}
 
 	/**
@@ -612,18 +499,6 @@ public class AppUtils
 			scheduler.shutdown();
 		}
 		scheduler = null;
-	}
-
-	public static void stopVPN(Context context)
-	{
-		String profileUUID = getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
-		VpnProfile profile = ProfileManager.get(context, profileUUID);
-		if (VpnStatus.isVPNActive() && ProfileManager.getLastConnectedVpn() == profile)
-		{
-			Intent disconnectVPN = new Intent(context, DisconnectVPN.class);
-			disconnectVPN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(disconnectVPN);
-		}
 	}
 
 	public static boolean isVPNConnected(Context context)
@@ -708,35 +583,33 @@ public class AppUtils
 	public static void downloadVPNProfile()
 	{
 		User user = getUserFromDB();
-		if (user.getVpnProfile() != null && user.getVpnProfile().getLinks() != null && user.getVpnProfile().getLinks().getOvpnProfile() != null
-				&& YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() == null)
+		if (user.getVpnProfile() != null && YonaApplication.getEventChangeManager().getSharedPreference().getVPNProfilePath() == null)
 		{
-			new DownloadFileFromURL(user.getVpnProfile().getLinks().getOvpnProfile().getHref(), new DataLoadListener()
-			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-					if (result != null && !TextUtils.isEmpty(result.toString()))
-					{
-						YonaApplication.getEventChangeManager().getSharedPreference().setVPNProfilePath(result.toString());
-						YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_VPN_CERTIFICATE_DOWNLOADED, null);
-					}
-
-					logi(TAG, "Download successful: " + result.toString());
-				}
-
-				@Override
-				public void onError(Object errorMessage)
-				{
-					loge(TAG, "Download fail");
-					vpnConnectionAttempts++;
-					if (vpnConnectionAttempts < 3)
-					{
-						downloadVPNProfile();
-					}
-				}
-			});
+			DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> handleDownloadVpnFromUrlSuccess(result), (error) -> handleDownloadVpnFromUrlFailure(), null);
+			new DownloadFileFromURL(user.getVpnProfile().getLinks().getOvpnProfile().getHref(), dataLoadListener);
 		}
+	}
+
+	private static Object handleDownloadVpnFromUrlSuccess(Object result)
+	{
+		if (result != null && !TextUtils.isEmpty(result.toString()))
+		{
+			YonaApplication.getEventChangeManager().getSharedPreference().setVPNProfilePath(result.toString());
+			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_VPN_CERTIFICATE_DOWNLOADED, null);
+			logi(TAG, "Download successful: " + result.toString());
+		}
+		return null; // Dummy return value, to allow use as data load handler
+	}
+
+	private static Object handleDownloadVpnFromUrlFailure()
+	{
+		loge(TAG, "Download fail");
+		vpnConnectionAttempts++;
+		if (vpnConnectionAttempts < 3)
+		{
+			downloadVPNProfile();
+		}
+		return null;// Dummy return value, to allow use as data error handler
 	}
 
 	public static byte[] getCACertificate(String path)
@@ -753,11 +626,7 @@ public class AppUtils
 				buf.close();
 				return bytes;
 			}
-			catch (FileNotFoundException e)
-			{
-				AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
-			}
-			catch (IOException e)
+			catch (java.io.IOException e)
 			{
 				AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
 			}
@@ -771,25 +640,27 @@ public class AppUtils
 		try
 		{
 			KeyStore ks = KeyStore.getInstance("AndroidCAStore");
-			if (ks != null)
+			if (ks == null)
 			{
-				ks.load(null, null);
-				Enumeration aliases = ks.aliases();
-				if (getUserFromDB() != null && getUserFromDB().getSslRootCertCN() != null)
+				return false;
+			}
+			ks.load(null, null);
+			Enumeration aliases = ks.aliases();
+			if (getUserFromDB() == null || getUserFromDB().getSslRootCertCN() == null)
+			{
+				return false;
+			}
+			String caCertName = getUserFromDB().getSslRootCertCN();
+			if (!TextUtils.isEmpty(caCertName))
+			{
+				while (aliases.hasMoreElements())
 				{
-					String caCertName = getUserFromDB().getSslRootCertCN();
-					if (!TextUtils.isEmpty(caCertName))
+					String alias = (String) aliases.nextElement();
+					java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate) ks.getCertificate(alias);
+					if (cert.getIssuerDN().getName().contains(caCertName))
 					{
-						while (aliases.hasMoreElements())
-						{
-							String alias = (String) aliases.nextElement();
-							java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate) ks.getCertificate(alias);
-							if (cert.getIssuerDN().getName().contains(caCertName))
-							{
-								isCertExist = true;
-								break;
-							}
-						}
+						isCertExist = true;
+						break;
 					}
 				}
 			}
@@ -799,7 +670,6 @@ public class AppUtils
 			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
 		}
 		return isCertExist;
-
 	}
 
 	public static boolean checkKeyboardOpen(View view)
@@ -807,10 +677,8 @@ public class AppUtils
 		int defaultKeyboardDp = 100;
 		Rect r = new Rect();
 		view.getWindowVisibleDisplayFrame(r);
-
 		int estimatedKeyboardHeight = (int) TypedValue
 				.applyDimension(TypedValue.COMPLEX_UNIT_DIP, defaultKeyboardDp, view.getResources().getDisplayMetrics());
-
 		view.getWindowVisibleDisplayFrame(r);
 		int heightDiff = view.getRootView().getHeight() - (r.bottom - r.top);
 		return heightDiff > estimatedKeyboardHeight;
@@ -826,7 +694,6 @@ public class AppUtils
 	{
 		ConnectivityManager cm =
 				(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		return activeNetwork != null &&
 				activeNetwork.isConnectedOrConnecting();
@@ -859,7 +726,6 @@ public class AppUtils
 				return YonaApplication.getAppContext().getResources().getString(R.string.rejected);
 			}
 		}
-
 		return StatusEnum.NOT_REQUESTED.getStatus(); //Considered as default.
 	}
 
