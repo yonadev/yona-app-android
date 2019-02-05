@@ -129,16 +129,16 @@ public class LaunchActivity extends BaseActivity
 		try
 		{
 			User user = APIManager.getInstance().getAuthenticateManager().getUser();
-			if (user.getVersion() != AppConstant.USER_ENTITY_VERSION)
-			{
-				reloadUserFromServer(user.getLinks().getSelf().getHref());
-				return;
-			}
 			URL environmentURL = new URL(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
-			URL storedUserURL = new URL(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref());
+			URL storedUserURL = new URL(user.getLinks().getSelf().getHref());
 			if (environmentURL.getProtocol() != storedUserURL.getProtocol())
 			{
 				reloadUserFromServer(storedUserURL.toString().replace(storedUserURL.getProtocol(), environmentURL.getProtocol()));
+				return;
+			}
+			if (user.getVersion() != AppConstant.USER_ENTITY_VERSION)
+			{
+				reloadUserFromServer(user.getLinks().getSelf().getHref());
 				return;
 			}
 			moveToYonaActivity();
