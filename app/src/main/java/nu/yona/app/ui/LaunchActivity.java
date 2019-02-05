@@ -120,20 +120,32 @@ public class LaunchActivity extends BaseActivity
 		}
 		else if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")))
 		{
-			checkForUserEntityVersion();// validate any updates to user entity before moving to next screen.
+			ensureValidUserEntity();
 		}
 	}
 
-	private void checkForUserEntityVersion()
+	private void ensureValidUserEntity()
 	{
-		User user = APIManager.getInstance().getAuthenticateManager().getUser();
-		if (user.getVersion() != AppConstant.USER_ENTITY_VERSION)
+		try
 		{
-			reloadUserFromServer(user.getLinks().getSelf().getHref());
-		}
-		else
-		{
+			User user = APIManager.getInstance().getAuthenticateManager().getUser();
+			if (user.getVersion() != AppConstant.USER_ENTITY_VERSION)
+			{
+				reloadUserFromServer(user.getLinks().getSelf().getHref());
+				return;
+			}
+			URL environmentURL = new URL(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
+			URL storedUserURL = new URL(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref());
+			if (environmentURL.getProtocol() != storedUserURL.getProtocol())
+			{
+				reloadUserFromServer(storedUserURL.toString().replace(storedUserURL.getProtocol(), environmentURL.getProtocol()));
+				return;
+			}
 			moveToYonaActivity();
+		}
+		catch (MalformedURLException e)
+		{
+			AppUtils.reportException(this.getClass().getName(), e, Thread.currentThread());
 		}
 	}
 
