@@ -53,6 +53,8 @@ import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.utils.AppConstant;
 
+import static nu.yona.app.YonaApplication.getAppUser;
+
 /**
  * Created by kinnarvasa on 13/06/16.
  */
@@ -535,7 +537,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 			else
 			{
 				intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
-				intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
+				intent.putExtra(AppConstant.USER, getAppUser());
 			}
 			YonaActivity.getActivity().replaceFragment(intent);
 		});

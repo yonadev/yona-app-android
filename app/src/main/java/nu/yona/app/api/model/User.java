@@ -49,9 +49,6 @@ public class User extends BaseEntity
 	@Expose
 	private String mobileNumber;
 
-	@SerializedName("vpnProfile")
-	@Expose
-	private VpnProfile vpnProfile;
 
 	@SerializedName("nickname")
 	@Expose
@@ -209,10 +206,6 @@ public class User extends BaseEntity
 	 *
 	 * @return The vpnProfile
 	 */
-	public VpnProfile getVpnProfile()
-	{
-		return vpnProfile;
-	}
 
 	/**
 	 * Gets nickname.
@@ -313,6 +306,12 @@ public class User extends BaseEntity
 	public String getSslRootCertLink()
 	{
 		return getCurrentDevice().getSslRootCertLink();
+	}
+
+	@JsonIgnore
+	public VpnProfile getVpnProfile()
+	{
+		return getCurrentDevice().getVpnProfile();
 	}
 
 	@JsonIgnore

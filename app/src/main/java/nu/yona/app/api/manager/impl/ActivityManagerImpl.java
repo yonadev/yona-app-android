@@ -65,6 +65,7 @@ import nu.yona.app.utils.DateUtility;
 import nu.yona.app.utils.Logger;
 
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getAppUser;
 
 /**
  * Created by kinnarvasa on 06/06/16.
@@ -1105,18 +1106,18 @@ public class ActivityManagerImpl implements ActivityManager
 
 	private YonaGoal findYonaGoal(Href goalHref)
 	{
-		if (YonaApplication.getEventChangeManager().getDataState().getUser() != null && YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null)
+		if (getAppUser() != null && getAppUser().getEmbedded() != null
+				&& getAppUser().getEmbedded().getYonaGoals() != null
+				&& getAppUser().getEmbedded().getYonaGoals().getEmbedded() != null
+				&& getAppUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals() != null)
 		{
-			List<YonaGoal> yonaGoals = YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
+			List<YonaGoal> yonaGoals = getAppUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
 			for (YonaGoal goal : yonaGoals)
 			{
 				if (goal.getLinks().getSelf().getHref().equals(goalHref.getHref()))
 				{
 					goal.setActivityCategoryName(getActivityCategory(goal));
-					goal.setNickName(YonaApplication.getEventChangeManager().getDataState().getUser().getNickname());
+					goal.setNickName(getAppUser().getNickname());
 					return goal;
 				}
 			}
@@ -1128,7 +1129,7 @@ public class ActivityManagerImpl implements ActivityManager
 	@Override
 	public YonaBuddy findYonaBuddy(Href yonaBuddy)
 	{
-		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+		User user = getAppUser();
 		if (!isUserWithBuddies(user))
 		{
 			return null;
@@ -1146,7 +1147,7 @@ public class ActivityManagerImpl implements ActivityManager
 
 	private YonaGoal findYonaBuddyGoal(Href goalHref)
 	{
-		User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+		User user = getAppUser();
 		if (!isUserWithBuddies(user))
 		{
 			return null;

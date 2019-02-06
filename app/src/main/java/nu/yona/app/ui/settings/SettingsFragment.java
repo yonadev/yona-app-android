@@ -50,6 +50,7 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
+import static nu.yona.app.YonaApplication.getAppUser;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -384,7 +385,7 @@ public class SettingsFragment extends BaseFragment
 	private String getTextForSupportMail(Boolean isYonaPasswordToBeAdded)
 	{
 		AppMetaInfo appMetaInfo = AppMetaInfo.getInstance();
-		String baseURL = " Base URL: " + Uri.encode(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref());
+		String baseURL = " Base URL: " + Uri.encode(getAppUser().getLinks().getSelf().getHref());
 		String yonaPassword = "";
 		if (isYonaPasswordToBeAdded)
 		{
