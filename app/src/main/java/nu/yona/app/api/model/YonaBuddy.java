@@ -15,6 +15,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import java.util.Collections;
 import java.util.List;
 
 import nu.yona.app.enums.StatusEnum;
@@ -170,7 +171,13 @@ public class YonaBuddy extends BaseEntity
 	@JsonIgnore
 	public List<YonaGoal> getYonaGoals()
 	{
-		return this.getEmbedded().getYonaUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals();
+		EmbeddedDevicesGoals goalsContainer = this.getEmbedded().getYonaUser().getEmbedded();
+		if (goalsContainer == null)
+		{
+			// Buddy didn't accept invitation, so goals are not available yet.
+			return Collections.emptyList();
+		}
+		return goalsContainer.getYonaGoals().getEmbedded().getYonaGoals();
 	}
 
 }
