@@ -304,5 +304,5 @@ public interface AppConstant
 
 
 	// Version number of user entity stored in local database
-	int USER_ENTITY_VERSION = 2;
+	int USER_ENTITY_VERSION = 3;
 }
