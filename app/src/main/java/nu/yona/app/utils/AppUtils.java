@@ -283,8 +283,8 @@ public class AppUtils
 		else
 		{
 			showErrorToast(errorMessage);
-			Logger.loge(className, errorMessage.getMessage(), exception);
 		}
+		Logger.loge(className, errorMessage.getMessage(), exception);
 	}
 
 	/**
