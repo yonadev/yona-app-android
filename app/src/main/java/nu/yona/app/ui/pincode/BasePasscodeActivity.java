@@ -230,11 +230,20 @@ passcode_reset;
 		{
 			case R.id.passcode_reset:
 			case R.id.btnPasscodeReset:
-				doPasscodeReset();
+				displayAlertForPasscodeReset();
 				break;
 			default:
 				break;
 		}
+	}
+
+	private void displayAlertForPasscodeReset()
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BasePasscodeActivity.this);
+		alertDialogBuilder.setMessage(getString(R.string.resetpinalert));
+		alertDialogBuilder.setPositiveButton(getString(R.string.yes), (dialog, which) -> doPasscodeReset());
+		alertDialogBuilder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.cancel());
+		alertDialogBuilder.create().show();
 	}
 
 	private void doPasscodeReset()
