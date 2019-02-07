@@ -217,6 +217,12 @@ passcode_reset;
 	}
 
 	@Override
+	public void onBackPressed()
+	{
+		// No action if back button is pressed in pin reset screen
+	}
+
+	@Override
 	public void onClick(View v)
 	{
 		switch (v.getId())
