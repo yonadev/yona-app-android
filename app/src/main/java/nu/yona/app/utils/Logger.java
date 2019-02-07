@@ -30,10 +30,7 @@ public class Logger
 		{
 			Crashlytics.log(Log.INFO, tag, message);
 		}
-		else
-		{
-			Log.i(tag, message);
-		}
+		Log.i(tag, message);
 	}
 
 	public static void loge(String tag, String message)
@@ -42,10 +39,7 @@ public class Logger
 		{
 			Crashlytics.log(Log.ERROR, tag, message);
 		}
-		else
-		{
-			Log.e(tag, message);
-		}
+		Log.e(tag, message);
 	}
 
 	public static void loge(String tag, String message, Exception exception)
@@ -55,10 +49,7 @@ public class Logger
 			Crashlytics.log(Log.ERROR, tag, message);
 			Crashlytics.logException(exception);
 		}
-		else
-		{
-			Log.e(tag, message, exception);
-		}
+		Log.e(tag, message, exception);
 	}
 
 	public static void logd(String tag, String message)
@@ -67,10 +58,7 @@ public class Logger
 		{
 			Crashlytics.log(Log.DEBUG, tag, message);
 		}
-		else
-		{
-			Log.d(tag, message);
-		}
+		Log.d(tag, message);
 	}
 
 	public static void printStackTrace(Exception e)
