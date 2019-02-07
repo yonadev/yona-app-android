@@ -536,12 +536,12 @@ passcode_reset;
 		{
 			remainingTime -= HOUR;
 		}
-		int minute = (int) remainingTime / MINUTE;
+		int minute = (int) (remainingTime % HOUR) / MINUTE;
 		if (minute > 0)
 		{
 			remainingTime -= MINUTE;
 		}
-		int seconds = (int) remainingTime / AppConstant.ONE_SECOND;
+		int seconds = (int) (((remainingTime % HOUR) % MINUTE) / AppConstant.ONE_SECOND);
 		if (hour < 10)
 		{
 			hourText.setText("0" + hour);
