@@ -43,6 +43,8 @@ import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
+import static nu.yona.app.YonaApplication.getAppUser;
+
 /**
  * Created by kinnarvasa on 21/03/16.
  */
@@ -88,7 +90,6 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 		View view = inflater.inflate(R.layout.dashboard_perday_fragment, null);
 		listView = view.findViewById(R.id.listView);
 		mLayoutManager = new LinearLayoutManager(YonaActivity.getActivity());
-		APIManager.getInstance().getAuthenticateManager().getUserFromServer();
 		mDayTimelineStickyAdapter = new TimelineStickyAdapter(new ArrayList<>(), v -> {
 			if (v.getTag() instanceof DayActivity)
 			{
@@ -170,6 +171,14 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 	}
 
 	@Override
+	public void onDestroyView()
+	{
+		super.onDestroyView();
+		YonaApplication.getEventChangeManager().unRegisterListener(this);
+	}
+
+
+	@Override
 	public void onResume()
 	{
 		super.onResume();
@@ -186,16 +195,37 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 
 	private void refreshAdapter()
 	{
+		getUserFromServer(getAppUser().getLinks().getSelf().getHref());
 		mDayTimelineStickyAdapter.clear();
-		getDayActivity(false);
 	}
 
-	@Override
-	public void onDestroyView()
+	private void getUserFromServer(String url)
 	{
-		super.onDestroyView();
-		YonaApplication.getEventChangeManager().unRegisterListener(this);
+		YonaActivity.getActivity().showLoadingView(true, null);
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserFetchSuccess(result), (result) -> handleUserFetchFailure(result), null);
+		APIManager.getInstance().getAuthenticateManager().getUserFromServer(url, dataLoadListenerImpl);
 	}
+
+	private Object handleUserFetchSuccess(Object result)
+	{
+		getDayActivity(false);
+		return null;// Dummy return value, to allow use as data load handler
+	}
+
+	private Object handleUserFetchFailure(Object error)
+	{
+		YonaActivity.getActivity().showLoadingView(false, null);
+		if (error instanceof ErrorMessage)
+		{
+			AppUtils.displayErrorAlert(YonaActivity.getActivity(), (ErrorMessage) error);
+		}
+		else
+		{
+			AppUtils.displayErrorAlert(YonaActivity.getActivity(), new ErrorMessage((String) error));
+		}
+		return null;// Dummy return value, to allow use as data load handler
+	}
+
 
 	private void getDayActivity(boolean loadMore)
 	{

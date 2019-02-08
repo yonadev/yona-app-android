@@ -64,8 +64,8 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
 import nu.yona.app.utils.Logger;
 
-import static nu.yona.app.YonaApplication.getSharedAppDataState;
 import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 06/06/16.
@@ -1092,16 +1092,13 @@ public class ActivityManagerImpl implements ActivityManager
 		return overviewDayActiivties;
 	}
 
-	private YonaGoal getYonaGoal(boolean isBuddyFlow, Href url)
+	private YonaGoal getYonaGoal(boolean isBuddyGoal, Href url)
 	{
-		if (!isBuddyFlow)
-		{
-			return findYonaGoal(url);
-		}
-		else
+		if (isBuddyGoal)
 		{
 			return findYonaBuddyGoal(url);
 		}
+		return findYonaGoal(url);
 	}
 
 	private YonaGoal findYonaGoal(Href goalHref)
@@ -1157,10 +1154,14 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			if (buddy.getYonaGoals() != null)
 			{
-				return findMatchingGoalFromYonaBuddy(goalHref, buddy);
+				YonaGoal matchingGoal = findMatchingGoalFromYonaBuddy(goalHref, buddy);
+				if (matchingGoal != null)
+				{
+					return matchingGoal;
+				}
 			}
 		}
-		return null; // Dummy return value, to allow use as data load handler
+		return null;
 	}
 
 	private YonaGoal findMatchingGoalFromYonaBuddy(Href goalHref, YonaBuddy buddy)
