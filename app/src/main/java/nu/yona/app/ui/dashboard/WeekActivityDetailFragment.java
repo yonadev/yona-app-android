@@ -309,7 +309,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 
 	public void getCurrentWeekActivityDetails(WeekActivity weekActivity)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().toggleLoadingView(true, null);
 		if (isDataLoading)
 		{
 			return;
@@ -323,7 +323,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 	{
 		try
 		{
-			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().toggleLoadingView(false, null);
 			isDataLoading = false;
 			setupWeekActivityListFromEmbeddedYonaActivity(result);
 			setDayDetailTitleAndIcon();
@@ -338,7 +338,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 	private Object handleWeekActivityDetailsFetchFailure(Object errorMessage)
 	{
 		isDataLoading = false;
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().toggleLoadingView(false, null);
 		YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
 		return null; // Dummy return value, to allow use as data error handler
 	}
@@ -532,7 +532,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 		{
 			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
 		}
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().toggleLoadingView(false, null);
 		return null; // Dummy return value, to allow use as data error handler
 	}
 
@@ -572,7 +572,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 
 	private void doComment(String message, String url, boolean isreplaying)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().toggleLoadingView(true, null);
 		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.SEND);
 		if (activity != null && activity.getComments() != null)
 		{
@@ -594,7 +594,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 		messageTxt.getText().clear();
 		updateParentcommentView();
 		fetchComments(viewPager.getCurrentItem());
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().toggleLoadingView(false, null);
 		return null; // Dummy return value, to allow use as data load handler
 	}
 

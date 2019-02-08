@@ -194,13 +194,13 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
 
 	private void deleteBuddy()
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().toggleLoadingView(true, null);
 		APIManager.getInstance().getBuddyManager().deleteBuddy(buddyUser, new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				YonaActivity.getActivity().onBackPressed();
 				YonaActivity.getActivity().onBackPressed();
 				getSharedAppDataState().setEmbeddedWithBuddyActivity(null);
@@ -218,7 +218,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
 			@Override
 			public void onError(Object errorMessage)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				YonaActivity.getActivity().onBackPressed();
 			}
 		});

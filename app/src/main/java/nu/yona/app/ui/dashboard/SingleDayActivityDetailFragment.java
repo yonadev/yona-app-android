@@ -460,13 +460,13 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		{
 			return;
 		}
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().toggleLoadingView(true, null);
 
 		if (getLocalDayActivity(url) != null)
 		{
 			activity = getLocalDayActivity(url);
 			updateDayActivityData(activity);
-			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().toggleLoadingView(false, null);
 		}
 		else
 		{
@@ -486,7 +486,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 				@Override
 				public void onError(Object errorMessage)
 				{
-					YonaActivity.getActivity().showLoadingView(false, null);
+					YonaActivity.getActivity().toggleLoadingView(false, null);
 				}
 			});
 		}
@@ -510,7 +510,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		fetchComments(dayActivityList.indexOf(activity));
 		viewPager.setCurrentItem(dayActivityList.indexOf(dayActivity));
 		updateFlow(dayActivityList.indexOf(dayActivity));
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().toggleLoadingView(false, null);
 		setUpYonaHeaderTheme();
 		setDayDetailActivityTitle();
 		setUpUserDetailsInHeader();
@@ -623,7 +623,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 
 	private void doComment(String message, String url, boolean isreplaying)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().toggleLoadingView(true, null);
 		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.SEND);
 		if (activity != null && activity.getComments() != null)
 		{
@@ -641,7 +641,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 			@Override
 			public void onDataLoad(Object result)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				messageTxt.getText().clear();
 				updateParentcommentView();
 				fetchComments(viewPager.getCurrentItem());
@@ -651,7 +651,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 			@Override
 			public void onError(Object errorMessage)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				//TODO show proper message
 			}
 		});

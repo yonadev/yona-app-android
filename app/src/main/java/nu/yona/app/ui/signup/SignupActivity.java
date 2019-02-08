@@ -143,7 +143,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 
 	private void doRegister()
 	{
-		showLoadingView(true, null);
+		toggleLoadingView(true, null);
 		if (getIntent() != null && getIntent().getExtras() != null && !TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.URL)))
 		{
 			APIManager.getInstance().getAuthenticateManager().registerUser(getIntent().getExtras().getString(AppConstant.URL), getSharedAppDataState().getRegisterUser(), new DataLoadListener()
@@ -151,7 +151,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 				@Override
 				public void onDataLoad(Object result)
 				{
-					showLoadingView(false, null);
+					toggleLoadingView(false, null);
 					showMobileVerificationScreen(null);
 				}
 
@@ -169,7 +169,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 				@Override
 				public void onDataLoad(Object result)
 				{
-					showLoadingView(false, null);
+					toggleLoadingView(false, null);
 					showMobileVerificationScreen(null);
 				}
 
@@ -206,14 +206,14 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 	 */
 	private void OverrideUser()
 	{
-		showLoadingView(true, null);
+		toggleLoadingView(true, null);
 		APIManager.getInstance().getAuthenticateManager().requestUserOverride(getSharedAppDataState().getRegisterUser().getMobileNumber(), new DataLoadListener()
 		{
 
 			@Override
 			public void onDataLoad(Object result)
 			{
-				showLoadingView(false, null);
+				toggleLoadingView(false, null);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable(AppConstant.USER, getSharedAppDataState().getRegisterUser());
 				showMobileVerificationScreen(bundle);
@@ -222,7 +222,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 			@Override
 			public void onError(Object errorMessage)
 			{
-				showLoadingView(false, null);
+				toggleLoadingView(false, null);
 				showError(errorMessage);
 			}
 		});
@@ -271,7 +271,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 
 	private void showError(Object errorMessage)
 	{
-		showLoadingView(false, null);
+		toggleLoadingView(false, null);
 		if (errorMessage instanceof ErrorMessage)
 		{
 			ErrorMessage message = (ErrorMessage) errorMessage;
@@ -312,7 +312,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 			return;
 		}
 
-		showLoadingView(true, null);
+		toggleLoadingView(true, null);
 		if (AppConstant.URL != null)
 		{
 
@@ -321,7 +321,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 				@Override
 				public void onDataLoad(Object result)
 				{
-					showLoadingView(false, null);
+					toggleLoadingView(false, null);
 
 					if (result != null)
 					{

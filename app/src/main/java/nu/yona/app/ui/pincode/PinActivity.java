@@ -156,13 +156,13 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 
 	private void doPinReset()
 	{
-		showLoadingView(true, null);
+		toggleLoadingView(true, null);
 		APIManager.getInstance().getAuthenticateManager().requestPinReset(new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
 			{
-				showLoadingView(false, null);
+				toggleLoadingView(false, null);
 				if (result instanceof PinResetDelay)
 				{
 					PinResetDelay delay = (PinResetDelay) result;
@@ -180,7 +180,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 			public void onError(Object errorMessage)
 			{
 				ErrorMessage message = (ErrorMessage) errorMessage;
-				showLoadingView(false, null);
+				toggleLoadingView(false, null);
 				Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG)
 						.setAction(getString(R.string.ok), null)
 						.show();

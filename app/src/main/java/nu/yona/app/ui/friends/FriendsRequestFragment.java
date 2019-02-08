@@ -213,20 +213,20 @@ public class FriendsRequestFragment extends BaseProfileFragment implements View.
 	{
 		MessageBody messageBody = new MessageBody();
 		messageBody.setProperties(new Properties());
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().toggleLoadingView(true, null);
 		APIManager.getInstance().getNotificationManager().postMessage(url, messageBody, new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				goBackToScreen();
 			}
 
 			@Override
 			public void onError(Object errorMessage)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
 			}
 		});

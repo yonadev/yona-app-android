@@ -12,12 +12,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import nu.yona.app.R;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.Categorizable;
 import nu.yona.app.analytics.YonaAnalytics;
@@ -34,6 +32,13 @@ public class BaseActivity extends AppCompatActivity implements Categorizable
 	private InputMethodManager inputMethodManager;
 	private Runnable backPressListener = null;
 	private PauseResumeHook hook;
+	private static int progressDialogCount = 0;
+
+
+	public void toggleLoadingView(boolean loading)
+	{
+		toggleLoadingView(loading, null);
+	}
 
 	/**
 	 * Show loading view.
@@ -41,28 +46,18 @@ public class BaseActivity extends AppCompatActivity implements Categorizable
 	 * @param loading the loading
 	 * @param message the message
 	 */
-	public void showLoadingView(boolean loading, String message)
+
+	public void toggleLoadingView(boolean loading, String message)
 	{
 		try
 		{
-			String dialogText = getResources().getString(R.string.loading);
-			if (!TextUtils.isEmpty(message))
-			{
-				dialogText = message;
-			}
-
-       /* if (inputMethodManager == null) {
-            inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        }*/
 			if (loading && progressDialog == null)
 			{
-				progressDialog = new CustomProgressDialog(this, false);
-				progressDialog.show();
+				displayLoadingView();
 			}
 			else if (progressDialog != null && !loading)
 			{
-				progressDialog.dismiss();
-				progressDialog = null;
+				dismissLoadingView();
 			}
 		}
 		catch (Exception e)
@@ -71,9 +66,25 @@ public class BaseActivity extends AppCompatActivity implements Categorizable
 		}
 	}
 
-	public void showLoadingView(boolean loading)
+	private void displayLoadingView()
 	{
-		showLoadingView(loading, null);
+		if (progressDialogCount == 0)
+		{
+			progressDialog = new CustomProgressDialog(this, false);
+			progressDialog.show();
+		}
+		progressDialogCount++;
+	}
+
+	private void dismissLoadingView()
+	{
+		if (progressDialogCount > 0)
+		{
+			progressDialogCount--;
+			return;
+		}
+		progressDialog.dismiss();
+		progressDialog = null;
 	}
 
 	/**

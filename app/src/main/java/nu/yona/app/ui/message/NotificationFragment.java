@@ -128,20 +128,20 @@ public class NotificationFragment extends BaseFragment
 				updateStatusAsRead(yonaMessageClicked);
 				if (yonaMessageClicked != null && yonaMessageClicked.getLinks() != null && yonaMessageClicked.getLinks().getEdit() != null && !TextUtils.isEmpty(yonaMessageClicked.getLinks().getEdit().getHref()))
 				{
-					YonaActivity.getActivity().showLoadingView(true, null);
+					YonaActivity.getActivity().toggleLoadingView(true, null);
 					APIManager.getInstance().getNotificationManager().deleteMessage(yonaMessageClicked.getLinks().getEdit().getHref(), new DataLoadListener()
 					{
 						@Override
 						public void onDataLoad(Object result)
 						{
-							YonaActivity.getActivity().showLoadingView(false, null);
+							YonaActivity.getActivity().toggleLoadingView(false, null);
 							refreshAdapter();
 						}
 
 						@Override
 						public void onError(Object errorMessage)
 						{
-							YonaActivity.getActivity().showLoadingView(false, null);
+							YonaActivity.getActivity().toggleLoadingView(false, null);
 							YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
 						}
 					});
@@ -451,7 +451,7 @@ public class NotificationFragment extends BaseFragment
 
 	private Object handleYonaMessagesFetchSuccess(YonaMessages result)
 	{
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().toggleLoadingView(false, null);
 		if (isAdded() && result != null && result instanceof YonaMessages)
 		{
 			YonaMessages mMessages = (YonaMessages) result;
@@ -475,7 +475,7 @@ public class NotificationFragment extends BaseFragment
 
 	private Object handleYonaMessagesFetchFailure(Object errorMessage)
 	{
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().toggleLoadingView(false, null);
 		YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
 		mIsLoading = false;
 		return null;

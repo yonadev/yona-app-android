@@ -293,7 +293,7 @@ public class AddFriendManuallyFragment extends BaseFragment implements EventChan
 
 	private void addFriend()
 	{
-		((YonaActivity) getActivity()).showLoadingView(true, null);
+		((YonaActivity) getActivity()).toggleLoadingView(true, null);
 		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.ADD_FRIEND, getString(R.string.invitefriend));
 		String formattedMobileNumber = MobileNumberFormatter.format(mobileNumber.getText().toString());
 		mobileNumber.setText(formattedMobileNumber);
@@ -308,7 +308,7 @@ public class AddFriendManuallyFragment extends BaseFragment implements EventChan
 			@Override
 			public void onDataLoad(Object result)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				YonaActivity.getActivity().onBackPressed();
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_FRIEND_OVERVIEW, null);
 			}
@@ -317,7 +317,7 @@ public class AddFriendManuallyFragment extends BaseFragment implements EventChan
 			public void onError(Object errorMessage)
 			{
 				ErrorMessage message = (ErrorMessage) errorMessage;
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
 			}
 		});

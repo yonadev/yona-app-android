@@ -178,13 +178,13 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
 
 	private void loadFriendProfile(String url)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().toggleLoadingView(true, null);
 		APIManager.getInstance().getAuthenticateManager().getFriendProfile(url, new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				if (result instanceof User)
 				{
 					user = (User) result;
@@ -196,7 +196,7 @@ public class ProfileFragment extends BaseProfileFragment implements EventChangeL
 			@Override
 			public void onError(Object errorMessage)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				ErrorMessage message = (ErrorMessage) errorMessage;
 				Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
 			}

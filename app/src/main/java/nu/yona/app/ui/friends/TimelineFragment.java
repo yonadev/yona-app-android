@@ -201,7 +201,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 
 	private void getUserFromServer(String url)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().toggleLoadingView(true, null);
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserFetchSuccess(result), (result) -> handleUserFetchFailure(result), null);
 		APIManager.getInstance().getAuthenticateManager().getUserFromServer(url, dataLoadListenerImpl);
 	}
@@ -214,7 +214,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 
 	private Object handleUserFetchFailure(Object error)
 	{
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().toggleLoadingView(false, null);
 		if (error instanceof ErrorMessage)
 		{
 			AppUtils.displayErrorAlert(YonaActivity.getActivity(), (ErrorMessage) error);
@@ -232,7 +232,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 		final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
 		if (embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null || embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())
 		{
-			YonaActivity.getActivity().showLoadingView(true, null);
+			YonaActivity.getActivity().toggleLoadingView(true, null);
 			DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result -> handleGetWithBuddyActivityFetchSuccess()), (error -> handleGetWithBuddyActivityFetchFailure(error)), null);
 			APIManager.getInstance().getActivityManager().getWithBuddyActivity(loadMore, dataLoadListener);
 		}
@@ -253,7 +253,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 	private Object handleGetWithBuddyActivityFetchFailure(Object error)
 	{
 		isDataLoading = false;
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().toggleLoadingView(false, null);
 		if (error instanceof ErrorMessage)
 		{
 			YonaActivity.getActivity().showError((ErrorMessage) error);
@@ -272,13 +272,13 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList().size() > 0)
 		{
 			mDayTimelineStickyAdapter.notifyDataSetChange(setHeaderListView());
-			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().toggleLoadingView(false, null);
 		}
 		else
 		{
 			if (isAdded())
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().toggleLoadingView(false, null);
 				YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_friend_text)));
 			}
 		}
