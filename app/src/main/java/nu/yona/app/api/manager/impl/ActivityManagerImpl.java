@@ -1127,10 +1127,6 @@ public class ActivityManagerImpl implements ActivityManager
 	public YonaBuddy findYonaBuddy(Href yonaBuddy)
 	{
 		User user = getAppUser();
-		if (!isUserWithBuddies(user))
-		{
-			return null;
-		}
 		List<YonaBuddy> yonaBuddies = user.getBuddies();
 		for (YonaBuddy buddy : yonaBuddies)
 		{
@@ -1145,10 +1141,6 @@ public class ActivityManagerImpl implements ActivityManager
 	private YonaGoal findYonaBuddyGoal(Href goalHref)
 	{
 		User user = getAppUser();
-		if (!isUserWithBuddies(user))
-		{
-			return null;
-		}
 		List<YonaBuddy> yonaBuddies = user.getBuddies();
 		for (YonaBuddy buddy : yonaBuddies)
 		{
@@ -1176,14 +1168,6 @@ public class ActivityManagerImpl implements ActivityManager
 			}
 		}
 		return null;
-	}
-
-	private boolean isUserWithBuddies(User user)
-	{
-		return (user != null && user.getEmbedded() != null
-				&& user.getEmbedded().getYonaBuddies() != null
-				&& user.getEmbedded().getYonaBuddies().getEmbedded() != null
-				&& user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null);
 	}
 
 	private String getActivityCategory(YonaGoal goal)
@@ -1426,7 +1410,7 @@ public class ActivityManagerImpl implements ActivityManager
 				listener.onError(new ErrorMessage(mContext.getString(R.string.no_data_found)));
 			}
 		}
-		catch (NullPointerException e)
+		catch (Exception e)
 		{
 			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
 		}
