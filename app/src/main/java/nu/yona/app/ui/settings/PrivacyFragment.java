@@ -51,14 +51,14 @@ public class PrivacyFragment extends BaseFragment
 			public void onPageStarted(WebView view, String url, Bitmap favicon)
 			{
 				super.onPageStarted(view, url, favicon);
-				YonaActivity.getActivity().toggleLoadingView(true, null);
+				YonaActivity.getActivity().displayLoadingView();
 			}
 
 			@Override
 			public void onPageFinished(WebView view, String url)
 			{
 				super.onPageFinished(view, url);
-				YonaActivity.getActivity().toggleLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 			}
 		});
 		setHook(new BackHook(AnalyticsConstant.BACK_FROM_SCREEN_PRIVACY));

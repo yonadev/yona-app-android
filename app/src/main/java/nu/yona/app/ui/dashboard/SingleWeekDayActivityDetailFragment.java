@@ -338,12 +338,12 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		{
 			return;
 		}
-		YonaActivity.getActivity().toggleLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		if (getLocalWeekActivity(url) != null)
 		{
 			weekActivity = getLocalWeekActivity(url);
 			updateDayActivityData(weekActivity);
-			YonaActivity.getActivity().toggleLoadingView(false, null);
+			YonaActivity.getActivity().dismissLoadingView();
 		}
 		else
 		{
@@ -366,7 +366,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 			weekActivity = (WeekActivity) result;
 			updateDayActivityData(weekActivity);
 		}
-		YonaActivity.getActivity().toggleLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		return null;
 	}
 
@@ -380,7 +380,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		{
 			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
 		}
-		YonaActivity.getActivity().toggleLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		return null;
 	}
 
@@ -417,7 +417,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		fetchComments(weekActivityList.indexOf(weekActivity));
 		viewPager.setCurrentItem(weekActivityList.indexOf(updatedWeekActivity));
 		updateFlow(weekActivityList.indexOf(updatedWeekActivity));
-		YonaActivity.getActivity().toggleLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		setUpYonaHeaderTheme();
 		setWeekDetailActivityTitle();
 		setUpUserDetailsInHeader();
@@ -580,7 +580,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 			weekActivityList = (List<WeekActivity>) result;
 			customPageAdapter.notifyDataSetChanged(weekActivityList);
 			updateCurrentCommentList(weekActivityList, position);
-			YonaActivity.getActivity().toggleLoadingView(false, null);
+			YonaActivity.getActivity().dismissLoadingView();
 		}
 		return null;
 	}
@@ -620,13 +620,13 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 		messageTxt.getText().clear();
 		updateParentcommentView();
 		fetchComments(viewPager.getCurrentItem());
-		YonaActivity.getActivity().toggleLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		return null;
 	}
 
 	private void clearViewWhenUserCommenting()
 	{
-		YonaActivity.getActivity().toggleLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.WEEK_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.SEND);
 		if (weekActivity != null && weekActivity.getComments() != null)
 		{

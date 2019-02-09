@@ -202,7 +202,7 @@ public class PerWeekFragment extends BaseFragment
 
 	private void loadWeeksActivity(EmbeddedYonaActivity embeddedYonaActivity, boolean loadMore)
 	{
-		YonaActivity.getActivity().toggleLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		Href urlToFetchWeekActivityOverviews = getURLToFetchWeekActivityOverViews(embeddedYonaActivity, loadMore);
 		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result -> handleWeeksActivityRetrieveOnSuccess(result)), result -> handleWeeksActivityRetrieveOnFailure(result), null);
 		APIManager.getInstance().getActivityManager().getWeeksActivity(loadMore, mYonaHeaderTheme.isBuddyFlow(), urlToFetchWeekActivityOverviews, dataLoadListener);
@@ -217,7 +217,7 @@ public class PerWeekFragment extends BaseFragment
 
 	private Object handleWeeksActivityRetrieveOnFailure(Object errorMessage)
 	{
-		YonaActivity.getActivity().toggleLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
 		return null;
 	}
@@ -231,11 +231,11 @@ public class PerWeekFragment extends BaseFragment
 		{
 			perWeekStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
 			mIsLoading = false;
-			YonaActivity.getActivity().toggleLoadingView(false, null);
+			YonaActivity.getActivity().dismissLoadingView();
 		}
 		else
 		{
-			YonaActivity.getActivity().toggleLoadingView(false, null);
+			YonaActivity.getActivity().dismissLoadingView();
 			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
 		}
 	}

@@ -173,7 +173,7 @@ public class LaunchActivity extends BaseActivity
 
 	private void getUserFromServer(String url)
 	{
-		toggleLoadingView(true);
+		displayLoadingView();
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserFetchSuccess(result), (result) -> handleUserFetchFailure(result), null);
 		APIManager.getInstance().getAuthenticateManager().getUserFromServer(url, dataLoadListenerImpl);
 	}
@@ -181,13 +181,13 @@ public class LaunchActivity extends BaseActivity
 	private Object handleUserFetchSuccess(Object result)
 	{
 		moveToYonaActivity();
-		toggleLoadingView(false);
+		dismissLoadingView();
 		return null;// Dummy return value, to allow use as data load handler
 	}
 
 	private Object handleUserFetchFailure(Object error)
 	{
-		toggleLoadingView(false);
+		dismissLoadingView();
 		if (error instanceof ErrorMessage)
 		{
 			AppUtils.displayErrorAlert(this, (ErrorMessage) error);
@@ -294,7 +294,7 @@ public class LaunchActivity extends BaseActivity
 
 	void validateEnvironment(String newEnvironmentURL)
 	{
-		toggleLoadingView(true, null);
+		displayLoadingView();
 		String oldEnvironmentURL = getSharedAppDataState().getServerUrl();
 		APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(newEnvironmentURL);// initializes the network manager with the new host url from data state.
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(((result) -> showEnvironmentSwitchSuccessMessageToUser(newEnvironmentURL, result)),
@@ -305,7 +305,7 @@ public class LaunchActivity extends BaseActivity
 
 	public Object showEnvironmentSwitchSuccessMessageToUser(String newEnvironmentURL, Object result)
 	{
-		toggleLoadingView(false, null);
+		dismissLoadingView();
 		Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.new_environment_switch_success_msg) + newEnvironmentURL, Toast.LENGTH_LONG).show();
 		return null;
 	}
@@ -313,7 +313,7 @@ public class LaunchActivity extends BaseActivity
 	public Object showEnvironmentSwitchFailureMessageToUser(String oldEnvironmentURL, Object errorMessage)
 	{
 		APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(oldEnvironmentURL); // reverts the network manager with the old host url from data state.
-		toggleLoadingView(false, null);
+		dismissLoadingView();
 		Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.environment_switch_error) + oldEnvironmentURL, Toast.LENGTH_LONG).show();
 		return null;
 	}

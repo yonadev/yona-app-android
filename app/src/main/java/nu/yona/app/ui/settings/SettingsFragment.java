@@ -247,7 +247,7 @@ public class SettingsFragment extends BaseFragment
 
 	private void doUnsubscribe()
 	{
-		YonaActivity.getActivity().toggleLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		APIManager.getInstance().getAuthenticateManager().deleteUser(new DataLoadListener()
 		{
 			@Override
@@ -255,7 +255,7 @@ public class SettingsFragment extends BaseFragment
 			{
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, null);
-				YonaActivity.getActivity().toggleLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 				startActivity(new Intent(YonaActivity.getActivity(), LaunchActivity.class));
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
 
@@ -264,7 +264,7 @@ public class SettingsFragment extends BaseFragment
 			@Override
 			public void onError(Object errorMessage)
 			{
-				YonaActivity.getActivity().toggleLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 				Snackbar snackbar = Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT);
 				TextView textView = ((TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text));
 				textView.setMaxLines(5);
@@ -289,7 +289,7 @@ public class SettingsFragment extends BaseFragment
 	private void addDevice(final String pin)
 	{
 		YonaAnalytics.createTapEvent(getString(R.string.adddevice));
-		YonaActivity.getActivity().toggleLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		try
 		{
 			deviceManager.addDevice(pin, new DataLoadListener()
@@ -319,7 +319,7 @@ public class SettingsFragment extends BaseFragment
 		{
 			if (YonaActivity.getActivity() != null)
 			{
-				YonaActivity.getActivity().toggleLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 				Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
 						.setAction(getString(R.string.ok), new View.OnClickListener()
 						{

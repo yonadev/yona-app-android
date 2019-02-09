@@ -1119,7 +1119,7 @@ public class ActivityManagerImpl implements ActivityManager
 				}
 			}
 		}
-		return null; // Dummy return value, to allow use as data load handler
+		return null;
 	}
 
 
@@ -1135,7 +1135,7 @@ public class ActivityManagerImpl implements ActivityManager
 				return buddy;
 			}
 		}
-		return null; // Dummy return value, to allow use as data load handler
+		return null;
 	}
 
 	private YonaGoal findYonaBuddyGoal(Href goalHref)
@@ -1144,16 +1144,13 @@ public class ActivityManagerImpl implements ActivityManager
 		List<YonaBuddy> yonaBuddies = user.getBuddies();
 		for (YonaBuddy buddy : yonaBuddies)
 		{
-			if (buddy.getYonaGoals() != null)
+			YonaGoal matchingGoal = findMatchingGoalFromYonaBuddy(goalHref, buddy);
+			if (matchingGoal != null)
 			{
-				YonaGoal matchingGoal = findMatchingGoalFromYonaBuddy(goalHref, buddy);
-				if (matchingGoal != null)
-				{
-					return matchingGoal;
-				}
+				return matchingGoal;
 			}
 		}
-		return null;
+		throw new IllegalStateException("Buddy goal not found: " + goalHref.getHref());
 	}
 
 	private YonaGoal findMatchingGoalFromYonaBuddy(Href goalHref, YonaBuddy buddy)
@@ -1395,24 +1392,17 @@ public class ActivityManagerImpl implements ActivityManager
 
 	private void filterAndUpdateWithBuddyData(EmbeddedYonaActivity embeddedYonaActivity, DataLoadListener listener)
 	{
-		try
+		if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() == null)
 		{
-			if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() == null)
-			{
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(embeddedYonaActivity);
-			}
-			if (embeddedYonaActivity != null)
-			{
-				updateEmbeddedBuddyActivity(embeddedYonaActivity, listener);
-			}
-			else
-			{
-				listener.onError(new ErrorMessage(mContext.getString(R.string.no_data_found)));
-			}
+			YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(embeddedYonaActivity);
 		}
-		catch (Exception e)
+		if (embeddedYonaActivity != null)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			updateEmbeddedBuddyActivity(embeddedYonaActivity, listener);
+		}
+		else
+		{
+			listener.onError(new ErrorMessage(mContext.getString(R.string.no_data_found)));
 		}
 	}
 

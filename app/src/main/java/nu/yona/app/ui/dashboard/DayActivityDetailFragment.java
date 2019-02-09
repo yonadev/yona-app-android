@@ -295,7 +295,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 		{
 			return;
 		}
-		YonaActivity.getActivity().toggleLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		isDataLoading = true;
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleDetailOfEachSpreadWithDayActivityFetchSuccess(result), (result) -> handleDetailOfEachSpreadWithDayActivityFetchFailure(result), null);
 		APIManager.getInstance().getActivityManager().getDetailOfEachSpreadWithDayActivity(dayActivity, dataLoadListenerImpl);
@@ -305,7 +305,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 	{
 		activity = (DayActivity) result;
 		isDataLoading = false;
-		YonaActivity.getActivity().toggleLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		setDayActivityDetails();
 		return null; // Dummy return value, to allow use as data load handler
 	}
@@ -313,7 +313,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 	private Object handleDetailOfEachSpreadWithDayActivityFetchFailure(Object errorMessage)
 	{
 		isDataLoading = false;
-		YonaActivity.getActivity().toggleLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
 		return null; // Dummy return value, to allow use as data error handler
 	}
@@ -542,7 +542,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 
 	private void doComment(String message, String url, boolean isreplaying)
 	{
-		YonaActivity.getActivity().toggleLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.SEND);
 		if (activity != null && activity.getComments() != null)
 		{
@@ -557,7 +557,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 		}
 		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> handleOnAddCommentSuccess(), (result) -> handleErrorMessage(result), null);
 		APIManager.getInstance().getActivityManager().addComment(url, isreplaying, message, dataLoadListener);
-		YonaActivity.getActivity().toggleLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 	}
 
 	private Object handleOnAddCommentSuccess()

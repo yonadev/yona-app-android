@@ -20,7 +20,6 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.Categorizable;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.customview.CustomProgressDialog;
-import nu.yona.app.utils.AppUtils;
 
 /**
  * Created by kinnarvasa on 18/03/16.
@@ -35,39 +34,18 @@ public class BaseActivity extends AppCompatActivity implements Categorizable
 	private static int progressDialogCount = 0;
 
 
-	public void toggleLoadingView(boolean loading)
-	{
-		toggleLoadingView(loading, null);
-	}
-
 	/**
 	 * Show loading view.
 	 *
 	 * @param loading the loading
-	 * @param message the message
 	 */
 
-	public void toggleLoadingView(boolean loading, String message)
+	public void displayLoadingView()
 	{
-		try
+		if (progressDialog != null)
 		{
-			if (loading && progressDialog == null)
-			{
-				displayLoadingView();
-			}
-			else if (progressDialog != null && !loading)
-			{
-				dismissLoadingView();
-			}
+			return;
 		}
-		catch (Exception e)
-		{
-			AppUtils.reportException(BaseActivity.class.getSimpleName(), e, Thread.currentThread());
-		}
-	}
-
-	private void displayLoadingView()
-	{
 		if (progressDialogCount == 0)
 		{
 			progressDialog = new CustomProgressDialog(this, false);
@@ -76,8 +54,12 @@ public class BaseActivity extends AppCompatActivity implements Categorizable
 		progressDialogCount++;
 	}
 
-	private void dismissLoadingView()
+	public void dismissLoadingView()
 	{
+		if (progressDialog == null)
+		{
+			return;
+		}
 		if (progressDialogCount > 0)
 		{
 			progressDialogCount--;

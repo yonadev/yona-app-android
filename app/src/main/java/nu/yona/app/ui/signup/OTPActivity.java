@@ -144,7 +144,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 	 */
 	private void validateOTP(final String otpString)
 	{
-		toggleLoadingView(true, null);
+		displayLoadingView();
 		APIManager.getInstance().getAuthenticateManager().verifyOTP(user, otpString, new DataLoadListener()
 		{
 			@Override
@@ -153,7 +153,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 				AppUtils.downloadCertificates();
 				AppUtils.downloadVPNProfile();
 				getActivityCategories();
-				toggleLoadingView(false, null);
+				dismissLoadingView();
 				navigateToNextScreen();
 			}
 
@@ -162,7 +162,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 			{
 				if (errorMessage instanceof ErrorMessage)
 				{
-					toggleLoadingView(false, null);
+					dismissLoadingView();
 					Snackbar.make(findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_INDEFINITE)
 							.setAction(getString(R.string.ok), new View.OnClickListener()
 							{
@@ -188,20 +188,20 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 
 	private void resendOTP()
 	{
-		toggleLoadingView(true, null);
+		displayLoadingView();
 		otpFragment.resetDigit();
 		APIManager.getInstance().getAuthenticateManager().resendOTP(new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
 			{
-				toggleLoadingView(false, null);
+				dismissLoadingView();
 			}
 
 			@Override
 			public void onError(Object errorMessage)
 			{
-				toggleLoadingView(false, null);
+				dismissLoadingView();
 			}
 		});
 	}

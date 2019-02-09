@@ -208,13 +208,13 @@ public class LoginActivity extends BaseActivity implements EventChangeListener
 	 */
 	private void doLogin()
 	{
-		toggleLoadingView(true, null);
+		displayLoadingView();
 		APIManager.getInstance().getDeviceManager().validateDevice(passcode.getText().toString(), countryCode.getText().toString() + mobileNumber.getText().toString().replaceAll(" ", ""), new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
 			{
-				toggleLoadingView(false, null);
+				dismissLoadingView();
 				AppUtils.downloadCertificates();
 				AppUtils.downloadVPNProfile();
 				updateData();
@@ -224,9 +224,9 @@ public class LoginActivity extends BaseActivity implements EventChangeListener
 			@Override
 			public void onError(Object errorMessage)
 			{
-				toggleLoadingView(false, null);
+				dismissLoadingView();
 				ErrorMessage message = (ErrorMessage) errorMessage;
-				toggleLoadingView(false, null);
+				dismissLoadingView();
 				Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
 			}
 		});

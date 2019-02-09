@@ -143,7 +143,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 
 	private void doRegister()
 	{
-		toggleLoadingView(true, null);
+		displayLoadingView();
 		if (getIntent() != null && getIntent().getExtras() != null && !TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.URL)))
 		{
 			APIManager.getInstance().getAuthenticateManager().registerUser(getIntent().getExtras().getString(AppConstant.URL), getSharedAppDataState().getRegisterUser(), new DataLoadListener()
@@ -151,7 +151,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 				@Override
 				public void onDataLoad(Object result)
 				{
-					toggleLoadingView(false, null);
+					dismissLoadingView();
 					showMobileVerificationScreen(null);
 				}
 
@@ -169,7 +169,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 				@Override
 				public void onDataLoad(Object result)
 				{
-					toggleLoadingView(false, null);
+					dismissLoadingView();
 					showMobileVerificationScreen(null);
 				}
 
@@ -206,14 +206,14 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 	 */
 	private void OverrideUser()
 	{
-		toggleLoadingView(true, null);
+		displayLoadingView();
 		APIManager.getInstance().getAuthenticateManager().requestUserOverride(getSharedAppDataState().getRegisterUser().getMobileNumber(), new DataLoadListener()
 		{
 
 			@Override
 			public void onDataLoad(Object result)
 			{
-				toggleLoadingView(false, null);
+				dismissLoadingView();
 				Bundle bundle = new Bundle();
 				bundle.putSerializable(AppConstant.USER, getSharedAppDataState().getRegisterUser());
 				showMobileVerificationScreen(bundle);
@@ -222,7 +222,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 			@Override
 			public void onError(Object errorMessage)
 			{
-				toggleLoadingView(false, null);
+				dismissLoadingView();
 				showError(errorMessage);
 			}
 		});
@@ -271,7 +271,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 
 	private void showError(Object errorMessage)
 	{
-		toggleLoadingView(false, null);
+		dismissLoadingView();
 		if (errorMessage instanceof ErrorMessage)
 		{
 			ErrorMessage message = (ErrorMessage) errorMessage;
@@ -312,7 +312,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 			return;
 		}
 
-		toggleLoadingView(true, null);
+		displayLoadingView();
 		if (AppConstant.URL != null)
 		{
 
@@ -321,7 +321,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 				@Override
 				public void onDataLoad(Object result)
 				{
-					toggleLoadingView(false, null);
+					dismissLoadingView();
 
 					if (result != null)
 					{
