@@ -36,8 +36,6 @@ public class BaseActivity extends AppCompatActivity implements Categorizable
 
 	/**
 	 * Show loading view.
-	 *
-	 * @param loading the loading
 	 */
 
 	public void displayLoadingView()
@@ -54,19 +52,23 @@ public class BaseActivity extends AppCompatActivity implements Categorizable
 		progressDialogCount++;
 	}
 
+
+	/**
+	 * Dismiss loading view.
+	 */
+
 	public void dismissLoadingView()
 	{
 		if (progressDialog == null)
 		{
 			return;
 		}
-		if (progressDialogCount > 0)
+		progressDialogCount--;
+		if (progressDialogCount == 0)
 		{
-			progressDialogCount--;
-			return;
+			progressDialog.dismiss();
+			progressDialog = null;
 		}
-		progressDialog.dismiss();
-		progressDialog = null;
 	}
 
 	/**
