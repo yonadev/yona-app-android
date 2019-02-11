@@ -129,7 +129,7 @@ public class LaunchActivity extends BaseActivity
 		{
 			URL environmentURL = new URL(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
 			URL storeUserURL = new URL(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref());
-			if (environmentURL.getProtocol() == storeUserURL.getProtocol())
+			if (environmentURL.getProtocol().equals(storeUserURL.getProtocol()))
 			{
 				moveToYonaActivity();
 			}
