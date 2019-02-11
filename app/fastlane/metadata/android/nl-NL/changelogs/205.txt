@@ -1,0 +1,1 @@
+APPDEV-1255 Crash in de vriendentijdslijn opgelost.
