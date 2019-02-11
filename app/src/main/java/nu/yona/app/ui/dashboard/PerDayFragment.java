@@ -236,7 +236,7 @@ public class PerDayFragment extends BaseFragment
 
 	private void loadDaysActivity(EmbeddedYonaActivity embeddedYonaActivity, boolean loadMore)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		Href urlToFetchDayActivityOverviews = getURLToFetchDayActivityOverViews(embeddedYonaActivity, loadMore);
 		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl(((result) -> handleDaysActivityRetrieveOnSuccess(result)),
 				((result) -> handleDaysActivityRetrieveOnFailure(result)), null);
@@ -254,7 +254,7 @@ public class PerDayFragment extends BaseFragment
 	private Object handleDaysActivityRetrieveOnFailure(Object errorMessage)
 	{
 		isDataLoading = false;
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
 		return null;
 	}
@@ -268,11 +268,11 @@ public class PerDayFragment extends BaseFragment
 		{
 			perDayStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
 			mIsLoading = false;
-			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().dismissLoadingView();
 		}
 		else
 		{
-			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().dismissLoadingView();
 			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
 		}
 	}

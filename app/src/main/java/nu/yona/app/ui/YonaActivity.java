@@ -376,7 +376,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			@Override
 			public void onError(Object errorMessage)
 			{
-				showLoadingView(false, null);
+				dismissLoadingView();
 				showError((ErrorMessage) errorMessage);
 			}
 		});
@@ -1290,7 +1290,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			protected void onPostExecute(Object o)
 			{
 				super.onPostExecute(o);
-				showLoadingView(false, null);
+				dismissLoadingView();
 				new Handler().postDelayed(new Runnable()
 				{
 					@Override

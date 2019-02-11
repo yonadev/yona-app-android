@@ -114,7 +114,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
 
 	private void getActivityCategories()
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(new DataLoadListener()
 		{
 			@Override
@@ -126,7 +126,7 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
 			@Override
 			public void onError(Object errorMessage)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 
 			}
 		});
@@ -141,14 +141,14 @@ public class ChallengesFragment extends BaseFragment implements EventChangeListe
 			public void onDataLoad(Object result)
 			{
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 			}
 
 			@Override
 			public void onError(Object errorMessage)
 			{
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_GOALS, null);
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 			}
 		});
 	}

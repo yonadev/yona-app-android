@@ -125,7 +125,7 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
 	 */
 	private void getBuddies()
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		APIManager.getInstance().getBuddyManager().getBuddies(new DataLoadListener()
 		{
 			@Override
@@ -141,13 +141,13 @@ public class OverviewFragment extends BaseFragment implements EventChangeListene
 						mOverViewAdapter.notifyDataSetChange(mListBuddy);
 					}
 				}
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 			}
 
 			@Override
 			public void onError(Object errorMessage)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 				YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
 			}
 		});

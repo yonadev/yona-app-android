@@ -361,14 +361,14 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		registerUser.setNickName(nickName.getText().toString());
 		String number = mobileNumber.getText().toString();
 		registerUser.setMobileNumber(number.replace(" ", ""));
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> redirectToNextPage(), result -> showError(result), null);
 		APIManager.getInstance().getAuthenticateManager().registerUser(registerUser, true, dataLoadListener);
 	}
 
 	private Object redirectToNextPage()
 	{
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		if (getSharedAppDataState().getUser() != null && oldUserNumber.equalsIgnoreCase(getSharedAppDataState().getUser().getMobileNumber()))
 		{
 			YonaActivity.getActivity().onBackPressed();
@@ -404,7 +404,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 	private Object showError(Object errorMessage)
 	{
 		ErrorMessage message = (ErrorMessage) errorMessage;
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		if (message.getCode() != null && message.getCode().equalsIgnoreCase(ServerErrorCode.USER_EXIST_ERROR))
 		{
 			CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.useralreadyregister), getString(R.string.ok), (dialog, which) -> dialog.dismiss());

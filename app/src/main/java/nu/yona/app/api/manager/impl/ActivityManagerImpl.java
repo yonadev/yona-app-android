@@ -64,8 +64,8 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
 import nu.yona.app.utils.Logger;
 
-import static nu.yona.app.YonaApplication.getSharedAppDataState;
 import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 06/06/16.
@@ -1092,16 +1092,13 @@ public class ActivityManagerImpl implements ActivityManager
 		return overviewDayActiivties;
 	}
 
-	private YonaGoal getYonaGoal(boolean isBuddyFlow, Href url)
+	private YonaGoal getYonaGoal(boolean isBuddyGoal, Href url)
 	{
-		if (!isBuddyFlow)
-		{
-			return findYonaGoal(url);
-		}
-		else
+		if (isBuddyGoal)
 		{
 			return findYonaBuddyGoal(url);
 		}
+		return findYonaGoal(url);
 	}
 
 	private YonaGoal findYonaGoal(Href goalHref)
@@ -1122,7 +1119,7 @@ public class ActivityManagerImpl implements ActivityManager
 				}
 			}
 		}
-		return null; // Dummy return value, to allow use as data load handler
+		return null;
 	}
 
 
@@ -1130,10 +1127,6 @@ public class ActivityManagerImpl implements ActivityManager
 	public YonaBuddy findYonaBuddy(Href yonaBuddy)
 	{
 		User user = getAppUser();
-		if (!isUserWithBuddies(user))
-		{
-			return null;
-		}
 		List<YonaBuddy> yonaBuddies = user.getBuddies();
 		for (YonaBuddy buddy : yonaBuddies)
 		{
@@ -1142,25 +1135,22 @@ public class ActivityManagerImpl implements ActivityManager
 				return buddy;
 			}
 		}
-		return null; // Dummy return value, to allow use as data load handler
+		return null;
 	}
 
 	private YonaGoal findYonaBuddyGoal(Href goalHref)
 	{
 		User user = getAppUser();
-		if (!isUserWithBuddies(user))
-		{
-			return null;
-		}
 		List<YonaBuddy> yonaBuddies = user.getBuddies();
 		for (YonaBuddy buddy : yonaBuddies)
 		{
-			if (buddy.getYonaGoals() != null)
+			YonaGoal matchingGoal = findMatchingGoalFromYonaBuddy(goalHref, buddy);
+			if (matchingGoal != null)
 			{
-				return findMatchingGoalFromYonaBuddy(goalHref, buddy);
+				return matchingGoal;
 			}
 		}
-		return null; // Dummy return value, to allow use as data load handler
+		throw new IllegalStateException("Buddy goal not found: " + goalHref.getHref());
 	}
 
 	private YonaGoal findMatchingGoalFromYonaBuddy(Href goalHref, YonaBuddy buddy)
@@ -1175,14 +1165,6 @@ public class ActivityManagerImpl implements ActivityManager
 			}
 		}
 		return null;
-	}
-
-	private boolean isUserWithBuddies(User user)
-	{
-		return (user != null && user.getEmbedded() != null
-				&& user.getEmbedded().getYonaBuddies() != null
-				&& user.getEmbedded().getYonaBuddies().getEmbedded() != null
-				&& user.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies() != null);
 	}
 
 	private String getActivityCategory(YonaGoal goal)
@@ -1410,24 +1392,17 @@ public class ActivityManagerImpl implements ActivityManager
 
 	private void filterAndUpdateWithBuddyData(EmbeddedYonaActivity embeddedYonaActivity, DataLoadListener listener)
 	{
-		try
+		if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() == null)
 		{
-			if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() == null)
-			{
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(embeddedYonaActivity);
-			}
-			if (embeddedYonaActivity != null)
-			{
-				updateEmbeddedBuddyActivity(embeddedYonaActivity, listener);
-			}
-			else
-			{
-				listener.onError(new ErrorMessage(mContext.getString(R.string.no_data_found)));
-			}
+			YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(embeddedYonaActivity);
 		}
-		catch (NullPointerException e)
+		if (embeddedYonaActivity != null)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			updateEmbeddedBuddyActivity(embeddedYonaActivity, listener);
+		}
+		else
+		{
+			listener.onError(new ErrorMessage(mContext.getString(R.string.no_data_found)));
 		}
 	}
 

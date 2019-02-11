@@ -17,6 +17,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import nu.yona.app.YonaApplication;
@@ -323,7 +324,12 @@ public class User extends BaseEntity
 	@JsonIgnore
 	public List<YonaBuddy> getBuddies()
 	{
-		return this.getEmbedded().getYonaBuddies().getEmbedded().getYonaBuddies();
+		YonaBuddies buddiesContainer = this.getEmbedded().getYonaBuddies();
+		if (buddiesContainer == null)
+		{
+			return Collections.emptyList();
+		}
+		return buddiesContainer.getEmbedded().getYonaBuddies();
 	}
 
 	public boolean isActive()
