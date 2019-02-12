@@ -73,7 +73,7 @@
     <string name="inloggin">INLOGGEN</string>
     <string name="enterpasscode">Je moet een 6 cijferig alfanumeriek code invoeren.</string>
     <string name="resetpinrequest">Je reset-aanvraag is ontvangen. Binnen %1$s uur ontvang je een sms met een PIN-reset bevestigingscode.</string>
-    <string name="resetpinalert">Wil je echt je pincode resetten? Om veiligheidsredenen gaat daar tijd overheen en ondertussen kan je Yona een niet gebruiken.</string>
+    <string name="resetpinalert">Wil je echt je pincode resetten? Om veiligheidsredenen gaat daar tijd overheen en ondertussen kan je Yona niet gebruiken.</string>
     <string name="useroverride">Dit mobiele nummer %1$s is al geregistreerd bij Yona. Wil je hetzelfde nummer opnieuw registreren? (Let op: Alle gegevens behorend bij dit nummer zullen worden verwijderd. Als je een ander apparaat wilt toevoegen kun je teruggaan en klik op ‘Inloggen’ klikken.)</string>
     <string name="yes">JA</string>
     <string name="no">NEE</string>
