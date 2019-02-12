@@ -128,7 +128,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 		int visibleItemCount = mLayoutManager.getChildCount();
 		int totalItemCount = mLayoutManager.getItemCount();
 		int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
 		if (!mIsLoading &&
 				embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
 				&& embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
