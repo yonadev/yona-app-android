@@ -73,7 +73,7 @@
     <string name="inloggin">LOGIN</string>
     <string name="enterpasscode">You need to enter a 6 digit alphanumeric passcode.</string>
     <string name="resetpinrequest">Your request for reset has been received. You will receive an text message with a PIN reset confirmation code within %1$s.</string>
-    <string name="resetpinalert">Do you want to reset your pin?</string>
+    <string name="resetpinalert">Do you really want to reset your PIN? For security reasons, that will take time and you cannot use Yona in the meanwhile.</string>
     <string name="useroverride">Mobile Number %1$s is already registered with Yona. Do you want to re-register same number? (Note: All data associated with this number will be removed, if you want to add another device, you can go back and click on Login.)</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
