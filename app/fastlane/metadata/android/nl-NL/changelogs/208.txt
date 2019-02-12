@@ -1,0 +1,1 @@
+APPDEV-1240 Terugknop uitgeschakeld in PIN reset scherm
