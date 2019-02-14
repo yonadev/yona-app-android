@@ -37,16 +37,6 @@ public class ActivityTrackerDAO extends BaseDAO
 	/**
 	 * Save activities.
 	 *
-	 * @param activityList the activity list
-	 */
-	public void saveActivities(List<Activity> activityList)
-	{
-		bulkInsert(DBConstant.TBL_ACTIVITY_TRACKER, activityList);
-	}
-
-	/**
-	 * Save activities.
-	 *
 	 * @param activity the activity
 	 */
 	public void saveActivities(Activity activity)
@@ -61,8 +51,8 @@ public class ActivityTrackerDAO extends BaseDAO
 	 */
 	public List<Activity> getActivities()
 	{
-		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER);
 		List<Activity> activityList = new ArrayList<>();
+		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER, DBConstant.APPLICATION_NAME + " DESC", DBConstant.ROW_LIMIT);
 		try
 		{
 			if (c != null && c.getCount() > 0)
@@ -92,12 +82,16 @@ public class ActivityTrackerDAO extends BaseDAO
 		return activityList;
 	}
 
+
 	/**
 	 * Clear activities.
 	 */
 	public void clearActivities()
 	{
-		delete(DBConstant.TBL_ACTIVITY_TRACKER, null, null);
-		getActivities();
+		List<Activity> postedActivities = getActivities();
+		for (Activity activity : postedActivities)
+		{
+			delete(DBConstant.TBL_ACTIVITY_TRACKER, DBConstant.APPLICATION_START_TIME + " = ?", new String[]{activity.getStartTime()});
+		}
 	}
 }
