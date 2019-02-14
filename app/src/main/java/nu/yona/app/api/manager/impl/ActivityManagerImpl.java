@@ -314,41 +314,46 @@ public class ActivityManagerImpl implements ActivityManager
 	@Override
 	public void postAllDBActivities()
 	{
+		postNextBatchOfAppActivities();
+	}
+
+	private void postNextBatchOfAppActivities()
+	{ // recursive function posts until all activities are posted to the server .
 		List<Activity> activityList = activityTrackerDAO.getActivities();
 		if (activityList == null || activityList.isEmpty())
 		{
+			isSyncAPICallDone = true;
 			return;
 		}
-		postActivityOnServer(getBatchOfAppActivitiesFromDB(activityList));
-	}
-
-	private AppActivity getBatchOfAppActivitiesFromDB(List<Activity> activityList)
-	{
 		AppActivity appActivity = new AppActivity();
 		appActivity.setDeviceDateTime(DateUtility.getLongFormatDate(new Date()));
 		appActivity.setActivities(activityList);
-		return appActivity;
+		postActivityOnServer(appActivity);
 	}
 
+	private boolean isSyncAPICallDone = true;
 
 	private void postActivityOnServer(AppActivity activity)
 	{
+		if (!isSyncAPICallDone)
+		{
+			return;
+		}
 		User user = getSharedAppDataState().getUser();
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(), (result) -> handlePostAppActivityOnFailure(activity), null);
 		activityNetwork.postAppActivity(user.getPostDeviceAppActivityLink(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
-
 	}
 
 	private Object handlePostAppActivityOnSuccess()
 	{
-		//on success nothing to do, as it is posted on server. #JIRA_1022
 		activityTrackerDAO.clearActivities();
-		postAllDBActivities();
+		postNextBatchOfAppActivities();
 		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private Object handlePostAppActivityOnFailure(AppActivity activity)
 	{
+		isSyncAPICallDone = true;
 		return null; // Dummy return value, to allow use as data error handler
 	}
 

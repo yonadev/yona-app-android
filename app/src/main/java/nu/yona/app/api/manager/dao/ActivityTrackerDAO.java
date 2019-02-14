@@ -17,6 +17,7 @@ import java.util.List;
 import nu.yona.app.api.db.DBConstant;
 import nu.yona.app.api.model.Activity;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 08/06/16.
@@ -42,6 +43,7 @@ public class ActivityTrackerDAO extends BaseDAO
 	public void saveActivities(Activity activity)
 	{
 		insert(DBConstant.TBL_ACTIVITY_TRACKER, activity.getDbContentValues());
+		Logger.logi("APPDEV-1238", "Activity inserted : " + activity.getDbContentValues().toString());
 	}
 
 	/**
@@ -52,6 +54,7 @@ public class ActivityTrackerDAO extends BaseDAO
 	public List<Activity> getActivities()
 	{
 		List<Activity> activityList = new ArrayList<>();
+		printTotalActivityCount();
 		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER, DBConstant.APPLICATION_NAME + " DESC", DBConstant.ROW_LIMIT);
 		try
 		{
@@ -88,10 +91,20 @@ public class ActivityTrackerDAO extends BaseDAO
 	 */
 	public void clearActivities()
 	{
-		List<Activity> postedActivities = getActivities();
-		for (Activity activity : postedActivities)
-		{
-			delete(DBConstant.TBL_ACTIVITY_TRACKER, DBConstant.APPLICATION_START_TIME + " = ?", new String[]{activity.getStartTime()});
-		}
+		delete(DBConstant.TBL_ACTIVITY_TRACKER,
+				DBConstant.APPLICATION_START_TIME +
+						" IN (SELECT " + DBConstant.APPLICATION_START_TIME +
+						" from " + DBConstant.TBL_ACTIVITY_TRACKER +
+						" ORDER BY " + DBConstant.APPLICATION_NAME + " DESC LIMIT " + DBConstant.ROW_LIMIT + ")",
+				null);
+		printTotalActivityCount();
 	}
+
+	public void printTotalActivityCount()
+	{
+		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER);
+		Logger.logi("APPDEV-1238", "Activities Count " + c.getCount());
+		c.close();
+	}
+
 }
