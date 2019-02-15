@@ -62,7 +62,6 @@ import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
-import nu.yona.app.utils.Logger;
 
 import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
@@ -308,55 +307,63 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 	}
 
-	private boolean isSyncAPICallDone = true;
-
-	private void postActivityOnServer(AppActivity activity, boolean fromDB)
-	{
-		Logger.logi("postActivityOnServer", "isSyncAPICallDone: " + isSyncAPICallDone);
-		User user = getSharedAppDataState().getUser();
-		if (!isSyncAPICallDone)
-		{
-			return;
-		}
-		isSyncAPICallDone = false;
-		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(fromDB), (result) -> handlePostAppActivityOnFailure(fromDB, activity), null);
-		activityNetwork.postAppActivity(user.getPostDeviceAppActivityLink(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
-
-	}
-
-	private Object handlePostAppActivityOnSuccess(Boolean fromDB)
-	{
-		//on success nothing to do, as it is posted on server. #JIRA_1022
-		if (fromDB)
-		{
-			activityTrackerDAO.clearActivities();
-		}
-		isSyncAPICallDone = true;
-		return null; // Dummy return value, to allow use as data load handler
-	}
-
-	private Object handlePostAppActivityOnFailure(Boolean fromDB, AppActivity activity)
-	{
-		//on failure, we need to store data in database to resend next time.
-		if (!fromDB)
-		{
-			activityTrackerDAO.saveActivities(activity.getActivities());
-		}
-		isSyncAPICallDone = true;
-		return null; // Dummy return value, to allow use as data error handler
-	}
+	/**
+	 * App activity Business
+	 */
 
 	@Override
 	public void postAllDBActivities()
 	{
+		postAppActivitiesBatchWise();
+	}
+
+	private void postAppActivitiesBatchWise()
+	{ // recursive function posts until all activities are posted to the server .
 		List<Activity> activityList = activityTrackerDAO.getActivities();
-		if (activityList != null && activityList.size() > 0)
+		if (activityList.isEmpty())
 		{
-			AppActivity appActivity = new AppActivity();
-			appActivity.setDeviceDateTime(DateUtility.getLongFormatDate(new Date()));
-			appActivity.setActivities(activityList);
-			postActivityOnServer(appActivity, true);
+			isSyncAPICallDone = true;
+			return;
 		}
+		AppActivity appActivity = new AppActivity();
+		appActivity.setDeviceDateTime(DateUtility.getLongFormatDate(new Date()));
+		appActivity.setActivities(activityList);
+		postActivityOnServerAndDoNextBatch(appActivity);
+	}
+
+	private boolean isSyncAPICallDone = true;
+
+	private void postActivityOnServerAndDoNextBatch(AppActivity activity)
+	{
+		if (!isSyncAPICallDone)
+		{
+			return;
+		}
+		User user = getSharedAppDataState().getUser();
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(), (result) -> handlePostAppActivityOnFailure(result), null);
+		activityNetwork.postAppActivity(user.getPostDeviceAppActivityLink(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
+	}
+
+	private Object handlePostAppActivityOnSuccess()
+	{
+		activityTrackerDAO.clearActivities();
+		postAppActivitiesBatchWise();
+		return null; // Dummy return value, to allow use as data load handler
+	}
+
+	private Object handlePostAppActivityOnFailure(Object result)
+	{
+		String errorMessage;
+		if (result instanceof ErrorMessage)
+		{
+			errorMessage = ((ErrorMessage) result).getMessage();
+		}
+		else
+		{
+			errorMessage = (String) result;
+		}
+		AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), new Exception("Failed to post app activity of device: " + errorMessage), Thread.currentThread(), null, false);
+		return null; // Dummy return value, to allow use as data error handler
 	}
 
 	/**

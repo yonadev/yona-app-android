@@ -58,6 +58,21 @@ class BaseDAO
 		}
 	}
 
+
+	/**
+	 * Delete.
+	 *
+	 * @param whereArgs the where args
+	 */
+	protected void delete(String query, String[] whereArgs)
+	{
+		if (mOpenHelper != null)
+		{
+			mOpenHelper.getWritableDatabase().rawQuery(query, whereArgs);
+		}
+	}
+
+
 	/**
 	 * Insert long.
 	 *
@@ -103,6 +118,23 @@ class BaseDAO
 			return null;
 		}
 		return mOpenHelper.getWritableDatabase().query(tableName, null, null, null, null, null, null);
+	}
+
+	/**
+	 * Query cursor.
+	 *
+	 * @param tableName the table name
+	 * @param orderBy   the column name to order rows in Descending order
+	 * @param rowLimit  maximum rows to fetch at a time.
+	 * @return the cursor
+	 */
+	Cursor query(String tableName, String orderBy, String rowLimit)
+	{
+		if (mOpenHelper == null)
+		{
+			return null;
+		}
+		return mOpenHelper.getWritableDatabase().query(tableName, null, null, null, null, null, orderBy, rowLimit);
 	}
 
 	/**
