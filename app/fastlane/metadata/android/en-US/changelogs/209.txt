@@ -1,0 +1,1 @@
+APPDEV-1238 Fixed an issue that caused activity recording to stop

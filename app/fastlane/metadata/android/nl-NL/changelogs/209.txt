@@ -1,0 +1,1 @@
+APPDEV-1238 Probleem opgelost dat het bijhouden van activiteiten kon blokkeren
