@@ -67,9 +67,9 @@ import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.timepicker.time.Timepoint;
 
+import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
-import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
 
@@ -265,6 +265,12 @@ public class AppUtils
 		return totalTime;
 	}
 
+
+	public static void reportException(String className, Exception exception, Thread t, DataLoadListener listener)
+	{
+		reportException(className, exception, t, listener, true);
+	}
+
 	/**
 	 * Report exception.
 	 *
@@ -272,15 +278,16 @@ public class AppUtils
 	 * @param exception Error
 	 * @param t         Current Thread (Thread.currentThread())
 	 * @param listener  DataLoadListener to update UI
+	 * @param showToast Shows error toast in UI if possible.
 	 */
-	public static void reportException(String className, Exception exception, Thread t, DataLoadListener listener)
+	public static void reportException(String className, Exception exception, Thread t, DataLoadListener listener, boolean showToast)
 	{
 		ErrorMessage errorMessage = getErrorMessageFromException(exception);
 		if (listener != null)
 		{
 			listener.onError(errorMessage);
 		}
-		else
+		else if (showToast)
 		{
 			showErrorToast(errorMessage);
 		}

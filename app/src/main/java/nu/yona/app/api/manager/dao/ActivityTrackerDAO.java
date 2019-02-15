@@ -55,7 +55,7 @@ public class ActivityTrackerDAO extends BaseDAO
 	{
 		List<Activity> activityList = new ArrayList<>();
 		printTotalActivityCount();
-		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER, DBConstant.APPLICATION_NAME + " DESC", DBConstant.ROW_LIMIT);
+		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER, DBConstant.APPLICATION_NAME + " DESC", DBConstant.ACTIVITY_FETCH_ROW_LIMIT);
 		try
 		{
 			if (c != null && c.getCount() > 0)
@@ -95,7 +95,7 @@ public class ActivityTrackerDAO extends BaseDAO
 				DBConstant.APPLICATION_START_TIME +
 						" IN (SELECT " + DBConstant.APPLICATION_START_TIME +
 						" from " + DBConstant.TBL_ACTIVITY_TRACKER +
-						" ORDER BY " + DBConstant.APPLICATION_NAME + " DESC LIMIT " + DBConstant.ROW_LIMIT + ")",
+						" ORDER BY " + DBConstant.APPLICATION_NAME + " DESC LIMIT " + DBConstant.ACTIVITY_FETCH_ROW_LIMIT + ")",
 				null);
 		printTotalActivityCount();
 	}
@@ -103,7 +103,7 @@ public class ActivityTrackerDAO extends BaseDAO
 	public void printTotalActivityCount()
 	{
 		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER);
-		Logger.logi("APPDEV-1238", "Activities Count " + c.getCount());
+		Logger.logi("APPDEV-1238", "Activity count " + c.getCount());
 		c.close();
 	}
 

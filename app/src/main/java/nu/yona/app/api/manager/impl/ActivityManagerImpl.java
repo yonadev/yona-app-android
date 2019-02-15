@@ -314,13 +314,13 @@ public class ActivityManagerImpl implements ActivityManager
 	@Override
 	public void postAllDBActivities()
 	{
-		postNextBatchOfAppActivities();
+		postAppActivitiesBatchWise();
 	}
 
-	private void postNextBatchOfAppActivities()
+	private void postAppActivitiesBatchWise()
 	{ // recursive function posts until all activities are posted to the server .
 		List<Activity> activityList = activityTrackerDAO.getActivities();
-		if (activityList == null || activityList.isEmpty())
+		if (activityList.isEmpty())
 		{
 			isSyncAPICallDone = true;
 			return;
@@ -328,32 +328,41 @@ public class ActivityManagerImpl implements ActivityManager
 		AppActivity appActivity = new AppActivity();
 		appActivity.setDeviceDateTime(DateUtility.getLongFormatDate(new Date()));
 		appActivity.setActivities(activityList);
-		postActivityOnServer(appActivity);
+		postActivityOnServerAndDoNextBatch(appActivity);
 	}
 
 	private boolean isSyncAPICallDone = true;
 
-	private void postActivityOnServer(AppActivity activity)
+	private void postActivityOnServerAndDoNextBatch(AppActivity activity)
 	{
 		if (!isSyncAPICallDone)
 		{
 			return;
 		}
 		User user = getSharedAppDataState().getUser();
-		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(), (result) -> handlePostAppActivityOnFailure(activity), null);
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handlePostAppActivityOnSuccess(), (result) -> handlePostAppActivityOnFailure(result), null);
 		activityNetwork.postAppActivity(user.getPostDeviceAppActivityLink(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), activity, dataLoadListenerImpl);
 	}
 
 	private Object handlePostAppActivityOnSuccess()
 	{
 		activityTrackerDAO.clearActivities();
-		postNextBatchOfAppActivities();
+		postAppActivitiesBatchWise();
 		return null; // Dummy return value, to allow use as data load handler
 	}
 
-	private Object handlePostAppActivityOnFailure(AppActivity activity)
+	private Object handlePostAppActivityOnFailure(Object result)
 	{
-		isSyncAPICallDone = true;
+		String errorMessage;
+		if (result instanceof ErrorMessage)
+		{
+			errorMessage = ((ErrorMessage) result).getMessage();
+		}
+		else
+		{
+			errorMessage = (String) result;
+		}
+		AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), new Exception("Failed to post app activity of device: " + errorMessage), Thread.currentThread(), null, false);
 		return null; // Dummy return value, to allow use as data error handler
 	}
 

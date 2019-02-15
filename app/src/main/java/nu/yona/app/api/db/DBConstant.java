@@ -71,5 +71,5 @@ public interface DBConstant
 	/**
 	 * The DB App activity fetch ROW_LIMIT.
 	 */
-	String ROW_LIMIT = "200";
+	String ACTIVITY_FETCH_ROW_LIMIT = "200";
 }
