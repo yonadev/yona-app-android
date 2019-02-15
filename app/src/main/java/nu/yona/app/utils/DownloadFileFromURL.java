@@ -80,7 +80,7 @@ public class DownloadFileFromURL
 				}
 				catch (Exception e)
 				{
-					Logger.loge(DownloadFileFromURL.class.getSimpleName(), e.toString());
+					Logger.loge(DownloadFileFromURL.class, e.toString());
 				}
 				finally
 
@@ -99,7 +99,7 @@ public class DownloadFileFromURL
 					}
 					catch (Exception e)
 					{
-						Logger.loge(DownloadFileFromURL.class.getSimpleName(), e.toString());
+						Logger.loge(DownloadFileFromURL.class, e.toString());
 					}
 				}
 
@@ -123,7 +123,7 @@ public class DownloadFileFromURL
 				}
 				catch (Exception e)
 				{
-					Logger.loge(DownloadFileFromURL.class.getSimpleName(), e.toString());
+					Logger.loge(DownloadFileFromURL.class, "Download failed", e);
 				}
 				//super.onPostExecute(path);
 			}

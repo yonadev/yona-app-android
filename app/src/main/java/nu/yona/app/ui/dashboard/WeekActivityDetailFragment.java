@@ -330,7 +330,7 @@ public class WeekActivityDetailFragment extends BaseFragment implements EventCha
 		}
 		catch (NullPointerException e)
 		{
-			AppUtils.reportException(WeekActivityDetailFragment.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(WeekActivityDetailFragment.class, e, Thread.currentThread());
 		}
 		return null; // Dummy return value, to allow use as data load handler
 	}

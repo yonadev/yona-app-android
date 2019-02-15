@@ -135,7 +135,7 @@ class BaseDAO
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(BaseDAO.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(BaseDAO.class, e, Thread.currentThread());
 		}
 	}
 }

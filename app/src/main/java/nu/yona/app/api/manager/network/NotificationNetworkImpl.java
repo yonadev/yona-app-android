@@ -60,7 +60,7 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -119,7 +119,7 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -139,7 +139,7 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 

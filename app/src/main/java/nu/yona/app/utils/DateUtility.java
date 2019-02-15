@@ -79,7 +79,7 @@ public class DateUtility
 			}
 			catch (Exception e)
 			{
-				AppUtils.reportException(DateUtility.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(DateUtility.class, e, Thread.currentThread());
 			}
 		}
 
@@ -171,7 +171,7 @@ public class DateUtility
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DateUtility.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(DateUtility.class, e, Thread.currentThread());
 		}
 
 		return listOfdates;
@@ -240,7 +240,7 @@ public class DateUtility
 			}
 			catch (ParseException e)
 			{
-				AppUtils.reportException(DateUtility.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(DateUtility.class, e, Thread.currentThread());
 			}
 		}
 

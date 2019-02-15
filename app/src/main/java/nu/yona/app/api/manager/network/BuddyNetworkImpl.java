@@ -61,7 +61,7 @@ public class BuddyNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(BuddyNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class BuddyNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(BuddyNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -119,7 +119,7 @@ public class BuddyNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(BuddyNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(BuddyNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 }

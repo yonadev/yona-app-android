@@ -275,7 +275,7 @@ public class NotificationFragment extends BaseFragment
 		}
 		catch (ParseException e)
 		{
-			AppUtils.reportException(NotificationFragment.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(NotificationFragment.class, e, Thread.currentThread());
 		}
 		return messageIntent;
 	}
@@ -445,7 +445,7 @@ public class NotificationFragment extends BaseFragment
 		}
 		catch (IllegalArgumentException e)
 		{
-			AppUtils.reportException(NotificationFragment.class.getSimpleName(), e, Thread.currentThread(), null);
+			AppUtils.reportException(NotificationFragment.class, e, Thread.currentThread(), null);
 		}
 	}
 

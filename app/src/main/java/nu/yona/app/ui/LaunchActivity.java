@@ -145,7 +145,7 @@ public class LaunchActivity extends BaseActivity
 		}
 		catch (MalformedURLException e)
 		{
-			AppUtils.reportException(this.getClass().getName(), e, Thread.currentThread());
+			AppUtils.reportException(LaunchActivity.class, e, Thread.currentThread());
 		}
 	}
 

@@ -67,9 +67,9 @@ import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.timepicker.time.Timepoint;
 
+import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
-import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
 
@@ -86,8 +86,6 @@ public class AppUtils
 	private static int certificateDownloadAttempts = 0;
 	private static int vpnConnectionAttempts = 0;
 	private static final Handler uiTaskHandler = new Handler();
-
-	private static final String TAG = "AppUtils";
 
 	/**
 	 * Has permission boolean.
@@ -135,7 +133,7 @@ public class AppUtils
 		}
 		catch (Exception e)
 		{
-			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+			reportException(AppUtils.class, e, Thread.currentThread());
 		}
 	}
 
@@ -181,7 +179,7 @@ public class AppUtils
 		}
 		catch (Exception e)
 		{
-			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+			reportException(AppUtils.class, e, Thread.currentThread());
 		}
 	}
 
@@ -211,7 +209,7 @@ public class AppUtils
 	 */
 	public static void registerReceiver(Context context)
 	{
-		loge(TAG, "Register Receiver");
+		loge(AppUtils.class, "Register Receiver");
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_ON);
 		filter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -240,7 +238,7 @@ public class AppUtils
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(AppUtils.class, e, Thread.currentThread());
 		}
 		return Pair.create(time, (long) 0);
 	}
@@ -273,7 +271,7 @@ public class AppUtils
 	 * @param t         Current Thread (Thread.currentThread())
 	 * @param listener  DataLoadListener to update UI
 	 */
-	public static void reportException(String className, Exception exception, Thread t, DataLoadListener listener)
+	public static void reportException(Class<?> originClass, Exception exception, Thread t, DataLoadListener listener)
 	{
 		ErrorMessage errorMessage = getErrorMessageFromException(exception);
 		if (listener != null)
@@ -284,7 +282,7 @@ public class AppUtils
 		{
 			showErrorToast(errorMessage);
 		}
-		Logger.loge(className, errorMessage.getMessage(), exception);
+		Logger.loge(originClass, errorMessage.getMessage(), exception);
 	}
 
 	/**
@@ -303,13 +301,13 @@ public class AppUtils
 	/**
 	 * Report exception.
 	 *
-	 * @param className class name where exception throws
-	 * @param exception Error
-	 * @param t         Current Thread (Thread.currentThread())
+	 * @param originClass class reporting the exception
+	 * @param exception   Error
+	 * @param t           Current Thread (Thread.currentThread())
 	 */
-	public static void reportException(String className, Exception exception, Thread t)
+	public static void reportException(Class<?> originClass, Exception exception, Thread t)
 	{
-		AppUtils.reportException(className, exception, t, null);
+		AppUtils.reportException(originClass, exception, t, null);
 	}
 
 
@@ -565,13 +563,13 @@ public class AppUtils
 			YonaApplication.getEventChangeManager().getSharedPreference().setRootCertPath(result.toString());
 			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_ROOT_CERTIFICATE_DOWNLOADED, null);
 		}
-		logi(TAG, "Download successful: " + result.toString());
+		logi(AppUtils.class, "Download successful: " + result.toString());
 		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private static Object handleDownloadFileFromUrlFailure()
 	{
-		loge(TAG, "Download fail");
+		loge(AppUtils.class, "Download fail");
 		certificateDownloadAttempts++;
 		if (certificateDownloadAttempts < 3)
 		{
@@ -596,14 +594,14 @@ public class AppUtils
 		{
 			YonaApplication.getEventChangeManager().getSharedPreference().setVPNProfilePath(result.toString());
 			YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_VPN_CERTIFICATE_DOWNLOADED, null);
-			logi(TAG, "Download successful: " + result.toString());
+			logi(AppUtils.class, "Download successful: " + result.toString());
 		}
 		return null; // Dummy return value, to allow use as data load handler
 	}
 
 	private static Object handleDownloadVpnFromUrlFailure()
 	{
-		loge(TAG, "Download fail");
+		loge(AppUtils.class, "Download fail");
 		vpnConnectionAttempts++;
 		if (vpnConnectionAttempts < 3)
 		{
@@ -628,7 +626,7 @@ public class AppUtils
 			}
 			catch (java.io.IOException e)
 			{
-				AppUtils.reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(AppUtils.class, e, Thread.currentThread());
 			}
 		}
 		return null;
@@ -667,7 +665,7 @@ public class AppUtils
 		}
 		catch (Exception e)
 		{
-			reportException(AppUtils.class.getSimpleName(), e, Thread.currentThread());
+			reportException(AppUtils.class, e, Thread.currentThread());
 		}
 		return isCertExist;
 	}

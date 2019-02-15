@@ -133,7 +133,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -308,7 +308,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -349,7 +349,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -445,7 +445,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -497,7 +497,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -529,7 +529,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -579,7 +579,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 
 	}
@@ -626,7 +626,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -667,7 +667,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -740,7 +740,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -801,7 +801,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 

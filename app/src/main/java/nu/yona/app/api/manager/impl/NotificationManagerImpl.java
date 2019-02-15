@@ -93,7 +93,7 @@ public class NotificationManagerImpl implements NotificationManager
 		}
 		catch (IllegalArgumentException e)
 		{
-			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -140,9 +140,9 @@ public class NotificationManagerImpl implements NotificationManager
 			String uploadDate = DateUtility.getRelativeDate(futureCalendar);
 			return uploadDate;
 		}
-		catch (ParseException parseEx)
+		catch (ParseException e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), parseEx, Thread.currentThread());
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread());
 		}
 		return null;
 	}
@@ -205,7 +205,7 @@ public class NotificationManagerImpl implements NotificationManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -246,7 +246,7 @@ public class NotificationManagerImpl implements NotificationManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -272,7 +272,7 @@ public class NotificationManagerImpl implements NotificationManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -313,7 +313,7 @@ public class NotificationManagerImpl implements NotificationManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 		finally
 		{

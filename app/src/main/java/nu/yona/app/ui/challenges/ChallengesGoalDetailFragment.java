@@ -67,7 +67,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
 	private View btnChallengesContainer;
 
-	private static final String TAG = "ChallengesGoalDetailFragment";
 	/**
 	 * Use this listener only for Time zone picker
 	 */
@@ -585,7 +584,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 			@Override
 			public void onCancel(DialogInterface dialogInterface)
 			{
-				logd(TAG, "TimePicker Dialog was cancelled");
+				logd(ChallengesGoalDetailFragment.class, "TimePicker Dialog was cancelled");
 			}
 		});
 		mTimePickerDialog.show(getActivity().getFragmentManager(), "Timepickerdialog");
@@ -779,7 +778,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
 	{
-		logi(TAG, "progress...." + progress);
+		logi(ChallengesGoalDetailFragment.class, "progress...." + progress);
 		mBudgetGoalTime.setText("" + progress);
 		updateTimeZoneUI();
 	}

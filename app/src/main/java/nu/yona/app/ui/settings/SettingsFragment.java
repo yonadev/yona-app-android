@@ -337,7 +337,7 @@ public class SettingsFragment extends BaseFragment
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(SettingsFragment.class, e, Thread.currentThread());
 		}
 	}
 
@@ -362,7 +362,7 @@ public class SettingsFragment extends BaseFragment
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(SettingsFragment.class, e, Thread.currentThread());
 		}
 	}
 

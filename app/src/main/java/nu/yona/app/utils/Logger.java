@@ -24,41 +24,41 @@ import nu.yona.app.BuildConfig;
 public class Logger
 {
 
-	public static void logi(String tag, String message)
+	public static void logi(Class<?> originClass, String message)
 	{
 		if (Fabric.isInitialized())
 		{
-			Crashlytics.log(Log.INFO, tag, message);
+			Crashlytics.log(Log.INFO, originClass.getName(), message);
 		}
-		Log.i(tag, message);
+		Log.i(originClass.getName(), message);
 	}
 
-	public static void loge(String tag, String message)
+	public static void loge(Class<?> originClass, String message)
 	{
 		if (Fabric.isInitialized())
 		{
-			Crashlytics.log(Log.ERROR, tag, message);
+			Crashlytics.log(Log.ERROR, originClass.getName(), message);
 		}
-		Log.e(tag, message);
+		Log.e(originClass.getName(), message);
 	}
 
-	public static void loge(String tag, String message, Exception exception)
+	public static void loge(Class<?> originClass, String message, Exception exception)
 	{
 		if (Fabric.isInitialized())
 		{
-			Crashlytics.log(Log.ERROR, tag, message);
+			Crashlytics.log(Log.ERROR, originClass.getName(), message);
 			Crashlytics.logException(exception);
 		}
-		Log.e(tag, message, exception);
+		Log.e(originClass.getName(), message, exception);
 	}
 
-	public static void logd(String tag, String message)
+	public static void logd(Class<?> originClass, String message)
 	{
 		if (Fabric.isInitialized())
 		{
-			Crashlytics.log(Log.DEBUG, tag, message);
+			Crashlytics.log(Log.DEBUG, originClass.getName(), message);
 		}
-		Log.d(tag, message);
+		Log.d(originClass.getName(), message);
 	}
 
 	public static void printStackTrace(Exception e)

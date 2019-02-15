@@ -353,7 +353,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		{
 			return;
 		}
-		Logger.loge("Notifications Disabled", this.getString(R.string.notification_disabled_message));
+		Logger.loge(YonaActivity.class, this.getString(R.string.notification_disabled_message));
 		AppUtils.displayErrorAlert(getActivity(), new ErrorMessage(this.getString(R.string.notification_disabled_message)));
 	}
 
@@ -434,7 +434,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(YonaActivity.class, e, Thread.currentThread());
 		}
 	}
 
@@ -599,9 +599,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			FileOutputStream fos = new FileOutputStream(file);
 			imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 		}
-		catch (FileNotFoundException ex)
+		catch (FileNotFoundException e)
 		{
-			AppUtils.reportException(YonaActivity.class.getSimpleName(), ex, Thread.currentThread());
+			AppUtils.reportException(YonaActivity.class, e, Thread.currentThread());
 			return null;
 		}
 		return file;
@@ -1147,7 +1147,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(YonaActivity.class, e, Thread.currentThread());
 		}
 	}
 
@@ -1281,7 +1281,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				}
 				catch (Exception e)
 				{
-					AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
+					AppUtils.reportException(YonaActivity.class, e, Thread.currentThread());
 				}
 				return null;
 			}
@@ -1407,7 +1407,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 										   @NonNull String permissions[],
 										   @NonNull int[] grantResults)
 	{
-		Logger.loge(YonaActivity.class.getSimpleName(), "onRequestPermissionsResult");
+		Logger.loge(YonaActivity.class, "onRequestPermissionsResult");
 		isToDisplayLogin = false;
 		// Make sure it's our original READ_CONTACTS request
 		if (requestCode == READ_EXTERNAL_STORAGE_REQUEST)

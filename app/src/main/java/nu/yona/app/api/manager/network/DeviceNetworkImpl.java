@@ -40,7 +40,7 @@ public class DeviceNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(DeviceNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 
@@ -59,7 +59,7 @@ public class DeviceNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(DeviceNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 
@@ -98,7 +98,7 @@ public class DeviceNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(DeviceNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 }

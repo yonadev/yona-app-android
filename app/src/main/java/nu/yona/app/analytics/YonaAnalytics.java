@@ -31,7 +31,6 @@ public class YonaAnalytics
 {
 	private static YonaAnalytics instance;
 	private Categorizable category = null;
-	private static final String TAG = "YonaAnalytics";
 
 	public static YonaAnalytics getInstance()
 	{
@@ -71,7 +70,7 @@ public class YonaAnalytics
 		{
 			return;
 		}
-		logi(TAG, "Analytics: Category: [" + category + "] Label: [" + label + "] Action: [" + action + "]");
+		logi(YonaAnalytics.class, "Analytics: Category: [" + category + "] Label: [" + label + "] Action: [" + action + "]");
 		//commented out until things are probably working
 		Tracker t = YonaApplication.getTracker();
 		if (getAppUser() != null
@@ -100,7 +99,7 @@ public class YonaAnalytics
 	{
 		if (category == null)
 		{
-			loge(TAG, "Attempt to fire analytics event prior to initializing current Categorizable");
+			loge(YonaAnalytics.class, "Attempt to fire analytics event prior to initializing current Categorizable");
 			return "null";
 		}
 		return category.getAnalyticsCategory();

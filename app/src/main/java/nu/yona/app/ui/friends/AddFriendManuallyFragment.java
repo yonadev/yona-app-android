@@ -297,7 +297,7 @@ public class AddFriendManuallyFragment extends BaseFragment implements EventChan
 		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.ADD_FRIEND, getString(R.string.invitefriend));
 		String formattedMobileNumber = MobileNumberFormatter.format(mobileNumber.getText().toString());
 		mobileNumber.setText(formattedMobileNumber);
-		Logger.logi("Mobile_validation", formattedMobileNumber);
+		Logger.logi(AddFriendManuallyFragment.class, formattedMobileNumber);
 		makeAddFriendAPIRequest(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString(), formattedMobileNumber);
 	}
 

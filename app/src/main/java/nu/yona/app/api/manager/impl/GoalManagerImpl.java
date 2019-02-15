@@ -85,7 +85,7 @@ public class GoalManagerImpl implements GoalManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -122,7 +122,7 @@ public class GoalManagerImpl implements GoalManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -159,7 +159,7 @@ public class GoalManagerImpl implements GoalManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -196,7 +196,7 @@ public class GoalManagerImpl implements GoalManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -229,7 +229,7 @@ public class GoalManagerImpl implements GoalManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -262,7 +262,7 @@ public class GoalManagerImpl implements GoalManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 

@@ -126,14 +126,14 @@ public class YonaApplication extends Application
 
 	private void swapUserAndAppSharedPreferences()
 	{
-		nu.yona.app.utils.Logger.logi("Preferences", "Correcting user and app preferences by swapping them");
+		nu.yona.app.utils.Logger.logi(YonaApplication.class, "Correcting user and app preferences by swapping them");
 		SharedPreferences tempSharedUserPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_USER_PREF", Context.MODE_PRIVATE);
 		SharedPreferences tempSharedAppPrefs = YonaApplication.getAppContext().getSharedPreferences("TEMP_APP_PREF", Context.MODE_PRIVATE);
 		AppUtils.moveSharedPreferences(sharedAppPreferences, tempSharedUserPrefs);
 		AppUtils.moveSharedPreferences(sharedUserPreferences, tempSharedAppPrefs);
 		AppUtils.moveSharedPreferences(tempSharedAppPrefs, sharedAppPreferences);
 		AppUtils.moveSharedPreferences(tempSharedUserPrefs, sharedUserPreferences);
-		nu.yona.app.utils.Logger.logi("Preferences", "Corrected user and app preferences by swapping them");
+		nu.yona.app.utils.Logger.logi(YonaApplication.class, "Corrected user and app preferences by swapping them");
 	}
 
 	private void enableStickMode()
@@ -182,7 +182,7 @@ public class YonaApplication extends Application
 			}
 			catch (PackageManager.NameNotFoundException e)
 			{
-				AppUtils.reportException(YonaApplication.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(YonaApplication.class, e, Thread.currentThread());
 			}
 
 			GoogleAnalytics.getInstance(mContext).getLogger()
