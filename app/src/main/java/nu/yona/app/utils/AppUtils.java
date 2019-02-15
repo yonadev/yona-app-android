@@ -263,22 +263,29 @@ public class AppUtils
 		return totalTime;
 	}
 
+
+	public static void reportException(Class<?> originClass, Exception exception, Thread t, DataLoadListener listener)
+	{
+		reportException(originClass, exception, t, listener, true);
+	}
+
 	/**
 	 * Report exception.
 	 *
-	 * @param className class name where exception throws
-	 * @param exception Error
-	 * @param t         Current Thread (Thread.currentThread())
-	 * @param listener  DataLoadListener to update UI
+	 * @param originClass class reporting the exception
+	 * @param exception   Error
+	 * @param t           Current Thread (Thread.currentThread())
+	 * @param listener    DataLoadListener to update UI
+	 * @param showToast   Shows error toast in UI if possible.
 	 */
-	public static void reportException(Class<?> originClass, Exception exception, Thread t, DataLoadListener listener)
+	public static void reportException(Class<?> originClass, Exception exception, Thread t, DataLoadListener listener, boolean showToast)
 	{
 		ErrorMessage errorMessage = getErrorMessageFromException(exception);
 		if (listener != null)
 		{
 			listener.onError(errorMessage);
 		}
-		else
+		else if (showToast)
 		{
 			showErrorToast(errorMessage);
 		}
