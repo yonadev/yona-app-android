@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		super(context, DBConstant.DATABASE_NAME, null, DBConstant.DATABASE_VERSION);
 		synchronized (this)
 		{
-			Logger.logi(DatabaseHelper.class.getName(), "DatabaseHelper constructor called");
+			Logger.logi(DatabaseHelper.class, "DatabaseHelper constructor called");
 			this.getWritableDatabase();
 		}
 	}
@@ -74,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DatabaseHelper.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(DatabaseHelper.class, e, Thread.currentThread());
 		}
 	}
 
@@ -85,7 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	{
 		try
 		{
-			Logger.loge(DatabaseHelper.class.getSimpleName(), "Delete all data");
+			Logger.loge(DatabaseHelper.class, "Delete all data");
 			mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_USER_DATA);
 			mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_ACTIVITY_CATEGORIES);
 			mInstance.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + DBConstant.TBL_GOAL);
@@ -94,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DatabaseHelper.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(DatabaseHelper.class, e, Thread.currentThread());
 		}
 	}
 

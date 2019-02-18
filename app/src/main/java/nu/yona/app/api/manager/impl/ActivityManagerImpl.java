@@ -131,7 +131,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -270,7 +270,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (NullPointerException e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread());
 		}
 		return null; // Dummy return value, to allow use as data load handler
 	}
@@ -303,7 +303,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread());
 		}
 	}
 
@@ -362,7 +362,7 @@ public class ActivityManagerImpl implements ActivityManager
 		{
 			errorMessage = (String) result;
 		}
-		AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), new Exception("Failed to post app activity of device: " + errorMessage), Thread.currentThread(), null, false);
+		AppUtils.reportException(ActivityManagerImpl.class, new Exception("Failed to post app activity of device: " + errorMessage), Thread.currentThread(), null, false);
 		return null; // Dummy return value, to allow use as data error handler
 	}
 
@@ -703,7 +703,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -716,7 +716,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -807,7 +807,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (ParseException e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread());
 		}
 		activity.setDate(overview.getDate());
 		activity = getWeekDayActivity(activity);
@@ -854,7 +854,7 @@ public class ActivityManagerImpl implements ActivityManager
 			}
 			catch (ParseException e)
 			{
-				AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread());
 			}
 			weekActivity.setDate(weekActivity.getDate());
 			weekActivity = getWeekDayActivity(weekActivity);
@@ -1066,7 +1066,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (ParseException e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread());
 		}
 		// TODO: History check need to ve verify. Concern Issue: http://jira.yona.nu/browse/APPDEV-999.
 		if (activity.getYonaGoal() != null && activity.getYonaGoal() != null/* && !activity.getYonaGoal().isHistoryItem()*/)
@@ -1316,7 +1316,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -1346,7 +1346,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (ParseException e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread());
 		}
 		return null;
 	}
@@ -1461,7 +1461,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (ParseException e)
 		{
-			AppUtils.reportException(NotificationManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(NotificationManagerImpl.class, e, Thread.currentThread());
 		}
 		listener.onDataLoad(generateTimeZoneSpread(activity));
 		return null; // Dummy return value, to allow use as data load handler
@@ -1492,7 +1492,7 @@ public class ActivityManagerImpl implements ActivityManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread());
 		}
 		return null; // Dummy return value, to allow use as data load handler
 	}
@@ -1517,7 +1517,7 @@ public class ActivityManagerImpl implements ActivityManager
 			}
 			catch (Exception e)
 			{
-				AppUtils.reportException(ActivityManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(ActivityManagerImpl.class, e, Thread.currentThread());
 			}
 		}
 	}

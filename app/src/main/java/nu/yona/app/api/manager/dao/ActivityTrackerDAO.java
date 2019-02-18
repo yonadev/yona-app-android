@@ -43,7 +43,7 @@ public class ActivityTrackerDAO extends BaseDAO
 	public void saveActivities(Activity activity)
 	{
 		insert(DBConstant.TBL_ACTIVITY_TRACKER, activity.getDbContentValues());
-		Logger.logi("APPDEV-1238", "Activity inserted : " + activity.getDbContentValues().toString());
+		Logger.logi(ActivityTrackerDAO.class, "Activity inserted : " + activity.getDbContentValues().toString());
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class ActivityTrackerDAO extends BaseDAO
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(GoalDAO.class, e, Thread.currentThread());
 		}
 		finally
 		{
@@ -103,7 +103,7 @@ public class ActivityTrackerDAO extends BaseDAO
 	public void logTotalActivityCount()
 	{
 		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER);
-		Logger.logi("APPDEV-1238", "Activity count " + c.getCount());
+		Logger.logi(ActivityTrackerDAO.class, "Activity count " + c.getCount());
 		c.close();
 	}
 

@@ -126,7 +126,7 @@ public class BuddyManagerImpl implements BuddyManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(BuddyManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -174,7 +174,7 @@ public class BuddyManagerImpl implements BuddyManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(BuddyManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -239,7 +239,7 @@ public class BuddyManagerImpl implements BuddyManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(BuddyManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(BuddyManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 }

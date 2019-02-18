@@ -89,7 +89,7 @@ public class ActivityMonitorService extends Service
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityMonitorService.class, e, Thread.currentThread());
 		}
 		return currentApp;
 	}
@@ -219,7 +219,7 @@ public class ActivityMonitorService extends Service
 
 	private void updateOnServer(String pkgname)
 	{
-		Logger.logi("updateOnServer", "pck: " + pkgname);
+		Logger.logi(ActivityMonitorService.class, "pck: " + pkgname);
 		if (previousAppName != null && !pkgname.equals("NULL") && startTime != null && endTime != null && startTime.before(endTime))
 		{
 			APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
@@ -252,7 +252,7 @@ public class ActivityMonitorService extends Service
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityMonitorService.class, e, Thread.currentThread());
 		}
 	}
 

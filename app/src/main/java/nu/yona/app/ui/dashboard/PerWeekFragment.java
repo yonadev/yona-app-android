@@ -80,7 +80,7 @@ public class PerWeekFragment extends BaseFragment
 			}
 			catch (Exception e)
 			{
-				AppUtils.reportException(PerWeekFragment.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(PerWeekFragment.class, e, Thread.currentThread());
 			}
 		}
 	};

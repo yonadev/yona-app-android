@@ -122,7 +122,7 @@ public class StepTwoFragment extends BaseFragment implements EventChangeListener
 			}
 			catch (NumberParseException e)
 			{
-				AppUtils.reportException(StepTwoFragment.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(StepTwoFragment.class, e, Thread.currentThread());
 			}
 		}
 		else

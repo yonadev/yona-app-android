@@ -64,7 +64,7 @@ public class GoalDAO extends BaseDAO
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(GoalDAO.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class GoalDAO extends BaseDAO
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(GoalDAO.class, e, Thread.currentThread());
 		}
 		finally
 		{

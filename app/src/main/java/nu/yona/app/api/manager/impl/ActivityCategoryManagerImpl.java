@@ -83,7 +83,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(ActivityCategoryManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 		return null; // No value to return from here
 	}
@@ -104,7 +104,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(ActivityCategoryManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 }
