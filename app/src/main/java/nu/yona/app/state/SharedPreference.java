@@ -18,7 +18,6 @@ import javax.crypto.spec.IvParameterSpec;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.security.EncryptionUtils;
 import nu.yona.app.security.MyCipher;
-import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -100,8 +99,7 @@ public class SharedPreference
 	public void setYonaPassword(String password)
 	{
 		yonaPwd = null;
-		String encryptedValue = EncryptionUtils.encrypt(YonaActivity.getActivity(), password);
-		userPreferences.edit().putString(PreferenceConstant.YONA_DATA, encryptedValue).commit();
+		userPreferences.edit().putString(PreferenceConstant.YONA_DATA, EncryptionUtils.encrypt(YonaApplication.getAppContext(), password)).commit();
 	}
 
 	/**
@@ -122,7 +120,7 @@ public class SharedPreference
 	{
 		if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, "")))
 		{
-			return EncryptionUtils.decrypt(YonaActivity.getActivity(), userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
+			return EncryptionUtils.decrypt(YonaApplication.getAppContext(), userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
 		}
 		else
 		{

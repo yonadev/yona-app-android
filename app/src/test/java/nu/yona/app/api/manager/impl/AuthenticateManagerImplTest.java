@@ -32,6 +32,7 @@ import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.SharedPreference;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.equalTo;
@@ -45,8 +46,10 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	private AuthenticateManagerImpl manager;
 	private AuthenticateNetworkImpl authenticateNetworkImplMock;
 	private AuthenticateDAO authenticateDAOMock;
+	private SharedPreference sharedPreferenceMock;
 	private RegisterUser registerUser;
 
+	private final String yonaPwd = "AES:128:hiQK2AjU4YE8tEuJlUy+Ug==";
 	private final String correctMobileNumber = "+919686270640";
 	private final String wrongMobileNumber = "+9999211";
 	private final OTPVerficationCode correctOtpCode = new OTPVerficationCode("1234");
@@ -83,6 +86,7 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 		setUpRegisterUser();
 		manager = (AuthenticateManagerImpl) APIManager.getInstance().getAuthenticateManager();
 		mockRequiredClasses();
+		setUpSharedPreferenceMock();
 		setUpMockedAuthNetworkDaoMethods();
 		setUpMockedAuthNetworkImplMethods();
 	}
@@ -160,8 +164,6 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	private void setUpApplicationTestData()
 	{
 		YonaApplication yonaApplication = (YonaApplication) RuntimeEnvironment.application;
-		yonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword("AES:128:hiQK2AjU4YE8tEuJlUy+Ug==");
-		// getSharedAppDataState().setUser(getMockedUser()); TODO: To make the test work again, set this through reflection
 	}
 
 	private void setUpRegisterUser()
@@ -177,6 +179,7 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 		authenticateNetworkImplMock = Mockito.mock(AuthenticateNetworkImpl.class);
 		manager.setAuthNetwork(authenticateNetworkImplMock);
 		authenticateDAOMock = Mockito.mock(AuthenticateDAO.class);
+		sharedPreferenceMock = Mockito.mock(SharedPreference.class);
 		manager.setAuthenticateDao(authenticateDAOMock);
 	}
 
@@ -259,6 +262,11 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 				ArgumentMatchers.any(DataLoadListener.class));
 
 		Mockito.when(authenticateDAOMock.getUser()).thenReturn(getMockedUser());
+	}
+
+	private void setUpSharedPreferenceMock()
+	{
+		Mockito.when(sharedPreferenceMock.getYonaPassword()).thenReturn(yonaPwd);
 	}
 
 	@Override
