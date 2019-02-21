@@ -213,14 +213,40 @@ public class LaunchActivity extends BaseActivity
 
 	private void validateYonaPasswordEncryption()
 	{
+		int currentEncryptionMode = getSharedUserPreferences().getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal());
 		// if App is older version and user is already logged in, upgrade the encryption.
-		if ((getSharedUserPreferences().getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal()) == EncryptionMethod.INITIAL_METHOD.ordinal()
-				&& !TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))))
+		if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")) && (currentEncryptionMode != EncryptionMethod.ENHANCED_BASED_ON_ANDROID_KEYSTORE.ordinal()))
 		{
-			YonaApplication.getEventChangeManager().getSharedPreference().upgradeYonaPasswordEncryption();
+			upgradePasswordEncryption(currentEncryptionMode);
 		}
+		setPasswordEncryptionModeToLatest();
+	}
+
+	private void upgradePasswordEncryption(int currentEncryptionMode)
+	{
+		switch (currentEncryptionMode)
+		{
+			case 0:
+			{
+				YonaApplication.getEventChangeManager().getSharedPreference().upgradeFromInitialPasswordEncryption();
+				break;
+			}
+			case 1:
+			{
+				YonaApplication.getEventChangeManager().getSharedPreference().upgradeFromSerialBasedPasswordEncryption();
+				break;
+			}
+			default:
+			{
+				break;
+			}
+		}
+	}
+
+	private void setPasswordEncryptionModeToLatest()
+	{
 		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
-		editor.putInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.ENHANCED_STILL_BASED_ON_SERIAL.ordinal());
+		editor.putInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.ENHANCED_BASED_ON_ANDROID_KEYSTORE.ordinal());
 		editor.commit();
 	}
 

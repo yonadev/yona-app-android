@@ -13,14 +13,12 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
 
-import java.util.Arrays;
-
 import javax.crypto.spec.IvParameterSpec;
 
 import nu.yona.app.YonaApplication;
+import nu.yona.app.security.EncryptionUtils;
 import nu.yona.app.security.MyCipher;
-import nu.yona.app.security.MyCipherData;
-import nu.yona.app.security.PRNGFixes;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.PreferenceConstant;
 
 /**
@@ -63,42 +61,6 @@ public class SharedPreference
 	}
 
 
-	/**
-	 * Gets yona password.
-	 *
-	 * @return return yona password
-	 */
-	public String getYonaPassword()
-	{
-		if (yonaPwd == null)
-		{
-			yonaPwd = getDecryptedKey();
-		}
-		return yonaPwd;
-	}
-
-	/**
-	 * Sets yona password.
-	 *
-	 * @param password yona password
-	 */
-	public void setYonaPassword(String password)
-	{
-		yonaPwd = null;
-		//According to http://android-developers.blogspot.com.es/2013/08/some-securerandom-thoughts.html
-		PRNGFixes.apply();
-		MyCipherData cipherData = new MyCipher(Build.SERIAL).encryptUTF8(password);
-		userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
-	}
-
-	public void setVPNProfilePath(String path)
-	{
-		SharedPreferences.Editor editor = userPreferences.edit();
-		editor.putString(PreferenceConstant.VPN_PROFILE_PATH, path);
-		editor.putBoolean(PreferenceConstant.VPN_PROFILE_ACTIVE, false);
-		editor.commit();
-	}
-
 	public String getVPNProfilePath()
 	{
 		return userPreferences.getString(PreferenceConstant.VPN_PROFILE_PATH, null);
@@ -121,13 +83,68 @@ public class SharedPreference
 		return null;
 	}
 
-	public boolean isRootCertActive()
+
+	public void setVPNProfilePath(String path)
 	{
-		return userPreferences.getBoolean(PreferenceConstant.ROOT_CERTIFICATE_ACTIVE, false);
+		SharedPreferences.Editor editor = userPreferences.edit();
+		editor.putString(PreferenceConstant.VPN_PROFILE_PATH, path);
+		editor.putBoolean(PreferenceConstant.VPN_PROFILE_ACTIVE, false);
+		editor.commit();
 	}
 
+	/**
+	 * Sets yona password.
+	 *
+	 * @param password yona password
+	 */
+	public void setYonaPassword(String password)
+	{
+		yonaPwd = null;
+		String encryptedValue = EncryptionUtils.encrypt(YonaActivity.getActivity(), password);
+		userPreferences.edit().putString(PreferenceConstant.YONA_DATA, encryptedValue).commit();
+	}
+
+	/**
+	 * Gets yona password.
+	 *
+	 * @return return yona password
+	 */
+	public String getYonaPassword()
+	{
+		if (yonaPwd == null)
+		{
+			yonaPwd = getDecryptedKey();
+		}
+		return yonaPwd;
+	}
 
 	private String getDecryptedKey()
+	{
+		if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, "")))
+		{
+			return EncryptionUtils.decrypt(YonaActivity.getActivity(), userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	public void upgradeFromInitialPasswordEncryption()
+	{
+		byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
+		byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
+		IvParameterSpec iv = new IvParameterSpec(dataIV);
+		MyCipher myCipher = new MyCipher(Build.SERIAL);
+		setYonaPassword(myCipher.getYonaPasswordWithOldEncryptedData(encrypted_data, iv));
+	}
+
+	public void upgradeFromSerialBasedPasswordEncryption()
+	{
+		setYonaPassword(getDecryptedKeyFromSerialBasedEncryptedData());
+	}
+
+	private String getDecryptedKeyFromSerialBasedEncryptedData()
 	{
 		if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, "")))
 		{
@@ -141,20 +158,6 @@ public class SharedPreference
 			return "";
 		}
 	}
-
-	public void upgradeYonaPasswordEncryption()
-	{
-		if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, "")))
-		{
-			byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
-			byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
-			IvParameterSpec iv = new IvParameterSpec(dataIV);
-			MyCipher myCipher = new MyCipher(Build.SERIAL);
-			String yonaPassword = myCipher.getYonaPasswordWithOldEncryptedData(encrypted_data, iv);
-			setYonaPassword(yonaPassword);
-		}
-	}
-
 
 	private byte[] byteToString(String response)
 	{

@@ -69,7 +69,7 @@ public class MyCipher
 	{
 		try
 		{
-			byte[] bytes = data.toString().getBytes("utf-8");
+			byte[] bytes = data.getBytes("utf-8");
 			byte[] bytesBase64 = Base64.encode(bytes, DEFAULT);
 			return encrypt(bytesBase64);
 		}
