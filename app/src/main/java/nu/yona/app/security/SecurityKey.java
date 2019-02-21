@@ -49,7 +49,6 @@ class SecurityKey
 		{
 			return null;
 		}
-
 		try
 		{
 			Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
@@ -71,11 +70,9 @@ class SecurityKey
 		{
 			return null;
 		}
-
 		try
 		{
 			Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
-
 			byte[] decoded = Base64.decode(encryptedToken, Base64.URL_SAFE);
 			byte[] original = cipher.doFinal(decoded);
 			return new String(original);
