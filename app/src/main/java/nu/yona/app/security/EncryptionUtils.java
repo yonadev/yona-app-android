@@ -43,14 +43,7 @@ public class EncryptionUtils
 		{
 			return EncryptionKeyGenerator.generateSecretKey(getKeyStore());
 		}
-		else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-		{
-			return EncryptionKeyGenerator.generateSecretKeyPreM(context, getKeyStore());
-		}
-		else
-		{
-			return EncryptionKeyGenerator.generateSecretKeyPre18(context);
-		}
+		return EncryptionKeyGenerator.generateSecretKeyPreM(context, getKeyStore());
 	}
 
 	private static KeyStore getKeyStore()

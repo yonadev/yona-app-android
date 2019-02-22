@@ -17,8 +17,6 @@ import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
@@ -28,7 +26,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
 import java.util.Calendar;
 
 import javax.crypto.KeyGenerator;
@@ -40,8 +37,6 @@ public class EncryptionKeyGenerator
 {
 	public static final String ANDROID_KEY_STORE = "AndroidKeyStore";//Dont change this un.
 	public static final String KEY_ALIAS = "YONA";
-	private static final String KEY_STORE_FILE_NAME = "KEY_STORE";
-	private static final String KEY_STORE_PASSWORD = "KEY_STORE_PASSWORD";
 
 	@TargetApi(Build.VERSION_CODES.M)
 	static SecurityKey generateSecretKey(KeyStore keyStore)
@@ -107,9 +102,9 @@ public class EncryptionKeyGenerator
 		{
 			if (keyStore.containsAlias(KEY_ALIAS))
 			{
-				return getFreshSecretKeyPreM(context, keyStore);
+				return getExistingSecretKeyPreM(context, keyStore);
 			}
-			return getExistingSecretKeyPreM(context, keyStore);
+			return getFreshSecretKeyPreM(context, keyStore);
 		}
 		catch (KeyStoreException e)
 		{
@@ -123,25 +118,22 @@ public class EncryptionKeyGenerator
 	{
 		try
 		{
-			if (!keyStore.containsAlias(KEY_ALIAS))
-			{
-				Calendar start = Calendar.getInstance();
-				Calendar end = Calendar.getInstance();
-				//1 Year validity
-				end.add(Calendar.YEAR, 1);
-				KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context).setAlias(KEY_ALIAS)
-						.setSubject(new X500Principal("CN=" + KEY_ALIAS))
-						.setSerialNumber(BigInteger.TEN)
-						.setStartDate(start.getTime())
-						.setEndDate(end.getTime())
-						.build();
+			Calendar start = Calendar.getInstance();
+			Calendar end = Calendar.getInstance();
+			//1 Year validity
+			end.add(Calendar.YEAR, 1);
+			KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context).setAlias(KEY_ALIAS)
+					.setSubject(new X500Principal("CN=" + KEY_ALIAS))
+					.setSerialNumber(BigInteger.TEN)
+					.setStartDate(start.getTime())
+					.setEndDate(end.getTime())
+					.build();
 
-				KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", ANDROID_KEY_STORE);
-				kpg.initialize(spec);
-				return new SecurityKey(kpg.generateKeyPair());
-			}
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", ANDROID_KEY_STORE);
+			kpg.initialize(spec);
+			return new SecurityKey(kpg.generateKeyPair());
 		}
-		catch (KeyStoreException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | NoSuchProviderException e)
+		catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | NoSuchProviderException e)
 		{
 			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
 		}
@@ -163,77 +155,5 @@ public class EncryptionKeyGenerator
 			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
 		}
 		return null;
-	}
-
-	static SecurityKey generateSecretKeyPre18(Context context)
-	{
-		try
-		{
-			KeyStore androidCAStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			char[] password = KEY_STORE_PASSWORD.toCharArray();
-			boolean isKeyStoreLoaded = loadKeyStore(context, androidCAStore, password);
-			KeyStore.ProtectionParameter protParam = new KeyStore.PasswordProtection(password);
-			if (!isKeyStoreLoaded || !androidCAStore.containsAlias(KEY_ALIAS))
-			{
-				//Create and save new secret key
-				saveMyKeystore(context, androidCAStore, password, protParam);
-			}
-			// Fetch Secret Key
-			KeyStore.SecretKeyEntry pkEntry =
-					(KeyStore.SecretKeyEntry) androidCAStore.getEntry(KEY_ALIAS, protParam);
-			return new SecurityKey(pkEntry.getSecretKey());
-		}
-		catch (KeyStoreException | IOException | CertificateException | NoSuchAlgorithmException | UnrecoverableEntryException e)
-		{
-			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
-		}
-		return null;
-	}
-
-	private static boolean loadKeyStore(Context context, KeyStore androidCAStore, char[] password)
-	{
-		java.io.FileInputStream fis;
-		try
-		{
-			fis = context.openFileInput(KEY_STORE_FILE_NAME);
-		}
-		catch (FileNotFoundException e)
-		{
-			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
-			return false;
-		}
-		try
-		{
-			androidCAStore.load(fis, password);
-			return true;
-		}
-		catch (IOException | NoSuchAlgorithmException | CertificateException e)
-		{
-			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
-		}
-		return false;
-	}
-
-	private static void saveMyKeystore(Context context, KeyStore androidCAStore, char[] password,
-									   KeyStore.ProtectionParameter protParam)
-			throws NoSuchAlgorithmException, KeyStoreException, IOException, CertificateException
-	{
-		javax.crypto.SecretKey mySecretKey = KeyGenerator.getInstance("AES").generateKey();
-		KeyStore.SecretKeyEntry skEntry = new KeyStore.SecretKeyEntry(mySecretKey);
-		androidCAStore.load(null);
-		androidCAStore.setEntry(KEY_ALIAS, skEntry, protParam);
-		java.io.FileOutputStream fos = null;
-		try
-		{
-			fos = context.openFileOutput(KEY_STORE_FILE_NAME, Context.MODE_PRIVATE);
-			androidCAStore.store(fos, password);
-		}
-		finally
-		{
-			if (fos != null)
-			{
-				fos.close();
-			}
-		}
 	}
 }
