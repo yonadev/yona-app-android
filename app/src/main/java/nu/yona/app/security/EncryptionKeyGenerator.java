@@ -38,7 +38,7 @@ import nu.yona.app.utils.AppUtils;
 
 public class EncryptionKeyGenerator
 {
-	public static final String ANDROID_KEY_STORE = "YONA_KEY_STORE";
+	public static final String ANDROID_KEY_STORE = "AndroidKeyStore";//Dont change this un.
 	public static final String KEY_ALIAS = "YONA";
 	private static final String KEY_STORE_FILE_NAME = "KEY_STORE";
 	private static final String KEY_STORE_PASSWORD = "KEY_STORE_PASSWORD";
