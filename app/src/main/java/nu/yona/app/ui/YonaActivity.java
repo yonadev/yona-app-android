@@ -13,6 +13,8 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.usage.UsageStatsManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -666,17 +668,28 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 		builder.setTitle(getString(R.string.app_usage_permission_title));
 		builder.setMessage(getString(R.string.app_usage_permission_message));
-		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				isToDisplayLogin = false;
-				startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
-			}
+		builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+			isToDisplayLogin = false;
+			redirectToUsageAccessSetting();
 		});
 		builder.setCancelable(false);
 		builder.create().show();
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+	private void redirectToUsageAccessSetting()
+	{
+		UsageStatsManager mUsageStatsManager = (UsageStatsManager) getActivity().getSystemService(Context.USAGE_STATS_SERVICE);
+		long time = System.currentTimeMillis();
+		List stats = null;
+		if (mUsageStatsManager != null)
+		{
+			stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 10, time);
+		}
+		if (stats == null || stats.isEmpty())
+		{
+			startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
+		}
 	}
 
 	/**
