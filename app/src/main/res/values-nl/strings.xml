@@ -228,4 +228,5 @@
     <string name="yona_service_notification_channel_name">Vaste melding</string>
     <string name="support_mail_subject">Probleem met Yona app</string>
     <string name="mandatory_user_fetch_failure">De Yona-app heeft deze keer een netwerkverbinding nodig om te starten.</string>
+    <string name="usage_access_unavailable_message">Sta Yona in het instellingenmenu toe om de gebruiksstatistieken van apps in te zien.</string>
 </resources>
