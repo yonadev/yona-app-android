@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -53,7 +52,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -408,18 +406,6 @@ public class AppUtils
 		return alertDialogBuilder.create();
 	}
 
-	public static void displayInfoAlert(Context context, String title, String message,
-										boolean cancelable, DialogInterface.OnClickListener okButtonListener, DialogInterface.OnClickListener cancelButtonListener)
-	{
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-		alertDialogBuilder.setTitle(title);
-		alertDialogBuilder.setMessage(message);
-		alertDialogBuilder.setCancelable(cancelable);
-		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), okButtonListener);
-		alertDialogBuilder.setNegativeButton(context.getString(R.string.cancel), cancelButtonListener);
-		alertDialogBuilder.create().show();
-	}
-
 	@TargetApi(Build.VERSION_CODES.O)
 	public static boolean arePersistentNotificationsEnabled(Context context)
 	{
@@ -469,13 +455,6 @@ public class AppUtils
 		{
 			uiTaskHandler.post(runnable);
 		}
-	}
-
-	public static boolean canPerformIntent(Context context, Intent intent)
-	{
-		PackageManager mgr = context.getPackageManager();
-		List<ResolveInfo> list = mgr.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-		return list.size() > 0;
 	}
 
 	/**
