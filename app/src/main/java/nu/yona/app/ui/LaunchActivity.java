@@ -243,7 +243,6 @@ public class LaunchActivity extends BaseActivity
 			default:
 			{
 				throw new YonaRuntimeException("Unknown encryption method: " + encryptionMethod))
-				break;
 			}
 		}
 	}
