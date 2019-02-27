@@ -30,9 +30,9 @@ public class EncryptionUtils
 		return getSecurityKey(context).encrypt(plaintext);
 	}
 
-	public static String decrypt(Context context, String cipherText)
+	public static String decrypt(Context context, String ciphertext)
 	{
-		return getSecurityKey(context).decrypt(cipherText);
+		return getSecurityKey(context).decrypt(ciphertext);
 	}
 
 	private static SecurityKey getSecurityKey(Context context)
