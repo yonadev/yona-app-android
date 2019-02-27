@@ -21,6 +21,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -44,6 +45,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -343,6 +345,25 @@ public class AppUtils
 		alertDialogBuilder.setMessage(errorMessage.getMessage());
 		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), onClickListener);
 		return alertDialogBuilder.create();
+	}
+
+	public static void displayInfoAlert(Context context, String title, String message,
+										boolean cancelable, DialogInterface.OnClickListener okButtonListener, DialogInterface.OnClickListener cancelButtonListener)
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		alertDialogBuilder.setTitle(title);
+		alertDialogBuilder.setMessage(message);
+		alertDialogBuilder.setCancelable(cancelable);
+		alertDialogBuilder.setPositiveButton(context.getString(R.string.ok), okButtonListener);
+		alertDialogBuilder.setNegativeButton(context.getString(R.string.cancel), cancelButtonListener);
+		alertDialogBuilder.create().show();
+	}
+
+	public static boolean canPerformIntent(Context context, Intent intent)
+	{
+		PackageManager mgr = context.getPackageManager();
+		List<ResolveInfo> list = mgr.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+		return list.size() > 0;
 	}
 
 	@TargetApi(Build.VERSION_CODES.O)

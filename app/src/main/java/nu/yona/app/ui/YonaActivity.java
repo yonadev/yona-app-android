@@ -665,21 +665,28 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 	private void showPermissionAlert()
 	{
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		AppUtils.displayInfoAlert(this, getString(R.string.app_usage_permission_title),
+				getString(R.string.app_usage_permission_message),
+				false,
+				(dialog, which) -> {
+					isToDisplayLogin = false;
+					redirectToUsageAccessSetting();
+				},
+				null);
+	}
 
-		builder.setTitle(getString(R.string.app_usage_permission_title));
-		builder.setMessage(getString(R.string.app_usage_permission_message));
-		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+	private void redirectToUsageAccessSetting()
+	{
+		if (!AppUtils.canPerformIntent(this, new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)))
 		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				isToDisplayLogin = false;
-				startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
-			}
-		});
-		builder.setCancelable(false);
-		builder.create().show();
+			AppUtils.displayInfoAlert(this, getString(R.string.generic_alert_title),
+					getString(R.string.usage_access_unavailable_message),
+					true,
+					null,
+					null);
+			return;
+		}
+		startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
 	}
 
 	/**
