@@ -41,17 +41,17 @@ class SecurityKey
 		this.keyPair = keyPair;
 	}
 
-	String encrypt(String plainText)
+	String encrypt(String plaintext)
 	{
-		if (plainText == null)
+		if (plaintext == null)
 		{
 			return null;
 		}
 		try
 		{
 			Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
-			byte[] encrypted = cipher.doFinal(plainText.getBytes());
-			return Base64.encodeToString(encrypted, Base64.URL_SAFE);
+			byte[] ciphertext = cipher.doFinal(plaintext.getBytes());
+			return Base64.encodeToString(ciphertext, Base64.URL_SAFE);
 		}
 		catch (GeneralSecurityException e)
 		{
@@ -60,18 +60,18 @@ class SecurityKey
 		}
 	}
 
-	String decrypt(String encryptedToken)
+	String decrypt(String ciphertext)
 	{
-		if (encryptedToken == null)
+		if (ciphertext == null)
 		{
 			return null;
 		}
 		try
 		{
 			Cipher cipher = getCipher(Cipher.DECRYPT_MODE);
-			byte[] decoded = Base64.decode(encryptedToken, Base64.URL_SAFE);
-			byte[] original = cipher.doFinal(decoded);
-			return new String(original);
+			byte[] decodedCipertext = Base64.decode(ciphertext, Base64.URL_SAFE);
+			byte[] plaintext = cipher.doFinal(decodedCipertext);
+			return new String(plaintext);
 		}
 		catch (GeneralSecurityException e)
 		{
