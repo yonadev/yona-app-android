@@ -1,0 +1,1 @@
+APPDEV-1265 Crash op bepaalde Huawei apparaten opgelost
