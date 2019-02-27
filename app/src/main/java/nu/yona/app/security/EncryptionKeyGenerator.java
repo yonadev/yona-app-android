@@ -35,7 +35,8 @@ import nu.yona.app.utils.YonaRuntimeException;
 
 public class EncryptionKeyGenerator
 {
-	public static final String ANDROID_KEY_STORE = "AndroidKeyStore";//Dont change this un.
+	//Dont change this. AndroidKeyStore is the default one for Android 18+. refer https://developer.android.com/reference/java/security/KeyStore.html
+	public static final String ANDROID_KEY_STORE = "AndroidKeyStore";
 	public static final String KEY_ALIAS = "YONA";
 
 	@TargetApi(Build.VERSION_CODES.M)
