@@ -139,7 +139,7 @@ public class EncryptionKeyGenerator
 			Calendar start = Calendar.getInstance();
 			Calendar end = Calendar.getInstance();
 			//1 Year validity
-			end.add(Calendar.YEAR, 1);
+			end.add(Calendar.YEAR, 5);
 			KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context).setAlias(KEY_ALIAS)
 					.setSubject(new X500Principal("CN=" + KEY_ALIAS))
 					.setSerialNumber(BigInteger.TEN)

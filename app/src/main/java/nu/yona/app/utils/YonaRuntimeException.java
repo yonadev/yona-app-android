@@ -14,4 +14,9 @@ public class YonaRuntimeException extends RuntimeException
 	{
 		super(cause);
 	}
+
+	public YonaRuntimeException(String message)
+	{
+		super(message);
+	}
 }

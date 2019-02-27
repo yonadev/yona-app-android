@@ -25,16 +25,14 @@ import nu.yona.app.utils.YonaRuntimeException;
 public class EncryptionUtils
 {
 
-	public static String encrypt(Context context, String plainText)
+	public static String encrypt(Context context, String plaintext)
 	{
-		SecurityKey securityKey = getSecurityKey(context);
-		return securityKey.encrypt(plainText);
+		return getSecurityKey(context).encrypt(plaintext);
 	}
 
 	public static String decrypt(Context context, String cipherText)
 	{
-		SecurityKey securityKey = getSecurityKey(context);
-		return securityKey.decrypt(cipherText);
+		return getSecurityKey(context).decrypt(cipherText);
 	}
 
 	private static SecurityKey getSecurityKey(Context context)
@@ -50,7 +48,7 @@ public class EncryptionUtils
 	{
 		try
 		{
-			KeyStore keyStore = null;
+			KeyStore keyStore;
 			keyStore = KeyStore.getInstance(EncryptionKeyGenerator.ANDROID_KEY_STORE);
 			keyStore.load(null);
 			return keyStore;

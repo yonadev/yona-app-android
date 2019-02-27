@@ -46,6 +46,7 @@ import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
+import nu.yona.app.utils.YonaRuntimeException;
 
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
@@ -236,8 +237,12 @@ public class LaunchActivity extends BaseActivity
 				YonaApplication.getEventChangeManager().getSharedPreference().upgradeFromSerialBasedPasswordEncryption();
 				break;
 			}
+			case ENHANCED_BASED_ON_ANDROID_KEYSTORE:
+				// This is the current encryption version.
+				break;
 			default:
 			{
+				throw new YonaRuntimeException("Unknown encryption method: " + encryptionMethod))
 				break;
 			}
 		}
