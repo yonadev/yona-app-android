@@ -1,12 +1,11 @@
 /*
- * <?xml version="1.0" encoding="utf-8"?><!--
- * ~ Copyright (c) 2018 Stichting Yona Foundation
- *   ~
- *   ~ This Source Code Form is subject to the terms of the Mozilla Public
- *   ~ License, v. 2.0. If a copy of the MPL was not distributed with this
- *   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *   -->
+ * Copyright (c) 2018 Stichting Yona Foundation
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
+
 
 package nu.yona.app.security;
 
@@ -20,21 +19,22 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.YonaRuntimeException;
 
 
 public class EncryptionUtils
 {
 
-	public static String encrypt(Context context, String token)
+	public static String encrypt(Context context, String plainText)
 	{
 		SecurityKey securityKey = getSecurityKey(context);
-		return securityKey != null ? securityKey.encrypt(token) : null;
+		return securityKey.encrypt(plainText);
 	}
 
-	public static String decrypt(Context context, String token)
+	public static String decrypt(Context context, String cipherText)
 	{
 		SecurityKey securityKey = getSecurityKey(context);
-		return securityKey != null ? securityKey.decrypt(token) : null;
+		return securityKey.decrypt(cipherText);
 	}
 
 	private static SecurityKey getSecurityKey(Context context)
@@ -48,17 +48,18 @@ public class EncryptionUtils
 
 	private static KeyStore getKeyStore()
 	{
-		KeyStore keyStore = null;
 		try
 		{
+			KeyStore keyStore = null;
 			keyStore = KeyStore.getInstance(EncryptionKeyGenerator.ANDROID_KEY_STORE);
 			keyStore.load(null);
+			return keyStore;
 		}
 		catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e)
 		{
-			AppUtils.reportException(EncryptionUtils.class, e, Thread.currentThread());
+			AppUtils.reportException(EncryptionUtils.class, e, Thread.currentThread(), null, false);
+			throw new YonaRuntimeException(e);
 		}
-		return keyStore;
 	}
 
 	public static void clear()
@@ -73,7 +74,7 @@ public class EncryptionUtils
 		}
 		catch (KeyStoreException e)
 		{
-			AppUtils.reportException(EncryptionUtils.class, e, Thread.currentThread());
+			AppUtils.reportException(EncryptionUtils.class, e, Thread.currentThread(), null, false);
 		}
 	}
 }

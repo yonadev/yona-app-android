@@ -1,12 +1,11 @@
 /*
- * <?xml version="1.0" encoding="utf-8"?><!--
- * ~ Copyright (c) 2018 Stichting Yona Foundation
- *   ~
- *   ~ This Source Code Form is subject to the terms of the Mozilla Public
- *   ~ License, v. 2.0. If a copy of the MPL was not distributed with this
- *   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *   -->
+ * Copyright (c) 2018 Stichting Yona Foundation
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
+
 
 package nu.yona.app.security;
 
@@ -32,6 +31,7 @@ import javax.crypto.KeyGenerator;
 import javax.security.auth.x500.X500Principal;
 
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.YonaRuntimeException;
 
 public class EncryptionKeyGenerator
 {
@@ -51,9 +51,9 @@ public class EncryptionKeyGenerator
 		}
 		catch (KeyStoreException e)
 		{
-			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
+			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread(), null, false);
+			throw new YonaRuntimeException(e);
 		}
-		return null;
 	}
 
 	@TargetApi(Build.VERSION_CODES.M)
@@ -61,15 +61,15 @@ public class EncryptionKeyGenerator
 	{
 		try
 		{
-			final KeyStore.SecretKeyEntry entry =
+			KeyStore.SecretKeyEntry entry =
 					(KeyStore.SecretKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
 			return new SecurityKey(entry.getSecretKey());
 		}
 		catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableEntryException e)
 		{
-			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
+			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread(), null, false);
+			throw new YonaRuntimeException(e);
 		}
-		return null;
 	}
 
 
@@ -90,9 +90,9 @@ public class EncryptionKeyGenerator
 		}
 		catch (NoSuchProviderException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e)
 		{
-			AppUtils.reportException(MyCipher.class, e, Thread.currentThread());
+			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread(), null, false);
+			throw new YonaRuntimeException(e);
 		}
-		return null;
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -102,19 +102,36 @@ public class EncryptionKeyGenerator
 		{
 			if (keyStore.containsAlias(KEY_ALIAS))
 			{
-				return getExistingSecretKeyPreM(context, keyStore);
+				return getExistingSecretKeyPreM(keyStore);
 			}
-			return getFreshSecretKeyPreM(context, keyStore);
+			return getFreshSecretKeyPreM(context);
 		}
 		catch (KeyStoreException e)
 		{
-			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
+			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread(), null, false);
+			throw new YonaRuntimeException(e);
 		}
-		return null;
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	static SecurityKey getExistingSecretKeyPreM(Context context, KeyStore keyStore)
+	static SecurityKey getExistingSecretKeyPreM(KeyStore keyStore)
+	{
+		try
+		{
+			KeyStore.PrivateKeyEntry entry =
+					(KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
+			return new SecurityKey(
+					new KeyPair(entry.getCertificate().getPublicKey(), entry.getPrivateKey()));
+		}
+		catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableEntryException e)
+		{
+			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread(), null, false);
+			throw new YonaRuntimeException(e);
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+	static SecurityKey getFreshSecretKeyPreM(Context context)
 	{
 		try
 		{
@@ -128,32 +145,14 @@ public class EncryptionKeyGenerator
 					.setStartDate(start.getTime())
 					.setEndDate(end.getTime())
 					.build();
-
 			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", ANDROID_KEY_STORE);
 			kpg.initialize(spec);
 			return new SecurityKey(kpg.generateKeyPair());
 		}
 		catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | NoSuchProviderException e)
 		{
-			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
+			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread(), null, false);
+			throw new YonaRuntimeException(e);
 		}
-		return null;
-	}
-
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	static SecurityKey getFreshSecretKeyPreM(Context context, KeyStore keyStore)
-	{
-		try
-		{
-			final KeyStore.PrivateKeyEntry entry =
-					(KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
-			return new SecurityKey(
-					new KeyPair(entry.getCertificate().getPublicKey(), entry.getPrivateKey()));
-		}
-		catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableEntryException e)
-		{
-			AppUtils.reportException(EncryptionKeyGenerator.class, e, Thread.currentThread());
-		}
-		return null;
 	}
 }

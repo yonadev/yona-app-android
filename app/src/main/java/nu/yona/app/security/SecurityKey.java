@@ -1,12 +1,11 @@
 /*
- * <?xml version="1.0" encoding="utf-8"?><!--
- * ~ Copyright (c) 2018 Stichting Yona Foundation
- *   ~
- *   ~ This Source Code Form is subject to the terms of the Mozilla Public
- *   ~ License, v. 2.0. If a copy of the MPL was not distributed with this
- *   ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *   -->
+ * Copyright (c) 2018 Stichting Yona Foundation
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
+
 
 package nu.yona.app.security;
 
@@ -20,15 +19,14 @@ import java.security.KeyPair;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.IvParameterSpec;
 
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.YonaRuntimeException;
 
 class SecurityKey
 {
 	private static final String RSA_MODE = "RSA/ECB/PKCS1Padding";
 	private static final String AES_MODE_FOR_POST_API_23 = "AES/GCM/NoPadding";
-	private static final String AES_MODE_FOR_PRE_API_18 = "AES/CBC/PKCS5Padding";
 
 	private SecretKey secretKey;
 	private KeyPair keyPair;
@@ -43,25 +41,23 @@ class SecurityKey
 		this.keyPair = keyPair;
 	}
 
-	String encrypt(String token)
+	String encrypt(String plainText)
 	{
-		if (token == null)
+		if (plainText == null)
 		{
 			return null;
 		}
 		try
 		{
 			Cipher cipher = getCipher(Cipher.ENCRYPT_MODE);
-
-			byte[] encrypted = cipher.doFinal(token.getBytes());
+			byte[] encrypted = cipher.doFinal(plainText.getBytes());
 			return Base64.encodeToString(encrypted, Base64.URL_SAFE);
 		}
 		catch (GeneralSecurityException e)
 		{
-			AppUtils.reportException(SecurityKey.class, e, Thread.currentThread());
+			AppUtils.reportException(SecurityKey.class, e, Thread.currentThread(), null, false);
+			throw new YonaRuntimeException(e);
 		}
-		//Unable to encrypt Token
-		return null;
 	}
 
 	String decrypt(String encryptedToken)
@@ -79,10 +75,9 @@ class SecurityKey
 		}
 		catch (GeneralSecurityException e)
 		{
-			AppUtils.reportException(SecurityKey.class, e, Thread.currentThread());
+			AppUtils.reportException(SecurityKey.class, e, Thread.currentThread(), null, false);
+			throw new YonaRuntimeException(e);
 		}
-		//Unable to decrypt encrypted Token
-		return null;
 	}
 
 	private Cipher getCipher(int mode) throws GeneralSecurityException
@@ -94,15 +89,10 @@ class SecurityKey
 			cipher = Cipher.getInstance(AES_MODE_FOR_POST_API_23);
 			cipher.init(mode, secretKey, new GCMParameterSpec(128, AES_MODE_FOR_POST_API_23.getBytes(), 0, 12));
 		}
-		else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+		else
 		{
 			cipher = Cipher.getInstance(RSA_MODE);
 			cipher.init(mode, mode == Cipher.DECRYPT_MODE ? keyPair.getPublic() : keyPair.getPrivate());
-		}
-		else
-		{
-			cipher = Cipher.getInstance(AES_MODE_FOR_PRE_API_18);
-			cipher.init(mode, secretKey, new IvParameterSpec(new byte[cipher.getBlockSize()]));
 		}
 		return cipher;
 	}
