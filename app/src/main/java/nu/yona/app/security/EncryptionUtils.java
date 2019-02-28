@@ -39,9 +39,9 @@ public class EncryptionUtils
 	{
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
 		{
-			return EncryptionKeyGenerator.generateSecretKey(getKeyStore());
+			return EncryptionKeyGenerator.getSecurityKey(getKeyStore());
 		}
-		return EncryptionKeyGenerator.generateSecretKeyPreM(context, getKeyStore());
+		return EncryptionKeyGenerator.getSecurityKey(context, getKeyStore());
 	}
 
 	private static KeyStore getKeyStore()

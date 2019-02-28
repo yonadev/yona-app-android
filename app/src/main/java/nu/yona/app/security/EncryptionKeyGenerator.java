@@ -40,15 +40,15 @@ public class EncryptionKeyGenerator
 	public static final String KEY_ALIAS = "YONA";
 
 	@TargetApi(Build.VERSION_CODES.M)
-	static SecurityKey generateSecretKey(KeyStore keyStore)
+	static SecurityKey getSecurityKey(KeyStore keyStore)
 	{
 		try
 		{
 			if (keyStore.containsAlias(KEY_ALIAS))
 			{
-				return getExistingSecurityKeyFromAlias(keyStore);
+				return getSecurityKeyFromKeyStore(keyStore);
 			}
-			return getFreshSecurityKey(keyStore);
+			return createSecurityKey(keyStore);
 		}
 		catch (KeyStoreException e)
 		{
@@ -58,7 +58,7 @@ public class EncryptionKeyGenerator
 	}
 
 	@TargetApi(Build.VERSION_CODES.M)
-	static SecurityKey getExistingSecurityKeyFromAlias(KeyStore keyStore)
+	static SecurityKey getSecurityKeyFromKeyStore(KeyStore keyStore)
 	{
 		try
 		{
@@ -75,7 +75,7 @@ public class EncryptionKeyGenerator
 
 
 	@TargetApi(Build.VERSION_CODES.M)
-	static SecurityKey getFreshSecurityKey(KeyStore keyStore)
+	static SecurityKey createSecurityKey(KeyStore keyStore)
 	{
 		try
 		{
@@ -97,15 +97,15 @@ public class EncryptionKeyGenerator
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	static SecurityKey generateSecretKeyPreM(Context context, KeyStore keyStore)
+	static SecurityKey getSecurityKey(Context context, KeyStore keyStore)
 	{
 		try
 		{
 			if (keyStore.containsAlias(KEY_ALIAS))
 			{
-				return getExistingSecretKeyPreM(keyStore);
+				return getSecurityKeyFromKeyStorePreM(keyStore);
 			}
-			return getFreshSecretKeyPreM(context);
+			return createSecretKeyPreM(context);
 		}
 		catch (KeyStoreException e)
 		{
@@ -115,7 +115,7 @@ public class EncryptionKeyGenerator
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	static SecurityKey getExistingSecretKeyPreM(KeyStore keyStore)
+	static SecurityKey getSecurityKeyFromKeyStorePreM(KeyStore keyStore)
 	{
 		try
 		{
@@ -132,7 +132,7 @@ public class EncryptionKeyGenerator
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	static SecurityKey getFreshSecretKeyPreM(Context context)
+	static SecurityKey createSecretKeyPreM(Context context)
 	{
 		try
 		{

@@ -9,7 +9,6 @@
 package nu.yona.app.ui;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -36,7 +35,6 @@ import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
-import nu.yona.app.enums.EncryptionMethod;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.login.LoginActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
@@ -46,11 +44,9 @@ import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
-import nu.yona.app.utils.YonaRuntimeException;
 
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
-import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 
 public class LaunchActivity extends BaseActivity
 {
@@ -214,44 +210,12 @@ public class LaunchActivity extends BaseActivity
 
 	private void validateYonaPasswordEncryption()
 	{
-		EncryptionMethod encryptionMethod = EncryptionMethod.values()[getSharedUserPreferences().getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal())];
-		// if App is older version and user is already logged in, upgrade the encryption.
-		if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")) && (encryptionMethod != EncryptionMethod.ENHANCED_BASED_ON_ANDROID_KEYSTORE))
+		if (TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")))
 		{
-			upgradePasswordEncryption(encryptionMethod);
+			// User didn't login in yet
+			return;
 		}
-		setPasswordEncryptionModeToLatest();
-	}
-
-	private void upgradePasswordEncryption(EncryptionMethod encryptionMethod)
-	{
-		switch (encryptionMethod)
-		{
-			case INITIAL_METHOD:
-			{
-				YonaApplication.getEventChangeManager().getSharedPreference().upgradeFromInitialPasswordEncryption();
-				break;
-			}
-			case ENHANCED_STILL_BASED_ON_SERIAL:
-			{
-				YonaApplication.getEventChangeManager().getSharedPreference().upgradeFromSerialBasedPasswordEncryption();
-				break;
-			}
-			case ENHANCED_BASED_ON_ANDROID_KEYSTORE:
-				// This is the current encryption version.
-				break;
-			default:
-			{
-				throw new YonaRuntimeException("Unknown encryption method: " + encryptionMethod))
-			}
-		}
-	}
-
-	private void setPasswordEncryptionModeToLatest()
-	{
-		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
-		editor.putInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.ENHANCED_BASED_ON_ANDROID_KEYSTORE.ordinal());
-		editor.commit();
+		YonaApplication.getEventChangeManager().getSharedPreference().upgradePasswordEncryptionIfNeeded();
 	}
 
 	/**

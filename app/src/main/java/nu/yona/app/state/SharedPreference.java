@@ -16,9 +16,14 @@ import android.text.TextUtils;
 import javax.crypto.spec.IvParameterSpec;
 
 import nu.yona.app.YonaApplication;
+import nu.yona.app.enums.EncryptionMethod;
 import nu.yona.app.security.EncryptionUtils;
 import nu.yona.app.security.MyCipher;
 import nu.yona.app.utils.PreferenceConstant;
+import nu.yona.app.utils.YonaRuntimeException;
+
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 
 /**
  * Created by kinnarvasa on 29/06/16.
@@ -26,6 +31,7 @@ import nu.yona.app.utils.PreferenceConstant;
 
 public class SharedPreference
 {
+	public static final EncryptionMethod LATEST_ENCRYPTION_METHOD = EncryptionMethod.ENHANCED_BASED_ON_ANDROID_KEYSTORE;
 	private SharedPreferences userPreferences;
 	private SharedPreferences appPreferences;
 	private String yonaPwd = null;
@@ -168,4 +174,44 @@ public class SharedPreference
 		return encrypted_data;
 	}
 
+	public void upgradePasswordEncryptionIfNeeded()
+	{
+		EncryptionMethod encryptionMethod = EncryptionMethod.values()[getSharedUserPreferences().getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal())];
+		if (encryptionMethod != LATEST_ENCRYPTION_METHOD)
+		{
+			upgradePasswordEncryption(encryptionMethod);
+		}
+	}
+
+	private void upgradePasswordEncryption(EncryptionMethod encryptionMethod)
+	{
+		switch (encryptionMethod)
+		{
+			case INITIAL_METHOD:
+			{
+				YonaApplication.getEventChangeManager().getSharedPreference().upgradeFromInitialPasswordEncryption();
+				break;
+			}
+			case ENHANCED_STILL_BASED_ON_SERIAL:
+			{
+				YonaApplication.getEventChangeManager().getSharedPreference().upgradeFromSerialBasedPasswordEncryption();
+				break;
+			}
+			case ENHANCED_BASED_ON_ANDROID_KEYSTORE:
+				// This is the current encryption version.
+				break;
+			default:
+			{
+				throw new YonaRuntimeException("Unknown encryption method: " + encryptionMethod);
+			}
+		}
+		setPasswordEncryptionModeToLatest();
+	}
+
+	private void setPasswordEncryptionModeToLatest()
+	{
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
+		editor.putInt(YONA_ENCRYPTION_METHOD, LATEST_ENCRYPTION_METHOD.ordinal());
+		editor.commit();
+	}
 }
