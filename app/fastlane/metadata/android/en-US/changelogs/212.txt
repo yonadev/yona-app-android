@@ -1,0 +1,1 @@
+APPDEV-1233 Fixed crash on certain Android 8 (Oreo) devices
