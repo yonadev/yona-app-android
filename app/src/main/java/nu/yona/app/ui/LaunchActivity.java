@@ -9,7 +9,6 @@
 package nu.yona.app.ui;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -36,7 +35,6 @@ import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.User;
-import nu.yona.app.enums.EncryptionMethod;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.login.LoginActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
@@ -49,7 +47,6 @@ import nu.yona.app.utils.PreferenceConstant;
 
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
-import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 
 public class LaunchActivity extends BaseActivity
 {
@@ -213,15 +210,12 @@ public class LaunchActivity extends BaseActivity
 
 	private void validateYonaPasswordEncryption()
 	{
-		// if App is older version and user is already logged in, upgrade the encryption.
-		if ((getSharedUserPreferences().getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal()) == EncryptionMethod.INITIAL_METHOD.ordinal()
-				&& !TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, ""))))
+		if (TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")))
 		{
-			YonaApplication.getEventChangeManager().getSharedPreference().upgradeYonaPasswordEncryption();
+			// User didn't login in yet
+			return;
 		}
-		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
-		editor.putInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.ENHANCED_STILL_BASED_ON_SERIAL.ordinal());
-		editor.commit();
+		YonaApplication.getEventChangeManager().getSharedPreference().upgradePasswordEncryptionIfNeeded();
 	}
 
 	/**

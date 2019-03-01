@@ -6,12 +6,17 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package nu.yona.app.enums;
+package nu.yona.app.utils;
 
-public enum EncryptionMethod
+public class YonaRuntimeException extends RuntimeException
 {
+	public YonaRuntimeException(Throwable cause)
+	{
+		super(cause);
+	}
 
-	INITIAL_METHOD,
-	ENHANCED_STILL_BASED_ON_SERIAL,
-	ENHANCED_BASED_ON_ANDROID_KEYSTORE
+	public YonaRuntimeException(String message)
+	{
+		super(message);
+	}
 }

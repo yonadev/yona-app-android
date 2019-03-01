@@ -76,6 +76,7 @@ import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.security.EncryptionUtils;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.challenges.ChallengesFragment;
@@ -446,6 +447,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		editor.commit();
 		DatabaseHelper.getInstance(YonaActivity.this).deleteAllData();
 		YonaApplication.getEventChangeManager().clearAll();
+		EncryptionUtils.clear();//clear all user keys if stored
 	}
 
 	private void navigateToLaunchActivity()

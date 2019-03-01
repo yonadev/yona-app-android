@@ -216,6 +216,7 @@ public class DeviceManagerImpl implements DeviceManager
 						{
 							NewDevice device = (NewDevice) result;
 							YonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword(device.getYonaPassword());
+							YonaApplication.getEventChangeManager().getSharedPreference().setPasswordEncryptionModeToLatest();
 							getUser(device, listener);
 						}
 
