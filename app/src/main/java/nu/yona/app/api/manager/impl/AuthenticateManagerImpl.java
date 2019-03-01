@@ -114,18 +114,18 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 		}
 		DataLoadListenerImpl dataLoadListenerImpl =
 				new DataLoadListenerImpl(
-						(result -> handleUserRegistrationSuccess(result, null)),
+						(result -> handleUserRegistrationSuccess(result, listener)),
 						(result -> handleUserRegistrationFailure(result, listener)),
 						null);
 		authNetwork.registerUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), registerUser, isEditMode, dataLoadListenerImpl);
 	}
 
 	@Override
-	public void registerUser(String url, RegisterUser user, final DataLoadListener listener)
+	public void registerUser(String url, RegisterUser user, DataLoadListener listener)
 	{
 		DataLoadListenerImpl dataLoadListenerImpl =
 				new DataLoadListenerImpl(
-						(result -> handleUserRegistrationSuccess(result, null)),
+						(result -> handleUserRegistrationSuccess(result, listener)),
 						(result -> handleUserRegistrationFailure(result, listener)),
 						null);
 		authNetwork.registerUser(url, user, dataLoadListenerImpl);
