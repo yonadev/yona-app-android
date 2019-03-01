@@ -22,7 +22,7 @@ import nu.yona.app.security.MyCipher;
 import nu.yona.app.utils.PreferenceConstant;
 import nu.yona.app.utils.YonaRuntimeException;
 
-import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.YonaApplication.getSharedAppPreferences;
 import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 
 /**
@@ -176,7 +176,7 @@ public class SharedPreference
 
 	public void upgradePasswordEncryptionIfNeeded()
 	{
-		EncryptionMethod encryptionMethod = EncryptionMethod.values()[getSharedUserPreferences().getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal())];
+		EncryptionMethod encryptionMethod = EncryptionMethod.values()[getSharedAppPreferences().getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal())];
 		if (encryptionMethod != LATEST_ENCRYPTION_METHOD)
 		{
 			upgradePasswordEncryption(encryptionMethod);
@@ -208,9 +208,9 @@ public class SharedPreference
 		setPasswordEncryptionModeToLatest();
 	}
 
-	private void setPasswordEncryptionModeToLatest()
+	public void setPasswordEncryptionModeToLatest()
 	{
-		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
+		SharedPreferences.Editor editor = getSharedAppPreferences().edit();
 		editor.putInt(YONA_ENCRYPTION_METHOD, LATEST_ENCRYPTION_METHOD.ordinal());
 		editor.commit();
 	}

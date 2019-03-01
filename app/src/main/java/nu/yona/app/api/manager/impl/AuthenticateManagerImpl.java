@@ -97,7 +97,6 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	@Override
 	public boolean isMobileNumberValid(String mobileNumber)
 	{
-
 		return MobileNumberFormatter.isValid(mobileNumber);
 	}
 
@@ -108,63 +107,49 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	@Override
 	public void registerUser(RegisterUser registerUser, boolean isEditMode, final DataLoadListener listener)
 	{
-		try
+		String url = null;
+		if (isEditMode)
 		{
-			String url = null;
-			if (isEditMode)
-			{
-				url = getSharedAppDataState().getUser().getLinks().getEdit().getHref();
-			}
-			authNetwork.registerUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), registerUser, isEditMode, new DataLoadListener()
-			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-					getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
-					updateDataForRegisterUser(result, listener);
-				}
-
-				@Override
-				public void onError(Object errorMessage)
-				{
-					listener.onError(errorMessage);
-				}
-			});
+			url = getSharedAppDataState().getUser().getLinks().getEdit().getHref();
 		}
-		catch (Exception e)
-		{
-			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
-		}
+		DataLoadListenerImpl dataLoadListenerImpl =
+				new DataLoadListenerImpl(
+						(result -> handleUserRegistrationSuccess(result, null)),
+						(result -> handleUserRegistrationFailure(result, listener)),
+						null);
+		authNetwork.registerUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), registerUser, isEditMode, dataLoadListenerImpl);
 	}
 
 	@Override
 	public void registerUser(String url, RegisterUser user, final DataLoadListener listener)
 	{
-		authNetwork.registerUser(url, user, new DataLoadListener()
-		{
-			@Override
-			public void onDataLoad(Object result)
-			{
-				if (result != null)
-				{
-					getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
-					updateDataForRegisterUser(result, listener);
-				}
-			}
+		DataLoadListenerImpl dataLoadListenerImpl =
+				new DataLoadListenerImpl(
+						(result -> handleUserRegistrationSuccess(result, null)),
+						(result -> handleUserRegistrationFailure(result, listener)),
+						null);
+		authNetwork.registerUser(url, user, dataLoadListenerImpl);
+	}
 
-			@Override
-			public void onError(Object errorMessage)
-			{
-				if (errorMessage instanceof ErrorMessage)
-				{
-					listener.onError(errorMessage);
-				}
-				else
-				{
-					listener.onError(new ErrorMessage(errorMessage.toString() != null ? errorMessage.toString() : ""));
-				}
-			}
-		});
+	private Object handleUserRegistrationSuccess(Object result, DataLoadListener nextListener)
+	{
+		getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_REGISTER, true).commit();
+		updateDataForRegisterUser(result, nextListener);
+		YonaApplication.getEventChangeManager().getSharedPreference().setPasswordEncryptionModeToLatest();
+		return null;// Dummy return value, to allow use as data load handler
+	}
+
+	private Object handleUserRegistrationFailure(Object errorMessage, DataLoadListener nextListener)
+	{
+		if (errorMessage instanceof ErrorMessage)
+		{
+			nextListener.onError(errorMessage);
+		}
+		else
+		{
+			nextListener.onError(new ErrorMessage(errorMessage.toString() != null ? errorMessage.toString() : ""));
+		}
+		return null;// Dummy return value, to allow use as data load handler
 	}
 
 	@Override
