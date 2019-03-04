@@ -72,6 +72,7 @@ import nu.yona.timepicker.time.Timepoint;
 import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.utils.AppConstant.VPN_CONNECT_NOTIFICATION_ID;
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
 
@@ -218,7 +219,9 @@ public class AppUtils
 		filter.addAction(Intent.ACTION_BOOT_COMPLETED);
 		filter.addAction(AppConstant.RESTART_DEVICE);
 		filter.addAction(AppConstant.RESTART_VPN);
+		filter.addAction(AppConstant.CONNECT_VPN);
 		filter.addAction(PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED);
+
 		context.registerReceiver(receiver, filter);
 	}
 
@@ -415,6 +418,20 @@ public class AppUtils
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.O)
+	public static void removeVPNConnectNotification(Context context)
+	{
+		android.app.NotificationManager notificationManager;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+		{
+			notificationManager = context.getSystemService(android.app.NotificationManager.class);
+			notificationManager.deleteNotificationChannel(AppConstant.YONA_VPN_CHANNEL_ID);
+			return;
+		}
+		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.cancel(VPN_CONNECT_NOTIFICATION_ID);
+	}
+
 	/**
 	 * Get splited time. ex: 21:00 - 23:54 whill return 21:00 and 23:54
 	 *
@@ -536,22 +553,22 @@ public class AppUtils
 
 	public static Intent startVPN(Context context, boolean returnIntent)
 	{
+
 		String profileUUID = getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
 		VpnProfile profile = ProfileManager.get(context, profileUUID);
 		User user = getAppUser();
-		if (profile != null && !VpnStatus.isVPNActive() && user != null && user.getVpnProfile() != null)
+		if (profile == null || VpnStatus.isVPNActive() || user == null || getAppUser().getVpnProfile() == null)
 		{
-			profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
-			profile.mPassword = !TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
-			if (returnIntent)
-			{
-				return getVPNIntent(profile, context);
-			}
-			else
-			{
-				startVPN(profile, context);
-			}
+			return null;
 		}
+		AppUtils.removeVPNConnectNotification(context);
+		profile.mUsername = !TextUtils.isEmpty(user.getVpnProfile().getVpnLoginID()) ? user.getVpnProfile().getVpnLoginID() : "";
+		profile.mPassword = !TextUtils.isEmpty(user.getVpnProfile().getVpnPassword()) ? user.getVpnProfile().getVpnPassword() : "";
+		if (returnIntent)
+		{
+			return getVPNIntent(profile, context);
+		}
+		startVPN(profile, context);
 		return null;
 	}
 
