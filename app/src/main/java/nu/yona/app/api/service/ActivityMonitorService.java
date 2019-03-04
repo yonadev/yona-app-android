@@ -43,6 +43,7 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.utils.AppConstant.APP_MONITOR_NOTIFICATION_ID;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -56,7 +57,6 @@ public class ActivityMonitorService extends Service
 	private PowerManager powerManager;
 	private Date startTime, endTime;
 	private ScheduledFuture scheduledFuture;
-	private static final int NOTIFICATION_ID = 1111;
 
 	private static String printForegroundTask(Context context)
 	{
@@ -136,9 +136,8 @@ public class ActivityMonitorService extends Service
 				.setContentIntent(pendingIntent)
 				.setOngoing(true)
 				.setPriority(0)
-				.setOngoing(true)
 				.build();
-		startForeground(NOTIFICATION_ID, notification);
+		startForeground(APP_MONITOR_NOTIFICATION_ID, notification);
 	}
 
 
@@ -146,7 +145,7 @@ public class ActivityMonitorService extends Service
 	{
 		NotificationManager mNotificationManager = (NotificationManager)
 				this.getSystemService(NOTIFICATION_SERVICE);
-		mNotificationManager.cancel(NOTIFICATION_ID);
+		mNotificationManager.cancel(APP_MONITOR_NOTIFICATION_ID);
 	}
 
 	@Override

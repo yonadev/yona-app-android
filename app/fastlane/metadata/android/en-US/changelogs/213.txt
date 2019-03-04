@@ -1,0 +1,1 @@
+APPDEV-1227 Addressed a UI issue in day and week detail screens, when app is launched from recent apps

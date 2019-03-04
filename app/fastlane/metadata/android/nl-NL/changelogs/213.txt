@@ -1,0 +1,1 @@
+APPDEV-1227 Probleem in de dag- en weekdetailschermen opgelost dat optrad als de Yona app vanuit het "recente apps" overzicht werd geopend.
