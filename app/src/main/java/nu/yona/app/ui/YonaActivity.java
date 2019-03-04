@@ -135,6 +135,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	private static boolean isUserFromOnCreate;
 	private boolean isUserFromPinScreenAlert;
 	private boolean isSkipPinFlow;
+	private boolean isFromBackground;
 	private static final int LOCK_SCREEN_INTERVAL = 3000;
 
 	/**
@@ -271,21 +272,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		switch (tab.getCustomView().getTag().hashCode())
 		{
 			case R.string.dashboard:
-				getUserMessages();
-				getSharedAppDataState().setEmbeddedDayActivity(null);
-				getSharedAppDataState().setEmbeddedWeekActivity(null);
-				Bundle bundle = new Bundle();
-				if (user != null && user.getLinks() != null)
-				{
-					bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
-				}
-				else
-				{
-					bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
-				}
-				Intent dashboardIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
-				dashboardIntent.putExtras(bundle);
-				replaceFragmentWithAction(dashboardIntent);
+				moveToDashboard();
 				break;
 			case R.string.friends:
 				getSharedAppDataState().setEmbeddedWithBuddyActivity(null);
@@ -302,6 +289,25 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		}
 	}
 
+	public void moveToDashboard()
+	{
+		getUserMessages();
+		getSharedAppDataState().setEmbeddedDayActivity(null);
+		getSharedAppDataState().setEmbeddedWeekActivity(null);
+		Bundle bundle = new Bundle();
+		if (user != null && user.getLinks() != null)
+		{
+			bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
+		}
+		else
+		{
+			bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
+		}
+		Intent dashboardIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
+		dashboardIntent.putExtras(bundle);
+		replaceFragmentWithAction(dashboardIntent);
+	}
+
 	@Override
 	public void onResume()
 	{
@@ -311,6 +317,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			isStateActive = false;
 		}
 		super.onResume();
+		handleLaunchOfActivityDetailFragmentFromRecents();
 		if (isToDisplayLogin)
 		{
 			getUserMessages();
@@ -345,6 +352,18 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				checkVPN();
 			}
 			checkForNotificationPermission();
+		}
+	}
+
+	private void handleLaunchOfActivityDetailFragmentFromRecents()
+	{
+		BaseFragment fragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+		if ((fragment instanceof DayActivityDetailFragment || fragment instanceof WeekActivityDetailFragment
+				|| fragment instanceof SingleDayActivityDetailFragment || fragment instanceof SingleWeekDayActivityDetailFragment)
+				&& isFromBackground)
+		{
+			isFromBackground = false;
+			mTabLayout.getTabAt(0).select(); // Will redirect to dashboard
 		}
 	}
 
@@ -467,6 +486,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	public void onPause()
 	{
 		super.onPause();
+		isFromBackground = true;
 		if (launchedPinActiivty)
 		{
 			isToDisplayLogin = false;
