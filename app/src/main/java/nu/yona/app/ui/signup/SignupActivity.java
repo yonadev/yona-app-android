@@ -28,6 +28,7 @@ import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
@@ -207,25 +208,26 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 	private void OverrideUser()
 	{
 		displayLoadingView();
-		APIManager.getInstance().getAuthenticateManager().requestUserOverride(getSharedAppDataState().getRegisterUser().getMobileNumber(), new DataLoadListener()
-		{
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserOverrideRequestSuccess(result),
+				(result) -> handleUserOverrideRequestFailure(result), null);
+		APIManager.getInstance().getAuthenticateManager().requestUserOverride(getSharedAppDataState().getRegisterUser().getMobileNumber(), dataLoadListenerImpl);
+	}
 
-			@Override
-			public void onDataLoad(Object result)
-			{
-				dismissLoadingView();
-				Bundle bundle = new Bundle();
-				bundle.putSerializable(AppConstant.USER, getSharedAppDataState().getRegisterUser());
-				showMobileVerificationScreen(bundle);
-			}
+	private Object handleUserOverrideRequestSuccess(Object result)
+	{
+		dismissLoadingView();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(AppConstant.USER, getSharedAppDataState().getRegisterUser());
+		showMobileVerificationScreen(bundle);
+		YonaApplication.getEventChangeManager().getSharedPreference().setPasswordEncryptionModeToLatest();
+		return null;
+	}
 
-			@Override
-			public void onError(Object errorMessage)
-			{
-				dismissLoadingView();
-				showError(errorMessage);
-			}
-		});
+	private Object handleUserOverrideRequestFailure(Object errorMessage)
+	{
+		dismissLoadingView();
+		showError(errorMessage);
+		return null;
 	}
 
 	@Override
