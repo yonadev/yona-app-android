@@ -1,0 +1,1 @@
+APPDEV-1267 Aantikken van de melding "VPN niet verbonden; tik hier om opnieuw te verbinden" zorgt er nu inderdaad voor dat de VPN wordt verbonden. Daarnaast is het icoontje verbeterd.
