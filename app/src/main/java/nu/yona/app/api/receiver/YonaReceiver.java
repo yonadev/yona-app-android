@@ -145,7 +145,7 @@ public class YonaReceiver extends BroadcastReceiver
 	private void handleRestartVPNBroadcast(Context context)
 	{
 		Logger.logi(YonaReceiver.class, "Restart VPN Broadcast received");
-		showRestartVPN(context.getString(R.string.vpn_disconnected));
+		showRestartVPNNotification(context.getString(R.string.vpn_disconnected));
 	}
 
 	private void handleConnectVPNBroadcast(Context context)
@@ -163,7 +163,7 @@ public class YonaReceiver extends BroadcastReceiver
 		}
 	}
 
-	private void showRestartVPN(String message)
+	private void showRestartVPNNotification(String message)
 	{
 		Intent intent = new Intent(context.getApplicationContext(), YonaReceiver.class);
 		intent.setAction(AppConstant.CONNECT_VPN);

@@ -307,7 +307,7 @@ public interface AppConstant
 	// Version number of user entity stored in local database
 	int USER_ENTITY_VERSION = 3;
 
-
+	// Notification Id's. Before changing them please ensure that existing notifications with old Id's are cancelled at-least once.
 	int APP_MONITOR_NOTIFICATION_ID = 1111;
 	int VPN_CONNECT_NOTIFICATION_ID = 1112;
 }
