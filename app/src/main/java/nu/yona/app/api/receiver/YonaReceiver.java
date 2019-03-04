@@ -20,11 +20,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 
 import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.state.EventChangeManager;
-import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
@@ -60,11 +60,15 @@ public class YonaReceiver extends BroadcastReceiver
 			case AppConstant.RESTART_DEVICE:
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_DEVICE_RESTART_REQUIRE, null);
 				break;
+			case PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED:
+				handleDeviceDozeMode(context);
+				break;
 			case AppConstant.RESTART_VPN:
 				handleRestartVPNBroadcast(context);
 				break;
-			case PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED:
-				handleDeviceDozeMode(context);
+			case AppConstant.CONNECT_VPN:
+				AppUtils.removeVPNConnectNotification(context);
+				handleConnectVPNBroadcast(context);
 				break;
 			default:
 				break;
@@ -144,6 +148,12 @@ public class YonaReceiver extends BroadcastReceiver
 		showRestartVPN(context.getString(R.string.vpn_disconnected));
 	}
 
+	private void handleConnectVPNBroadcast(Context context)
+	{
+		Logger.logi(YonaReceiver.class, "Connect VPN Broadcast received");
+		AppUtils.startVPN(context, false);
+	}
+
 	private void startService(Context context)
 	{
 		if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1 && AppUtils.hasPermission(YonaApplication.getAppContext()))
@@ -153,11 +163,11 @@ public class YonaReceiver extends BroadcastReceiver
 		}
 	}
 
-
 	private void showRestartVPN(String message)
 	{
-		Intent intent = new Intent(context.getApplicationContext(), YonaActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+		Intent intent = new Intent(context.getApplicationContext(), YonaReceiver.class);
+		intent.setAction(AppConstant.CONNECT_VPN);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		if (pendingIntent == null)
 		{
 			return;
@@ -170,9 +180,8 @@ public class YonaReceiver extends BroadcastReceiver
 					NotificationManager.IMPORTANCE_DEFAULT);
 			notificationManager.createNotificationChannel(channel);
 		}
-		notificationManager.notify(0, getConfiguredVPNRestartNotification(message, pendingIntent));
+		notificationManager.notify(AppConstant.VPN_CONNECT_NOTIFICATION_ID, getConfiguredVPNRestartNotification(message, pendingIntent));
 	}
-
 
 	private Notification getConfiguredVPNRestartNotification(String message, PendingIntent pendingIntent)
 	{
@@ -180,12 +189,15 @@ public class YonaReceiver extends BroadcastReceiver
 				new NotificationCompat.Builder(context.getApplicationContext(), AppConstant.YONA_VPN_CHANNEL_ID);
 		NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
 		bigText.bigText(message);
+		mBuilder.setColor(ContextCompat.getColor(context, R.color.grape));
 		mBuilder.setStyle(bigText);
 		mBuilder.setContentIntent(pendingIntent);
 		mBuilder.setContentText(message);
 		mBuilder.setTicker(context.getString(R.string.appname));
-		mBuilder.setSmallIcon(R.mipmap.ic_launcher);
+		mBuilder.setSmallIcon(R.drawable.app_monitor_notif_icon);
 		mBuilder.setPriority(Notification.PRIORITY_MAX);
+		mBuilder.setAutoCancel(true);
 		return mBuilder.build();
 	}
 }
+
