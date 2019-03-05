@@ -731,63 +731,51 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 
 	private void OverrideUser(final DataLoadListener listener)
 	{
-		APIManager.getInstance().getAuthenticateManager().requestUserOverride(getSharedAppDataState().getRegisterUser().getMobileNumber(), new DataLoadListener()
-		{
-
-			@Override
-			public void onDataLoad(Object result)
-			{
-				listener.onDataLoad(result);
-			}
-
-			@Override
-			public void onError(Object errorMessage)
-			{
-				listener.onError(new ErrorMessage(errorMessage.toString()));
-			}
-		});
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(
+				(result) -> {
+					listener.onDataLoad(result);
+					return null;
+				},
+				(errorMessage) -> {
+					listener.onError(new ErrorMessage(errorMessage.toString()));
+					return null;
+				}, null);
+		APIManager.getInstance().getAuthenticateManager().requestUserOverride(getSharedAppDataState().getRegisterUser().getMobileNumber(), dataLoadListenerImpl);
 	}
 
 	@Override
 	public void requestUserOverride(String mobileNumber, final DataLoadListener listener)
 	{
-		try
-		{
-			authNetwork.requestUserOverride(mobileNumber, new DataLoadListener()
-			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-					if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
-							&& getSharedAppDataState().getUser().getLinks().getSelf() != null
-							&& !TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getSelf().getHref()))
-					{
-						getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), listener);
-					}
-					else
-					{
-						listener.onDataLoad(result);
-					}
-				}
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserOverrideRequestSuccess(result, listener),
+				(result) -> handleUserOverrideRequestFailure(result, listener), null);
+		authNetwork.requestUserOverride(mobileNumber, dataLoadListenerImpl);
+	}
 
-				@Override
-				public void onError(Object errorMessage)
-				{
-					if (errorMessage instanceof ErrorMessage)
-					{
-						listener.onError(errorMessage);
-					}
-					else
-					{
-						listener.onError(new ErrorMessage(errorMessage.toString()));
-					}
-				}
-			});
-		}
-		catch (Exception e)
+	private Object handleUserOverrideRequestSuccess(Object result, DataLoadListener listener)
+	{
+		if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null)
 		{
-			AppUtils.reportException(AuthenticateManagerImpl.class, e, Thread.currentThread(), listener);
+			getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), listener);
 		}
+		else
+		{
+			listener.onDataLoad(result);
+		}
+		return null;
+	}
+
+	private Object handleUserOverrideRequestFailure(Object errorMessage, DataLoadListener listener)
+	{
+
+		if (errorMessage instanceof ErrorMessage)
+		{
+			listener.onError(errorMessage);
+		}
+		else
+		{
+			listener.onError(new ErrorMessage(errorMessage.toString()));
+		}
+		return null;
 	}
 
 	@Override
