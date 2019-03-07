@@ -32,6 +32,7 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.MobileNumberFormatter;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
@@ -762,7 +763,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null)
 		{
-			getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), listener);
+			getUser(getAppUser().getLinks().getSelf().getHref(), listener);
 		}
 		else
 		{
