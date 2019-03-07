@@ -138,7 +138,7 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 
 	private void verifyUserRegistration()
 	{
-		manager.registerUser(registerUser, true, genericResponseListener);
+		manager.registerUser(registerUser, genericResponseListener);
 	}
 
 
@@ -183,9 +183,9 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 		manager.setAuthenticateDao(authenticateDAOMock);
 	}
 
-	private void handleUserRegResponse(String url, String password, RegisterUser regUserfromResponse, boolean isEditMode, final DataLoadListener listener)
+	private void handleUserRegResponse(RegisterUser regUserFromResponse, final DataLoadListener listener)
 	{
-		String regUserMobileNumFromReponse = (String) regUserfromResponse.getMobileNumber();
+		String regUserMobileNumFromReponse = (String) regUserFromResponse.getMobileNumber();
 		if (regUserMobileNumFromReponse.equals(correctMobileNumber))
 		{
 			listener.onDataLoad(getMockedUser());
@@ -220,14 +220,13 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	private void setUpMockedAuthNetworkImplMethods()
 	{
 		Mockito.doAnswer((Answer) invocation -> {
-			handleUserRegResponse(invocation.getArgument(0), invocation.getArgument(1), invocation.getArgument(2), invocation.getArgument(3), invocation.getArgument(4));
+			handleUserRegResponse(invocation.getArgument(0), invocation.getArgument(1));
 			return null;
-		}).when(authenticateNetworkImplMock).registerUser(ArgumentMatchers.any(String.class),
-				ArgumentMatchers.any(String.class), ArgumentMatchers.any(RegisterUser.class),
-				ArgumentMatchers.any(Boolean.class), ArgumentMatchers.any(DataLoadListener.class));
+		}).when(authenticateNetworkImplMock).registerUser(ArgumentMatchers.any(RegisterUser.class), ArgumentMatchers.any(DataLoadListener.class));
 
 		Mockito.doAnswer((Answer) invocation -> {
-			handleVerifyMobileResponse(invocation.getArgument(0), invocation.getArgument(1), invocation.getArgument(2), invocation.getArgument(3));
+			handleVerifyMobileResponse(invocation.getArgument(0),
+					invocation.getArgument(1), invocation.getArgument(2), invocation.getArgument(3));
 			return null;
 		}).when(authenticateNetworkImplMock).verifyMobileNumber(ArgumentMatchers.any(String.class),
 				ArgumentMatchers.any(String.class), ArgumentMatchers.any(OTPVerficationCode.class),
