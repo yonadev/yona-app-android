@@ -363,7 +363,7 @@ public class EditDetailsProfileFragment extends BaseProfileFragment implements E
 		registerUser.setMobileNumber(number.replace(" ", ""));
 		YonaActivity.getActivity().displayLoadingView();
 		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl((result) -> redirectToNextPage(), result -> showError(result), null);
-		APIManager.getInstance().getAuthenticateManager().registerUser(registerUser, true, dataLoadListener);
+		APIManager.getInstance().getAuthenticateManager().updateUser(registerUser, dataLoadListener);
 	}
 
 	private Object redirectToNextPage()

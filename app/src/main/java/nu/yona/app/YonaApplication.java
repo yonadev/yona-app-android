@@ -98,7 +98,7 @@ public class YonaApplication extends Application
 
 	public static User getAppUser()
 	{
-		return YonaApplication.getEventChangeManager().getDataState().getUser();
+		return sharedAppDataState.getUser();
 	}
 
 	@Override

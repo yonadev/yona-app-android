@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -145,42 +144,21 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 	private void doRegister()
 	{
 		displayLoadingView();
-		if (getIntent() != null && getIntent().getExtras() != null && !TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.URL)))
+		APIManager.getInstance().getAuthenticateManager().registerUser(getSharedAppDataState().getRegisterUser(), new DataLoadListener()
 		{
-			APIManager.getInstance().getAuthenticateManager().registerUser(getIntent().getExtras().getString(AppConstant.URL), getSharedAppDataState().getRegisterUser(), new DataLoadListener()
+			@Override
+			public void onDataLoad(Object result)
 			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-					dismissLoadingView();
-					showMobileVerificationScreen(null);
-				}
+				dismissLoadingView();
+				showMobileVerificationScreen(null);
+			}
 
-				@Override
-				public void onError(Object errorMessage)
-				{
-					showError(errorMessage);
-				}
-			});
-		}
-		else
-		{
-			APIManager.getInstance().getAuthenticateManager().registerUser(getSharedAppDataState().getRegisterUser(), false, new DataLoadListener()
+			@Override
+			public void onError(Object errorMessage)
 			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-					dismissLoadingView();
-					showMobileVerificationScreen(null);
-				}
-
-				@Override
-				public void onError(Object errorMessage)
-				{
-					showError(errorMessage);
-				}
-			});
-		}
+				showError(errorMessage);
+			}
+		});
 	}
 
 	private void showAlertForReRegisteruser(String title)

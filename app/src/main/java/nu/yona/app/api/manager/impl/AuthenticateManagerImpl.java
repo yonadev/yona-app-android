@@ -105,19 +105,26 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	 * @param listener
 	 */
 	@Override
-	public void registerUser(RegisterUser registerUser, boolean isEditMode, final DataLoadListener listener)
+	public void registerUser(RegisterUser registerUser, DataLoadListener listener)
 	{
-		String url = null;
-		if (isEditMode)
-		{
-			url = getSharedAppDataState().getUser().getLinks().getEdit().getHref();
-		}
 		DataLoadListenerImpl dataLoadListenerImpl =
 				new DataLoadListenerImpl(
 						(result -> handleUserRegistrationSuccess(result, listener)),
 						(result -> handleUserRegistrationFailure(result, listener)),
 						null);
-		authNetwork.registerUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), registerUser, isEditMode, dataLoadListenerImpl);
+		authNetwork.registerUser(registerUser, dataLoadListenerImpl);
+	}
+
+	@Override
+	public void updateUser(RegisterUser registerUser, DataLoadListener listener)
+	{
+		DataLoadListenerImpl dataLoadListenerImpl =
+				new DataLoadListenerImpl(
+						(result -> handleUserRegistrationSuccess(result, listener)),
+						(result -> handleUserRegistrationFailure(result, listener)),
+						null);
+		String url = getSharedAppDataState().getUser().getLinks().getEdit().getHref();
+		authNetwork.updateUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), registerUser, dataLoadListenerImpl);
 	}
 
 	@Override

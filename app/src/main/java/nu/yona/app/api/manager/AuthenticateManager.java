@@ -40,11 +40,14 @@ public interface AuthenticateManager
 	/**
 	 * Register user.
 	 *
-	 * @param user       the user
-	 * @param isEditMode the is edit mode
-	 * @param listener   the listener
+	 * @param user     the user
+	 * @param listener the listener
 	 */
-	void registerUser(RegisterUser user, boolean isEditMode, DataLoadListener listener);
+	void registerUser(RegisterUser user, DataLoadListener listener);
+
+	void registerUser(String url, RegisterUser user, final DataLoadListener listener);
+
+	void updateUser(RegisterUser registerUser, final DataLoadListener listener);
 
 	void uploadUserPhoto(String url, String password, File file, DataLoadListener listener);
 
@@ -127,7 +130,6 @@ public interface AuthenticateManager
 	 */
 	void getUserFromServer(String userSelfLink, DataLoadListenerImpl dataLoadListener);
 
-	void registerUser(String url, RegisterUser user, final DataLoadListener listener);
 
 	void readDeepLinkUserInfo(String url, final DataLoadListener listener);
 }
