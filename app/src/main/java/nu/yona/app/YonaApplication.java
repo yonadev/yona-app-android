@@ -107,16 +107,21 @@ public class YonaApplication extends Application
 		enableStickMode();
 		super.onCreate();
 		mContext = this;
-		eventChangeManager = new EventChangeManager();
-		validateAndInitializePreferences();
-		sharedAppDataState = eventChangeManager.getDataState();
+		initializeAppGlobals();
+		validateSharedPreferences();
 		Foreground.init(this);
 	}
 
-	private void validateAndInitializePreferences()
+	public void initializeAppGlobals()
 	{
+		eventChangeManager = new EventChangeManager();
+		sharedAppDataState = eventChangeManager.getDataState();
 		sharedAppPreferences = eventChangeManager.getSharedPreference().getAppPreferences();
 		sharedUserPreferences = eventChangeManager.getSharedPreference().getUserPreferences();
+	}
+
+	private void validateSharedPreferences()
+	{
 		if (sharedAppPreferences.getBoolean(PreferenceConstant.STEP_REGISTER, false))
 		{
 			// The user preferences apparently contain the app preferences, due to an earlier bug
@@ -169,12 +174,12 @@ public class YonaApplication extends Application
 			{
 				tracker.setLanguage(Locale.getDefault().getDisplayLanguage());
 				tracker.enableExceptionReporting(true);
-				if (getEventChangeManager().getDataState().getUser() != null
-						&& getEventChangeManager().getDataState().getUser().getLinks() != null
-						&& getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null
-						&& !TextUtils.isEmpty(getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref()))
+				if (getAppUser() != null
+						&& getAppUser().getLinks() != null
+						&& getAppUser().getLinks().getSelf() != null
+						&& !TextUtils.isEmpty(getAppUser().getLinks().getSelf().getHref()))
 				{
-					tracker.set("&uid", getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref());
+					tracker.set("&uid", getAppUser().getLinks().getSelf().getHref());
 				}
 				PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
 				tracker.setAppVersion(pInfo.versionName + mContext.getString(R.string.space) + pInfo.versionCode);

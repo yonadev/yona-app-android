@@ -124,7 +124,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 						(result -> handleUserRegistrationSuccess(result, listener)),
 						(result -> handleUserRegistrationFailure(result, listener)),
 						null);
-		String url = getSharedAppDataState().getUser().getLinks().getEdit().getHref();
+		String url = getAppUser().getLinks().getEdit().getHref();
 		authNetwork.updateUser(url, YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), registerUser, dataLoadListenerImpl);
 	}
 
@@ -310,10 +310,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		try
 		{
-			if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
-					&& getSharedAppDataState().getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getSelf().getHref()))
+			if (getAppUser() != null && getAppUser().getLinks() != null
+					&& getAppUser().getLinks().getSelf() != null && !TextUtils.isEmpty(getAppUser().getLinks().getSelf().getHref()))
 			{
-				getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
+				getUser(getAppUser().getLinks().getSelf().getHref(), new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)
@@ -396,10 +396,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 				}
 				else
 				{
-					if (getSharedAppDataState().getUser() != null
-							&& getSharedAppDataState().getUser().getLinks() != null
-							&& getSharedAppDataState().getUser().getLinks().getVerifyPinReset() != null
-							&& !TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getVerifyPinReset().getHref()))
+					if (getAppUser() != null
+							&& getAppUser().getLinks() != null
+							&& getAppUser().getLinks().getVerifyPinReset() != null
+							&& !TextUtils.isEmpty(getAppUser().getLinks().getVerifyPinReset().getHref()))
 					{
 						authNetwork.doVerifyPin(authenticateDao.getUser().getLinks().getVerifyPinReset().getHref(), otp, new DataLoadListener()
 						{
@@ -628,10 +628,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		try
 		{
-			if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
-					&& getSharedAppDataState().getUser().getLinks().getSelf() != null && !TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getSelf().getHref()))
+			if (getAppUser() != null && getAppUser().getLinks() != null
+					&& getAppUser().getLinks().getSelf() != null && !TextUtils.isEmpty(getAppUser().getLinks().getSelf().getHref()))
 			{
-				getUser(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), new DataLoadListener()
+				getUser(getAppUser().getLinks().getSelf().getHref(), new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)
@@ -668,7 +668,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	{
 		try
 		{
-			User user = getSharedAppDataState().getUser();
+			User user = getAppUser();
 			if (user != null && user.getLinks() != null)
 			{
 				if (user.getLinks().getResendMobileNumberConfirmationCode() != null
@@ -761,7 +761,7 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 
 	private Object handleUserOverrideRequestSuccess(Object result, DataLoadListener listener)
 	{
-		if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null)
+		if (getAppUser() != null && getAppUser().getLinks() != null)
 		{
 			getUser(getAppUser().getLinks().getSelf().getHref(), listener);
 		}
@@ -795,10 +795,10 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 	@Override
 	public void getUserFromServer()
 	{
-		if (getSharedAppDataState().getUser() != null && getSharedAppDataState().getUser().getLinks() != null
-				&& getSharedAppDataState().getUser().getLinks().getSelf() != null)
+		if (getAppUser() != null && getAppUser().getLinks() != null
+				&& getAppUser().getLinks().getSelf() != null)
 		{
-			getUserFromServer(getSharedAppDataState().getUser().getLinks().getSelf().getHref(), null);
+			getUserFromServer(getAppUser().getLinks().getSelf().getHref(), null);
 		}
 
 	}

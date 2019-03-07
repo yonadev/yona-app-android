@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.EmbeddedYonaActivity;
@@ -38,6 +37,8 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -70,7 +71,7 @@ public class PerWeekFragment extends BaseFragment
 			super.onScrolled(recyclerView, dx, dy);
 			try
 			{
-				EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+				EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 				if (mIsLoading || embeddedYonaActivity == null ||
 						embeddedYonaActivity.getPage().getNumber() >= embeddedYonaActivity.getPage().getTotalPages())
 				{
@@ -189,7 +190,7 @@ public class PerWeekFragment extends BaseFragment
 	 */
 	private void getWeekActivity(boolean loadMore)
 	{
-		final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+		final EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedWeekActivity();
 		if (embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null || embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())
 		{
 			loadWeeksActivity(embeddedYonaActivity, loadMore);
@@ -224,7 +225,7 @@ public class PerWeekFragment extends BaseFragment
 
 	private void showData()
 	{
-		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+		EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedWeekActivity();
 		if (embeddedYonaActivity != null
 				&& embeddedYonaActivity.getWeekActivityList() != null
 				&& embeddedYonaActivity.getWeekActivityList().size() > 0)

@@ -44,6 +44,7 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
 import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -128,7 +129,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 		int visibleItemCount = mLayoutManager.getChildCount();
 		int totalItemCount = mLayoutManager.getItemCount();
 		int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
+		EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedWithBuddyActivity();
 		if (!mIsLoading &&
 				embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
 				&& embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
@@ -187,7 +188,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 			isDataLoading = true;
 			refreshAdapter();
 		}
-		else if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null)
+		else if (getSharedAppDataState().getEmbeddedDayActivity() != null)
 		{
 			showData();
 		}
@@ -229,7 +230,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 
 	private void getDayActivity(boolean loadMore)
 	{
-		final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity();
+		final EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedWithBuddyActivity();
 		if (embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null || embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())
 		{
 			YonaActivity.getActivity().displayLoadingView();
@@ -267,9 +268,9 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 
 	private void showData()
 	{
-		if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList().size() > 0)
+		if (getSharedAppDataState().getEmbeddedWithBuddyActivity() != null
+				&& getSharedAppDataState().getEmbeddedWithBuddyActivity().getDayActivityList() != null
+				&& getSharedAppDataState().getEmbeddedWithBuddyActivity().getDayActivityList().size() > 0)
 		{
 			mDayTimelineStickyAdapter.notifyDataSetChange(setHeaderListView());
 			YonaActivity.getActivity().dismissLoadingView();
@@ -286,7 +287,7 @@ public class TimelineFragment extends BaseFragment implements EventChangeListene
 
 	private List<DayActivity> setHeaderListView()
 	{
-		List<DayActivity> dayActivityList = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWithBuddyActivity().getDayActivityList();
+		List<DayActivity> dayActivityList = getSharedAppDataState().getEmbeddedWithBuddyActivity().getDayActivityList();
 		List<DayActivity> newDayActivityList = new ArrayList<>();
 		processDayActivityListForTimeLineView(dayActivityList, newDayActivityList);
 		return newDayActivityList;

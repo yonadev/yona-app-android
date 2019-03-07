@@ -22,6 +22,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
+import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
@@ -112,9 +113,9 @@ public class DeviceManagerImpl implements DeviceManager
 	{
 		try
 		{
-			if (!TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref()))
+			if (!TextUtils.isEmpty(getAppUser().getLinks().getYonaNewDeviceRequest().getHref()))
 			{
-				deviceNetwork.addDevice(getSharedAppDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref(),
+				deviceNetwork.addDevice(getAppUser().getLinks().getYonaNewDeviceRequest().getHref(),
 						new NewDeviceRequest(devicePassword), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
 						new DataLoadListener()
 						{
@@ -159,9 +160,9 @@ public class DeviceManagerImpl implements DeviceManager
 	{
 		try
 		{
-			if (!TextUtils.isEmpty(getSharedAppDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref()))
+			if (!TextUtils.isEmpty(getAppUser().getLinks().getYonaNewDeviceRequest().getHref()))
 			{
-				deviceNetwork.deleteDevice(getSharedAppDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener()
+				deviceNetwork.deleteDevice(getAppUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)

@@ -52,6 +52,7 @@ import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.utils.AppConstant;
 
 import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 13/06/16.
@@ -116,7 +117,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 			int visibleItemCount = mLayoutManager.getChildCount();
 			int totalItemCount = mLayoutManager.getItemCount();
 			int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-			EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+			EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 			if (isViewScrollable(embeddedYonaActivity, visibleItemCount, firstVisibleItemPosition, totalItemCount))
 			{
 				fetchComments(viewPager.getCurrentItem());
@@ -216,7 +217,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 			@Override
 			public void onPageSelected(int position)
 			{
-				EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+				EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 				if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0)
 				{
 					DayActivity newDayActivityToLoad = dayActivityList.get(position);
@@ -321,7 +322,7 @@ public class DayActivityDetailFragment extends BaseFragment implements EventChan
 	private void setDayActivityDetails()
 	{
 		dayActivityList = new ArrayList<>();
-		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+		EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 		if (embeddedYonaActivity != null && embeddedYonaActivity.getDayActivityList() != null && embeddedYonaActivity.getDayActivityList().size() > 0)
 		{
 			setUpDayActivityListFromEmbeddedYonaActivity(embeddedYonaActivity);

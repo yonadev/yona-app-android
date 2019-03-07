@@ -54,6 +54,7 @@ import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.utils.AppConstant;
 
 import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 13/06/16.
@@ -126,7 +127,7 @@ public class SingleWeekDayActivityDetailFragment extends BaseFragment implements
 			int visibleItemCount = mLayoutManager.getChildCount();
 			int totalItemCount = mLayoutManager.getItemCount();
 			int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-			EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedWeekActivity();
+			EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedWeekActivity();
 			if (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
 					&& embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
 					&& (visibleItemCount + firstVisibleItemPosition) >= totalItemCount)
