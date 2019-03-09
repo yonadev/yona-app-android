@@ -35,7 +35,6 @@ import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
 import nu.yona.app.api.model.Href;
-import nu.yona.app.api.model.User;
 import nu.yona.app.api.model.YonaBuddy;
 import nu.yona.app.api.model.YonaHeaderTheme;
 import nu.yona.app.api.model.YonaMessage;
@@ -51,7 +50,7 @@ import nu.yona.app.ui.friends.OnFriendsItemClickListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
-import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getAppUser;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -409,11 +408,10 @@ public class NotificationFragment extends BaseFragment
 
 	private Href getURLToFetchMessages(boolean loadMore)
 	{
-		Href urlForMessageFetch = null;
+		Href urlForMessageFetch;
 		if (mYonaMessages == null)
 		{
-			User user = getSharedAppDataState().getUser();
-			urlForMessageFetch = user.getLinks().getYonaMessages();
+			urlForMessageFetch = getAppUser().getLinks().getYonaMessages();
 		}
 		else if (mYonaMessages.getLinks().getNext() != null && loadMore)
 		{

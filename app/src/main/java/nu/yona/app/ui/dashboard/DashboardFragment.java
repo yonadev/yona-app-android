@@ -39,6 +39,7 @@ import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
 import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -219,7 +220,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
 
 							rightIcon.setVisibility(View.VISIBLE);
 							rightIconProfile.setVisibility(View.GONE);
-							int notificaitonCount = YonaApplication.getEventChangeManager().getDataState().getNotificationCount();
+							int notificaitonCount = getSharedAppDataState().getNotificationCount();
 							if (notificaitonCount > 0)
 							{
 								txtNotificationCounter.setText("" + notificaitonCount);

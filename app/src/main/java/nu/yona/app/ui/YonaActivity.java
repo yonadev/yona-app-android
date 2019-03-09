@@ -101,6 +101,7 @@ import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
 import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
@@ -166,7 +167,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		YonaApplication.getEventChangeManager().registerListener(this);
 
 		Bundle bundle = new Bundle();
-		user = getSharedAppDataState().getUser();
+		user = getAppUser();
 
 		if (user != null && user.getLinks() != null)
 		{
@@ -180,7 +181,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		if (getSharedUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
 		{
 			homeFragment = new ProfileFragment();
-			bundle.putSerializable(AppConstant.USER, getSharedAppDataState().getUser());
+			bundle.putSerializable(AppConstant.USER, getAppUser());
 		}
 		else
 		{
@@ -632,7 +633,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	private void uploadUserPhoto(final File file)
 	{
 		APIManager.getInstance().getAuthenticateManager().uploadUserPhoto(
-				getSharedAppDataState().getUser().getLinks().getEditUserPhoto().getHref(),
+				getAppUser().getLinks().getEditUserPhoto().getHref(),
 				YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
 				file,
 				new DataLoadListener()

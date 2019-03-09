@@ -28,7 +28,7 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
-import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getAppUser;
 
 /**
  * Created by kinnarvasa on 28/04/16.
@@ -94,9 +94,9 @@ public class BuddyManagerImpl implements BuddyManager
 	{
 		try
 		{
-			if (!TextUtils.isEmpty(getSharedAppDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref()))
+			if (!TextUtils.isEmpty(getAppUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref()))
 			{
-				buddyNetwork.getBuddies(getSharedAppDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
+				buddyNetwork.getBuddies(getAppUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
 						new DataLoadListener()
 						{
 							@Override
@@ -142,9 +142,9 @@ public class BuddyManagerImpl implements BuddyManager
 	{
 		try
 		{
-			if (!TextUtils.isEmpty(getSharedAppDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref()))
+			if (!TextUtils.isEmpty(getAppUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref()))
 			{
-				buddyNetwork.addBuddy(getSharedAppDataState().getUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
+				buddyNetwork.addBuddy(getAppUser().getEmbedded().getYonaBuddies().getLinks().getSelf().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
 						getBuddy(firstName, lastName, email, mobileNumber), new DataLoadListener()
 						{
 							@Override

@@ -23,6 +23,7 @@ import nu.yona.app.utils.PreferenceConstant;
 import nu.yona.app.utils.YonaRuntimeException;
 
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 
 /**
@@ -32,8 +33,6 @@ import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 public class SharedPreference
 {
 	public static final EncryptionMethod LATEST_ENCRYPTION_METHOD = EncryptionMethod.ENHANCED_BASED_ON_ANDROID_KEYSTORE;
-	private SharedPreferences userPreferences;
-	private SharedPreferences appPreferences;
 	private String yonaPwd = null;
 
 
@@ -44,11 +43,7 @@ public class SharedPreference
 	 */
 	public synchronized SharedPreferences getUserPreferences()
 	{
-		if (userPreferences == null)
-		{
-			userPreferences = YonaApplication.getAppContext().getSharedPreferences(PreferenceConstant.USER_PREFERENCE_KEY, Context.MODE_PRIVATE);
-		}
-		return userPreferences;
+		return YonaApplication.getAppContext().getSharedPreferences(PreferenceConstant.USER_PREFERENCE_KEY, Context.MODE_PRIVATE);
 	}
 
 	/**
@@ -58,22 +53,18 @@ public class SharedPreference
 	 */
 	public synchronized SharedPreferences getAppPreferences()
 	{
-		if (appPreferences == null)
-		{
-			appPreferences = YonaApplication.getAppContext().getSharedPreferences(PreferenceConstant.APP_PREFERENCE_KEY, Context.MODE_PRIVATE);
-		}
-		return appPreferences;
+		return YonaApplication.getAppContext().getSharedPreferences(PreferenceConstant.APP_PREFERENCE_KEY, Context.MODE_PRIVATE);
 	}
 
 
 	public String getVPNProfilePath()
 	{
-		return userPreferences.getString(PreferenceConstant.VPN_PROFILE_PATH, null);
+		return getSharedUserPreferences().getString(PreferenceConstant.VPN_PROFILE_PATH, null);
 	}
 
 	public void setRootCertPath(String path)
 	{
-		SharedPreferences.Editor editor = userPreferences.edit();
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
 		editor.putString(PreferenceConstant.ROOT_CERTIFICATE, path);
 		editor.putBoolean(PreferenceConstant.ROOT_CERTIFICATE_ACTIVE, false);
 		editor.commit();
@@ -81,9 +72,9 @@ public class SharedPreference
 
 	public String getRootCertPath()
 	{
-		if (userPreferences != null)
+		if (getSharedUserPreferences() != null)
 		{
-			return userPreferences.getString(PreferenceConstant.ROOT_CERTIFICATE, null);
+			return getSharedUserPreferences().getString(PreferenceConstant.ROOT_CERTIFICATE, null);
 		}
 		return null;
 	}
@@ -91,7 +82,7 @@ public class SharedPreference
 
 	public void setVPNProfilePath(String path)
 	{
-		SharedPreferences.Editor editor = userPreferences.edit();
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
 		editor.putString(PreferenceConstant.VPN_PROFILE_PATH, path);
 		editor.putBoolean(PreferenceConstant.VPN_PROFILE_ACTIVE, false);
 		editor.commit();
@@ -105,7 +96,7 @@ public class SharedPreference
 	public void setYonaPassword(String password)
 	{
 		yonaPwd = null;
-		userPreferences.edit().putString(PreferenceConstant.YONA_DATA, EncryptionUtils.encrypt(YonaApplication.getAppContext(), password)).commit();
+		getSharedUserPreferences().edit().putString(PreferenceConstant.YONA_DATA, EncryptionUtils.encrypt(YonaApplication.getAppContext(), password)).commit();
 	}
 
 	/**
@@ -124,9 +115,9 @@ public class SharedPreference
 
 	private String getDecryptedKey()
 	{
-		if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, "")))
+		if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, "")))
 		{
-			return EncryptionUtils.decrypt(YonaApplication.getAppContext(), userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
+			return EncryptionUtils.decrypt(YonaApplication.getAppContext(), getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, ""));
 		}
 		else
 		{
@@ -136,8 +127,8 @@ public class SharedPreference
 
 	public void upgradeFromInitialPasswordEncryption()
 	{
-		byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
-		byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
+		byte[] encrypted_data = byteToString(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, ""));
+		byte[] dataIV = byteToString(getSharedUserPreferences().getString(PreferenceConstant.YONA_IV, ""));
 		IvParameterSpec iv = new IvParameterSpec(dataIV);
 		MyCipher myCipher = new MyCipher(Build.SERIAL);
 		setYonaPassword(myCipher.getYonaPasswordWithOldEncryptedData(encrypted_data, iv));
@@ -150,10 +141,10 @@ public class SharedPreference
 
 	private String getDecryptedKeyFromSerialBasedEncryptedData()
 	{
-		if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, "")))
+		if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, "")))
 		{
-			byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
-			byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
+			byte[] encrypted_data = byteToString(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, ""));
+			byte[] dataIV = byteToString(getSharedUserPreferences().getString(PreferenceConstant.YONA_IV, ""));
 			IvParameterSpec iv = new IvParameterSpec(dataIV);
 			return new MyCipher(Build.SERIAL).decryptUTF8(encrypted_data, iv);
 		}

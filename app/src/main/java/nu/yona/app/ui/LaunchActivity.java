@@ -126,7 +126,7 @@ public class LaunchActivity extends BaseActivity
 		try
 		{
 			User user = APIManager.getInstance().getAuthenticateManager().getUser();
-			URL environmentURL = new URL(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
+			URL environmentURL = new URL(getSharedAppDataState().getServerUrl());
 			URL storedUserURL = new URL(user.getLinks().getSelf().getHref());
 			if (!environmentURL.getProtocol().equals(storedUserURL.getProtocol()))
 			{

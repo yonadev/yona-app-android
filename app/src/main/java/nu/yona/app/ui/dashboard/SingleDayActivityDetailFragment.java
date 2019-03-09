@@ -54,6 +54,7 @@ import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.utils.AppConstant;
 
 import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 13/06/16.
@@ -117,7 +118,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 					int visibleItemCount = mLayoutManager.getChildCount();
 					int totalItemCount = mLayoutManager.getItemCount();
 					int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-					EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+					EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 					if (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
 							&& embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
 							&& (visibleItemCount + firstVisibleItemPosition) >= totalItemCount)
