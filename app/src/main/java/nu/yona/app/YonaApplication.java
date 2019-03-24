@@ -9,10 +9,14 @@
 package nu.yona.app;
 
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.IBinder;
 import android.os.StrictMode;
 import android.text.TextUtils;
 
@@ -23,11 +27,14 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Locale;
 
+import de.blinkt.openvpn.core.OpenVPNService;
+import de.blinkt.openvpn.core.ProfileManager;
 import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.api.model.User;
 import nu.yona.app.state.DataState;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.Foreground;
+import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
@@ -202,5 +209,53 @@ public class YonaApplication extends Application
 		}
 		return mContext.tracker;
 	}
+
+	protected OpenVPNService mService;
+
+	private final ServiceConnection mConnection = new ServiceConnection()
+	{
+
+		@Override
+		public void onServiceConnected(ComponentName className,
+									   IBinder service)
+		{
+			// We've bound to LocalService, cast the IBinder and get LocalService instance
+			OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) service;
+			mService = binder.getService();
+			stopVPN();
+			getAppContext().unbindService(mConnection);
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName arg0)
+		{
+			mService = null;
+			// TODO: Need to show user a alert on failure to stop vpn.
+		}
+
+	};
+
+
+	private void stopVPN()
+	{
+		ProfileManager.setConntectedVpnProfileDisconnected(YonaActivity.getActivity());
+		if (mService != null && mService.getManagement() != null)
+		{
+			mService.getManagement().stopVPN(false);
+		}
+	}
+
+	private void bindOpenVPNService()
+	{
+		Intent intent = new Intent(YonaActivity.getActivity(), OpenVPNService.class);
+		intent.setAction(OpenVPNService.START_SERVICE);
+		getAppContext().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+	}
+
+	public void stopOpenVPNService()
+	{
+		bindOpenVPNService();
+	}
+
 }
 

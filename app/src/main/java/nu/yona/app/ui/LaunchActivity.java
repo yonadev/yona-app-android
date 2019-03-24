@@ -115,7 +115,7 @@ public class LaunchActivity extends BaseActivity
 			bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(LaunchActivity.this, R.color.grape));
 			startNewActivity(bundle, PasscodeActivity.class);
 		}
-		else if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")))
+		else if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, "")))
 		{
 			ensureValidUserEntity();
 		}

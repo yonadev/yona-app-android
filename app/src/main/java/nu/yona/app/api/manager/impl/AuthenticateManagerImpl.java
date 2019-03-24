@@ -820,10 +820,6 @@ public class AuthenticateManagerImpl implements AuthenticateManager
 			@Override
 			public void onDataLoad(Object result)
 			{
-				SharedPreferences.Editor editor = getSharedUserPreferences().edit();
-				editor.clear();
-				editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
-				editor.commit();
 				listener.onDataLoad(result);
 			}
 
