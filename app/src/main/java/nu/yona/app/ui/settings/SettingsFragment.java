@@ -136,7 +136,8 @@ public class SettingsFragment extends BaseFragment
 				getString(R.string.showopenvpnlog),
 				getString(R.string.contact_us),
 				getString(R.string.deleteuser),
-				"STOP VPN", "START VPN"};
+				getString(R.string.stop_vpn_setting),
+				getString(R.string.start_vpn_setting)};
 		settingsListViewAdaptor = new SettingListViewAdaptor(getActivity(), R.layout.settings_list_item, R.id.list_title, listArray);
 		settingsListView.setAdapter(settingsListViewAdaptor);
 		setUpListItemOnClickListener(settingsListView);
@@ -178,11 +179,11 @@ public class SettingsFragment extends BaseFragment
 				{
 					toggleVPNLogWindowDisplay();
 				}
-				else if (listItemTitle.equals("STOP VPN"))
+				else if (listItemTitle.equals(getString(R.string.stop_vpn_setting)))
 				{
 					AppUtils.stopVPN(getAppContext());
 				}
-				else if (listItemTitle.equals("START VPN"))
+				else if (listItemTitle.equals(getString(R.string.start_vpn_setting)))
 				{
 					AppUtils.startVPN(YonaActivity.getActivity(), false);
 				}
@@ -269,11 +270,11 @@ public class SettingsFragment extends BaseFragment
 	{
 		AppUtils.stopService(getAppContext());
 		AppUtils.stopVPN(getAppContext());
-		finishUnSubscribe();
+		finishUnsubscribe();
 		return null;// Dummy return value, to allow use as data load handler
 	}
 
-	private void finishUnSubscribe()
+	private void finishUnsubscribe()
 	{
 		getSharedUserPreferences().edit().clear();
 		getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();

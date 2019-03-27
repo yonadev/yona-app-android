@@ -233,4 +233,6 @@
     <string name="support_mail_subject">Problem with Yona app</string>
     <string name="mandatory_user_fetch_failure">The Yona app this time needs network connectivity to start</string>
     <string name="usage_access_unavailable_message">In the device settings, please permit Yona to see app usage statistics.</string>
+    <string name="stop_vpn_setting">STOP VPN</string>
+    <string name="start_vpn_setting">START VPN</string>
 </resources>

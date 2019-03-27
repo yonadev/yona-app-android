@@ -108,6 +108,9 @@ public class YonaApplication extends Application
 		return sharedAppDataState.getUser();
 	}
 
+	protected OpenVPNService vpnService;
+	private ServiceConnection connection;
+
 	@Override
 	public void onCreate()
 	{
@@ -210,38 +213,39 @@ public class YonaApplication extends Application
 		return mContext.tracker;
 	}
 
-	protected OpenVPNService mService;
 
-	private final ServiceConnection mConnection = new ServiceConnection()
+	private ServiceConnection getVpnServiceConnection()
 	{
-
-		@Override
-		public void onServiceConnected(ComponentName className,
-									   IBinder service)
+		return connection = new ServiceConnection()
 		{
-			// We've bound to LocalService, cast the IBinder and get LocalService instance
-			OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) service;
-			mService = binder.getService();
-			stopVPN();
-			getAppContext().unbindService(mConnection);
-		}
+			@Override
+			public void onServiceConnected(ComponentName className,
+										   IBinder service)
+			{
+				// We've bound to LocalService, cast the IBinder and get LocalService instance
+				OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) service;
+				vpnService = binder.getService();
+				stopVPN();
+				getAppContext().unbindService(connection);
+			}
 
-		@Override
-		public void onServiceDisconnected(ComponentName arg0)
-		{
-			mService = null;
-			// TODO: Need to show user a alert on failure to stop vpn.
-		}
+			@Override
+			public void onServiceDisconnected(ComponentName arg0)
+			{
+				vpnService = null;
+				// TODO: Need to show user a alert on failure to stop vpn.
+				nu.yona.app.utils.Logger.loge(YonaApplication.class, "Error in binding the vpn service with " + arg0.getClassName());
+			}
 
-	};
-
+		};
+	}
 
 	private void stopVPN()
 	{
 		ProfileManager.setConntectedVpnProfileDisconnected(YonaActivity.getActivity());
-		if (mService != null && mService.getManagement() != null)
+		if (vpnService != null && vpnService.getManagement() != null)
 		{
-			mService.getManagement().stopVPN(false);
+			vpnService.getManagement().stopVPN(false);
 		}
 	}
 
@@ -249,7 +253,7 @@ public class YonaApplication extends Application
 	{
 		Intent intent = new Intent(YonaActivity.getActivity(), OpenVPNService.class);
 		intent.setAction(OpenVPNService.START_SERVICE);
-		getAppContext().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		getAppContext().bindService(intent, getVpnServiceConnection(), Context.BIND_AUTO_CREATE);
 	}
 
 	public void stopOpenVPNService()
