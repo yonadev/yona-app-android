@@ -211,7 +211,7 @@ public class YonaApplication extends Application
 	}
 
 
-	private ServiceConnection getVpnServiceConnection()
+	private ServiceConnection getVpnServiceStopperConnection()
 	{
 		return new ServiceConnection()
 		{
@@ -252,7 +252,7 @@ public class YonaApplication extends Application
 
 	public void stopOpenVPNService()
 	{
-		bindOpenVPNService(getVpnServiceConnection());
+		bindOpenVPNService(getVpnServiceStopperConnection());
 	}
 
 }
