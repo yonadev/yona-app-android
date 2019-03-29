@@ -41,6 +41,7 @@ import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.LaunchActivity;
@@ -48,9 +49,12 @@ import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getAppContext;
 import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.YonaApplication.getSharedAppPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -131,7 +135,9 @@ public class SettingsFragment extends BaseFragment
 				getString(R.string.adddevice),
 				getString(R.string.showopenvpnlog),
 				getString(R.string.contact_us),
-				getString(R.string.deleteuser)};
+				getString(R.string.deleteuser),
+				getString(R.string.stop_vpn_setting),
+				getString(R.string.start_vpn_setting)};
 		settingsListViewAdaptor = new SettingListViewAdaptor(getActivity(), R.layout.settings_list_item, R.id.list_title, listArray);
 		settingsListView.setAdapter(settingsListViewAdaptor);
 		setUpListItemOnClickListener(settingsListView);
@@ -172,6 +178,14 @@ public class SettingsFragment extends BaseFragment
 				else if (listItemTitle.equals(getString(R.string.showopenvpnlog)))
 				{
 					toggleVPNLogWindowDisplay();
+				}
+				else if (listItemTitle.equals(getString(R.string.stop_vpn_setting)))
+				{
+					AppUtils.stopVPN(getAppContext());
+				}
+				else if (listItemTitle.equals(getString(R.string.start_vpn_setting)))
+				{
+					AppUtils.startVPN(YonaActivity.getActivity(), false);
 				}
 			}
 		});
@@ -248,29 +262,37 @@ public class SettingsFragment extends BaseFragment
 	private void doUnsubscribe()
 	{
 		YonaActivity.getActivity().displayLoadingView();
-		APIManager.getInstance().getAuthenticateManager().deleteUser(new DataLoadListener()
-		{
-			@Override
-			public void onDataLoad(Object result)
-			{
-				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
-				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, null);
-				YonaActivity.getActivity().dismissLoadingView();
-				startActivity(new Intent(YonaActivity.getActivity(), LaunchActivity.class));
-				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUnsubscribeSuccess(), (result) -> handleUnsubscribeFailure(result), null);
+		APIManager.getInstance().getAuthenticateManager().deleteUser(dataLoadListenerImpl);
+	}
 
-			}
+	private Object handleUnsubscribeSuccess()
+	{
+		AppUtils.stopService(getAppContext());
+		AppUtils.stopVPN(getAppContext());
+		finishUnsubscribe();
+		return null;// Dummy return value, to allow use as data load handler
+	}
 
-			@Override
-			public void onError(Object errorMessage)
-			{
-				YonaActivity.getActivity().dismissLoadingView();
-				Snackbar snackbar = Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT);
-				TextView textView = ((TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text));
-				textView.setMaxLines(5);
-				snackbar.show();
-			}
-		});
+	private void finishUnsubscribe()
+	{
+		getSharedUserPreferences().edit().clear();
+		getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
+		YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
+		YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, null);
+		YonaActivity.getActivity().dismissLoadingView();
+		startActivity(new Intent(YonaActivity.getActivity(), LaunchActivity.class));
+		YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
+	}
+
+	private Object handleUnsubscribeFailure(Object errorMessage)
+	{
+		YonaActivity.getActivity().dismissLoadingView();
+		Snackbar snackbar = Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT);
+		TextView textView = ((TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text));
+		textView.setMaxLines(5);
+		snackbar.show();
+		return null;// Dummy return value, to allow use as data load handler
 	}
 
 	@Override

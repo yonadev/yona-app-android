@@ -43,6 +43,7 @@ import nu.yona.app.ui.signup.SignupActivity;
 import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
 import static nu.yona.app.YonaApplication.getSharedAppDataState;
@@ -96,6 +97,7 @@ public class LaunchActivity extends BaseActivity
 
 	private void navigateToValidActivity()
 	{
+		extralogging();
 		if (!getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false))
 		{
 			startNewActivity(bundle, YonaCarrouselActivity.class);
@@ -115,10 +117,17 @@ public class LaunchActivity extends BaseActivity
 			bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(LaunchActivity.this, R.color.grape));
 			startNewActivity(bundle, PasscodeActivity.class);
 		}
-		else if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")))
+		else if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, "")))
 		{
 			ensureValidUserEntity();
 		}
+	}
+
+
+	private void extralogging()
+	{
+		Logger.loge(LaunchActivity.class, "YONA_DATA --" + getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, "") == "" ? "Cache cleared" : "Cache present");
+		Logger.loge(LaunchActivity.class, "YONA_URL --" + getSharedUserPreferences().getString(AppConstant.SERVER_URL, ""));
 	}
 
 	private void ensureValidUserEntity()

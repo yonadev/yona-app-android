@@ -1201,7 +1201,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				break;
 			case EventChangeManager.EVENT_USER_NOT_EXIST:
 				DatabaseHelper.getInstance(this).deleteAllData();
-				getSharedUserPreferences().edit().clear();
+				getSharedUserPreferences().edit().clear().commit();
 				if (object != null && object instanceof ErrorMessage)
 				{
 					showError((ErrorMessage) object);

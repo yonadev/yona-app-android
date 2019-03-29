@@ -231,4 +231,6 @@
     <string name="yona_vpn_notification_channel_name">VPN-meldingen</string>
     <string name="mandatory_user_fetch_failure">De Yona-app heeft deze keer een netwerkverbinding nodig om te starten.</string>
     <string name="usage_access_unavailable_message">Sta Yona in het instellingenmenu toe om de gebruiksstatistieken van apps in te zien.</string>
+    <string name="stop_vpn_setting">STOP VPN</string>
+    <string name="start_vpn_setting">START VPN</string>
 </resources>

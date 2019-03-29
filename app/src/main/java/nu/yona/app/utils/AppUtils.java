@@ -590,6 +590,18 @@ public class AppUtils
 		return intent;
 	}
 
+	public static void stopVPN(Context context)
+	{
+		String profileUUID = getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "");
+		VpnProfile profile = ProfileManager.get(context, profileUUID);
+		if (!VpnStatus.isVPNActive() || !(ProfileManager.getLastConnectedVpn() == profile))
+		{
+			return;
+		}
+		YonaApplication.getAppContext().stopOpenVPNService();
+		Logger.loge(AppUtils.class, "VPN stop called");
+	}
+
 	public static void downloadCertificates()
 	{
 		User user = getAppUser();
