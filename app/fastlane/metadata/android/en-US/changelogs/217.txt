@@ -1,0 +1,1 @@
+APPDEV-1269 The VPN and the activity monitoring now stop when you unsubscribe

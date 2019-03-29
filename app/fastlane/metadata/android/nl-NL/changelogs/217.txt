@@ -1,0 +1,1 @@
+APPDEV-1269 De VPN en het bijhouden van de actieve apps stopt nu als je je afmeldt van Yona
