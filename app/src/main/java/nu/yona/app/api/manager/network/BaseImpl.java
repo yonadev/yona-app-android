@@ -126,7 +126,7 @@ class BaseImpl
 				.connectTimeout(NetworkConstant.API_CONNECT_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
 				.writeTimeout(NetworkConstant.API_WRITE_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
 				.readTimeout(NetworkConstant.API_READ_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
-				.retryOnConnectionFailure(false)
+				//.retryOnConnectionFailure(false)
 				.addInterceptor(getInterceptor)
 				.build();
 	}
