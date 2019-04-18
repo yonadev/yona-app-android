@@ -48,6 +48,14 @@ class BaseImpl
 	//    public final String localLanguage = ;
 	private final Interceptor getInterceptor = chain -> {
 		Request request = chain.request();
+		if (NetworkUtils.isOnline(YonaApplication.getAppContext()))
+		{
+			chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
+		}
+		else
+		{
+			throw new IllegalStateException(YonaApplication.getAppContext().getString(R.string.server_not_rechable));
+		}
 		chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
 		Response response = verifyResponse(request, chain);
 		return response.newBuilder()
@@ -57,25 +65,16 @@ class BaseImpl
 
 	private Response verifyResponse(Request request, Interceptor.Chain chain) throws IOException
 	{
-		if (NetworkUtils.isOnline(YonaApplication.getAppContext()))
-		{
-			chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
-		}
-		else
-		{
-			throw new IllegalStateException(YonaApplication.getAppContext().getString(R.string.server_not_rechable));
-		}
 		Response response = chain.proceed(request);
-		if (response.priorResponse() != null &&
-				(response.priorResponse().code() ==
-						HttpURLConnection.HTTP_MOVED_PERM || response.priorResponse().code() == HttpURLConnection.HTTP_GATEWAY_TIMEOUT))
+		if (response.priorResponse() != null && response.priorResponse().code() == HttpURLConnection.HTTP_MOVED_PERM)
 		{
 			throw new IllegalStateException(YonaApplication.getAppContext().getString(R.string.server_not_rechable));
 		}
-		else
+		else if (response.code() == HttpURLConnection.HTTP_GATEWAY_TIMEOUT)
 		{
-			request.newBuilder().build();
+			throw new SocketTimeoutException(YonaApplication.getAppContext().getString(R.string.server_not_rechable));
 		}
+		request.newBuilder().build();
 		return response;
 	}
 
@@ -127,6 +126,7 @@ class BaseImpl
 				.connectTimeout(NetworkConstant.API_CONNECT_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
 				.writeTimeout(NetworkConstant.API_WRITE_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
 				.readTimeout(NetworkConstant.API_READ_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+				.retryOnConnectionFailure(false)
 				.addInterceptor(getInterceptor)
 				.build();
 	}
@@ -217,8 +217,8 @@ class BaseImpl
 	{
 		if (listener != null)
 		{
-
-			if (t instanceof ConnectException || t instanceof SocketTimeoutException || t instanceof UnknownHostException)
+			AppUtils.reportException(BaseImpl.class, new Exception(t), Thread.currentThread(), null, false);
+			if (t instanceof ConnectException || t instanceof SocketTimeoutException || t instanceof UnknownHostException || t instanceof IllegalStateException)
 			{
 				// If client causing problem.
 				if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
