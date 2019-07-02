@@ -53,6 +53,9 @@ import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.comment.CommentsAdapter;
 import nu.yona.app.utils.AppConstant;
 
+import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+
 /**
  * Created by kinnarvasa on 13/06/16.
  */
@@ -115,7 +118,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 					int visibleItemCount = mLayoutManager.getChildCount();
 					int totalItemCount = mLayoutManager.getItemCount();
 					int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
-					EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+					EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 					if (embeddedYonaActivity != null && embeddedYonaActivity.getPage() != null
 							&& embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages()
 							&& (visibleItemCount + firstVisibleItemPosition) >= totalItemCount)
@@ -445,7 +448,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 				else
 				{
 					intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
-					intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
+					intent.putExtra(AppConstant.USER, getAppUser());
 				}
 				YonaActivity.getActivity().replaceFragment(intent);
 			}
@@ -458,13 +461,13 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		{
 			return;
 		}
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 
 		if (getLocalDayActivity(url) != null)
 		{
 			activity = getLocalDayActivity(url);
 			updateDayActivityData(activity);
-			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().dismissLoadingView();
 		}
 		else
 		{
@@ -484,7 +487,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 				@Override
 				public void onError(Object errorMessage)
 				{
-					YonaActivity.getActivity().showLoadingView(false, null);
+					YonaActivity.getActivity().dismissLoadingView();
 				}
 			});
 		}
@@ -508,7 +511,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 		fetchComments(dayActivityList.indexOf(activity));
 		viewPager.setCurrentItem(dayActivityList.indexOf(dayActivity));
 		updateFlow(dayActivityList.indexOf(dayActivity));
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		setUpYonaHeaderTheme();
 		setDayDetailActivityTitle();
 		setUpUserDetailsInHeader();
@@ -621,7 +624,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 
 	private void doComment(String message, String url, boolean isreplaying)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.DAY_ACTIVITY_DETAIL_SCREEN, AnalyticsConstant.SEND);
 		if (activity != null && activity.getComments() != null)
 		{
@@ -639,7 +642,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 			@Override
 			public void onDataLoad(Object result)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 				messageTxt.getText().clear();
 				updateParentcommentView();
 				fetchComments(viewPager.getCurrentItem());
@@ -649,7 +652,7 @@ public class SingleDayActivityDetailFragment extends BaseFragment implements Eve
 			@Override
 			public void onError(Object errorMessage)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 				//TODO show proper message
 			}
 		});

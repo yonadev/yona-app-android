@@ -73,6 +73,7 @@
     <string name="inloggin">INLOGGEN</string>
     <string name="enterpasscode">Je moet een 6 cijferig alfanumeriek code invoeren.</string>
     <string name="resetpinrequest">Je reset-aanvraag is ontvangen. Binnen %1$s uur ontvang je een sms met een PIN-reset bevestigingscode.</string>
+    <string name="resetpinalert">Wil je echt je pincode resetten? Om veiligheidsredenen gaat daar tijd overheen en ondertussen kan je Yona niet gebruiken.</string>
     <string name="useroverride">Dit mobiele nummer %1$s is al geregistreerd bij Yona. Wil je hetzelfde nummer opnieuw registreren? (Let op: Alle gegevens behorend bij dit nummer zullen worden verwijderd. Als je een ander apparaat wilt toevoegen kun je teruggaan en klik op ‘Inloggen’ klikken.)</string>
     <string name="yes">JA</string>
     <string name="no">NEE</string>
@@ -225,7 +226,11 @@
     <string name="generic_mobile_number_format_error">Ongeldig telefoonnummer. Controleer het formaat</string>
     <string name="yona_notification_content">Monitort appgebruik</string>
     <string name="notification_disabled_message">Omdat meldingen voor de Yona-applicatie zijn uitgeschakeld kan Yona appgebruik niet meer bijhouden. Zet in de Android instellingen meldingen weer aan voor de Yona app.</string>
-    <string name="yona_service_notification_channel_name">Vaste melding</string>
     <string name="support_mail_subject">Probleem met Yona app</string>
+    <string name="yona_service_notification_channel_name">Vaste melding</string>
+    <string name="yona_vpn_notification_channel_name">VPN-meldingen</string>
     <string name="mandatory_user_fetch_failure">De Yona-app heeft deze keer een netwerkverbinding nodig om te starten.</string>
+    <string name="usage_access_unavailable_message">Sta Yona in het instellingenmenu toe om de gebruiksstatistieken van apps in te zien.</string>
+    <string name="stop_vpn_setting">STOP VPN</string>
+    <string name="start_vpn_setting">START VPN</string>
 </resources>

@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -40,6 +41,7 @@ import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.LaunchActivity;
@@ -47,6 +49,12 @@ import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.ui.pincode.PinActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.PreferenceConstant;
+
+import static nu.yona.app.YonaApplication.getAppContext;
+import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -108,7 +116,7 @@ public class SettingsFragment extends BaseFragment
 
 		private CheckBox setUpListItemViewCheckBox(CheckBox checkBox)
 		{
-			boolean showOpenVpnLog = YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
+			boolean showOpenVpnLog = getSharedAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
 			checkBox.setChecked(showOpenVpnLog);
 			checkBox.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
 				toggleVPNLogWindowDisplay();
@@ -127,7 +135,9 @@ public class SettingsFragment extends BaseFragment
 				getString(R.string.adddevice),
 				getString(R.string.showopenvpnlog),
 				getString(R.string.contact_us),
-				getString(R.string.deleteuser)};
+				getString(R.string.deleteuser),
+				getString(R.string.stop_vpn_setting),
+				getString(R.string.start_vpn_setting)};
 		settingsListViewAdaptor = new SettingListViewAdaptor(getActivity(), R.layout.settings_list_item, R.id.list_title, listArray);
 		settingsListView.setAdapter(settingsListViewAdaptor);
 		setUpListItemOnClickListener(settingsListView);
@@ -169,6 +179,14 @@ public class SettingsFragment extends BaseFragment
 				{
 					toggleVPNLogWindowDisplay();
 				}
+				else if (listItemTitle.equals(getString(R.string.stop_vpn_setting)))
+				{
+					AppUtils.stopVPN(getAppContext());
+				}
+				else if (listItemTitle.equals(getString(R.string.start_vpn_setting)))
+				{
+					AppUtils.startVPN(YonaActivity.getActivity(), false);
+				}
 			}
 		});
 		return settingsListView;
@@ -204,8 +222,8 @@ public class SettingsFragment extends BaseFragment
 
 	private void toggleVPNLogWindowDisplay()
 	{
-		boolean showOpenVpnLog = YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
-		YonaApplication.getEventChangeManager().getSharedPreference().getAppPreferences().edit().putBoolean(AppConstant.SHOW_VPN_WINDOW, !showOpenVpnLog).commit();
+		boolean showOpenVpnLog = getSharedAppPreferences().getBoolean(AppConstant.SHOW_VPN_WINDOW, false);
+		getSharedAppPreferences().edit().putBoolean(AppConstant.SHOW_VPN_WINDOW, !showOpenVpnLog).commit();
 		settingsListViewAdaptor.notifyDataSetChanged();
 	}
 
@@ -243,30 +261,38 @@ public class SettingsFragment extends BaseFragment
 
 	private void doUnsubscribe()
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
-		APIManager.getInstance().getAuthenticateManager().deleteUser(new DataLoadListener()
-		{
-			@Override
-			public void onDataLoad(Object result)
-			{
-				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
-				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, null);
-				YonaActivity.getActivity().showLoadingView(false, null);
-				startActivity(new Intent(YonaActivity.getActivity(), LaunchActivity.class));
-				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
+		YonaActivity.getActivity().displayLoadingView();
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUnsubscribeSuccess(), (result) -> handleUnsubscribeFailure(result), null);
+		APIManager.getInstance().getAuthenticateManager().deleteUser(dataLoadListenerImpl);
+	}
 
-			}
+	private Object handleUnsubscribeSuccess()
+	{
+		AppUtils.stopService(getAppContext());
+		AppUtils.stopVPN(getAppContext());
+		finishUnsubscribe();
+		return null;// Dummy return value, to allow use as data load handler
+	}
 
-			@Override
-			public void onError(Object errorMessage)
-			{
-				YonaActivity.getActivity().showLoadingView(false, null);
-				Snackbar snackbar = Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT);
-				TextView textView = ((TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text));
-				textView.setMaxLines(5);
-				snackbar.show();
-			}
-		});
+	private void finishUnsubscribe()
+	{
+		getSharedUserPreferences().edit().clear();
+		getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
+		YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST, null);
+		YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_USER_NOT_EXIST, null);
+		YonaActivity.getActivity().dismissLoadingView();
+		startActivity(new Intent(YonaActivity.getActivity(), LaunchActivity.class));
+		YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH, null);
+	}
+
+	private Object handleUnsubscribeFailure(Object errorMessage)
+	{
+		YonaActivity.getActivity().dismissLoadingView();
+		Snackbar snackbar = Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_SHORT);
+		TextView textView = ((TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text));
+		textView.setMaxLines(5);
+		snackbar.show();
+		return null;// Dummy return value, to allow use as data load handler
 	}
 
 	@Override
@@ -285,7 +311,7 @@ public class SettingsFragment extends BaseFragment
 	private void addDevice(final String pin)
 	{
 		YonaAnalytics.createTapEvent(getString(R.string.adddevice));
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		try
 		{
 			deviceManager.addDevice(pin, new DataLoadListener()
@@ -315,7 +341,7 @@ public class SettingsFragment extends BaseFragment
 		{
 			if (YonaActivity.getActivity() != null)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 				Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE)
 						.setAction(getString(R.string.ok), new View.OnClickListener()
 						{
@@ -333,7 +359,7 @@ public class SettingsFragment extends BaseFragment
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(SettingsFragment.class, e, Thread.currentThread());
 		}
 	}
 
@@ -358,30 +384,16 @@ public class SettingsFragment extends BaseFragment
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(SettingsFragment.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(SettingsFragment.class, e, Thread.currentThread());
 		}
 	}
 
 	private void openEmail()
 	{
 		CustomAlertDialog.show(YonaActivity.getActivity(), getString(R.string.usercredential), getString(R.string.usercredentialmsg),
-				getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int which)
-					{
-						String userCredential = Html.fromHtml("<html> Base URL: " + Uri.encode(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref())
-								+ "<br><br>" + Uri.encode("Password: " + YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()) + "</html>").toString();
-						showEmailClient(userCredential);
-					}
-				}, new DialogInterface.OnClickListener()
-				{
-					@Override
-					public void onClick(DialogInterface dialog, int which)
-					{
-						showEmailClient("");
-					}
-				});
+				getString(R.string.yes), getString(R.string.no), (dialog, which) -> {
+					showEmailClient(getTextForSupportMail(true));
+				}, (dialog, which) -> showEmailClient(getTextForSupportMail(false)));
 	}
 
 	private void showEmailClient(String userCredential)
@@ -390,6 +402,23 @@ public class SettingsFragment extends BaseFragment
 		Uri data = Uri.parse("mailto:support@yona.nu?subject=" + getString(R.string.support_mail_subject) + "&body=" + userCredential);
 		intent.setData(data);
 		startActivity(intent);
+	}
+
+	private String getTextForSupportMail(Boolean isYonaPasswordToBeAdded)
+	{
+		AppMetaInfo appMetaInfo = AppMetaInfo.getInstance();
+		String baseURL = " Base URL: " + Uri.encode(getAppUser().getLinks().getSelf().getHref());
+		String yonaPassword = "";
+		if (isYonaPasswordToBeAdded)
+		{
+			yonaPassword = Uri.encode("Password: " + YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword()) + "<br><br>";
+		}
+		String appVersion = "App version: " + appMetaInfo.getAppVersion();
+		String appBuild = "App version code: " + appMetaInfo.getAppVersionCode();
+		String androidVersion = "Android version: " + Build.VERSION.RELEASE;
+		String deviceBrand = "Device brand: " + Build.MANUFACTURER;
+		String deviceModel = "Device model: " + Build.MODEL;
+		return Html.fromHtml("<html>" + baseURL + "<br><br>" + yonaPassword + appVersion + "<br>" + appBuild + "<br>" + androidVersion + "<br>" + deviceBrand + "<br>" + deviceModel + "</html>").toString();
 	}
 
 	@Override

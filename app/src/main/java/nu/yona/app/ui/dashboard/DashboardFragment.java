@@ -38,6 +38,9 @@ import nu.yona.app.ui.ViewPagerAdapter;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
+import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+
 /**
  * Created by kinnarvasa on 21/03/16.
  */
@@ -179,7 +182,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
 			@Override
 			public void run()
 			{
-				User user = YonaApplication.getEventChangeManager().getDataState().getUser();
+				User user = getAppUser();
 				if (user != null && !TextUtils.isEmpty(user.getFirstName()))
 				{
 					if (mYonaHeaderTheme != null)
@@ -217,7 +220,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
 
 							rightIcon.setVisibility(View.VISIBLE);
 							rightIconProfile.setVisibility(View.GONE);
-							int notificaitonCount = YonaApplication.getEventChangeManager().getDataState().getNotificaitonCount();
+							int notificaitonCount = getSharedAppDataState().getNotificationCount();
 							if (notificaitonCount > 0)
 							{
 								txtNotificationCounter.setText("" + notificaitonCount);
@@ -266,7 +269,7 @@ public class DashboardFragment extends BaseFragment implements EventChangeListen
 				else
 				{
 					intent.putExtra(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
-					intent.putExtra(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
+					intent.putExtra(AppConstant.USER, getAppUser());
 				}
 				YonaActivity.getActivity().replaceFragment(intent);
 			}

@@ -1,0 +1,3 @@
+APPDEV-1226 Crash in pincodescherm opgelost
+
+Verder is het icoontje in het meldingenscherm verbeterd

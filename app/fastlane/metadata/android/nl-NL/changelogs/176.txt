@@ -1,0 +1,1 @@
+APPDEV-1205 profile icon nu zichtbaar in weekdetails

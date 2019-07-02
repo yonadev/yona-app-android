@@ -19,6 +19,7 @@ import nu.yona.app.YonaApplication;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.PauseResumeHook;
 
+import static nu.yona.app.YonaApplication.getAppUser;
 import static nu.yona.app.utils.Logger.loge;
 import static nu.yona.app.utils.Logger.logi;
 
@@ -30,7 +31,6 @@ public class YonaAnalytics
 {
 	private static YonaAnalytics instance;
 	private Categorizable category = null;
-	private static final String TAG = "YonaAnalytics";
 
 	public static YonaAnalytics getInstance()
 	{
@@ -70,15 +70,15 @@ public class YonaAnalytics
 		{
 			return;
 		}
-		logi(TAG, "Analytics: Category: [" + category + "] Label: [" + label + "] Action: [" + action + "]");
+		logi(YonaAnalytics.class, "Analytics: Category: [" + category + "] Label: [" + label + "] Action: [" + action + "]");
 		//commented out until things are probably working
 		Tracker t = YonaApplication.getTracker();
-		if (YonaApplication.getEventChangeManager().getDataState().getUser() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getUser().getLinks() != null
-				&& YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf() != null
-				&& !TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref()))
+		if (getAppUser() != null
+				&& getAppUser().getLinks() != null
+				&& getAppUser().getLinks().getSelf() != null
+				&& !TextUtils.isEmpty(getAppUser().getLinks().getSelf().getHref()))
 		{
-			t.set("&uid", YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref());
+			t.set("&uid", getAppUser().getLinks().getSelf().getHref());
 		}
 		if (action.equals("Track"))
 		{
@@ -99,7 +99,7 @@ public class YonaAnalytics
 	{
 		if (category == null)
 		{
-			loge(TAG, "Attempt to fire analytics event prior to initializing current Categorizable");
+			loge(YonaAnalytics.class, "Attempt to fire analytics event prior to initializing current Categorizable");
 			return "null";
 		}
 		return category.getAnalyticsCategory();

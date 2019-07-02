@@ -9,6 +9,7 @@
 package nu.yona.app.ui;
 
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -23,9 +24,9 @@ import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.ui.challenges.ChallengesFragment;
 import nu.yona.app.ui.challenges.ChallengesGoalDetailFragment;
 import nu.yona.app.ui.dashboard.DashboardFragment;
-import nu.yona.app.ui.frinends.AddFriendFragment;
-import nu.yona.app.ui.frinends.FriendsFragment;
-import nu.yona.app.ui.frinends.FriendsRequestFragment;
+import nu.yona.app.ui.friends.AddFriendFragment;
+import nu.yona.app.ui.friends.FriendsFragment;
+import nu.yona.app.ui.friends.FriendsRequestFragment;
 import nu.yona.app.ui.message.NotificationFragment;
 import nu.yona.app.ui.settings.PrivacyFragment;
 import nu.yona.app.ui.settings.SettingsFragment;
@@ -121,6 +122,26 @@ rightIcon,
 		{
 			mToolBar.setBackgroundResource(R.drawable.triangle_shadow_blue);
 		}
+	}
+
+	protected <T> T getArgument(String key, Class<T> type)
+	{
+		return getArgument(key, type, null);
+	}
+
+	protected <T> T getArgument(String key, Class<T> type, T defaultValue)
+	{
+		Bundle arguments = getArguments();
+		if (arguments == null)
+		{
+			return defaultValue;
+		}
+		Object argument = arguments.get(key);
+		if (type.isInstance(argument))
+		{
+			return type.cast(argument);
+		}
+		return defaultValue;
 	}
 
 	public void udpateBottomTabVisibility(final View view)

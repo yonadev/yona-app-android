@@ -67,6 +67,22 @@ public interface RestApi
 	Call<User> registerUser(@Url String url, @Header(NetworkConstant.ACCEPT_LANGUAGE) String acceptLanguage,
 							@Body RegisterUser body);
 
+	@PUT
+	Call<User> updateRegisterUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Header(NetworkConstant.ACCEPT_LANGUAGE) String acceptLanguage,
+								  @Body RegisterUser body);
+
+	/**
+	 * Override register user call.
+	 *
+	 * @param otp  the otp
+	 * @param body the body
+	 * @return the call
+	 */
+	@POST(ApiList.USER)
+	Call<User> overrideRegisterUser(@Header(NetworkConstant.ACCEPT_LANGUAGE) String acceptLanguage,
+									@Query("overwriteUserConfirmationCode") String otp,
+									@Body RegisterUser body);
+
 	@PUT()
 	@Multipart
 	Call<ProfilePhoto> uploadUserPhoto(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Part MultipartBody.Part file);
@@ -88,21 +104,6 @@ public interface RestApi
 	 * @param body         the body
 	 * @return the call
 	 */
-	@PUT
-	Call<User> updateRegisterUser(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String yonaPassword, @Header(NetworkConstant.ACCEPT_LANGUAGE) String acceptLanguage,
-								  @Body RegisterUser body);
-
-	/**
-	 * Override register user call.
-	 *
-	 * @param otp  the otp
-	 * @param body the body
-	 * @return the call
-	 */
-	@POST(ApiList.USER)
-	Call<User> overrideRegisterUser(@Header(NetworkConstant.ACCEPT_LANGUAGE) String acceptLanguage,
-									@Query("overwriteUserConfirmationCode") String otp,
-									@Body RegisterUser body);
 
 	/**
 	 * Gets user.
@@ -340,21 +341,6 @@ public interface RestApi
 	Call<YonaMessages> getMessages(@Url String nextUrl, @Header(NetworkConstant.YONA_PASSWORD) String password,
 								   @Header(NetworkConstant.ACCEPT_LANGUAGE) String acceptLanguage,
 								   @Query("onlyUnreadMessages") boolean isUnreadMessage);
-
-	/********
-	 * NOTIFICATION MANAGER
-	 *
-	 * @param url      the url
-	 * @param password the password
-	 * @param size     the size
-	 * @param page     the page
-	 * @return the messages
-	 */
-	@GET
-	Call<YonaMessages> getMessages(@Url String url, @Header(NetworkConstant.YONA_PASSWORD) String password,
-								   @Header(NetworkConstant.ACCEPT_LANGUAGE) String acceptLanguage,
-								   @Query("onlyUnreadMessages") boolean isUnreadMessage,
-								   @Query("size") int size, @Query("page") int page);
 
 	/**
 	 * Delete message call.

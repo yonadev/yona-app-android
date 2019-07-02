@@ -103,7 +103,7 @@ public class CustomProgressDialog extends Dialog
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(CustomProgressDialog.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(CustomProgressDialog.class, e, Thread.currentThread());
 		}
 	}
 

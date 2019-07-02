@@ -25,6 +25,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,9 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.utils.AppConstant.APP_MONITOR_NOTIFICATION_ID;
+
 /**
  * Created by kinnarvasa on 21/03/16.
  */
@@ -53,7 +57,6 @@ public class ActivityMonitorService extends Service
 	private PowerManager powerManager;
 	private Date startTime, endTime;
 	private ScheduledFuture scheduledFuture;
-	private static final int NOTIFICATION_ID = 1111;
 
 	private static String printForegroundTask(Context context)
 	{
@@ -86,7 +89,7 @@ public class ActivityMonitorService extends Service
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityMonitorService.class, e, Thread.currentThread());
 		}
 		return currentApp;
 	}
@@ -101,9 +104,9 @@ public class ActivityMonitorService extends Service
 
 	private void restartReceiver()
 	{
-		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
+		if (getSharedUserPreferences().getBoolean(AppConstant.TERMINATED_APP, false))
 		{
-			YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, false).commit();
+			getSharedUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, false).commit();
 			AppUtils.registerReceiver(YonaApplication.getAppContext());
 		}
 		AppUtils.registerReceiver(YonaApplication.getAppContext());
@@ -127,14 +130,14 @@ public class ActivityMonitorService extends Service
 		PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 /* Request code */, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		Notification notification = new NotificationCompat.Builder(this, AppConstant.YONA_SERVICE_CHANNEL_ID)
-				.setSmallIcon(R.drawable.ic_launcher)
+				.setColor(ContextCompat.getColor(this, R.color.grape))
+				.setSmallIcon(R.drawable.app_monitor_notif_icon)
 				.setContentTitle(this.getString(R.string.yona_notification_content))
 				.setContentIntent(pendingIntent)
 				.setOngoing(true)
 				.setPriority(0)
-				.setOngoing(true)
 				.build();
-		startForeground(NOTIFICATION_ID, notification);
+		startForeground(APP_MONITOR_NOTIFICATION_ID, notification);
 	}
 
 
@@ -142,7 +145,7 @@ public class ActivityMonitorService extends Service
 	{
 		NotificationManager mNotificationManager = (NotificationManager)
 				this.getSystemService(NOTIFICATION_SERVICE);
-		mNotificationManager.cancel(NOTIFICATION_ID);
+		mNotificationManager.cancel(APP_MONITOR_NOTIFICATION_ID);
 	}
 
 	@Override
@@ -215,7 +218,7 @@ public class ActivityMonitorService extends Service
 
 	private void updateOnServer(String pkgname)
 	{
-		Logger.logi("updateOnServer", "pck: " + pkgname);
+		Logger.logi(ActivityMonitorService.class, "pck: " + pkgname);
 		if (previousAppName != null && !pkgname.equals("NULL") && startTime != null && endTime != null && startTime.before(endTime))
 		{
 			APIManager.getInstance().getActivityManager().postActivityToDB(previousAppName, startTime, endTime);
@@ -225,7 +228,7 @@ public class ActivityMonitorService extends Service
 	@Override
 	public void onTaskRemoved(Intent rootIntent)
 	{
-		YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
+		getSharedUserPreferences().edit().putBoolean(AppConstant.TERMINATED_APP, true).commit();
 		shutdownScheduler();
 		restartService();
 		super.onTaskRemoved(rootIntent);
@@ -248,7 +251,7 @@ public class ActivityMonitorService extends Service
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityMonitorService.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityMonitorService.class, e, Thread.currentThread());
 		}
 	}
 

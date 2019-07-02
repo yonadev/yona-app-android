@@ -9,7 +9,6 @@
 package nu.yona.app.ui.signup;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -39,13 +38,14 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+
 /**
  * Created by kinnarvasa on 04/04/16.
  */
 public class OTPActivity extends BasePasscodeActivity implements EventChangeListener
 {
 
-	private final SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
 	private PasscodeFragment otpFragment;
 	private RegisterUser user;
 
@@ -68,7 +68,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 	public void onResume()
 	{
 		super.onResume();
-		if (userPreferences.getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0) > new Date().getTime())
+		if (getSharedUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0) > new Date().getTime())
 		{
 			showTimer();
 		}
@@ -144,7 +144,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 	 */
 	private void validateOTP(final String otpString)
 	{
-		showLoadingView(true, null);
+		displayLoadingView();
 		APIManager.getInstance().getAuthenticateManager().verifyOTP(user, otpString, new DataLoadListener()
 		{
 			@Override
@@ -153,7 +153,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 				AppUtils.downloadCertificates();
 				AppUtils.downloadVPNProfile();
 				getActivityCategories();
-				showLoadingView(false, null);
+				dismissLoadingView();
 				navigateToNextScreen();
 			}
 
@@ -162,7 +162,7 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 			{
 				if (errorMessage instanceof ErrorMessage)
 				{
-					showLoadingView(false, null);
+					dismissLoadingView();
 					Snackbar.make(findViewById(android.R.id.content), ((ErrorMessage) errorMessage).getMessage(), Snackbar.LENGTH_INDEFINITE)
 							.setAction(getString(R.string.ok), new View.OnClickListener()
 							{
@@ -188,20 +188,20 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 
 	private void resendOTP()
 	{
-		showLoadingView(true, null);
+		displayLoadingView();
 		otpFragment.resetDigit();
 		APIManager.getInstance().getAuthenticateManager().resendOTP(new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
 			{
-				showLoadingView(false, null);
+				dismissLoadingView();
 			}
 
 			@Override
 			public void onError(Object errorMessage)
 			{
-				showLoadingView(false, null);
+				dismissLoadingView();
 			}
 		});
 	}
@@ -229,9 +229,9 @@ public class OTPActivity extends BasePasscodeActivity implements EventChangeList
 	@Override
 	protected void navigateToNextScreen()
 	{
-		if (userPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
+		if (getSharedUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
 		{
-			userPreferences.edit().putBoolean(PreferenceConstant.STEP_OTP, true).apply();
+			getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_OTP, true).apply();
 			showProfileScreen();
 		}
 		else

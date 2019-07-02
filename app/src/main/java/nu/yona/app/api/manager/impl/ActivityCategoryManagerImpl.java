@@ -10,7 +10,6 @@ package nu.yona.app.api.manager.impl;
 
 import android.content.Context;
 
-import nu.yona.app.YonaApplication;
 import nu.yona.app.api.db.DatabaseHelper;
 import nu.yona.app.api.manager.ActivityCategoryManager;
 import nu.yona.app.api.manager.dao.ActivityCategoriesDAO;
@@ -20,6 +19,8 @@ import nu.yona.app.api.model.ActivityCategories;
 import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.utils.AppUtils;
+
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by bhargavsuthar on 14/04/16.
@@ -82,7 +83,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(ActivityCategoryManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 		return null; // No value to return from here
 	}
@@ -90,7 +91,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager
 	@Override
 	public void updateNetworkAPIEnvironment(String environmentURL)
 	{
-		YonaApplication.getEventChangeManager().getDataState().setServerUrl(environmentURL);
+		getSharedAppDataState().setServerUrl(environmentURL);
 		activityCategoriesNetwork.updateNeworkEnvironment();
 	}
 
@@ -103,7 +104,7 @@ public class ActivityCategoryManagerImpl implements ActivityCategoryManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(ActivityCategoryManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 }

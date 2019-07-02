@@ -36,28 +36,30 @@ public class AuthenticateNetworkImpl extends BaseImpl
 	/**
 	 * Register user.
 	 *
-	 * @param url          the url
-	 * @param password     the password
 	 * @param registerUser the registerUser
-	 * @param isEditMode   the is edit mode
 	 * @param listener     the listener
 	 */
-	public void registerUser(String url, String password, RegisterUser registerUser, boolean isEditMode, final DataLoadListener listener)
+	public void registerUser(RegisterUser registerUser, final DataLoadListener listener)
 	{
 		try
 		{
-			if (!isEditMode)
-			{
-				getRestApi().registerUser(Locale.getDefault().toString().replace('_', '-'), registerUser).enqueue(getUserCallBack(listener));
-			}
-			else
-			{
-				getRestApi().updateRegisterUser(url, password, Locale.getDefault().toString().replace('_', '-'), registerUser).enqueue(getUserCallBack(listener));
-			}
+			getRestApi().registerUser(Locale.getDefault().toString().replace('_', '-'), registerUser).enqueue(getUserCallBack(listener));
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
+		}
+	}
+
+	public void updateUser(String url, String password, RegisterUser registerUser, final DataLoadListener listener)
+	{
+		try
+		{
+			getRestApi().updateRegisterUser(url, password, Locale.getDefault().toString().replace('_', '-'), registerUser).enqueue(getUserCallBack(listener));
+		}
+		catch (Exception e)
+		{
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -69,7 +71,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -109,7 +111,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -129,7 +131,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -148,7 +150,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -168,7 +170,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -187,7 +189,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -205,7 +207,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -224,7 +226,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -263,7 +265,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -282,7 +284,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -312,7 +314,7 @@ public class AuthenticateNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 

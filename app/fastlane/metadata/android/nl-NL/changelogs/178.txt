@@ -1,0 +1,1 @@
+APPDEV-1219 Probleem opgelost dat kon optreden als de VPN-verbinding werd verbroken

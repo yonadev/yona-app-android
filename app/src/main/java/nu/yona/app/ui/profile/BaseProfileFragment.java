@@ -17,8 +17,9 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.TextUtils;
 
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.ui.BaseFragment;
+
+import static nu.yona.app.YonaApplication.getAppUser;
 
 /**
  * Created by kinnarvasa on 10/05/16.
@@ -58,7 +59,7 @@ public class BaseProfileFragment extends BaseFragment
 	private String getName(String firstName, String lastName)
 	{
 		StringBuffer displayName = new StringBuffer();
-		if (YonaApplication.getEventChangeManager().getDataState().getUser() != null)
+		if (getAppUser() != null)
 		{
 			displayName.append(TextUtils.isEmpty(firstName) ? getString(R.string.blank) : firstName.substring(0, 1).toUpperCase());
 			displayName.append(TextUtils.isEmpty(lastName) ? getString(R.string.blank) : lastName.substring(0, 1).toUpperCase());

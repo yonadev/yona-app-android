@@ -1,0 +1,1 @@
+APPDEV-1230 Probleem opgelost waardoor het niet mogelijk was je als nieuwe gebruiker aan te melden.

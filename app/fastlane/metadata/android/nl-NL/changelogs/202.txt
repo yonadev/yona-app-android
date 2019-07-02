@@ -1,0 +1,1 @@
+APPDEV-1110 Geen functionele wijzigingen in de app

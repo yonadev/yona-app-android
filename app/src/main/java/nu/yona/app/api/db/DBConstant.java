@@ -67,4 +67,9 @@ public interface DBConstant
 	 * The constant APPLICATION_END_TIME.
 	 */
 	String APPLICATION_END_TIME = "applicationEndTime";
+
+	/**
+	 * The DB App activity fetch ROW_LIMIT.
+	 */
+	String ACTIVITY_FETCH_ROW_LIMIT = "200";
 }

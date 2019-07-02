@@ -9,7 +9,6 @@
 package nu.yona.app.ui;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -35,7 +34,7 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.enums.EncryptionMethod;
+import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.ui.login.LoginActivity;
 import nu.yona.app.ui.pincode.PasscodeActivity;
@@ -44,14 +43,15 @@ import nu.yona.app.ui.signup.SignupActivity;
 import nu.yona.app.ui.tour.YonaCarrouselActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
 
-import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 public class LaunchActivity extends BaseActivity
 {
 	private Bundle bundle;
-	private final SharedPreferences sharedUserPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -85,7 +85,7 @@ public class LaunchActivity extends BaseActivity
 				bundle.putString(AppConstant.DEEP_LINK, getIntent().getDataString());
 				startNewActivity(bundle, SignupActivity.class);
 				// and it will not launch tour for first time user and so can be marked true.
-				sharedUserPreferences.edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
+				getSharedUserPreferences().edit().putBoolean(PreferenceConstant.STEP_TOUR, true).commit();
 				return;
 			}
 			else if (getIntent().getExtras() != null)
@@ -97,47 +97,61 @@ public class LaunchActivity extends BaseActivity
 
 	private void navigateToValidActivity()
 	{
-		if (!sharedUserPreferences.getBoolean(PreferenceConstant.STEP_TOUR, false))
+		extralogging();
+		if (!getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_TOUR, false))
 		{
 			startNewActivity(bundle, YonaCarrouselActivity.class);
 		}
-		else if (!sharedUserPreferences.getBoolean(PreferenceConstant.STEP_REGISTER, false))
+		else if (!getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false))
 		{
 			// We will skip here to load same activity
 		}
-		else if (sharedUserPreferences.getBoolean(PreferenceConstant.STEP_REGISTER, false)
-				&& !sharedUserPreferences.getBoolean(PreferenceConstant.STEP_OTP, false))
+		else if (getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_REGISTER, false)
+				&& !getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_OTP, false))
 		{
 			startNewActivity(bundle, OTPActivity.class);
 		}
-		else if (!sharedUserPreferences.getBoolean(PreferenceConstant.STEP_PASSCODE, false))
+		else if (!getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_PASSCODE, false))
 		{
 			bundle.putInt(AppConstant.TITLE_BACKGROUND_RESOURCE, R.drawable.triangle_shadow_grape);
 			bundle.putInt(AppConstant.COLOR_CODE, ContextCompat.getColor(LaunchActivity.this, R.color.grape));
 			startNewActivity(bundle, PasscodeActivity.class);
 		}
-		else if (!TextUtils.isEmpty(sharedUserPreferences.getString(PreferenceConstant.YONA_PASSCODE, "")))
+		else if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, "")))
 		{
-			checkForValidStoredUser();
+			ensureValidUserEntity();
 		}
 	}
 
 
-	private void checkForValidStoredUser()
+	private void extralogging()
+	{
+		Logger.loge(LaunchActivity.class, "YONA_DATA --" + getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, "") == "" ? "Cache cleared" : "Cache present");
+		Logger.loge(LaunchActivity.class, "YONA_URL --" + getSharedUserPreferences().getString(AppConstant.SERVER_URL, ""));
+	}
+
+	private void ensureValidUserEntity()
 	{
 		try
 		{
-			URL environmentURL = new URL(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
-			URL storeUserURL = new URL(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getSelf().getHref());
-			if (environmentURL.getProtocol().equals(storeUserURL.getProtocol()))
+			User user = APIManager.getInstance().getAuthenticateManager().getUser();
+			URL environmentURL = new URL(getSharedAppDataState().getServerUrl());
+			URL storedUserURL = new URL(user.getLinks().getSelf().getHref());
+			if (!environmentURL.getProtocol().equals(storedUserURL.getProtocol()))
 			{
-				moveToYonaActivity();
+				reloadUserFromServer(storedUserURL.toString().replace(storedUserURL.getProtocol(), environmentURL.getProtocol()));
+				return;
 			}
-			reloadUserFromServer(storeUserURL.toString().replace(storeUserURL.getProtocol(), environmentURL.getProtocol()));
+			if (user.getVersion() != AppConstant.USER_ENTITY_VERSION)
+			{
+				reloadUserFromServer(user.getLinks().getSelf().getHref());
+				return;
+			}
+			moveToYonaActivity();
 		}
 		catch (MalformedURLException e)
 		{
-			AppUtils.reportException(this.getClass().getName(), e, Thread.currentThread());
+			AppUtils.reportException(LaunchActivity.class, e, Thread.currentThread());
 		}
 	}
 
@@ -151,6 +165,12 @@ public class LaunchActivity extends BaseActivity
 		getUserFromServer(url);
 	}
 
+	private void closeApplication(DialogInterface dialog, int which)
+	{
+		finish();
+		System.exit(0);
+	}
+
 	private void moveToYonaActivity()
 	{
 		startNewActivity(bundle, YonaActivity.class);
@@ -159,7 +179,7 @@ public class LaunchActivity extends BaseActivity
 
 	private void getUserFromServer(String url)
 	{
-		showLoadingView(true, "");
+		displayLoadingView();
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserFetchSuccess(result), (result) -> handleUserFetchFailure(result), null);
 		APIManager.getInstance().getAuthenticateManager().getUserFromServer(url, dataLoadListenerImpl);
 	}
@@ -167,13 +187,13 @@ public class LaunchActivity extends BaseActivity
 	private Object handleUserFetchSuccess(Object result)
 	{
 		moveToYonaActivity();
-		showLoadingView(false, "");
+		dismissLoadingView();
 		return null;// Dummy return value, to allow use as data load handler
 	}
 
 	private Object handleUserFetchFailure(Object error)
 	{
-		showLoadingView(false, "");
+		dismissLoadingView();
 		if (error instanceof ErrorMessage)
 		{
 			AppUtils.displayErrorAlert(this, (ErrorMessage) error);
@@ -183,12 +203,6 @@ public class LaunchActivity extends BaseActivity
 			AppUtils.displayErrorAlert(this, new ErrorMessage((String) error));
 		}
 		return null;// Dummy return value, to allow use as data load handler
-	}
-
-	private void closeApplication(DialogInterface dialog, int which)
-	{
-		finish();
-		System.exit(0);
 	}
 
 
@@ -203,18 +217,14 @@ public class LaunchActivity extends BaseActivity
 		});
 	}
 
-
 	private void validateYonaPasswordEncryption()
 	{
-		// if App is older version and user is already logged in, upgrade the encryption.
-		if ((sharedUserPreferences.getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal()) == EncryptionMethod.INITIAL_METHOD.ordinal()
-				&& !TextUtils.isEmpty(sharedUserPreferences.getString(PreferenceConstant.YONA_PASSCODE, ""))))
+		if (TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_PASSCODE, "")))
 		{
-			YonaApplication.getEventChangeManager().getSharedPreference().upgradeYonaPasswordEncryption();
+			// User didn't login in yet
+			return;
 		}
-		SharedPreferences.Editor editor = sharedUserPreferences.edit();
-		editor.putInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.ENHANCED_STILL_BASED_ON_SERIAL.ordinal());
-		editor.commit();
+		YonaApplication.getEventChangeManager().getSharedPreference().upgradePasswordEncryptionIfNeeded();
 	}
 
 	/**
@@ -227,7 +237,7 @@ public class LaunchActivity extends BaseActivity
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setView(promptView);
 		final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
-		editText.setText(YonaApplication.getEventChangeManager().getDataState().getServerUrl());
+		editText.setText(getSharedAppDataState().getServerUrl());
 		alertDialogBuilder.setCancelable(false)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener()
 				{
@@ -235,7 +245,7 @@ public class LaunchActivity extends BaseActivity
 					public void onClick(DialogInterface dialog, int id)
 					{
 						Log.d("Entered URL", "Hello, " + editText.getText());
-						if (!(YonaApplication.getEventChangeManager().getDataState().getServerUrl().equals(editText.getText().toString())))
+						if (!(getSharedAppDataState().getServerUrl().equals(editText.getText().toString())))
 						{
 							validateEnvironment(editText.getText().toString());
 						}
@@ -287,8 +297,8 @@ public class LaunchActivity extends BaseActivity
 
 	void validateEnvironment(String newEnvironmentURL)
 	{
-		showLoadingView(true, null);
-		String oldEnvironmentURL = YonaApplication.getEventChangeManager().getDataState().getServerUrl();
+		displayLoadingView();
+		String oldEnvironmentURL = getSharedAppDataState().getServerUrl();
 		APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(newEnvironmentURL);// initializes the network manager with the new host url from data state.
 		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl(((result) -> showEnvironmentSwitchSuccessMessageToUser(newEnvironmentURL, result)),
 				((result) -> showEnvironmentSwitchFailureMessageToUser(oldEnvironmentURL, result)), null);
@@ -298,7 +308,7 @@ public class LaunchActivity extends BaseActivity
 
 	public Object showEnvironmentSwitchSuccessMessageToUser(String newEnvironmentURL, Object result)
 	{
-		showLoadingView(false, null);
+		dismissLoadingView();
 		Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.new_environment_switch_success_msg) + newEnvironmentURL, Toast.LENGTH_LONG).show();
 		return null;
 	}
@@ -306,7 +316,7 @@ public class LaunchActivity extends BaseActivity
 	public Object showEnvironmentSwitchFailureMessageToUser(String oldEnvironmentURL, Object errorMessage)
 	{
 		APIManager.getInstance().getActivityCategoryManager().updateNetworkAPIEnvironment(oldEnvironmentURL); // reverts the network manager with the old host url from data state.
-		showLoadingView(false, null);
+		dismissLoadingView();
 		Toast.makeText(LaunchActivity.this, YonaApplication.getAppContext().getString(R.string.environment_switch_error) + oldEnvironmentURL, Toast.LENGTH_LONG).show();
 		return null;
 	}

@@ -70,7 +70,7 @@ public class CarrouselViewPager extends ViewPager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(CarrouselViewPager.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(CarrouselViewPager.class, e, Thread.currentThread());
 		}
 	}
 

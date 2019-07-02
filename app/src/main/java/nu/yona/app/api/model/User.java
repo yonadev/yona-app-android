@@ -13,12 +13,15 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import nu.yona.app.YonaApplication;
+import nu.yona.app.enums.UserStatus;
 
 /**
  * The type User.
@@ -47,9 +50,6 @@ public class User extends BaseEntity
 	@Expose
 	private String mobileNumber;
 
-	@SerializedName("vpnProfile")
-	@Expose
-	private VpnProfile vpnProfile;
 
 	@SerializedName("nickname")
 	@Expose
@@ -70,6 +70,16 @@ public class User extends BaseEntity
 	@SerializedName("yonaPassword")
 	@Expose
 	private String yonaPassword;
+
+
+	@SerializedName("status")
+	@Expose
+	private UserStatus status;
+
+	@SerializedName("version")
+	@Expose
+	private int version;
+
 
 	/**
 	 * Gets mobile number confirmation code.
@@ -197,20 +207,6 @@ public class User extends BaseEntity
 	 *
 	 * @return The vpnProfile
 	 */
-	public VpnProfile getVpnProfile()
-	{
-		return vpnProfile;
-	}
-
-	/**
-	 * Sets vpn profile.
-	 *
-	 * @param vpnProfile The vpnProfile
-	 */
-	public void setVpnProfile(VpnProfile vpnProfile)
-	{
-		this.vpnProfile = vpnProfile;
-	}
 
 	/**
 	 * Gets nickname.
@@ -258,16 +254,6 @@ public class User extends BaseEntity
 		return null;
 	}
 
-	public String getSslRootCertCN()
-	{
-		return this.sslRootCertCN;
-	}
-
-	public void setSslRootCertCN(String sslRootCertCN)
-	{
-		this.sslRootCertCN = sslRootCertCN;
-	}
-
 	public String getYonaPassword()
 	{
 		return this.yonaPassword;
@@ -279,4 +265,75 @@ public class User extends BaseEntity
 		this.yonaPassword = yonaPassword;
 	}
 
+	public UserStatus getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(UserStatus userStatus)
+	{
+		this.status = userStatus;
+	}
+
+	public int getVersion()
+	{
+		return version;
+	}
+
+	public void setVersion(int version)
+	{
+		this.version = version;
+	}
+
+	@JsonIgnore
+	public String getPostOpenAppEventLink()
+	{
+		return getCurrentDevice().getPostOpenAppEventLink();
+	}
+
+	@JsonIgnore
+	public String getSslRootCertCN()
+	{
+		return getCurrentDevice().getSslRootCertCN();
+	}
+
+	@JsonIgnore
+	public String getPostDeviceAppActivityLink()
+	{
+		return getCurrentDevice().getPostDeviceAppActivityLink();
+	}
+
+	@JsonIgnore
+	public String getSslRootCertLink()
+	{
+		return getCurrentDevice().getSslRootCertLink();
+	}
+
+	@JsonIgnore
+	public VpnProfile getVpnProfile()
+	{
+		return getCurrentDevice().getVpnProfile();
+	}
+
+	@JsonIgnore
+	private YonaDevice getCurrentDevice()
+	{
+		return this.getEmbedded().getYonaDevices().getEmbedded().getCurrentDevice();
+	}
+
+	@JsonIgnore
+	public List<YonaBuddy> getBuddies()
+	{
+		YonaBuddies buddiesContainer = this.getEmbedded().getYonaBuddies();
+		if (buddiesContainer == null)
+		{
+			return Collections.emptyList();
+		}
+		return buddiesContainer.getEmbedded().getYonaBuddies();
+	}
+
+	public boolean isActive()
+	{
+		return this.getStatus() == UserStatus.ACTIVE;
+	}
 }

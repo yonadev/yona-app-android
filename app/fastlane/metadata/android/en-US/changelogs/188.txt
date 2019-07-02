@@ -1,0 +1,1 @@
+APPDEV-1230 Fixed an issue that prevented signing up for Yona

@@ -67,7 +67,6 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	private TimeZoneGoalsAdapter timeZoneGoalsAdapter;
 	private View btnChallengesContainer;
 
-	private static final String TAG = "ChallengesGoalDetailFragment";
 	/**
 	 * Use this listener only for Time zone picker
 	 */
@@ -341,7 +340,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	 */
 	private void doDeleteGoal()
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		YonaAnalytics.createTapEventWithCategory(AnalyticsConstant.CHALLENGES_SCREEN, AnalyticsConstant.DELETE_GOAL);
 		APIManager.getInstance().getChallengesManager().deleteGoal((YonaGoal) mYonaGoal, new DataLoadListener()
 		{
@@ -362,7 +361,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	private void showError(Object errorMessage)
 	{
 		ErrorMessage message = (ErrorMessage) errorMessage;
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		Snackbar.make(YonaActivity.getActivity().findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG).show();
 	}
 
@@ -394,7 +393,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	 */
 	private void createNewBudgetGoal(long minutes, Object object)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		if (object instanceof YonaGoal)
 		{
 			APIManager.getInstance().getChallengesManager().postBudgetGoals(minutes, ((YonaGoal) object), new DataLoadListener()
@@ -438,7 +437,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	 */
 	private void updateGoalNotify(final Object result)
 	{
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		if (result != null)
 		{
 			goBackToScreen();
@@ -461,7 +460,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	 */
 	private void updateBudgetGoal(long minutes, YonaGoal yonaGoal)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		if (yonaGoal != null)
 		{
 			APIManager.getInstance().getChallengesManager().updateBudgetGoals(minutes, yonaGoal, new DataLoadListener()
@@ -489,7 +488,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	 */
 	private void createTimeZoneGoal(List<String> timesList, Object object)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		if (object instanceof YonaGoal)
 		{
 			APIManager.getInstance().getChallengesManager().postTimeGoals(timesList, (YonaGoal) object, new DataLoadListener()
@@ -535,7 +534,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	 */
 	private void updateTimeZoneGoal(List<String> timeList, YonaGoal yonaGoal)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		if (yonaGoal != null)
 		{
 			APIManager.getInstance().getChallengesManager().updateTimeGoals(timeList, yonaGoal, new DataLoadListener()
@@ -585,7 +584,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 			@Override
 			public void onCancel(DialogInterface dialogInterface)
 			{
-				logd(TAG, "TimePicker Dialog was cancelled");
+				logd(ChallengesGoalDetailFragment.class, "TimePicker Dialog was cancelled");
 			}
 		});
 		mTimePickerDialog.show(getActivity().getFragmentManager(), "Timepickerdialog");
@@ -779,7 +778,7 @@ public class ChallengesGoalDetailFragment extends BaseFragment implements View.O
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
 	{
-		logi(TAG, "progress...." + progress);
+		logi(ChallengesGoalDetailFragment.class, "progress...." + progress);
 		mBudgetGoalTime.setText("" + progress);
 		updateTimeZoneUI();
 	}

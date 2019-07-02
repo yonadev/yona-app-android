@@ -17,6 +17,7 @@ import java.util.List;
 import nu.yona.app.api.db.DBConstant;
 import nu.yona.app.api.model.Activity;
 import nu.yona.app.utils.AppUtils;
+import nu.yona.app.utils.Logger;
 
 /**
  * Created by kinnarvasa on 08/06/16.
@@ -37,21 +38,12 @@ public class ActivityTrackerDAO extends BaseDAO
 	/**
 	 * Save activities.
 	 *
-	 * @param activityList the activity list
-	 */
-	public void saveActivities(List<Activity> activityList)
-	{
-		bulkInsert(DBConstant.TBL_ACTIVITY_TRACKER, activityList);
-	}
-
-	/**
-	 * Save activities.
-	 *
 	 * @param activity the activity
 	 */
 	public void saveActivities(Activity activity)
 	{
 		insert(DBConstant.TBL_ACTIVITY_TRACKER, activity.getDbContentValues());
+		Logger.logi(ActivityTrackerDAO.class, "Activity inserted : " + activity.getDbContentValues().toString());
 	}
 
 	/**
@@ -61,8 +53,9 @@ public class ActivityTrackerDAO extends BaseDAO
 	 */
 	public List<Activity> getActivities()
 	{
-		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER);
 		List<Activity> activityList = new ArrayList<>();
+		logTotalActivityCount();
+		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER, DBConstant.APPLICATION_NAME + " DESC", DBConstant.ACTIVITY_FETCH_ROW_LIMIT);
 		try
 		{
 			if (c != null && c.getCount() > 0)
@@ -80,7 +73,7 @@ public class ActivityTrackerDAO extends BaseDAO
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalDAO.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(GoalDAO.class, e, Thread.currentThread());
 		}
 		finally
 		{
@@ -92,12 +85,26 @@ public class ActivityTrackerDAO extends BaseDAO
 		return activityList;
 	}
 
+
 	/**
 	 * Clear activities.
 	 */
 	public void clearActivities()
 	{
-		delete(DBConstant.TBL_ACTIVITY_TRACKER, null, null);
-		getActivities();
+		delete(DBConstant.TBL_ACTIVITY_TRACKER,
+				DBConstant.APPLICATION_START_TIME +
+						" IN (SELECT " + DBConstant.APPLICATION_START_TIME +
+						" from " + DBConstant.TBL_ACTIVITY_TRACKER +
+						" ORDER BY " + DBConstant.APPLICATION_NAME + " DESC LIMIT " + DBConstant.ACTIVITY_FETCH_ROW_LIMIT + ")",
+				null);
+		logTotalActivityCount();
 	}
+
+	public void logTotalActivityCount()
+	{
+		Cursor c = query(DBConstant.TBL_ACTIVITY_TRACKER);
+		Logger.logi(ActivityTrackerDAO.class, "Activity count " + c.getCount());
+		c.close();
+	}
+
 }

@@ -1,0 +1,1 @@
+APPDEV-1255 Fixed a crash in the friends timeline view

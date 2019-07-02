@@ -1,0 +1,1 @@
+APPDEV-1251 De app sluit nu in het geval hij wordt gestart in een situatie waar hij een netwerkverbinding nodig heeft maar er geen kan maken

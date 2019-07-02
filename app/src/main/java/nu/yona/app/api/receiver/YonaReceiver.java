@@ -10,13 +10,19 @@ package nu.yona.app.api.receiver;
 
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.PowerManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 
+import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppConstant;
@@ -54,11 +60,15 @@ public class YonaReceiver extends BroadcastReceiver
 			case AppConstant.RESTART_DEVICE:
 				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_DEVICE_RESTART_REQUIRE, null);
 				break;
+			case PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED:
+				handleDeviceDozeMode(context);
+				break;
 			case AppConstant.RESTART_VPN:
 				handleRestartVPNBroadcast(context);
 				break;
-			case PowerManager.ACTION_DEVICE_IDLE_MODE_CHANGED:
-				handleDeviceDozeMode(context);
+			case AppConstant.CONNECT_VPN:
+				AppUtils.removeVPNConnectNotification(context);
+				handleConnectVPNBroadcast(context);
 				break;
 			default:
 				break;
@@ -68,7 +78,7 @@ public class YonaReceiver extends BroadcastReceiver
 	@TargetApi(Build.VERSION_CODES.O)
 	private void handleDeviceDozeMode(Context context)
 	{
-		Logger.loge("Broadcast", "ACTION_DEVICE_IDLE_MODE_CHANGED");
+		Logger.loge(YonaReceiver.class, "ACTION_DEVICE_IDLE_MODE_CHANGED");
 		PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
 		if (powerManager.isDeviceIdleMode() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
 		{
@@ -78,20 +88,20 @@ public class YonaReceiver extends BroadcastReceiver
 
 	private void handleRebootCompletedBroadcast(Context context)
 	{
-		Logger.loge("Broadcast", "ACTION_BOOT_COMPLETED");
+		Logger.loge(YonaReceiver.class, "ACTION_BOOT_COMPLETED");
 		startService(context);
 	}
 
 	private void handleScreenOnBroadcast(Context context)
 	{
-		Logger.logi("Broadcast", "ACTION_SCREEN_ON");
+		Logger.logi(YonaReceiver.class, "ACTION_SCREEN_ON");
 		startService(context);
 		AppUtils.startVPN(context, false);
 	}
 
 	private void handleScreenOffBroadcast(Context context)
 	{
-		Logger.logi("Broadcast", "ACTION_SCREEN_OFF");
+		Logger.logi(YonaReceiver.class, "ACTION_SCREEN_OFF");
 		AppUtils.setNullScheduler();
 		AppUtils.sendLogToServer(AppConstant.ONE_SECOND);
 	}
@@ -99,7 +109,7 @@ public class YonaReceiver extends BroadcastReceiver
 	@TargetApi(Build.VERSION_CODES.O)
 	private void handleWakeUpAlarm(Context context)
 	{
-		Logger.logi("Broadcast", "WAKE_UP");
+		Logger.logi(YonaReceiver.class, "WAKE_UP");
 		// Device is awake from doze/sleep (it can be because of user interaction or of some silent Push notifications).
 		// We should start service only when device is interactive else schedule next alarm
 		if (isDeviceInteractive(context))
@@ -134,7 +144,14 @@ public class YonaReceiver extends BroadcastReceiver
 
 	private void handleRestartVPNBroadcast(Context context)
 	{
-		Logger.logi("Broadcast", "Restart VPN Broadcast received");
+		Logger.logi(YonaReceiver.class, "Restart VPN Broadcast received");
+		showRestartVPNNotification(context.getString(R.string.vpn_disconnected));
+	}
+
+	private void handleConnectVPNBroadcast(Context context)
+	{
+		Logger.logi(YonaReceiver.class, "Connect VPN Broadcast received");
+		AppUtils.startVPN(context, false);
 	}
 
 	private void startService(Context context)
@@ -145,4 +162,42 @@ public class YonaReceiver extends BroadcastReceiver
 			AppUtils.startService(context);
 		}
 	}
+
+	private void showRestartVPNNotification(String message)
+	{
+		Intent intent = new Intent(context.getApplicationContext(), YonaReceiver.class);
+		intent.setAction(AppConstant.CONNECT_VPN);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		if (pendingIntent == null)
+		{
+			return;
+		}
+		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+		{
+			NotificationChannel channel = new NotificationChannel(AppConstant.YONA_VPN_CHANNEL_ID,
+					context.getString(R.string.yona_vpn_notification_channel_name),
+					NotificationManager.IMPORTANCE_DEFAULT);
+			notificationManager.createNotificationChannel(channel);
+		}
+		notificationManager.notify(AppConstant.VPN_CONNECT_NOTIFICATION_ID, getConfiguredVPNRestartNotification(message, pendingIntent));
+	}
+
+	private Notification getConfiguredVPNRestartNotification(String message, PendingIntent pendingIntent)
+	{
+		NotificationCompat.Builder mBuilder =
+				new NotificationCompat.Builder(context.getApplicationContext(), AppConstant.YONA_VPN_CHANNEL_ID);
+		NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+		bigText.bigText(message);
+		mBuilder.setColor(ContextCompat.getColor(context, R.color.grape));
+		mBuilder.setStyle(bigText);
+		mBuilder.setContentIntent(pendingIntent);
+		mBuilder.setContentText(message);
+		mBuilder.setTicker(context.getString(R.string.appname));
+		mBuilder.setSmallIcon(R.drawable.app_monitor_notif_icon);
+		mBuilder.setPriority(Notification.PRIORITY_MAX);
+		mBuilder.setAutoCancel(true);
+		return mBuilder.build();
+	}
 }
+

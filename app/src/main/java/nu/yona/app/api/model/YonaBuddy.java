@@ -13,6 +13,11 @@ import android.content.ContentValues;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import java.util.Collections;
+import java.util.List;
+
 import nu.yona.app.enums.StatusEnum;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.DateUtility;
@@ -26,9 +31,6 @@ public class YonaBuddy extends BaseEntity
 	@SerializedName("_links")
 	@Expose
 	private Links Links;
-	@SerializedName("nickname")
-	@Expose
-	private String nickname;
 	@SerializedName("sendingStatus")
 	@Expose
 	private String sendingStatus;
@@ -61,26 +63,6 @@ public class YonaBuddy extends BaseEntity
 	public void setLinks(Links Links)
 	{
 		this.Links = Links;
-	}
-
-	/**
-	 * Gets nickname.
-	 *
-	 * @return The nickname
-	 */
-	public String getNickname()
-	{
-		return nickname;
-	}
-
-	/**
-	 * Sets nickname.
-	 *
-	 * @param nickname The nickname
-	 */
-	public void setNickname(String nickname)
-	{
-		this.nickname = nickname;
 	}
 
 	/**
@@ -168,6 +150,7 @@ public class YonaBuddy extends BaseEntity
 	 *
 	 * @return formatted date string.
 	 */
+	@JsonIgnore
 	public String getLastMonitoredActivityDateToDisplay()
 	{
 		return DateUtility.getFormattedRelativeDateDifference(lastMonitoredActivityDate);
@@ -178,4 +161,23 @@ public class YonaBuddy extends BaseEntity
 	{
 		return null;
 	}
+
+	@JsonIgnore
+	public String getNickname()
+	{
+		return this.getEmbedded().getYonaUser().getNickname();
+	}
+
+	@JsonIgnore
+	public List<YonaGoal> getYonaGoals()
+	{
+		EmbeddedDevicesGoals goalsContainer = this.getEmbedded().getYonaUser().getEmbedded();
+		if (goalsContainer == null)
+		{
+			// Buddy didn't accept invitation, so goals are not available yet.
+			return Collections.emptyList();
+		}
+		return goalsContainer.getYonaGoals().getEmbedded().getYonaGoals();
+	}
+
 }

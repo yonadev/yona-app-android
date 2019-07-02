@@ -1,0 +1,1 @@
+APPDEV-1239 Sommige alfatesters konden hun account niet meer gebruiken. Dit is nu opgelost.

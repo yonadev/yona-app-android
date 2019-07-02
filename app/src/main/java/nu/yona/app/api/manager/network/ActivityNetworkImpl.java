@@ -44,7 +44,7 @@ public class ActivityNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class ActivityNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -82,7 +82,7 @@ public class ActivityNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -101,7 +101,7 @@ public class ActivityNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ActivityNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -142,7 +142,7 @@ public class ActivityNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -154,7 +154,7 @@ public class ActivityNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -186,7 +186,7 @@ public class ActivityNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -218,7 +218,7 @@ public class ActivityNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(AuthenticateNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(AuthenticateNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 

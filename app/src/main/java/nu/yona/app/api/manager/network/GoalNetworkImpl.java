@@ -40,7 +40,7 @@ public class GoalNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(GoalNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 
@@ -60,7 +60,7 @@ public class GoalNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(GoalNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 
@@ -80,7 +80,7 @@ public class GoalNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(GoalNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 
@@ -99,7 +99,7 @@ public class GoalNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(GoalNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 
@@ -119,7 +119,7 @@ public class GoalNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(GoalNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 
@@ -139,7 +139,7 @@ public class GoalNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(GoalNetworkImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(GoalNetworkImpl.class, e, Thread.currentThread());
 		}
 	}
 

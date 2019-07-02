@@ -123,6 +123,7 @@
             <intent-filter>
                 <action android:name="nu.yona.app.RESTART_DEVICE" />
                 <action android:name="nu.yona.app.RESTART_VPN" />
+                <action android:name="nu.yona.app.CONNECT_VPN" />
             </intent-filter>
         </receiver>
     </application>

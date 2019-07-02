@@ -32,6 +32,8 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+
 /**
  * Created by kinnarvasa on 21/03/16.
  */
@@ -192,16 +194,16 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
 
 	private void deleteBuddy()
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		APIManager.getInstance().getBuddyManager().deleteBuddy(buddyUser, new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 				YonaActivity.getActivity().onBackPressed();
 				YonaActivity.getActivity().onBackPressed();
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
+				getSharedAppDataState().setEmbeddedWithBuddyActivity(null);
 				new Handler().postDelayed(new Runnable()
 				{
 					@Override
@@ -216,7 +218,7 @@ public class DetailsProfileFragment extends BaseProfileFragment implements Event
 			@Override
 			public void onError(Object errorMessage)
 			{
-				YonaActivity.getActivity().showLoadingView(false, null);
+				YonaActivity.getActivity().dismissLoadingView();
 				YonaActivity.getActivity().onBackPressed();
 			}
 		});

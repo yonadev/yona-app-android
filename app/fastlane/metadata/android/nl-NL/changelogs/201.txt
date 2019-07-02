@@ -1,0 +1,1 @@
+APPDEV-1255 Foutmelding in vriendentijdslijn opgelost

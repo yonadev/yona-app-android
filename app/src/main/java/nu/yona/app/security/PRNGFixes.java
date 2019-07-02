@@ -320,7 +320,7 @@ public final class PRNGFixes
 			{
 				// On a small fraction of devices /dev/urandom is not writable.
 				// Log and ignore.
-				AppUtils.reportException(PRNGFixes.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(PRNGFixes.class, e, Thread.currentThread());
 			}
 			finally
 			{

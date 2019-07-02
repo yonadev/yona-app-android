@@ -1,0 +1,1 @@
+APPDEV-1251 The app now closes when it is started in a situation where it needs a network connection but cannot make one

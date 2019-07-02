@@ -8,14 +8,11 @@
 
 package nu.yona.app.utils;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
-import nu.yona.app.BuildConfig;
 
 /**
  * A common Logger implementation to support logging mechanism in application.
@@ -24,68 +21,40 @@ import nu.yona.app.BuildConfig;
 public class Logger
 {
 
-	public static void logi(String tag, String message)
+	public static void logi(Class<?> originClass, String message)
 	{
 		if (Fabric.isInitialized())
 		{
-			Crashlytics.log(Log.INFO, tag, message);
+			Crashlytics.log(Log.INFO, originClass.getName(), message);
 		}
-		else
-		{
-			Log.i(tag, message);
-		}
+		Log.i(originClass.getName(), message);
 	}
 
-	public static void loge(String tag, String message)
+	public static void loge(Class<?> originClass, String message)
 	{
 		if (Fabric.isInitialized())
 		{
-			Crashlytics.log(Log.ERROR, tag, message);
+			Crashlytics.log(Log.ERROR, originClass.getName(), message);
 		}
-		else
-		{
-			Log.e(tag, message);
-		}
+		Log.e(originClass.getName(), message);
 	}
 
-	public static void loge(String tag, String message, Exception exception)
+	public static void loge(Class<?> originClass, String message, Exception exception)
 	{
 		if (Fabric.isInitialized())
 		{
-			Crashlytics.log(Log.ERROR, tag, message);
+			Crashlytics.log(Log.ERROR, originClass.getName(), message);
 			Crashlytics.logException(exception);
 		}
-		else
-		{
-			Log.e(tag, message, exception);
-		}
+		Log.e(originClass.getName(), message, exception);
 	}
 
-	public static void logd(String tag, String message)
+	public static void logd(Class<?> originClass, String message)
 	{
 		if (Fabric.isInitialized())
 		{
-			Crashlytics.log(Log.DEBUG, tag, message);
+			Crashlytics.log(Log.DEBUG, originClass.getName(), message);
 		}
-		else
-		{
-			Log.d(tag, message);
-		}
-	}
-
-	public static void printStackTrace(Exception e)
-	{
-		if (BuildConfig.DEBUG)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	public static void toast(Context context, String message)
-	{
-		if (BuildConfig.DEBUG)
-		{
-			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-		}
+		Log.d(originClass.getName(), message);
 	}
 }

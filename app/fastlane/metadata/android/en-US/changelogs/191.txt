@@ -1,0 +1,1 @@
+APPDEV-1241 Some users face a crash on app start. Added extra logging to analyze that issue.

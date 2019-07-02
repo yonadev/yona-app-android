@@ -10,7 +10,6 @@ package nu.yona.app.ui.pincode;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -34,8 +33,6 @@ import nu.yona.app.analytics.AnalyticsConstant;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.ErrorMessage;
-import nu.yona.app.api.model.Href;
-import nu.yona.app.api.model.User;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.customview.YonaFontTextView;
 import nu.yona.app.listener.DataLoadListenerImpl;
@@ -43,6 +40,9 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.PreferenceConstant;
+
+import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by bhargavsuthar on 03/06/16.
@@ -113,7 +113,6 @@ passcode_reset;
 	protected View passcodeView;
 	private AnimationSet animationView;
 	protected boolean isPasscodeFlowRetry;
-	final Handler mHandler = new Handler();
 	long totalTimerTime;
 	private Timer timer = new Timer();
 
@@ -122,46 +121,55 @@ passcode_reset;
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.blank_container_layout);
-
-		mToolBar = (Toolbar) findViewById(R.id.toolbar_layout);
-
+		mToolBar = findViewById(R.id.toolbar_layout);
 		progressDrawable = R.drawable.progress_bar;
-
-		passcode_title = (YonaFontTextView) findViewById(R.id.passcode_title);
-		passcode_description = (YonaFontTextView) findViewById(R.id.passcode_description);
-		passcode_error = (YonaFontTextView) findViewById(R.id.passcode_error);
-		accont_image = (ImageView) findViewById(R.id.img_account_check);
-		passcode_reset = (YonaFontTextView) findViewById(R.id.passcode_reset);
-		passcode_reset.setOnClickListener(this);
-		passcodeResetBtn = (YonaFontButton) findViewById(R.id.btnPasscodeReset);
-		timerLayout = (LinearLayout) findViewById(R.id.timerLayout);
-		hourText = (TextView) findViewById(R.id.hourText);
-		minuteText = (TextView) findViewById(R.id.minuteText);
-		secondText = (TextView) findViewById(R.id.secondText);
-
+		initializeViewAttributes();
 		passcodeResetBtn.setOnClickListener(this);
-
 		passcodeView = findViewById(R.id.blank_container);
+		profile_progress = findViewById(R.id.profile_progress);
+		addExtrasToIntent();
+		setBackgroundForToolBar();
+		txtTitle = findViewById(R.id.toolbar_title);
+	}
 
-		profile_progress = (ProgressBar) findViewById(R.id.profile_progress);
-		if (getIntent() != null && getIntent().getExtras() != null)
+	private void initializeViewAttributes()
+	{
+		passcode_title = findViewById(R.id.passcode_title);
+		passcode_description = findViewById(R.id.passcode_description);
+		passcode_error = findViewById(R.id.passcode_error);
+		accont_image = findViewById(R.id.img_account_check);
+		passcode_reset = findViewById(R.id.passcode_reset);
+		passcode_reset.setOnClickListener(this);
+		passcodeResetBtn = findViewById(R.id.btnPasscodeReset);
+		timerLayout = findViewById(R.id.timerLayout);
+		hourText = findViewById(R.id.hourText);
+		minuteText = findViewById(R.id.minuteText);
+		secondText = findViewById(R.id.secondText);
+	}
+
+	private void addExtrasToIntent()
+	{
+		if (getIntent() == null || getIntent().getExtras() == null)
 		{
-
-			if (getIntent().getExtras().get(AppConstant.SCREEN_TITLE) != null)
-			{
-				screenTitle = getIntent().getExtras().getString(AppConstant.SCREEN_TITLE);
-			}
-			if (getIntent().getExtras().get(AppConstant.PROGRESS_DRAWABLE) != null)
-			{
-				progressDrawable = getIntent().getExtras().getInt(AppConstant.PROGRESS_DRAWABLE);
-			}
-			if (!TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.SCREEN_TYPE)))
-			{
-				screenType = getIntent().getExtras().getString(AppConstant.SCREEN_TYPE);
-			}
-			isFromSettings = getIntent().getExtras().getBoolean(AppConstant.FROM_SETTINGS, false);
+			return;
 		}
+		if (getIntent().getExtras().get(AppConstant.SCREEN_TITLE) != null)
+		{
+			screenTitle = getIntent().getExtras().getString(AppConstant.SCREEN_TITLE);
+		}
+		if (getIntent().getExtras().get(AppConstant.PROGRESS_DRAWABLE) != null)
+		{
+			progressDrawable = getIntent().getExtras().getInt(AppConstant.PROGRESS_DRAWABLE);
+		}
+		if (!TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.SCREEN_TYPE)))
+		{
+			screenType = getIntent().getExtras().getString(AppConstant.SCREEN_TYPE);
+		}
+		isFromSettings = getIntent().getExtras().getBoolean(AppConstant.FROM_SETTINGS, false);
+	}
 
+	private void setBackgroundForToolBar()
+	{
 		if (isFromSettings)
 		{
 			colorCode = ContextCompat.getColor(this, R.color.mango);
@@ -172,15 +180,9 @@ passcode_reset;
 			colorCode = ContextCompat.getColor(this, R.color.grape); // default color will be grape
 			mToolBar.setBackgroundResource(R.drawable.triangle_shadow_grape); //default theme of toolbar
 		}
-
 		findViewById(R.id.pincode_layout).setBackgroundColor(colorCode);
-
 		findViewById(R.id.main_content).setBackgroundColor(colorCode);
-
-
-		txtTitle = (YonaFontTextView) findViewById(R.id.toolbar_title);
 	}
-
 
 	/**
 	 * Initialize animation.
@@ -215,35 +217,51 @@ passcode_reset;
 	}
 
 	@Override
+	public void onBackPressed()
+	{
+		// No action if back button is pressed in pin reset screen
+	}
+
+	@Override
 	public void onClick(View v)
 	{
 		switch (v.getId())
 		{
 			case R.id.passcode_reset:
 			case R.id.btnPasscodeReset:
-				doPasscodeReset();
+				displayAlertForPasscodeReset();
 				break;
 			default:
 				break;
 		}
 	}
 
+	private void displayAlertForPasscodeReset()
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BasePasscodeActivity.this);
+		alertDialogBuilder.setMessage(getString(R.string.resetpinalert));
+		alertDialogBuilder.setPositiveButton(getString(R.string.yes), (dialog, which) -> doPasscodeReset());
+		alertDialogBuilder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.cancel());
+		alertDialogBuilder.create().show();
+	}
+
 	private void doPasscodeReset()
 	{
-		if (screenType != null)
+		if (screenType == null)
 		{
-			switch (screenType)
-			{
-				case AppConstant.OTP:
-					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_OTP_RESEND, null);
-					break;
-				case AppConstant.PIN_RESET_VERIFICATION:
-				case AppConstant.LOGGED_IN:
-					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_RESET, null);
-					break;
-				default:
-					break;
-			}
+			return;
+		}
+		switch (screenType)
+		{
+			case AppConstant.OTP:
+				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_OTP_RESEND, null);
+				break;
+			case AppConstant.PIN_RESET_VERIFICATION:
+			case AppConstant.LOGGED_IN:
+				YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_PASSCODE_RESET, null);
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -263,24 +281,25 @@ passcode_reset;
 	protected void updateScreenUI()
 	{
 		unblockUserUpdateUI();
-		if (!TextUtils.isEmpty(screenType))
+		if (TextUtils.isEmpty(screenType))
 		{
-			if (screenType.equalsIgnoreCase(AppConstant.LOGGED_IN))
-			{
-				visibleLoginView();
-				populateLoginView();
-			}
-			else if (screenType.equalsIgnoreCase(AppConstant.OTP))
-			{
-				populateOTPView();
-				visibleView();
-			}
-			else if (screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION))
-			{
-				populatePinResetVerificationView();
-				visibleLoginView();
-				visibleView();
-			}
+			return;
+		}
+		if (screenType.equalsIgnoreCase(AppConstant.LOGGED_IN))
+		{
+			visibleLoginView();
+			populateLoginView();
+		}
+		else if (screenType.equalsIgnoreCase(AppConstant.OTP))
+		{
+			populateOTPView();
+			visibleView();
+		}
+		else if (screenType.equalsIgnoreCase(AppConstant.PIN_RESET_VERIFICATION))
+		{
+			populatePinResetVerificationView();
+			visibleLoginView();
+			visibleView();
 		}
 	}
 
@@ -469,7 +488,7 @@ passcode_reset;
 		timerLayout.setVisibility(View.VISIBLE);
 		passcodeView.setVisibility(View.GONE);
 		profile_progress.setVisibility(View.GONE);
-		passcode_description.setText(getString(R.string.timer_wait_desc, YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getString(PreferenceConstant.USER_WAIT_TIME_IN_STRING, "")));
+		passcode_description.setText(getString(R.string.timer_wait_desc, getSharedUserPreferences().getString(PreferenceConstant.USER_WAIT_TIME_IN_STRING, "")));
 		passcode_description.setVisibility(View.VISIBLE);
 		passcode_error.setVisibility(View.GONE);
 		accont_image.setImageResource(R.drawable.icn_secure);
@@ -480,7 +499,7 @@ passcode_reset;
 	private void showTime()
 	{
 		totalTimerTime = 0;
-		long serverTime = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0);
+		long serverTime = getSharedUserPreferences().getLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, 0);
 		if (serverTime > new Date().getTime())
 		{
 			totalTimerTime = serverTime - new Date().getTime();
@@ -499,23 +518,19 @@ passcode_reset;
 		@Override
 		public void run()
 		{
-			runOnUiThread(new Runnable()
-			{
-				@Override
-				public void run()
+			runOnUiThread(() -> {
+				if (totalTimerTime > 0)
 				{
-					if (totalTimerTime > 0)
-					{
-						displayData();
-					}
-					else
-					{
-						timer.cancel();
-						YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RESUME_OTP_VIEW, null);
-					}
+					displayData();
+				}
+				else
+				{
+					timer.cancel();
+					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_RESUME_OTP_VIEW, null);
 				}
 			});
 		}
+
 	}
 
 	private void displayData()
@@ -528,12 +543,17 @@ passcode_reset;
 		{
 			remainingTime -= HOUR;
 		}
-		int minute = (int) remainingTime / MINUTE;
+		int minute = (int) (remainingTime % HOUR) / MINUTE;
 		if (minute > 0)
 		{
 			remainingTime -= MINUTE;
 		}
-		int seconds = (int) remainingTime / AppConstant.ONE_SECOND;
+		int seconds = (int) (((remainingTime % HOUR) % MINUTE) / AppConstant.ONE_SECOND);
+		setTimeValues(hour, minute, seconds);
+	}
+
+	private void setTimeValues(int hour, int minute, int seconds)
+	{
 		if (hour < 10)
 		{
 			hourText.setText("0" + hour);
@@ -542,7 +562,6 @@ passcode_reset;
 		{
 			hourText.setText("" + hour);
 		}
-
 		if (minute < 10)
 		{
 			minuteText.setText("0" + minute);
@@ -551,7 +570,6 @@ passcode_reset;
 		{
 			minuteText.setText("" + minute);
 		}
-
 		if (seconds < 10)
 		{
 			secondText.setText("0" + seconds);
@@ -564,17 +582,14 @@ passcode_reset;
 
 	protected void postOpenAppEvent()
 	{
-		User loggedInUser = YonaApplication.getEventChangeManager().getDataState().getUser();
-		if (loggedInUser.getLinks() == null || loggedInUser.getLinks().getYonaPostOpenAppEvent() == null)
+		if (!getAppUser().isActive())
 		{
 			// The user account is apparently deleted
 			return;
 		}
-		Href yonaPostOpenAppEventHref = YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaPostOpenAppEvent();
-		String postAppOpenEventURL = yonaPostOpenAppEventHref.getHref();
 		DataLoadListenerImpl listenerWrapper = new DataLoadListenerImpl((result) -> handlePostAppEventSuccess(result), (error) -> handlePostAppEventFailure(error), null);
 		String yonaPassword = YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword();
-		APIManager.getInstance().getYonaManager().postOpenAppEvent(postAppOpenEventURL, yonaPassword, listenerWrapper);
+		APIManager.getInstance().getYonaManager().postOpenAppEvent(getAppUser().getPostOpenAppEventLink(), yonaPassword, listenerWrapper);
 	}
 
 	protected abstract Object handlePostAppEventSuccess(Object result);
@@ -586,24 +601,28 @@ passcode_reset;
 		{
 			errorMessageStr = ((ErrorMessage) errorMessage).getMessage();
 		}
-		else
+		else if (errorMessage != null)
 		{
-			errorMessageStr = (String) errorMessage;
+			errorMessageStr = errorMessage.toString();
 		}
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(getString(R.string.generic_alert_title));
-		builder.setMessage(errorMessageStr);
-		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
+		displayErrorMessageToUser(errorMessageStr);
+		return null; // dummy return value, to allow use a data error handler
+	}
+
+
+	private void displayErrorMessageToUser(String errorMessageStr)
+	{
+		runOnUiThread(() -> {
+			if (!this.isFinishing())
 			{
-				navigateToNextScreen();
+				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle(getString(R.string.generic_alert_title));
+				builder.setMessage(errorMessageStr);
+				builder.setPositiveButton(android.R.string.ok, (DialogInterface dialog, int which) -> navigateToNextScreen());
+				builder.setCancelable(false);
+				builder.create().show();
 			}
 		});
-		builder.setCancelable(false);
-		builder.create().show();
-		return null;
 	}
 
 	protected abstract void navigateToNextScreen();

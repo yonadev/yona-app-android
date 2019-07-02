@@ -92,7 +92,7 @@ class YonaFontUtils
 			}
 			catch (Exception e)
 			{
-				AppUtils.reportException(YonaFontUtils.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(YonaFontUtils.class, e, Thread.currentThread());
 				return null;
 			}
 

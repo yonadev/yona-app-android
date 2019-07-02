@@ -44,7 +44,7 @@ public class JsonSerializer implements DbSerializer
 		}
 		catch (IOException e)
 		{
-			AppUtils.reportException(JsonSerializer.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(JsonSerializer.class, e, Thread.currentThread());
 		}
 		return new byte[0];
 	}

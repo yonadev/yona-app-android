@@ -35,6 +35,8 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+
 /**
  * Created by kinnarvasa on 28/03/16.
  */
@@ -97,7 +99,7 @@ class BaseImpl
 		if (retrofit == null)
 		{
 			retrofit = new Retrofit.Builder()
-					.baseUrl(YonaApplication.getEventChangeManager().getDataState().getServerUrl())
+					.baseUrl(getSharedAppDataState().getServerUrl())
 					.addConverterFactory(GsonConverterFactory.create())
 					.client(gethttpClient())
 					.build();

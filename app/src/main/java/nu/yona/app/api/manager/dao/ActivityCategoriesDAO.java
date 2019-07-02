@@ -64,7 +64,7 @@ public class ActivityCategoriesDAO extends BaseDAO
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(ActivityCategories.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class ActivityCategoriesDAO extends BaseDAO
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityCategories.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityCategories.class, e, Thread.currentThread());
 		}
 		finally
 		{

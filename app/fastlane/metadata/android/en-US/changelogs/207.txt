@@ -1,1 +1,1 @@
-APPDEV 1265 Fixed a crash on certain Huawei devices
+APPDEV-1250 Fixed scroll issue in timeline after adding a new goal

@@ -1,0 +1,1 @@
+APPDEV-1241 Bij sommige gebruikers crasht de applicatie bij het starten. Extra logging toegevoegd om dat probleem te analyseren.

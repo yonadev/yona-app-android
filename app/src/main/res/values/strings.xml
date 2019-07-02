@@ -73,6 +73,7 @@
     <string name="inloggin">LOGIN</string>
     <string name="enterpasscode">You need to enter a 6 digit alphanumeric passcode.</string>
     <string name="resetpinrequest">Your request for reset has been received. You will receive an text message with a PIN reset confirmation code within %1$s.</string>
+    <string name="resetpinalert">Do you really want to reset your PIN? For security reasons, that will take time and you cannot use Yona in the meanwhile.</string>
     <string name="useroverride">Mobile Number %1$s is already registered with Yona. Do you want to re-register same number? (Note: All data associated with this number will be removed, if you want to add another device, you can go back and click on Login.)</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
@@ -228,6 +229,10 @@
     <string name="yona_notification_content">Monitoring app usage</string>
     <string name="notification_disabled_message">Yona cannot monitor app activity because notifications for the Yona application have been disabled. Enable notifications for Yona again in the device settings.</string>
     <string name="yona_service_notification_channel_name">Persistent notifications</string>
+    <string name="yona_vpn_notification_channel_name">VPN notifications</string>
     <string name="support_mail_subject">Problem with Yona app</string>
     <string name="mandatory_user_fetch_failure">The Yona app this time needs network connectivity to start</string>
+    <string name="usage_access_unavailable_message">In the device settings, please permit Yona to see app usage statistics.</string>
+    <string name="stop_vpn_setting">STOP VPN</string>
+    <string name="start_vpn_setting">START VPN</string>
 </resources>

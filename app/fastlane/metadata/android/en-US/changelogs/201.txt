@@ -1,0 +1,1 @@
+APPDEV-1255 Fixed error in friends timeline

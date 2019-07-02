@@ -60,7 +60,7 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -70,15 +70,13 @@ public class NotificationNetworkImpl extends BaseImpl
 	 *
 	 * @param url          the url
 	 * @param yonaPassword the yona password
-	 * @param itemsPerPage the items per page
-	 * @param pageNo       the page no
 	 * @param listener     the listener
 	 */
-	public void getMessage(String url, String yonaPassword, boolean isUnreadStatus, int itemsPerPage, int pageNo, final DataLoadListener listener)
+	public void getMessage(String url, String yonaPassword, boolean isUnreadStatus, final DataLoadListener listener)
 	{
 		try
 		{
-			getRestApi().getMessages(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), isUnreadStatus, itemsPerPage, pageNo).enqueue(new Callback<YonaMessages>()
+			getRestApi().getMessages(url, yonaPassword, Locale.getDefault().toString().replace('_', '-'), isUnreadStatus).enqueue(new Callback<YonaMessages>()
 			{
 				@Override
 				public void onResponse(Call<YonaMessages> call, Response<YonaMessages> response)
@@ -102,7 +100,7 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -121,7 +119,7 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -141,11 +139,11 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
-	public void getComments(String url, String password, final int itemsPerPage, final int pageNo, DataLoadListener listener)
+	public void getComments(String url, String password, DataLoadListener listener)
 	{
 		try
 		{
@@ -153,7 +151,7 @@ public class NotificationNetworkImpl extends BaseImpl
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(NotificationNetworkImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(NotificationNetworkImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 

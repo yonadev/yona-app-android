@@ -32,6 +32,32 @@ public class YonaUser extends BaseEntity
 	@SerializedName("mobileNumber")
 	@Expose
 	private String mobileNumber;
+	@SerializedName("nickname")
+	@Expose
+	private String nickname;
+	@SerializedName("_embedded")
+	@Expose
+	private EmbeddedDevicesGoals embedded;
+
+	/**
+	 * Gets nickname.
+	 *
+	 * @return The nickname
+	 */
+	public String getNickname()
+	{
+		return nickname;
+	}
+
+	/**
+	 * Sets nickname.
+	 *
+	 * @param nickname The nickname
+	 */
+	public void setNickname(String nickname)
+	{
+		this.nickname = nickname;
+	}
 
 	/**
 	 * Gets links.
@@ -111,6 +137,16 @@ public class YonaUser extends BaseEntity
 	public void setMobileNumber(String mobileNumber)
 	{
 		this.mobileNumber = mobileNumber;
+	}
+
+	public EmbeddedDevicesGoals getEmbedded()
+	{
+		return embedded;
+	}
+
+	public void setEmbedded(EmbeddedDevicesGoals embedded)
+	{
+		this.embedded = embedded;
 	}
 
 	@Override

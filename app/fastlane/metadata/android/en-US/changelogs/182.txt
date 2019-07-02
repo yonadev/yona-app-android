@@ -1,0 +1,1 @@
+APPDEV-1209 Fixed an issue where comments were shown twice on a day activity

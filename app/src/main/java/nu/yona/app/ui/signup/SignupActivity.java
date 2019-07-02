@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -28,11 +27,14 @@ import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.customview.YonaFontButton;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.listener.DataLoadListenerImpl;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.BaseActivity;
 import nu.yona.app.ui.LaunchActivity;
 import nu.yona.app.utils.AppConstant;
+
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 25/03/16.
@@ -141,48 +143,27 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 
 	private void doRegister()
 	{
-		showLoadingView(true, null);
-		if (getIntent() != null && getIntent().getExtras() != null && !TextUtils.isEmpty(getIntent().getExtras().getString(AppConstant.URL)))
+		displayLoadingView();
+		APIManager.getInstance().getAuthenticateManager().registerUser(getSharedAppDataState().getRegisterUser(), new DataLoadListener()
 		{
-			APIManager.getInstance().getAuthenticateManager().registerUser(getIntent().getExtras().getString(AppConstant.URL), YonaApplication.getEventChangeManager().getDataState().getRegisterUser(), new DataLoadListener()
+			@Override
+			public void onDataLoad(Object result)
 			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-					showLoadingView(false, null);
-					showMobileVerificationScreen(null);
-				}
+				dismissLoadingView();
+				showMobileVerificationScreen(null);
+			}
 
-				@Override
-				public void onError(Object errorMessage)
-				{
-					showError(errorMessage);
-				}
-			});
-		}
-		else
-		{
-			APIManager.getInstance().getAuthenticateManager().registerUser(YonaApplication.getEventChangeManager().getDataState().getRegisterUser(), false, new DataLoadListener()
+			@Override
+			public void onError(Object errorMessage)
 			{
-				@Override
-				public void onDataLoad(Object result)
-				{
-					showLoadingView(false, null);
-					showMobileVerificationScreen(null);
-				}
-
-				@Override
-				public void onError(Object errorMessage)
-				{
-					showError(errorMessage);
-				}
-			});
-		}
+				showError(errorMessage);
+			}
+		});
 	}
 
 	private void showAlertForReRegisteruser(String title)
 	{
-		CustomAlertDialog.show(this, title, getString(R.string.useroverride, YonaApplication.getEventChangeManager().getDataState().getRegisterUser().getMobileNumber()), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener()
+		CustomAlertDialog.show(this, title, getString(R.string.useroverride, getSharedAppDataState().getRegisterUser().getMobileNumber()), getString(R.string.yes), getString(R.string.no), new DialogInterface.OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialogInterface, int i)
@@ -204,26 +185,27 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 	 */
 	private void OverrideUser()
 	{
-		showLoadingView(true, null);
-		APIManager.getInstance().getAuthenticateManager().requestUserOverride(YonaApplication.getEventChangeManager().getDataState().getRegisterUser().getMobileNumber(), new DataLoadListener()
-		{
+		displayLoadingView();
+		DataLoadListenerImpl dataLoadListenerImpl = new DataLoadListenerImpl((result) -> handleUserOverrideRequestSuccess(result),
+				(result) -> handleUserOverrideRequestFailure(result), null);
+		APIManager.getInstance().getAuthenticateManager().requestUserOverride(getSharedAppDataState().getRegisterUser().getMobileNumber(), dataLoadListenerImpl);
+	}
 
-			@Override
-			public void onDataLoad(Object result)
-			{
-				showLoadingView(false, null);
-				Bundle bundle = new Bundle();
-				bundle.putSerializable(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getRegisterUser());
-				showMobileVerificationScreen(bundle);
-			}
+	private Object handleUserOverrideRequestSuccess(Object result)
+	{
+		dismissLoadingView();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(AppConstant.USER, getSharedAppDataState().getRegisterUser());
+		showMobileVerificationScreen(bundle);
+		YonaApplication.getEventChangeManager().getSharedPreference().setPasswordEncryptionModeToLatest();
+		return null;
+	}
 
-			@Override
-			public void onError(Object errorMessage)
-			{
-				showLoadingView(false, null);
-				showError(errorMessage);
-			}
-		});
+	private Object handleUserOverrideRequestFailure(Object errorMessage)
+	{
+		dismissLoadingView();
+		showError(errorMessage);
+		return null;
 	}
 
 	@Override
@@ -269,7 +251,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 
 	private void showError(Object errorMessage)
 	{
-		showLoadingView(false, null);
+		dismissLoadingView();
 		if (errorMessage instanceof ErrorMessage)
 		{
 			ErrorMessage message = (ErrorMessage) errorMessage;
@@ -310,7 +292,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 			return;
 		}
 
-		showLoadingView(true, null);
+		displayLoadingView();
 		if (AppConstant.URL != null)
 		{
 
@@ -319,7 +301,7 @@ public class SignupActivity extends BaseActivity implements EventChangeListener
 				@Override
 				public void onDataLoad(Object result)
 				{
-					showLoadingView(false, null);
+					dismissLoadingView();
 
 					if (result != null)
 					{

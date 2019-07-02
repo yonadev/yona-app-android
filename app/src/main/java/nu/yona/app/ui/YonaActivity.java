@@ -76,6 +76,7 @@ import nu.yona.app.api.utils.ServerErrorCode;
 import nu.yona.app.customview.CustomAlertDialog;
 import nu.yona.app.enums.IntentEnum;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.security.EncryptionUtils;
 import nu.yona.app.state.EventChangeListener;
 import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.ui.challenges.ChallengesFragment;
@@ -85,9 +86,9 @@ import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
 import nu.yona.app.ui.dashboard.SingleDayActivityDetailFragment;
 import nu.yona.app.ui.dashboard.SingleWeekDayActivityDetailFragment;
 import nu.yona.app.ui.dashboard.WeekActivityDetailFragment;
-import nu.yona.app.ui.frinends.AddFriendFragment;
-import nu.yona.app.ui.frinends.FriendsFragment;
-import nu.yona.app.ui.frinends.FriendsRequestFragment;
+import nu.yona.app.ui.friends.AddFriendFragment;
+import nu.yona.app.ui.friends.FriendsFragment;
+import nu.yona.app.ui.friends.FriendsRequestFragment;
 import nu.yona.app.ui.message.AdminNotificationFragment;
 import nu.yona.app.ui.message.NotificationFragment;
 import nu.yona.app.ui.pincode.PinActivity;
@@ -99,6 +100,10 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.Logger;
 import nu.yona.app.utils.PreferenceConstant;
+
+import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
 
 /**
  * Created by kinnarvasa on 18/03/16.
@@ -131,7 +136,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	private static boolean isUserFromOnCreate;
 	private boolean isUserFromPinScreenAlert;
 	private boolean isSkipPinFlow;
-	private final SharedPreferences userPreferences = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
+	private boolean isFromBackground;
 	private static final int LOCK_SCREEN_INTERVAL = 3000;
 
 	/**
@@ -162,7 +167,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		YonaApplication.getEventChangeManager().registerListener(this);
 
 		Bundle bundle = new Bundle();
-		user = YonaApplication.getEventChangeManager().getDataState().getUser();
+		user = getAppUser();
 
 		if (user != null && user.getLinks() != null)
 		{
@@ -173,10 +178,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
 		}
 
-		if (userPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
+		if (getSharedUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
 		{
 			homeFragment = new ProfileFragment();
-			bundle.putSerializable(AppConstant.USER, YonaApplication.getEventChangeManager().getDataState().getUser());
+			bundle.putSerializable(AppConstant.USER, getAppUser());
 		}
 		else
 		{
@@ -216,15 +221,15 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			}
 		});
 
-		if (userPreferences.getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
+		if (getSharedUserPreferences().getBoolean(PreferenceConstant.PROFILE_OTP_STEP, false))
 		{
 			updateTabIcon(false);
-			userPreferences.edit().putBoolean(PreferenceConstant.PROFILE_OTP_STEP, false).commit();
+			getSharedUserPreferences().edit().putBoolean(PreferenceConstant.PROFILE_OTP_STEP, false).commit();
 		}
 		else
 		{
 			//Load default dashboard_selector fragment on start after login, if signup, start challenges.
-			if (!userPreferences.getBoolean(PreferenceConstant.STEP_CHALLENGES, false))
+			if (!getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false))
 			{
 				mTabLayout.getTabAt(2).select();
 			}
@@ -268,24 +273,10 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		switch (tab.getCustomView().getTag().hashCode())
 		{
 			case R.string.dashboard:
-				getUserMessages();
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedDayActivity(null);
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWeekActivity(null);
-				Bundle bundle = new Bundle();
-				if (user != null && user.getLinks() != null)
-				{
-					bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
-				}
-				else
-				{
-					bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
-				}
-				Intent dashboardIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
-				dashboardIntent.putExtras(bundle);
-				replaceFragmentWithAction(dashboardIntent);
+				moveToDashboard();
 				break;
 			case R.string.friends:
-				YonaApplication.getEventChangeManager().getDataState().setEmbeddedWithBuddyActivity(null);
+				getSharedAppDataState().setEmbeddedWithBuddyActivity(null);
 				replaceFragmentWithAction(new Intent(IntentEnum.ACTION_FRIENDS.getActionString()));
 				break;
 			case R.string.challenges:
@@ -299,6 +290,25 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		}
 	}
 
+	public void moveToDashboard()
+	{
+		getUserMessages();
+		getSharedAppDataState().setEmbeddedDayActivity(null);
+		getSharedAppDataState().setEmbeddedWeekActivity(null);
+		Bundle bundle = new Bundle();
+		if (user != null && user.getLinks() != null)
+		{
+			bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, user.getLinks().getYonaDailyActivityReports(), user.getLinks().getYonaWeeklyActivityReports(), 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
+		}
+		else
+		{
+			bundle.putSerializable(AppConstant.YONA_THEME_OBJ, new YonaHeaderTheme(false, null, null, 0, R.drawable.icn_reminder, getString(R.string.dashboard), R.color.grape, R.drawable.triangle_shadow_grape));
+		}
+		Intent dashboardIntent = new Intent(IntentEnum.ACTION_DASHBOARD.getActionString());
+		dashboardIntent.putExtras(bundle);
+		replaceFragmentWithAction(dashboardIntent);
+	}
+
 	@Override
 	public void onResume()
 	{
@@ -308,6 +318,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			isStateActive = false;
 		}
 		super.onResume();
+		handleLaunchOfActivityDetailFragmentFromRecents();
 		if (isToDisplayLogin)
 		{
 			getUserMessages();
@@ -345,19 +356,32 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		}
 	}
 
+	private void handleLaunchOfActivityDetailFragmentFromRecents()
+	{
+		BaseFragment fragment = (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+		if ((fragment instanceof DayActivityDetailFragment || fragment instanceof WeekActivityDetailFragment
+				|| fragment instanceof SingleDayActivityDetailFragment || fragment instanceof SingleWeekDayActivityDetailFragment)
+				&& isFromBackground)
+		{
+			isFromBackground = false;
+			mTabLayout.getTabAt(0).select(); // Will redirect to dashboard
+		}
+	}
+
 	private void checkForNotificationPermission()
 	{
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || (NotificationManagerCompat.from(this).areNotificationsEnabled() && AppUtils.arePersistentNotificationsEnabled(getActivity())))
 		{
 			return;
 		}
-		Logger.loge("Notifications Disabled", this.getString(R.string.notification_disabled_message));
+		Logger.loge(YonaActivity.class, this.getString(R.string.notification_disabled_message));
 		AppUtils.displayErrorAlert(getActivity(), new ErrorMessage(this.getString(R.string.notification_disabled_message)));
 	}
 
+
 	private void getUserMessages()
 	{
-		APIManager.getInstance().getNotificationManager().getMessage(AppConstant.PAGE_SIZE, 0, true, new DataLoadListener()
+		APIManager.getInstance().getNotificationManager().getMessages(true, new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
@@ -365,7 +389,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				if (result != null && result instanceof YonaMessages)
 				{
 					YonaMessages yonaMessages = (YonaMessages) result;
-					YonaApplication.getEventChangeManager().getDataState().setNotificaitonCount(yonaMessages.getPage().getTotalElements());
+					getSharedAppDataState().setNotificationCount(yonaMessages.getPage().getTotalElements());
 					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_UPDATE_NOTIFICATION_COUNT, null);
 				}
 			}
@@ -373,7 +397,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			@Override
 			public void onError(Object errorMessage)
 			{
-				showLoadingView(false, null);
+				dismissLoadingView();
 				showError((ErrorMessage) errorMessage);
 			}
 		});
@@ -431,18 +455,19 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(YonaActivity.class, e, Thread.currentThread());
 		}
 	}
 
 	private void resetData()
 	{
-		SharedPreferences.Editor editor = userPreferences.edit();
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
 		editor.clear();
 		editor.putBoolean(PreferenceConstant.STEP_TOUR, true);
 		editor.commit();
 		DatabaseHelper.getInstance(YonaActivity.this).deleteAllData();
 		YonaApplication.getEventChangeManager().clearAll();
+		EncryptionUtils.clear();//clear all user keys if stored
 	}
 
 	private void navigateToLaunchActivity()
@@ -462,6 +487,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	public void onPause()
 	{
 		super.onPause();
+		isFromBackground = true;
 		if (launchedPinActiivty)
 		{
 			isToDisplayLogin = false;
@@ -531,7 +557,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	{
 		if (!TextUtils.isEmpty(data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)))
 		{
-			userPreferences.edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
+			getSharedUserPreferences().edit().putString(PreferenceConstant.PROFILE_UUID, data.getStringExtra(VpnProfile.EXTRA_PROFILEUUID)).commit();
 			AppUtils.startVPN(this, false);
 		}
 		else
@@ -596,9 +622,9 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			FileOutputStream fos = new FileOutputStream(file);
 			imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 		}
-		catch (FileNotFoundException ex)
+		catch (FileNotFoundException e)
 		{
-			AppUtils.reportException(YonaActivity.class.getSimpleName(), ex, Thread.currentThread());
+			AppUtils.reportException(YonaActivity.class, e, Thread.currentThread());
 			return null;
 		}
 		return file;
@@ -607,7 +633,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 	private void uploadUserPhoto(final File file)
 	{
 		APIManager.getInstance().getAuthenticateManager().uploadUserPhoto(
-				YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getEditUserPhoto().getHref(),
+				getAppUser().getLinks().getEditUserPhoto().getHref(),
 				YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
 				file,
 				new DataLoadListener()
@@ -630,7 +656,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 	private void showInstallAlert(final byte[] keystore)
 	{
-		if (userPreferences.getString(PreferenceConstant.PROFILE_UUID, null) != null)
+		if (getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, null) != null)
 		{
 			final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(getString(R.string.certificate_installation));
@@ -662,21 +688,28 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 
 	private void showPermissionAlert()
 	{
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		AppUtils.displayInfoAlert(this, getString(R.string.app_usage_permission_title),
+				getString(R.string.app_usage_permission_message),
+				false,
+				(dialog, which) -> {
+					isToDisplayLogin = false;
+					redirectToUsageAccessSetting();
+				},
+				null);
+	}
 
-		builder.setTitle(getString(R.string.app_usage_permission_title));
-		builder.setMessage(getString(R.string.app_usage_permission_message));
-		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+	private void redirectToUsageAccessSetting()
+	{
+		if (!AppUtils.canPerformIntent(this, new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)))
 		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				isToDisplayLogin = false;
-				startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
-			}
-		});
-		builder.setCancelable(false);
-		builder.create().show();
+			AppUtils.displayInfoAlert(this, getString(R.string.generic_alert_title),
+					getString(R.string.usage_access_unavailable_message),
+					true,
+					null,
+					null);
+			return;
+		}
+		startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
 	}
 
 	/**
@@ -1144,7 +1177,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(YonaActivity.class, e, Thread.currentThread());
 		}
 	}
 
@@ -1168,7 +1201,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				break;
 			case EventChangeManager.EVENT_USER_NOT_EXIST:
 				DatabaseHelper.getInstance(this).deleteAllData();
-				userPreferences.edit().clear();
+				getSharedUserPreferences().edit().clear().commit();
 				if (object != null && object instanceof ErrorMessage)
 				{
 					showError((ErrorMessage) object);
@@ -1176,7 +1209,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				YonaApplication.getEventChangeManager().clearAll();
 				break;
 			case EventChangeManager.EVENT_CLEAR_ACTIVITY_LIST:
-				YonaApplication.getEventChangeManager().getDataState().clearActivityList(mContent);
+				getSharedAppDataState().clearActivityList(mContent);
 				break;
 			case EventChangeManager.EVENT_CLOSE_ALL_ACTIVITY_EXCEPT_LAUNCH:
 				finish();
@@ -1278,7 +1311,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 				}
 				catch (Exception e)
 				{
-					AppUtils.reportException(YonaActivity.class.getSimpleName(), e, Thread.currentThread());
+					AppUtils.reportException(YonaActivity.class, e, Thread.currentThread());
 				}
 				return null;
 			}
@@ -1287,7 +1320,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			protected void onPostExecute(Object o)
 			{
 				super.onPostExecute(o);
-				showLoadingView(false, null);
+				dismissLoadingView();
 				new Handler().postDelayed(new Runnable()
 				{
 					@Override
@@ -1404,7 +1437,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 										   @NonNull String permissions[],
 										   @NonNull int[] grantResults)
 	{
-		Logger.loge(YonaActivity.class.getSimpleName(), "onRequestPermissionsResult");
+		Logger.loge(YonaActivity.class, "onRequestPermissionsResult");
 		isToDisplayLogin = false;
 		// Make sure it's our original READ_CONTACTS request
 		if (requestCode == READ_EXTERNAL_STORAGE_REQUEST)
@@ -1537,7 +1570,7 @@ public class YonaActivity extends BaseActivity implements FragmentManager.OnBack
 			{
 				isToDisplayLogin = false;
 				skipVerification = true;
-				if (userPreferences.getString(PreferenceConstant.PROFILE_UUID, "").equals(""))
+				if (getSharedUserPreferences().getString(PreferenceConstant.PROFILE_UUID, "").equals(""))
 				{
 					checkFileWritePermission();
 				}

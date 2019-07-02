@@ -1,1 +1,1 @@
-APPDEV-1265 Crash opgelost op sommige Huawei apparaten
+APPDEV-1250 Na het toevoegen van een doel ging het scrollen door de activiteitenlijst niet goed. Dit is nu opgelost.

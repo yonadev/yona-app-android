@@ -8,7 +8,6 @@
 
 package nu.yona.app.state;
 
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import nu.yona.app.R;
@@ -20,8 +19,9 @@ import nu.yona.app.api.model.User;
 import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.dashboard.DayActivityDetailFragment;
 import nu.yona.app.utils.AppConstant;
+import nu.yona.app.utils.Logger;
 
-import static nu.yona.app.YonaApplication.getEventChangeManager;
+import static nu.yona.app.YonaApplication.getSharedAppPreferences;
 
 /**
  * Created by kinnarvasa on 10/06/16.
@@ -34,10 +34,10 @@ public class DataState
 	private EmbeddedYonaActivity embeddedWeekActivity;
 	private EmbeddedYonaActivity embeddedWithBuddyActivity;
 	private RegisterUser registerUser;
-	private int notificaitonCount;
+	private int notificationCount;
 
 	/**
-	 * Gets user.
+	 * Gets user; loads it if it isn't loaded yet
 	 *
 	 * @return the user
 	 */
@@ -45,31 +45,22 @@ public class DataState
 	{
 		if (user == null)
 		{
-			user = APIManager.getInstance().getAuthenticateManager().getUser();
+			reloadUser();
 		}
 		return user;
 	}
 
 	/**
-	 * Sets user.
-	 *
-	 * @param user the user
-	 */
-	public void setUser(User user)
-	{
-		this.user = user;
-	}
-
-	/**
-	 * Update user user.
+	 * Reload the user.
 	 *
 	 * @return the user
 	 */
-	public User updateUser()
+	public User reloadUser()
 	{
 		user = APIManager.getInstance().getAuthenticateManager().getUser();
 		return user;
 	}
+
 
 	/**
 	 * Gets embedded day activity.
@@ -153,11 +144,11 @@ public class DataState
 	 */
 	public String getServerUrl()
 	{
-		if (TextUtils.isEmpty(getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.blank))))
+		if (TextUtils.isEmpty(getSharedAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.blank))))
 		{
 			setServerUrl(YonaApplication.getAppContext().getString(R.string.server_url));
 		}
-		return getAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
+		return getSharedAppPreferences().getString(AppConstant.SERVER_URL, YonaApplication.getAppContext().getString(R.string.server_url));
 	}
 
 	/**
@@ -167,19 +158,9 @@ public class DataState
 	 */
 	public void setServerUrl(String serverUrl)
 	{
-		getUserPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
-		getAppPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
+		getSharedAppPreferences().edit().putString(AppConstant.SERVER_URL, serverUrl).commit();
 	}
 
-	private SharedPreferences getUserPreferences()
-	{
-		return getEventChangeManager().getSharedPreference().getUserPreferences();
-	}
-
-	private SharedPreferences getAppPreferences()
-	{
-		return getEventChangeManager().getSharedPreference().getAppPreferences();
-	}
 
 	public RegisterUser getRegisterUser()
 	{
@@ -195,14 +176,14 @@ public class DataState
 		this.registerUser = registerUser;
 	}
 
-	public int getNotificaitonCount()
+	public int getNotificationCount()
 	{
-		return notificaitonCount;
+		return notificationCount;
 	}
 
-	public void setNotificaitonCount(int notificaitonCount)
+	public void setNotificationCount(int notificationCount)
 	{
-		this.notificaitonCount = notificaitonCount;
+		this.notificationCount = notificationCount;
 	}
 
 }

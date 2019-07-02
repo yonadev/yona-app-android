@@ -22,6 +22,7 @@ import nu.yona.app.R;
 import nu.yona.app.YonaApplication;
 import nu.yona.app.YonaTestCase;
 import nu.yona.app.api.db.DatabaseHelper;
+import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.manager.dao.AuthenticateDAO;
 import nu.yona.app.api.manager.network.AuthenticateNetworkImpl;
 import nu.yona.app.api.model.ErrorMessage;
@@ -31,6 +32,7 @@ import nu.yona.app.api.model.OTPVerficationCode;
 import nu.yona.app.api.model.RegisterUser;
 import nu.yona.app.api.model.User;
 import nu.yona.app.listener.DataLoadListener;
+import nu.yona.app.state.SharedPreference;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.equalTo;
@@ -44,8 +46,10 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	private AuthenticateManagerImpl manager;
 	private AuthenticateNetworkImpl authenticateNetworkImplMock;
 	private AuthenticateDAO authenticateDAOMock;
+	private SharedPreference sharedPreferenceMock;
 	private RegisterUser registerUser;
 
+	private final String yonaPwd = "AES:128:hiQK2AjU4YE8tEuJlUy+Ug==";
 	private final String correctMobileNumber = "+919686270640";
 	private final String wrongMobileNumber = "+9999211";
 	private final OTPVerficationCode correctOtpCode = new OTPVerficationCode("1234");
@@ -80,8 +84,9 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	{
 		setUpApplicationTestData();
 		setUpRegisterUser();
-		manager = new AuthenticateManagerImpl(YonaApplication.getAppContext());
+		manager = (AuthenticateManagerImpl) APIManager.getInstance().getAuthenticateManager();
 		mockRequiredClasses();
+		setUpSharedPreferenceMock();
 		setUpMockedAuthNetworkDaoMethods();
 		setUpMockedAuthNetworkImplMethods();
 	}
@@ -133,7 +138,7 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 
 	private void verifyUserRegistration()
 	{
-		manager.registerUser(registerUser, true, genericResponseListener);
+		manager.registerUser(registerUser, genericResponseListener);
 	}
 
 
@@ -159,9 +164,6 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	private void setUpApplicationTestData()
 	{
 		YonaApplication yonaApplication = (YonaApplication) RuntimeEnvironment.application;
-		yonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences();
-		yonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword("AES:128:hiQK2AjU4YE8tEuJlUy+Ug==");
-		yonaApplication.getEventChangeManager().getDataState().setUser(getMockedUser());
 	}
 
 	private void setUpRegisterUser()
@@ -177,12 +179,13 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 		authenticateNetworkImplMock = Mockito.mock(AuthenticateNetworkImpl.class);
 		manager.setAuthNetwork(authenticateNetworkImplMock);
 		authenticateDAOMock = Mockito.mock(AuthenticateDAO.class);
+		sharedPreferenceMock = Mockito.mock(SharedPreference.class);
 		manager.setAuthenticateDao(authenticateDAOMock);
 	}
 
-	private void handleUserRegResponse(String url, String password, RegisterUser regUserfromResponse, boolean isEditMode, final DataLoadListener listener)
+	private void handleUserRegResponse(RegisterUser regUserFromResponse, final DataLoadListener listener)
 	{
-		String regUserMobileNumFromReponse = (String) regUserfromResponse.getMobileNumber();
+		String regUserMobileNumFromReponse = (String) regUserFromResponse.getMobileNumber();
 		if (regUserMobileNumFromReponse.equals(correctMobileNumber))
 		{
 			listener.onDataLoad(getMockedUser());
@@ -217,14 +220,13 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 	private void setUpMockedAuthNetworkImplMethods()
 	{
 		Mockito.doAnswer((Answer) invocation -> {
-			handleUserRegResponse(invocation.getArgument(0), invocation.getArgument(1), invocation.getArgument(2), invocation.getArgument(3), invocation.getArgument(4));
+			handleUserRegResponse(invocation.getArgument(0), invocation.getArgument(1));
 			return null;
-		}).when(authenticateNetworkImplMock).registerUser(ArgumentMatchers.any(String.class),
-				ArgumentMatchers.any(String.class), ArgumentMatchers.any(RegisterUser.class),
-				ArgumentMatchers.any(Boolean.class), ArgumentMatchers.any(DataLoadListener.class));
+		}).when(authenticateNetworkImplMock).registerUser(ArgumentMatchers.any(RegisterUser.class), ArgumentMatchers.any(DataLoadListener.class));
 
 		Mockito.doAnswer((Answer) invocation -> {
-			handleVerifyMobileResponse(invocation.getArgument(0), invocation.getArgument(1), invocation.getArgument(2), invocation.getArgument(3));
+			handleVerifyMobileResponse(invocation.getArgument(0),
+					invocation.getArgument(1), invocation.getArgument(2), invocation.getArgument(3));
 			return null;
 		}).when(authenticateNetworkImplMock).verifyMobileNumber(ArgumentMatchers.any(String.class),
 				ArgumentMatchers.any(String.class), ArgumentMatchers.any(OTPVerficationCode.class),
@@ -259,6 +261,11 @@ public class AuthenticateManagerImplTest extends YonaTestCase
 				ArgumentMatchers.any(DataLoadListener.class));
 
 		Mockito.when(authenticateDAOMock.getUser()).thenReturn(getMockedUser());
+	}
+
+	private void setUpSharedPreferenceMock()
+	{
+		Mockito.when(sharedPreferenceMock.getYonaPassword()).thenReturn(yonaPwd);
 	}
 
 	@Override

@@ -22,6 +22,10 @@ import nu.yona.app.listener.DataLoadListener;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 
+import static nu.yona.app.YonaApplication.getAppUser;
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+
 /**
  * Created by kinnarvasa on 13/04/16.
  */
@@ -82,7 +86,7 @@ public class DeviceManagerImpl implements DeviceManager
 	@Override
 	public void addDevice(final String devicePassword, final DataLoadListener listener)
 	{
-		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(AppConstant.NEW_DEVICE_REQUESTED, false))
+		if (getSharedUserPreferences().getBoolean(AppConstant.NEW_DEVICE_REQUESTED, false))
 		{
 			deleteDevice(new DataLoadListener()
 			{
@@ -109,9 +113,9 @@ public class DeviceManagerImpl implements DeviceManager
 	{
 		try
 		{
-			if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref()))
+			if (!TextUtils.isEmpty(getAppUser().getLinks().getYonaNewDeviceRequest().getHref()))
 			{
-				deviceNetwork.addDevice(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref(),
+				deviceNetwork.addDevice(getAppUser().getLinks().getYonaNewDeviceRequest().getHref(),
 						new NewDeviceRequest(devicePassword), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(),
 						new DataLoadListener()
 						{
@@ -119,7 +123,7 @@ public class DeviceManagerImpl implements DeviceManager
 							@Override
 							public void onDataLoad(Object result)
 							{
-								YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, true).commit();
+								getSharedUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, true).commit();
 								listener.onDataLoad(result);
 							}
 
@@ -144,7 +148,7 @@ public class DeviceManagerImpl implements DeviceManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -156,14 +160,14 @@ public class DeviceManagerImpl implements DeviceManager
 	{
 		try
 		{
-			if (!TextUtils.isEmpty(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref()))
+			if (!TextUtils.isEmpty(getAppUser().getLinks().getYonaNewDeviceRequest().getHref()))
 			{
-				deviceNetwork.deleteDevice(YonaApplication.getEventChangeManager().getDataState().getUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener()
+				deviceNetwork.deleteDevice(getAppUser().getLinks().getYonaNewDeviceRequest().getHref(), YonaApplication.getEventChangeManager().getSharedPreference().getYonaPassword(), new DataLoadListener()
 				{
 					@Override
 					public void onDataLoad(Object result)
 					{
-						YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, false).commit();
+						getSharedUserPreferences().edit().putBoolean(AppConstant.NEW_DEVICE_REQUESTED, false).commit();
 						listener.onDataLoad(result);
 					}
 
@@ -188,7 +192,7 @@ public class DeviceManagerImpl implements DeviceManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -213,6 +217,7 @@ public class DeviceManagerImpl implements DeviceManager
 						{
 							NewDevice device = (NewDevice) result;
 							YonaApplication.getEventChangeManager().getSharedPreference().setYonaPassword(device.getYonaPassword());
+							YonaApplication.getEventChangeManager().getSharedPreference().setPasswordEncryptionModeToLatest();
 							getUser(device, listener);
 						}
 
@@ -232,7 +237,7 @@ public class DeviceManagerImpl implements DeviceManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 	}
 
@@ -248,7 +253,7 @@ public class DeviceManagerImpl implements DeviceManager
 					public void onDataLoad(Object result)
 					{
 						listener.onDataLoad(result);
-						YonaApplication.getEventChangeManager().getDataState().updateUser();
+						getSharedAppDataState().reloadUser();
 					}
 
 					@Override
@@ -272,7 +277,7 @@ public class DeviceManagerImpl implements DeviceManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(DeviceManagerImpl.class.getSimpleName(), e, Thread.currentThread(), listener);
+			AppUtils.reportException(DeviceManagerImpl.class, e, Thread.currentThread(), listener);
 		}
 
 	}

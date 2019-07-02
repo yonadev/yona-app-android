@@ -1,0 +1,1 @@
+APPDEV-1267 Tapping the "VPN disconnected, Tap here to connect again" notification now indeed reconnects the VPN. Along with this improved the icon.

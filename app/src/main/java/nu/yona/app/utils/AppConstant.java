@@ -295,8 +295,19 @@ public interface AppConstant
 	String RESTART_VPN = "com.yona.app.RESTART_VPN";
 	String RESTART_DEVICE = "com.yona.app.RESTART_DEVICE";
 	String WAKE_UP = "com.yona.app.WAKE_UP_ALARM";
+	String CONNECT_VPN = "nu.yona.app.CONNECT_VPN";
+
 
 	// Notifications Channel Id's
+	String YONA_VPN_CHANNEL_ID = "yona-vpn-channel";
 	String YONA_SERVICE_CHANNEL_ID = "yona-service-channel";
 	String OLD_YONA_SERVICE_CHANNEL_ID = "yona-channel";
+
+
+	// Version number of user entity stored in local database
+	int USER_ENTITY_VERSION = 3;
+
+	// Notification Id's. Before changing them please ensure that existing notifications with old Id's are cancelled at-least once.
+	int APP_MONITOR_NOTIFICATION_ID = 1111;
+	int VPN_CONNECT_NOTIFICATION_ID = 1112;
 }

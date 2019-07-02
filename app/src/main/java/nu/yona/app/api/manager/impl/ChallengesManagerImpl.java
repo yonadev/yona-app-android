@@ -34,6 +34,9 @@ import nu.yona.app.state.EventChangeManager;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.YonaApplication.getAppUser;
+
 /**
  * Created by bhargavsuthar on 20/04/16.
  */
@@ -182,7 +185,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 		try
 		{
 			if (userGoals != null
-					&& !YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false))
+					&& !getSharedUserPreferences().getBoolean(PreferenceConstant.STEP_CHALLENGES, false))
 			{
 				int serversetGoal = 0;
 				if (userGoals != null && userGoals.getEmbedded() != null && userGoals.getEmbedded().getYonaGoals() != null)
@@ -195,7 +198,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 						}
 					}
 				}
-				if (YonaApplication.getEventChangeManager().getDataState().getUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() > serversetGoal)
+				if (getAppUser().getEmbedded().getYonaGoals().getEmbedded().getYonaGoals().size() > serversetGoal)
 				{
 					YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.STEP_CHALLENGES, true).commit();
 					return true;
@@ -204,7 +207,7 @@ public class ChallengesManagerImpl implements ChallengesManager
 		}
 		catch (Exception e)
 		{
-			AppUtils.reportException(ActivityCategoryManagerImpl.class.getSimpleName(), e, Thread.currentThread());
+			AppUtils.reportException(ActivityCategoryManagerImpl.class, e, Thread.currentThread());
 		}
 		return false;
 	}

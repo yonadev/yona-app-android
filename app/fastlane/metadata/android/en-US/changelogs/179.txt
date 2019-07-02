@@ -1,0 +1,1 @@
+APPDEV-1211 Bug fix related to comments on week activities

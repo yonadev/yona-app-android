@@ -13,15 +13,18 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.TextUtils;
 
-import java.util.Arrays;
-
 import javax.crypto.spec.IvParameterSpec;
 
 import nu.yona.app.YonaApplication;
+import nu.yona.app.enums.EncryptionMethod;
+import nu.yona.app.security.EncryptionUtils;
 import nu.yona.app.security.MyCipher;
-import nu.yona.app.security.MyCipherData;
-import nu.yona.app.security.PRNGFixes;
 import nu.yona.app.utils.PreferenceConstant;
+import nu.yona.app.utils.YonaRuntimeException;
+
+import static nu.yona.app.YonaApplication.getSharedAppPreferences;
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+import static nu.yona.app.utils.PreferenceConstant.YONA_ENCRYPTION_METHOD;
 
 /**
  * Created by kinnarvasa on 29/06/16.
@@ -29,8 +32,7 @@ import nu.yona.app.utils.PreferenceConstant;
 
 public class SharedPreference
 {
-	private SharedPreferences userPreferences;
-	private SharedPreferences appPreferences;
+	public static final EncryptionMethod LATEST_ENCRYPTION_METHOD = EncryptionMethod.ENHANCED_BASED_ON_ANDROID_KEYSTORE;
 	private String yonaPwd = null;
 
 
@@ -41,11 +43,7 @@ public class SharedPreference
 	 */
 	public synchronized SharedPreferences getUserPreferences()
 	{
-		if (userPreferences == null)
-		{
-			userPreferences = YonaApplication.getAppContext().getSharedPreferences(PreferenceConstant.USER_PREFERENCE_KEY, Context.MODE_PRIVATE);
-		}
-		return userPreferences;
+		return YonaApplication.getAppContext().getSharedPreferences(PreferenceConstant.USER_PREFERENCE_KEY, Context.MODE_PRIVATE);
 	}
 
 	/**
@@ -55,13 +53,51 @@ public class SharedPreference
 	 */
 	public synchronized SharedPreferences getAppPreferences()
 	{
-		if (appPreferences == null)
-		{
-			appPreferences = YonaApplication.getAppContext().getSharedPreferences(PreferenceConstant.APP_PREFERENCE_KEY, Context.MODE_PRIVATE);
-		}
-		return appPreferences;
+		return YonaApplication.getAppContext().getSharedPreferences(PreferenceConstant.APP_PREFERENCE_KEY, Context.MODE_PRIVATE);
 	}
 
+
+	public String getVPNProfilePath()
+	{
+		return getSharedUserPreferences().getString(PreferenceConstant.VPN_PROFILE_PATH, null);
+	}
+
+	public void setRootCertPath(String path)
+	{
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
+		editor.putString(PreferenceConstant.ROOT_CERTIFICATE, path);
+		editor.putBoolean(PreferenceConstant.ROOT_CERTIFICATE_ACTIVE, false);
+		editor.commit();
+	}
+
+	public String getRootCertPath()
+	{
+		if (getSharedUserPreferences() != null)
+		{
+			return getSharedUserPreferences().getString(PreferenceConstant.ROOT_CERTIFICATE, null);
+		}
+		return null;
+	}
+
+
+	public void setVPNProfilePath(String path)
+	{
+		SharedPreferences.Editor editor = getSharedUserPreferences().edit();
+		editor.putString(PreferenceConstant.VPN_PROFILE_PATH, path);
+		editor.putBoolean(PreferenceConstant.VPN_PROFILE_ACTIVE, false);
+		editor.commit();
+	}
+
+	/**
+	 * Sets yona password.
+	 *
+	 * @param password yona password
+	 */
+	public void setYonaPassword(String password)
+	{
+		yonaPwd = null;
+		getSharedUserPreferences().edit().putString(PreferenceConstant.YONA_DATA, EncryptionUtils.encrypt(YonaApplication.getAppContext(), password)).commit();
+	}
 
 	/**
 	 * Gets yona password.
@@ -77,62 +113,38 @@ public class SharedPreference
 		return yonaPwd;
 	}
 
-	/**
-	 * Sets yona password.
-	 *
-	 * @param password yona password
-	 */
-	public void setYonaPassword(String password)
-	{
-		yonaPwd = null;
-		//According to http://android-developers.blogspot.com.es/2013/08/some-securerandom-thoughts.html
-		PRNGFixes.apply();
-		MyCipherData cipherData = new MyCipher(Build.SERIAL).encryptUTF8(password);
-		userPreferences.edit().putString(PreferenceConstant.YONA_DATA, Arrays.toString(cipherData.getData())).putString(PreferenceConstant.YONA_IV, Arrays.toString(cipherData.getIV())).commit();
-	}
-
-	public void setVPNProfilePath(String path)
-	{
-		SharedPreferences.Editor editor = userPreferences.edit();
-		editor.putString(PreferenceConstant.VPN_PROFILE_PATH, path);
-		editor.putBoolean(PreferenceConstant.VPN_PROFILE_ACTIVE, false);
-		editor.commit();
-	}
-
-	public String getVPNProfilePath()
-	{
-		return userPreferences.getString(PreferenceConstant.VPN_PROFILE_PATH, null);
-	}
-
-	public void setRootCertPath(String path)
-	{
-		SharedPreferences.Editor editor = userPreferences.edit();
-		editor.putString(PreferenceConstant.ROOT_CERTIFICATE, path);
-		editor.putBoolean(PreferenceConstant.ROOT_CERTIFICATE_ACTIVE, false);
-		editor.commit();
-	}
-
-	public String getRootCertPath()
-	{
-		if (userPreferences != null)
-		{
-			return userPreferences.getString(PreferenceConstant.ROOT_CERTIFICATE, null);
-		}
-		return null;
-	}
-
-	public boolean isRootCertActive()
-	{
-		return userPreferences.getBoolean(PreferenceConstant.ROOT_CERTIFICATE_ACTIVE, false);
-	}
-
-
 	private String getDecryptedKey()
 	{
-		if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, "")))
+		if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, "")))
 		{
-			byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
-			byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
+			return EncryptionUtils.decrypt(YonaApplication.getAppContext(), getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, ""));
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	public void upgradeFromInitialPasswordEncryption()
+	{
+		byte[] encrypted_data = byteToString(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, ""));
+		byte[] dataIV = byteToString(getSharedUserPreferences().getString(PreferenceConstant.YONA_IV, ""));
+		IvParameterSpec iv = new IvParameterSpec(dataIV);
+		MyCipher myCipher = new MyCipher(Build.SERIAL);
+		setYonaPassword(myCipher.getYonaPasswordWithOldEncryptedData(encrypted_data, iv));
+	}
+
+	public void upgradeFromSerialBasedPasswordEncryption()
+	{
+		setYonaPassword(getDecryptedKeyFromSerialBasedEncryptedData());
+	}
+
+	private String getDecryptedKeyFromSerialBasedEncryptedData()
+	{
+		if (!TextUtils.isEmpty(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, "")))
+		{
+			byte[] encrypted_data = byteToString(getSharedUserPreferences().getString(PreferenceConstant.YONA_DATA, ""));
+			byte[] dataIV = byteToString(getSharedUserPreferences().getString(PreferenceConstant.YONA_IV, ""));
 			IvParameterSpec iv = new IvParameterSpec(dataIV);
 			return new MyCipher(Build.SERIAL).decryptUTF8(encrypted_data, iv);
 		}
@@ -141,20 +153,6 @@ public class SharedPreference
 			return "";
 		}
 	}
-
-	public void upgradeYonaPasswordEncryption()
-	{
-		if (!TextUtils.isEmpty(userPreferences.getString(PreferenceConstant.YONA_DATA, "")))
-		{
-			byte[] encrypted_data = byteToString(userPreferences.getString(PreferenceConstant.YONA_DATA, ""));
-			byte[] dataIV = byteToString(userPreferences.getString(PreferenceConstant.YONA_IV, ""));
-			IvParameterSpec iv = new IvParameterSpec(dataIV);
-			MyCipher myCipher = new MyCipher(Build.SERIAL);
-			String yonaPassword = myCipher.getYonaPasswordWithOldEncryptedData(encrypted_data, iv);
-			setYonaPassword(yonaPassword);
-		}
-	}
-
 
 	private byte[] byteToString(String response)
 	{
@@ -167,4 +165,44 @@ public class SharedPreference
 		return encrypted_data;
 	}
 
+	public void upgradePasswordEncryptionIfNeeded()
+	{
+		EncryptionMethod encryptionMethod = EncryptionMethod.values()[getSharedAppPreferences().getInt(YONA_ENCRYPTION_METHOD, EncryptionMethod.INITIAL_METHOD.ordinal())];
+		if (encryptionMethod != LATEST_ENCRYPTION_METHOD)
+		{
+			upgradePasswordEncryption(encryptionMethod);
+		}
+	}
+
+	private void upgradePasswordEncryption(EncryptionMethod encryptionMethod)
+	{
+		switch (encryptionMethod)
+		{
+			case INITIAL_METHOD:
+			{
+				YonaApplication.getEventChangeManager().getSharedPreference().upgradeFromInitialPasswordEncryption();
+				break;
+			}
+			case ENHANCED_STILL_BASED_ON_SERIAL:
+			{
+				YonaApplication.getEventChangeManager().getSharedPreference().upgradeFromSerialBasedPasswordEncryption();
+				break;
+			}
+			case ENHANCED_BASED_ON_ANDROID_KEYSTORE:
+				// This is the current encryption version.
+				break;
+			default:
+			{
+				throw new YonaRuntimeException("Unknown encryption method: " + encryptionMethod);
+			}
+		}
+		setPasswordEncryptionModeToLatest();
+	}
+
+	public void setPasswordEncryptionModeToLatest()
+	{
+		SharedPreferences.Editor editor = getSharedAppPreferences().edit();
+		editor.putInt(YONA_ENCRYPTION_METHOD, LATEST_ENCRYPTION_METHOD.ordinal());
+		editor.commit();
+	}
 }

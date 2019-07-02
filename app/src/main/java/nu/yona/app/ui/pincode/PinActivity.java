@@ -35,6 +35,8 @@ import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
 import nu.yona.app.utils.PreferenceConstant;
 
+import static nu.yona.app.YonaApplication.getSharedUserPreferences;
+
 /**
  * Created by bhargavsuthar on 3/30/16.
  */
@@ -58,7 +60,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 		fragmentTransaction.replace(R.id.blank_container, passcodeFragment);
 		fragmentTransaction.commit();
 
-		isUserBlocked = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false);
+		isUserBlocked = getSharedUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false);
 		if (TextUtils.isEmpty(screenType))
 		{
 			screenType = AppConstant.LOGGED_IN;
@@ -80,7 +82,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 	public void onResume()
 	{
 		super.onResume();
-		if (YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null)
+		if (getSharedUserPreferences().getBoolean(PreferenceConstant.USER_BLOCKED, false) && passcodeFragment != null)
 		{
 			updateBlockMsg();
 		}
@@ -108,7 +110,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 				else if (APIManager.getInstance().getPasscodeManager().isWrongCounterReached())
 				{
 					passcode_error.setVisibility(View.GONE);
-					YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
+					getSharedUserPreferences().edit().putBoolean(PreferenceConstant.USER_BLOCKED, true).commit();
 					updateBlockMsg();
 					YonaApplication.getEventChangeManager().notifyChange(EventChangeManager.EVENT_CLOSE_YONA_ACTIVITY, null);
 				}
@@ -147,24 +149,25 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 		{
 			updatePin();
 		}
+		AppUtils.sendLogToServer(0);
 		finish();
 	}
 
 
 	private void doPinReset()
 	{
-		showLoadingView(true, null);
+		displayLoadingView();
 		APIManager.getInstance().getAuthenticateManager().requestPinReset(new DataLoadListener()
 		{
 			@Override
 			public void onDataLoad(Object result)
 			{
-				showLoadingView(false, null);
+				dismissLoadingView();
 				if (result instanceof PinResetDelay)
 				{
 					PinResetDelay delay = (PinResetDelay) result;
 					final Pair<String, Long> delayTime = AppUtils.getTimeForOTP(delay.getDelay());
-					SharedPreferences.Editor pref = YonaApplication.getEventChangeManager().getSharedPreference().getUserPreferences().edit();
+					SharedPreferences.Editor pref = getSharedUserPreferences().edit();
 					pref.putLong(PreferenceConstant.USER_WAIT_TIME_IN_LONG, (new Date().getTime() + delayTime.second));
 					pref.putString(PreferenceConstant.USER_WAIT_TIME_IN_STRING, delayTime.first);
 					pref.commit();
@@ -177,7 +180,7 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 			public void onError(Object errorMessage)
 			{
 				ErrorMessage message = (ErrorMessage) errorMessage;
-				showLoadingView(false, null);
+				dismissLoadingView();
 				Snackbar.make(findViewById(android.R.id.content), message.getMessage(), Snackbar.LENGTH_LONG)
 						.setAction(getString(R.string.ok), null)
 						.show();
@@ -220,7 +223,6 @@ public class PinActivity extends BasePasscodeActivity implements EventChangeList
 
 	private void updateData()
 	{
-		AppUtils.sendLogToServer(0);
 		APIManager.getInstance().getActivityCategoryManager().getActivityCategoriesById(null);
 	}
 }

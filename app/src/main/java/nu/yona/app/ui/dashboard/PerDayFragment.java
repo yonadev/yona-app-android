@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.yona.app.R;
-import nu.yona.app.YonaApplication;
 import nu.yona.app.analytics.YonaAnalytics;
 import nu.yona.app.api.manager.APIManager;
 import nu.yona.app.api.model.DayActivity;
@@ -38,6 +37,8 @@ import nu.yona.app.ui.BaseFragment;
 import nu.yona.app.ui.YonaActivity;
 import nu.yona.app.utils.AppConstant;
 import nu.yona.app.utils.AppUtils;
+
+import static nu.yona.app.YonaApplication.getSharedAppDataState;
 
 /**
  * Created by kinnarvasa on 21/03/16.
@@ -70,7 +71,7 @@ public class PerDayFragment extends BaseFragment
 			super.onScrolled(recyclerView, dx, dy);
 			try
 			{
-				EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+				EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 				if (mIsLoading || embeddedYonaActivity == null ||
 						embeddedYonaActivity.getPage().getNumber() >= embeddedYonaActivity.getPage().getTotalPages())
 				{
@@ -80,7 +81,7 @@ public class PerDayFragment extends BaseFragment
 			}
 			catch (Exception e)
 			{
-				AppUtils.reportException(PerDayFragment.class.getSimpleName(), e, Thread.currentThread());
+				AppUtils.reportException(PerDayFragment.class, e, Thread.currentThread());
 			}
 		}
 	};
@@ -174,7 +175,7 @@ public class PerDayFragment extends BaseFragment
 			isDataLoading = true;
 			refreshAdapter();
 		}
-		else if (YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity() != null)
+		else if (getSharedAppDataState().getEmbeddedDayActivity() != null)
 		{
 			showData();
 		}
@@ -223,7 +224,7 @@ public class PerDayFragment extends BaseFragment
 	 */
 	private void getDayActivity(boolean loadMore)
 	{
-		final EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+		final EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 		if (embeddedYonaActivity == null || embeddedYonaActivity.getPage() == null || embeddedYonaActivity.getPage() != null && embeddedYonaActivity.getPage().getNumber() < embeddedYonaActivity.getPage().getTotalPages())
 		{
 			loadDaysActivity(embeddedYonaActivity, loadMore);
@@ -236,7 +237,7 @@ public class PerDayFragment extends BaseFragment
 
 	private void loadDaysActivity(EmbeddedYonaActivity embeddedYonaActivity, boolean loadMore)
 	{
-		YonaActivity.getActivity().showLoadingView(true, null);
+		YonaActivity.getActivity().displayLoadingView();
 		Href urlToFetchDayActivityOverviews = getURLToFetchDayActivityOverViews(embeddedYonaActivity, loadMore);
 		DataLoadListenerImpl dataLoadListener = new DataLoadListenerImpl(((result) -> handleDaysActivityRetrieveOnSuccess(result)),
 				((result) -> handleDaysActivityRetrieveOnFailure(result)), null);
@@ -254,25 +255,25 @@ public class PerDayFragment extends BaseFragment
 	private Object handleDaysActivityRetrieveOnFailure(Object errorMessage)
 	{
 		isDataLoading = false;
-		YonaActivity.getActivity().showLoadingView(false, null);
+		YonaActivity.getActivity().dismissLoadingView();
 		YonaActivity.getActivity().showError((ErrorMessage) errorMessage);
 		return null;
 	}
 
 	private void showData()
 	{
-		EmbeddedYonaActivity embeddedYonaActivity = YonaApplication.getEventChangeManager().getDataState().getEmbeddedDayActivity();
+		EmbeddedYonaActivity embeddedYonaActivity = getSharedAppDataState().getEmbeddedDayActivity();
 		if (embeddedYonaActivity != null
 				&& embeddedYonaActivity.getDayActivityList() != null
 				&& embeddedYonaActivity.getDayActivityList().size() > 0)
 		{
 			perDayStickyAdapter.notifyDataSetChange(setHeaderListView(embeddedYonaActivity));
 			mIsLoading = false;
-			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().dismissLoadingView();
 		}
 		else
 		{
-			YonaActivity.getActivity().showLoadingView(false, null);
+			YonaActivity.getActivity().dismissLoadingView();
 			YonaActivity.getActivity().showError(new ErrorMessage(getString(R.string.no_data_found)));
 		}
 	}

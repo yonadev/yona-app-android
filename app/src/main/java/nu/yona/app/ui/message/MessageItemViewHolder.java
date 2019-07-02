@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 import nu.yona.app.R;
 import nu.yona.app.customview.YonaFontTextView;
-import nu.yona.app.ui.frinends.OnFriendsItemClickListener;
+import nu.yona.app.ui.friends.OnFriendsItemClickListener;
 
 /**
  * Created by bhargavsuthar on 10/05/16.
