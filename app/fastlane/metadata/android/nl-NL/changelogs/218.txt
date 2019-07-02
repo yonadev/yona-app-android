@@ -1,0 +1,1 @@
+Deze release levert oplossingen voor diverse fouten en baant de weg voor een update die push berichten ondersteunt.

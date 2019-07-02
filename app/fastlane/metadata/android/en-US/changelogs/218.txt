@@ -1,0 +1,1 @@
+This release contains various bug fixes and paves the way to an update that brings push notifications.
