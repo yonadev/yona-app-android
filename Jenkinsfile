@@ -31,6 +31,9 @@ pipeline {
           writeFile file: "app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${nlReleaseNotes}"
           writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${enReleaseNotes}"
         }
+        dir(path: 'Yona') {
+		  sh "bundle update --verbose fastlane"
+		}
 
         withCredentials(bindings: [string(credentialsId: 'AndroidKeystorePassword', variable: 'YONA_KEYSTORE_PASSWORD'),
             string(credentialsId: 'AndroidKeyPassword', variable: 'YONA_KEY_PASSWORD'),
@@ -46,6 +49,7 @@ pipeline {
         sh 'git add app/version.properties'
         sh "git add app/fastlane/metadata/android/nl-NL/changelogs/${env.NEW_VERSION_CODE}.txt"
         sh "git add app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt"
+		sh "git add app/Gemfile.lock"
         sh 'git commit -m "Build $BUILD_NUMBER updated versionCode to $NEW_VERSION_CODE [ci skip]"'
         sh 'git push https://${GIT_USR}:${GIT_PSW}@github.com/yonadev/yona-app-android.git HEAD:$BRANCH_NAME'
         sh 'git tag -a $BRANCH_NAME-build-$BUILD_NUMBER -m "Jenkins"'
