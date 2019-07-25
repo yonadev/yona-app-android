@@ -32,6 +32,7 @@ pipeline {
           writeFile file: "app/fastlane/metadata/android/en-US/changelogs/${env.NEW_VERSION_CODE}.txt", text: "${enReleaseNotes}"
         }
         dir(path: 'app') {
+		  sh "ls -l"
 		  sh "bundle update --verbose fastlane"
 		}
 
