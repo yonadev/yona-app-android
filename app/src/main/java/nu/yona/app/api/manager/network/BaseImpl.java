@@ -46,41 +46,37 @@ class BaseImpl
 {
 	private final int maxStale = 60 * 60 * 24 * 28; // keep cache for 28 days.
 	//    public final String localLanguage = ;
-	private final Interceptor getInterceptor = new Interceptor()
-	{
-		@Override
-		public Response intercept(Chain chain) throws IOException
+	private final Interceptor getInterceptor = chain -> {
+		Request request = chain.request();
+		if (NetworkUtils.isOnline(YonaApplication.getAppContext()))
 		{
-			Response response = null;
-			Request request = chain.request();
-			chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
-			if (NetworkUtils.isOnline(YonaApplication.getAppContext()))
-			{
-				chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
-			}
-			else
-			{
-				throw new UnknownHostException();
-			}
-
-			response = chain.proceed(request);
-			if (response.priorResponse() != null &&
-					response.priorResponse().code() ==
-							HttpURLConnection.HTTP_MOVED_PERM)
-			{
-
-				throw new UnknownHostException();
-			}
-			else
-			{
-				request = request.newBuilder().build();
-			}
-
-			return response.newBuilder()
-					.header("Cache-Control", "public, max-age=" + maxStale)
-					.build();
+			chain.request().newBuilder().addHeader("Cache-Control", "only-if-cached").build();
 		}
+		else
+		{
+			throw new IllegalStateException(YonaApplication.getAppContext().getString(R.string.server_not_rechable));
+		}
+		chain.request().newBuilder().addHeader(NetworkConstant.CONTENT_TYPE, "application/json");
+		Response response = verifyResponse(request, chain);
+		return response.newBuilder()
+				.header("Cache-Control", "public, max-age=" + maxStale)
+				.build();
 	};
+
+	private Response verifyResponse(Request request, Interceptor.Chain chain) throws IOException
+	{
+		Response response = chain.proceed(request);
+		if (response.priorResponse() != null && response.priorResponse().code() == HttpURLConnection.HTTP_MOVED_PERM)
+		{
+			throw new IllegalStateException(YonaApplication.getAppContext().getString(R.string.server_not_rechable));
+		}
+		else if (response.code() == HttpURLConnection.HTTP_GATEWAY_TIMEOUT)
+		{
+			throw new SocketTimeoutException(YonaApplication.getAppContext().getString(R.string.server_not_rechable));
+		}
+		request.newBuilder().build();
+		return response;
+	}
 
 	// Made both variables  below as class variables to make sure all network impl classes are using same host environment serverURL.
 	// If needed in future instead of using class variables we need to store all the impl instances into an array and iterate and update t
@@ -130,6 +126,7 @@ class BaseImpl
 				.connectTimeout(NetworkConstant.API_CONNECT_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
 				.writeTimeout(NetworkConstant.API_WRITE_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
 				.readTimeout(NetworkConstant.API_READ_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+				//.retryOnConnectionFailure(false)
 				.addInterceptor(getInterceptor)
 				.build();
 	}
@@ -220,8 +217,8 @@ class BaseImpl
 	{
 		if (listener != null)
 		{
-
-			if (t instanceof ConnectException || t instanceof SocketTimeoutException || t instanceof UnknownHostException)
+			AppUtils.reportException(BaseImpl.class, new Exception(t), Thread.currentThread(), null, false);
+			if (t instanceof ConnectException || t instanceof SocketTimeoutException || t instanceof UnknownHostException || t instanceof IllegalStateException)
 			{
 				// If client causing problem.
 				if (!AppUtils.isNetworkAvailable(YonaApplication.getAppContext()))
